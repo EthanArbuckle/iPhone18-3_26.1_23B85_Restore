@@ -2,13 +2,13 @@
 - (BOOL)p_isVerticalTextLayout;
 - (BOOL)p_shouldSnapToSelection;
 - (BOOL)p_shouldSuppressAnimation;
-- (CGAffineTransform)p_caretAffineTransformWithScaleFactor:(SEL)a3;
+- (CGAffineTransform)p_caretAffineTransformWithScaleFactor:(SEL)factor;
 - (CGPoint)animationPoint;
 - (CGPoint)magnificationPoint;
 - (CGPoint)offset;
-- (CGPoint)p_naturalPointFromUnscaledPoint:(CGPoint)a3;
+- (CGPoint)p_naturalPointFromUnscaledPoint:(CGPoint)point;
 - (CGPoint)p_scaledCaretRectCenter;
-- (CGPoint)p_selectionPointFromPoint:(CGPoint)a3;
+- (CGPoint)p_selectionPointFromPoint:(CGPoint)point;
 - (CGPoint)p_unscaledScrollPoint;
 - (CGPoint)p_unscaledSelectionPoint;
 - (CGPoint)startingUnscaledAutoscrollPoint;
@@ -23,21 +23,21 @@
 - (double)p_smoothedVelocity;
 - (double)p_trackingOffset;
 - (double)unscaledStartAutoscrollThreshold;
-- (unint64_t)maximumAutoscrollDeltaForCount:(unint64_t)a3;
-- (void)beginMagnifyingTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6;
-- (void)continueMagnifyingWithMagnificationPoint:(CGPoint)a3;
+- (unint64_t)maximumAutoscrollDeltaForCount:(unint64_t)count;
+- (void)beginMagnifyingTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated;
+- (void)continueMagnifyingWithMagnificationPoint:(CGPoint)point;
 - (void)p_removeFromView;
 - (void)p_setBoundsAndCenterToCaretRect;
 - (void)p_updateFrameAndOffset;
-- (void)p_updateNaturalCaretRectFromTarget:(id)a3;
+- (void)p_updateNaturalCaretRectFromTarget:(id)target;
 - (void)p_zoomDownAnimation;
 - (void)p_zoomUpAnimation;
-- (void)setCursorIsFloating:(BOOL)a3;
-- (void)setMagnificationPoint:(CGPoint)a3;
-- (void)setNaturalCaretRect:(CGRect)a3;
-- (void)setPointVelocity:(double)a3;
-- (void)stopMagnifying:(BOOL)a3;
-- (void)updateAfterAutoscroll:(id)a3;
+- (void)setCursorIsFloating:(BOOL)floating;
+- (void)setMagnificationPoint:(CGPoint)point;
+- (void)setNaturalCaretRect:(CGRect)rect;
+- (void)setPointVelocity:(double)velocity;
+- (void)stopMagnifying:(BOOL)magnifying;
+- (void)updateAfterAutoscroll:(id)autoscroll;
 @end
 
 @implementation CRLWPiOSTextCaretDragTracker
@@ -50,18 +50,18 @@
   if (v2)
   {
     v3 = [CRLColor colorWithRed:0.26 green:0.42 blue:0.95 alpha:1.0];
-    v4 = [v3 UIColor];
-    [(CRLWPiOSTextCaretDragTracker *)v2 setBackgroundColor:v4];
+    uIColor = [v3 UIColor];
+    [(CRLWPiOSTextCaretDragTracker *)v2 setBackgroundColor:uIColor];
 
     [(CRLWPiOSTextCaretDragTracker *)v2 setClipsToBounds:0];
-    v5 = [(CRLWPiOSTextCaretDragTracker *)v2 layer];
+    layer = [(CRLWPiOSTextCaretDragTracker *)v2 layer];
     v6 = +[CRLColor blackColor];
-    [v5 setShadowColor:{objc_msgSend(v6, "CGColor")}];
+    [layer setShadowColor:{objc_msgSend(v6, "CGColor")}];
 
     LODWORD(v7) = 1047233823;
-    [v5 setShadowOpacity:v7];
-    [v5 setShadowOffset:{0.0, 6.0}];
-    [v5 setShadowRadius:2.75];
+    [layer setShadowOpacity:v7];
+    [layer setShadowOffset:{0.0, 6.0}];
+    [layer setShadowRadius:2.75];
     v8 = +[NSMutableArray array];
     recentVelocityQueue = v2->_recentVelocityQueue;
     v2->_recentVelocityQueue = v8;
@@ -72,16 +72,16 @@
   return v2;
 }
 
-- (void)p_updateNaturalCaretRectFromTarget:(id)a3
+- (void)p_updateNaturalCaretRectFromTarget:(id)target
 {
-  v16 = a3;
-  v4 = [(CRLWPiOSTextCaretDragTracker *)self delegate];
-  v5 = [v4 caretDragSelectionIsValid];
+  targetCopy = target;
+  delegate = [(CRLWPiOSTextCaretDragTracker *)self delegate];
+  caretDragSelectionIsValid = [delegate caretDragSelectionIsValid];
 
-  if (v5)
+  if (caretDragSelectionIsValid)
   {
     v6 = objc_opt_class();
-    v7 = sub_100013F00(v6, v16);
+    v7 = sub_100013F00(v6, targetCopy);
     [v7 caretRect];
     v9 = v8;
     v11 = v10;
@@ -92,14 +92,14 @@
   }
 }
 
-- (void)setNaturalCaretRect:(CGRect)a3
+- (void)setNaturalCaretRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_naturalCaretRect = &self->_naturalCaretRect;
-  if (!CGRectEqualToRect(a3, self->_naturalCaretRect))
+  if (!CGRectEqualToRect(rect, self->_naturalCaretRect))
   {
     v16.origin.x = CGRectZero.origin.x;
     v16.origin.y = CGRectZero.origin.y;
@@ -111,8 +111,8 @@
       {
         if ([(CRLWPiOSTextCaretDragTracker *)self isAnimatingPickup:v12])
         {
-          v15 = [(CRLWPiOSTextCaretDragTracker *)self layer];
-          [v15 removeAllAnimations];
+          layer = [(CRLWPiOSTextCaretDragTracker *)self layer];
+          [layer removeAllAnimations];
         }
 
         [(CRLWPiOSTextCaretDragTracker *)self setPointDidLeaveOriginalLine:1];
@@ -126,22 +126,22 @@
   }
 }
 
-- (void)setPointVelocity:(double)a3
+- (void)setPointVelocity:(double)velocity
 {
-  v5 = [(CRLWPiOSTextCaretDragTracker *)self recentVelocityQueue];
-  v6 = [NSNumber crl_numberWithCGFloat:a3];
-  [v5 insertObject:v6 atIndex:0];
+  recentVelocityQueue = [(CRLWPiOSTextCaretDragTracker *)self recentVelocityQueue];
+  v6 = [NSNumber crl_numberWithCGFloat:velocity];
+  [recentVelocityQueue insertObject:v6 atIndex:0];
 
-  v7 = [(CRLWPiOSTextCaretDragTracker *)self recentVelocityQueue];
-  v8 = [v7 count];
+  recentVelocityQueue2 = [(CRLWPiOSTextCaretDragTracker *)self recentVelocityQueue];
+  v8 = [recentVelocityQueue2 count];
 
   if (v8 >= 0x15)
   {
-    v9 = [(CRLWPiOSTextCaretDragTracker *)self recentVelocityQueue];
-    [v9 removeObjectAtIndex:20];
+    recentVelocityQueue3 = [(CRLWPiOSTextCaretDragTracker *)self recentVelocityQueue];
+    [recentVelocityQueue3 removeObjectAtIndex:20];
   }
 
-  self->_pointVelocity = a3;
+  self->_pointVelocity = velocity;
 }
 
 - (CGPoint)magnificationPoint
@@ -153,15 +153,15 @@
   return result;
 }
 
-- (void)setMagnificationPoint:(CGPoint)a3
+- (void)setMagnificationPoint:(CGPoint)point
 {
-  x = a3.x;
+  x = point.x;
   p_magnificationPoint = &self->_magnificationPoint;
   y = self->_magnificationPoint.y;
-  if (a3.x != self->_magnificationPoint.x || a3.y != y)
+  if (point.x != self->_magnificationPoint.x || point.y != y)
   {
-    v7 = a3.y;
-    if (sub_100120888(a3.x, a3.y))
+    v7 = point.y;
+    if (sub_100120888(point.x, point.y))
     {
       if (v7 <= y)
       {
@@ -181,40 +181,40 @@
   }
 }
 
-- (void)setCursorIsFloating:(BOOL)a3
+- (void)setCursorIsFloating:(BOOL)floating
 {
-  if (self->_cursorIsFloating != a3)
+  if (self->_cursorIsFloating != floating)
   {
-    self->_cursorIsFloating = a3;
+    self->_cursorIsFloating = floating;
   }
 }
 
 - (BOOL)p_isVerticalTextLayout
 {
   v3 = objc_opt_class();
-  v4 = [(CRLWPiOSTextCaretDragTracker *)self target];
-  v5 = sub_100014370(v3, v4);
+  target = [(CRLWPiOSTextCaretDragTracker *)self target];
+  v5 = sub_100014370(v3, target);
 
   if (v5)
   {
-    v6 = [v5 textIsVertical];
+    textIsVertical = [v5 textIsVertical];
   }
 
   else
   {
-    v7 = [(CRLWPiOSTextCaretDragTracker *)self delegate];
-    v6 = [v7 isVerticalTextCaretForMagnifying];
+    delegate = [(CRLWPiOSTextCaretDragTracker *)self delegate];
+    textIsVertical = [delegate isVerticalTextCaretForMagnifying];
   }
 
-  return v6;
+  return textIsVertical;
 }
 
 - (CGPoint)p_unscaledScrollPoint
 {
-  v3 = [(CRLWPiOSTextCaretDragTracker *)self target];
-  v4 = [v3 interactiveCanvasController];
+  target = [(CRLWPiOSTextCaretDragTracker *)self target];
+  interactiveCanvasController = [target interactiveCanvasController];
   [(CRLWPiOSTextCaretDragTracker *)self magnificationPoint];
-  [v4 convertBoundsToUnscaledPoint:?];
+  [interactiveCanvasController convertBoundsToUnscaledPoint:?];
   v6 = v5;
   v8 = v7;
 
@@ -225,13 +225,13 @@
   return result;
 }
 
-- (CGPoint)p_naturalPointFromUnscaledPoint:(CGPoint)a3
+- (CGPoint)p_naturalPointFromUnscaledPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(CRLWPiOSTextCaretDragTracker *)self target];
-  v6 = [v5 interactiveCanvasController];
-  [v6 convertUnscaledToBoundsPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  target = [(CRLWPiOSTextCaretDragTracker *)self target];
+  interactiveCanvasController = [target interactiveCanvasController];
+  [interactiveCanvasController convertUnscaledToBoundsPoint:{x, y}];
   v8 = v7;
   v10 = v9;
 
@@ -248,8 +248,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(CRLWPiOSTextCaretDragTracker *)self recentVelocityQueue];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  recentVelocityQueue = [(CRLWPiOSTextCaretDragTracker *)self recentVelocityQueue];
+  v4 = [recentVelocityQueue countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -261,14 +261,14 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(recentVelocityQueue);
         }
 
         [*(*(&v14 + 1) + 8 * i) crl_CGFloatValue];
         v7 = v7 + v9;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [recentVelocityQueue countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -279,11 +279,11 @@
     v7 = 0.0;
   }
 
-  v10 = [(CRLWPiOSTextCaretDragTracker *)self recentVelocityQueue];
-  if ([v10 count])
+  recentVelocityQueue2 = [(CRLWPiOSTextCaretDragTracker *)self recentVelocityQueue];
+  if ([recentVelocityQueue2 count])
   {
-    v11 = [(CRLWPiOSTextCaretDragTracker *)self recentVelocityQueue];
-    v12 = [v11 count];
+    recentVelocityQueue3 = [(CRLWPiOSTextCaretDragTracker *)self recentVelocityQueue];
+    v12 = [recentVelocityQueue3 count];
   }
 
   else
@@ -294,10 +294,10 @@
   return v7 / v12;
 }
 
-- (CGPoint)p_selectionPointFromPoint:(CGPoint)a3
+- (CGPoint)p_selectionPointFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CRLWPiOSTextCaretDragTracker *)self p_trackingOffset];
   v6 = y - v5;
   v7 = round(x);
@@ -313,9 +313,9 @@
   [(CRLWPiOSTextCaretDragTracker *)self p_selectionPointFromPoint:?];
   v4 = v3;
   v6 = v5;
-  v7 = [(CRLWPiOSTextCaretDragTracker *)self target];
-  v8 = [v7 interactiveCanvasController];
-  [v8 convertBoundsToUnscaledPoint:{v4, v6}];
+  target = [(CRLWPiOSTextCaretDragTracker *)self target];
+  interactiveCanvasController = [target interactiveCanvasController];
+  [interactiveCanvasController convertBoundsToUnscaledPoint:{v4, v6}];
   v10 = v9;
   v12 = v11;
 
@@ -365,9 +365,9 @@
   v4 = v3;
   if ([(CRLWPiOSTextCaretDragTracker *)self pointDidLeaveOriginalLine])
   {
-    v5 = [(CRLWPiOSTextCaretDragTracker *)self p_isVerticalTextLayout];
+    p_isVerticalTextLayout = [(CRLWPiOSTextCaretDragTracker *)self p_isVerticalTextLayout];
     [(CRLWPiOSTextCaretDragTracker *)self p_clampedScaledCaretSize];
-    if (v5)
+    if (p_isVerticalTextLayout)
     {
       v8 = v6 * 0.5;
     }
@@ -395,9 +395,9 @@
 
 - (CGRect)p_unscaledCaretRect
 {
-  v3 = [(CRLWPiOSTextCaretDragTracker *)self target];
+  target = [(CRLWPiOSTextCaretDragTracker *)self target];
   [(CRLWPiOSTextCaretDragTracker *)self naturalCaretRect];
-  [v3 convertNaturalRectToUnscaledCanvas:?];
+  [target convertNaturalRectToUnscaledCanvas:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -416,10 +416,10 @@
 
 - (CGRect)p_scaledCaretRect
 {
-  v3 = [(CRLWPiOSTextCaretDragTracker *)self target];
-  v4 = [v3 interactiveCanvasController];
+  target = [(CRLWPiOSTextCaretDragTracker *)self target];
+  interactiveCanvasController = [target interactiveCanvasController];
   [(CRLWPiOSTextCaretDragTracker *)self p_unscaledCaretRect];
-  [v4 convertUnscaledToBoundsRect:?];
+  [interactiveCanvasController convertUnscaledToBoundsRect:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -438,13 +438,13 @@
 
 - (CGSize)p_clampedScaledCaretSize
 {
-  v3 = [(CRLWPiOSTextCaretDragTracker *)self p_isVerticalTextLayout];
+  p_isVerticalTextLayout = [(CRLWPiOSTextCaretDragTracker *)self p_isVerticalTextLayout];
   [(CRLWPiOSTextCaretDragTracker *)self p_scaledCaretRect];
   v5 = v4;
   v6 = fmaxf(v5, 48.0);
   v8 = v7;
   v9 = fmaxf(v8, 48.0);
-  if (v3)
+  if (p_isVerticalTextLayout)
   {
     v6 = 2.0;
   }
@@ -540,7 +540,7 @@ LABEL_6:
   [UIView animateWithDuration:v4 animations:v3 completion:0.15];
 }
 
-- (CGAffineTransform)p_caretAffineTransformWithScaleFactor:(SEL)a3
+- (CGAffineTransform)p_caretAffineTransformWithScaleFactor:(SEL)factor
 {
   [(CRLWPiOSTextCaretDragTracker *)self p_clampedScaledCaretSize];
   v8 = v7;
@@ -550,9 +550,9 @@ LABEL_6:
     v8 = v10;
   }
 
-  v11 = [(CRLWPiOSTextCaretDragTracker *)self p_isVerticalTextLayout];
+  p_isVerticalTextLayout = [(CRLWPiOSTextCaretDragTracker *)self p_isVerticalTextLayout];
   [(CRLWPiOSTextCaretDragTracker *)self bounds];
-  if (v11)
+  if (p_isVerticalTextLayout)
   {
     v14 = v12;
   }
@@ -624,71 +624,71 @@ LABEL_6:
   [(CRLWPiOSTextCaretDragTracker *)self setTarget:0];
 }
 
-- (void)beginMagnifyingTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6
+- (void)beginMagnifyingTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated
 {
-  v6 = a6;
-  y = a4.y;
-  x = a4.x;
-  v24 = a3;
-  [(CRLWPiOSTextCaretDragTracker *)self setTarget:v24];
-  [(CRLWPiOSTextCaretDragTracker *)self p_updateNaturalCaretRectFromTarget:v24];
-  v10 = [(CRLWPiOSTextCaretDragTracker *)self target];
-  v11 = [v10 interactiveCanvasController];
+  animatedCopy = animated;
+  y = point.y;
+  x = point.x;
+  targetCopy = target;
+  [(CRLWPiOSTextCaretDragTracker *)self setTarget:targetCopy];
+  [(CRLWPiOSTextCaretDragTracker *)self p_updateNaturalCaretRectFromTarget:targetCopy];
+  target = [(CRLWPiOSTextCaretDragTracker *)self target];
+  interactiveCanvasController = [target interactiveCanvasController];
 
   v12 = objc_opt_class();
-  v13 = sub_100014370(v12, v11);
+  v13 = sub_100014370(v12, interactiveCanvasController);
   if (v13)
   {
     v14 = objc_opt_class();
-    v15 = [v13 layerHost];
-    v16 = sub_100014370(v14, v15);
+    layerHost = [v13 layerHost];
+    v16 = sub_100014370(v14, layerHost);
 
-    v17 = [v16 canvasView];
-    [(CRLWPiOSTextCaretDragTracker *)self setHostView:v17];
+    canvasView = [v16 canvasView];
+    [(CRLWPiOSTextCaretDragTracker *)self setHostView:canvasView];
   }
 
   [(CRLWPiOSTextCaretDragTracker *)self p_scaledCaretRect];
   [(CRLWPiOSTextCaretDragTracker *)self setOffset:0.0, y - CGRectGetMidY(v26)];
   [(CRLWPiOSTextCaretDragTracker *)self setMagnificationPoint:x, y];
   v18 = objc_opt_class();
-  v19 = [v24 interactiveCanvasController];
-  v20 = [v19 delegate];
-  v21 = sub_100014370(v18, v20);
+  interactiveCanvasController2 = [targetCopy interactiveCanvasController];
+  delegate = [interactiveCanvasController2 delegate];
+  v21 = sub_100014370(v18, delegate);
 
   v22 = -[CRLWPiOSTextCaretDragTrackerController initWithPreferredStatusBarStyle:]([CRLWPiOSTextCaretDragTrackerController alloc], "initWithPreferredStatusBarStyle:", [v21 preferredStatusBarStyle]);
   [(CRLWPiOSTextCaretDragTrackerController *)v22 setView:self];
-  v23 = [(CRLWPiOSTextCaretDragTracker *)self hostView];
-  [v23 addSubview:self];
+  hostView = [(CRLWPiOSTextCaretDragTracker *)self hostView];
+  [hostView addSubview:self];
 
-  if (v6)
+  if (animatedCopy)
   {
     [(CRLWPiOSTextCaretDragTracker *)self p_zoomUpAnimation];
   }
 }
 
-- (void)continueMagnifyingWithMagnificationPoint:(CGPoint)a3
+- (void)continueMagnifyingWithMagnificationPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(CRLWPiOSTextCaretDragTracker *)self setMagnificationPoint:?];
   if (sub_100120888(x, y))
   {
     [(CRLWPiOSTextCaretDragTracker *)self p_updateFrameAndOffset];
-    v6 = [(CRLWPiOSTextCaretDragTracker *)self delegate];
+    delegate = [(CRLWPiOSTextCaretDragTracker *)self delegate];
     [(CRLWPiOSTextCaretDragTracker *)self p_unscaledSelectionPoint];
-    [v6 setSelectionFromUnscaledPoint:?];
+    [delegate setSelectionFromUnscaledPoint:?];
 
-    v7 = [(CRLWPiOSTextCaretDragTracker *)self target];
-    [(CRLWPiOSTextCaretDragTracker *)self p_updateNaturalCaretRectFromTarget:v7];
+    target = [(CRLWPiOSTextCaretDragTracker *)self target];
+    [(CRLWPiOSTextCaretDragTracker *)self p_updateNaturalCaretRectFromTarget:target];
 
-    v8 = [(CRLWPiOSTextCaretDragTracker *)self target];
-    v9 = [v8 interactiveCanvasController];
-    v10 = [v9 layerHost];
-    v11 = [v10 canvasView];
-    v12 = [v11 enclosingScrollView];
-    v13 = [v12 isScrollEnabled];
+    target2 = [(CRLWPiOSTextCaretDragTracker *)self target];
+    interactiveCanvasController = [target2 interactiveCanvasController];
+    layerHost = [interactiveCanvasController layerHost];
+    canvasView = [layerHost canvasView];
+    enclosingScrollView = [canvasView enclosingScrollView];
+    isScrollEnabled = [enclosingScrollView isScrollEnabled];
 
-    if (v13)
+    if (isScrollEnabled)
     {
       [(CRLWPiOSTextCaretDragTracker *)self p_unscaledScrollPoint];
 
@@ -697,9 +697,9 @@ LABEL_6:
   }
 }
 
-- (void)stopMagnifying:(BOOL)a3
+- (void)stopMagnifying:(BOOL)magnifying
 {
-  if (a3)
+  if (magnifying)
   {
     [(CRLWPiOSTextCaretDragTracker *)self p_zoomDownAnimation];
   }
@@ -710,8 +710,8 @@ LABEL_6:
   }
 
   self->_magnificationPoint = xmmword_1014629E0;
-  v4 = [(CRLWPiOSTextCaretDragTracker *)self autoscroll];
-  [v4 invalidate];
+  autoscroll = [(CRLWPiOSTextCaretDragTracker *)self autoscroll];
+  [autoscroll invalidate];
 
   [(CRLWPiOSTextCaretDragTracker *)self setAutoscroll:0];
 }
@@ -727,9 +727,9 @@ LABEL_6:
 
 - (double)unscaledStartAutoscrollThreshold
 {
-  v2 = [(CRLWPiOSTextCaretDragTracker *)self scrollingDirection];
+  scrollingDirection = [(CRLWPiOSTextCaretDragTracker *)self scrollingDirection];
   result = 45.0;
-  if (v2 == 1)
+  if (scrollingDirection == 1)
   {
     return 100.0;
   }
@@ -739,27 +739,27 @@ LABEL_6:
 
 - (CRLInteractiveCanvasController)icc
 {
-  v2 = [(CRLWPiOSTextCaretDragTracker *)self target];
-  v3 = [v2 interactiveCanvasController];
+  target = [(CRLWPiOSTextCaretDragTracker *)self target];
+  interactiveCanvasController = [target interactiveCanvasController];
 
-  return v3;
+  return interactiveCanvasController;
 }
 
-- (void)updateAfterAutoscroll:(id)a3
+- (void)updateAfterAutoscroll:(id)autoscroll
 {
   if (![(CRLWPiOSTextCaretDragTracker *)self autoScrollIsActive])
   {
     [(CRLWPiOSTextCaretDragTracker *)self setAutoScrollIsActive:1];
   }
 
-  v4 = [(CRLWPiOSTextCaretDragTracker *)self autoscroll];
-  [v4 unscaledAutoscrollPoint];
+  autoscroll = [(CRLWPiOSTextCaretDragTracker *)self autoscroll];
+  [autoscroll unscaledAutoscrollPoint];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(CRLWPiOSTextCaretDragTracker *)self target];
-  v10 = [v9 interactiveCanvasController];
-  [v10 contentOffset];
+  target = [(CRLWPiOSTextCaretDragTracker *)self target];
+  interactiveCanvasController = [target interactiveCanvasController];
+  [interactiveCanvasController contentOffset];
   v12 = v11;
   v14 = v13;
 
@@ -779,17 +779,17 @@ LABEL_6:
   [(CRLWPiOSTextCaretDragTracker *)self p_updateFrameAndOffset];
 }
 
-- (unint64_t)maximumAutoscrollDeltaForCount:(unint64_t)a3
+- (unint64_t)maximumAutoscrollDeltaForCount:(unint64_t)count
 {
-  if (a3 > 0x2C)
+  if (count > 0x2C)
   {
-    if (a3 > 0x31)
+    if (count > 0x31)
     {
-      if (a3 > 0x40)
+      if (count > 0x40)
       {
-        if (a3 > 0x63)
+        if (count > 0x63)
         {
-          if (a3 > 0x77)
+          if (count > 0x77)
           {
             v3 = 0.35;
           }

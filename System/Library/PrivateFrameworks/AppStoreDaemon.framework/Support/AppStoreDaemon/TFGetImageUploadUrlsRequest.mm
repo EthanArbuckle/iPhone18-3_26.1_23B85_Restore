@@ -1,11 +1,11 @@
 @interface TFGetImageUploadUrlsRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation TFGetImageUploadUrlsRequest
@@ -15,8 +15,8 @@
   v7.receiver = self;
   v7.super_class = TFGetImageUploadUrlsRequest;
   v3 = [(TFGetImageUploadUrlsRequest *)&v7 description];
-  v4 = [(TFGetImageUploadUrlsRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(TFGetImageUploadUrlsRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -54,14 +54,14 @@
   return v3;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -72,18 +72,18 @@
       while (1)
       {
         v41 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v41 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v41 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v41 & 0x7F) << v6;
@@ -101,9 +101,9 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -132,18 +132,18 @@ LABEL_40:
           while (1)
           {
             v42 = 0;
-            v25 = [a3 position] + 1;
-            if (v25 >= [a3 position] && (v26 = objc_msgSend(a3, "position") + 1, v26 <= objc_msgSend(a3, "length")))
+            v25 = [from position] + 1;
+            if (v25 >= [from position] && (v26 = objc_msgSend(from, "position") + 1, v26 <= objc_msgSend(from, "length")))
             {
-              v27 = [a3 data];
-              [v27 getBytes:&v42 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:&v42 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v24 |= (v42 & 0x7F) << v22;
@@ -161,7 +161,7 @@ LABEL_40:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v28 = 0;
           }
@@ -192,18 +192,18 @@ LABEL_59:
           while (1)
           {
             v43 = 0;
-            v33 = [a3 position] + 1;
-            if (v33 >= [a3 position] && (v34 = objc_msgSend(a3, "position") + 1, v34 <= objc_msgSend(a3, "length")))
+            v33 = [from position] + 1;
+            if (v33 >= [from position] && (v34 = objc_msgSend(from, "position") + 1, v34 <= objc_msgSend(from, "length")))
             {
-              v35 = [a3 data];
-              [v35 getBytes:&v43 range:{objc_msgSend(a3, "position"), 1}];
+              data3 = [from data];
+              [data3 getBytes:&v43 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v32 |= (v43 & 0x7F) << v30;
@@ -221,7 +221,7 @@ LABEL_59:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v28 = 0;
           }
@@ -250,18 +250,18 @@ LABEL_64:
         while (1)
         {
           v44 = 0;
-          v18 = [a3 position] + 1;
-          if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+          v18 = [from position] + 1;
+          if (v18 >= [from position] && (v19 = objc_msgSend(from, "position") + 1, v19 <= objc_msgSend(from, "length")))
           {
-            v20 = [a3 data];
-            [v20 getBytes:&v44 range:{objc_msgSend(a3, "position"), 1}];
+            data4 = [from data];
+            [data4 getBytes:&v44 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v17 |= (v44 & 0x7F) << v15;
@@ -279,7 +279,7 @@ LABEL_64:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v21 = 0;
         }
@@ -294,19 +294,19 @@ LABEL_55:
       }
 
 LABEL_65:
-      v39 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v39 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v29) = [a3 hasError] ^ 1;
+  LOBYTE(v29) = [from hasError] ^ 1;
   return v29;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -330,9 +330,9 @@ LABEL_65:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -348,7 +348,7 @@ LABEL_65:
     *(v5 + 36) |= 4u;
   }
 
-  v8 = [(NSString *)self->_contentType copyWithZone:a3];
+  v8 = [(NSString *)self->_contentType copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
@@ -361,44 +361,44 @@ LABEL_65:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_dsid != *(v4 + 2))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_dsid != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_count != *(v4 + 8))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_count != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   contentType = self->_contentType;
-  if (contentType | *(v4 + 3))
+  if (contentType | *(equalCopy + 3))
   {
     if (![(NSString *)contentType isEqual:?])
     {
@@ -408,13 +408,13 @@ LABEL_19:
     }
 
     has = self->_has;
-    v6 = *(v4 + 36);
+    v6 = *(equalCopy + 36);
   }
 
   v8 = (v6 & 1) == 0;
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_desiredUrlTTLMillis != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_desiredUrlTTLMillis != *(equalCopy + 1))
     {
       goto LABEL_19;
     }

@@ -1,8 +1,8 @@
 @interface FxParameterListSelection
 - (FxParameterListSelection)init;
-- (id)displayNameForValue:(id)a3;
+- (id)displayNameForValue:(id)value;
 - (void)dealloc;
-- (void)setListItems:(id)a3;
+- (void)setListItems:(id)items;
 @end
 
 @implementation FxParameterListSelection
@@ -30,17 +30,17 @@
   [(FxPinParameter *)&v9 dealloc];
 }
 
-- (void)setListItems:(id)a3
+- (void)setListItems:(id)items
 {
   var1 = self->_listSelectionPriv->var1;
   if (var1)
   {
   }
 
-  self->_listSelectionPriv->var1 = a3;
+  self->_listSelectionPriv->var1 = items;
 }
 
-- (id)displayNameForValue:(id)a3
+- (id)displayNameForValue:(id)value
 {
   var1 = self->_listSelectionPriv->var1;
   if (!var1)
@@ -48,9 +48,9 @@
     return 0;
   }
 
-  v4 = [a3 intValue];
+  intValue = [value intValue];
 
-  return [var1 objectAtIndex:v4];
+  return [var1 objectAtIndex:intValue];
 }
 
 @end

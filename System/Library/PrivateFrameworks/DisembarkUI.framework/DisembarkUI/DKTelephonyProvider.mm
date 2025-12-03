@@ -12,10 +12,10 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v3 = [MEMORY[0x277D4D8C0] sharedInstance];
-  v4 = [v3 planItems];
+  mEMORY[0x277D4D8C0] = [MEMORY[0x277D4D8C0] sharedInstance];
+  planItems = [mEMORY[0x277D4D8C0] planItems];
 
-  v5 = [v4 countByEnumeratingWithState:&v28 objects:v40 count:16];
+  v5 = [planItems countByEnumeratingWithState:&v28 objects:v40 count:16];
   if (v5)
   {
     v6 = v5;
@@ -29,33 +29,33 @@
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(planItems);
         }
 
         v10 = *(*(&v28 + 1) + 8 * v9);
         v11 = _DKLogSystem();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
-          v16 = [v10 carrierName];
-          v17 = [v10 phoneNumber];
-          v18 = v4;
+          carrierName = [v10 carrierName];
+          phoneNumber = [v10 phoneNumber];
+          v18 = planItems;
           v19 = v8;
-          v20 = [v10 type];
-          v21 = [v10 transferredStatus];
+          type = [v10 type];
+          transferredStatus = [v10 transferredStatus];
           *buf = 138413058;
           v22 = @"YES";
-          if (!v21)
+          if (!transferredStatus)
           {
             v22 = @"NO";
           }
 
-          v33 = v16;
+          v33 = carrierName;
           v34 = 2112;
-          v35 = v17;
+          v35 = phoneNumber;
           v36 = 2048;
-          v37 = v20;
+          v37 = type;
           v8 = v19;
-          v4 = v18;
+          planItems = v18;
           v38 = 2112;
           v39 = v22;
           _os_log_debug_impl(&dword_248D68000, v11, OS_LOG_TYPE_DEBUG, "cellularPlans - planItem carrierName:%@  phoneNumber:%@ type:%li IsTransfered:%@", buf, 0x2Au);
@@ -66,9 +66,9 @@
         if ([v10 type] == 2 || objc_msgSend(v10, "type") == 3)
         {
           v12 = objc_alloc(*(v8 + 1352));
-          v13 = [v10 carrierName];
-          v14 = [v10 phoneNumber];
-          v15 = [v12 initWithCarrierName:v13 phoneNumber:v14 isTransferred:{objc_msgSend(v10, "transferredStatus") != 0}];
+          carrierName2 = [v10 carrierName];
+          phoneNumber2 = [v10 phoneNumber];
+          v15 = [v12 initWithCarrierName:carrierName2 phoneNumber:phoneNumber2 isTransferred:{objc_msgSend(v10, "transferredStatus") != 0}];
 
           [v2 addObject:v15];
         }
@@ -77,7 +77,7 @@
       }
 
       while (v6 != v9);
-      v23 = [v4 countByEnumeratingWithState:&v28 objects:v40 count:16];
+      v23 = [planItems countByEnumeratingWithState:&v28 objects:v40 count:16];
       v6 = v23;
     }
 

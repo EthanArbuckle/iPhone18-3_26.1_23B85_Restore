@@ -2,7 +2,7 @@
 - (CGSize)sizeThatFits:(CGSize)result;
 - (SRSpeechAlternativeTapToEditCellView)init;
 - (void)layoutSubviews;
-- (void)setTextHidden:(BOOL)a3;
+- (void)setTextHidden:(BOOL)hidden;
 @end
 
 @implementation SRSpeechAlternativeTapToEditCellView
@@ -43,12 +43,12 @@
   return v2;
 }
 
-- (void)setTextHidden:(BOOL)a3
+- (void)setTextHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ([(UILabel *)self->_tapToEditLabel isHidden]!= a3)
+  hiddenCopy = hidden;
+  if ([(UILabel *)self->_tapToEditLabel isHidden]!= hidden)
   {
-    if (v3)
+    if (hiddenCopy)
     {
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;

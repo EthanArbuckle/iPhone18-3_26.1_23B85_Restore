@@ -1,38 +1,38 @@
 @interface PXPhotoKitUIMediaProvider
-+ (PXPhotoKitUIMediaProvider)mediaProviderWithLibrary:(id)a3;
++ (PXPhotoKitUIMediaProvider)mediaProviderWithLibrary:(id)library;
 + (id)_defaultImageManager;
 + (id)_defaultLoadingStatusManager;
-+ (void)configureLoadingStatusManager:(id)a3 andVideoProgressHandler:(id)a4 withVideoSensitivityProcessingProgress:(id)a5 imageManagerRequestProgress:(double)a6 loadOperationTrackingID:(id)a7 stop:(BOOL *)a8 info:(id)a9 error:(id)a10;
++ (void)configureLoadingStatusManager:(id)manager andVideoProgressHandler:(id)handler withVideoSensitivityProcessingProgress:(id)progress imageManagerRequestProgress:(double)requestProgress loadOperationTrackingID:(id)d stop:(BOOL *)stop info:(id)info error:(id)self0;
 - (CGSize)masterThumbnailSize;
 - (PXPhotoKitUIMediaProvider)init;
-- (PXPhotoKitUIMediaProvider)initWithImageManager:(id)a3;
-- (PXPhotoKitUIMediaProvider)initWithImageManager:(id)a3 library:(id)a4;
-- (id)_preheatInfoForQualityClassIndex:(int64_t)a3;
-- (id)_thumbnailDataForAsset:(id)a3 qualityClass:(id)a4 cache:(id)a5 onlyFromCache:(BOOL)a6 outDataSpec:(PXMediaProviderThumbnailDataSpec *)a7 forPreheat:(BOOL)a8;
+- (PXPhotoKitUIMediaProvider)initWithImageManager:(id)manager;
+- (PXPhotoKitUIMediaProvider)initWithImageManager:(id)manager library:(id)library;
+- (id)_preheatInfoForQualityClassIndex:(int64_t)index;
+- (id)_thumbnailDataForAsset:(id)asset qualityClass:(id)class cache:(id)cache onlyFromCache:(BOOL)fromCache outDataSpec:(PXMediaProviderThumbnailDataSpec *)spec forPreheat:(BOOL)preheat;
 - (id)searchResultContextualVideoThumbnailIdentifiers;
-- (id)thumbnailDataForAsset:(id)a3 targetSize:(CGSize)a4 onlyFromCache:(BOOL)a5 outDataSpec:(PXMediaProviderThumbnailDataSpec *)a6;
-- (int64_t)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestCGImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int64_t)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int64_t)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int64_t)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestStreamForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestURLForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (void)_getQualityClass:(id *)a3 cache:(id *)a4 qualityClassIndex:(int64_t *)a5 forTargetSize:(CGSize)a6;
+- (id)thumbnailDataForAsset:(id)asset targetSize:(CGSize)size onlyFromCache:(BOOL)cache outDataSpec:(PXMediaProviderThumbnailDataSpec *)spec;
+- (int64_t)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int64_t)requestCGImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int64_t)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int64_t)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int64_t)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int64_t)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (int64_t)requestStreamForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (int64_t)requestURLForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (void)_getQualityClass:(id *)class cache:(id *)cache qualityClassIndex:(int64_t *)index forTargetSize:(CGSize)size;
 - (void)_preheatQueue_schedulePreheat;
 - (void)_preheatQueue_scheduleUpdateAfterDelay;
 - (void)_preheatQueue_update;
 - (void)_schedulePreheat;
-- (void)_setPreheatInfo:(id)a3 forQualityClassIndex:(int64_t)a4;
-- (void)cancelImageRequest:(int64_t)a3;
-- (void)enumerateAvailableThumbnailDataFormats:(id)a3;
-- (void)preheatThumbnailDataForAssets:(id)a3 origin:(int64_t)a4 targetSize:(CGSize)a5;
-- (void)setSearchResultContextualVideoThumbnailIdentifiers:(id)a3;
-- (void)startCachingImagesForAssets:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6;
+- (void)_setPreheatInfo:(id)info forQualityClassIndex:(int64_t)index;
+- (void)cancelImageRequest:(int64_t)request;
+- (void)enumerateAvailableThumbnailDataFormats:(id)formats;
+- (void)preheatThumbnailDataForAssets:(id)assets origin:(int64_t)origin targetSize:(CGSize)size;
+- (void)setSearchResultContextualVideoThumbnailIdentifiers:(id)identifiers;
+- (void)startCachingImagesForAssets:(id)assets targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options;
 - (void)stopCachingImagesForAllAssets;
-- (void)stopCachingImagesForAssets:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6;
+- (void)stopCachingImagesForAssets:(id)assets targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options;
 @end
 
 @implementation PXPhotoKitUIMediaProvider
@@ -145,25 +145,25 @@ void __45__PXPhotoKitUIMediaProvider__schedulePreheat__block_invoke(uint64_t a1)
   [WeakRetained _preheatQueue_schedulePreheat];
 }
 
-- (void)_setPreheatInfo:(id)a3 forQualityClassIndex:(int64_t)a4
+- (void)_setPreheatInfo:(id)info forQualityClassIndex:(int64_t)index
 {
-  v6 = a3;
+  infoCopy = info;
   os_unfair_lock_lock(&self->_preheatlock);
-  [(NSMutableArray *)self->_preheatLock_preheatStates replaceObjectAtIndex:a4 withObject:v6];
+  [(NSMutableArray *)self->_preheatLock_preheatStates replaceObjectAtIndex:index withObject:infoCopy];
   os_unfair_lock_unlock(&self->_preheatlock);
-  LOBYTE(a4) = [v6 finished];
+  LOBYTE(index) = [infoCopy finished];
 
-  if ((a4 & 1) == 0)
+  if ((index & 1) == 0)
   {
 
     [(PXPhotoKitUIMediaProvider *)self _schedulePreheat];
   }
 }
 
-- (id)_preheatInfoForQualityClassIndex:(int64_t)a3
+- (id)_preheatInfoForQualityClassIndex:(int64_t)index
 {
   os_unfair_lock_lock(&self->_preheatlock);
-  v5 = [(NSMutableArray *)self->_preheatLock_preheatStates objectAtIndexedSubscript:a3];
+  v5 = [(NSMutableArray *)self->_preheatLock_preheatStates objectAtIndexedSubscript:index];
   os_unfair_lock_unlock(&self->_preheatlock);
 
   return v5;
@@ -172,17 +172,17 @@ void __45__PXPhotoKitUIMediaProvider__schedulePreheat__block_invoke(uint64_t a1)
 - (void)_preheatQueue_update
 {
   dispatch_assert_queue_V2(self->_preheatQueue);
-  v2 = [off_1E7721920 sharedInstance];
+  sharedInstance = [off_1E7721920 sharedInstance];
   mach_absolute_time();
-  [v2 opportunisticPreheatRequiredIdleTime];
+  [sharedInstance opportunisticPreheatRequiredIdleTime];
   PXTimebaseConversionFactor();
 }
 
-- (void)setSearchResultContextualVideoThumbnailIdentifiers:(id)a3
+- (void)setSearchResultContextualVideoThumbnailIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock(&self->_videoThumbnailIdentifiersLock);
-  v5 = [v4 copy];
+  v5 = [identifiersCopy copy];
 
   lock_videoThumbnailIdentifiers = self->_lock_videoThumbnailIdentifiers;
   self->_lock_videoThumbnailIdentifiers = v5;
@@ -192,81 +192,81 @@ void __45__PXPhotoKitUIMediaProvider__schedulePreheat__block_invoke(uint64_t a1)
 
 - (void)stopCachingImagesForAllAssets
 {
-  v2 = [(PXPhotoKitUIMediaProvider *)self cachingImageManager];
-  [v2 stopCachingImagesForAllAssets];
+  cachingImageManager = [(PXPhotoKitUIMediaProvider *)self cachingImageManager];
+  [cachingImageManager stopCachingImagesForAllAssets];
 }
 
-- (void)stopCachingImagesForAssets:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6
+- (void)stopCachingImagesForAssets:(id)assets targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options
 {
-  height = a4.height;
-  width = a4.width;
-  v19 = a3;
-  v12 = a6;
-  if ([v19 count])
+  height = size.height;
+  width = size.width;
+  assetsCopy = assets;
+  optionsCopy = options;
+  if ([assetsCopy count])
   {
-    v13 = [v19 firstObject];
+    firstObject = [assetsCopy firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = NSStringFromSelector(a2);
-      [v15 handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:908 description:{@"%@ expected PHAssets", v16}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:908 description:{@"%@ expected PHAssets", v16}];
     }
   }
 
-  v17 = [(PXPhotoKitUIMediaProvider *)self cachingImageManager];
-  v18 = [v12 photoKitRequestOptions];
+  cachingImageManager = [(PXPhotoKitUIMediaProvider *)self cachingImageManager];
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
 
-  [v17 stopCachingImagesForAssets:v19 targetSize:a5 contentMode:v18 options:{width, height}];
+  [cachingImageManager stopCachingImagesForAssets:assetsCopy targetSize:mode contentMode:photoKitRequestOptions options:{width, height}];
 }
 
-- (void)startCachingImagesForAssets:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6
+- (void)startCachingImagesForAssets:(id)assets targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options
 {
-  height = a4.height;
-  width = a4.width;
-  v19 = a3;
-  v12 = a6;
-  if ([v19 count])
+  height = size.height;
+  width = size.width;
+  assetsCopy = assets;
+  optionsCopy = options;
+  if ([assetsCopy count])
   {
-    v13 = [v19 firstObject];
+    firstObject = [assetsCopy firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = NSStringFromSelector(a2);
-      [v15 handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:903 description:{@"%@ expected PHAssets", v16}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:903 description:{@"%@ expected PHAssets", v16}];
     }
   }
 
-  v17 = [(PXPhotoKitUIMediaProvider *)self cachingImageManager];
-  v18 = [v12 photoKitRequestOptions];
+  cachingImageManager = [(PXPhotoKitUIMediaProvider *)self cachingImageManager];
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
 
-  [v17 startCachingImagesForAssets:v19 targetSize:a5 contentMode:v18 options:{width, height}];
+  [cachingImageManager startCachingImagesForAssets:assetsCopy targetSize:mode contentMode:photoKitRequestOptions options:{width, height}];
 }
 
-- (void)cancelImageRequest:(int64_t)a3
+- (void)cancelImageRequest:(int64_t)request
 {
-  v4 = [(PXPhotoKitUIMediaProvider *)self imageManager];
-  [v4 cancelImageRequest:a3];
+  imageManager = [(PXPhotoKitUIMediaProvider *)self imageManager];
+  [imageManager cancelImageRequest:request];
 }
 
-- (void)enumerateAvailableThumbnailDataFormats:(id)a3
+- (void)enumerateAvailableThumbnailDataFormats:(id)formats
 {
-  v4 = a3;
+  formatsCopy = formats;
   v9.receiver = self;
   v9.super_class = PXPhotoKitUIMediaProvider;
-  [(PXMediaProvider *)&v9 enumerateAvailableThumbnailDataFormats:v4];
+  [(PXMediaProvider *)&v9 enumerateAvailableThumbnailDataFormats:formatsCopy];
   thumbnailQualityClasses = self->_thumbnailQualityClasses;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__PXPhotoKitUIMediaProvider_enumerateAvailableThumbnailDataFormats___block_invoke;
   v7[3] = &unk_1E7739738;
-  v8 = v4;
-  v6 = v4;
+  v8 = formatsCopy;
+  v6 = formatsCopy;
   [(NSArray *)thumbnailQualityClasses enumerateObjectsUsingBlock:v7];
 }
 
@@ -293,11 +293,11 @@ void __68__PXPhotoKitUIMediaProvider_enumerateAvailableThumbnailDataFormats___bl
   }
 }
 
-- (void)preheatThumbnailDataForAssets:(id)a3 origin:(int64_t)a4 targetSize:(CGSize)a5
+- (void)preheatThumbnailDataForAssets:(id)assets origin:(int64_t)origin targetSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  assetsCopy = assets;
   v20 = 0;
   v21 = 0;
   v19 = 0;
@@ -306,52 +306,52 @@ void __68__PXPhotoKitUIMediaProvider_enumerateAvailableThumbnailDataFormats___bl
   v11 = v19;
   if (v11)
   {
-    if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+    if (origin == 0x7FFFFFFFFFFFFFFFLL)
     {
-      a4 = 0;
+      origin = 0;
     }
 
-    v12 = [[PXPreheatInfo alloc] initWithFetchResult:v9 origin:a4];
+    v12 = [[PXPreheatInfo alloc] initWithFetchResult:assetsCopy origin:origin];
     [(PXPhotoKitUIMediaProvider *)self _setPreheatInfo:v12 forQualityClassIndex:v21];
   }
 
   else
   {
     v12 = objc_alloc_init(MEMORY[0x1E696AD50]);
-    v13 = [v9 count];
+    v13 = [assetsCopy count];
     if (v13 >= 1)
     {
       v14 = v13;
       for (i = 0; i != v14; ++i)
       {
-        v16 = [v9 thumbnailAssetAtIndex:i];
-        v17 = [v16 thumbnailIndex];
-        if (v17 != 0x7FFFFFFFFFFFFFFFLL)
+        v16 = [assetsCopy thumbnailAssetAtIndex:i];
+        thumbnailIndex = [v16 thumbnailIndex];
+        if (thumbnailIndex != 0x7FFFFFFFFFFFFFFFLL)
         {
-          [(PXPreheatInfo *)v12 addIndex:v17];
+          [(PXPreheatInfo *)v12 addIndex:thumbnailIndex];
         }
       }
     }
 
-    v18 = [(PXPhotoKitUIMediaProvider *)self photoLibrary];
-    [v10 preheatDataForThumbnailIndexes:v12 inLibrary:v18];
+    photoLibrary = [(PXPhotoKitUIMediaProvider *)self photoLibrary];
+    [v10 preheatDataForThumbnailIndexes:v12 inLibrary:photoLibrary];
   }
 }
 
-- (id)_thumbnailDataForAsset:(id)a3 qualityClass:(id)a4 cache:(id)a5 onlyFromCache:(BOOL)a6 outDataSpec:(PXMediaProviderThumbnailDataSpec *)a7 forPreheat:(BOOL)a8
+- (id)_thumbnailDataForAsset:(id)asset qualityClass:(id)class cache:(id)cache onlyFromCache:(BOOL)fromCache outDataSpec:(PXMediaProviderThumbnailDataSpec *)spec forPreheat:(BOOL)preheat
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  assetCopy = asset;
+  classCopy = class;
+  cacheCopy = cache;
   v16 = 0;
-  if (v13 && v14)
+  if (assetCopy && classCopy)
   {
-    v17 = v13;
+    v17 = assetCopy;
     memset(v33, 0, sizeof(v33));
-    v16 = [v15 tableThumbnailDataForAsset:v17 dataSpecification:v33];
-    if (!v16 && !a6)
+    v16 = [cacheCopy tableThumbnailDataForAsset:v17 dataSpecification:v33];
+    if (!v16 && !fromCache)
     {
-      v16 = [v14 tableThumbnailDataForAsset:v17 dataSpecification:v33];
+      v16 = [classCopy tableThumbnailDataForAsset:v17 dataSpecification:v33];
       if (!v16)
       {
 LABEL_15:
@@ -359,10 +359,10 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      [v15 cacheThumbnailData:v16 specification:v33 forAsset:v17];
+      [cacheCopy cacheThumbnailData:v16 specification:v33 forAsset:v17];
     }
 
-    if (v16 && !a8)
+    if (v16 && !preheat)
     {
       v32 = v16;
       [MEMORY[0x1E6978AB0] obscureThumbnailDataIfSensitiveFromThumbnailData:v16 outThumbnailData:&v32 forThumbnailAsset:v17];
@@ -371,7 +371,7 @@ LABEL_15:
       v16 = v18;
     }
 
-    if (a7 && v16)
+    if (spec && v16)
     {
       v19 = SDWORD2(v33[0]) / SHIDWORD(v33[0]);
       if (SDWORD2(v33[0]) / SHIDWORD(v33[0]) <= 1)
@@ -380,27 +380,27 @@ LABEL_15:
       }
 
       v31 = v19;
-      v20 = [v14 metalPixelFormat];
-      v21 = [v14 colorSpaceName];
-      v22 = [v14 maxSideLengthIfSquare];
-      v23 = [v14 maxSideLengthIfSquare];
-      v24 = [v14 isCroppedToSquare];
+      metalPixelFormat = [classCopy metalPixelFormat];
+      colorSpaceName = [classCopy colorSpaceName];
+      maxSideLengthIfSquare = [classCopy maxSideLengthIfSquare];
+      maxSideLengthIfSquare2 = [classCopy maxSideLengthIfSquare];
+      isCroppedToSquare = [classCopy isCroppedToSquare];
       v25 = WORD4(v33[0]);
       v26 = SDWORD1(v33[1]) / SDWORD2(v33[0]);
       v27 = SDWORD1(v33[1]) % SDWORD2(v33[0]);
       v28 = *&v33[0];
       v29 = *(v33 + 12);
-      a7->var0.var0 = v20;
-      a7->var0.var1 = v21;
-      a7->var0.var2 = v22;
-      a7->var0.var3 = v23;
-      a7->var0.var4 = v24;
-      *(&a7->var0.var4 + 1) = 0;
-      *(&a7->var0.var4 + 3) = 0;
-      a7->var1 = v27 / v31;
-      a7->var2 = v26;
-      *&a7->var3 = vuzp1_s16(v28, v29);
-      *&a7->var7 = v25;
+      spec->var0.var0 = metalPixelFormat;
+      spec->var0.var1 = colorSpaceName;
+      spec->var0.var2 = maxSideLengthIfSquare;
+      spec->var0.var3 = maxSideLengthIfSquare2;
+      spec->var0.var4 = isCroppedToSquare;
+      *(&spec->var0.var4 + 1) = 0;
+      *(&spec->var0.var4 + 3) = 0;
+      spec->var1 = v27 / v31;
+      spec->var2 = v26;
+      *&spec->var3 = vuzp1_s16(v28, v29);
+      *&spec->var7 = v25;
     }
 
     goto LABEL_15;
@@ -411,13 +411,13 @@ LABEL_16:
   return v16;
 }
 
-- (id)thumbnailDataForAsset:(id)a3 targetSize:(CGSize)a4 onlyFromCache:(BOOL)a5 outDataSpec:(PXMediaProviderThumbnailDataSpec *)a6
+- (id)thumbnailDataForAsset:(id)asset targetSize:(CGSize)size onlyFromCache:(BOOL)cache outDataSpec:(PXMediaProviderThumbnailDataSpec *)spec
 {
-  v7 = a5;
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  if (!v7)
+  cacheCopy = cache;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  if (!cacheCopy)
   {
     [(PXPhotoKitUIMediaProvider *)self _noteActivity];
   }
@@ -427,15 +427,15 @@ LABEL_16:
   [(PXPhotoKitUIMediaProvider *)self _getQualityClass:&v17 cache:&v16 qualityClassIndex:0 forTargetSize:width, height];
   v12 = v17;
   v13 = v16;
-  v14 = [(PXPhotoKitUIMediaProvider *)self _thumbnailDataForAsset:v11 qualityClass:v12 cache:v13 onlyFromCache:v7 outDataSpec:a6 forPreheat:0];
+  v14 = [(PXPhotoKitUIMediaProvider *)self _thumbnailDataForAsset:assetCopy qualityClass:v12 cache:v13 onlyFromCache:cacheCopy outDataSpec:spec forPreheat:0];
 
   return v14;
 }
 
-- (void)_getQualityClass:(id *)a3 cache:(id *)a4 qualityClassIndex:(int64_t *)a5 forTargetSize:(CGSize)a6
+- (void)_getQualityClass:(id *)class cache:(id *)cache qualityClassIndex:(int64_t *)index forTargetSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   v41 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_lastTargetSize.width == width && self->_lock_lastTargetSize.height == height)
@@ -447,9 +447,9 @@ LABEL_16:
 
   else
   {
-    v33 = a3;
-    v34 = a4;
-    v35 = a5;
+    classCopy = class;
+    cacheCopy = cache;
+    indexCopy = index;
     if (width >= height)
     {
       v13 = width;
@@ -496,21 +496,21 @@ LABEL_10:
 
         if (v24 || ([v23 isCroppedToSquare] & 1) == 0)
         {
-          v25 = [v23 maxSideLengthIfSquare];
+          maxSideLengthIfSquare = [v23 maxSideLengthIfSquare];
           v26 = v23;
 
           v27 = [(NSArray *)self->_thumbnailCaches objectAtIndexedSubscript:lock_lastQualityClassIndex];
 
-          if (v13 <= v25)
+          if (v13 <= maxSideLengthIfSquare)
           {
             v28 = v26;
             v29 = v27;
 
             if (v28)
             {
-              a4 = v34;
-              a5 = v35;
-              a3 = v33;
+              cache = cacheCopy;
+              index = indexCopy;
+              class = classCopy;
               goto LABEL_30;
             }
 
@@ -546,9 +546,9 @@ LABEL_27:
     v29 = 0;
     lock_lastQualityClassIndex = v19;
 LABEL_29:
-    a4 = v34;
-    a5 = v35;
-    a3 = v33;
+    cache = cacheCopy;
+    index = indexCopy;
+    class = classCopy;
     v28 = v17;
     v30 = v18;
 
@@ -562,41 +562,41 @@ LABEL_30:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a3)
+  if (class)
   {
     v31 = v28;
-    *a3 = v28;
+    *class = v28;
   }
 
-  if (a4)
+  if (cache)
   {
     v32 = v29;
-    *a4 = v29;
+    *cache = v29;
   }
 
-  if (a5)
+  if (index)
   {
-    *a5 = lock_lastQualityClassIndex;
+    *index = lock_lastQualityClassIndex;
   }
 }
 
-- (int64_t)requestStreamForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestStreamForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  videoCopy = video;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:667 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:667 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
   }
 
   [(PXPhotoKitUIMediaProvider *)self _noteActivity];
-  v12 = [v10 photoKitRequestOptions];
-  v13 = _Block_copy(v11);
-  v14 = [(PXMediaProvider *)self loadingStatusManager];
-  if (v14)
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
+  v13 = _Block_copy(handlerCopy);
+  loadingStatusManager = [(PXMediaProvider *)self loadingStatusManager];
+  if (loadingStatusManager)
   {
     v19[0] = 0;
     v19[1] = v19;
@@ -604,13 +604,13 @@ LABEL_30:
     v19[3] = __Block_byref_object_copy__108787;
     v19[4] = __Block_byref_object_dispose__108788;
     v19[5] = 0;
-    v14;
-    v9;
+    loadingStatusManager;
+    videoCopy;
     px_dispatch_on_main_queue();
   }
 
-  v15 = [(PXPhotoKitUIMediaProvider *)self imageManager];
-  v16 = [v15 requestStreamForVideo:v9 options:v12 resultHandler:v13];
+  imageManager = [(PXPhotoKitUIMediaProvider *)self imageManager];
+  v16 = [imageManager requestStreamForVideo:videoCopy options:photoKitRequestOptions resultHandler:v13];
 
   return v16;
 }
@@ -685,23 +685,23 @@ void __73__PXPhotoKitUIMediaProvider_requestStreamForVideo_options_resultHandler
   }
 }
 
-- (int64_t)requestURLForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestURLForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  videoCopy = video;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:618 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:618 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
   }
 
   [(PXPhotoKitUIMediaProvider *)self _noteActivity];
-  v12 = [v10 photoKitRequestOptions];
-  v13 = _Block_copy(v11);
-  v14 = [(PXMediaProvider *)self loadingStatusManager];
-  if (v14)
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
+  v13 = _Block_copy(handlerCopy);
+  loadingStatusManager = [(PXMediaProvider *)self loadingStatusManager];
+  if (loadingStatusManager)
   {
     v19[0] = 0;
     v19[1] = v19;
@@ -709,13 +709,13 @@ void __73__PXPhotoKitUIMediaProvider_requestStreamForVideo_options_resultHandler
     v19[3] = __Block_byref_object_copy__108787;
     v19[4] = __Block_byref_object_dispose__108788;
     v19[5] = 0;
-    v14;
-    v9;
+    loadingStatusManager;
+    videoCopy;
     px_dispatch_on_main_queue();
   }
 
-  v15 = [(PXPhotoKitUIMediaProvider *)self imageManager];
-  v16 = [v15 requestURLForVideo:v9 options:v12 resultHandler:v13];
+  imageManager = [(PXPhotoKitUIMediaProvider *)self imageManager];
+  v16 = [imageManager requestURLForVideo:videoCopy options:photoKitRequestOptions resultHandler:v13];
 
   return v16;
 }
@@ -788,31 +788,31 @@ void __70__PXPhotoKitUIMediaProvider_requestURLForVideo_options_resultHandler___
   }
 }
 
-- (int64_t)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:566 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:566 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
   }
 
   [(PXPhotoKitUIMediaProvider *)self _noteActivity];
-  v12 = [v10 photoKitRequestOptions];
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __80__PXPhotoKitUIMediaProvider_requestAnimatedImageForAsset_options_resultHandler___block_invoke;
   aBlock[3] = &unk_1E7739670;
-  v13 = v11;
+  v13 = handlerCopy;
   v24 = v13;
-  v14 = v9;
+  v14 = assetCopy;
   v23 = v14;
   v15 = _Block_copy(aBlock);
-  v16 = [(PXMediaProvider *)self loadingStatusManager];
-  if (v16)
+  loadingStatusManager = [(PXMediaProvider *)self loadingStatusManager];
+  if (loadingStatusManager)
   {
     v21[0] = 0;
     v21[1] = v21;
@@ -820,13 +820,13 @@ void __70__PXPhotoKitUIMediaProvider_requestURLForVideo_options_resultHandler___
     v21[3] = __Block_byref_object_copy__108787;
     v21[4] = __Block_byref_object_dispose__108788;
     v21[5] = 0;
-    v16;
+    loadingStatusManager;
     v14;
     px_dispatch_on_main_queue();
   }
 
-  v17 = [(PXPhotoKitUIMediaProvider *)self imageManager];
-  v18 = [v17 requestAnimatedImageForAsset:v14 options:v12 resultHandler:v15];
+  imageManager = [(PXPhotoKitUIMediaProvider *)self imageManager];
+  v18 = [imageManager requestAnimatedImageForAsset:v14 options:photoKitRequestOptions resultHandler:v15];
 
   return v18;
 }
@@ -937,36 +937,36 @@ void __80__PXPhotoKitUIMediaProvider_requestAnimatedImageForAsset_options_result
   }
 }
 
-- (int64_t)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:511 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:511 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
   }
 
   [(PXPhotoKitUIMediaProvider *)self _noteActivity];
-  v17 = [v15 photoKitRequestOptions];
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __99__PXPhotoKitUIMediaProvider_requestLivePhotoForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
   aBlock[3] = &unk_1E7739620;
-  v18 = v16;
+  v18 = handlerCopy;
   v32 = v18;
-  v19 = v14;
+  v19 = assetCopy;
   v30 = v19;
-  v20 = v15;
+  v20 = optionsCopy;
   v31 = v20;
   v21 = _Block_copy(aBlock);
-  v22 = [(PXMediaProvider *)self loadingStatusManager];
+  loadingStatusManager = [(PXMediaProvider *)self loadingStatusManager];
   v27 = v20;
-  if (v22)
+  if (loadingStatusManager)
   {
     v28[0] = 0;
     v28[1] = v28;
@@ -974,13 +974,13 @@ void __80__PXPhotoKitUIMediaProvider_requestAnimatedImageForAsset_options_result
     v28[3] = __Block_byref_object_copy__108787;
     v28[4] = __Block_byref_object_dispose__108788;
     v28[5] = 0;
-    v22;
+    loadingStatusManager;
     v19;
     px_dispatch_on_main_queue();
   }
 
-  v23 = [(PXPhotoKitUIMediaProvider *)self imageManager];
-  v24 = [v23 requestLivePhotoForAsset:v19 targetSize:a5 contentMode:v17 options:v21 resultHandler:{width, height}];
+  imageManager = [(PXPhotoKitUIMediaProvider *)self imageManager];
+  v24 = [imageManager requestLivePhotoForAsset:v19 targetSize:mode contentMode:photoKitRequestOptions options:v21 resultHandler:{width, height}];
 
   return v24;
 }
@@ -1089,17 +1089,17 @@ void __99__PXPhotoKitUIMediaProvider_requestLivePhotoForAsset_targetSize_content
   }
 }
 
-- (int64_t)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  videoCopy = video;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:428 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:428 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
   }
 
   [(PXPhotoKitUIMediaProvider *)self _noteActivity];
@@ -1113,27 +1113,27 @@ void __99__PXPhotoKitUIMediaProvider_requestLivePhotoForAsset_targetSize_content
   v50[3] = __Block_byref_object_copy__108787;
   v50[4] = __Block_byref_object_dispose__108788;
   v51 = 0;
-  v12 = [v10 photoKitRequestOptions];
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
   v48[0] = 0;
   v48[1] = v48;
   v48[2] = 0x3032000000;
   v48[3] = __Block_byref_object_copy__108787;
   v48[4] = __Block_byref_object_dispose__108788;
   v49 = 0;
-  v13 = [(PXMediaProvider *)self loadingStatusManager];
-  if (v13)
+  loadingStatusManager = [(PXMediaProvider *)self loadingStatusManager];
+  if (loadingStatusManager)
   {
     v47[4] = MEMORY[0x1E69E9820];
     v47[5] = 3221225472;
     v47[6] = __77__PXPhotoKitUIMediaProvider_requestPlayerItemForVideo_options_resultHandler___block_invoke;
     v47[7] = &unk_1E7746448;
     v47[10] = v48;
-    v47[8] = v13;
-    v47[9] = v9;
+    v47[8] = loadingStatusManager;
+    v47[9] = videoCopy;
     px_dispatch_on_main_queue();
   }
 
-  v29 = [v12 progressHandler];
+  progressHandler = [photoKitRequestOptions progressHandler];
   v47[0] = 0;
   v47[1] = v47;
   v47[2] = 0x2020000000;
@@ -1142,7 +1142,7 @@ void __99__PXPhotoKitUIMediaProvider_requestLivePhotoForAsset_targetSize_content
   v45[1] = v45;
   v45[2] = 0x2020000000;
   v46 = 0;
-  v14 = v9;
+  v14 = videoCopy;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v31 = v14;
@@ -1154,7 +1154,7 @@ void __99__PXPhotoKitUIMediaProvider_requestLivePhotoForAsset_targetSize_content
   }
 
   v15 = PHSensitiveContentAnalysisAvailable() ^ 1;
-  if (!v10)
+  if (!optionsCopy)
   {
     LOBYTE(v15) = 1;
   }
@@ -1164,10 +1164,10 @@ void __99__PXPhotoKitUIMediaProvider_requestLivePhotoForAsset_targetSize_content
     goto LABEL_17;
   }
 
-  v16 = [v10 photoKitRequestOptions];
-  v17 = [v16 downloadIntent];
+  photoKitRequestOptions2 = [optionsCopy photoKitRequestOptions];
+  downloadIntent = [photoKitRequestOptions2 downloadIntent];
   v30 = 0;
-  if (!v31 || v17 != 3)
+  if (!v31 || downloadIntent != 3)
   {
     goto LABEL_16;
   }
@@ -1181,9 +1181,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v19 = [v31 photoLibrary];
-  v20 = [v31 uuid];
-  v54[0] = v20;
+  photoLibrary = [v31 photoLibrary];
+  uuid = [v31 uuid];
+  v54[0] = uuid;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:1];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
@@ -1193,14 +1193,14 @@ LABEL_17:
   v40 = v45;
   v37 = 0;
   v38 = 0;
-  v39 = v29;
+  v39 = progressHandler;
   v41 = v47;
   v42 = v48;
   v43 = v52;
   v44 = v50;
-  v30 = [v19 analyzeAssets:v21 forFeature:7 withCompletion:v35];
+  v30 = [photoLibrary analyzeAssets:v21 forFeature:7 withCompletion:v35];
 
-  v16 = v36;
+  photoKitRequestOptions2 = v36;
 LABEL_16:
 
 LABEL_18:
@@ -1208,13 +1208,13 @@ LABEL_18:
   aBlock[1] = 3221225472;
   aBlock[2] = __77__PXPhotoKitUIMediaProvider_requestPlayerItemForVideo_options_resultHandler___block_invoke_2_277;
   aBlock[3] = &unk_1E7739580;
-  v28 = v11;
+  v28 = handlerCopy;
   v34 = v28;
   v22 = v14;
   v33 = v22;
   v23 = _Block_copy(aBlock);
-  v24 = [(PXPhotoKitUIMediaProvider *)self imageManager];
-  v25 = [v24 requestPlayerItemForVideo:v22 options:v12 resultHandler:v23];
+  imageManager = [(PXPhotoKitUIMediaProvider *)self imageManager];
+  v25 = [imageManager requestPlayerItemForVideo:v22 options:photoKitRequestOptions resultHandler:v23];
 
   _Block_object_dispose(v45, 8);
   _Block_object_dispose(v47, 8);
@@ -1400,29 +1400,29 @@ uint64_t __77__PXPhotoKitUIMediaProvider_requestPlayerItemForVideo_options_resul
   return result;
 }
 
-- (int64_t)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:376 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:PHAsset.class]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:376 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:PHAsset.class]"}];
   }
 
   [(PXPhotoKitUIMediaProvider *)self _noteActivity];
-  v12 = [v10 photoKitRequestOptions];
-  [v12 setLoadingMode:0x10000];
-  v13 = [(PXPhotoKitUIMediaProvider *)self searchResultContextualVideoThumbnailIdentifiers];
-  v14 = [v9 uuid];
-  v15 = [v13 objectForKeyedSubscript:v14];
-  [v12 setContextualVideoThumbnailIdentifier:v15];
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
+  [photoKitRequestOptions setLoadingMode:0x10000];
+  searchResultContextualVideoThumbnailIdentifiers = [(PXPhotoKitUIMediaProvider *)self searchResultContextualVideoThumbnailIdentifiers];
+  uuid = [assetCopy uuid];
+  v15 = [searchResultContextualVideoThumbnailIdentifiers objectForKeyedSubscript:uuid];
+  [photoKitRequestOptions setContextualVideoThumbnailIdentifier:v15];
 
-  v16 = _Block_copy(v11);
-  v17 = [(PXMediaProvider *)self loadingStatusManager];
-  if (v17)
+  v16 = _Block_copy(handlerCopy);
+  loadingStatusManager = [(PXMediaProvider *)self loadingStatusManager];
+  if (loadingStatusManager)
   {
     v34[0] = 0;
     v34[1] = v34;
@@ -1435,12 +1435,12 @@ uint64_t __77__PXPhotoKitUIMediaProvider_requestPlayerItemForVideo_options_resul
     v29 = __75__PXPhotoKitUIMediaProvider_requestImageURLForAsset_options_resultHandler___block_invoke;
     v30 = &unk_1E7746448;
     v33 = v34;
-    v31 = v17;
-    v32 = v9;
+    v31 = loadingStatusManager;
+    v32 = assetCopy;
     px_dispatch_on_main_queue();
   }
 
-  v18 = [(PXPhotoKitUIMediaProvider *)self imageManager];
+  imageManager = [(PXPhotoKitUIMediaProvider *)self imageManager];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __75__PXPhotoKitUIMediaProvider_requestImageURLForAsset_options_resultHandler___block_invoke_6;
@@ -1449,7 +1449,7 @@ uint64_t __77__PXPhotoKitUIMediaProvider_requestPlayerItemForVideo_options_resul
   v19 = *MEMORY[0x1E6978E30];
   v20 = *(MEMORY[0x1E6978E30] + 8);
   v21 = v16;
-  v22 = [v18 requestImageForAsset:v9 targetSize:0 contentMode:v12 options:v25 resultHandler:{v19, v20}];
+  v22 = [imageManager requestImageForAsset:assetCopy targetSize:0 contentMode:photoKitRequestOptions options:v25 resultHandler:{v19, v20}];
 
   return v22;
 }
@@ -1545,28 +1545,28 @@ void __75__PXPhotoKitUIMediaProvider_requestImageURLForAsset_options_resultHandl
   }
 }
 
-- (int64_t)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"[asset isKindOfClass:[PHAsset class]]"}];
   }
 
   [(PXPhotoKitUIMediaProvider *)self _noteActivity];
-  v12 = [v10 photoKitRequestOptions];
-  v13 = [(PXPhotoKitUIMediaProvider *)self searchResultContextualVideoThumbnailIdentifiers];
-  v14 = [v9 uuid];
-  v15 = [v13 objectForKeyedSubscript:v14];
-  [v12 setContextualVideoThumbnailIdentifier:v15];
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
+  searchResultContextualVideoThumbnailIdentifiers = [(PXPhotoKitUIMediaProvider *)self searchResultContextualVideoThumbnailIdentifiers];
+  uuid = [assetCopy uuid];
+  v15 = [searchResultContextualVideoThumbnailIdentifiers objectForKeyedSubscript:uuid];
+  [photoKitRequestOptions setContextualVideoThumbnailIdentifier:v15];
 
-  v16 = _Block_copy(v11);
-  v17 = [(PXMediaProvider *)self loadingStatusManager];
-  if (v17)
+  v16 = _Block_copy(handlerCopy);
+  loadingStatusManager = [(PXMediaProvider *)self loadingStatusManager];
+  if (loadingStatusManager)
   {
     v32[0] = 0;
     v32[1] = v32;
@@ -1579,19 +1579,19 @@ void __75__PXPhotoKitUIMediaProvider_requestImageURLForAsset_options_resultHandl
     v27 = __76__PXPhotoKitUIMediaProvider_requestImageDataForAsset_options_resultHandler___block_invoke;
     v28 = &unk_1E7746448;
     v31 = v32;
-    v29 = v17;
-    v30 = v9;
+    v29 = loadingStatusManager;
+    v30 = assetCopy;
     px_dispatch_on_main_queue();
   }
 
-  v18 = [(PXPhotoKitUIMediaProvider *)self imageManager];
+  imageManager = [(PXPhotoKitUIMediaProvider *)self imageManager];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __76__PXPhotoKitUIMediaProvider_requestImageDataForAsset_options_resultHandler___block_invoke_6;
   v23[3] = &unk_1E77394E0;
   v24 = v16;
   v19 = v16;
-  v20 = [v18 requestImageDataAndOrientationForAsset:v9 options:v12 resultHandler:v23];
+  v20 = [imageManager requestImageDataAndOrientationForAsset:assetCopy options:photoKitRequestOptions resultHandler:v23];
 
   return v20;
 }
@@ -1696,14 +1696,14 @@ void __76__PXPhotoKitUIMediaProvider_requestImageDataForAsset_options_resultHand
   }
 }
 
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = v13;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v16 = assetCopy;
   if (v16)
   {
     objc_opt_class();
@@ -1712,28 +1712,28 @@ void __76__PXPhotoKitUIMediaProvider_requestImageDataForAsset_options_resultHand
       goto LABEL_3;
     }
 
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v33 = objc_opt_class();
     v32 = NSStringFromClass(v33);
-    v34 = [v16 px_descriptionForAssertionMessage];
-    [v30 handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:199 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v32, v34}];
+    px_descriptionForAssertionMessage = [v16 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:199 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v32, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v31 = objc_opt_class();
     v32 = NSStringFromClass(v31);
-    [v30 handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:199 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v32}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitUIMediaProvider.m" lineNumber:199 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v32}];
   }
 
 LABEL_3:
   [(PXPhotoKitUIMediaProvider *)self _noteActivity];
-  v17 = [v14 photoKitRequestOptions];
-  v18 = [(PXPhotoKitUIMediaProvider *)self searchResultContextualVideoThumbnailIdentifiers];
-  v19 = [v16 uuid];
-  v20 = [v18 objectForKeyedSubscript:v19];
-  [v17 setContextualVideoThumbnailIdentifier:v20];
+  photoKitRequestOptions = [optionsCopy photoKitRequestOptions];
+  searchResultContextualVideoThumbnailIdentifiers = [(PXPhotoKitUIMediaProvider *)self searchResultContextualVideoThumbnailIdentifiers];
+  uuid = [v16 uuid];
+  v20 = [searchResultContextualVideoThumbnailIdentifiers objectForKeyedSubscript:uuid];
+  [photoKitRequestOptions setContextualVideoThumbnailIdentifier:v20];
 
   objc_initWeak(location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1746,14 +1746,14 @@ LABEL_3:
   v21 = v16;
   v39 = v21;
   objc_copyWeak(v41, location);
-  v22 = v15;
+  v22 = handlerCopy;
   v40 = v22;
   v23 = _Block_copy(aBlock);
-  v24 = [(PXMediaProvider *)self loadingStatusManager];
-  v25 = [v14 avoidDisplayingProgressUpdates];
-  if (v24)
+  loadingStatusManager = [(PXMediaProvider *)self loadingStatusManager];
+  avoidDisplayingProgressUpdates = [optionsCopy avoidDisplayingProgressUpdates];
+  if (loadingStatusManager)
   {
-    v26 = v25;
+    v26 = avoidDisplayingProgressUpdates;
   }
 
   else
@@ -1770,13 +1770,13 @@ LABEL_3:
     v37[3] = __Block_byref_object_copy__108787;
     v37[4] = __Block_byref_object_dispose__108788;
     v37[5] = 0;
-    v24;
+    loadingStatusManager;
     v21;
     px_dispatch_on_main_queue();
   }
 
-  v27 = [(PXPhotoKitUIMediaProvider *)self imageManager];
-  v28 = [v27 requestImageForAsset:v21 targetSize:a5 contentMode:v17 options:v23 resultHandler:{width, height}];
+  imageManager = [(PXPhotoKitUIMediaProvider *)self imageManager];
+  v28 = [imageManager requestImageForAsset:v21 targetSize:mode contentMode:photoKitRequestOptions options:v23 resultHandler:{width, height}];
 
   objc_destroyWeak(v41);
   objc_destroyWeak(location);
@@ -1942,32 +1942,32 @@ void __95__PXPhotoKitUIMediaProvider_requestImageForAsset_targetSize_contentMode
   }
 }
 
-- (int64_t)requestCGImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestCGImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a6;
-  v14 = a7;
-  v15 = a3;
-  v16 = [v13 cleanUpDecodeBuffers];
-  v17 = v13;
-  v18 = [(PXPhotoKitUIMediaProvider *)self searchResultContextualVideoThumbnailIdentifiers];
-  v19 = [v15 uuid];
-  v20 = [v18 objectForKeyedSubscript:v19];
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
+  handlerCopy = handler;
+  assetCopy = asset;
+  cleanUpDecodeBuffers = [optionsCopy cleanUpDecodeBuffers];
+  v17 = optionsCopy;
+  searchResultContextualVideoThumbnailIdentifiers = [(PXPhotoKitUIMediaProvider *)self searchResultContextualVideoThumbnailIdentifiers];
+  uuid = [assetCopy uuid];
+  v20 = [searchResultContextualVideoThumbnailIdentifiers objectForKeyedSubscript:uuid];
   [v17 setContextualVideoThumbnailIdentifier:v20];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __97__PXPhotoKitUIMediaProvider_requestCGImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
   v25[3] = &unk_1E77393F0;
-  v26 = v14;
-  v27 = v16;
+  v26 = handlerCopy;
+  v27 = cleanUpDecodeBuffers;
   v24.receiver = self;
   v24.super_class = PXPhotoKitUIMediaProvider;
-  v21 = v14;
-  v22 = [(PXUIMediaProvider *)&v24 requestCGImageForAsset:v15 targetSize:a5 contentMode:v17 options:v25 resultHandler:width, height];
+  v21 = handlerCopy;
+  height = [(PXUIMediaProvider *)&v24 requestCGImageForAsset:assetCopy targetSize:mode contentMode:v17 options:v25 resultHandler:width, height];
 
-  return v22;
+  return height;
 }
 
 void __97__PXPhotoKitUIMediaProvider_requestCGImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -1990,39 +1990,39 @@ void __97__PXPhotoKitUIMediaProvider_requestCGImageForAsset_targetSize_contentMo
 
 - (PXPhotoKitUIMediaProvider)init
 {
-  v3 = [MEMORY[0x1E6978860] defaultManager];
-  v4 = [(PXPhotoKitUIMediaProvider *)self initWithImageManager:v3];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  v4 = [(PXPhotoKitUIMediaProvider *)self initWithImageManager:defaultManager];
 
   return v4;
 }
 
-- (PXPhotoKitUIMediaProvider)initWithImageManager:(id)a3
+- (PXPhotoKitUIMediaProvider)initWithImageManager:(id)manager
 {
   v4 = MEMORY[0x1E69789A8];
-  v5 = a3;
-  v6 = [v4 px_deprecated_appPhotoLibrary];
-  v7 = [(PXPhotoKitUIMediaProvider *)self initWithImageManager:v5 library:v6];
+  managerCopy = manager;
+  px_deprecated_appPhotoLibrary = [v4 px_deprecated_appPhotoLibrary];
+  v7 = [(PXPhotoKitUIMediaProvider *)self initWithImageManager:managerCopy library:px_deprecated_appPhotoLibrary];
 
   return v7;
 }
 
-- (PXPhotoKitUIMediaProvider)initWithImageManager:(id)a3 library:(id)a4
+- (PXPhotoKitUIMediaProvider)initWithImageManager:(id)manager library:(id)library
 {
   v50 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  libraryCopy = library;
   v48.receiver = self;
   v48.super_class = PXPhotoKitUIMediaProvider;
   v9 = [(PXPhotoKitUIMediaProvider *)&v48 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_photoLibrary, a4);
-    objc_storeStrong(&v10->_imageManager, a3);
+    objc_storeStrong(&v9->_photoLibrary, library);
+    objc_storeStrong(&v10->_imageManager, manager);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v7;
+      v11 = managerCopy;
     }
 
     else
@@ -2033,17 +2033,17 @@ void __97__PXPhotoKitUIMediaProvider_requestCGImageForAsset_targetSize_contentMo
     objc_storeStrong(&v10->_cachingImageManager, v11);
     v12 = MEMORY[0x1E69786F8];
     v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"isTable = YES"];
-    v14 = [v12 allQualityClassesMatchingPredicate:v13 inLibrary:v8];
+    v14 = [v12 allQualityClassesMatchingPredicate:v13 inLibrary:libraryCopy];
     thumbnailQualityClasses = v10->_thumbnailQualityClasses;
     v10->_thumbnailQualityClasses = v14;
 
-    v16 = [off_1E7721920 sharedInstance];
-    v17 = [v16 thumbnailCacheSize];
-    if (v17)
+    sharedInstance = [off_1E7721920 sharedInstance];
+    thumbnailCacheSize = [sharedInstance thumbnailCacheSize];
+    if (thumbnailCacheSize)
     {
-      v18 = v17;
-      v41 = v16;
-      v19 = v8;
+      v18 = thumbnailCacheSize;
+      v41 = sharedInstance;
+      v19 = libraryCopy;
       v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v44 = 0u;
@@ -2091,22 +2091,22 @@ void __97__PXPhotoKitUIMediaProvider_requestCGImageForAsset_targetSize_contentMo
       preheatLock_preheatStates = v42->_preheatLock_preheatStates;
       v42->_preheatLock_preheatStates = v21;
 
-      v8 = v19;
-      v16 = v41;
+      libraryCopy = v19;
+      sharedInstance = v41;
     }
 
     v10->_lock._os_unfair_lock_opaque = 0;
     v10->_videoThumbnailIdentifiersLock._os_unfair_lock_opaque = 0;
     v10->_preheatlock._os_unfair_lock_opaque = 0;
-    v34 = [off_1E77217A8 preheatQueue];
+    preheatQueue = [off_1E77217A8 preheatQueue];
     preheatQueue = v10->_preheatQueue;
-    v10->_preheatQueue = v34;
+    v10->_preheatQueue = preheatQueue;
 
     atomic_store(0, &v10->_lastActivity);
-    v36 = [MEMORY[0x1E69BF248] defaultFormatChooser];
-    v37 = [v36 masterThumbnailFormat];
+    defaultFormatChooser = [MEMORY[0x1E69BF248] defaultFormatChooser];
+    masterThumbnailFormat = [defaultFormatChooser masterThumbnailFormat];
 
-    [v37 sizeWithFallBackSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    [masterThumbnailFormat sizeWithFallBackSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
     v10->_masterThumbnailSize.width = v38;
     v10->_masterThumbnailSize.height = v39;
   }
@@ -2114,47 +2114,47 @@ void __97__PXPhotoKitUIMediaProvider_requestCGImageForAsset_targetSize_contentMo
   return v10;
 }
 
-+ (void)configureLoadingStatusManager:(id)a3 andVideoProgressHandler:(id)a4 withVideoSensitivityProcessingProgress:(id)a5 imageManagerRequestProgress:(double)a6 loadOperationTrackingID:(id)a7 stop:(BOOL *)a8 info:(id)a9 error:(id)a10
++ (void)configureLoadingStatusManager:(id)manager andVideoProgressHandler:(id)handler withVideoSensitivityProcessingProgress:(id)progress imageManagerRequestProgress:(double)requestProgress loadOperationTrackingID:(id)d stop:(BOOL *)stop info:(id)info error:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a9;
-  v21 = a10;
-  if (v18)
+  managerCopy = manager;
+  handlerCopy = handler;
+  progressCopy = progress;
+  dCopy = d;
+  infoCopy = info;
+  errorCopy = error;
+  if (progressCopy)
   {
-    [v18 fractionCompleted];
-    a6 = (v22 + a6) * 0.5;
+    [progressCopy fractionCompleted];
+    requestProgress = (v22 + requestProgress) * 0.5;
   }
 
-  if (v17)
+  if (handlerCopy)
   {
     v24 = 0;
-    if (a8)
+    if (stop)
     {
-      v23 = a8;
+      stopCopy = stop;
     }
 
     else
     {
-      v23 = &v24;
+      stopCopy = &v24;
     }
 
-    v17[2](v17, v21, v23, v20, a6);
+    handlerCopy[2](handlerCopy, errorCopy, stopCopy, infoCopy, requestProgress);
   }
 
-  [v16 didUpdateLoadOperationWithTrackingID:v19 withProgress:a6];
+  [managerCopy didUpdateLoadOperationWithTrackingID:dCopy withProgress:requestProgress];
 }
 
-+ (PXPhotoKitUIMediaProvider)mediaProviderWithLibrary:(id)a3
++ (PXPhotoKitUIMediaProvider)mediaProviderWithLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [a1 _defaultImageManager];
-  v6 = [[a1 alloc] initWithImageManager:v5 library:v4];
+  libraryCopy = library;
+  _defaultImageManager = [self _defaultImageManager];
+  v6 = [[self alloc] initWithImageManager:_defaultImageManager library:libraryCopy];
 
-  v7 = [a1 _defaultLoadingStatusManager];
-  [v6 setLoadingStatusManager:v7];
+  _defaultLoadingStatusManager = [self _defaultLoadingStatusManager];
+  [v6 setLoadingStatusManager:_defaultLoadingStatusManager];
 
   return v6;
 }

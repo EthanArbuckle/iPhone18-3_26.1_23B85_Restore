@@ -17,14 +17,14 @@
       v10 = v8;
       [v7 seekToOffset:v8 error:0];
       v11 = [v7 readDataOfLength:1024];
-      v12 = [a1 length];
+      v12 = [self length];
       v13 = 1024;
       if (v12 - v8 <= 0x400)
       {
-        v13 = [a1 length] - v8;
+        v13 = [self length] - v8;
       }
 
-      v14 = [a1 subdataWithRange:{v8, v13}];
+      v14 = [self subdataWithRange:{v8, v13}];
       v15 = [v11 length];
       v16 = [v11 isEqualToData:v14];
 
@@ -37,7 +37,7 @@
       v8 = v15 + v10;
     }
 
-    while ([a1 length] > v8);
+    while ([self length] > v8);
   }
 
   else

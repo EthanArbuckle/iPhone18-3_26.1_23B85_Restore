@@ -1,9 +1,9 @@
 @interface ASPasswordCredential
 + (ASPasswordCredential)credentialWithUser:(NSString *)user password:(NSString *)password;
-- (ASPasswordCredential)initWithCoder:(id)a3;
+- (ASPasswordCredential)initWithCoder:(id)coder;
 - (ASPasswordCredential)initWithUser:(NSString *)user password:(NSString *)password;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASPasswordCredential
@@ -12,7 +12,7 @@
 {
   v6 = password;
   v7 = user;
-  v8 = [[a1 alloc] initWithUser:v7 password:v6];
+  v8 = [[self alloc] initWithUser:v7 password:v6];
 
   return v8;
 }
@@ -40,25 +40,25 @@
   return v8;
 }
 
-- (ASPasswordCredential)initWithCoder:(id)a3
+- (ASPasswordCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"User"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Password"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"User"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Password"];
 
   v7 = [(ASPasswordCredential *)self initWithUser:v5 password:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   user = self->_user;
-  v5 = a3;
-  [v5 encodeObject:user forKey:@"User"];
-  [v5 encodeObject:self->_password forKey:@"Password"];
+  coderCopy = coder;
+  [coderCopy encodeObject:user forKey:@"User"];
+  [coderCopy encodeObject:self->_password forKey:@"Password"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   user = self->_user;

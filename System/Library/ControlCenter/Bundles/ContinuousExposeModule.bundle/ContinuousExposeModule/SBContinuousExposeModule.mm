@@ -1,10 +1,10 @@
 @interface SBContinuousExposeModule
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 @end
 
 @implementation SBContinuousExposeModule
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   v3 = [[SBContinuousExposeModuleViewController alloc] initWithContentModuleContext:self->_contentModuleContext];
 

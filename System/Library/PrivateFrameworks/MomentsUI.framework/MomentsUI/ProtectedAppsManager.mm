@@ -1,6 +1,6 @@
 @interface ProtectedAppsManager
 - (_TtC9MomentsUI20ProtectedAppsManager)init;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 @end
 
 @implementation ProtectedAppsManager
@@ -27,12 +27,12 @@
   return [(ProtectedAppsManager *)&v12 init];
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   type metadata accessor for APSubject();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   specialized ProtectedAppsManager.appProtectionSubjectsChanged(_:for:)(v5);
   swift_unknownObjectRelease();
 }

@@ -1,10 +1,10 @@
 @interface WorkoutCollectionViewLandscapeAssetCell
-- (_TtC9MomentsUI39WorkoutCollectionViewLandscapeAssetCell)initWithCoder:(id)a3;
+- (_TtC9MomentsUI39WorkoutCollectionViewLandscapeAssetCell)initWithCoder:(id)coder;
 @end
 
 @implementation WorkoutCollectionViewLandscapeAssetCell
 
-- (_TtC9MomentsUI39WorkoutCollectionViewLandscapeAssetCell)initWithCoder:(id)a3
+- (_TtC9MomentsUI39WorkoutCollectionViewLandscapeAssetCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9MomentsUI39WorkoutCollectionViewLandscapeAssetCell_workoutView;
   if (one-time initialization token for empty != -1)

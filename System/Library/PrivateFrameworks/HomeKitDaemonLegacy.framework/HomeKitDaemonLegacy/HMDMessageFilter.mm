@@ -1,26 +1,26 @@
 @interface HMDMessageFilter
 + (id)logCategory;
-- (HMDMessageFilter)initWithName:(id)a3;
+- (HMDMessageFilter)initWithName:(id)name;
 @end
 
 @implementation HMDMessageFilter
 
-- (HMDMessageFilter)initWithName:(id)a3
+- (HMDMessageFilter)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = HMDMessageFilter;
   v5 = [(HMDMessageFilter *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"com.apple.msgfltr", v4];
-    v9 = [v8 UTF8String];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", @"com.apple.msgfltr", nameCopy];
+    uTF8String = [nameCopy UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     workQueue = v5->_workQueue;
     v5->_workQueue = v11;
   }

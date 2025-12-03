@@ -1,32 +1,32 @@
 @interface CarCollectionCell
-- (CarCollectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CarCollectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setupWithCollectionHandler:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setupWithCollectionHandler:(id)handler;
 @end
 
 @implementation CarCollectionCell
 
-- (void)setupWithCollectionHandler:(id)a3
+- (void)setupWithCollectionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [(CarCollectionCell *)self textLabel];
-  [v6 setText:v5];
+  handlerCopy = handler;
+  title = [handlerCopy title];
+  textLabel = [(CarCollectionCell *)self textLabel];
+  [textLabel setText:title];
 
-  v8 = [v4 subtitle];
+  subtitle = [handlerCopy subtitle];
 
-  v7 = [(CarCollectionCell *)self detailTextLabel];
-  [v7 setText:v8];
+  detailTextLabel = [(CarCollectionCell *)self detailTextLabel];
+  [detailTextLabel setText:subtitle];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a3;
+  highlightedCopy = highlighted;
   v10.receiver = self;
   v10.super_class = CarCollectionCell;
-  [(CarCollectionCell *)&v10 setHighlighted:a3 animated:a4];
-  if (v4)
+  [(CarCollectionCell *)&v10 setHighlighted:highlighted animated:animated];
+  if (highlightedCopy)
   {
     +[UIColor _carSystemFocusLabelColor];
   }
@@ -36,10 +36,10 @@
     +[UIColor labelColor];
   }
   v6 = ;
-  v7 = [(CarCollectionCell *)self textLabel];
-  [v7 setTextColor:v6];
+  textLabel = [(CarCollectionCell *)self textLabel];
+  [textLabel setTextColor:v6];
 
-  if (v4)
+  if (highlightedCopy)
   {
     +[UIColor _carSystemFocusPrimaryColor];
   }
@@ -49,8 +49,8 @@
     +[UIColor _carSystemPrimaryColor];
   }
   v8 = ;
-  v9 = [(CarCollectionCell *)self detailTextLabel];
-  [v9 setTextColor:v8];
+  detailTextLabel = [(CarCollectionCell *)self detailTextLabel];
+  [detailTextLabel setTextColor:v8];
 }
 
 - (void)prepareForReuse
@@ -58,45 +58,45 @@
   v5.receiver = self;
   v5.super_class = CarCollectionCell;
   [(CarCollectionCell *)&v5 prepareForReuse];
-  v3 = [(CarCollectionCell *)self textLabel];
-  [v3 setText:0];
+  textLabel = [(CarCollectionCell *)self textLabel];
+  [textLabel setText:0];
 
-  v4 = [(CarCollectionCell *)self detailTextLabel];
-  [v4 setText:0];
+  detailTextLabel = [(CarCollectionCell *)self detailTextLabel];
+  [detailTextLabel setText:0];
 }
 
-- (CarCollectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CarCollectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v17.receiver = self;
   v17.super_class = CarCollectionCell;
-  v4 = [(CarCollectionCell *)&v17 initWithStyle:3 reuseIdentifier:a4];
+  v4 = [(CarCollectionCell *)&v17 initWithStyle:3 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(CarCollectionCell *)v4 setAccessibilityIdentifier:@"CarCollectionCell"];
-    v6 = [(CarCollectionCell *)v5 textLabel];
-    [v6 setNumberOfLines:2];
+    textLabel = [(CarCollectionCell *)v5 textLabel];
+    [textLabel setNumberOfLines:2];
 
     v7 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleCallout weight:UIFontWeightMedium];
-    v8 = [(CarCollectionCell *)v5 textLabel];
-    [v8 setFont:v7];
+    textLabel2 = [(CarCollectionCell *)v5 textLabel];
+    [textLabel2 setFont:v7];
 
-    v9 = [(CarCollectionCell *)v5 textLabel];
-    [v9 setAccessibilityIdentifier:@"TitleLabel"];
+    textLabel3 = [(CarCollectionCell *)v5 textLabel];
+    [textLabel3 setAccessibilityIdentifier:@"TitleLabel"];
 
-    v10 = [(CarCollectionCell *)v5 detailTextLabel];
-    [v10 setNumberOfLines:2];
+    detailTextLabel = [(CarCollectionCell *)v5 detailTextLabel];
+    [detailTextLabel setNumberOfLines:2];
 
     v11 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleCaption2 weight:3 grade:UIFontWeightRegular];
-    v12 = [(CarCollectionCell *)v5 detailTextLabel];
-    [v12 setFont:v11];
+    detailTextLabel2 = [(CarCollectionCell *)v5 detailTextLabel];
+    [detailTextLabel2 setFont:v11];
 
     v13 = +[UIColor _carSystemPrimaryColor];
-    v14 = [(CarCollectionCell *)v5 detailTextLabel];
-    [v14 setTextColor:v13];
+    detailTextLabel3 = [(CarCollectionCell *)v5 detailTextLabel];
+    [detailTextLabel3 setTextColor:v13];
 
-    v15 = [(CarCollectionCell *)v5 detailTextLabel];
-    [v15 setAccessibilityIdentifier:@"DetailLabel"];
+    detailTextLabel4 = [(CarCollectionCell *)v5 detailTextLabel];
+    [detailTextLabel4 setAccessibilityIdentifier:@"DetailLabel"];
   }
 
   return v5;

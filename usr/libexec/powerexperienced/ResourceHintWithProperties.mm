@@ -1,36 +1,36 @@
 @interface ResourceHintWithProperties
-- (ResourceHintWithProperties)initWithProperties:(id)a3;
-- (ResourceHintWithProperties)initWithResourceHint:(id)a3 andPid:(id)a4;
+- (ResourceHintWithProperties)initWithProperties:(id)properties;
+- (ResourceHintWithProperties)initWithResourceHint:(id)hint andPid:(id)pid;
 @end
 
 @implementation ResourceHintWithProperties
 
-- (ResourceHintWithProperties)initWithResourceHint:(id)a3 andPid:(id)a4
+- (ResourceHintWithProperties)initWithResourceHint:(id)hint andPid:(id)pid
 {
-  v6 = a4;
-  v7 = a3;
+  pidCopy = pid;
+  hintCopy = hint;
   v8 = objc_alloc_init(ResourceHintWithProperties);
-  -[ResourceHintWithProperties setState:](v8, "setState:", [v7 state]);
-  v9 = [v7 uuid];
-  [(ResourceHintWithProperties *)v8 setUuid:v9];
+  -[ResourceHintWithProperties setState:](v8, "setState:", [hintCopy state]);
+  uuid = [hintCopy uuid];
+  [(ResourceHintWithProperties *)v8 setUuid:uuid];
 
-  v10 = [v7 resourceType];
-  [(ResourceHintWithProperties *)v8 setResourceType:v10];
-  [(ResourceHintWithProperties *)v8 setPid:v6];
+  resourceType = [hintCopy resourceType];
+  [(ResourceHintWithProperties *)v8 setResourceType:resourceType];
+  [(ResourceHintWithProperties *)v8 setPid:pidCopy];
 
   return v8;
 }
 
-- (ResourceHintWithProperties)initWithProperties:(id)a3
+- (ResourceHintWithProperties)initWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = objc_alloc_init(ResourceHintWithProperties);
-  if (v4)
+  if (propertiesCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"uuid"];
-    v7 = [v4 objectForKeyedSubscript:@"type"];
-    v8 = [v4 objectForKeyedSubscript:@"state"];
-    v9 = [v4 objectForKeyedSubscript:@"pid"];
+    v6 = [propertiesCopy objectForKeyedSubscript:@"uuid"];
+    v7 = [propertiesCopy objectForKeyedSubscript:@"type"];
+    v8 = [propertiesCopy objectForKeyedSubscript:@"state"];
+    v9 = [propertiesCopy objectForKeyedSubscript:@"pid"];
     v10 = v9;
     if (!v6 || !v7 || !v8 || !v9)
     {

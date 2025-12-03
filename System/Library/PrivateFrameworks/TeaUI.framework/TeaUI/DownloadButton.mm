@@ -1,7 +1,7 @@
 @interface DownloadButton
 - (BOOL)accessibilityActivate;
 - (void)layoutSubviews;
-- (void)startingButtonTappedWithSender:(id)a3;
+- (void)startingButtonTappedWithSender:(id)sender;
 - (void)tintColorDidChange;
 @end
 
@@ -9,7 +9,7 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   DownloadButton.accessibilityActivate()();
 
   return 1;
@@ -17,20 +17,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DownloadButton.layoutSubviews()();
 }
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   DownloadButton.tintColorDidChange()();
 }
 
-- (void)startingButtonTappedWithSender:(id)a3
+- (void)startingButtonTappedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_1D81059CC();
 }
 

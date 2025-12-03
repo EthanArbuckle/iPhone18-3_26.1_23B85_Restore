@@ -1,27 +1,27 @@
 @interface _PSCNAutocompleteFeedbackInteractionIterator
-- (_PSCNAutocompleteFeedbackInteractionIterator)initWithInteractionStore:(id)a3 bundleIds:(id)a4 startDate:(id)a5 batchSize:(unint64_t)a6;
-- (id)fastForwardToDate:(id)a3;
+- (_PSCNAutocompleteFeedbackInteractionIterator)initWithInteractionStore:(id)store bundleIds:(id)ids startDate:(id)date batchSize:(unint64_t)size;
+- (id)fastForwardToDate:(id)date;
 - (id)nextObject;
 - (void)fetchResults;
 @end
 
 @implementation _PSCNAutocompleteFeedbackInteractionIterator
 
-- (_PSCNAutocompleteFeedbackInteractionIterator)initWithInteractionStore:(id)a3 bundleIds:(id)a4 startDate:(id)a5 batchSize:(unint64_t)a6
+- (_PSCNAutocompleteFeedbackInteractionIterator)initWithInteractionStore:(id)store bundleIds:(id)ids startDate:(id)date batchSize:(unint64_t)size
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  storeCopy = store;
+  idsCopy = ids;
+  dateCopy = date;
   v21.receiver = self;
   v21.super_class = _PSCNAutocompleteFeedbackInteractionIterator;
   v14 = [(_PSCNAutocompleteFeedbackInteractionIterator *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_interactionStore, a3);
-    objc_storeStrong(&v15->_bundleIds, a4);
-    v15->_batchSize = a6;
-    objc_storeStrong(&v15->_startDate, a5);
+    objc_storeStrong(&v14->_interactionStore, store);
+    objc_storeStrong(&v15->_bundleIds, ids);
+    v15->_batchSize = size;
+    objc_storeStrong(&v15->_startDate, date);
     v16 = [MEMORY[0x1E695DF00] now];
     endDate = v15->_endDate;
     v15->_endDate = v16;
@@ -111,16 +111,16 @@
   return v4;
 }
 
-- (id)fastForwardToDate:(id)a3
+- (id)fastForwardToDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if (!self->_results && !self->_isExhausted)
   {
     [(_PSCNAutocompleteFeedbackInteractionIterator *)self fetchResults];
   }
 
   lastItem = self->_lastItem;
-  if (lastItem && (-[_CDInteraction startDate](lastItem, "startDate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 compare:v4], v6, v7 == 1))
+  if (lastItem && (-[_CDInteraction startDate](lastItem, "startDate"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 compare:dateCopy], v6, v7 == 1))
   {
     v8 = self->_lastItem;
   }
@@ -137,16 +137,16 @@
     {
       while (1)
       {
-        v12 = [(_PSCNAutocompleteFeedbackInteractionIterator *)self nextObject];
+        nextObject = [(_PSCNAutocompleteFeedbackInteractionIterator *)self nextObject];
 
-        v8 = v12;
-        if (!v12)
+        v8 = nextObject;
+        if (!nextObject)
         {
           break;
         }
 
-        v10 = [(_CDInteraction *)v12 startDate];
-        v11 = [v10 compare:v4];
+        startDate = [(_CDInteraction *)nextObject startDate];
+        v11 = [startDate compare:dateCopy];
 
         if (v11 != -1)
         {

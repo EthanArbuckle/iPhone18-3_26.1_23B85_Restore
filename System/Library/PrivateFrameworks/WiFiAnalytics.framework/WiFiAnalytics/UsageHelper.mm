@@ -1,14 +1,14 @@
 @interface UsageHelper
-+ (Class)classForTimeSpan:(unint64_t)a3 withError:(id *)a4;
++ (Class)classForTimeSpan:(unint64_t)span withError:(id *)error;
 + (NSCalendar)calendar;
 + (NSDateComponents)componentsOneMonth;
 + (NSISO8601DateFormatter)dailyDateFormatter;
 + (NSISO8601DateFormatter)monthlyDateFormatter;
-+ (id)aggregateNameFor:(unint64_t)a3 withError:(id *)a4;
-+ (id)availableDimensionsFor:(unint64_t)a3 withError:(id *)a4;
-+ (id)binnedDate:(id)a3 as:(unint64_t)a4;
-+ (id)getHigherEdgeIncludedBinFor:(int64_t)a3 In:(id)a4;
-+ (id)getLowerEdgeIncludedBinFor:(int64_t)a3 In:(id)a4;
++ (id)aggregateNameFor:(unint64_t)for withError:(id *)error;
++ (id)availableDimensionsFor:(unint64_t)for withError:(id *)error;
++ (id)binnedDate:(id)date as:(unint64_t)as;
++ (id)getHigherEdgeIncludedBinFor:(int64_t)for In:(id)in;
++ (id)getLowerEdgeIncludedBinFor:(int64_t)for In:(id)in;
 @end
 
 @implementation UsageHelper
@@ -110,45 +110,45 @@ uint64_t __35__UsageHelper_monthlyDateFormatter__block_invoke()
   return [v3 setFormatOptions:259];
 }
 
-+ (id)getLowerEdgeIncludedBinFor:(int64_t)a3 In:(id)a4
++ (id)getLowerEdgeIncludedBinFor:(int64_t)for In:(id)in
 {
-  v5 = a4;
+  inCopy = in;
   v6 = [UsageHelperBinEdges binEdgesWithLowerEdgeIncluded:1];
-  for (i = 0; i < [v5 count]; ++i)
+  for (i = 0; i < [inCopy count]; ++i)
   {
-    v8 = [v5 objectAtIndexedSubscript:i];
-    v9 = [v8 integerValue];
+    v8 = [inCopy objectAtIndexedSubscript:i];
+    integerValue = [v8 integerValue];
 
-    if (v9 > a3)
+    if (integerValue > for)
     {
       break;
     }
 
-    v10 = [v5 objectAtIndexedSubscript:i];
+    v10 = [inCopy objectAtIndexedSubscript:i];
     [v6 setLowerThan:v10];
   }
 
-  v11 = [v6 lowerThan];
-  [v6 setGreaterOrEqualTo:v11];
+  lowerThan = [v6 lowerThan];
+  [v6 setGreaterOrEqualTo:lowerThan];
 
-  if (i < [v5 count])
+  if (i < [inCopy count])
   {
-    v12 = [v5 objectAtIndexedSubscript:i];
-    v13 = [v12 integerValue];
+    v12 = [inCopy objectAtIndexedSubscript:i];
+    integerValue2 = [v12 integerValue];
 
-    if (v13 > a3)
+    if (integerValue2 > for)
     {
-      v14 = [v5 objectAtIndexedSubscript:i];
+      v14 = [inCopy objectAtIndexedSubscript:i];
       [v6 setLowerThan:v14];
     }
   }
 
-  if (i == [v5 count])
+  if (i == [inCopy count])
   {
-    v15 = [v6 lowerThan];
-    v16 = [v15 integerValue];
+    lowerThan2 = [v6 lowerThan];
+    integerValue3 = [lowerThan2 integerValue];
 
-    if (v16 < a3)
+    if (integerValue3 < for)
     {
       [v6 setLowerThan:0];
     }
@@ -157,45 +157,45 @@ uint64_t __35__UsageHelper_monthlyDateFormatter__block_invoke()
   return v6;
 }
 
-+ (id)getHigherEdgeIncludedBinFor:(int64_t)a3 In:(id)a4
++ (id)getHigherEdgeIncludedBinFor:(int64_t)for In:(id)in
 {
-  v5 = a4;
+  inCopy = in;
   v6 = [UsageHelperBinEdges binEdgesWithLowerEdgeIncluded:0];
-  for (i = 0; i < [v5 count]; ++i)
+  for (i = 0; i < [inCopy count]; ++i)
   {
-    v8 = [v5 objectAtIndexedSubscript:i];
-    v9 = [v8 integerValue];
+    v8 = [inCopy objectAtIndexedSubscript:i];
+    integerValue = [v8 integerValue];
 
-    if (v9 >= a3)
+    if (integerValue >= for)
     {
       break;
     }
 
-    v10 = [v5 objectAtIndexedSubscript:i];
+    v10 = [inCopy objectAtIndexedSubscript:i];
     [v6 setLowerOrEqualTo:v10];
   }
 
-  v11 = [v6 lowerOrEqualTo];
-  [v6 setGreaterThan:v11];
+  lowerOrEqualTo = [v6 lowerOrEqualTo];
+  [v6 setGreaterThan:lowerOrEqualTo];
 
-  if (i < [v5 count])
+  if (i < [inCopy count])
   {
-    v12 = [v5 objectAtIndexedSubscript:i];
-    v13 = [v12 integerValue];
+    v12 = [inCopy objectAtIndexedSubscript:i];
+    integerValue2 = [v12 integerValue];
 
-    if (v13 >= a3)
+    if (integerValue2 >= for)
     {
-      v14 = [v5 objectAtIndexedSubscript:i];
+      v14 = [inCopy objectAtIndexedSubscript:i];
       [v6 setLowerOrEqualTo:v14];
     }
   }
 
-  if (i == [v5 count])
+  if (i == [inCopy count])
   {
-    v15 = [v6 lowerOrEqualTo];
-    v16 = [v15 integerValue];
+    lowerOrEqualTo2 = [v6 lowerOrEqualTo];
+    integerValue3 = [lowerOrEqualTo2 integerValue];
 
-    if (v16 < a3)
+    if (integerValue3 < for)
     {
       [v6 setLowerOrEqualTo:0];
     }
@@ -204,15 +204,15 @@ uint64_t __35__UsageHelper_monthlyDateFormatter__block_invoke()
   return v6;
 }
 
-+ (id)binnedDate:(id)a3 as:(unint64_t)a4
++ (id)binnedDate:(id)date as:(unint64_t)as
 {
-  v6 = a3;
+  dateCopy = date;
   v7 = [UsageHelperBinEdges binEdgesWithLowerEdgeIncluded:1];
   v8 = objc_autoreleasePoolPush();
   v9 = v8;
-  if (a4 > 2)
+  if (as > 2)
   {
-    if (a4 == 3)
+    if (as == 3)
     {
       v43 = WALogCategoryDeviceStoreHandle();
       if (os_signpost_enabled(v43))
@@ -221,16 +221,16 @@ uint64_t __35__UsageHelper_monthlyDateFormatter__block_invoke()
         _os_signpost_emit_with_name_impl(&dword_1C8460000, v43, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "monthly bin", "", buf, 2u);
       }
 
-      v44 = [a1 monthlyDateFormatter];
-      v45 = [a1 monthlyDateFormatter];
-      v46 = [v45 stringFromDate:v6];
-      v47 = [v44 dateFromString:v46];
+      monthlyDateFormatter = [self monthlyDateFormatter];
+      monthlyDateFormatter2 = [self monthlyDateFormatter];
+      v46 = [monthlyDateFormatter2 stringFromDate:dateCopy];
+      v47 = [monthlyDateFormatter dateFromString:v46];
       [v7 setGreaterOrEqualTo:v47];
 
-      v48 = [a1 calendar];
-      v49 = [a1 componentsOneMonth];
-      v50 = [v7 greaterOrEqualTo];
-      v51 = [v48 dateByAddingComponents:v49 toDate:v50 options:0];
+      calendar = [self calendar];
+      componentsOneMonth = [self componentsOneMonth];
+      greaterOrEqualTo = [v7 greaterOrEqualTo];
+      v51 = [calendar dateByAddingComponents:componentsOneMonth toDate:greaterOrEqualTo options:0];
       [v7 setLowerThan:v51];
 
       v12 = WALogCategoryDeviceStoreHandle();
@@ -244,7 +244,7 @@ uint64_t __35__UsageHelper_monthlyDateFormatter__block_invoke()
       goto LABEL_24;
     }
 
-    if (a4 != 4)
+    if (as != 4)
     {
       goto LABEL_26;
     }
@@ -256,16 +256,16 @@ uint64_t __35__UsageHelper_monthlyDateFormatter__block_invoke()
       _os_signpost_emit_with_name_impl(&dword_1C8460000, v24, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "yearly bin", "", buf, 2u);
     }
 
-    v25 = [a1 calendar];
-    v12 = [v25 components:4 fromDate:v6];
+    calendar2 = [self calendar];
+    v12 = [calendar2 components:4 fromDate:dateCopy];
 
-    v26 = [a1 calendar];
-    v27 = [v26 dateFromComponents:v12];
+    calendar3 = [self calendar];
+    v27 = [calendar3 dateFromComponents:v12];
     [v7 setGreaterOrEqualTo:v27];
 
-    v28 = [a1 calendar];
-    v29 = [v7 greaterOrEqualTo];
-    v30 = [v28 dateByAddingUnit:4 value:1 toDate:v29 options:0];
+    calendar4 = [self calendar];
+    greaterOrEqualTo2 = [v7 greaterOrEqualTo];
+    v30 = [calendar4 dateByAddingUnit:4 value:1 toDate:greaterOrEqualTo2 options:0];
     [v7 setLowerThan:v30];
 
     v31 = WALogCategoryDeviceStoreHandle();
@@ -278,9 +278,9 @@ uint64_t __35__UsageHelper_monthlyDateFormatter__block_invoke()
 
   else
   {
-    if (a4 != 1)
+    if (as != 1)
     {
-      if (a4 != 2)
+      if (as != 2)
       {
         goto LABEL_26;
       }
@@ -293,21 +293,21 @@ uint64_t __35__UsageHelper_monthlyDateFormatter__block_invoke()
         _os_signpost_emit_with_name_impl(&dword_1C8460000, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "weekly bin", "", buf, 2u);
       }
 
-      v11 = [a1 calendar];
-      v12 = [v11 components:512 fromDate:v6];
+      calendar5 = [self calendar];
+      v12 = [calendar5 components:512 fromDate:dateCopy];
 
-      v13 = [a1 calendar];
+      calendar6 = [self calendar];
       v14 = 1 - [v12 weekday];
-      v15 = [a1 dailyDateFormatter];
-      v16 = [a1 dailyDateFormatter];
-      v17 = [v16 stringFromDate:v6];
-      v18 = [v15 dateFromString:v17];
-      v19 = [v13 dateByAddingUnit:16 value:v14 toDate:v18 options:0];
+      dailyDateFormatter = [self dailyDateFormatter];
+      dailyDateFormatter2 = [self dailyDateFormatter];
+      v17 = [dailyDateFormatter2 stringFromDate:dateCopy];
+      v18 = [dailyDateFormatter dateFromString:v17];
+      v19 = [calendar6 dateByAddingUnit:16 value:v14 toDate:v18 options:0];
       [v7 setGreaterOrEqualTo:v19];
 
-      v20 = [a1 calendar];
-      v21 = [v7 greaterOrEqualTo];
-      v22 = [v20 dateByAddingUnit:0x2000 value:1 toDate:v21 options:0];
+      calendar7 = [self calendar];
+      greaterOrEqualTo3 = [v7 greaterOrEqualTo];
+      v22 = [calendar7 dateByAddingUnit:0x2000 value:1 toDate:greaterOrEqualTo3 options:0];
       [v7 setLowerThan:v22];
 
       v23 = WALogCategoryDeviceStoreHandle();
@@ -328,17 +328,17 @@ uint64_t __35__UsageHelper_monthlyDateFormatter__block_invoke()
       _os_signpost_emit_with_name_impl(&dword_1C8460000, v32, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "daily bin", "", buf, 2u);
     }
 
-    v33 = [a1 dailyDateFormatter];
-    v34 = [a1 dailyDateFormatter];
-    v35 = [v34 stringFromDate:v6];
-    v36 = [v33 dateFromString:v35];
+    dailyDateFormatter3 = [self dailyDateFormatter];
+    dailyDateFormatter4 = [self dailyDateFormatter];
+    v35 = [dailyDateFormatter4 stringFromDate:dateCopy];
+    v36 = [dailyDateFormatter3 dateFromString:v35];
     [v7 setGreaterOrEqualTo:v36];
 
-    v37 = [a1 dailyDateFormatter];
-    v38 = [a1 dailyDateFormatter];
-    v39 = [v6 dateByAddingTimeInterval:86400.0];
-    v40 = [v38 stringFromDate:v39];
-    v41 = [v37 dateFromString:v40];
+    dailyDateFormatter5 = [self dailyDateFormatter];
+    dailyDateFormatter6 = [self dailyDateFormatter];
+    v39 = [dateCopy dateByAddingTimeInterval:86400.0];
+    v40 = [dailyDateFormatter6 stringFromDate:v39];
+    v41 = [dailyDateFormatter5 dateFromString:v40];
     [v7 setLowerThan:v41];
 
     v12 = WALogCategoryDeviceStoreHandle();
@@ -359,36 +359,36 @@ LABEL_26:
   return v7;
 }
 
-+ (Class)classForTimeSpan:(unint64_t)a3 withError:(id *)a4
++ (Class)classForTimeSpan:(unint64_t)span withError:(id *)error
 {
   v5 = 0;
   v37[1] = *MEMORY[0x1E69E9840];
-  if (a3 > 1)
+  if (span > 1)
   {
-    switch(a3)
+    switch(span)
     {
       case 2uLL:
-        if (a4)
+        if (error)
         {
-          *a4 = 0;
+          *error = 0;
         }
 
         break;
       case 3uLL:
-        if (a4)
+        if (error)
         {
-          *a4 = 0;
+          *error = 0;
         }
 
         break;
       case 4uLL:
-        if (a4)
+        if (error)
         {
           v6 = MEMORY[0x1E696ABC0];
           v32 = *MEMORY[0x1E696A588];
           v33 = @"WAErrorCodeInvalidInput";
           v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-          *a4 = [v6 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v7];
+          *error = [v6 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v7];
         }
 
         v8 = WALogCategoryDeviceStoreHandle();
@@ -411,32 +411,32 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (!a3)
+  if (!span)
   {
-    if (a4)
+    if (error)
     {
       v12 = MEMORY[0x1E696ABC0];
       v36 = *MEMORY[0x1E696A588];
       v37[0] = @"WAErrorCodeInvalidInput";
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
-      *a4 = [v12 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v13];
+      *error = [v12 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v13];
     }
 
     goto LABEL_25;
   }
 
-  if (a3 != 1)
+  if (span != 1)
   {
     goto LABEL_26;
   }
 
-  if (a4)
+  if (error)
   {
     v10 = MEMORY[0x1E696ABC0];
     v34 = *MEMORY[0x1E696A588];
     v35 = @"WAErrorCodeInvalidInput";
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-    *a4 = [v10 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v11];
+    *error = [v10 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9035 userInfo:v11];
   }
 
   v8 = WALogCategoryDeviceStoreHandle();
@@ -470,7 +470,7 @@ LABEL_26:
       _os_log_impl(&dword_1C8460000, v17, OS_LOG_TYPE_FAULT, "%{public}s::%d:class %@ is not a Usage Entity", buf, 0x1Cu);
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_46;
     }
@@ -498,7 +498,7 @@ LABEL_26:
       _os_log_impl(&dword_1C8460000, v22, OS_LOG_TYPE_FAULT, "%{public}s::%d:class %@ is not an Entity", buf, 0x1Cu);
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_46;
     }
@@ -530,7 +530,7 @@ LABEL_26:
     _os_log_impl(&dword_1C8460000, v23, OS_LOG_TYPE_FAULT, "%{public}s::%d:class %@ is not a Usage Entity", buf, 0x1Cu);
   }
 
-  if (a4)
+  if (error)
   {
     v18 = MEMORY[0x1E696ABC0];
     v25 = *MEMORY[0x1E696A588];
@@ -540,7 +540,7 @@ LABEL_26:
     v21 = &v25;
 LABEL_45:
     v24 = [v19 dictionaryWithObjects:v20 forKeys:v21 count:{1, v25, v26, v27, v28, v29, v30, *buf, *&buf[16]}];
-    *a4 = [v18 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9043 userInfo:v24];
+    *error = [v18 errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9043 userInfo:v24];
   }
 
 LABEL_46:
@@ -551,10 +551,10 @@ LABEL_30:
   return v14;
 }
 
-+ (id)availableDimensionsFor:(unint64_t)a3 withError:(id *)a4
++ (id)availableDimensionsFor:(unint64_t)for withError:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [a1 classForTimeSpan:a3 withError:?];
+  v5 = [self classForTimeSpan:for withError:?];
   if (v5)
   {
     v6 = +[WAPersistentContainer dimensionsForUsageEntity:](WAPersistentContainer, "dimensionsForUsageEntity:", [v5 performSelector:sel_entity]);
@@ -565,9 +565,9 @@ LABEL_30:
     v9 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      if (a4)
+      if (error)
       {
-        v10 = *a4;
+        v10 = *error;
       }
 
       else
@@ -592,10 +592,10 @@ LABEL_30:
   return v6;
 }
 
-+ (id)aggregateNameFor:(unint64_t)a3 withError:(id *)a4
++ (id)aggregateNameFor:(unint64_t)for withError:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [a1 classForTimeSpan:a3 withError:?];
+  v5 = [self classForTimeSpan:for withError:?];
   if (v5)
   {
     v6 = v5;
@@ -623,9 +623,9 @@ LABEL_30:
     v10 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      if (a4)
+      if (error)
       {
-        v11 = *a4;
+        v11 = *error;
       }
 
       else

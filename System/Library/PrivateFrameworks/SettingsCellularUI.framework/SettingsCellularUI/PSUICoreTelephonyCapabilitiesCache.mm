@@ -1,31 +1,31 @@
 @interface PSUICoreTelephonyCapabilitiesCache
 + (id)sharedInstance;
-- (BOOL)canSetCapabilityForContext:(id)a3 cache:(id)a4;
-- (BOOL)canSetCapabilityVoLTE:(id)a3;
-- (BOOL)canSetCapabilityVoNR:(id)a3;
-- (BOOL)canSetNetworkSlicing:(id)a3;
-- (BOOL)canSetSatelliteCapability:(id)a3;
-- (BOOL)canSetTurnOffCellular:(id)a3;
-- (BOOL)cannotChangeVoLTESettingCallCarrier:(id)a3;
-- (BOOL)capabilityEnabledForContext:(id)a3 cache:(id)a4;
-- (BOOL)capabilityEnabledVoLTE:(id)a3;
-- (BOOL)capabilityEnabledVoNR:(id)a3;
-- (BOOL)fetchDeviceAndPlan5GSupport:(id)a3;
-- (BOOL)getCapabilityInfo:(id)a3 forContext:(id)a4 cache:(id)a5;
-- (BOOL)getNetworkSlicing:(id)a3;
-- (BOOL)getSatelliteCapability:(id)a3;
-- (BOOL)getTurnOffCellular:(id)a3;
-- (BOOL)isVoLTEStillProvisioningForContext:(id)a3;
+- (BOOL)canSetCapabilityForContext:(id)context cache:(id)cache;
+- (BOOL)canSetCapabilityVoLTE:(id)e;
+- (BOOL)canSetCapabilityVoNR:(id)r;
+- (BOOL)canSetNetworkSlicing:(id)slicing;
+- (BOOL)canSetSatelliteCapability:(id)capability;
+- (BOOL)canSetTurnOffCellular:(id)cellular;
+- (BOOL)cannotChangeVoLTESettingCallCarrier:(id)carrier;
+- (BOOL)capabilityEnabledForContext:(id)context cache:(id)cache;
+- (BOOL)capabilityEnabledVoLTE:(id)e;
+- (BOOL)capabilityEnabledVoNR:(id)r;
+- (BOOL)fetchDeviceAndPlan5GSupport:(id)support;
+- (BOOL)getCapabilityInfo:(id)info forContext:(id)context cache:(id)cache;
+- (BOOL)getNetworkSlicing:(id)slicing;
+- (BOOL)getSatelliteCapability:(id)capability;
+- (BOOL)getTurnOffCellular:(id)cellular;
+- (BOOL)isVoLTEStillProvisioningForContext:(id)context;
 - (PSUICoreTelephonyCapabilitiesCache)init;
-- (id)getCapabilityInfoObject:(id)a3 forContext:(id)a4 cache:(id)a5;
+- (id)getCapabilityInfoObject:(id)object forContext:(id)context cache:(id)cache;
 - (id)initPrivate;
-- (id)networkSlicingCategories:(id)a3;
+- (id)networkSlicingCategories:(id)categories;
 - (void)clearCache;
-- (void)context:(id)a3 capabilitiesChanged:(id)a4;
-- (void)fetchCanSetCapabilityWithCache:(id)a3 forContext:(id)a4;
-- (void)fetchCapabilityEnabledWithCache:(id)a3 forContext:(id)a4;
-- (void)setCapabilityInfoObject:(id)a3 forKey:(id)a4 forContext:(id)a5 cache:(id)a6;
-- (void)setNetworkSlicingCategories:(id)a3 forContext:(id)a4;
+- (void)context:(id)context capabilitiesChanged:(id)changed;
+- (void)fetchCanSetCapabilityWithCache:(id)cache forContext:(id)context;
+- (void)fetchCapabilityEnabledWithCache:(id)cache forContext:(id)context;
+- (void)setCapabilityInfoObject:(id)object forKey:(id)key forContext:(id)context cache:(id)cache;
+- (void)setNetworkSlicingCategories:(id)categories forContext:(id)context;
 @end
 
 @implementation PSUICoreTelephonyCapabilitiesCache
@@ -63,9 +63,9 @@ uint64_t __52__PSUICoreTelephonyCapabilitiesCache_sharedInstance__block_invoke()
     v2->_client = v5;
 
     [(CoreTelephonyClient *)v2->_client setDelegate:v2];
-    v7 = [MEMORY[0x277D4D868] sharedInstance];
+    mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
     simStatusCache = v2->_simStatusCache;
-    v2->_simStatusCache = v7;
+    v2->_simStatusCache = mEMORY[0x277D4D868];
 
     v9 = [CTCapability alloc];
     v10 = [(CTCapability *)v9 initWithCapabilityName:*MEMORY[0x277CC37F8]];
@@ -87,8 +87,8 @@ uint64_t __52__PSUICoreTelephonyCapabilitiesCache_sharedInstance__block_invoke()
     v18 = [(CTCapability *)v17 initWithCapabilityName:*MEMORY[0x277CC3830]];
     [(PSUICoreTelephonyCapabilitiesCache *)v2 setSatelliteCapability:v18];
 
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v19 addObserver:v2 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
   }
 
   return v2;
@@ -107,48 +107,48 @@ uint64_t __52__PSUICoreTelephonyCapabilitiesCache_sharedInstance__block_invoke()
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer" reason:@"Unsupported initializer called" userInfo:0]);
 }
 
-- (void)fetchCanSetCapabilityWithCache:(id)a3 forContext:(id)a4
+- (void)fetchCanSetCapabilityWithCache:(id)cache forContext:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  cacheCopy = cache;
+  contextCopy = context;
+  getLogger = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v7;
-    _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "Executing can set capability fetch for %@", buf, 0xCu);
+    v24 = contextCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Executing can set capability fetch for %@", buf, 0xCu);
   }
 
   v22 = 0;
   client = self->_client;
-  v10 = [v6 capabilityName];
+  capabilityName = [cacheCopy capabilityName];
   v21 = 0;
-  v11 = [(CoreTelephonyClient *)client context:v7 canSetCapability:v10 allowed:&v22 with:&v21];
+  v11 = [(CoreTelephonyClient *)client context:contextCopy canSetCapability:capabilityName allowed:&v22 with:&v21];
   v12 = v21;
 
   if (v11)
   {
-    v13 = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    getLogger2 = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v24 = v7;
+      v24 = contextCopy;
       v25 = 2112;
       v26 = v11;
-      _os_log_error_impl(&dword_2658DE000, v13, OS_LOG_TYPE_ERROR, "Can set fetch for %@ failed: %@", buf, 0x16u);
+      _os_log_error_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_ERROR, "Can set fetch for %@ failed: %@", buf, 0x16u);
     }
 
-    v14 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
     v15 = [v12 objectForKey:*MEMORY[0x277CC3838]];
-    v14 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
 
-    v13 = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    getLogger2 = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
     {
       v16 = @"NO";
       *buf = 138413058;
@@ -162,8 +162,8 @@ uint64_t __52__PSUICoreTelephonyCapabilitiesCache_sharedInstance__block_invoke()
         v17 = @"NO";
       }
 
-      v24 = v7;
-      if (v14)
+      v24 = contextCopy;
+      if (bOOLValue)
       {
         v16 = @"YES";
       }
@@ -174,129 +174,129 @@ uint64_t __52__PSUICoreTelephonyCapabilitiesCache_sharedInstance__block_invoke()
       v28 = v16;
       v29 = 2112;
       v30 = v12;
-      _os_log_impl(&dword_2658DE000, v13, OS_LOG_TYPE_DEFAULT, "Can set fetch for %@, Allowed: %@, Enabled: %@, %@", buf, 0x2Au);
+      _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Can set fetch for %@, Allowed: %@, Enabled: %@, %@", buf, 0x2Au);
     }
   }
 
-  v18 = self;
-  objc_sync_enter(v18);
-  v19 = [v7 slotID];
-  [v6 acceptCapabilityforSlotID:v19 status:v14 canSet:v22 info:v12];
-  objc_sync_exit(v18);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  slotID = [contextCopy slotID];
+  [cacheCopy acceptCapabilityforSlotID:slotID status:bOOLValue canSet:v22 info:v12];
+  objc_sync_exit(selfCopy);
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)canSetCapabilityForContext:(id)a3 cache:(id)a4
+- (BOOL)canSetCapabilityForContext:(id)context cache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "slotID")}];
-  v9 = [v7 capabilityFetched];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  contextCopy = context;
+  cacheCopy = cache;
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(contextCopy, "slotID")}];
+  capabilityFetched = [cacheCopy capabilityFetched];
+  v10 = [capabilityFetched objectForKeyedSubscript:v8];
   v11 = [v10 isEqual:MEMORY[0x277CBEC38]];
 
   if ((v11 & 1) == 0)
   {
-    [(PSUICoreTelephonyCapabilitiesCache *)self fetchCanSetCapabilityWithCache:v7 forContext:v6];
+    [(PSUICoreTelephonyCapabilitiesCache *)self fetchCanSetCapabilityWithCache:cacheCopy forContext:contextCopy];
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  v13 = [v7 getCapabilityForSlotID:{objc_msgSend(v6, "slotID")}];
-  objc_sync_exit(v12);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v13 = [cacheCopy getCapabilityForSlotID:{objc_msgSend(contextCopy, "slotID")}];
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
 
-- (BOOL)getCapabilityInfo:(id)a3 forContext:(id)a4 cache:(id)a5
+- (BOOL)getCapabilityInfo:(id)info forContext:(id)context cache:(id)cache
 {
-  v5 = [(PSUICoreTelephonyCapabilitiesCache *)self getCapabilityInfoObject:a3 forContext:a4 cache:a5];
-  v6 = [v5 BOOLValue];
+  v5 = [(PSUICoreTelephonyCapabilitiesCache *)self getCapabilityInfoObject:info forContext:context cache:cache];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (id)getCapabilityInfoObject:(id)a3 forContext:(id)a4 cache:(id)a5
+- (id)getCapabilityInfoObject:(id)object forContext:(id)context cache:(id)cache
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v9, "slotID")}];
-  v12 = [v10 capabilityFetched];
-  v13 = [v12 objectForKeyedSubscript:v11];
+  objectCopy = object;
+  contextCopy = context;
+  cacheCopy = cache;
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(contextCopy, "slotID")}];
+  capabilityFetched = [cacheCopy capabilityFetched];
+  v13 = [capabilityFetched objectForKeyedSubscript:v11];
   v14 = [v13 isEqual:MEMORY[0x277CBEC38]];
 
   if ((v14 & 1) == 0)
   {
-    [(PSUICoreTelephonyCapabilitiesCache *)self fetchCanSetCapabilityWithCache:v10 forContext:v9];
+    [(PSUICoreTelephonyCapabilitiesCache *)self fetchCanSetCapabilityWithCache:cacheCopy forContext:contextCopy];
   }
 
-  v15 = self;
-  objc_sync_enter(v15);
-  v16 = [v10 getCapabilityInfoObject:v8 forSlotID:{objc_msgSend(v9, "slotID")}];
-  objc_sync_exit(v15);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v16 = [cacheCopy getCapabilityInfoObject:objectCopy forSlotID:{objc_msgSend(contextCopy, "slotID")}];
+  objc_sync_exit(selfCopy);
 
   return v16;
 }
 
-- (void)setCapabilityInfoObject:(id)a3 forKey:(id)a4 forContext:(id)a5 cache:(id)a6
+- (void)setCapabilityInfoObject:(id)object forKey:(id)key forContext:(id)context cache:(id)cache
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = self;
-  objc_sync_enter(v13);
-  [v12 setCapabilityInfoObject:v14 forKey:v10 forSlotID:{objc_msgSend(v11, "slotID")}];
-  objc_sync_exit(v13);
+  objectCopy = object;
+  keyCopy = key;
+  contextCopy = context;
+  cacheCopy = cache;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [cacheCopy setCapabilityInfoObject:objectCopy forKey:keyCopy forSlotID:{objc_msgSend(contextCopy, "slotID")}];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)fetchCapabilityEnabledWithCache:(id)a3 forContext:(id)a4
+- (void)fetchCapabilityEnabledWithCache:(id)cache forContext:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  cacheCopy = cache;
+  contextCopy = context;
+  getLogger = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "Executing capability enabled fetch", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Executing capability enabled fetch", buf, 2u);
   }
 
   v22 = 0;
   client = self->_client;
-  v10 = [v6 capabilityName];
+  capabilityName = [cacheCopy capabilityName];
   v21 = 0;
-  v11 = [(CoreTelephonyClient *)client context:v7 getCapability:v10 status:&v22 with:&v21];
+  v11 = [(CoreTelephonyClient *)client context:contextCopy getCapability:capabilityName status:&v22 with:&v21];
   v12 = v21;
 
   if (v11)
   {
-    v13 = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    getLogger2 = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v24 = v7;
+      v24 = contextCopy;
       v25 = 2112;
       v26 = v11;
-      _os_log_error_impl(&dword_2658DE000, v13, OS_LOG_TYPE_ERROR, "Capability enabled fetch failed for %@: %@", buf, 0x16u);
+      _os_log_error_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_ERROR, "Capability enabled fetch failed for %@: %@", buf, 0x16u);
     }
 
-    v14 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
     v15 = [v12 objectForKey:*MEMORY[0x277CC3818]];
-    v14 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
 
-    v13 = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    getLogger2 = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
+    if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
     {
       v16 = @"NO";
       *buf = 138413058;
-      if (v14)
+      if (bOOLValue)
       {
         v17 = @"YES";
       }
@@ -306,7 +306,7 @@ uint64_t __52__PSUICoreTelephonyCapabilitiesCache_sharedInstance__block_invoke()
         v17 = @"NO";
       }
 
-      v24 = v7;
+      v24 = contextCopy;
       v25 = 2112;
       if (v22)
       {
@@ -318,92 +318,92 @@ uint64_t __52__PSUICoreTelephonyCapabilitiesCache_sharedInstance__block_invoke()
       v28 = v16;
       v29 = 2112;
       v30 = v12;
-      _os_log_impl(&dword_2658DE000, v13, OS_LOG_TYPE_DEFAULT, "Fetch for capability for %@, Allowed: %@, Enabled: %@, %@", buf, 0x2Au);
+      _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Fetch for capability for %@, Allowed: %@, Enabled: %@, %@", buf, 0x2Au);
     }
   }
 
-  v18 = self;
-  objc_sync_enter(v18);
-  v19 = [v7 slotID];
-  [v6 acceptCapabilityforSlotID:v19 status:v22 canSet:v14 info:v12];
-  objc_sync_exit(v18);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  slotID = [contextCopy slotID];
+  [cacheCopy acceptCapabilityforSlotID:slotID status:v22 canSet:bOOLValue info:v12];
+  objc_sync_exit(selfCopy);
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)capabilityEnabledForContext:(id)a3 cache:(id)a4
+- (BOOL)capabilityEnabledForContext:(id)context cache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "slotID")}];
-  v9 = [v7 enabledFetched];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  contextCopy = context;
+  cacheCopy = cache;
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(contextCopy, "slotID")}];
+  enabledFetched = [cacheCopy enabledFetched];
+  v10 = [enabledFetched objectForKeyedSubscript:v8];
   v11 = [v10 isEqual:MEMORY[0x277CBEC38]];
 
   if ((v11 & 1) == 0)
   {
-    [(PSUICoreTelephonyCapabilitiesCache *)self fetchCapabilityEnabledWithCache:v7 forContext:v6];
+    [(PSUICoreTelephonyCapabilitiesCache *)self fetchCapabilityEnabledWithCache:cacheCopy forContext:contextCopy];
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  v13 = [v7 getEnabledForSlotID:{objc_msgSend(v6, "slotID")}];
-  objc_sync_exit(v12);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v13 = [cacheCopy getEnabledForSlotID:{objc_msgSend(contextCopy, "slotID")}];
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
 
-- (BOOL)canSetCapabilityVoLTE:(id)a3
+- (BOOL)canSetCapabilityVoLTE:(id)e
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCapabilitiesCache *)self volteCapability];
-  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self canSetCapabilityForContext:v4 cache:v5];
+  eCopy = e;
+  volteCapability = [(PSUICoreTelephonyCapabilitiesCache *)self volteCapability];
+  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self canSetCapabilityForContext:eCopy cache:volteCapability];
 
   return self;
 }
 
-- (BOOL)cannotChangeVoLTESettingCallCarrier:(id)a3
+- (BOOL)cannotChangeVoLTESettingCallCarrier:(id)carrier
 {
   v4 = *MEMORY[0x277CC3820];
-  v5 = a3;
-  v6 = [(PSUICoreTelephonyCapabilitiesCache *)self volteCapability];
-  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self getCapabilityInfo:v4 forContext:v5 cache:v6];
+  carrierCopy = carrier;
+  volteCapability = [(PSUICoreTelephonyCapabilitiesCache *)self volteCapability];
+  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self getCapabilityInfo:v4 forContext:carrierCopy cache:volteCapability];
 
   return self;
 }
 
-- (BOOL)isVoLTEStillProvisioningForContext:(id)a3
+- (BOOL)isVoLTEStillProvisioningForContext:(id)context
 {
   v4 = *MEMORY[0x277CC3810];
-  v5 = a3;
-  v6 = [(PSUICoreTelephonyCapabilitiesCache *)self volteCapability];
-  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self getCapabilityInfo:v4 forContext:v5 cache:v6];
+  contextCopy = context;
+  volteCapability = [(PSUICoreTelephonyCapabilitiesCache *)self volteCapability];
+  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self getCapabilityInfo:v4 forContext:contextCopy cache:volteCapability];
 
   return self;
 }
 
-- (BOOL)capabilityEnabledVoLTE:(id)a3
+- (BOOL)capabilityEnabledVoLTE:(id)e
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCapabilitiesCache *)self volteCapability];
-  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self capabilityEnabledForContext:v4 cache:v5];
+  eCopy = e;
+  volteCapability = [(PSUICoreTelephonyCapabilitiesCache *)self volteCapability];
+  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self capabilityEnabledForContext:eCopy cache:volteCapability];
 
   return self;
 }
 
-- (BOOL)fetchDeviceAndPlan5GSupport:(id)a3
+- (BOOL)fetchDeviceAndPlan5GSupport:(id)support
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  supportCopy = support;
   client = self->_client;
   v15 = 0;
-  v6 = [(CoreTelephonyClient *)client getSupports5G:v4 error:&v15];
+  v6 = [(CoreTelephonyClient *)client getSupports5G:supportCopy error:&v15];
   v7 = v15;
-  v8 = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
-  v9 = v8;
+  getLogger = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
+  v9 = getLogger;
   if (v7)
   {
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v17 = v7;
@@ -411,203 +411,203 @@ uint64_t __52__PSUICoreTelephonyCapabilitiesCache_sharedInstance__block_invoke()
     }
   }
 
-  else if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  else if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
     v11 = @"NO";
-    if (v10)
+    if (bOOLValue)
     {
       v11 = @"YES";
     }
 
     *buf = 138412546;
-    v17 = v4;
+    v17 = supportCopy;
     v18 = 2112;
     v19 = v11;
     _os_log_impl(&dword_2658DE000, v9, OS_LOG_TYPE_DEFAULT, "Fetch succeeded: %@, %@", buf, 0x16u);
   }
 
-  v12 = [v6 BOOLValue];
+  bOOLValue2 = [v6 BOOLValue];
   v13 = *MEMORY[0x277D85DE8];
-  return v12;
+  return bOOLValue2;
 }
 
-- (BOOL)canSetCapabilityVoNR:(id)a3
+- (BOOL)canSetCapabilityVoNR:(id)r
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCapabilitiesCache *)self vonrCapability];
-  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self canSetCapabilityForContext:v4 cache:v5];
+  rCopy = r;
+  vonrCapability = [(PSUICoreTelephonyCapabilitiesCache *)self vonrCapability];
+  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self canSetCapabilityForContext:rCopy cache:vonrCapability];
 
   return self;
 }
 
-- (BOOL)capabilityEnabledVoNR:(id)a3
+- (BOOL)capabilityEnabledVoNR:(id)r
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCapabilitiesCache *)self vonrCapability];
-  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self capabilityEnabledForContext:v4 cache:v5];
+  rCopy = r;
+  vonrCapability = [(PSUICoreTelephonyCapabilitiesCache *)self vonrCapability];
+  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self capabilityEnabledForContext:rCopy cache:vonrCapability];
 
   return self;
 }
 
-- (BOOL)canSetTurnOffCellular:(id)a3
+- (BOOL)canSetTurnOffCellular:(id)cellular
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCapabilitiesCache *)self turnOffCellularCapability];
-  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self canSetCapabilityForContext:v4 cache:v5];
+  cellularCopy = cellular;
+  turnOffCellularCapability = [(PSUICoreTelephonyCapabilitiesCache *)self turnOffCellularCapability];
+  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self canSetCapabilityForContext:cellularCopy cache:turnOffCellularCapability];
 
   return self;
 }
 
-- (BOOL)getTurnOffCellular:(id)a3
+- (BOOL)getTurnOffCellular:(id)cellular
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCapabilitiesCache *)self turnOffCellularCapability];
-  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self capabilityEnabledForContext:v4 cache:v5];
+  cellularCopy = cellular;
+  turnOffCellularCapability = [(PSUICoreTelephonyCapabilitiesCache *)self turnOffCellularCapability];
+  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self capabilityEnabledForContext:cellularCopy cache:turnOffCellularCapability];
 
   return self;
 }
 
-- (BOOL)canSetNetworkSlicing:(id)a3
+- (BOOL)canSetNetworkSlicing:(id)slicing
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCapabilitiesCache *)self networkSlicingCapability];
-  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self canSetCapabilityForContext:v4 cache:v5];
+  slicingCopy = slicing;
+  networkSlicingCapability = [(PSUICoreTelephonyCapabilitiesCache *)self networkSlicingCapability];
+  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self canSetCapabilityForContext:slicingCopy cache:networkSlicingCapability];
 
   return self;
 }
 
-- (BOOL)getNetworkSlicing:(id)a3
+- (BOOL)getNetworkSlicing:(id)slicing
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCapabilitiesCache *)self networkSlicingCapability];
-  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self capabilityEnabledForContext:v4 cache:v5];
+  slicingCopy = slicing;
+  networkSlicingCapability = [(PSUICoreTelephonyCapabilitiesCache *)self networkSlicingCapability];
+  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self capabilityEnabledForContext:slicingCopy cache:networkSlicingCapability];
 
   return self;
 }
 
-- (id)networkSlicingCategories:(id)a3
+- (id)networkSlicingCategories:(id)categories
 {
   v4 = *MEMORY[0x277CC3B28];
-  v5 = a3;
-  v6 = [(PSUICoreTelephonyCapabilitiesCache *)self networkSlicingCapability];
-  v7 = [(PSUICoreTelephonyCapabilitiesCache *)self getCapabilityInfoObject:v4 forContext:v5 cache:v6];
+  categoriesCopy = categories;
+  networkSlicingCapability = [(PSUICoreTelephonyCapabilitiesCache *)self networkSlicingCapability];
+  v7 = [(PSUICoreTelephonyCapabilitiesCache *)self getCapabilityInfoObject:v4 forContext:categoriesCopy cache:networkSlicingCapability];
 
   return v7;
 }
 
-- (void)setNetworkSlicingCategories:(id)a3 forContext:(id)a4
+- (void)setNetworkSlicingCategories:(id)categories forContext:(id)context
 {
   v6 = *MEMORY[0x277CC3B28];
-  v7 = a4;
-  v8 = a3;
-  v9 = [(PSUICoreTelephonyCapabilitiesCache *)self networkSlicingCapability];
-  [(PSUICoreTelephonyCapabilitiesCache *)self setCapabilityInfoObject:v8 forKey:v6 forContext:v7 cache:v9];
+  contextCopy = context;
+  categoriesCopy = categories;
+  networkSlicingCapability = [(PSUICoreTelephonyCapabilitiesCache *)self networkSlicingCapability];
+  [(PSUICoreTelephonyCapabilitiesCache *)self setCapabilityInfoObject:categoriesCopy forKey:v6 forContext:contextCopy cache:networkSlicingCapability];
 }
 
-- (BOOL)canSetSatelliteCapability:(id)a3
+- (BOOL)canSetSatelliteCapability:(id)capability
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCapabilitiesCache *)self satelliteCapability];
-  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self canSetCapabilityForContext:v4 cache:v5];
+  capabilityCopy = capability;
+  satelliteCapability = [(PSUICoreTelephonyCapabilitiesCache *)self satelliteCapability];
+  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self canSetCapabilityForContext:capabilityCopy cache:satelliteCapability];
 
   return self;
 }
 
-- (BOOL)getSatelliteCapability:(id)a3
+- (BOOL)getSatelliteCapability:(id)capability
 {
-  v4 = a3;
-  v5 = [(PSUICoreTelephonyCapabilitiesCache *)self satelliteCapability];
-  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self capabilityEnabledForContext:v4 cache:v5];
+  capabilityCopy = capability;
+  satelliteCapability = [(PSUICoreTelephonyCapabilitiesCache *)self satelliteCapability];
+  LOBYTE(self) = [(PSUICoreTelephonyCapabilitiesCache *)self capabilityEnabledForContext:capabilityCopy cache:satelliteCapability];
 
   return self;
 }
 
-- (void)context:(id)a3 capabilitiesChanged:(id)a4
+- (void)context:(id)context capabilitiesChanged:(id)changed
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  contextCopy = context;
+  changedCopy = changed;
+  getLogger = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v47 = 138412546;
-    v48 = v6;
+    v48 = contextCopy;
     v49 = 2112;
-    v50 = v7;
-    _os_log_impl(&dword_2658DE000, v8, OS_LOG_TYPE_DEFAULT, "capabilitiesChanged: %@, %@", &v47, 0x16u);
+    v50 = changedCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "capabilitiesChanged: %@, %@", &v47, 0x16u);
   }
 
-  v9 = [v7 objectForKey:*MEMORY[0x277CC37F8]];
+  v9 = [changedCopy objectForKey:*MEMORY[0x277CC37F8]];
   v10 = v9;
   v11 = MEMORY[0x277CC3818];
   v12 = MEMORY[0x277CC3838];
   if (v9)
   {
     v13 = [v9 objectForKey:*MEMORY[0x277CC3818]];
-    v14 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
 
     v15 = [v10 objectForKey:*v12];
-    v16 = [v15 BOOLValue];
+    bOOLValue2 = [v15 BOOLValue];
 
-    v17 = [(PSUICoreTelephonyCapabilitiesCache *)self volteCapability];
-    [v17 acceptCapabilityforSlotID:objc_msgSend(v6 status:"slotID") canSet:v16 info:{v14, v10}];
+    volteCapability = [(PSUICoreTelephonyCapabilitiesCache *)self volteCapability];
+    [volteCapability acceptCapabilityforSlotID:objc_msgSend(contextCopy status:"slotID") canSet:bOOLValue2 info:{bOOLValue, v10}];
   }
 
-  v18 = [v7 objectForKey:*MEMORY[0x277CC3800]];
+  v18 = [changedCopy objectForKey:*MEMORY[0x277CC3800]];
   v19 = v18;
   if (v18)
   {
     v20 = [v18 objectForKey:*v11];
-    v21 = [v20 BOOLValue];
+    bOOLValue3 = [v20 BOOLValue];
 
     v22 = [v19 objectForKey:*v12];
-    v23 = [v22 BOOLValue];
+    bOOLValue4 = [v22 BOOLValue];
 
-    v24 = [(PSUICoreTelephonyCapabilitiesCache *)self vonrCapability];
-    [v24 acceptCapabilityforSlotID:objc_msgSend(v6 status:"slotID") canSet:v23 info:{v21, v19}];
+    vonrCapability = [(PSUICoreTelephonyCapabilitiesCache *)self vonrCapability];
+    [vonrCapability acceptCapabilityforSlotID:objc_msgSend(contextCopy status:"slotID") canSet:bOOLValue4 info:{bOOLValue3, v19}];
   }
 
-  v25 = [v7 objectForKey:*MEMORY[0x277CC3840]];
+  v25 = [changedCopy objectForKey:*MEMORY[0x277CC3840]];
   v26 = v25;
   if (v25)
   {
     v27 = [v25 objectForKey:*v11];
-    v28 = [v27 BOOLValue];
+    bOOLValue5 = [v27 BOOLValue];
 
     v29 = [v26 objectForKey:*v12];
-    v30 = [v29 BOOLValue];
+    bOOLValue6 = [v29 BOOLValue];
 
-    v31 = [(PSUICoreTelephonyCapabilitiesCache *)self turnOffCellularCapability];
-    [v31 acceptCapabilityforSlotID:objc_msgSend(v6 status:"slotID") canSet:v30 info:{v28, v26}];
+    turnOffCellularCapability = [(PSUICoreTelephonyCapabilitiesCache *)self turnOffCellularCapability];
+    [turnOffCellularCapability acceptCapabilityforSlotID:objc_msgSend(contextCopy status:"slotID") canSet:bOOLValue6 info:{bOOLValue5, v26}];
   }
 
-  v32 = [v7 objectForKey:*MEMORY[0x277CC3828]];
+  v32 = [changedCopy objectForKey:*MEMORY[0x277CC3828]];
   v33 = v32;
   if (v32)
   {
     v34 = [v32 objectForKey:*v11];
-    v35 = [v34 BOOLValue];
+    bOOLValue7 = [v34 BOOLValue];
 
     v36 = [v33 objectForKey:*v12];
-    v37 = [v36 BOOLValue];
+    bOOLValue8 = [v36 BOOLValue];
 
-    v38 = [(PSUICoreTelephonyCapabilitiesCache *)self networkSlicingCapability];
-    [v38 acceptCapabilityforSlotID:objc_msgSend(v6 status:"slotID") canSet:v37 info:{v35, v33}];
+    networkSlicingCapability = [(PSUICoreTelephonyCapabilitiesCache *)self networkSlicingCapability];
+    [networkSlicingCapability acceptCapabilityforSlotID:objc_msgSend(contextCopy status:"slotID") canSet:bOOLValue8 info:{bOOLValue7, v33}];
   }
 
-  v39 = [v7 objectForKey:*MEMORY[0x277CC3830]];
+  v39 = [changedCopy objectForKey:*MEMORY[0x277CC3830]];
   v40 = v39;
   if (v39)
   {
     v41 = [v39 objectForKey:*v11];
-    v42 = [v41 BOOLValue];
+    bOOLValue9 = [v41 BOOLValue];
 
     v43 = [v40 objectForKey:*v12];
-    v44 = [v43 BOOLValue];
+    bOOLValue10 = [v43 BOOLValue];
 
-    v45 = [(PSUICoreTelephonyCapabilitiesCache *)self satelliteCapability];
-    [v45 acceptCapabilityforSlotID:objc_msgSend(v6 status:"slotID") canSet:v44 info:{v42, v40}];
+    satelliteCapability = [(PSUICoreTelephonyCapabilitiesCache *)self satelliteCapability];
+    [satelliteCapability acceptCapabilityforSlotID:objc_msgSend(contextCopy status:"slotID") canSet:bOOLValue10 info:{bOOLValue9, v40}];
   }
 
   v46 = *MEMORY[0x277D85DE8];
@@ -615,27 +615,27 @@ uint64_t __52__PSUICoreTelephonyCapabilitiesCache_sharedInstance__block_invoke()
 
 - (void)clearCache
 {
-  v3 = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICoreTelephonyCapabilitiesCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v9 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Clearing capabilities cache", v9, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Clearing capabilities cache", v9, 2u);
   }
 
-  v4 = [(PSUICoreTelephonyCapabilitiesCache *)self volteCapability];
-  [v4 reset];
+  volteCapability = [(PSUICoreTelephonyCapabilitiesCache *)self volteCapability];
+  [volteCapability reset];
 
-  v5 = [(PSUICoreTelephonyCapabilitiesCache *)self vonrCapability];
-  [v5 reset];
+  vonrCapability = [(PSUICoreTelephonyCapabilitiesCache *)self vonrCapability];
+  [vonrCapability reset];
 
-  v6 = [(PSUICoreTelephonyCapabilitiesCache *)self turnOffCellularCapability];
-  [v6 reset];
+  turnOffCellularCapability = [(PSUICoreTelephonyCapabilitiesCache *)self turnOffCellularCapability];
+  [turnOffCellularCapability reset];
 
-  v7 = [(PSUICoreTelephonyCapabilitiesCache *)self networkSlicingCapability];
-  [v7 reset];
+  networkSlicingCapability = [(PSUICoreTelephonyCapabilitiesCache *)self networkSlicingCapability];
+  [networkSlicingCapability reset];
 
-  v8 = [(PSUICoreTelephonyCapabilitiesCache *)self satelliteCapability];
-  [v8 reset];
+  satelliteCapability = [(PSUICoreTelephonyCapabilitiesCache *)self satelliteCapability];
+  [satelliteCapability reset];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface NTSTimerTimer
 + (id)sharedTimerTimer;
 - (NTSTimerTimer)init;
-- (id)startTimerUpdatesWithHandler:(id)a3;
-- (void)_appBackgrounded:(id)a3;
-- (void)_appForegrounded:(id)a3;
-- (void)_endRequestWithError:(id)a3;
+- (id)startTimerUpdatesWithHandler:(id)handler;
+- (void)_appBackgrounded:(id)backgrounded;
+- (void)_appForegrounded:(id)foregrounded;
+- (void)_endRequestWithError:(id)error;
 - (void)_invokeHandlers;
-- (void)_modelStateReset:(id)a3;
+- (void)_modelStateReset:(id)reset;
 - (void)_performPendingRequest;
 - (void)_performRetry;
 - (void)_startObserving;
 - (void)_stopObserving;
-- (void)_updateTimerForRetry:(BOOL)a3;
-- (void)_withTimerLock:(id)a3;
+- (void)_updateTimerForRetry:(BOOL)retry;
+- (void)_withTimerLock:(id)lock;
 - (void)dealloc;
-- (void)stopTimerUpdatesForToken:(id)a3;
+- (void)stopTimerUpdatesForToken:(id)token;
 @end
 
 @implementation NTSTimerTimer
@@ -58,12 +58,12 @@ uint64_t __33__NTSTimerTimer_sharedTimerTimer__block_invoke()
     v3->_isObserving = 0;
     v3->_updateErrorCount = 0;
     *&v3->_requestPending = 0;
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v3 selector:sel__modelStateReset_ name:*MEMORY[0x277D29690] object:v3->_timerManager];
-    [v8 addObserver:v3 selector:sel__appBackgrounded_ name:*MEMORY[0x277D76660] object:0];
-    [v8 addObserver:v3 selector:sel__appForegrounded_ name:*MEMORY[0x277D76758] object:0];
-    v9 = [MEMORY[0x277D75128] sharedApplication];
-    v3->_appInForeground = [v9 applicationState] != 2;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__modelStateReset_ name:*MEMORY[0x277D29690] object:v3->_timerManager];
+    [defaultCenter addObserver:v3 selector:sel__appBackgrounded_ name:*MEMORY[0x277D76660] object:0];
+    [defaultCenter addObserver:v3 selector:sel__appForegrounded_ name:*MEMORY[0x277D76758] object:0];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v3->_appInForeground = [mEMORY[0x277D75128] applicationState] != 2;
   }
 
   return v3;
@@ -71,19 +71,19 @@ uint64_t __33__NTSTimerTimer_sharedTimerTimer__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NTSTimerTimer;
   [(NTSTimerTimer *)&v4 dealloc];
 }
 
-- (void)_withTimerLock:(id)a3
+- (void)_withTimerLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_timerLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_timerLock);
 }
@@ -134,9 +134,9 @@ void __31__NTSTimerTimer__stopObserving__block_invoke(uint64_t a1)
   }
 }
 
-- (id)startTimerUpdatesWithHandler:(id)a3
+- (id)startTimerUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -149,7 +149,7 @@ void __31__NTSTimerTimer__stopObserving__block_invoke(uint64_t a1)
   v8[3] = &unk_279919658;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = handlerCopy;
   v9 = v5;
   [(NTSTimerTimer *)self _withTimerLock:v8];
   [(NTSTimerTimer *)self _startObserving];
@@ -174,16 +174,16 @@ void __46__NTSTimerTimer_startTimerUpdatesWithHandler___block_invoke(uint64_t a1
   [*(*(a1 + 32) + 16) setObject:v5 forKeyedSubscript:*(*(*(a1 + 48) + 8) + 40)];
 }
 
-- (void)stopTimerUpdatesForToken:(id)a3
+- (void)stopTimerUpdatesForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __42__NTSTimerTimer_stopTimerUpdatesForToken___block_invoke;
   v9 = &unk_279919680;
-  v10 = self;
-  v11 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v11 = tokenCopy;
+  v5 = tokenCopy;
   [(NTSTimerTimer *)self _withTimerLock:&v6];
   [(NTSTimerTimer *)self _stopObserving:v6];
   [(NTSTimerTimer *)self _updateTimer];
@@ -274,9 +274,9 @@ void *__30__NTSTimerTimer__performRetry__block_invoke(void *result)
   return result;
 }
 
-- (void)_endRequestWithError:(id)a3
+- (void)_endRequestWithError:(id)error
 {
-  if (a3)
+  if (error)
   {
 
     [(NTSTimerTimer *)self _performRetry];
@@ -307,21 +307,21 @@ uint64_t __38__NTSTimerTimer__endRequestWithError___block_invoke(uint64_t result
   return result;
 }
 
-- (void)_updateTimerForRetry:(BOOL)a3
+- (void)_updateTimerForRetry:(BOOL)retry
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 1;
-  if (a3 || (v7[0] = MEMORY[0x277D85DD0], v7[1] = 3221225472, v7[2] = __38__NTSTimerTimer__updateTimerForRetry___block_invoke, v7[3] = &unk_2799196D0, v7[4] = self, v7[5] = &v8, [(NTSTimerTimer *)self _withTimerLock:v7], (v9[3] & 1) != 0))
+  if (retry || (v7[0] = MEMORY[0x277D85DD0], v7[1] = 3221225472, v7[2] = __38__NTSTimerTimer__updateTimerForRetry___block_invoke, v7[3] = &unk_2799196D0, v7[4] = self, v7[5] = &v8, [(NTSTimerTimer *)self _withTimerLock:v7], (v9[3] & 1) != 0))
   {
-    v4 = [(MTTimerManager *)self->_timerManager nextTimer];
+    nextTimer = [(MTTimerManager *)self->_timerManager nextTimer];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __38__NTSTimerTimer__updateTimerForRetry___block_invoke_2;
     v6[3] = &unk_279919748;
     v6[4] = self;
-    v5 = [v4 addCompletionBlock:v6];
+    v5 = [nextTimer addCompletionBlock:v6];
   }
 
   _Block_object_dispose(&v8, 8);
@@ -494,7 +494,7 @@ uint64_t __32__NTSTimerTimer__invokeHandlers__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_appForegrounded:(id)a3
+- (void)_appForegrounded:(id)foregrounded
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -508,7 +508,7 @@ uint64_t __32__NTSTimerTimer__invokeHandlers__block_invoke(uint64_t a1)
   [(NTSTimerTimer *)self _updateTimer];
 }
 
-- (void)_appBackgrounded:(id)a3
+- (void)_appBackgrounded:(id)backgrounded
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -520,7 +520,7 @@ uint64_t __32__NTSTimerTimer__invokeHandlers__block_invoke(uint64_t a1)
   [(NTSTimerTimer *)self _updateTimer];
 }
 
-- (void)_modelStateReset:(id)a3
+- (void)_modelStateReset:(id)reset
 {
   [(MTTimerManager *)self->_timerManager checkIn];
 

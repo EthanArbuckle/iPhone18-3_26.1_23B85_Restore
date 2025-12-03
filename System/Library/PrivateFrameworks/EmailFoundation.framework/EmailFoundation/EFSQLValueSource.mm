@@ -1,35 +1,35 @@
 @interface EFSQLValueSource
-- (EFSQLValueSource)initWithTableName:(id)a3 selectResultAlias:(id)a4;
-- (id)comparisonExpressionForValue:(id)a3 predicateOperator:(unint64_t)a4;
+- (EFSQLValueSource)initWithTableName:(id)name selectResultAlias:(id)alias;
+- (id)comparisonExpressionForValue:(id)value predicateOperator:(unint64_t)operator;
 @end
 
 @implementation EFSQLValueSource
 
-- (EFSQLValueSource)initWithTableName:(id)a3 selectResultAlias:(id)a4
+- (EFSQLValueSource)initWithTableName:(id)name selectResultAlias:(id)alias
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  aliasCopy = alias;
   v13.receiver = self;
   v13.super_class = EFSQLValueSource;
   v10 = [(EFSQLValueSource *)&v13 init];
   if (v10)
   {
-    if (!v8)
+    if (!nameCopy)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v10 file:@"EFSQLObjectPropertyMapper.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"EFSQLObjectPropertyMapper.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"tableName"}];
     }
 
-    objc_storeStrong(&v10->_tableName, a3);
-    objc_storeStrong(&v10->_selectResultAlias, a4);
+    objc_storeStrong(&v10->_tableName, name);
+    objc_storeStrong(&v10->_selectResultAlias, alias);
   }
 
   return v10;
 }
 
-- (id)comparisonExpressionForValue:(id)a3 predicateOperator:(unint64_t)a4
+- (id)comparisonExpressionForValue:(id)value predicateOperator:(unint64_t)operator
 {
-  v6 = a3;
+  valueCopy = value;
   [(EFSQLValueSource *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EFSQLValueSource comparisonExpressionForValue:predicateOperator:]", "EFSQLObjectPropertyMapper.m", 42, "0");
 }

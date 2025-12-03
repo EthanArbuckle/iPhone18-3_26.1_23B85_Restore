@@ -1,12 +1,12 @@
 @interface MTLabelStackView
 + (double)distanceBetweenLabelFrames;
-+ (double)distanceBetweenLabelFramesWithTitleFont:(id)a3 subtitleFont:(id)a4 multilineTitle:(BOOL)a5;
++ (double)distanceBetweenLabelFramesWithTitleFont:(id)font subtitleFont:(id)subtitleFont multilineTitle:(BOOL)title;
 + (double)maxHeight;
-+ (double)maxHeightForTitleNumberOfLines:(unint64_t)a3 subtitleNumberOfLines:(unint64_t)a4;
++ (double)maxHeightForTitleNumberOfLines:(unint64_t)lines subtitleNumberOfLines:(unint64_t)ofLines;
 + (id)defaultSubtitleFont;
 + (id)defaultTitleFont;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MTLabelStackView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MTLabelStackView)initWithFrame:(CGRect)frame;
 - (MTLabelStackViewDelegate)delegate;
 - (NSString)subtitle;
 - (NSString)subtitleTextStyle;
@@ -17,25 +17,25 @@
 - (UILabel)subtitleLabel;
 - (UILabel)titleLabel;
 - (double)distanceBetweenLabelFrames;
-- (double)heightForWidth:(double)a3;
-- (double)subtitleHeightForWidth:(double)a3;
-- (double)titleHeightForWidth:(double)a3;
+- (double)heightForWidth:(double)width;
+- (double)subtitleHeightForWidth:(double)width;
+- (double)titleHeightForWidth:(double)width;
 - (unint64_t)subtitleNumberOfLines;
 - (unint64_t)titleNumberOfLines;
 - (void)_notifyDelegateIfHeightChanged;
 - (void)_updateSubtitleFont;
 - (void)_updateTitleFont;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setSubtitleMaxWidth:(double)a3;
-- (void)setSubtitleNumberOfLines:(unint64_t)a3;
-- (void)setSubtitleTextColor:(id)a3;
-- (void)setSubtitleTextStyle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleNumberOfLines:(unint64_t)a3;
-- (void)setTitleTextColor:(id)a3;
-- (void)setTitleTextStyle:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSubtitleMaxWidth:(double)width;
+- (void)setSubtitleNumberOfLines:(unint64_t)lines;
+- (void)setSubtitleTextColor:(id)color;
+- (void)setSubtitleTextStyle:(id)style;
+- (void)setTitle:(id)title;
+- (void)setTitleNumberOfLines:(unint64_t)lines;
+- (void)setTitleTextColor:(id)color;
+- (void)setTitleTextStyle:(id)style;
 - (void)updateFonts;
 @end
 
@@ -43,40 +43,40 @@
 
 + (double)maxHeight
 {
-  v3 = [objc_opt_class() defaultTitleNumberOfLines];
-  v4 = [objc_opt_class() defaultSubtitleNumberOfLines];
+  defaultTitleNumberOfLines = [objc_opt_class() defaultTitleNumberOfLines];
+  defaultSubtitleNumberOfLines = [objc_opt_class() defaultSubtitleNumberOfLines];
 
-  [a1 maxHeightForTitleNumberOfLines:v3 subtitleNumberOfLines:v4];
+  [self maxHeightForTitleNumberOfLines:defaultTitleNumberOfLines subtitleNumberOfLines:defaultSubtitleNumberOfLines];
   return result;
 }
 
-+ (double)maxHeightForTitleNumberOfLines:(unint64_t)a3 subtitleNumberOfLines:(unint64_t)a4
++ (double)maxHeightForTitleNumberOfLines:(unint64_t)lines subtitleNumberOfLines:(unint64_t)ofLines
 {
-  v7 = [objc_opt_class() defaultTitleFont];
-  v8 = [objc_opt_class() defaultSubtitleFont];
-  [v7 lineHeight];
-  v10 = v9 * a3 + 0.0;
-  [a1 distanceBetweenLabelFramesWithTitleFont:v7 subtitleFont:v8 multilineTitle:a3 != 1];
+  defaultTitleFont = [objc_opt_class() defaultTitleFont];
+  defaultSubtitleFont = [objc_opt_class() defaultSubtitleFont];
+  [defaultTitleFont lineHeight];
+  v10 = v9 * lines + 0.0;
+  [self distanceBetweenLabelFramesWithTitleFont:defaultTitleFont subtitleFont:defaultSubtitleFont multilineTitle:lines != 1];
   v12 = v10 + v11;
-  [v8 lineHeight];
-  v14 = v12 + v13 * a4;
+  [defaultSubtitleFont lineHeight];
+  v14 = v12 + v13 * ofLines;
 
   return v14;
 }
 
 + (double)distanceBetweenLabelFrames
 {
-  v3 = [objc_opt_class() defaultTitleFont];
-  v4 = [objc_opt_class() defaultSubtitleFont];
-  [a1 distanceBetweenLabelFramesWithTitleFont:v3 subtitleFont:v4 multilineTitle:{objc_msgSend(objc_opt_class(), "defaultTitleNumberOfLines") != 1}];
+  defaultTitleFont = [objc_opt_class() defaultTitleFont];
+  defaultSubtitleFont = [objc_opt_class() defaultSubtitleFont];
+  [self distanceBetweenLabelFramesWithTitleFont:defaultTitleFont subtitleFont:defaultSubtitleFont multilineTitle:{objc_msgSend(objc_opt_class(), "defaultTitleNumberOfLines") != 1}];
   v6 = v5;
 
   return v6;
 }
 
-+ (double)distanceBetweenLabelFramesWithTitleFont:(id)a3 subtitleFont:(id)a4 multilineTitle:(BOOL)a5
++ (double)distanceBetweenLabelFramesWithTitleFont:(id)font subtitleFont:(id)subtitleFont multilineTitle:(BOOL)title
 {
-  if (a5)
+  if (title)
   {
     v6 = 19.0;
   }
@@ -86,15 +86,15 @@
     v6 = 16.0;
   }
 
-  v7 = a4;
-  v8 = a3;
-  [v7 _scaledValueForValue:v6];
+  subtitleFontCopy = subtitleFont;
+  fontCopy = font;
+  [subtitleFontCopy _scaledValueForValue:v6];
   v10 = v9;
-  [v8 mt_offsetFromLastBaselineToBottom];
+  [fontCopy mt_offsetFromLastBaselineToBottom];
   v12 = v11;
 
   v13 = v10 - v12;
-  [v7 mt_offsetFromFirstBaselineToTop];
+  [subtitleFontCopy mt_offsetFromFirstBaselineToTop];
   v15 = v14;
 
   return v13 - v15;
@@ -102,25 +102,25 @@
 
 + (id)defaultTitleFont
 {
-  v2 = [a1 defaultTitleTextStyle];
-  v3 = [UIFont mt_preferredFontForTextStyle:v2];
+  defaultTitleTextStyle = [self defaultTitleTextStyle];
+  v3 = [UIFont mt_preferredFontForTextStyle:defaultTitleTextStyle];
 
   return v3;
 }
 
 + (id)defaultSubtitleFont
 {
-  v2 = [a1 defaultSubtitleTextStyle];
-  v3 = [UIFont mt_preferredFontForTextStyle:v2];
+  defaultSubtitleTextStyle = [self defaultSubtitleTextStyle];
+  v3 = [UIFont mt_preferredFontForTextStyle:defaultSubtitleTextStyle];
 
   return v3;
 }
 
-- (MTLabelStackView)initWithFrame:(CGRect)a3
+- (MTLabelStackView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = MTLabelStackView;
-  v3 = [(MTLabelStackView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTLabelStackView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -129,11 +129,11 @@
 
     v3->_subtitleMaxWidth = 1.79769313e308;
     v3->_enabled = 1;
-    v6 = [(MTLabelStackView *)v3 titleLabel];
-    [(MTLabelStackView *)v3 addSubview:v6];
+    titleLabel = [(MTLabelStackView *)v3 titleLabel];
+    [(MTLabelStackView *)v3 addSubview:titleLabel];
 
-    v7 = [(MTLabelStackView *)v3 subtitleLabel];
-    [(MTLabelStackView *)v3 addSubview:v7];
+    subtitleLabel = [(MTLabelStackView *)v3 subtitleLabel];
+    [(MTLabelStackView *)v3 addSubview:subtitleLabel];
 
     [(MTLabelStackView *)v3 _updateTitleFont];
     [(MTLabelStackView *)v3 _updateSubtitleFont];
@@ -149,24 +149,24 @@
   [(MTLabelStackView *)self _updateSubtitleFont];
 }
 
-- (void)setSubtitleMaxWidth:(double)a3
+- (void)setSubtitleMaxWidth:(double)width
 {
-  if (self->_subtitleMaxWidth != a3)
+  if (self->_subtitleMaxWidth != width)
   {
-    self->_subtitleMaxWidth = a3;
+    self->_subtitleMaxWidth = width;
     [(MTLabelStackView *)self setNeedsLayout];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_enabled = a3;
-  v5 = [(MTLabelStackView *)self titleLabel];
-  [v5 setEnabled:v3];
+  enabledCopy = enabled;
+  self->_enabled = enabled;
+  titleLabel = [(MTLabelStackView *)self titleLabel];
+  [titleLabel setEnabled:enabledCopy];
 
-  v6 = [(MTLabelStackView *)self subtitleLabel];
-  [v6 setEnabled:v3];
+  subtitleLabel = [(MTLabelStackView *)self subtitleLabel];
+  [subtitleLabel setEnabled:enabledCopy];
 }
 
 - (void)layoutSubviews
@@ -178,8 +178,8 @@
   v4 = v3;
   [(MTLabelStackView *)self titleHeightForWidth:v3];
   v6 = v5;
-  v7 = [(MTLabelStackView *)self titleLabel];
-  [v7 setFrame:{0.0, 0.0, v4, v6}];
+  titleLabel = [(MTLabelStackView *)self titleLabel];
+  [titleLabel setFrame:{0.0, 0.0, v4, v6}];
 
   [(MTLabelStackView *)self distanceBetweenLabelFrames];
   v9 = v8;
@@ -211,16 +211,16 @@
   v19.size.width = v4;
   v19.size.height = v6;
   v15 = v9 + CGRectGetMaxY(v19);
-  v16 = [(MTLabelStackView *)self subtitleLabel];
-  [v16 setFrame:{v14, v15, v11, v13}];
+  subtitleLabel = [(MTLabelStackView *)self subtitleLabel];
+  [subtitleLabel setFrame:{v14, v15, v11, v13}];
 
   [(MTLabelStackView *)self _notifyDelegateIfHeightChanged];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(MTLabelStackView *)self heightForWidth:a3.width, a3.height];
+  width = fits.width;
+  [(MTLabelStackView *)self heightForWidth:fits.width, fits.height];
   v5 = v4;
   v6 = width;
   result.height = v5;
@@ -228,42 +228,42 @@
   return result;
 }
 
-- (double)heightForWidth:(double)a3
+- (double)heightForWidth:(double)width
 {
   [(MTLabelStackView *)self titleHeightForWidth:?];
   v6 = v5;
   [(MTLabelStackView *)self distanceBetweenLabelFrames];
   v8 = v7;
   [(MTLabelStackView *)self subtitleMaxWidth];
-  if (v9 > a3)
+  if (widthCopy > width)
   {
-    v9 = a3;
+    widthCopy = width;
   }
 
-  [(MTLabelStackView *)self subtitleHeightForWidth:v9];
+  [(MTLabelStackView *)self subtitleHeightForWidth:widthCopy];
   return v6 + v8 + v10;
 }
 
 - (double)distanceBetweenLabelFrames
 {
-  v3 = [(MTLabelStackView *)self title];
-  if ([v3 length])
+  title = [(MTLabelStackView *)self title];
+  if ([title length])
   {
-    v4 = [(MTLabelStackView *)self subtitle];
-    v5 = [v4 length];
+    subtitle = [(MTLabelStackView *)self subtitle];
+    v5 = [subtitle length];
 
     if (!v5)
     {
       return 0.0;
     }
 
-    v6 = [(MTLabelStackView *)self titleLabel];
-    v3 = [v6 font];
+    titleLabel = [(MTLabelStackView *)self titleLabel];
+    title = [titleLabel font];
 
-    v7 = [(MTLabelStackView *)self subtitleLabel];
-    v8 = [v7 font];
+    subtitleLabel = [(MTLabelStackView *)self subtitleLabel];
+    font = [subtitleLabel font];
 
-    [objc_opt_class() distanceBetweenLabelFramesWithTitleFont:v3 subtitleFont:v8 multilineTitle:{-[MTLabelStackView titleNumberOfLines](self, "titleNumberOfLines") != 1}];
+    [objc_opt_class() distanceBetweenLabelFramesWithTitleFont:title subtitleFont:font multilineTitle:{-[MTLabelStackView titleNumberOfLines](self, "titleNumberOfLines") != 1}];
     v10 = v9;
   }
 
@@ -275,14 +275,14 @@
   return v10;
 }
 
-- (double)titleHeightForWidth:(double)a3
+- (double)titleHeightForWidth:(double)width
 {
   v5 = [(MTLabelStackView *)self sizeCacheKeyForLabel:@"title" width:?];
   v6 = [(NSCache *)self->_textSizeCache objectForKey:v5];
   if (!v6)
   {
-    v7 = [(MTLabelStackView *)self titleLabel];
-    [v7 sizeThatFits:{a3, 1.79769313e308}];
+    titleLabel = [(MTLabelStackView *)self titleLabel];
+    [titleLabel sizeThatFits:{width, 1.79769313e308}];
     v6 = [NSNumber numberWithDouble:v8];
 
     [(NSCache *)self->_textSizeCache setObject:v6 forKey:v5];
@@ -294,14 +294,14 @@
   return v10;
 }
 
-- (double)subtitleHeightForWidth:(double)a3
+- (double)subtitleHeightForWidth:(double)width
 {
   v5 = [(MTLabelStackView *)self sizeCacheKeyForLabel:@"subtitle" width:?];
   v6 = [(NSCache *)self->_textSizeCache objectForKey:v5];
   if (!v6)
   {
-    v7 = [(MTLabelStackView *)self subtitleLabel];
-    [v7 sizeThatFits:{a3, 1.79769313e308}];
+    subtitleLabel = [(MTLabelStackView *)self subtitleLabel];
+    [subtitleLabel sizeThatFits:{width, 1.79769313e308}];
     v6 = [NSNumber numberWithDouble:v8];
 
     [(NSCache *)self->_textSizeCache setObject:v6 forKey:v5];
@@ -315,22 +315,22 @@
 
 - (void)_updateTitleFont
 {
-  v3 = [(MTLabelStackView *)self titleTextStyle];
-  v5 = [UIFont mt_preferredFontForTextStyle:v3];
+  titleTextStyle = [(MTLabelStackView *)self titleTextStyle];
+  v5 = [UIFont mt_preferredFontForTextStyle:titleTextStyle];
 
-  v4 = [(MTLabelStackView *)self titleLabel];
-  [v4 setFont:v5];
+  titleLabel = [(MTLabelStackView *)self titleLabel];
+  [titleLabel setFont:v5];
 
   [(MTLabelStackView *)self _heightWillChange];
 }
 
 - (void)_updateSubtitleFont
 {
-  v3 = [(MTLabelStackView *)self subtitleTextStyle];
-  v5 = [UIFont mt_preferredFontForTextStyle:v3];
+  subtitleTextStyle = [(MTLabelStackView *)self subtitleTextStyle];
+  v5 = [UIFont mt_preferredFontForTextStyle:subtitleTextStyle];
 
-  v4 = [(MTLabelStackView *)self subtitleLabel];
-  [v4 setFont:v5];
+  subtitleLabel = [(MTLabelStackView *)self subtitleLabel];
+  [subtitleLabel setFont:v5];
 
   [(MTLabelStackView *)self _heightWillChange];
 }
@@ -340,31 +340,31 @@
   if (self->_heightWillChange)
   {
     self->_heightWillChange = 0;
-    v4 = [(MTLabelStackView *)self delegate];
-    [v4 labelStackViewDidChangeHeight:self];
+    delegate = [(MTLabelStackView *)self delegate];
+    [delegate labelStackViewDidChangeHeight:self];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v9 = a3;
-  v4 = [(MTLabelStackView *)self title];
-  if (v4 != v9)
+  titleCopy = title;
+  title = [(MTLabelStackView *)self title];
+  if (title != titleCopy)
   {
-    v5 = [(MTLabelStackView *)self title];
-    v6 = [v5 isEqualToString:v9];
+    title2 = [(MTLabelStackView *)self title];
+    v6 = [title2 isEqualToString:titleCopy];
 
     if (v6)
     {
       goto LABEL_5;
     }
 
-    v7 = [(MTLabelStackView *)self titleLabel];
-    [v7 setText:v9];
+    titleLabel = [(MTLabelStackView *)self titleLabel];
+    [titleLabel setText:titleCopy];
 
     [(MTLabelStackView *)self bounds];
-    v4 = [(MTLabelStackView *)self sizeCacheKeyForLabel:@"title" width:v8];
-    [(NSCache *)self->_textSizeCache removeObjectForKey:v4];
+    title = [(MTLabelStackView *)self sizeCacheKeyForLabel:@"title" width:v8];
+    [(NSCache *)self->_textSizeCache removeObjectForKey:title];
     [(MTLabelStackView *)self _heightWillChange];
   }
 
@@ -373,32 +373,32 @@ LABEL_5:
 
 - (NSString)title
 {
-  v2 = [(MTLabelStackView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(MTLabelStackView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v9 = a3;
-  v4 = [(MTLabelStackView *)self subtitle];
-  if (v4 != v9)
+  subtitleCopy = subtitle;
+  subtitle = [(MTLabelStackView *)self subtitle];
+  if (subtitle != subtitleCopy)
   {
-    v5 = [(MTLabelStackView *)self subtitle];
-    v6 = [v5 isEqualToString:v9];
+    subtitle2 = [(MTLabelStackView *)self subtitle];
+    v6 = [subtitle2 isEqualToString:subtitleCopy];
 
     if (v6)
     {
       goto LABEL_5;
     }
 
-    v7 = [(MTLabelStackView *)self subtitleLabel];
-    [v7 setText:v9];
+    subtitleLabel = [(MTLabelStackView *)self subtitleLabel];
+    [subtitleLabel setText:subtitleCopy];
 
     [(MTLabelStackView *)self bounds];
-    v4 = [(MTLabelStackView *)self sizeCacheKeyForLabel:@"subtitle" width:v8];
-    [(NSCache *)self->_textSizeCache removeObjectForKey:v4];
+    subtitle = [(MTLabelStackView *)self sizeCacheKeyForLabel:@"subtitle" width:v8];
+    [(NSCache *)self->_textSizeCache removeObjectForKey:subtitle];
     [(MTLabelStackView *)self _heightWillChange];
   }
 
@@ -407,10 +407,10 @@ LABEL_5:
 
 - (NSString)subtitle
 {
-  v2 = [(MTLabelStackView *)self subtitleLabel];
-  v3 = [v2 text];
+  subtitleLabel = [(MTLabelStackView *)self subtitleLabel];
+  text = [subtitleLabel text];
 
-  return v3;
+  return text;
 }
 
 - (NSString)titleTextStyle
@@ -418,31 +418,31 @@ LABEL_5:
   titleTextStyle = self->_titleTextStyle;
   if (titleTextStyle)
   {
-    v3 = titleTextStyle;
+    defaultTitleTextStyle = titleTextStyle;
   }
 
   else
   {
-    v3 = [objc_opt_class() defaultTitleTextStyle];
+    defaultTitleTextStyle = [objc_opt_class() defaultTitleTextStyle];
   }
 
-  return v3;
+  return defaultTitleTextStyle;
 }
 
-- (void)setTitleTextStyle:(id)a3
+- (void)setTitleTextStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   titleTextStyle = self->_titleTextStyle;
-  if (titleTextStyle != v5)
+  if (titleTextStyle != styleCopy)
   {
-    v8 = v5;
-    v7 = [(NSString *)titleTextStyle isEqualToString:v5];
-    v5 = v8;
+    v8 = styleCopy;
+    v7 = [(NSString *)titleTextStyle isEqualToString:styleCopy];
+    styleCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_titleTextStyle, a3);
+      objc_storeStrong(&self->_titleTextStyle, style);
       [(MTLabelStackView *)self _updateTitleFont];
-      v5 = v8;
+      styleCopy = v8;
     }
   }
 }
@@ -452,31 +452,31 @@ LABEL_5:
   subtitleTextStyle = self->_subtitleTextStyle;
   if (subtitleTextStyle)
   {
-    v3 = subtitleTextStyle;
+    defaultSubtitleTextStyle = subtitleTextStyle;
   }
 
   else
   {
-    v3 = [objc_opt_class() defaultSubtitleTextStyle];
+    defaultSubtitleTextStyle = [objc_opt_class() defaultSubtitleTextStyle];
   }
 
-  return v3;
+  return defaultSubtitleTextStyle;
 }
 
-- (void)setSubtitleTextStyle:(id)a3
+- (void)setSubtitleTextStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   subtitleTextStyle = self->_subtitleTextStyle;
-  if (subtitleTextStyle != v5)
+  if (subtitleTextStyle != styleCopy)
   {
-    v8 = v5;
-    v7 = [(NSString *)subtitleTextStyle isEqualToString:v5];
-    v5 = v8;
+    v8 = styleCopy;
+    v7 = [(NSString *)subtitleTextStyle isEqualToString:styleCopy];
+    styleCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_subtitleTextStyle, a3);
+      objc_storeStrong(&self->_subtitleTextStyle, style);
       [(MTLabelStackView *)self _updateSubtitleFont];
-      v5 = v8;
+      styleCopy = v8;
     }
   }
 }
@@ -497,23 +497,23 @@ LABEL_5:
   return v3;
 }
 
-- (void)setTitleTextColor:(id)a3
+- (void)setTitleTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   titleTextColor = self->_titleTextColor;
-  if (titleTextColor != v5)
+  if (titleTextColor != colorCopy)
   {
-    v10 = v5;
-    v7 = [(UIColor *)titleTextColor isEqual:v5];
-    v5 = v10;
+    v10 = colorCopy;
+    v7 = [(UIColor *)titleTextColor isEqual:colorCopy];
+    colorCopy = v10;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_titleTextColor, a3);
-      v8 = [(MTLabelStackView *)self titleTextColor];
-      v9 = [(MTLabelStackView *)self titleLabel];
-      [v9 setTextColor:v8];
+      objc_storeStrong(&self->_titleTextColor, color);
+      titleTextColor = [(MTLabelStackView *)self titleTextColor];
+      titleLabel = [(MTLabelStackView *)self titleLabel];
+      [titleLabel setTextColor:titleTextColor];
 
-      v5 = v10;
+      colorCopy = v10;
     }
   }
 }
@@ -534,41 +534,41 @@ LABEL_5:
   return v3;
 }
 
-- (void)setSubtitleTextColor:(id)a3
+- (void)setSubtitleTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   subtitleTextColor = self->_subtitleTextColor;
-  if (subtitleTextColor != v5)
+  if (subtitleTextColor != colorCopy)
   {
-    v10 = v5;
-    v7 = [(UIColor *)subtitleTextColor isEqual:v5];
-    v5 = v10;
+    v10 = colorCopy;
+    v7 = [(UIColor *)subtitleTextColor isEqual:colorCopy];
+    colorCopy = v10;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_subtitleTextColor, a3);
-      v8 = [(MTLabelStackView *)self subtitleTextColor];
-      v9 = [(MTLabelStackView *)self subtitleLabel];
-      [v9 setTextColor:v8];
+      objc_storeStrong(&self->_subtitleTextColor, color);
+      subtitleTextColor = [(MTLabelStackView *)self subtitleTextColor];
+      subtitleLabel = [(MTLabelStackView *)self subtitleLabel];
+      [subtitleLabel setTextColor:subtitleTextColor];
 
-      v5 = v10;
+      colorCopy = v10;
     }
   }
 }
 
 - (unint64_t)titleNumberOfLines
 {
-  v2 = [(MTLabelStackView *)self titleLabel];
-  v3 = [v2 numberOfLines];
+  titleLabel = [(MTLabelStackView *)self titleLabel];
+  numberOfLines = [titleLabel numberOfLines];
 
-  return v3;
+  return numberOfLines;
 }
 
-- (void)setTitleNumberOfLines:(unint64_t)a3
+- (void)setTitleNumberOfLines:(unint64_t)lines
 {
-  if ([(MTLabelStackView *)self titleNumberOfLines]!= a3)
+  if ([(MTLabelStackView *)self titleNumberOfLines]!= lines)
   {
-    v5 = [(MTLabelStackView *)self titleLabel];
-    [v5 setNumberOfLines:a3];
+    titleLabel = [(MTLabelStackView *)self titleLabel];
+    [titleLabel setNumberOfLines:lines];
 
     [(MTLabelStackView *)self _heightWillChange];
   }
@@ -576,18 +576,18 @@ LABEL_5:
 
 - (unint64_t)subtitleNumberOfLines
 {
-  v2 = [(MTLabelStackView *)self subtitleLabel];
-  v3 = [v2 numberOfLines];
+  subtitleLabel = [(MTLabelStackView *)self subtitleLabel];
+  numberOfLines = [subtitleLabel numberOfLines];
 
-  return v3;
+  return numberOfLines;
 }
 
-- (void)setSubtitleNumberOfLines:(unint64_t)a3
+- (void)setSubtitleNumberOfLines:(unint64_t)lines
 {
-  if ([(MTLabelStackView *)self subtitleNumberOfLines]!= a3)
+  if ([(MTLabelStackView *)self subtitleNumberOfLines]!= lines)
   {
-    v5 = [(MTLabelStackView *)self subtitleLabel];
-    [v5 setNumberOfLines:a3];
+    subtitleLabel = [(MTLabelStackView *)self subtitleLabel];
+    [subtitleLabel setNumberOfLines:lines];
 
     [(MTLabelStackView *)self _heightWillChange];
   }
@@ -603,11 +603,11 @@ LABEL_5:
     self->_titleLabel = v4;
 
     -[UILabel setNumberOfLines:](self->_titleLabel, "setNumberOfLines:", [objc_opt_class() defaultTitleNumberOfLines]);
-    v6 = [(MTLabelStackView *)self titleTextColor];
-    [(UILabel *)self->_titleLabel setTextColor:v6];
+    titleTextColor = [(MTLabelStackView *)self titleTextColor];
+    [(UILabel *)self->_titleLabel setTextColor:titleTextColor];
 
-    v7 = [(MTLabelStackView *)self titleTextStyle];
-    v8 = [UIFont mt_preferredFontForTextStyle:v7];
+    titleTextStyle = [(MTLabelStackView *)self titleTextStyle];
+    v8 = [UIFont mt_preferredFontForTextStyle:titleTextStyle];
     [(UILabel *)self->_titleLabel setFont:v8];
 
     titleLabel = self->_titleLabel;
@@ -626,11 +626,11 @@ LABEL_5:
     self->_subtitleLabel = v4;
 
     -[UILabel setNumberOfLines:](self->_subtitleLabel, "setNumberOfLines:", [objc_opt_class() defaultSubtitleNumberOfLines]);
-    v6 = [(MTLabelStackView *)self subtitleTextColor];
-    [(UILabel *)self->_subtitleLabel setTextColor:v6];
+    subtitleTextColor = [(MTLabelStackView *)self subtitleTextColor];
+    [(UILabel *)self->_subtitleLabel setTextColor:subtitleTextColor];
 
-    v7 = [(MTLabelStackView *)self subtitleTextStyle];
-    v8 = [UIFont mt_preferredFontForTextStyle:v7];
+    subtitleTextStyle = [(MTLabelStackView *)self subtitleTextStyle];
+    v8 = [UIFont mt_preferredFontForTextStyle:subtitleTextStyle];
     [(UILabel *)self->_subtitleLabel setFont:v8];
 
     subtitleLabel = self->_subtitleLabel;

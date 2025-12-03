@@ -9,15 +9,15 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 backgroundEffect];
+    backgroundEffect = [self backgroundEffect];
   }
 
   else
   {
-    v2 = 0;
+    backgroundEffect = 0;
   }
 
-  return v2;
+  return backgroundEffect;
 }
 
 - (void)set_swiftui_backgroundEffect:()SwiftUI_BackgroundEffect
@@ -25,7 +25,7 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    [a1 setBackgroundEffect:v4];
+    [self setBackgroundEffect:v4];
   }
 }
 

@@ -1,34 +1,34 @@
 @interface GKPlayer
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-+ (BOOL)isGuestPlayerID:(id)a3;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
++ (BOOL)isGuestPlayerID:(id)d;
 + (GKPlayer)anonymousGuestPlayerWithIdentifier:(NSString *)guestIdentifier;
 + (id)anonymousPlayer;
 + (id)automatchPlayer;
-+ (id)canonicalizedPlayerForInternal:(id)a3;
++ (id)canonicalizedPlayerForInternal:(id)internal;
 + (id)gameBundleID;
-+ (id)instanceMethodSignatureForSelector:(SEL)a3;
-+ (id)playerFromPlayerID:(id)a3;
++ (id)instanceMethodSignatureForSelector:(SEL)selector;
++ (id)playerFromPlayerID:(id)d;
 + (id)unknownPlayer;
-+ (void)_loadPlayersForIdentifiers:(id)a3 withCompletionHandler:(id)a4;
-+ (void)loadCompletePlayersForPlayers:(id)a3 completionHandler:(id)a4;
++ (void)_loadPlayersForIdentifiers:(id)identifiers withCompletionHandler:(id)handler;
++ (void)loadCompletePlayersForPlayers:(id)players completionHandler:(id)handler;
 + (void)loadPlayersForIdentifiers:(NSArray *)identifiers withCompletionHandler:(void *)completionHandler;
-+ (void)loadScopedIDsForPlayerIDs:(id)a3 gameBundleID:(id)a4 handler:(id)a5;
++ (void)loadScopedIDsForPlayerIDs:(id)ds gameBundleID:(id)d handler:(id)handler;
 - ($C4B24A06E922887A36692F481211F72A)stats;
 - (BOOL)hasPhoto;
 - (BOOL)hasValidScopedIDs;
 - (BOOL)isArcadeGame;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFamiliarFriend;
 - (BOOL)isFriendablePlayer;
 - (BOOL)isInContacts;
 - (BOOL)isInvitable;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (BOOL)scopedIDsArePersistent;
 - (GKGame)lastPlayedGame;
 - (GKLocalPlayerInternal)localInternal;
 - (GKPlayer)init;
-- (GKPlayer)initWithCoder:(id)a3;
-- (GKPlayer)initWithInternalRepresentation:(id)a3;
+- (GKPlayer)initWithCoder:(id)coder;
+- (GKPlayer)initWithInternalRepresentation:(id)representation;
 - (NSNumber)acceptedGameInviteFromThisFriend;
 - (NSNumber)automatchedTogether;
 - (NSNumber)friendBiDirectional;
@@ -45,35 +45,35 @@
 - (NSString)referenceKey;
 - (NSString)teamPlayerID;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)minimalPlayer;
 - (id)searchName;
 - (id)sortName;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (id)vendibleScopedIDs;
 - (int64_t)avatarType;
 - (unint64_t)hash;
 - (void)_postChangeNotification;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadCommonFriends:(BOOL)a3 asPlayersWithCompletionHandler:(id)a4;
-- (void)loadFriendsWithFilter:(id)a3 withCompletionHandler:(id)a4;
-- (void)loadGamesPlayedDetailsWithCompletionHandler:(id)a3;
-- (void)loadGamesPlayedIncludingInstalledGames:(BOOL)a3 completionHandler:(id)a4;
-- (void)loadProfileDiscardingStaleData:(BOOL)a3 completionHandler:(id)a4;
-- (void)loadRecentMatchesForGame:(id)a3 block:(id)a4;
-- (void)logAndReportIllegalArcadeAccessTo:(id)a3;
-- (void)logAndReportScopedIDsError:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadCommonFriends:(BOOL)friends asPlayersWithCompletionHandler:(id)handler;
+- (void)loadFriendsWithFilter:(id)filter withCompletionHandler:(id)handler;
+- (void)loadGamesPlayedDetailsWithCompletionHandler:(id)handler;
+- (void)loadGamesPlayedIncludingInstalledGames:(BOOL)games completionHandler:(id)handler;
+- (void)loadProfileDiscardingStaleData:(BOOL)data completionHandler:(id)handler;
+- (void)loadRecentMatchesForGame:(id)game block:(id)block;
+- (void)logAndReportIllegalArcadeAccessTo:(id)to;
+- (void)logAndReportScopedIDsError:(id)error;
 - (void)postChangeNotification;
-- (void)setAcceptedGameInviteFromThisFriend:(id)a3;
-- (void)setAutomatchedTogether:(id)a3;
-- (void)setFriendBiDirectional:(id)a3;
-- (void)setFriendLevel:(id)a3;
-- (void)setFriendPlayedNearby:(id)a3;
-- (void)setFriendPlayedWith:(id)a3;
-- (void)setInitiatedGameInviteToThisFriend:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
-- (void)updateScopedIDs:(id)a3;
+- (void)setAcceptedGameInviteFromThisFriend:(id)friend;
+- (void)setAutomatchedTogether:(id)together;
+- (void)setFriendBiDirectional:(id)directional;
+- (void)setFriendLevel:(id)level;
+- (void)setFriendPlayedNearby:(id)nearby;
+- (void)setFriendPlayedWith:(id)with;
+- (void)setInitiatedGameInviteToThisFriend:(id)friend;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
+- (void)updateScopedIDs:(id)ds;
 @end
 
 @implementation GKPlayer
@@ -95,8 +95,8 @@
     v3 = MEMORY[0x277CCACA8];
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected GKLocalPlayerInternal, got %@", objc_opt_class()];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/API/GKPlayer.m"];
-    v6 = [v5 lastPathComponent];
-    v7 = [v3 stringWithFormat:@"%@ ([result isKindOfClass:[GKLocalPlayerInternal class]])\n[%s (%s:%d)]", v4, "-[GKPlayer localInternal]", objc_msgSend(v6, "UTF8String"), 52];
+    lastPathComponent = [v5 lastPathComponent];
+    v7 = [v3 stringWithFormat:@"%@ ([result isKindOfClass:[GKLocalPlayerInternal class]])\n[%s (%s:%d)]", v4, "-[GKPlayer localInternal]", objc_msgSend(lastPathComponent, "UTF8String"), 52];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v7}];
   }
@@ -136,21 +136,21 @@
   v3 = guestIdentifier;
   v4 = +[GKLocalPlayer localPlayer];
   v5 = [GKAnonymousGuestPlayerInternal alloc];
-  v6 = [v4 internal];
-  v7 = [(GKAnonymousGuestPlayerInternal *)v5 initWithHostPlayerInternal:v6 guestIdentifier:v3];
+  internal = [v4 internal];
+  v7 = [(GKAnonymousGuestPlayerInternal *)v5 initWithHostPlayerInternal:internal guestIdentifier:v3];
 
   v8 = [[GKPlayer alloc] initWithInternalRepresentation:v7];
 
   return v8;
 }
 
-- (GKPlayer)initWithInternalRepresentation:(id)a3
+- (GKPlayer)initWithInternalRepresentation:(id)representation
 {
-  v5 = a3;
-  if ([v5 isLocalPlayer])
+  representationCopy = representation;
+  if ([representationCopy isLocalPlayer])
   {
     v6 = objc_alloc_init(GKLocalPlayer);
-    [(GKPlayer *)v6 setInternal:v5];
+    [(GKPlayer *)v6 setInternal:representationCopy];
     v7 = +[GKLocalPlayer localPlayers];
     v8 = v7;
     if (v7 && (v9 = [v7 indexOfObject:v6], v9 != 0x7FFFFFFFFFFFFFFFLL))
@@ -172,18 +172,18 @@
 
     v6 = v12;
 LABEL_10:
-    v13 = [v5 scopedIDs];
-    if (v13)
+    scopedIDs = [representationCopy scopedIDs];
+    if (scopedIDs)
     {
-      v14 = v13;
-      v15 = [(GKPlayer *)v6 internal];
-      v16 = [v15 scopedIDs];
+      v14 = scopedIDs;
+      internal = [(GKPlayer *)v6 internal];
+      scopedIDs2 = [internal scopedIDs];
 
-      if (!v16)
+      if (!scopedIDs2)
       {
-        v17 = [v5 scopedIDs];
-        v18 = [(GKPlayer *)v6 internal];
-        [v18 setScopedIDs:v17];
+        scopedIDs3 = [representationCopy scopedIDs];
+        internal2 = [(GKPlayer *)v6 internal];
+        [internal2 setScopedIDs:scopedIDs3];
       }
     }
 
@@ -196,7 +196,7 @@ LABEL_10:
   v6 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_internal, a3);
+    objc_storeStrong(&v11->_internal, representation);
   }
 
 LABEL_14:
@@ -215,26 +215,26 @@ LABEL_14:
   return &v6->super;
 }
 
-- (GKPlayer)initWithCoder:(id)a3
+- (GKPlayer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"internal"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"internal"];
 
   v6 = [(GKPlayer *)self initWithInternalRepresentation:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(GKPlayer *)self internal];
-  [v4 encodeObject:v5 forKey:@"internal"];
+  coderCopy = coder;
+  internal = [(GKPlayer *)self internal];
+  [coderCopy encodeObject:internal forKey:@"internal"];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKPlayer;
@@ -244,43 +244,43 @@ LABEL_14:
 - (GKGame)lastPlayedGame
 {
   v3 = [GKGame alloc];
-  v4 = [(GKPlayer *)self internal];
-  v5 = [v4 lastPlayedGame];
-  v6 = [(GKGame *)v3 initWithInternalRepresentation:v5];
+  internal = [(GKPlayer *)self internal];
+  lastPlayedGame = [internal lastPlayedGame];
+  v6 = [(GKGame *)v3 initWithInternalRepresentation:lastPlayedGame];
 
   return v6;
 }
 
 - ($C4B24A06E922887A36692F481211F72A)stats
 {
-  v5 = [(GKPlayer *)self internal];
-  retstr->var0 = [v5 numberOfFriends];
-  retstr->var1 = [v5 numberOfFriendsInCommon];
-  retstr->var2 = [v5 numberOfGames];
-  retstr->var3 = [v5 numberOfGamesInCommon];
-  retstr->var4 = [v5 numberOfAchievements];
-  retstr->var5 = [v5 numberOfAchievementPoints];
-  retstr->var6 = [v5 numberOfRequests];
-  retstr->var7 = [v5 numberOfChallenges];
-  retstr->var8 = [v5 numberOfTurns];
+  internal = [(GKPlayer *)self internal];
+  retstr->var0 = [internal numberOfFriends];
+  retstr->var1 = [internal numberOfFriendsInCommon];
+  retstr->var2 = [internal numberOfGames];
+  retstr->var3 = [internal numberOfGamesInCommon];
+  retstr->var4 = [internal numberOfAchievements];
+  retstr->var5 = [internal numberOfAchievementPoints];
+  retstr->var6 = [internal numberOfRequests];
+  retstr->var7 = [internal numberOfChallenges];
+  retstr->var8 = [internal numberOfTurns];
 
   return result;
 }
 
 - (NSString)messagesID
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 messagesID];
+  internal = [(GKPlayer *)self internal];
+  messagesID = [internal messagesID];
 
-  return v3;
+  return messagesID;
 }
 
 - (BOOL)isInContacts
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 isInContacts];
+  internal = [(GKPlayer *)self internal];
+  isInContacts = [internal isInContacts];
 
-  return v3;
+  return isInContacts;
 }
 
 - (BOOL)isArcadeGame
@@ -315,32 +315,32 @@ void __24__GKPlayer_isArcadeGame__block_invoke()
       dispatch_once(&playerID_onceToken, block);
     }
 
-    v3 = @"playerID is not available for Arcade games";
+    playerID = @"playerID is not available for Arcade games";
   }
 
   else
   {
-    v4 = [(GKPlayer *)self internal];
-    v3 = [v4 playerID];
+    internal = [(GKPlayer *)self internal];
+    playerID = [internal playerID];
   }
 
-  return v3;
+  return playerID;
 }
 
 + (id)gameBundleID
 {
   v2 = +[GKGame currentGame];
-  v3 = [v2 bundleIdentifier];
+  bundleIdentifier = [v2 bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (NSString)gamePlayerID
 {
-  v2 = [(GKPlayer *)self vendibleScopedIDs];
-  v3 = [v2 gamePlayerID];
+  vendibleScopedIDs = [(GKPlayer *)self vendibleScopedIDs];
+  gamePlayerID = [vendibleScopedIDs gamePlayerID];
 
-  return v3;
+  return gamePlayerID;
 }
 
 - (NSString)teamPlayerID
@@ -358,21 +358,21 @@ void __24__GKPlayer_isArcadeGame__block_invoke()
     }
   }
 
-  v3 = [(GKPlayer *)self vendibleScopedIDs];
-  v4 = [v3 teamPlayerID];
+  vendibleScopedIDs = [(GKPlayer *)self vendibleScopedIDs];
+  teamPlayerID = [vendibleScopedIDs teamPlayerID];
 
-  return v4;
+  return teamPlayerID;
 }
 
-- (void)logAndReportIllegalArcadeAccessTo:(id)a3
+- (void)logAndReportIllegalArcadeAccessTo:(id)to
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  toCopy = to;
   v4 = +[GKPreferences shared];
-  v5 = [v4 isInternalBuild];
+  isInternalBuild = [v4 isInternalBuild];
 
   v6 = os_log_GKGeneral;
-  if (v5)
+  if (isInternalBuild)
   {
     if (!os_log_GKGeneral)
     {
@@ -405,7 +405,7 @@ void __24__GKPlayer_isArcadeGame__block_invoke()
   v13[0] = @"deprecatedAPIUsage";
   v13[1] = @"property";
   v12[2] = @"apiName";
-  v13[2] = v3;
+  v13[2] = toCopy;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
   [v9 recordPerformanceMetrics:v10];
 
@@ -414,19 +414,19 @@ void __24__GKPlayer_isArcadeGame__block_invoke()
 
 - (BOOL)scopedIDsArePersistent
 {
-  v2 = [(GKPlayer *)self vendibleScopedIDs];
-  v3 = [v2 arePersistent];
+  vendibleScopedIDs = [(GKPlayer *)self vendibleScopedIDs];
+  arePersistent = [vendibleScopedIDs arePersistent];
 
-  return v3;
+  return arePersistent;
 }
 
 - (id)vendibleScopedIDs
 {
-  v3 = [(GKPlayer *)self hasValidScopedIDs];
-  v4 = [(GKPlayer *)self internal];
-  v5 = [v4 scopedIDs];
-  v6 = v5;
-  if (v3)
+  hasValidScopedIDs = [(GKPlayer *)self hasValidScopedIDs];
+  internal = [(GKPlayer *)self internal];
+  scopedIDs = [internal scopedIDs];
+  v6 = scopedIDs;
+  if (hasValidScopedIDs)
   {
 
     goto LABEL_9;
@@ -438,7 +438,7 @@ void __24__GKPlayer_isArcadeGame__block_invoke()
     v17 = 3221225472;
     v18 = __29__GKPlayer_vendibleScopedIDs__block_invoke_2;
     v19 = &unk_2785DD760;
-    v20 = self;
+    selfCopy = self;
     if (vendibleScopedIDs_onceToken_75 == -1)
     {
       goto LABEL_8;
@@ -450,9 +450,9 @@ void __24__GKPlayer_isArcadeGame__block_invoke()
 
   else
   {
-    v7 = [(GKPlayer *)self internal];
-    v8 = [v7 playerID];
-    v9 = [GKScopedIDs availableForPlayerID:v8];
+    internal2 = [(GKPlayer *)self internal];
+    playerID = [internal2 playerID];
+    v9 = [GKScopedIDs availableForPlayerID:playerID];
 
     if (!v9)
     {
@@ -463,7 +463,7 @@ void __24__GKPlayer_isArcadeGame__block_invoke()
     v22 = 3221225472;
     v23 = __29__GKPlayer_vendibleScopedIDs__block_invoke;
     v24 = &unk_2785DD760;
-    v25 = self;
+    selfCopy2 = self;
     if (vendibleScopedIDs_onceToken == -1)
     {
       goto LABEL_8;
@@ -476,9 +476,9 @@ void __24__GKPlayer_isArcadeGame__block_invoke()
   dispatch_once(v14, p_block);
 LABEL_8:
   v10 = [(GKPlayer *)self internal:v16];
-  v11 = [v10 playerID];
+  playerID2 = [v10 playerID];
   v12 = +[GKPlayer gameBundleID];
-  v6 = [GKScopedIDs makeNonpersistentWithPlayerID:v11 gameBundleID:v12];
+  v6 = [GKScopedIDs makeNonpersistentWithPlayerID:playerID2 gameBundleID:v12];
 
 LABEL_9:
 
@@ -487,24 +487,24 @@ LABEL_9:
 
 - (BOOL)hasValidScopedIDs
 {
-  v3 = [(GKPlayer *)self internal];
-  v4 = [v3 scopedIDs];
-  v5 = [(GKPlayer *)self internal];
-  v6 = [v5 playerID];
+  internal = [(GKPlayer *)self internal];
+  scopedIDs = [internal scopedIDs];
+  internal2 = [(GKPlayer *)self internal];
+  playerID = [internal2 playerID];
   v7 = +[GKPlayer gameBundleID];
-  v8 = [v4 isForPlayerID:v6 gameBundleID:v7];
+  v8 = [scopedIDs isForPlayerID:playerID gameBundleID:v7];
 
   return v8;
 }
 
-- (void)logAndReportScopedIDsError:(id)a3
+- (void)logAndReportScopedIDsError:(id)error
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = +[GKPreferences shared];
-  v6 = [v5 isInternalBuild];
+  isInternalBuild = [v5 isInternalBuild];
 
-  if (v6)
+  if (isInternalBuild)
   {
     v7 = os_log_GKGeneral;
     if (!os_log_GKGeneral)
@@ -515,7 +515,7 @@ LABEL_9:
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      [(GKPlayer *)v4 logAndReportScopedIDsError:v7, self];
+      [(GKPlayer *)errorCopy logAndReportScopedIDsError:v7, self];
     }
   }
 
@@ -523,27 +523,27 @@ LABEL_9:
   v12[0] = @"eventType";
   v12[1] = @"errorType";
   v13[0] = @"scopedIDsError";
-  v13[1] = v4;
+  v13[1] = errorCopy;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   [v9 recordPerformanceMetrics:v10];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateScopedIDs:(id)a3
+- (void)updateScopedIDs:(id)ds
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(GKPlayer *)self internal];
-  v6 = [v5 playerID];
+  dsCopy = ds;
+  internal = [(GKPlayer *)self internal];
+  playerID = [internal playerID];
 
-  if ([GKScopedIDs availableForPlayerID:v6])
+  if ([GKScopedIDs availableForPlayerID:playerID])
   {
     v7 = +[GKPlayer gameBundleID];
-    v8 = [(GKPlayer *)self internal];
-    v9 = [v8 scopedIDs];
+    internal2 = [(GKPlayer *)self internal];
+    scopedIDs = [internal2 scopedIDs];
 
-    if ([v9 arePersistent] && objc_msgSend(v9, "isForPlayerID:gameBundleID:", v6, v7))
+    if ([scopedIDs arePersistent] && objc_msgSend(scopedIDs, "isForPlayerID:gameBundleID:", playerID, v7))
     {
       if (!os_log_GKGeneral)
       {
@@ -554,19 +554,19 @@ LABEL_9:
       if (os_log_type_enabled(os_log_GKTrace, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v21 = v6;
+        v21 = playerID;
         v22 = 2112;
         v23 = v7;
         _os_log_impl(&dword_227904000, v11, OS_LOG_TYPE_INFO, "Not updating persistent scoped ids for playerID: %@ gameBundleID: %@", buf, 0x16u);
       }
 
-      v4[2](v4);
+      dsCopy[2](dsCopy);
     }
 
     else
     {
       objc_initWeak(buf, self);
-      v19 = v6;
+      v19 = playerID;
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
@@ -574,7 +574,7 @@ LABEL_9:
       v16[3] = &unk_2785DFC48;
       objc_copyWeak(&v18, buf);
       v16[4] = self;
-      v17 = v4;
+      v17 = dsCopy;
       [GKPlayer loadScopedIDsForPlayerIDs:v14 gameBundleID:v7 handler:v16];
 
       objc_destroyWeak(&v18);
@@ -596,7 +596,7 @@ LABEL_9:
       [(GKPlayer *)v12 updateScopedIDs:?];
     }
 
-    v4[2](v4);
+    dsCopy[2](dsCopy);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -630,32 +630,32 @@ void __28__GKPlayer_updateScopedIDs___block_invoke(uint64_t a1, void *a2, void *
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)loadScopedIDsForPlayerIDs:(id)a3 gameBundleID:(id)a4 handler:(id)a5
++ (void)loadScopedIDsForPlayerIDs:(id)ds gameBundleID:(id)d handler:(id)handler
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  dsCopy = ds;
+  dCopy = d;
+  handlerCopy = handler;
+  if ([dsCopy count])
   {
     v10 = +[GKDaemonProxy proxyForLocalPlayer];
-    v11 = [v10 profileService];
+    profileService = [v10 profileService];
 
-    v18[0] = v8;
+    v18[0] = dCopy;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __59__GKPlayer_loadScopedIDsForPlayerIDs_gameBundleID_handler___block_invoke;
     v14[3] = &unk_2785DE568;
-    v15 = v7;
-    v16 = v8;
-    v17 = v9;
-    [v11 loadScopedPlayerIDs:v15 gameBundleIDs:v12 handler:v14];
+    v15 = dsCopy;
+    v16 = dCopy;
+    v17 = handlerCopy;
+    [profileService loadScopedPlayerIDs:v15 gameBundleIDs:v12 handler:v14];
   }
 
   else
   {
-    (*(v9 + 2))(v9, MEMORY[0x277CBEC10], 0);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x277CBEC10], 0);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -705,66 +705,66 @@ void __59__GKPlayer_loadScopedIDsForPlayerIDs_gameBundleID_handler___block_invok
 
 - (NSNumber)friendLevel
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 friendLevel];
+  internal = [(GKPlayer *)self internal];
+  friendLevel = [internal friendLevel];
 
-  return v3;
+  return friendLevel;
 }
 
 - (NSNumber)friendBiDirectional
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 friendBiDirectional];
+  internal = [(GKPlayer *)self internal];
+  friendBiDirectional = [internal friendBiDirectional];
 
-  return v3;
+  return friendBiDirectional;
 }
 
 - (NSNumber)friendPlayedWith
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 friendPlayedWith];
+  internal = [(GKPlayer *)self internal];
+  friendPlayedWith = [internal friendPlayedWith];
 
-  return v3;
+  return friendPlayedWith;
 }
 
 - (NSNumber)friendPlayedNearby
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 friendPlayedNearby];
+  internal = [(GKPlayer *)self internal];
+  friendPlayedNearby = [internal friendPlayedNearby];
 
-  return v3;
+  return friendPlayedNearby;
 }
 
 - (NSNumber)acceptedGameInviteFromThisFriend
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 acceptedGameInviteFromThisFriend];
+  internal = [(GKPlayer *)self internal];
+  acceptedGameInviteFromThisFriend = [internal acceptedGameInviteFromThisFriend];
 
-  return v3;
+  return acceptedGameInviteFromThisFriend;
 }
 
 - (NSNumber)initiatedGameInviteToThisFriend
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 initiatedGameInviteToThisFriend];
+  internal = [(GKPlayer *)self internal];
+  initiatedGameInviteToThisFriend = [internal initiatedGameInviteToThisFriend];
 
-  return v3;
+  return initiatedGameInviteToThisFriend;
 }
 
 - (NSNumber)automatchedTogether
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 automatchedTogether];
+  internal = [(GKPlayer *)self internal];
+  automatchedTogether = [internal automatchedTogether];
 
-  return v3;
+  return automatchedTogether;
 }
 
 - (NSString)alias
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 alias];
+  internal = [(GKPlayer *)self internal];
+  alias = [internal alias];
 
-  if (![v3 length])
+  if (![alias length])
   {
     if (alias_onceToken != -1)
     {
@@ -773,10 +773,10 @@ void __59__GKPlayer_loadScopedIDsForPlayerIDs_gameBundleID_handler___block_invok
 
     v4 = alias_sUnknownPlayerNickname;
 
-    v3 = v4;
+    alias = v4;
   }
 
-  return v3;
+  return alias;
 }
 
 uint64_t __17__GKPlayer_alias__block_invoke()
@@ -788,93 +788,93 @@ uint64_t __17__GKPlayer_alias__block_invoke()
 
 - (int64_t)avatarType
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 avatarType];
-  v4 = [v3 integerValue];
+  internal = [(GKPlayer *)self internal];
+  avatarType = [internal avatarType];
+  integerValue = [avatarType integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setFriendLevel:(id)a3
+- (void)setFriendLevel:(id)level
 {
-  v4 = a3;
-  v5 = [(GKPlayer *)self internal];
-  [v5 setFriendLevel:v4];
+  levelCopy = level;
+  internal = [(GKPlayer *)self internal];
+  [internal setFriendLevel:levelCopy];
 }
 
-- (void)setFriendBiDirectional:(id)a3
+- (void)setFriendBiDirectional:(id)directional
 {
-  v4 = a3;
-  v5 = [(GKPlayer *)self internal];
-  [v5 setFriendBiDirectional:v4];
+  directionalCopy = directional;
+  internal = [(GKPlayer *)self internal];
+  [internal setFriendBiDirectional:directionalCopy];
 }
 
-- (void)setFriendPlayedWith:(id)a3
+- (void)setFriendPlayedWith:(id)with
 {
-  v4 = a3;
-  v5 = [(GKPlayer *)self internal];
-  [v5 setFriendPlayedWith:v4];
+  withCopy = with;
+  internal = [(GKPlayer *)self internal];
+  [internal setFriendPlayedWith:withCopy];
 }
 
-- (void)setFriendPlayedNearby:(id)a3
+- (void)setFriendPlayedNearby:(id)nearby
 {
-  v4 = a3;
-  v5 = [(GKPlayer *)self internal];
-  [v5 setFriendPlayedNearby:v4];
+  nearbyCopy = nearby;
+  internal = [(GKPlayer *)self internal];
+  [internal setFriendPlayedNearby:nearbyCopy];
 }
 
-- (void)setAcceptedGameInviteFromThisFriend:(id)a3
+- (void)setAcceptedGameInviteFromThisFriend:(id)friend
 {
-  v4 = a3;
-  v5 = [(GKPlayer *)self internal];
-  [v5 setAcceptedGameInviteFromThisFriend:v4];
+  friendCopy = friend;
+  internal = [(GKPlayer *)self internal];
+  [internal setAcceptedGameInviteFromThisFriend:friendCopy];
 }
 
-- (void)setInitiatedGameInviteToThisFriend:(id)a3
+- (void)setInitiatedGameInviteToThisFriend:(id)friend
 {
-  v4 = a3;
-  v5 = [(GKPlayer *)self internal];
-  [v5 setInitiatedGameInviteToThisFriend:v4];
+  friendCopy = friend;
+  internal = [(GKPlayer *)self internal];
+  [internal setInitiatedGameInviteToThisFriend:friendCopy];
 }
 
-- (void)setAutomatchedTogether:(id)a3
+- (void)setAutomatchedTogether:(id)together
 {
-  v4 = a3;
-  v5 = [(GKPlayer *)self internal];
-  [v5 setAutomatchedTogether:v4];
+  togetherCopy = together;
+  internal = [(GKPlayer *)self internal];
+  [internal setAutomatchedTogether:togetherCopy];
 }
 
 - (BOOL)isInvitable
 {
-  v3 = [(GKPlayer *)self internal];
-  v4 = [v3 isLocalPlayer];
+  internal = [(GKPlayer *)self internal];
+  isLocalPlayer = [internal isLocalPlayer];
 
-  if (v4)
+  if (isLocalPlayer)
   {
     return 0;
   }
 
-  v6 = [(GKPlayer *)self internal];
-  v7 = [v6 friendBiDirectional];
-  if ([v7 isEqualToNumber:&unk_283B33280])
+  internal2 = [(GKPlayer *)self internal];
+  friendBiDirectional = [internal2 friendBiDirectional];
+  if ([friendBiDirectional isEqualToNumber:&unk_283B33280])
   {
     v5 = 1;
   }
 
   else
   {
-    v8 = [(GKPlayer *)self internal];
-    v9 = [v8 friendPlayedWith];
-    if ([v9 isEqualToNumber:&unk_283B33280])
+    internal3 = [(GKPlayer *)self internal];
+    friendPlayedWith = [internal3 friendPlayedWith];
+    if ([friendPlayedWith isEqualToNumber:&unk_283B33280])
     {
       v5 = 1;
     }
 
     else
     {
-      v10 = [(GKPlayer *)self internal];
-      v11 = [v10 friendPlayedNearby];
-      v5 = [v11 isEqualToNumber:&unk_283B33280];
+      internal4 = [(GKPlayer *)self internal];
+      friendPlayedNearby = [internal4 friendPlayedNearby];
+      v5 = [friendPlayedNearby isEqualToNumber:&unk_283B33280];
     }
   }
 
@@ -883,13 +883,13 @@ uint64_t __17__GKPlayer_alias__block_invoke()
 
 - (id)description
 {
-  v3 = [(GKPlayer *)self internal];
-  if (v3 && [MEMORY[0x277CCA8D8] _gkMainBundleIsGameCenterSystemProcess])
+  internal = [(GKPlayer *)self internal];
+  if (internal && [MEMORY[0x277CCA8D8] _gkMainBundleIsGameCenterSystemProcess])
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(GKPlayer *)self internal];
-    v6 = [v5 playerID];
-    v7 = [v4 stringWithFormat:@"playerID:%@ ", v6];
+    internal2 = [(GKPlayer *)self internal];
+    playerID = [internal2 playerID];
+    v7 = [v4 stringWithFormat:@"playerID:%@ ", playerID];
   }
 
   else
@@ -897,11 +897,11 @@ uint64_t __17__GKPlayer_alias__block_invoke()
     v7 = &stru_283AFD1E0;
   }
 
-  v8 = [(GKPlayer *)self internal];
+  internal3 = [(GKPlayer *)self internal];
 
-  if (v8)
+  if (internal3)
   {
-    v9 = [(GKPlayer *)self internal];
+    internal4 = [(GKPlayer *)self internal];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -910,13 +910,13 @@ uint64_t __17__GKPlayer_alias__block_invoke()
       v43.receiver = self;
       v43.super_class = GKPlayer;
       v11 = [(GKPlayer *)&v43 description];
-      v12 = [(GKPlayer *)self alias];
+      alias = [(GKPlayer *)self alias];
       v13 = [(GKPlayer *)self displayNameWithOptions:0];
-      v14 = [(GKPlayer *)self internal];
-      v15 = [v14 date];
-      v16 = [(GKPlayer *)self internal];
-      v17 = [v16 message];
-      v18 = [v11 stringByAppendingFormat:@"(%@alias:%@ name:%@ date:%@ message:%@)", v7, v12, v13, v15, v17];
+      internal5 = [(GKPlayer *)self internal];
+      date = [internal5 date];
+      internal6 = [(GKPlayer *)self internal];
+      message = [internal6 message];
+      v18 = [v11 stringByAppendingFormat:@"(%@alias:%@ name:%@ date:%@ message:%@)", v7, alias, v13, date, message];
     }
 
     else
@@ -924,29 +924,29 @@ uint64_t __17__GKPlayer_alias__block_invoke()
       v42.receiver = self;
       v42.super_class = GKPlayer;
       v30 = [(GKPlayer *)&v42 description];
-      v41 = [(GKPlayer *)self alias];
+      alias2 = [(GKPlayer *)self alias];
       v40 = +[GKPlayer gameBundleID];
-      v37 = [(GKPlayer *)self internal];
-      v36 = [v37 scopedIDs];
-      v31 = [v36 gamePlayerID];
-      v35 = [(GKPlayer *)self internal];
-      v34 = [v35 scopedIDs];
-      v38 = [v34 teamPlayerID];
+      internal7 = [(GKPlayer *)self internal];
+      scopedIDs = [internal7 scopedIDs];
+      gamePlayerID = [scopedIDs gamePlayerID];
+      internal8 = [(GKPlayer *)self internal];
+      scopedIDs2 = [internal8 scopedIDs];
+      teamPlayerID = [scopedIDs2 teamPlayerID];
       v19 = MEMORY[0x277CCABB0];
-      v33 = [(GKPlayer *)self internal];
-      v32 = [v33 scopedIDs];
-      v20 = [v19 numberWithBool:{objc_msgSend(v32, "arePersistent")}];
+      internal9 = [(GKPlayer *)self internal];
+      scopedIDs3 = [internal9 scopedIDs];
+      v20 = [v19 numberWithBool:{objc_msgSend(scopedIDs3, "arePersistent")}];
       v29 = [(GKPlayer *)self displayNameWithOptions:0];
       [(GKPlayer *)self status];
       v28 = v39 = v7;
-      v21 = [(GKPlayer *)self friendBiDirectional];
-      v22 = [(GKPlayer *)self friendPlayedWith];
-      v23 = [(GKPlayer *)self friendPlayedNearby];
-      v24 = [(GKPlayer *)self acceptedGameInviteFromThisFriend];
-      v25 = [(GKPlayer *)self initiatedGameInviteToThisFriend];
-      v26 = [(GKPlayer *)self automatchedTogether];
+      friendBiDirectional = [(GKPlayer *)self friendBiDirectional];
+      friendPlayedWith = [(GKPlayer *)self friendPlayedWith];
+      friendPlayedNearby = [(GKPlayer *)self friendPlayedNearby];
+      acceptedGameInviteFromThisFriend = [(GKPlayer *)self acceptedGameInviteFromThisFriend];
+      initiatedGameInviteToThisFriend = [(GKPlayer *)self initiatedGameInviteToThisFriend];
+      automatchedTogether = [(GKPlayer *)self automatchedTogether];
       v11 = v30;
-      v18 = [v30 stringByAppendingFormat:@"(%@alias:%@ gameBundleID:%@ gamePlayerID:%@ teamPlayerID:%@ scopedIDsArePersistent:%@ name:%@ status:%@ friendBiDirectional:%@ friendPlayedWith:%@ friendPlayedNearby:%@ acceptedGameInviteFromThisFriend:%@ initiatedGameInviteToThisFriend:%@ automatchedTogether:%@)", v39, v41, v40, v31, v38, v20, v29, v28, v21, v22, v23, v24, v25, v26];
+      v18 = [v30 stringByAppendingFormat:@"(%@alias:%@ gameBundleID:%@ gamePlayerID:%@ teamPlayerID:%@ scopedIDsArePersistent:%@ name:%@ status:%@ friendBiDirectional:%@ friendPlayedWith:%@ friendPlayedNearby:%@ acceptedGameInviteFromThisFriend:%@ initiatedGameInviteToThisFriend:%@ automatchedTogether:%@)", v39, alias2, v40, gamePlayerID, teamPlayerID, v20, v29, v28, friendBiDirectional, friendPlayedWith, friendPlayedNearby, acceptedGameInviteFromThisFriend, initiatedGameInviteToThisFriend, automatchedTogether];
 
       v7 = v39;
     }
@@ -965,23 +965,23 @@ uint64_t __17__GKPlayer_alias__block_invoke()
 
 - (unint64_t)hash
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 hash];
+  internal = [(GKPlayer *)self internal];
+  v3 = [internal hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKPlayer *)self internal];
-    v7 = [v5 internal];
+    v5 = equalCopy;
+    internal = [(GKPlayer *)self internal];
+    internal2 = [v5 internal];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [internal isEqual:internal2];
   }
 
   else
@@ -995,26 +995,26 @@ uint64_t __17__GKPlayer_alias__block_invoke()
 - (NSString)cacheKey
 {
   v3 = objc_opt_class();
-  v4 = [(GKPlayer *)self internal];
-  v5 = [v4 playerID];
-  v6 = [v3 cacheKeyForPlayerID:v5];
+  internal = [(GKPlayer *)self internal];
+  playerID = [internal playerID];
+  v6 = [v3 cacheKeyForPlayerID:playerID];
 
   return v6;
 }
 
 - (BOOL)hasPhoto
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 photos];
-  v4 = [v3 count] != 0;
+  internal = [(GKPlayer *)self internal];
+  photos = [internal photos];
+  v4 = [photos count] != 0;
 
   return v4;
 }
 
 - (BOOL)isFamiliarFriend
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 defaultFamiliarity] == 2;
+  internal = [(GKPlayer *)self internal];
+  v3 = [internal defaultFamiliarity] == 2;
 
   return v3;
 }
@@ -1043,7 +1043,7 @@ uint64_t __17__GKPlayer_alias__block_invoke()
   v15 = v18;
   v10 = v7;
   v14 = v10;
-  v16 = a1;
+  selfCopy = self;
   v11 = v6;
   v13 = v11;
   [v9 notifyOnMainQueueWithBlock:v12];
@@ -1099,10 +1099,10 @@ void __60__GKPlayer_loadPlayersForIdentifiers_withCompletionHandler___block_invo
   [v5 _loadPlayersForIdentifiers:v6 withCompletionHandler:v7];
 }
 
-+ (void)_loadPlayersForIdentifiers:(id)a3 withCompletionHandler:(id)a4
++ (void)_loadPlayersForIdentifiers:(id)identifiers withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -1115,8 +1115,8 @@ void __60__GKPlayer_loadPlayersForIdentifiers_withCompletionHandler___block_invo
     _os_log_impl(&dword_227904000, v8, OS_LOG_TYPE_INFO, "GKPlayer: _loadPlayersForIdentifiers:", buf, 2u);
   }
 
-  [v5 enumerateObjectsWithOptions:1 usingBlock:&__block_literal_global_121];
-  v9 = [v5 count];
+  [identifiersCopy enumerateObjectsWithOptions:1 usingBlock:&__block_literal_global_121];
+  v9 = [identifiersCopy count];
   v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:v9];
   v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:v9];
   v26[0] = MEMORY[0x277D85DD0];
@@ -1127,7 +1127,7 @@ void __60__GKPlayer_loadPlayersForIdentifiers_withCompletionHandler___block_invo
   v27 = v12;
   v13 = v10;
   v28 = v13;
-  [v5 enumerateObjectsUsingBlock:v26];
+  [identifiersCopy enumerateObjectsUsingBlock:v26];
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKPlayer.m", 583, "+[GKPlayer _loadPlayersForIdentifiers:withCompletionHandler:]"];
   v15 = [GKDispatchGroup dispatchGroupWithName:v14];
 
@@ -1146,20 +1146,20 @@ void __60__GKPlayer_loadPlayersForIdentifiers_withCompletionHandler___block_invo
     v21 = v13;
     v25 = v9;
     v22 = v12;
-    v23 = v5;
+    v23 = identifiersCopy;
     v24 = v15;
     [v24 perform:v20];
 
     v16 = v21;
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __61__GKPlayer__loadPlayersForIdentifiers_withCompletionHandler___block_invoke_137;
     v17[3] = &unk_2785DDC10;
-    v19 = v6;
+    v19 = handlerCopy;
     v18 = v15;
     [v18 notifyOnMainQueueWithBlock:v17];
   }
@@ -1408,9 +1408,9 @@ void __35__GKPlayer__postChangeNotification__block_invoke(uint64_t a1)
   [(GKPlayer *)self performSelector:sel__postChangeNotification withObject:0 afterDelay:0.1];
 }
 
-- (void)loadFriendsWithFilter:(id)a3 withCompletionHandler:(id)a4
+- (void)loadFriendsWithFilter:(id)filter withCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKPlayer.m", 677, "-[GKPlayer loadFriendsWithFilter:withCompletionHandler:]"];
   v7 = [GKDispatchGroup dispatchGroupWithName:v6];
 
@@ -1427,9 +1427,9 @@ void __35__GKPlayer__postChangeNotification__block_invoke(uint64_t a1)
   v11[2] = __56__GKPlayer_loadFriendsWithFilter_withCompletionHandler___block_invoke_3;
   v11[3] = &unk_2785DE948;
   v12 = v8;
-  v13 = self;
-  v14 = v5;
-  v9 = v5;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v8;
   [v10 notifyOnMainQueueWithBlock:v11];
 }
@@ -1486,14 +1486,14 @@ GKPlayer *__56__GKPlayer_loadFriendsWithFilter_withCompletionHandler___block_inv
   return v3;
 }
 
-- (void)loadCommonFriends:(BOOL)a3 asPlayersWithCompletionHandler:(id)a4
+- (void)loadCommonFriends:(BOOL)friends asPlayersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  friendsCopy = friends;
+  handlerCopy = handler;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKPlayer.m", 703, "-[GKPlayer loadCommonFriends:asPlayersWithCompletionHandler:]"];
   v8 = [GKDispatchGroup dispatchGroupWithName:v7];
 
-  if (v4)
+  if (friendsCopy)
   {
     v9 = v19;
     v19[0] = MEMORY[0x277D85DD0];
@@ -1521,9 +1521,9 @@ GKPlayer *__56__GKPlayer_loadFriendsWithFilter_withCompletionHandler___block_inv
   v14[2] = __61__GKPlayer_loadCommonFriends_asPlayersWithCompletionHandler___block_invoke_5;
   v14[3] = &unk_2785DE948;
   v15 = v11;
-  v16 = self;
-  v17 = v6;
-  v12 = v6;
+  selfCopy = self;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
   v13 = v11;
   [v13 notifyOnMainQueueWithBlock:v14];
 }
@@ -1608,11 +1608,11 @@ GKPlayer *__61__GKPlayer_loadCommonFriends_asPlayersWithCompletionHandler___bloc
   return v3;
 }
 
-- (void)loadRecentMatchesForGame:(id)a3 block:(id)a4
+- (void)loadRecentMatchesForGame:(id)game block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  gameCopy = game;
+  blockCopy = block;
+  if (blockCopy)
   {
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKPlayer.m", 743, "-[GKPlayer loadRecentMatchesForGame:block:]"];
     v9 = [GKDispatchGroup dispatchGroupWithName:v8];
@@ -1621,8 +1621,8 @@ GKPlayer *__61__GKPlayer_loadCommonFriends_asPlayersWithCompletionHandler___bloc
     v15[1] = 3221225472;
     v15[2] = __43__GKPlayer_loadRecentMatchesForGame_block___block_invoke;
     v15[3] = &unk_2785DD910;
-    v16 = v6;
-    v17 = self;
+    v16 = gameCopy;
+    selfCopy = self;
     v10 = v9;
     v18 = v10;
     [v10 perform:v15];
@@ -1631,7 +1631,7 @@ GKPlayer *__61__GKPlayer_loadCommonFriends_asPlayersWithCompletionHandler___bloc
     v12[2] = __43__GKPlayer_loadRecentMatchesForGame_block___block_invoke_4;
     v12[3] = &unk_2785DDC10;
     v13 = v10;
-    v14 = v7;
+    v14 = blockCopy;
     v11 = v10;
     [v11 notifyOnMainQueueWithBlock:v12];
   }
@@ -1704,10 +1704,10 @@ void __43__GKPlayer_loadRecentMatchesForGame_block___block_invoke_4(uint64_t a1)
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (void)loadGamesPlayedIncludingInstalledGames:(BOOL)a3 completionHandler:(id)a4
+- (void)loadGamesPlayedIncludingInstalledGames:(BOOL)games completionHandler:(id)handler
 {
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKPlayer.m", 773, "-[GKPlayer loadGamesPlayedIncludingInstalledGames:completionHandler:]"];
     v8 = [GKDispatchGroup dispatchGroupWithName:v7];
@@ -1717,7 +1717,7 @@ void __43__GKPlayer_loadRecentMatchesForGame_block___block_invoke_4(uint64_t a1)
     v14[2] = __69__GKPlayer_loadGamesPlayedIncludingInstalledGames_completionHandler___block_invoke;
     v14[3] = &unk_2785DECC0;
     v14[4] = self;
-    v16 = a3;
+    gamesCopy = games;
     v9 = v8;
     v15 = v9;
     [v9 perform:v14];
@@ -1726,7 +1726,7 @@ void __43__GKPlayer_loadRecentMatchesForGame_block___block_invoke_4(uint64_t a1)
     v11[2] = __69__GKPlayer_loadGamesPlayedIncludingInstalledGames_completionHandler___block_invoke_4;
     v11[3] = &unk_2785DDC10;
     v12 = v9;
-    v13 = v6;
+    v13 = handlerCopy;
     v10 = v9;
     [v10 notifyOnMainQueueWithBlock:v11];
   }
@@ -1788,10 +1788,10 @@ void __69__GKPlayer_loadGamesPlayedIncludingInstalledGames_completionHandler___b
   (*(v2 + 16))(v2, v5, v3, v4);
 }
 
-- (void)loadGamesPlayedDetailsWithCompletionHandler:(id)a3
+- (void)loadGamesPlayedDetailsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKPlayer.m", 796, "-[GKPlayer loadGamesPlayedDetailsWithCompletionHandler:]"];
     v6 = [GKDispatchGroup dispatchGroupWithName:v5];
@@ -1809,7 +1809,7 @@ void __69__GKPlayer_loadGamesPlayedIncludingInstalledGames_completionHandler___b
     v9[2] = __56__GKPlayer_loadGamesPlayedDetailsWithCompletionHandler___block_invoke_4;
     v9[3] = &unk_2785DDC10;
     v10 = v7;
-    v11 = v4;
+    v11 = handlerCopy;
     v8 = v7;
     [v8 notifyOnMainQueueWithBlock:v9];
   }
@@ -1870,21 +1870,21 @@ void __56__GKPlayer_loadGamesPlayedDetailsWithCompletionHandler___block_invoke_4
   (*(v2 + 16))(v2, v5, v3, v4);
 }
 
-- (void)loadProfileDiscardingStaleData:(BOOL)a3 completionHandler:(id)a4
+- (void)loadProfileDiscardingStaleData:(BOOL)data completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKPlayer.m", 821, "-[GKPlayer loadProfileDiscardingStaleData:completionHandler:]"];
   v8 = [GKDispatchGroup dispatchGroupWithName:v7];
 
-  v9 = [(GKPlayer *)self internal];
-  v10 = [v9 playerID];
+  internal = [(GKPlayer *)self internal];
+  playerID = [internal playerID];
 
-  if (!v10)
+  if (!playerID)
   {
     v11 = [MEMORY[0x277CCA9B8] userErrorForCode:8 underlyingError:0];
     [v8 setError:v11];
 
-    if (!v6)
+    if (!handlerCopy)
     {
       goto LABEL_4;
     }
@@ -1897,19 +1897,19 @@ void __56__GKPlayer_loadGamesPlayedDetailsWithCompletionHandler___block_invoke_4
   v15[2] = __61__GKPlayer_loadProfileDiscardingStaleData_completionHandler___block_invoke;
   v15[3] = &unk_2785DFBA8;
   v15[4] = self;
-  v16 = v10;
-  v18 = a3;
+  v16 = playerID;
+  dataCopy = data;
   v17 = v8;
   [v17 perform:v15];
 
-  if (v6)
+  if (handlerCopy)
   {
 LABEL_3:
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __61__GKPlayer_loadProfileDiscardingStaleData_completionHandler___block_invoke_3;
     v12[3] = &unk_2785DDC10;
-    v14 = v6;
+    v14 = handlerCopy;
     v13 = v8;
     [v13 notifyOnMainQueueWithBlock:v12];
   }
@@ -1983,16 +1983,16 @@ void __61__GKPlayer_loadProfileDiscardingStaleData_completionHandler___block_inv
   (*(v1 + 16))(v1, v2);
 }
 
-+ (void)loadCompletePlayersForPlayers:(id)a3 completionHandler:(id)a4
++ (void)loadCompletePlayersForPlayers:(id)players completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [a3 _gkMapWithBlock:&__block_literal_global_165];
+  handlerCopy = handler;
+  v6 = [players _gkMapWithBlock:&__block_literal_global_165];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__GKPlayer_loadCompletePlayersForPlayers_completionHandler___block_invoke_2;
   v8[3] = &unk_2785DDCB0;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [GKPlayer loadPlayersForIdentifiersPrivate:v6 withCompletionHandler:v8];
 }
 
@@ -2007,8 +2007,8 @@ id __60__GKPlayer_loadCompletePlayersForPlayers_completionHandler___block_invoke
 - (id)sortName
 {
   v2 = [(GKPlayer *)self displayNameWithOptions:1];
-  v3 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v4 = [v2 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v4;
 }
@@ -2016,15 +2016,15 @@ id __60__GKPlayer_loadCompletePlayersForPlayers_completionHandler___block_invoke
 - (id)searchName
 {
   v2 = [(GKPlayer *)self displayNameWithOptions:0];
-  v3 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v4 = [v2 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v4;
 }
 
-+ (id)instanceMethodSignatureForSelector:(SEL)a3
++ (id)instanceMethodSignatureForSelector:(SEL)selector
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___GKPlayer;
   v4 = objc_msgSendSuper2(&v9, sel_instanceMethodSignatureForSelector_);
   v5 = v4;
@@ -2035,7 +2035,7 @@ id __60__GKPlayer_loadCompletePlayersForPlayers_completionHandler___block_invoke
 
   else
   {
-    v6 = [GKPlayerInternal instanceMethodSignatureForSelector:a3];
+    v6 = [GKPlayerInternal instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -2043,7 +2043,7 @@ id __60__GKPlayer_loadCompletePlayersForPlayers_completionHandler___block_invoke
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = GKPlayer;
@@ -2056,14 +2056,14 @@ id __60__GKPlayer_loadCompletePlayersForPlayers_completionHandler___block_invoke
 
   else
   {
-    v8 = [(GKPlayer *)self forwardingTargetForSelector:a3];
-    v7 = [v8 methodSignatureForSelector:a3];
+    v8 = [(GKPlayer *)self forwardingTargetForSelector:selector];
+    v7 = [v8 methodSignatureForSelector:selector];
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = GKPlayer;
@@ -2074,18 +2074,18 @@ id __60__GKPlayer_loadCompletePlayersForPlayers_completionHandler___block_invoke
 
   else
   {
-    v6 = [(GKPlayer *)self forwardingTargetForSelector:a3];
+    v6 = [(GKPlayer *)self forwardingTargetForSelector:selector];
     v5 = objc_opt_respondsToSelector();
   }
 
   return v5 & 1;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    if (class_respondsToSelector(a1, a3))
+    if (class_respondsToSelector(self, selector))
     {
       LOBYTE(v4) = 1;
     }
@@ -2096,7 +2096,7 @@ id __60__GKPlayer_loadCompletePlayersForPlayers_completionHandler___block_invoke
       if (v4)
       {
 
-        LOBYTE(v4) = [GKPlayerInternal instancesRespondToSelector:a3];
+        LOBYTE(v4) = [GKPlayerInternal instancesRespondToSelector:selector];
       }
     }
   }
@@ -2109,21 +2109,21 @@ id __60__GKPlayer_loadCompletePlayersForPlayers_completionHandler___block_invoke
   return v4;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKPlayer *)self internal];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  internal = [(GKPlayer *)self internal];
+  v6 = [internal valueForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKPlayer *)self internal];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  internal = [(GKPlayer *)self internal];
+  [internal setValue:valueCopy forKey:keyCopy];
 }
 
 - (BOOL)isFriendablePlayer
@@ -2142,11 +2142,11 @@ id __60__GKPlayer_loadCompletePlayersForPlayers_completionHandler___block_invoke
   return v4;
 }
 
-+ (BOOL)isGuestPlayerID:(id)a3
++ (BOOL)isGuestPlayerID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  dCopy = d;
+  v4 = dCopy;
+  if (dCopy && [dCopy length])
   {
     v5 = [v4 rangeOfString:@"_"];
     v7 = v5 != 0x7FFFFFFFFFFFFFFFLL && v5 > 2;
@@ -2160,32 +2160,32 @@ id __60__GKPlayer_loadCompletePlayersForPlayers_completionHandler___block_invoke
   return v7;
 }
 
-+ (id)playerFromPlayerID:(id)a3
++ (id)playerFromPlayerID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[(GKInternalRepresentation *)GKPlayerInternal];
-  [v4 setPlayerID:v3];
+  [v4 setPlayerID:dCopy];
 
   v5 = [(GKPlayer *)_GKIncompletePlayer canonicalizedPlayerForInternal:v4];
 
   return v5;
 }
 
-+ (id)canonicalizedPlayerForInternal:(id)a3
++ (id)canonicalizedPlayerForInternal:(id)internal
 {
-  v3 = a3;
+  internalCopy = internal;
   v4 = +[GKLocalPlayer localPlayer];
-  v5 = [v3 playerID];
-  v6 = [v4 internal];
-  v7 = [v6 playerID];
-  v8 = [v5 isEqualToString:v7];
+  playerID = [internalCopy playerID];
+  internal = [v4 internal];
+  playerID2 = [internal playerID];
+  v8 = [playerID isEqualToString:playerID2];
 
   if (v8)
   {
-    v9 = [v4 internal];
-    v10 = [v9 isLocalPlayer];
+    internal2 = [v4 internal];
+    isLocalPlayer = [internal2 isLocalPlayer];
 
-    if ((v10 & 1) == 0)
+    if ((isLocalPlayer & 1) == 0)
     {
       [v4 promotePlayerInternalToLocalPlayerInternal:v4];
     }
@@ -2195,7 +2195,7 @@ id __60__GKPlayer_loadCompletePlayersForPlayers_completionHandler___block_invoke
 
   else
   {
-    v11 = [[GKPlayer alloc] initWithInternalRepresentation:v3];
+    v11 = [[GKPlayer alloc] initWithInternalRepresentation:internalCopy];
   }
 
   v12 = v11;
@@ -2205,28 +2205,28 @@ id __60__GKPlayer_loadCompletePlayersForPlayers_completionHandler___block_invoke
 
 - (NSString)referenceKey
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 playerID];
+  internal = [(GKPlayer *)self internal];
+  playerID = [internal playerID];
 
-  return v3;
+  return playerID;
 }
 
 - (id)minimalPlayer
 {
   v3 = [GKPlayer alloc];
-  v4 = [(GKPlayer *)self internal];
-  v5 = [v4 minimalInternal];
-  v6 = [(GKPlayer *)v3 initWithInternalRepresentation:v5];
+  internal = [(GKPlayer *)self internal];
+  minimalInternal = [internal minimalInternal];
+  v6 = [(GKPlayer *)v3 initWithInternalRepresentation:minimalInternal];
 
   return v6;
 }
 
 - (NSString)internalPlayerID
 {
-  v2 = [(GKPlayer *)self internal];
-  v3 = [v2 playerID];
+  internal = [(GKPlayer *)self internal];
+  playerID = [internal playerID];
 
-  return v3;
+  return playerID;
 }
 
 - (void)initWithInternalRepresentation:.cold.1()

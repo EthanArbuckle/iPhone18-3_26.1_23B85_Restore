@@ -2,12 +2,12 @@
 - (BOOL)isSimulatingUserInteraction;
 - (NSString)sessionIdentifier;
 - (_WKAutomationSession)init;
-- (_WKAutomationSession)initWithConfiguration:(id)a3;
+- (_WKAutomationSession)initWithConfiguration:(id)configuration;
 - (_WKAutomationSessionConfiguration)configuration;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
-- (void)setSessionIdentifier:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setSessionIdentifier:(id)identifier;
 @end
 
 @implementation _WKAutomationSession
@@ -23,7 +23,7 @@
   return v4;
 }
 
-- (_WKAutomationSession)initWithConfiguration:(id)a3
+- (_WKAutomationSession)initWithConfiguration:(id)configuration
 {
   v10.receiver = self;
   v10.super_class = _WKAutomationSession;
@@ -32,11 +32,11 @@
   if (v4)
   {
     v6 = API::Object::apiObjectsUnderConstruction(v4);
-    v13 = [(_WKAutomationSession *)v5 _apiObject];
+    _apiObject = [(_WKAutomationSession *)v5 _apiObject];
     v12 = v5;
-    WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v6, &v13, &v12, v11);
+    WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v6, &_apiObject, &v12, v11);
     WebKit::WebAutomationSession::WebAutomationSession([(_WKAutomationSession *)v5 _apiObject]);
-    v7 = [a3 copy];
+    v7 = [configuration copy];
     m_ptr = v5->_configuration.m_ptr;
     v5->_configuration.m_ptr = v7;
     if (m_ptr)
@@ -66,10 +66,10 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate.m_weakReference, a3);
-  if (a3)
+  objc_storeWeak(&self->_delegate.m_weakReference, delegate);
+  if (delegate)
   {
     if (WebKit::AutomationSessionClient::s_heapRef)
     {
@@ -82,7 +82,7 @@
     }
 
     v7 = NonCompact;
-    WebKit::AutomationSessionClient::AutomationSessionClient(NonCompact, a3);
+    WebKit::AutomationSessionClient::AutomationSessionClient(NonCompact, delegate);
   }
 
   else
@@ -147,9 +147,9 @@ LABEL_10:
   return &v4->isa;
 }
 
-- (void)setSessionIdentifier:(id)a3
+- (void)setSessionIdentifier:(id)identifier
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, identifier);
   v5 = v8;
   if (v8)
   {

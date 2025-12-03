@@ -3,19 +3,19 @@
 - (BOOL)hasDeletes;
 - (BOOL)hasInserts;
 - (BOOL)hasUpdates;
-- (MTLibraryEntityChanges)initWithEntityName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTLibraryEntityChanges)initWithEntityName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)insertedAndUpdatedObjectIDs;
-- (void)add:(id)a3 changeType:(int)a4;
-- (void)combineChanges:(id)a3;
+- (void)add:(id)add changeType:(int)type;
+- (void)combineChanges:(id)changes;
 @end
 
 @implementation MTLibraryEntityChanges
 
 - (BOOL)hasInserts
 {
-  v2 = [(MTLibraryEntityChanges *)self insertedObjectIDs];
-  v3 = [v2 count] != 0;
+  insertedObjectIDs = [(MTLibraryEntityChanges *)self insertedObjectIDs];
+  v3 = [insertedObjectIDs count] != 0;
 
   return v3;
 }
@@ -32,30 +32,30 @@
 
 - (BOOL)hasDeletes
 {
-  v2 = [(MTLibraryEntityChanges *)self deletedObjectIDs];
-  v3 = [v2 count] != 0;
+  deletedObjectIDs = [(MTLibraryEntityChanges *)self deletedObjectIDs];
+  v3 = [deletedObjectIDs count] != 0;
 
   return v3;
 }
 
 - (BOOL)hasUpdates
 {
-  v2 = [(MTLibraryEntityChanges *)self updatedObjectIDs];
-  v3 = [v2 count] != 0;
+  updatedObjectIDs = [(MTLibraryEntityChanges *)self updatedObjectIDs];
+  v3 = [updatedObjectIDs count] != 0;
 
   return v3;
 }
 
-- (MTLibraryEntityChanges)initWithEntityName:(id)a3
+- (MTLibraryEntityChanges)initWithEntityName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = MTLibraryEntityChanges;
   v6 = [(MTLibraryEntityChanges *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entityName, a3);
+    objc_storeStrong(&v6->_entityName, name);
     v8 = [MEMORY[0x1E695DFA8] set];
     insertedObjectIDs = v7->_insertedObjectIDs;
     v7->_insertedObjectIDs = v8;
@@ -72,22 +72,22 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(MTLibraryEntityChanges *)self entityName];
-  v7 = [v5 initWithEntityName:v6];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  entityName = [(MTLibraryEntityChanges *)self entityName];
+  v7 = [v5 initWithEntityName:entityName];
 
-  v8 = [(MTLibraryEntityChanges *)self insertedObjectIDs];
-  v9 = [v8 mutableCopyWithZone:a3];
+  insertedObjectIDs = [(MTLibraryEntityChanges *)self insertedObjectIDs];
+  v9 = [insertedObjectIDs mutableCopyWithZone:zone];
   [v7 setInsertedObjectIDs:v9];
 
-  v10 = [(MTLibraryEntityChanges *)self deletedObjectIDs];
-  v11 = [v10 mutableCopyWithZone:a3];
+  deletedObjectIDs = [(MTLibraryEntityChanges *)self deletedObjectIDs];
+  v11 = [deletedObjectIDs mutableCopyWithZone:zone];
   [v7 setDeletedObjectIDs:v11];
 
-  v12 = [(MTLibraryEntityChanges *)self updatedObjectIDs];
-  v13 = [v12 mutableCopyWithZone:a3];
+  updatedObjectIDs = [(MTLibraryEntityChanges *)self updatedObjectIDs];
+  v13 = [updatedObjectIDs mutableCopyWithZone:zone];
   [v7 setUpdatedObjectIDs:v13];
 
   return v7;
@@ -96,44 +96,44 @@
 - (id)insertedAndUpdatedObjectIDs
 {
   v3 = objc_opt_new();
-  v4 = [(MTLibraryEntityChanges *)self insertedObjectIDs];
-  [v3 unionSet:v4];
+  insertedObjectIDs = [(MTLibraryEntityChanges *)self insertedObjectIDs];
+  [v3 unionSet:insertedObjectIDs];
 
-  v5 = [(MTLibraryEntityChanges *)self updatedObjectIDs];
-  [v3 unionSet:v5];
+  updatedObjectIDs = [(MTLibraryEntityChanges *)self updatedObjectIDs];
+  [v3 unionSet:updatedObjectIDs];
 
   return v3;
 }
 
-- (void)combineChanges:(id)a3
+- (void)combineChanges:(id)changes
 {
   insertedObjectIDs = self->_insertedObjectIDs;
-  v5 = a3;
-  v6 = [v5 insertedObjectIDs];
-  [(NSMutableSet *)insertedObjectIDs unionSet:v6];
+  changesCopy = changes;
+  insertedObjectIDs = [changesCopy insertedObjectIDs];
+  [(NSMutableSet *)insertedObjectIDs unionSet:insertedObjectIDs];
 
   deletedObjectIDs = self->_deletedObjectIDs;
-  v8 = [v5 deletedObjectIDs];
-  [(NSMutableSet *)deletedObjectIDs unionSet:v8];
+  deletedObjectIDs = [changesCopy deletedObjectIDs];
+  [(NSMutableSet *)deletedObjectIDs unionSet:deletedObjectIDs];
 
   updatedObjectIDs = self->_updatedObjectIDs;
-  v10 = [v5 updatedObjectIDs];
+  updatedObjectIDs = [changesCopy updatedObjectIDs];
 
-  [(NSMutableSet *)updatedObjectIDs unionSet:v10];
+  [(NSMutableSet *)updatedObjectIDs unionSet:updatedObjectIDs];
 }
 
-- (void)add:(id)a3 changeType:(int)a4
+- (void)add:(id)add changeType:(int)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 <= 2)
+  addCopy = add;
+  v7 = addCopy;
+  if (type <= 2)
   {
-    v8 = v6;
-    v6 = [*(&self->_insertedObjectIDs + (8 * a4)) addObject:v6];
+    v8 = addCopy;
+    addCopy = [*(&self->_insertedObjectIDs + (8 * type)) addObject:addCopy];
     v7 = v8;
   }
 
-  MEMORY[0x1EEE66BB8](v6, v7);
+  MEMORY[0x1EEE66BB8](addCopy, v7);
 }
 
 @end

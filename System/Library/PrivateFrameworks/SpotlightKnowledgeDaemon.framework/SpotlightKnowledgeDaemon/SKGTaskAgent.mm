@@ -1,12 +1,12 @@
 @interface SKGTaskAgent
 + (void)initialize;
 - (BOOL)start;
-- (void)_runKnowledgeUpdatingWithJobContext:(id)a3 group:(id)a4 queue:(id)a5 delegate:(id)a6;
+- (void)_runKnowledgeUpdatingWithJobContext:(id)context group:(id)group queue:(id)queue delegate:(id)delegate;
 - (void)_setup;
-- (void)beginDebugActivity:(id)a3 event:(int64_t)a4 name:(const char *)a5 knowledgedQueue:(id)a6;
-- (void)beginTaskWithName:(id)a3 knowledgeEvent:(int64_t)a4 logMessage:(id)a5 deviceUnlocked:(BOOL)a6 knowledgedQueue:(id)a7 progressBlock:(id)a8 checkpointBlock:(id)a9 completeBlock:(id)a10 cancelBlock:(id)a11 deferBlock:(id)a12;
-- (void)didReceiveMemoryPressureNotification:(unint64_t)a3;
-- (void)didReceiveSignal:(unint64_t)a3;
+- (void)beginDebugActivity:(id)activity event:(int64_t)event name:(const char *)name knowledgedQueue:(id)queue;
+- (void)beginTaskWithName:(id)name knowledgeEvent:(int64_t)event logMessage:(id)message deviceUnlocked:(BOOL)unlocked knowledgedQueue:(id)queue progressBlock:(id)block checkpointBlock:(id)checkpointBlock completeBlock:(id)self0 cancelBlock:(id)self1 deferBlock:(id)self2;
+- (void)didReceiveMemoryPressureNotification:(unint64_t)notification;
+- (void)didReceiveSignal:(unint64_t)signal;
 @end
 
 @implementation SKGTaskAgent
@@ -25,33 +25,33 @@
 - (BOOL)start
 {
   [(CSXPCConnection *)self startListener];
-  v3 = [(SKGTaskAgent *)self knowledgedQueue];
-  dispatch_activate(v3);
+  knowledgedQueue = [(SKGTaskAgent *)self knowledgedQueue];
+  dispatch_activate(knowledgedQueue);
 
   return 1;
 }
 
-- (void)beginTaskWithName:(id)a3 knowledgeEvent:(int64_t)a4 logMessage:(id)a5 deviceUnlocked:(BOOL)a6 knowledgedQueue:(id)a7 progressBlock:(id)a8 checkpointBlock:(id)a9 completeBlock:(id)a10 cancelBlock:(id)a11 deferBlock:(id)a12
+- (void)beginTaskWithName:(id)name knowledgeEvent:(int64_t)event logMessage:(id)message deviceUnlocked:(BOOL)unlocked knowledgedQueue:(id)queue progressBlock:(id)block checkpointBlock:(id)checkpointBlock completeBlock:(id)self0 cancelBlock:(id)self1 deferBlock:(id)self2
 {
-  v29 = a6;
+  unlockedCopy = unlocked;
   v36 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
+  nameCopy = name;
+  messageCopy = message;
+  queueCopy = queue;
+  blockCopy = block;
+  checkpointBlockCopy = checkpointBlock;
+  completeBlockCopy = completeBlock;
+  cancelBlockCopy = cancelBlock;
+  deferBlockCopy = deferBlock;
   v24 = objc_autoreleasePoolPush();
-  if ((v22[2](v22) & 1) == 0)
+  if ((cancelBlockCopy[2](cancelBlockCopy) & 1) == 0)
   {
     if (_os_feature_enabled_impl())
     {
-      v28 = self;
+      selfCopy = self;
       if (atomic_fetch_add(atomic_counter, 1u))
       {
-        v23[2](v23);
+        deferBlockCopy[2](deferBlockCopy);
         atomic_fetch_add(atomic_counter, 0xFFFFFFFF);
       }
 
@@ -63,28 +63,28 @@
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v35 = v16;
+            v35 = nameCopy;
             _os_log_impl(&dword_231B25000, v25, OS_LOG_TYPE_DEFAULT, "Performing task:%@", buf, 0xCu);
           }
         }
 
         v27 = dispatch_group_create();
-        v30 = [SKGJobContext defaultJobContextWithDeviceUnlocked:v29];
-        [v30 logEvent:a4 message:v17];
-        [v30 setTaskName:v16];
-        [(SKGTaskAgent *)v28 _runKnowledgeUpdatingWithJobContext:v30 group:v27 queue:v18 deferBlock:v23 progressBlock:v19 checkpointBlock:v20 completeBlock:v21 cancelBlock:v22];
+        v30 = [SKGJobContext defaultJobContextWithDeviceUnlocked:unlockedCopy];
+        [v30 logEvent:event message:messageCopy];
+        [v30 setTaskName:nameCopy];
+        [(SKGTaskAgent *)selfCopy _runKnowledgeUpdatingWithJobContext:v30 group:v27 queue:queueCopy deferBlock:deferBlockCopy progressBlock:blockCopy checkpointBlock:checkpointBlockCopy completeBlock:completeBlockCopy cancelBlock:cancelBlockCopy];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __158__SKGTaskAgent_beginTaskWithName_knowledgeEvent_logMessage_deviceUnlocked_knowledgedQueue_progressBlock_checkpointBlock_completeBlock_cancelBlock_deferBlock___block_invoke;
         block[3] = &unk_27893CE68;
-        v33 = v16;
-        dispatch_group_notify(v27, v18, block);
+        v33 = nameCopy;
+        dispatch_group_notify(v27, queueCopy, block);
       }
     }
 
     else
     {
-      v21[2](v21);
+      completeBlockCopy[2](completeBlockCopy);
     }
   }
 
@@ -112,17 +112,17 @@ void __158__SKGTaskAgent_beginTaskWithName_knowledgeEvent_logMessage_deviceUnloc
   exit(0);
 }
 
-- (void)beginDebugActivity:(id)a3 event:(int64_t)a4 name:(const char *)a5 knowledgedQueue:(id)a6
+- (void)beginDebugActivity:(id)activity event:(int64_t)event name:(const char *)name knowledgedQueue:(id)queue
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  activityCopy = activity;
+  queueCopy = queue;
   v12 = objc_autoreleasePoolPush();
-  if (xpc_activity_get_state(v10) == 2)
+  if (xpc_activity_get_state(activityCopy) == 2)
   {
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
-      v13 = v10;
+      v13 = activityCopy;
       v14 = 5;
       goto LABEL_6;
     }
@@ -130,7 +130,7 @@ void __158__SKGTaskAgent_beginTaskWithName_knowledgeEvent_logMessage_deviceUnloc
     if (atomic_fetch_add(atomic_counter, 1u))
     {
       atomic_fetch_add(atomic_counter, 0xFFFFFFFF);
-      v13 = v10;
+      v13 = activityCopy;
       v14 = 3;
 LABEL_6:
       xpc_activity_set_state(v13, v14);
@@ -143,16 +143,16 @@ LABEL_6:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315138;
-        v25 = a5;
+        nameCopy = name;
         _os_log_impl(&dword_231B25000, v16, OS_LOG_TYPE_DEFAULT, "Performing XPC activity:%s", buf, 0xCu);
       }
     }
 
-    xpc_activity_set_state(v10, 4);
+    xpc_activity_set_state(activityCopy, 4);
     v17 = dispatch_group_create();
     v18 = [SKGJobContext defaultJobContextWithDeviceUnlocked:0];
     v19 = v18;
-    switch(a4)
+    switch(event)
     {
       case 1:
         v20 = @"debug inferring people";
@@ -169,13 +169,13 @@ LABEL_6:
       default:
 LABEL_19:
         [v19 logEvent:6 message:@"reporting"];
-        [(SKGTaskAgent *)self _runKnowledgeUpdatingWithJobContext:v19 group:v17 queue:v11 delegate:0];
+        [(SKGTaskAgent *)self _runKnowledgeUpdatingWithJobContext:v19 group:v17 queue:queueCopy delegate:0];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_invoke;
         block[3] = &unk_27893CE68;
-        v23 = v10;
-        dispatch_group_notify(v17, v11, block);
+        v23 = activityCopy;
+        dispatch_group_notify(v17, queueCopy, block);
 
         goto LABEL_7;
     }
@@ -225,41 +225,41 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
   v7 = dispatch_queue_create("knowledge queue", v6);
   [(SKGTaskAgent *)self setKnowledgedQueue:v7];
 
-  v8 = [(SKGTaskAgent *)self knowledgedQueue];
+  knowledgedQueue = [(SKGTaskAgent *)self knowledgedQueue];
   if (SKGLogGetCurrentLoggingLevel() >= 4)
   {
     v9 = SKGLogAgentInit();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
-      v95 = [@"com.apple.corespotlight.knowledge.AB" UTF8String];
+      uTF8String = [@"com.apple.corespotlight.knowledge.AB" UTF8String];
       _os_log_impl(&dword_231B25000, v9, OS_LOG_TYPE_DEFAULT, "Registering XPC task: %s", buf, 0xCu);
     }
   }
 
-  v10 = [MEMORY[0x277CF0810] sharedScheduler];
+  mEMORY[0x277CF0810] = [MEMORY[0x277CF0810] sharedScheduler];
   v92[0] = MEMORY[0x277D85DD0];
   v92[1] = 3221225472;
   v92[2] = __22__SKGTaskAgent__setup__block_invoke;
   v92[3] = &unk_27893F610;
   v92[4] = self;
-  v11 = v8;
+  v11 = knowledgedQueue;
   v93 = v11;
-  [v10 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.AB" usingQueue:0 launchHandler:v92];
+  [mEMORY[0x277CF0810] registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.AB" usingQueue:0 launchHandler:v92];
 
   if (SKGLogGetCurrentLoggingLevel() >= 4)
   {
     v12 = SKGLogAgentInit();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [@"com.apple.corespotlight.knowledge.journals.AB" UTF8String];
+      uTF8String2 = [@"com.apple.corespotlight.knowledge.journals.AB" UTF8String];
       *buf = 136315138;
-      v95 = v13;
+      uTF8String = uTF8String2;
       _os_log_impl(&dword_231B25000, v12, OS_LOG_TYPE_DEFAULT, "Registering XPC task: %s", buf, 0xCu);
     }
   }
 
-  v14 = [MEMORY[0x277CF0810] sharedScheduler];
+  mEMORY[0x277CF0810]2 = [MEMORY[0x277CF0810] sharedScheduler];
   v90[0] = MEMORY[0x277D85DD0];
   v90[1] = 3221225472;
   v90[2] = __22__SKGTaskAgent__setup__block_invoke_46;
@@ -267,7 +267,7 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
   v90[4] = self;
   v15 = v11;
   v91 = v15;
-  [v14 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.journals.AB" usingQueue:0 launchHandler:v90];
+  [mEMORY[0x277CF0810]2 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.journals.AB" usingQueue:0 launchHandler:v90];
 
   if (_os_feature_enabled_impl())
   {
@@ -283,21 +283,21 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
       v18 = SKGLogAgentInit();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [@"com.apple.corespotlight.knowledge.report" UTF8String];
+        uTF8String3 = [@"com.apple.corespotlight.knowledge.report" UTF8String];
         *buf = 136315138;
-        v95 = v19;
+        uTF8String = uTF8String3;
         _os_log_impl(&dword_231B25000, v18, OS_LOG_TYPE_DEFAULT, "Registering background task: %s", buf, 0xCu);
       }
     }
 
-    v20 = [MEMORY[0x277CF0810] sharedScheduler];
+    mEMORY[0x277CF0810]3 = [MEMORY[0x277CF0810] sharedScheduler];
     v88[0] = MEMORY[0x277D85DD0];
     v88[1] = 3221225472;
     v88[2] = __22__SKGTaskAgent__setup__block_invoke_56;
     v88[3] = &unk_27893F610;
     v88[4] = self;
     v89 = v15;
-    [v20 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.report" usingQueue:0 launchHandler:v88];
+    [mEMORY[0x277CF0810]3 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.report" usingQueue:0 launchHandler:v88];
   }
 
   if (SKGLogGetCurrentLoggingLevel() >= 4)
@@ -305,14 +305,14 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
     v21 = SKGLogAgentInit();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [@"com.apple.corespotlight.knowledge" UTF8String];
+      uTF8String4 = [@"com.apple.corespotlight.knowledge" UTF8String];
       *buf = 136315138;
-      v95 = v22;
+      uTF8String = uTF8String4;
       _os_log_impl(&dword_231B25000, v21, OS_LOG_TYPE_DEFAULT, "Registering XPC task: %s", buf, 0xCu);
     }
   }
 
-  v23 = [MEMORY[0x277CF0810] sharedScheduler];
+  mEMORY[0x277CF0810]4 = [MEMORY[0x277CF0810] sharedScheduler];
   v86[0] = MEMORY[0x277D85DD0];
   v86[1] = 3221225472;
   v86[2] = __22__SKGTaskAgent__setup__block_invoke_110;
@@ -320,42 +320,42 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
   v86[4] = self;
   v24 = v15;
   v87 = v24;
-  [v23 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge" usingQueue:0 launchHandler:v86];
+  [mEMORY[0x277CF0810]4 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge" usingQueue:0 launchHandler:v86];
 
   if (SKGLogGetCurrentLoggingLevel() >= 4)
   {
     v25 = SKGLogAgentInit();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [@"com.apple.corespotlight.knowledge.cascadeVerification" UTF8String];
+      uTF8String5 = [@"com.apple.corespotlight.knowledge.cascadeVerification" UTF8String];
       *buf = 136315138;
-      v95 = v26;
+      uTF8String = uTF8String5;
       _os_log_impl(&dword_231B25000, v25, OS_LOG_TYPE_DEFAULT, "Registering XPC task: %s", buf, 0xCu);
     }
   }
 
-  v27 = [MEMORY[0x277CF0810] sharedScheduler];
+  mEMORY[0x277CF0810]5 = [MEMORY[0x277CF0810] sharedScheduler];
   v84[0] = MEMORY[0x277D85DD0];
   v84[1] = 3221225472;
   v84[2] = __22__SKGTaskAgent__setup__block_invoke_118;
   v84[3] = &unk_27893F688;
   v28 = v24;
   v85 = v28;
-  [v27 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.cascadeVerification" usingQueue:0 launchHandler:v84];
+  [mEMORY[0x277CF0810]5 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.cascadeVerification" usingQueue:0 launchHandler:v84];
 
   if (SKGLogGetCurrentLoggingLevel() >= 4)
   {
     v29 = SKGLogAgentInit();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [@"com.apple.corespotlight.knowledge.journals" UTF8String];
+      uTF8String6 = [@"com.apple.corespotlight.knowledge.journals" UTF8String];
       *buf = 136315138;
-      v95 = v30;
+      uTF8String = uTF8String6;
       _os_log_impl(&dword_231B25000, v29, OS_LOG_TYPE_DEFAULT, "Registering XPC task: %s", buf, 0xCu);
     }
   }
 
-  v31 = [MEMORY[0x277CF0810] sharedScheduler];
+  mEMORY[0x277CF0810]6 = [MEMORY[0x277CF0810] sharedScheduler];
   v82[0] = MEMORY[0x277D85DD0];
   v82[1] = 3221225472;
   v82[2] = __22__SKGTaskAgent__setup__block_invoke_129;
@@ -363,17 +363,17 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
   v82[4] = self;
   v32 = v28;
   v83 = v32;
-  [v31 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.journals" usingQueue:0 launchHandler:v82];
+  [mEMORY[0x277CF0810]6 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.journals" usingQueue:0 launchHandler:v82];
 
   v33 = +[SKDDefaults sharedDefaults];
-  v34 = [v33 anyPipelineEnabled];
+  anyPipelineEnabled = [v33 anyPipelineEnabled];
 
-  if (v34)
+  if (anyPipelineEnabled)
   {
     v35 = [SKGJobContext defaultJobContextWithDeviceUnlocked:0];
     v36 = +[SKDPipelineManager sharedManager];
-    v37 = [v35 protectionClasses];
-    v38 = [v36 indexProcessingJobWithProtectionClasses:v37];
+    protectionClasses = [v35 protectionClasses];
+    v38 = [v36 indexProcessingJobWithProtectionClasses:protectionClasses];
 
     if (v38)
     {
@@ -382,9 +382,9 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
         v39 = SKGLogAgentInit();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
-          v40 = [@"com.apple.corespotlight.knowledge.indexing" UTF8String];
+          uTF8String7 = [@"com.apple.corespotlight.knowledge.indexing" UTF8String];
           *buf = 136315138;
-          v95 = v40;
+          uTF8String = uTF8String7;
           _os_log_impl(&dword_231B25000, v39, OS_LOG_TYPE_DEFAULT, "Registering XPC task: %s", buf, 0xCu);
         }
       }
@@ -392,14 +392,14 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
       v41 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v42 = dispatch_queue_create("com.apple.spotlight.indexing.task", v41);
 
-      v43 = [MEMORY[0x277CF0810] sharedScheduler];
+      mEMORY[0x277CF0810]7 = [MEMORY[0x277CF0810] sharedScheduler];
       v79[0] = MEMORY[0x277D85DD0];
       v79[1] = 3221225472;
       v79[2] = __22__SKGTaskAgent__setup__block_invoke_140;
       v79[3] = &unk_27893F610;
       v80 = v35;
       v81 = v38;
-      [v43 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.indexing" usingQueue:v42 launchHandler:v79];
+      [mEMORY[0x277CF0810]7 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.indexing" usingQueue:v42 launchHandler:v79];
     }
   }
 
@@ -410,9 +410,9 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
       v44 = SKGLogAgentInit();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
       {
-        v45 = [@"com.apple.corespotlight.knowledge.processing" UTF8String];
+        uTF8String8 = [@"com.apple.corespotlight.knowledge.processing" UTF8String];
         *buf = 136315138;
-        v95 = v45;
+        uTF8String = uTF8String8;
         _os_log_impl(&dword_231B25000, v44, OS_LOG_TYPE_DEFAULT, "Registering XPC task: %s", buf, 0xCu);
       }
     }
@@ -420,14 +420,14 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
     v46 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v35 = dispatch_queue_create("com.apple.spotlight.processing.task", v46);
 
-    v47 = [MEMORY[0x277CF0810] sharedScheduler];
+    mEMORY[0x277CF0810]8 = [MEMORY[0x277CF0810] sharedScheduler];
     v77[0] = MEMORY[0x277D85DD0];
     v77[1] = 3221225472;
     v77[2] = __22__SKGTaskAgent__setup__block_invoke_152;
     v77[3] = &unk_27893F610;
     v77[4] = self;
     v78 = v32;
-    [v47 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.processing" usingQueue:v35 launchHandler:v77];
+    [mEMORY[0x277CF0810]8 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.processing" usingQueue:v35 launchHandler:v77];
   }
 
   if (SKGLogGetCurrentLoggingLevel() >= 4)
@@ -435,14 +435,14 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
     v48 = SKGLogAgentInit();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
     {
-      v49 = [@"com.apple.corespotlight.knowledge.inference" UTF8String];
+      uTF8String9 = [@"com.apple.corespotlight.knowledge.inference" UTF8String];
       *buf = 136315138;
-      v95 = v49;
+      uTF8String = uTF8String9;
       _os_log_impl(&dword_231B25000, v48, OS_LOG_TYPE_DEFAULT, "Registering XPC task: %s", buf, 0xCu);
     }
   }
 
-  v50 = [MEMORY[0x277CF0810] sharedScheduler];
+  mEMORY[0x277CF0810]9 = [MEMORY[0x277CF0810] sharedScheduler];
   v75[0] = MEMORY[0x277D85DD0];
   v75[1] = 3221225472;
   v75[2] = __22__SKGTaskAgent__setup__block_invoke_160;
@@ -450,7 +450,7 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
   v75[4] = self;
   v51 = v32;
   v76 = v51;
-  [v50 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.inference" usingQueue:0 launchHandler:v75];
+  [mEMORY[0x277CF0810]9 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.inference" usingQueue:0 launchHandler:v75];
 
   if (SKGLogGetCurrentLoggingLevel() >= 4)
   {
@@ -458,7 +458,7 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
-      v95 = "com.apple.corespotlight.knowledge.debug.people";
+      uTF8String = "com.apple.corespotlight.knowledge.debug.people";
       _os_log_impl(&dword_231B25000, v52, OS_LOG_TYPE_DEFAULT, "Registering Debug Update XPC activity:%s", buf, 0xCu);
     }
   }
@@ -478,7 +478,7 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
     if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
-      v95 = "com.apple.corespotlight.knowledge.debug.inference";
+      uTF8String = "com.apple.corespotlight.knowledge.debug.inference";
       _os_log_impl(&dword_231B25000, v55, OS_LOG_TYPE_DEFAULT, "Registering Debug Inference XPC activity:%s", buf, 0xCu);
     }
   }
@@ -497,7 +497,7 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
     if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
-      v95 = "com.apple.corespotlight.knowledge.debug.reset";
+      uTF8String = "com.apple.corespotlight.knowledge.debug.reset";
       _os_log_impl(&dword_231B25000, v57, OS_LOG_TYPE_DEFAULT, "Registering Debug Reset XPC activity:%s", buf, 0xCu);
     }
   }
@@ -510,20 +510,20 @@ void __62__SKGTaskAgent_beginDebugActivity_event_name_knowledgedQueue___block_in
   v58 = v56;
   v70 = v58;
   xpc_activity_register("com.apple.corespotlight.knowledge.debug.reset", v53, v69);
-  v59 = [MEMORY[0x277CF0810] sharedScheduler];
+  mEMORY[0x277CF0810]10 = [MEMORY[0x277CF0810] sharedScheduler];
   v64 = MEMORY[0x277D85DD0];
   v65 = 3221225472;
   v66 = __22__SKGTaskAgent__setup__block_invoke_2_174;
   v67 = &unk_27893F720;
   v68 = v58;
   v60 = v58;
-  [v59 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.cascadeDonateNow" usingQueue:0 launchHandler:&v64];
+  [mEMORY[0x277CF0810]10 registerForTaskWithIdentifier:@"com.apple.corespotlight.knowledge.cascadeDonateNow" usingQueue:0 launchHandler:&v64];
 
-  v61 = [MEMORY[0x277D65738] sharedInstance];
-  [v61 registerHandler:&__block_literal_global_186 forEventName:@"com.apple.CascadeSets.DonateNow"];
+  mEMORY[0x277D65738] = [MEMORY[0x277D65738] sharedInstance];
+  [mEMORY[0x277D65738] registerHandler:&__block_literal_global_186 forEventName:@"com.apple.CascadeSets.DonateNow"];
 
-  v62 = [MEMORY[0x277D65738] sharedInstance];
-  [v62 startMonitoringEvents];
+  mEMORY[0x277D65738]2 = [MEMORY[0x277D65738] sharedInstance];
+  [mEMORY[0x277D65738]2 startMonitoringEvents];
 
   v63 = *MEMORY[0x277D85DE8];
 }
@@ -1301,7 +1301,7 @@ LABEL_12:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveSignal:(unint64_t)a3
+- (void)didReceiveSignal:(unint64_t)signal
 {
   v8 = *MEMORY[0x277D85DE8];
   if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -1310,12 +1310,12 @@ LABEL_12:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v6 = 134217984;
-      v7 = a3;
+      signalCopy = signal;
       _os_log_impl(&dword_231B25000, v4, OS_LOG_TYPE_INFO, "didReceiveSignal %ld", &v6, 0xCu);
     }
   }
 
-  if (a3 == 15)
+  if (signal == 15)
   {
     exit(0);
   }
@@ -1323,7 +1323,7 @@ LABEL_12:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveMemoryPressureNotification:(unint64_t)a3
+- (void)didReceiveMemoryPressureNotification:(unint64_t)notification
 {
   v8 = *MEMORY[0x277D85DE8];
   if (SKGLogGetCurrentLoggingLevel() >= 5)
@@ -1332,7 +1332,7 @@ LABEL_12:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v6 = 134217984;
-      v7 = a3;
+      notificationCopy = notification;
       _os_log_impl(&dword_231B25000, v4, OS_LOG_TYPE_INFO, "didReceiveMemoryPressureNotification %llx", &v6, 0xCu);
     }
   }
@@ -1340,22 +1340,22 @@ LABEL_12:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_runKnowledgeUpdatingWithJobContext:(id)a3 group:(id)a4 queue:(id)a5 delegate:(id)a6
+- (void)_runKnowledgeUpdatingWithJobContext:(id)context group:(id)group queue:(id)queue delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  contextCopy = context;
+  groupCopy = group;
+  delegateCopy = delegate;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__SKGTaskAgent__runKnowledgeUpdatingWithJobContext_group_queue_delegate___block_invoke;
   block[3] = &unk_27893D928;
-  v16 = v9;
-  v17 = v10;
-  v18 = v11;
-  v12 = v11;
-  v13 = v10;
-  v14 = v9;
-  dispatch_group_async(v13, a5, block);
+  v16 = contextCopy;
+  v17 = groupCopy;
+  v18 = delegateCopy;
+  v12 = delegateCopy;
+  v13 = groupCopy;
+  v14 = contextCopy;
+  dispatch_group_async(v13, queue, block);
 }
 
 void __22__SKGTaskAgent__setup__block_invoke_58_cold_1()

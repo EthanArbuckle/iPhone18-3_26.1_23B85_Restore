@@ -1,28 +1,28 @@
 @interface PKSTSTapToProvisionResult
-- (PKSTSTapToProvisionResult)initWithSTSResult:(id)a3;
+- (PKSTSTapToProvisionResult)initWithSTSResult:(id)result;
 @end
 
 @implementation PKSTSTapToProvisionResult
 
-- (PKSTSTapToProvisionResult)initWithSTSResult:(id)a3
+- (PKSTSTapToProvisionResult)initWithSTSResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v33.receiver = self;
   v33.super_class = PKSTSTapToProvisionResult;
   v5 = [(PKSTSTapToProvisionResult *)&v33 init];
   if (v5)
   {
-    v6 = [v4 provisionDataBlob];
+    provisionDataBlob = [resultCopy provisionDataBlob];
     encryptedTapData = v5->_encryptedTapData;
-    v5->_encryptedTapData = v6;
+    v5->_encryptedTapData = provisionDataBlob;
 
-    v8 = [v4 casdCertificate];
+    casdCertificate = [resultCopy casdCertificate];
     casdCertificate = v5->_casdCertificate;
-    v5->_casdCertificate = v8;
+    v5->_casdCertificate = casdCertificate;
 
-    v10 = [v4 networkName];
+    networkName = [resultCopy networkName];
     v11 = _MergedGlobals_176();
-    v12 = v10;
+    v12 = networkName;
     v13 = v11;
     v14 = v13;
     if (v13 == v12)

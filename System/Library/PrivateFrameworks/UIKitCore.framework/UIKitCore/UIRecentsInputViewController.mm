@@ -1,53 +1,53 @@
 @interface UIRecentsInputViewController
 - (UIRecentsInputViewControllerDelegate)recentInputDelegate;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_delete:(id)a3;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_delete:(id)_delete;
 - (void)_overrideTraitCollectionForHeaderViewController;
-- (void)didSelectButtonAtIndexPath:(id)a3;
+- (void)didSelectButtonAtIndexPath:(id)path;
 - (void)ensureConstraints;
-- (void)scrollViewDidChangeContentSize:(id)a3;
-- (void)setRecentInputs:(id)a3;
+- (void)scrollViewDidChangeContentSize:(id)size;
+- (void)setRecentInputs:(id)inputs;
 - (void)updateTableViewWidth;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation UIRecentsInputViewController
 
-- (void)didSelectButtonAtIndexPath:(id)a3
+- (void)didSelectButtonAtIndexPath:(id)path
 {
-  v11 = a3;
+  pathCopy = path;
   v4 = +[UIKeyboardImpl sharedInstance];
-  if ([v11 section])
+  if ([pathCopy section])
   {
-    if (-[UIRecentsInputViewController canManageList](self, "canManageList") && ![v11 row])
+    if (-[UIRecentsInputViewController canManageList](self, "canManageList") && ![pathCopy row])
     {
       [v4 clearRecentInput];
       [(UIRecentsInputViewController *)self setRecentInputs:0];
     }
 
-    if (-[UIRecentsInputViewController canManageList](self, "canManageList") && [v11 row] == 1 || !-[UIRecentsInputViewController canManageList](self, "canManageList") && !objc_msgSend(v11, "row"))
+    if (-[UIRecentsInputViewController canManageList](self, "canManageList") && [pathCopy row] == 1 || !-[UIRecentsInputViewController canManageList](self, "canManageList") && !objc_msgSend(pathCopy, "row"))
     {
       v5 = +[_UIStatistics recentsInputViewNewEntryCount];
       [v5 incrementValueBy:1];
     }
 
-    v6 = [(UIRecentsInputViewController *)self recentInputDelegate];
-    [v6 switchToKeyboard];
+    recentInputDelegate = [(UIRecentsInputViewController *)self recentInputDelegate];
+    [recentInputDelegate switchToKeyboard];
   }
 
   else
   {
-    v7 = [(UILexicon *)self->_recentInputs entries];
-    v8 = [v7 objectAtIndex:{objc_msgSend(v11, "row")}];
-    v6 = [v8 userInput];
+    entries = [(UILexicon *)self->_recentInputs entries];
+    v8 = [entries objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+    recentInputDelegate = [v8 userInput];
 
-    [v4 handleClearWithInsertBeforeAdvance:v6];
-    v9 = [(UIRecentsInputViewController *)self recentInputDelegate];
-    [v9 didSelectRecentInput];
+    [v4 handleClearWithInsertBeforeAdvance:recentInputDelegate];
+    recentInputDelegate2 = [(UIRecentsInputViewController *)self recentInputDelegate];
+    [recentInputDelegate2 didSelectRecentInput];
 
     v10 = +[_UIStatistics recentsInputViewItemSelectedCount];
     [v10 incrementValueBy:1];
@@ -56,35 +56,35 @@
 
 - (void)ensureConstraints
 {
-  v14 = [MEMORY[0x1E695DF70] array];
-  v3 = [(UIRecentsInputViewController *)self widthConstraint];
+  array = [MEMORY[0x1E695DF70] array];
+  widthConstraint = [(UIRecentsInputViewController *)self widthConstraint];
 
-  if (!v3)
+  if (!widthConstraint)
   {
     v4 = MEMORY[0x1E69977A0];
-    v5 = [(UITableViewController *)self tableView];
-    v6 = [v4 constraintWithItem:v5 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:0.0];
+    tableView = [(UITableViewController *)self tableView];
+    v6 = [v4 constraintWithItem:tableView attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:0.0];
     [(UIRecentsInputViewController *)self setWidthConstraint:v6];
 
-    v7 = [(UIRecentsInputViewController *)self widthConstraint];
-    [v14 addObject:v7];
+    widthConstraint2 = [(UIRecentsInputViewController *)self widthConstraint];
+    [array addObject:widthConstraint2];
   }
 
-  v8 = [(UIRecentsInputViewController *)self heightConstraint];
+  heightConstraint = [(UIRecentsInputViewController *)self heightConstraint];
 
-  if (!v8)
+  if (!heightConstraint)
   {
     v9 = MEMORY[0x1E69977A0];
-    v10 = [(UITableViewController *)self tableView];
-    v11 = [v9 constraintWithItem:v10 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:0.0];
+    tableView2 = [(UITableViewController *)self tableView];
+    v11 = [v9 constraintWithItem:tableView2 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:0.0];
     [(UIRecentsInputViewController *)self setHeightConstraint:v11];
 
-    v12 = [(UIRecentsInputViewController *)self heightConstraint];
-    [v14 addObject:v12];
+    heightConstraint2 = [(UIRecentsInputViewController *)self heightConstraint];
+    [array addObject:heightConstraint2];
   }
 
-  v13 = [(UITableViewController *)self tableView];
-  [v13 addConstraints:v14];
+  tableView3 = [(UITableViewController *)self tableView];
+  [tableView3 addConstraints:array];
 }
 
 - (void)updateTableViewWidth
@@ -100,7 +100,7 @@
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v5 = [(UILexicon *)self->_recentInputs entries];
+  entries = [(UILexicon *)self->_recentInputs entries];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __52__UIRecentsInputViewController_updateTableViewWidth__block_invoke;
@@ -108,10 +108,10 @@
   v6 = v4;
   v26 = v6;
   v27 = &v28;
-  [v5 enumerateObjectsUsingBlock:v25];
+  [entries enumerateObjectsUsingBlock:v25];
 
-  v7 = [(UIRecentsInputViewController *)self previouslyUsedString];
-  [v7 sizeWithAttributes:v6];
+  previouslyUsedString = [(UIRecentsInputViewController *)self previouslyUsedString];
+  [previouslyUsedString sizeWithAttributes:v6];
   v9 = v8;
 
   if (v9 > v29[3])
@@ -119,8 +119,8 @@
     v29[3] = v9;
   }
 
-  v10 = [(UIRecentsInputViewController *)self clearAllString];
-  [v10 sizeWithAttributes:v6];
+  clearAllString = [(UIRecentsInputViewController *)self clearAllString];
+  [clearAllString sizeWithAttributes:v6];
   v12 = v11;
 
   if (v12 > v29[3])
@@ -128,8 +128,8 @@
     v29[3] = v12;
   }
 
-  v13 = [(UIRecentsInputViewController *)self enterNewString];
-  [v13 sizeWithAttributes:v6];
+  enterNewString = [(UIRecentsInputViewController *)self enterNewString];
+  [enterNewString sizeWithAttributes:v6];
   v15 = v14;
 
   v16 = v29;
@@ -141,8 +141,8 @@
   }
 
   v16[3] = v17 + 80.0;
-  v18 = [(UITableViewController *)self tableView];
-  [v18 layoutMargins];
+  tableView = [(UITableViewController *)self tableView];
+  [tableView layoutMargins];
   v20 = v19;
   v22 = v21;
 
@@ -157,8 +157,8 @@
   }
 
   v29[3] = v23;
-  v24 = [(UIRecentsInputViewController *)self widthConstraint];
-  [v24 setConstant:v23];
+  widthConstraint = [(UIRecentsInputViewController *)self widthConstraint];
+  [widthConstraint setConstant:v23];
 
   _Block_object_dispose(&v28, 8);
 }
@@ -176,25 +176,25 @@ void __52__UIRecentsInputViewController_updateTableViewWidth__block_invoke(uint6
   }
 }
 
-- (void)setRecentInputs:(id)a3
+- (void)setRecentInputs:(id)inputs
 {
-  v11 = a3;
-  objc_storeStrong(&self->_recentInputs, a3);
+  inputsCopy = inputs;
+  objc_storeStrong(&self->_recentInputs, inputs);
   v5 = +[_UIStatistics recentsInputViewNumberOfItems];
-  v6 = [(UILexicon *)self->_recentInputs entries];
-  [v5 recordDistributionValue:{objc_msgSend(v6, "count")}];
+  entries = [(UILexicon *)self->_recentInputs entries];
+  [v5 recordDistributionValue:{objc_msgSend(entries, "count")}];
 
   [(UIRecentsInputViewController *)self updateTableViewWidth];
-  v7 = [(UITableViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(UITableViewController *)self tableView];
+  [tableView reloadData];
 
-  v8 = [v11 entries];
-  v9 = [v8 count];
+  entries2 = [inputsCopy entries];
+  v9 = [entries2 count];
 
   if (!v9)
   {
-    v10 = [(UIRecentsInputViewController *)self recentInputDelegate];
-    [v10 switchToKeyboard];
+    recentInputDelegate = [(UIRecentsInputViewController *)self recentInputDelegate];
+    [recentInputDelegate switchToKeyboard];
   }
 }
 
@@ -207,46 +207,46 @@ void __52__UIRecentsInputViewController_updateTableViewWidth__block_invoke(uint6
   [(UIRecentsInputViewController *)self ensureConstraints];
   if ([(UIRecentsInputViewController *)self canManageList])
   {
-    v3 = [(UIRecentsInputViewController *)self clearAllString];
+    clearAllString = [(UIRecentsInputViewController *)self clearAllString];
 
-    if (!v3)
+    if (!clearAllString)
     {
       v4 = _UINSLocalizedStringWithDefaultValue(@"Clear All", @"Clear All");
       [(UIRecentsInputViewController *)self setClearAllString:v4];
     }
   }
 
-  v5 = [(UIRecentsInputViewController *)self enterNewString];
+  enterNewString = [(UIRecentsInputViewController *)self enterNewString];
 
-  if (!v5)
+  if (!enterNewString)
   {
     v6 = _UINSLocalizedStringWithDefaultValue(@"Enter New…", @"Enter New…");
     [(UIRecentsInputViewController *)self setEnterNewString:v6];
   }
 
-  v7 = [(UIRecentsInputViewController *)self previouslyUsedString];
+  previouslyUsedString = [(UIRecentsInputViewController *)self previouslyUsedString];
 
-  if (!v7)
+  if (!previouslyUsedString)
   {
     v8 = _UINSLocalizedStringWithDefaultValue(@"Previously-Used Emails", @"Previously-Used Emails");
     [(UIRecentsInputViewController *)self setPreviouslyUsedString:v8];
   }
 
-  v9 = [(UITableViewController *)self tableView];
-  [v9 setMaskView:0];
+  tableView = [(UITableViewController *)self tableView];
+  [tableView setMaskView:0];
 
-  v10 = [(UITableViewController *)self tableView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView2 = [(UITableViewController *)self tableView];
+  [tableView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(UITableViewController *)self tableView];
-  [v11 registerClass:objc_opt_class() forCellReuseIdentifier:@"recentInputCell"];
+  tableView3 = [(UITableViewController *)self tableView];
+  [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"recentInputCell"];
 
-  v12 = [(UIRecentsInputViewController *)self customHeaderView];
+  customHeaderView = [(UIRecentsInputViewController *)self customHeaderView];
 
-  if (v12)
+  if (customHeaderView)
   {
-    v13 = [(UIRecentsInputViewController *)self customHeaderView];
-    [(UIRecentsInputViewController *)self setHeaderView:v13];
+    customHeaderView2 = [(UIRecentsInputViewController *)self customHeaderView];
+    [(UIRecentsInputViewController *)self setHeaderView:customHeaderView2];
   }
 
   else
@@ -254,72 +254,72 @@ void __52__UIRecentsInputViewController_updateTableViewWidth__block_invoke(uint6
     v14 = objc_alloc_init(_UIRecentsAccessoryDefaultView);
     [(UIRecentsInputViewController *)self setHeaderView:v14];
 
-    v15 = [(UIRecentsInputViewController *)self previouslyUsedString];
-    v16 = [(UIRecentsInputViewController *)self headerView];
-    v17 = [v16 titleLabel];
-    [v17 setText:v15];
+    previouslyUsedString2 = [(UIRecentsInputViewController *)self previouslyUsedString];
+    headerView = [(UIRecentsInputViewController *)self headerView];
+    titleLabel = [headerView titleLabel];
+    [titleLabel setText:previouslyUsedString2];
 
-    v13 = [(UIRecentsInputViewController *)self headerView];
-    [v13 intrinsicContentSize];
+    customHeaderView2 = [(UIRecentsInputViewController *)self headerView];
+    [customHeaderView2 intrinsicContentSize];
     v19 = v18;
-    v20 = [(UIRecentsInputViewController *)self headerView];
-    [v20 intrinsicContentSize];
+    headerView2 = [(UIRecentsInputViewController *)self headerView];
+    [headerView2 intrinsicContentSize];
     v22 = v21;
-    v23 = [(UIRecentsInputViewController *)self headerView];
-    [v23 setFrame:{0.0, 0.0, v19, v22}];
+    headerView3 = [(UIRecentsInputViewController *)self headerView];
+    [headerView3 setFrame:{0.0, 0.0, v19, v22}];
   }
 
-  v24 = [(UIRecentsInputViewController *)self headerView];
-  [v24 frame];
+  headerView4 = [(UIRecentsInputViewController *)self headerView];
+  [headerView4 frame];
   v26 = v25;
   v28 = v27;
 
   v29 = [[UIView alloc] initWithFrame:0.0, 0.0, v26, v28];
   [(UIRecentsInputViewController *)self setHeaderContainerView:v29];
 
-  v30 = [(UIRecentsInputViewController *)self headerContainerView];
-  [v30 setClipsToBounds:0];
+  headerContainerView = [(UIRecentsInputViewController *)self headerContainerView];
+  [headerContainerView setClipsToBounds:0];
 
   v31 = objc_alloc_init(UIViewController);
-  v32 = [(UIRecentsInputViewController *)self headerContainerView];
-  [(UIViewController *)v31 setView:v32];
+  headerContainerView2 = [(UIRecentsInputViewController *)self headerContainerView];
+  [(UIViewController *)v31 setView:headerContainerView2];
 
   [(UIRecentsInputViewController *)self setHeaderContainerViewController:v31];
-  v33 = [(UIRecentsInputViewController *)self headerContainerViewController];
-  [(UIViewController *)self addChildViewController:v33];
+  headerContainerViewController = [(UIRecentsInputViewController *)self headerContainerViewController];
+  [(UIViewController *)self addChildViewController:headerContainerViewController];
 
-  v34 = [(UIRecentsInputViewController *)self headerContainerViewController];
-  v35 = [v34 view];
-  v36 = [(UITableViewController *)self tableView];
-  [v36 setTableHeaderView:v35];
+  headerContainerViewController2 = [(UIRecentsInputViewController *)self headerContainerViewController];
+  view = [headerContainerViewController2 view];
+  tableView4 = [(UITableViewController *)self tableView];
+  [tableView4 setTableHeaderView:view];
 
-  v37 = [(UIRecentsInputViewController *)self headerContainerViewController];
-  [v37 didMoveToParentViewController:self];
+  headerContainerViewController3 = [(UIRecentsInputViewController *)self headerContainerViewController];
+  [headerContainerViewController3 didMoveToParentViewController:self];
 
-  v38 = [(UIRecentsInputViewController *)self headerView];
-  [v38 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerView5 = [(UIRecentsInputViewController *)self headerView];
+  [headerView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v39 = [(UIRecentsInputViewController *)self headerContainerView];
-  v40 = [(UIRecentsInputViewController *)self headerView];
-  [v39 addSubview:v40];
+  headerContainerView3 = [(UIRecentsInputViewController *)self headerContainerView];
+  headerView6 = [(UIRecentsInputViewController *)self headerView];
+  [headerContainerView3 addSubview:headerView6];
 
   v41 = MEMORY[0x1E69977A0];
-  v42 = [(UIRecentsInputViewController *)self headerView];
-  v43 = [(UIRecentsInputViewController *)self headerContainerView];
-  v44 = [v41 constraintWithItem:v42 attribute:9 relatedBy:0 toItem:v43 attribute:9 multiplier:1.0 constant:0.0];
+  headerView7 = [(UIRecentsInputViewController *)self headerView];
+  headerContainerView4 = [(UIRecentsInputViewController *)self headerContainerView];
+  v44 = [v41 constraintWithItem:headerView7 attribute:9 relatedBy:0 toItem:headerContainerView4 attribute:9 multiplier:1.0 constant:0.0];
 
   v45 = MEMORY[0x1E69977A0];
-  v46 = [(UIRecentsInputViewController *)self headerView];
-  v47 = [(UIRecentsInputViewController *)self headerContainerView];
-  v48 = [v45 constraintWithItem:v46 attribute:4 relatedBy:0 toItem:v47 attribute:4 multiplier:1.0 constant:0.0];
+  headerView8 = [(UIRecentsInputViewController *)self headerView];
+  headerContainerView5 = [(UIRecentsInputViewController *)self headerContainerView];
+  v48 = [v45 constraintWithItem:headerView8 attribute:4 relatedBy:0 toItem:headerContainerView5 attribute:4 multiplier:1.0 constant:0.0];
 
   v49 = MEMORY[0x1E69977A0];
-  v50 = [(UIRecentsInputViewController *)self headerView];
-  v51 = [v49 constraintWithItem:v50 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:v26];
+  headerView9 = [(UIRecentsInputViewController *)self headerView];
+  v51 = [v49 constraintWithItem:headerView9 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:v26];
 
   v52 = MEMORY[0x1E69977A0];
-  v53 = [(UIRecentsInputViewController *)self headerView];
-  v54 = [v52 constraintWithItem:v53 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:v28];
+  headerView10 = [(UIRecentsInputViewController *)self headerView];
+  v54 = [v52 constraintWithItem:headerView10 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:v28];
 
   v55 = MEMORY[0x1E69977A0];
   v58[0] = v44;
@@ -330,28 +330,28 @@ void __52__UIRecentsInputViewController_updateTableViewWidth__block_invoke(uint6
   [v55 activateConstraints:v56];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(UIRecentsInputViewController *)self _overrideTraitCollectionForHeaderViewController];
   v5.receiver = self;
   v5.super_class = UIRecentsInputViewController;
-  [(UITableViewController *)&v5 viewWillAppear:v3];
+  [(UITableViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = UIRecentsInputViewController;
-  [(UITableViewController *)&v4 viewDidAppear:a3];
+  [(UITableViewController *)&v4 viewDidAppear:appear];
   v3 = +[_UIStatistics recentsInputViewPresentationCount];
   [v3 incrementValueBy:1];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
     if ([(UIRecentsInputViewController *)self canManageList])
     {
@@ -364,47 +364,47 @@ void __52__UIRecentsInputViewController_updateTableViewWidth__block_invoke(uint6
     }
   }
 
-  else if (a4)
+  else if (section)
   {
     v9 = 0;
   }
 
   else
   {
-    v7 = [(UIRecentsInputViewController *)self recentInputs];
-    v8 = [v7 entries];
-    v9 = [v8 count];
+    recentInputs = [(UIRecentsInputViewController *)self recentInputs];
+    entries = [recentInputs entries];
+    v9 = [entries count];
   }
 
   return v9;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"recentInputCell" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"recentInputCell" forIndexPath:pathCopy];
   [v7 setFocusStyle:1];
-  v8 = [(UIRecentsInputViewController *)self recentInputDelegate];
-  v9 = [v8 textInputTraits];
-  [v7 setTextInputTraits:v9];
+  recentInputDelegate = [(UIRecentsInputViewController *)self recentInputDelegate];
+  textInputTraits = [recentInputDelegate textInputTraits];
+  [v7 setTextInputTraits:textInputTraits];
 
-  if ([v6 section])
+  if ([pathCopy section])
   {
-    if ([v6 section] != 1)
+    if ([pathCopy section] != 1)
     {
       goto LABEL_16;
     }
 
-    v10 = [(UIRecentsInputViewController *)self canManageList];
-    v11 = [v6 row];
-    if (v10)
+    canManageList = [(UIRecentsInputViewController *)self canManageList];
+    v11 = [pathCopy row];
+    if (canManageList)
     {
       if (!v11)
       {
-        v17 = [(UIRecentsInputViewController *)self clearAllString];
+        clearAllString = [(UIRecentsInputViewController *)self clearAllString];
 LABEL_14:
-        v15 = v17;
-        if (!v17)
+        userInput = clearAllString;
+        if (!clearAllString)
         {
           goto LABEL_16;
         }
@@ -412,7 +412,7 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      if ([v6 row] != 1)
+      if ([pathCopy row] != 1)
       {
         goto LABEL_16;
       }
@@ -423,14 +423,14 @@ LABEL_14:
       goto LABEL_16;
     }
 
-    v17 = [(UIRecentsInputViewController *)self enterNewString];
+    clearAllString = [(UIRecentsInputViewController *)self enterNewString];
     goto LABEL_14;
   }
 
-  v12 = [(UIRecentsInputViewController *)self recentInputs];
-  v13 = [v12 entries];
-  v14 = [v13 objectAtIndex:{objc_msgSend(v6, "row")}];
-  v15 = [v14 userInput];
+  recentInputs = [(UIRecentsInputViewController *)self recentInputs];
+  entries = [recentInputs entries];
+  v14 = [entries objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+  userInput = [v14 userInput];
 
   if ([(UIRecentsInputViewController *)self canManageList])
   {
@@ -439,10 +439,10 @@ LABEL_14:
     [v7 addGestureRecognizer:v16];
   }
 
-  if (v15)
+  if (userInput)
   {
 LABEL_15:
-    [v7 setInputText:v15 withBlurStyle:{-[UIRecentsInputViewController containingEffectStyle](self, "containingEffectStyle")}];
+    [v7 setInputText:userInput withBlurStyle:{-[UIRecentsInputViewController containingEffectStyle](self, "containingEffectStyle")}];
   }
 
 LABEL_16:
@@ -450,10 +450,10 @@ LABEL_16:
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
   result = 22.0;
-  if (!a4)
+  if (!section)
   {
     return 16.0;
   }
@@ -461,14 +461,14 @@ LABEL_16:
   return result;
 }
 
-- (void)scrollViewDidChangeContentSize:(id)a3
+- (void)scrollViewDidChangeContentSize:(id)size
 {
-  v4 = a3;
-  v5 = [v4 window];
-  [v5 bounds];
+  sizeCopy = size;
+  window = [sizeCopy window];
+  [window bounds];
   v7 = v6;
 
-  [v4 contentSize];
+  [sizeCopy contentSize];
   v9 = v8;
 
   if (v9 <= v7)
@@ -476,20 +476,20 @@ LABEL_16:
     v7 = v9;
   }
 
-  v10 = [(UIRecentsInputViewController *)self heightConstraint];
-  [v10 setConstant:v7];
+  heightConstraint = [(UIRecentsInputViewController *)self heightConstraint];
+  [heightConstraint setConstant:v7];
 }
 
-- (void)_delete:(id)a3
+- (void)_delete:(id)_delete
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  _deleteCopy = _delete;
+  if ([_deleteCopy state] == 1)
   {
-    v5 = [v4 view];
-    v6 = [v5 floatingLabel];
-    v7 = [v6 text];
+    view = [_deleteCopy view];
+    floatingLabel = [view floatingLabel];
+    text = [floatingLabel text];
 
-    v8 = [UIAlertController alertControllerWithTitle:v7 message:0 preferredStyle:0];
+    v8 = [UIAlertController alertControllerWithTitle:text message:0 preferredStyle:0];
     objc_initWeak(&location, self);
     v9 = _UINSLocalizedStringWithDefaultValue(@"Delete", @"Delete");
     v14[0] = MEMORY[0x1E69E9820];
@@ -497,7 +497,7 @@ LABEL_16:
     v14[2] = __40__UIRecentsInputViewController__delete___block_invoke;
     v14[3] = &unk_1E710E6D0;
     objc_copyWeak(&v16, &location);
-    v10 = v7;
+    v10 = text;
     v15 = v10;
     v11 = [UIAlertAction actionWithTitle:v9 style:2 handler:v14];
 
@@ -528,14 +528,14 @@ void __40__UIRecentsInputViewController__delete___block_invoke(uint64_t a1)
 
 - (void)_overrideTraitCollectionForHeaderViewController
 {
-  v3 = [(UIRecentsInputViewController *)self recentInputDelegate];
-  v4 = [v3 textInputTraits];
-  v5 = [v4 keyboardAppearance];
+  recentInputDelegate = [(UIRecentsInputViewController *)self recentInputDelegate];
+  textInputTraits = [recentInputDelegate textInputTraits];
+  keyboardAppearance = [textInputTraits keyboardAppearance];
 
   v6 = 2;
-  if (v5 != 1 && v5 != 9)
+  if (keyboardAppearance != 1 && keyboardAppearance != 9)
   {
-    if (v5 != 2)
+    if (keyboardAppearance != 2)
     {
       return;
     }
@@ -544,8 +544,8 @@ void __40__UIRecentsInputViewController__delete___block_invoke(uint64_t a1)
   }
 
   v8 = [UITraitCollection traitCollectionWithUserInterfaceStyle:v6];
-  v7 = [(UIRecentsInputViewController *)self headerContainerViewController];
-  [(UIViewController *)self setOverrideTraitCollection:v8 forChildViewController:v7];
+  headerContainerViewController = [(UIRecentsInputViewController *)self headerContainerViewController];
+  [(UIViewController *)self setOverrideTraitCollection:v8 forChildViewController:headerContainerViewController];
 }
 
 - (UIRecentsInputViewControllerDelegate)recentInputDelegate

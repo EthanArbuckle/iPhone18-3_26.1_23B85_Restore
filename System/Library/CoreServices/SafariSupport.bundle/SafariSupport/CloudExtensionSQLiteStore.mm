@@ -1,157 +1,157 @@
 @interface CloudExtensionSQLiteStore
-- (CloudExtensionSQLiteStore)initWithDatabaseURL:(id)a3 cloudExtensionsRecordZoneID:(id)a4;
+- (CloudExtensionSQLiteStore)initWithDatabaseURL:(id)l cloudExtensionsRecordZoneID:(id)d;
 - (CloudExtensionSQLiteStoreDelegate)delegate;
-- (id)_cloudExtensionStateFromRow:(id)a3 deviceUUIDString:(id)a4;
-- (id)_loadDeviceWithUUIDString:(id)a3;
+- (id)_cloudExtensionStateFromRow:(id)row deviceUUIDString:(id)string;
+- (id)_loadDeviceWithUUIDString:(id)string;
 - (id)_loadDevices;
 - (int)_createFreshDatabaseSchema;
-- (int)_loadExtensionStatesForDevice:(id)a3;
+- (int)_loadExtensionStatesForDevice:(id)device;
 - (int)_resetDatabaseSchema;
-- (int)_saveDevice:(id)a3;
-- (int)_saveExtensionState:(id)a3;
-- (void)_databaseAtURL:(id)a3 failedToDeleteWithError:(id)a4;
-- (void)_databaseAtURL:(id)a3 failedToOpenWithError:(id)a4;
-- (void)_databaseAtURL:(id)a3 hasIncorrectSchemaVersion:(int)a4;
+- (int)_saveDevice:(id)device;
+- (int)_saveExtensionState:(id)state;
+- (void)_databaseAtURL:(id)l failedToDeleteWithError:(id)error;
+- (void)_databaseAtURL:(id)l failedToOpenWithError:(id)error;
+- (void)_databaseAtURL:(id)l hasIncorrectSchemaVersion:(int)version;
 - (void)_databaseWillBeClosed;
 - (void)_databaseWillBeDeleted;
 - (void)_databaseWillBeOpened;
 - (void)_databaseWillBeRecreated;
-- (void)_failedToDeleteMetadataValueWithKey:(id)a3 error:(int)a4;
-- (void)_failedToEnableForeignKeysWithError:(int)a3;
-- (void)_failedToEnableSecureDeleteWithError:(int)a3;
-- (void)_failedToEnableWALWithError:(id)a3;
-- (void)_failedToExcludeDatabaseFromBackupWithError:(id)a3;
-- (void)_failedToInsertMetadataValueWithKey:(id)a3 error:(int)a4;
-- (void)_failedToSetSchemaVersion:(int)a3 withError:(int)a4;
-- (void)_failedToUpdateMetadataValueWithKey:(id)a3 error:(int)a4;
-- (void)_vacuumFailedWithError:(int)a3;
-- (void)database:(id)a3 hadSevereError:(id)a4;
-- (void)deleteRecordsWithPrimaryKeys:(id)a3 completionHandler:(id)a4;
-- (void)loadCloudExtensionDataWithCompletionHandler:(id)a3;
-- (void)loadCloudExtensionDeviceWithUUIDString:(id)a3 includeCloudExtensionStates:(BOOL)a4 completionHandler:(id)a5;
-- (void)saveCloudExtensionDevices:(id)a3 extensionStates:(id)a4 completionHandler:(id)a5;
+- (void)_failedToDeleteMetadataValueWithKey:(id)key error:(int)error;
+- (void)_failedToEnableForeignKeysWithError:(int)error;
+- (void)_failedToEnableSecureDeleteWithError:(int)error;
+- (void)_failedToEnableWALWithError:(id)error;
+- (void)_failedToExcludeDatabaseFromBackupWithError:(id)error;
+- (void)_failedToInsertMetadataValueWithKey:(id)key error:(int)error;
+- (void)_failedToSetSchemaVersion:(int)version withError:(int)error;
+- (void)_failedToUpdateMetadataValueWithKey:(id)key error:(int)error;
+- (void)_vacuumFailedWithError:(int)error;
+- (void)database:(id)database hadSevereError:(id)error;
+- (void)deleteRecordsWithPrimaryKeys:(id)keys completionHandler:(id)handler;
+- (void)loadCloudExtensionDataWithCompletionHandler:(id)handler;
+- (void)loadCloudExtensionDeviceWithUUIDString:(id)string includeCloudExtensionStates:(BOOL)states completionHandler:(id)handler;
+- (void)saveCloudExtensionDevices:(id)devices extensionStates:(id)states completionHandler:(id)handler;
 @end
 
 @implementation CloudExtensionSQLiteStore
 
-- (CloudExtensionSQLiteStore)initWithDatabaseURL:(id)a3 cloudExtensionsRecordZoneID:(id)a4
+- (CloudExtensionSQLiteStore)initWithDatabaseURL:(id)l cloudExtensionsRecordZoneID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = CloudExtensionSQLiteStore;
-  v8 = [(CloudKitSQLiteStore *)&v12 initWithDatabaseURL:a3 databaseQueueLabel:"com.apple.Safari.CloudBookmarks.CloudExtensionSQLiteStore"];
+  v8 = [(CloudKitSQLiteStore *)&v12 initWithDatabaseURL:l databaseQueueLabel:"com.apple.Safari.CloudBookmarks.CloudExtensionSQLiteStore"];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_cloudExtensionsRecordZoneID, a4);
+    objc_storeStrong(&v8->_cloudExtensionsRecordZoneID, d);
     v10 = v9;
   }
 
   return v9;
 }
 
-- (void)loadCloudExtensionDeviceWithUUIDString:(id)a3 includeCloudExtensionStates:(BOOL)a4 completionHandler:(id)a5
+- (void)loadCloudExtensionDeviceWithUUIDString:(id)string includeCloudExtensionStates:(BOOL)states completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CloudKitSQLiteStore *)self _databaseQueue];
+  stringCopy = string;
+  handlerCopy = handler;
+  _databaseQueue = [(CloudKitSQLiteStore *)self _databaseQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100087E14;
   v13[3] = &unk_100135448;
-  v14 = v8;
-  v15 = v9;
+  v14 = stringCopy;
+  v15 = handlerCopy;
   v13[4] = self;
-  v16 = a4;
-  v11 = v8;
-  v12 = v9;
-  dispatch_async(v10, v13);
+  statesCopy = states;
+  v11 = stringCopy;
+  v12 = handlerCopy;
+  dispatch_async(_databaseQueue, v13);
 }
 
-- (void)loadCloudExtensionDataWithCompletionHandler:(id)a3
+- (void)loadCloudExtensionDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CloudKitSQLiteStore *)self _databaseQueue];
+  handlerCopy = handler;
+  _databaseQueue = [(CloudKitSQLiteStore *)self _databaseQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100087FD8;
   v7[3] = &unk_100135470;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(_databaseQueue, v7);
 }
 
-- (void)deleteRecordsWithPrimaryKeys:(id)a3 completionHandler:(id)a4
+- (void)deleteRecordsWithPrimaryKeys:(id)keys completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  keysCopy = keys;
+  handlerCopy = handler;
+  if ([keysCopy count])
   {
-    v8 = [(CloudKitSQLiteStore *)self _databaseQueue];
+    _databaseQueue = [(CloudKitSQLiteStore *)self _databaseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000882A4;
     block[3] = &unk_100135498;
     block[4] = self;
-    v11 = v7;
-    v10 = v6;
-    dispatch_async(v8, block);
+    v11 = handlerCopy;
+    v10 = keysCopy;
+    dispatch_async(_databaseQueue, block);
   }
 
   else
   {
-    (*(v7 + 2))(v7, 101);
+    (*(handlerCopy + 2))(handlerCopy, 101);
   }
 }
 
-- (void)saveCloudExtensionDevices:(id)a3 extensionStates:(id)a4 completionHandler:(id)a5
+- (void)saveCloudExtensionDevices:(id)devices extensionStates:(id)states completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CloudKitSQLiteStore *)self _databaseQueue];
+  devicesCopy = devices;
+  statesCopy = states;
+  handlerCopy = handler;
+  _databaseQueue = [(CloudKitSQLiteStore *)self _databaseQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000886B8;
   v15[3] = &unk_1001354C0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
-  dispatch_async(v11, v15);
+  v16 = devicesCopy;
+  v17 = statesCopy;
+  v18 = handlerCopy;
+  v12 = statesCopy;
+  v13 = devicesCopy;
+  v14 = handlerCopy;
+  dispatch_async(_databaseQueue, v15);
 }
 
-- (void)database:(id)a3 hadSevereError:(id)a4
+- (void)database:(id)database hadSevereError:(id)error
 {
-  v8 = a4;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 cloudExtensionSQLiteStoreStore:self hadSevereError:v8];
+    [v7 cloudExtensionSQLiteStoreStore:self hadSevereError:errorCopy];
   }
 }
 
 - (int)_createFreshDatabaseSchema
 {
-  v3 = [(CloudKitSQLiteStore *)self _database];
-  v4 = sub_100001E04(v3, 0, @"CREATE TABLE cloud_extension_devices (device_uuid TEXT PRIMARY KEY NOT NULL,system_fields BLOB NOT NULL,device_name TEXT,last_modified REAL NOT NULL,new_tab_page_composed_identifier TEXT,new_tab_page_set_by_user_gesture BOOLEAN DEFAULT 0,new_tab_page_last_modified REAL NOT NULL)");
+  _database = [(CloudKitSQLiteStore *)self _database];
+  v4 = sub_100001E04(_database, 0, @"CREATE TABLE cloud_extension_devices (device_uuid TEXT PRIMARY KEY NOT NULL,system_fields BLOB NOT NULL,device_name TEXT,last_modified REAL NOT NULL,new_tab_page_composed_identifier TEXT,new_tab_page_set_by_user_gesture BOOLEAN DEFAULT 0,new_tab_page_last_modified REAL NOT NULL)");
 
   if (v4 != 101)
   {
     v8 = sub_1000D23FC();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(CloudKitSQLiteStore *)self _database];
-      v12 = [v11 lastErrorMessage];
+      _database2 = [(CloudKitSQLiteStore *)self _database];
+      lastErrorMessage = [_database2 lastErrorMessage];
       v18 = 138543618;
-      v19 = v12;
+      v19 = lastErrorMessage;
       v20 = 1024;
       v21 = v4;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Failed to create the cloud_extension_devices table: %{public}@ (%d)", &v18, 0x12u);
@@ -160,18 +160,18 @@
     goto LABEL_13;
   }
 
-  v5 = [(CloudKitSQLiteStore *)self _database];
-  v4 = sub_100001E04(v5, 0, @"CREATE TABLE cloud_extension_states (record_name TEXT PRIMARY KEY NOT NULL,composed_identifier TEXT NOT NULL,system_fields BLOB NOT NULL,owning_device_uuid TEXT NOT NULL,containing_app_adam_id TEXT,display_name TEXT NOT NULL,is_enabled BOOLEAN DEFAULT 0,was_enabled_by_user_gesture BOOLEAN DEFAULT 0,ios_app_bundle_identifier TEXT,ios_extension_bundle_identifier TEXT,mac_app_bundle_identifier TEXT,mac_extension_bundle_identifier TEXT,profile_uuid_string TEXT,last_modified REAL NOT NULL,FOREIGN KEY(owning_device_uuid) REFERENCES cloud_extension_devices(device_uuid) ON DELETE CASCADE)");
+  _database3 = [(CloudKitSQLiteStore *)self _database];
+  v4 = sub_100001E04(_database3, 0, @"CREATE TABLE cloud_extension_states (record_name TEXT PRIMARY KEY NOT NULL,composed_identifier TEXT NOT NULL,system_fields BLOB NOT NULL,owning_device_uuid TEXT NOT NULL,containing_app_adam_id TEXT,display_name TEXT NOT NULL,is_enabled BOOLEAN DEFAULT 0,was_enabled_by_user_gesture BOOLEAN DEFAULT 0,ios_app_bundle_identifier TEXT,ios_extension_bundle_identifier TEXT,mac_app_bundle_identifier TEXT,mac_extension_bundle_identifier TEXT,profile_uuid_string TEXT,last_modified REAL NOT NULL,FOREIGN KEY(owning_device_uuid) REFERENCES cloud_extension_devices(device_uuid) ON DELETE CASCADE)");
 
   if (v4 != 101)
   {
     v8 = sub_1000D23FC();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(CloudKitSQLiteStore *)self _database];
-      v14 = [v13 lastErrorMessage];
+      _database4 = [(CloudKitSQLiteStore *)self _database];
+      lastErrorMessage2 = [_database4 lastErrorMessage];
       v18 = 138543618;
-      v19 = v14;
+      v19 = lastErrorMessage2;
       v20 = 1024;
       v21 = v4;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Failed to create the cloud_extension_states table: %{public}@ (%d)", &v18, 0x12u);
@@ -180,18 +180,18 @@
     goto LABEL_13;
   }
 
-  v6 = [(CloudKitSQLiteStore *)self _database];
-  v4 = sub_100001E04(v6, 0, @"CREATE INDEX cloud_extension_states__owning_device_uuid ON cloud_extension_states (owning_device_uuid)");
+  _database5 = [(CloudKitSQLiteStore *)self _database];
+  v4 = sub_100001E04(_database5, 0, @"CREATE INDEX cloud_extension_states__owning_device_uuid ON cloud_extension_states (owning_device_uuid)");
 
   if (v4 != 101)
   {
     v8 = sub_1000D23FC();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v16 = [(CloudKitSQLiteStore *)self _database];
-      v17 = [v16 lastErrorMessage];
+      _database6 = [(CloudKitSQLiteStore *)self _database];
+      lastErrorMessage3 = [_database6 lastErrorMessage];
       v18 = 138543618;
-      v19 = v17;
+      v19 = lastErrorMessage3;
       v20 = 1024;
       v21 = v4;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Failed to create the index for cloud_extension_states table: %{public}@ (%d)", &v18, 0x12u);
@@ -200,18 +200,18 @@
     goto LABEL_13;
   }
 
-  v7 = [(CloudKitSQLiteStore *)self _database];
-  v4 = sub_100001E04(v7, 0, @"CREATE TABLE metadata (key TEXT NOT NULL UNIQUE, value)");
+  _database7 = [(CloudKitSQLiteStore *)self _database];
+  v4 = sub_100001E04(_database7, 0, @"CREATE TABLE metadata (key TEXT NOT NULL UNIQUE, value)");
 
   if (v4 != 101)
   {
     v8 = sub_1000D23FC();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(CloudKitSQLiteStore *)self _database];
-      v10 = [v9 lastErrorMessage];
+      _database8 = [(CloudKitSQLiteStore *)self _database];
+      lastErrorMessage4 = [_database8 lastErrorMessage];
       v18 = 138543618;
-      v19 = v10;
+      v19 = lastErrorMessage4;
       v20 = 1024;
       v21 = v4;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Failed to create the metadata table: %{public}@ (%d)", &v18, 0x12u);
@@ -244,18 +244,18 @@ LABEL_13:
         }
 
         v6 = *(*(&v13 + 1) + 8 * v5);
-        v7 = [(CloudKitSQLiteStore *)self _database];
-        v8 = sub_100001E04(v7, 0, v6);
+        _database = [(CloudKitSQLiteStore *)self _database];
+        v8 = sub_100001E04(_database, 0, v6);
 
         if (v8 != 101)
         {
           v9 = sub_1000D23FC();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
           {
-            v11 = [(CloudKitSQLiteStore *)self _database];
-            v12 = [v11 lastErrorMessage];
+            _database2 = [(CloudKitSQLiteStore *)self _database];
+            lastErrorMessage = [_database2 lastErrorMessage];
             *buf = 138543618;
-            v18 = v12;
+            v18 = lastErrorMessage;
             v19 = 1024;
             v20 = v8;
             _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to execute query when resetting database schema: %{public}@ (%d)", buf, 0x12u);
@@ -292,73 +292,73 @@ LABEL_13:
   }
 }
 
-- (void)_databaseAtURL:(id)a3 failedToOpenWithError:(id)a4
+- (void)_databaseAtURL:(id)l failedToOpenWithError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  errorCopy = error;
   v7 = sub_1000D23FC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = [v6 safari_privacyPreservingDescription];
-    sub_10008BF70(v5, v8, &v9);
+    safari_privacyPreservingDescription = [errorCopy safari_privacyPreservingDescription];
+    sub_10008BF70(lCopy, safari_privacyPreservingDescription, &v9);
   }
 }
 
-- (void)_failedToExcludeDatabaseFromBackupWithError:(id)a3
+- (void)_failedToExcludeDatabaseFromBackupWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = sub_1000D23FC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    v5 = [v3 safari_privacyPreservingDescription];
-    sub_10008BFC8(v5, &v6);
+    safari_privacyPreservingDescription = [errorCopy safari_privacyPreservingDescription];
+    sub_10008BFC8(safari_privacyPreservingDescription, &v6);
   }
 }
 
-- (void)_failedToEnableWALWithError:(id)a3
+- (void)_failedToEnableWALWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = sub_1000D23FC();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    v5 = [v3 safari_privacyPreservingDescription];
-    sub_10008C01C(v5, &v6);
+    safari_privacyPreservingDescription = [errorCopy safari_privacyPreservingDescription];
+    sub_10008C01C(safari_privacyPreservingDescription, &v6);
   }
 }
 
-- (void)_failedToEnableForeignKeysWithError:(int)a3
+- (void)_failedToEnableForeignKeysWithError:(int)error
 {
   v5 = sub_1000D23FC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v6 = [(CloudKitSQLiteStore *)self _database];
-    v7 = [v6 lastErrorMessage];
+    _database = [(CloudKitSQLiteStore *)self _database];
+    lastErrorMessage = [_database lastErrorMessage];
     v8 = 138543618;
-    v9 = v7;
+    v9 = lastErrorMessage;
     v10 = 1024;
-    v11 = a3;
+    errorCopy = error;
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Failed to enable foreign keys on iCloud Extensions store: %{public}@ (%d)", &v8, 0x12u);
   }
 }
 
-- (void)_failedToEnableSecureDeleteWithError:(int)a3
+- (void)_failedToEnableSecureDeleteWithError:(int)error
 {
   v5 = sub_1000D23FC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v6 = [(CloudKitSQLiteStore *)self _database];
-    v7 = [v6 lastErrorMessage];
+    _database = [(CloudKitSQLiteStore *)self _database];
+    lastErrorMessage = [_database lastErrorMessage];
     v8 = 138543618;
-    v9 = v7;
+    v9 = lastErrorMessage;
     v10 = 1024;
-    v11 = a3;
+    errorCopy = error;
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Failed to enable secure delete on iCloud Extensions store: %{public}@ (%d)", &v8, 0x12u);
   }
 }
 
-- (void)_databaseAtURL:(id)a3 hasIncorrectSchemaVersion:(int)a4
+- (void)_databaseAtURL:(id)l hasIncorrectSchemaVersion:(int)version
 {
-  v4 = a3;
+  lCopy = l;
   v5 = sub_1000D23FC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -385,15 +385,15 @@ LABEL_13:
   }
 }
 
-- (void)_databaseAtURL:(id)a3 failedToDeleteWithError:(id)a4
+- (void)_databaseAtURL:(id)l failedToDeleteWithError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  errorCopy = error;
   v7 = sub_1000D23FC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = [v6 safari_privacyPreservingDescription];
-    sub_10008C144(v5, v8, &v9);
+    safari_privacyPreservingDescription = [errorCopy safari_privacyPreservingDescription];
+    sub_10008C144(lCopy, safari_privacyPreservingDescription, &v9);
   }
 }
 
@@ -407,96 +407,96 @@ LABEL_13:
   }
 }
 
-- (void)_failedToSetSchemaVersion:(int)a3 withError:(int)a4
+- (void)_failedToSetSchemaVersion:(int)version withError:(int)error
 {
   v7 = sub_1000D23FC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = [(CloudKitSQLiteStore *)self _database];
-    v9 = [v8 lastErrorMessage];
+    _database = [(CloudKitSQLiteStore *)self _database];
+    lastErrorMessage = [_database lastErrorMessage];
     v10[0] = 67109634;
-    v10[1] = a3;
+    v10[1] = version;
     v11 = 2114;
-    v12 = v9;
+    v12 = lastErrorMessage;
     v13 = 1024;
-    v14 = a4;
+    errorCopy = error;
     _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to set the database schema version to %d: %{public}@ (%d)", v10, 0x18u);
   }
 }
 
-- (void)_failedToUpdateMetadataValueWithKey:(id)a3 error:(int)a4
+- (void)_failedToUpdateMetadataValueWithKey:(id)key error:(int)error
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = sub_1000D23FC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = [(CloudKitSQLiteStore *)self _database];
-    v9 = [v8 lastErrorMessage];
+    _database = [(CloudKitSQLiteStore *)self _database];
+    lastErrorMessage = [_database lastErrorMessage];
     v10 = 138543874;
-    v11 = v6;
+    v11 = keyCopy;
     v12 = 2114;
-    v13 = v9;
+    v13 = lastErrorMessage;
     v14 = 1024;
-    v15 = a4;
+    errorCopy = error;
     _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to update metadata value %{public}@: %{public}@ (%d)", &v10, 0x1Cu);
   }
 }
 
-- (void)_failedToInsertMetadataValueWithKey:(id)a3 error:(int)a4
+- (void)_failedToInsertMetadataValueWithKey:(id)key error:(int)error
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = sub_1000D23FC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = [(CloudKitSQLiteStore *)self _database];
-    v9 = [v8 lastErrorMessage];
+    _database = [(CloudKitSQLiteStore *)self _database];
+    lastErrorMessage = [_database lastErrorMessage];
     v10 = 138543874;
-    v11 = v6;
+    v11 = keyCopy;
     v12 = 2114;
-    v13 = v9;
+    v13 = lastErrorMessage;
     v14 = 1024;
-    v15 = a4;
+    errorCopy = error;
     _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to insert metadata value %{public}@: %{public}@ (%d)", &v10, 0x1Cu);
   }
 }
 
-- (void)_failedToDeleteMetadataValueWithKey:(id)a3 error:(int)a4
+- (void)_failedToDeleteMetadataValueWithKey:(id)key error:(int)error
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = sub_1000D23FC();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = [(CloudKitSQLiteStore *)self _database];
-    v9 = [v8 lastErrorMessage];
+    _database = [(CloudKitSQLiteStore *)self _database];
+    lastErrorMessage = [_database lastErrorMessage];
     v10 = 138543874;
-    v11 = v6;
+    v11 = keyCopy;
     v12 = 2114;
-    v13 = v9;
+    v13 = lastErrorMessage;
     v14 = 1024;
-    v15 = a4;
+    errorCopy = error;
     _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to delete metadata value for key %{public}@: %{public}@ (%d)", &v10, 0x1Cu);
   }
 }
 
-- (void)_vacuumFailedWithError:(int)a3
+- (void)_vacuumFailedWithError:(int)error
 {
   v5 = sub_1000D23FC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v6 = [(CloudKitSQLiteStore *)self _database];
-    v7 = [v6 lastErrorMessage];
+    _database = [(CloudKitSQLiteStore *)self _database];
+    lastErrorMessage = [_database lastErrorMessage];
     v8 = 138543618;
-    v9 = v7;
+    v9 = lastErrorMessage;
     v10 = 1024;
-    v11 = a3;
+    errorCopy = error;
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Failed to vacuum database: %{public}@ (%d)", &v8, 0x12u);
   }
 }
 
 - (id)_loadDevices
 {
-  v2 = [(CloudKitSQLiteStore *)self _database];
-  v22 = sub_100002034(v2, @"SELECT device_uuid, system_fields, device_name, last_modified, new_tab_page_composed_identifier, new_tab_page_set_by_user_gesture, new_tab_page_last_modified FROM cloud_extension_devices");
+  _database = [(CloudKitSQLiteStore *)self _database];
+  v22 = sub_100002034(_database, @"SELECT device_uuid, system_fields, device_name, last_modified, new_tab_page_composed_identifier, new_tab_page_set_by_user_gesture, new_tab_page_last_modified FROM cloud_extension_devices");
 
   v23 = +[NSMutableArray array];
   v34 = 0u;
@@ -571,36 +571,36 @@ LABEL_13:
     while (v3);
   }
 
-  v20 = [obj statement];
-  [v20 invalidate];
+  statement = [obj statement];
+  [statement invalidate];
 
   return v23;
 }
 
-- (id)_loadDeviceWithUUIDString:(id)a3
+- (id)_loadDeviceWithUUIDString:(id)string
 {
-  v18 = a3;
-  v4 = [(CloudKitSQLiteStore *)self _database];
-  v5 = sub_10008A264(v4, @"SELECT system_fields, device_name, last_modified, new_tab_page_composed_identifier, new_tab_page_set_by_user_gesture, new_tab_page_last_modified FROM cloud_extension_devices WHERE device_uuid = ?", &v18);
+  stringCopy = string;
+  _database = [(CloudKitSQLiteStore *)self _database];
+  v5 = sub_10008A264(_database, @"SELECT system_fields, device_name, last_modified, new_tab_page_composed_identifier, new_tab_page_set_by_user_gesture, new_tab_page_last_modified FROM cloud_extension_devices WHERE device_uuid = ?", &stringCopy);
 
-  v6 = [v5 nextObject];
-  v7 = v6;
-  if (v6)
+  nextObject = [v5 nextObject];
+  v7 = nextObject;
+  if (nextObject)
   {
-    v8 = [v6 dataAtIndex:0];
-    if ([v8 length])
+    statement3 = [nextObject dataAtIndex:0];
+    if ([statement3 length])
     {
-      v9 = [v7 stringAtIndex:1];
+      statement2 = [v7 stringAtIndex:1];
       [v7 doubleAtIndex:2];
       v10 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
       v11 = [v7 stringAtIndex:3];
       v12 = [v7 BOOLAtIndex:4];
       [v7 doubleAtIndex:5];
       v13 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-      v14 = [v5 statement];
-      [v14 invalidate];
+      statement = [v5 statement];
+      [statement invalidate];
 
-      v15 = [CloudExtensionDevice cloudExtensionDeviceWithDeviceUUIDString:v18 deviceName:v9 lastModifiedDate:v10 newTabPageComposedIdentifier:v11 newTabPageSetByUserGesture:v12 newTabPageLastModifiedDate:v13 encodedSystemFieldsData:v8 cloudExtensionsRecordZoneID:self->_cloudExtensionsRecordZoneID];
+      v15 = [CloudExtensionDevice cloudExtensionDeviceWithDeviceUUIDString:stringCopy deviceName:statement2 lastModifiedDate:v10 newTabPageComposedIdentifier:v11 newTabPageSetByUserGesture:v12 newTabPageLastModifiedDate:v13 encodedSystemFieldsData:statement3 cloudExtensionsRecordZoneID:self->_cloudExtensionsRecordZoneID];
     }
 
     else
@@ -611,69 +611,69 @@ LABEL_13:
         sub_10008C214();
       }
 
-      v9 = [v5 statement];
-      [v9 invalidate];
+      statement2 = [v5 statement];
+      [statement2 invalidate];
       v15 = 0;
     }
   }
 
   else
   {
-    v8 = [v5 statement];
-    [v8 invalidate];
+    statement3 = [v5 statement];
+    [statement3 invalidate];
     v15 = 0;
   }
 
   return v15;
 }
 
-- (int)_saveDevice:(id)a3
+- (int)_saveDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [WBSSQLiteStatement alloc];
-  v6 = [(CloudKitSQLiteStore *)self _database];
-  v7 = [v5 initWithDatabase:v6 query:{@"INSERT INTO cloud_extension_devices (device_uuid, system_fields, device_name, last_modified, new_tab_page_composed_identifier, new_tab_page_set_by_user_gesture, new_tab_page_last_modified)VALUES (?, ?, ?, ?, ?, ?, ?)ON CONFLICT(device_uuid) DO UPDATE SET device_uuid = ?1, system_fields = ?2, device_name = ?3, last_modified = ?4, new_tab_page_composed_identifier = ?5, new_tab_page_set_by_user_gesture = ?6, new_tab_page_last_modified = ?7"}];
+  _database = [(CloudKitSQLiteStore *)self _database];
+  v7 = [v5 initWithDatabase:_database query:{@"INSERT INTO cloud_extension_devices (device_uuid, system_fields, device_name, last_modified, new_tab_page_composed_identifier, new_tab_page_set_by_user_gesture, new_tab_page_last_modified)VALUES (?, ?, ?, ?, ?, ?, ?)ON CONFLICT(device_uuid) DO UPDATE SET device_uuid = ?1, system_fields = ?2, device_name = ?3, last_modified = ?4, new_tab_page_composed_identifier = ?5, new_tab_page_set_by_user_gesture = ?6, new_tab_page_last_modified = ?7"}];
 
-  v23 = [v4 deviceUUIDString];
-  v8 = [v4 record];
-  v22 = [v8 safari_encodedSystemFieldsData];
-  v21 = [v4 deviceName];
-  v9 = [v4 lastModifiedDate];
-  [v9 timeIntervalSinceReferenceDate];
+  deviceUUIDString = [deviceCopy deviceUUIDString];
+  record = [deviceCopy record];
+  safari_encodedSystemFieldsData = [record safari_encodedSystemFieldsData];
+  deviceName = [deviceCopy deviceName];
+  lastModifiedDate = [deviceCopy lastModifiedDate];
+  [lastModifiedDate timeIntervalSinceReferenceDate];
   *buf = v10;
-  v20 = [v4 composedIdentifierForNewTabPage];
-  v19 = [v4 wasNewTabPageSetByUserGesture];
-  v11 = [v4 lastModifiedDateForNewTabPage];
-  [v11 timeIntervalSinceReferenceDate];
+  composedIdentifierForNewTabPage = [deviceCopy composedIdentifierForNewTabPage];
+  wasNewTabPageSetByUserGesture = [deviceCopy wasNewTabPageSetByUserGesture];
+  lastModifiedDateForNewTabPage = [deviceCopy lastModifiedDateForNewTabPage];
+  [lastModifiedDateForNewTabPage timeIntervalSinceReferenceDate];
   v18 = v12;
-  sub_10008B294(v7, &v23, &v22, &v21, buf, &v20, &v19, &v18);
+  sub_10008B294(v7, &deviceUUIDString, &safari_encodedSystemFieldsData, &deviceName, buf, &composedIdentifierForNewTabPage, &wasNewTabPageSetByUserGesture, &v18);
 
-  v13 = [v7 execute];
+  execute = [v7 execute];
   [v7 reset];
-  if (v13 != 101)
+  if (execute != 101)
   {
     v14 = sub_1000D23FC();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v16 = [(CloudKitSQLiteStore *)self _database];
-      v17 = [v16 lastErrorMessage];
+      _database2 = [(CloudKitSQLiteStore *)self _database];
+      lastErrorMessage = [_database2 lastErrorMessage];
       *buf = 138543618;
-      *&buf[4] = v17;
+      *&buf[4] = lastErrorMessage;
       v25 = 1024;
-      v26 = v13;
+      v26 = execute;
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Failed to insert or replace device: %{public}@ (%d)", buf, 0x12u);
     }
   }
 
-  return v13;
+  return execute;
 }
 
-- (int)_loadExtensionStatesForDevice:(id)a3
+- (int)_loadExtensionStatesForDevice:(id)device
 {
-  v4 = a3;
-  v22 = [v4 deviceUUIDString];
-  v5 = [(CloudKitSQLiteStore *)self _database];
-  v6 = sub_10008A264(v5, @"SELECT composed_identifier, system_fields, containing_app_adam_id, display_name, is_enabled, was_enabled_by_user_gesture, ios_app_bundle_identifier, ios_extension_bundle_identifier, mac_app_bundle_identifier, mac_extension_bundle_identifier, last_modified, record_name, profile_uuid_string FROM cloud_extension_states WHERE owning_device_uuid = ?", &v22);
+  deviceCopy = device;
+  deviceUUIDString = [deviceCopy deviceUUIDString];
+  _database = [(CloudKitSQLiteStore *)self _database];
+  v6 = sub_10008A264(_database, @"SELECT composed_identifier, system_fields, containing_app_adam_id, display_name, is_enabled, was_enabled_by_user_gesture, ios_app_bundle_identifier, ios_extension_bundle_identifier, mac_app_bundle_identifier, mac_extension_bundle_identifier, last_modified, record_name, profile_uuid_string FROM cloud_extension_states WHERE owning_device_uuid = ?", &deviceUUIDString);
 
   v7 = +[NSMutableArray array];
   v20 = 0u;
@@ -694,11 +694,11 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        v12 = [(CloudExtensionSQLiteStore *)self _cloudExtensionStateFromRow:*(*(&v18 + 1) + 8 * i) deviceUUIDString:v22, v18];
+        v12 = [(CloudExtensionSQLiteStore *)self _cloudExtensionStateFromRow:*(*(&v18 + 1) + 8 * i) deviceUUIDString:deviceUUIDString, v18];
         if (!v12)
         {
-          v16 = [v8 statement];
-          [v16 invalidate];
+          statement = [v8 statement];
+          [statement invalidate];
 
           v15 = 1;
           v14 = v8;
@@ -718,62 +718,62 @@ LABEL_13:
     }
   }
 
-  v13 = [v8 statement];
-  [v13 invalidate];
+  statement2 = [v8 statement];
+  [statement2 invalidate];
 
   v14 = [v7 copy];
-  [v4 setCloudExtensionStates:v14];
+  [deviceCopy setCloudExtensionStates:v14];
   v15 = 101;
 LABEL_11:
 
   return v15;
 }
 
-- (id)_cloudExtensionStateFromRow:(id)a3 deviceUUIDString:(id)a4
+- (id)_cloudExtensionStateFromRow:(id)row deviceUUIDString:(id)string
 {
-  v6 = a3;
-  v24 = a4;
-  v7 = [v6 stringAtIndex:0];
+  rowCopy = row;
+  stringCopy = string;
+  v7 = [rowCopy stringAtIndex:0];
   if ([v7 length])
   {
-    v23 = [v6 dataAtIndex:1];
+    v23 = [rowCopy dataAtIndex:1];
     if ([v23 length])
     {
-      v22 = [v6 stringAtIndex:2];
-      v21 = [v6 stringAtIndex:3];
-      v8 = [v6 BOOLAtIndex:4];
-      v20 = [v6 BOOLAtIndex:5];
-      v9 = [v6 stringAtIndex:6];
+      v22 = [rowCopy stringAtIndex:2];
+      v21 = [rowCopy stringAtIndex:3];
+      v8 = [rowCopy BOOLAtIndex:4];
+      v20 = [rowCopy BOOLAtIndex:5];
+      v9 = [rowCopy stringAtIndex:6];
       if (![v9 length])
       {
 
         v9 = 0;
       }
 
-      v10 = [v6 stringAtIndex:7];
+      v10 = [rowCopy stringAtIndex:7];
       if (![v10 length])
       {
 
         v10 = 0;
       }
 
-      v11 = [v6 stringAtIndex:8];
+      v11 = [rowCopy stringAtIndex:8];
       if (![v11 length])
       {
 
         v11 = 0;
       }
 
-      v12 = [v6 stringAtIndex:9];
+      v12 = [rowCopy stringAtIndex:9];
       if (![v12 length])
       {
 
         v12 = 0;
       }
 
-      [v6 doubleAtIndex:10];
+      [rowCopy doubleAtIndex:10];
       v13 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-      v14 = [v6 stringAtIndex:12];
+      v14 = [rowCopy stringAtIndex:12];
       if (![v14 length])
       {
 
@@ -781,7 +781,7 @@ LABEL_11:
       }
 
       LOBYTE(v19) = v20;
-      v15 = [CloudExtensionState cloudExtensionStateWithComposedIdentifier:v7 owningDeviceUUIDString:v24 lastModifiedDate:v13 containingAppAdamID:v22 displayName:v21 isEnabled:v8 wasEnabledByUserGesture:v19 iosAppBundleIdentifier:v9 iosExtensionBundleIdentifier:v10 macAppBundleIdentifier:v11 macExtensionBundleIdentifier:v12 profileIdentifier:v14 encodedSystemFieldsData:v23 cloudExtensionsRecordZoneID:self->_cloudExtensionsRecordZoneID];
+      v15 = [CloudExtensionState cloudExtensionStateWithComposedIdentifier:v7 owningDeviceUUIDString:stringCopy lastModifiedDate:v13 containingAppAdamID:v22 displayName:v21 isEnabled:v8 wasEnabledByUserGesture:v19 iosAppBundleIdentifier:v9 iosExtensionBundleIdentifier:v10 macAppBundleIdentifier:v11 macExtensionBundleIdentifier:v12 profileIdentifier:v14 encodedSystemFieldsData:v23 cloudExtensionsRecordZoneID:self->_cloudExtensionsRecordZoneID];
     }
 
     else
@@ -810,18 +810,18 @@ LABEL_11:
   return v15;
 }
 
-- (int)_saveExtensionState:(id)a3
+- (int)_saveExtensionState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [WBSSQLiteStatement alloc];
-  v6 = [(CloudKitSQLiteStore *)self _database];
-  v7 = [v5 initWithDatabase:v6 query:{@"INSERT OR REPLACE INTO cloud_extension_states (record_name, composed_identifier, system_fields, owning_device_uuid, containing_app_adam_id, display_name, is_enabled, was_enabled_by_user_gesture, ios_app_bundle_identifier, ios_extension_bundle_identifier, mac_app_bundle_identifier, mac_extension_bundle_identifier, profile_uuid_string, last_modified)VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"}];
+  _database = [(CloudKitSQLiteStore *)self _database];
+  v7 = [v5 initWithDatabase:_database query:{@"INSERT OR REPLACE INTO cloud_extension_states (record_name, composed_identifier, system_fields, owning_device_uuid, containing_app_adam_id, display_name, is_enabled, was_enabled_by_user_gesture, ios_app_bundle_identifier, ios_extension_bundle_identifier, mac_app_bundle_identifier, mac_extension_bundle_identifier, profile_uuid_string, last_modified)VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"}];
 
-  v8 = [v4 iosAppBundleIdentifier];
-  v9 = v8;
-  if (v8)
+  iosAppBundleIdentifier = [stateCopy iosAppBundleIdentifier];
+  v9 = iosAppBundleIdentifier;
+  if (iosAppBundleIdentifier)
   {
-    v10 = v8;
+    v10 = iosAppBundleIdentifier;
   }
 
   else
@@ -831,11 +831,11 @@ LABEL_11:
 
   v44 = v10;
 
-  v11 = [v4 iosExtensionBundleIdentifier];
-  v12 = v11;
-  if (v11)
+  iosExtensionBundleIdentifier = [stateCopy iosExtensionBundleIdentifier];
+  v12 = iosExtensionBundleIdentifier;
+  if (iosExtensionBundleIdentifier)
   {
-    v13 = v11;
+    v13 = iosExtensionBundleIdentifier;
   }
 
   else
@@ -845,11 +845,11 @@ LABEL_11:
 
   v43 = v13;
 
-  v14 = [v4 macAppBundleIdentifier];
-  v15 = v14;
-  if (v14)
+  macAppBundleIdentifier = [stateCopy macAppBundleIdentifier];
+  v15 = macAppBundleIdentifier;
+  if (macAppBundleIdentifier)
   {
-    v16 = v14;
+    v16 = macAppBundleIdentifier;
   }
 
   else
@@ -859,11 +859,11 @@ LABEL_11:
 
   v42 = v16;
 
-  v17 = [v4 macExtensionBundleIdentifier];
-  v18 = v17;
-  if (v17)
+  macExtensionBundleIdentifier = [stateCopy macExtensionBundleIdentifier];
+  v18 = macExtensionBundleIdentifier;
+  if (macExtensionBundleIdentifier)
   {
-    v19 = v17;
+    v19 = macExtensionBundleIdentifier;
   }
 
   else
@@ -873,11 +873,11 @@ LABEL_11:
 
   v41 = v19;
 
-  v20 = [v4 profileIdentifier];
-  v21 = v20;
-  if (v20)
+  profileIdentifier = [stateCopy profileIdentifier];
+  v21 = profileIdentifier;
+  if (profileIdentifier)
   {
-    v22 = v20;
+    v22 = profileIdentifier;
   }
 
   else
@@ -887,39 +887,39 @@ LABEL_11:
 
   v40 = v22;
 
-  v23 = [v4 record];
-  v39 = [v23 safari_recordName];
-  v38 = [v4 composedIdentifier];
-  v24 = [v4 record];
-  v37 = [v24 safari_encodedSystemFieldsData];
-  v36 = [v4 owningDeviceUUIDString];
-  v35 = [v4 containingAppAdamID];
-  v34 = [v4 displayName];
-  v33 = [v4 isEnabled];
-  v32 = [v4 wasEnabledByUserGesture];
-  v25 = [v4 lastModifiedDate];
-  [v25 timeIntervalSinceReferenceDate];
+  record = [stateCopy record];
+  safari_recordName = [record safari_recordName];
+  composedIdentifier = [stateCopy composedIdentifier];
+  record2 = [stateCopy record];
+  safari_encodedSystemFieldsData = [record2 safari_encodedSystemFieldsData];
+  owningDeviceUUIDString = [stateCopy owningDeviceUUIDString];
+  containingAppAdamID = [stateCopy containingAppAdamID];
+  displayName = [stateCopy displayName];
+  isEnabled = [stateCopy isEnabled];
+  wasEnabledByUserGesture = [stateCopy wasEnabledByUserGesture];
+  lastModifiedDate = [stateCopy lastModifiedDate];
+  [lastModifiedDate timeIntervalSinceReferenceDate];
   *buf = v26;
-  sub_10008B610(v7, &v39, &v38, &v37, &v36, &v35, &v34, &v33, &v32, &v44, &v43, &v42, &v41, &v40, buf);
+  sub_10008B610(v7, &safari_recordName, &composedIdentifier, &safari_encodedSystemFieldsData, &owningDeviceUUIDString, &containingAppAdamID, &displayName, &isEnabled, &wasEnabledByUserGesture, &v44, &v43, &v42, &v41, &v40, buf);
 
-  v27 = [v7 execute];
+  execute = [v7 execute];
   [v7 reset];
-  if (v27 != 101)
+  if (execute != 101)
   {
     v28 = sub_1000D23FC();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v30 = [(CloudKitSQLiteStore *)self _database];
-      v31 = [v30 lastErrorMessage];
+      _database2 = [(CloudKitSQLiteStore *)self _database];
+      lastErrorMessage = [_database2 lastErrorMessage];
       *buf = 138543618;
-      *&buf[4] = v31;
+      *&buf[4] = lastErrorMessage;
       v46 = 1024;
-      v47 = v27;
+      v47 = execute;
       _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Failed to insert or replace extension state: %{public}@ (%d)", buf, 0x12u);
     }
   }
 
-  return v27;
+  return execute;
 }
 
 - (CloudExtensionSQLiteStoreDelegate)delegate

@@ -1,25 +1,25 @@
 @interface ICCollaborationRespondToPendingCollaboratorResponseParserDelegate
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4;
-- (ICCollaborationRespondToPendingCollaboratorResponseParserDelegate)initWithResponse:(id)a3;
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6;
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code;
+- (ICCollaborationRespondToPendingCollaboratorResponseParserDelegate)initWithResponse:(id)response;
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length;
 @end
 
 @implementation ICCollaborationRespondToPendingCollaboratorResponseParserDelegate
 
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length
 {
-  if (a4 == 1836413042)
+  if (code == 1836413042)
   {
-    [(ICCollaborationRespondToPendingCollaboratorResponse *)self->_collaborationResponse setUpdateRequired:*a5 != 0];
+    [(ICCollaborationRespondToPendingCollaboratorResponse *)self->_collaborationResponse setUpdateRequired:*bytes != 0];
   }
 }
 
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code
 {
   result = 1;
-  if (a4 <= 1634357318)
+  if (code <= 1634357318)
   {
-    if (a4 - 1634353999 <= 0x1A && ((1 << (a4 - 79)) & 0x4400009) != 0)
+    if (code - 1634353999 <= 0x1A && ((1 << (code - 79)) & 0x4400009) != 0)
     {
       return result;
     }
@@ -27,9 +27,9 @@
     return 0;
   }
 
-  if (a4 > 1835821427)
+  if (code > 1835821427)
   {
-    if (a4 == 1835821428)
+    if (code == 1835821428)
     {
       return result;
     }
@@ -39,7 +39,7 @@
 
   else
   {
-    if (a4 == 1634357319)
+    if (code == 1634357319)
     {
       return result;
     }
@@ -47,7 +47,7 @@
     v5 = 1835624804;
   }
 
-  if (a4 != v5)
+  if (code != v5)
   {
     return 0;
   }
@@ -55,14 +55,14 @@
   return result;
 }
 
-- (ICCollaborationRespondToPendingCollaboratorResponseParserDelegate)initWithResponse:(id)a3
+- (ICCollaborationRespondToPendingCollaboratorResponseParserDelegate)initWithResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   v6 = [(ICCollaborationRespondToPendingCollaboratorResponseParserDelegate *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collaborationResponse, a3);
+    objc_storeStrong(&v6->_collaborationResponse, response);
   }
 
   return v7;

@@ -1,7 +1,7 @@
 @interface C2RoutingTable
 - (C2RoutingTable)init;
-- (id)copyAndDecorateRequest:(id)a3;
-- (void)updateOriginalHostname:(id)a3 destinationHostname:(id)a4;
+- (id)copyAndDecorateRequest:(id)request;
+- (void)updateOriginalHostname:(id)hostname destinationHostname:(id)destinationHostname;
 @end
 
 @implementation C2RoutingTable
@@ -24,35 +24,35 @@
   return v5;
 }
 
-- (void)updateOriginalHostname:(id)a3 destinationHostname:(id)a4
+- (void)updateOriginalHostname:(id)hostname destinationHostname:(id)destinationHostname
 {
-  v9 = a3;
-  v6 = a4;
+  hostnameCopy = hostname;
+  destinationHostnameCopy = destinationHostname;
   v7 = objc_alloc_init(C2Route);
-  [(C2Route *)v7 setDestination:v6];
+  [(C2Route *)v7 setDestination:destinationHostnameCopy];
   [(C2Route *)v7 setLastUpdated:CFAbsoluteTimeGetCurrent()];
-  v8 = self;
-  objc_sync_enter(v8);
-  [(NSMutableDictionary *)v8->_routingTable setObject:v7 forKeyedSubscript:v9];
-  objc_sync_exit(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_routingTable setObject:v7 forKeyedSubscript:hostnameCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)copyAndDecorateRequest:(id)a3
+- (id)copyAndDecorateRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  requestCopy = request;
+  v5 = [requestCopy mutableCopy];
   v6 = v5;
   if (v5)
   {
     v7 = [v5 URL];
-    v8 = [v7 host];
+    host = [v7 host];
 
-    if (v8)
+    if (host)
     {
-      v9 = self;
-      objc_sync_enter(v9);
-      v10 = [(NSMutableDictionary *)v9->_routingTable objectForKeyedSubscript:v8];
-      objc_sync_exit(v9);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v10 = [(NSMutableDictionary *)selfCopy->_routingTable objectForKeyedSubscript:host];
+      objc_sync_exit(selfCopy);
 
       if (v10)
       {
@@ -63,8 +63,8 @@
           v13 = [v6 URL];
           v14 = [v12 initWithURL:v13 resolvingAgainstBaseURL:1];
 
-          v15 = [v10 destination];
-          [v14 setHost:v15];
+          destination = [v10 destination];
+          [v14 setHost:destination];
 
           v16 = [v14 URL];
           if (v16)
@@ -79,13 +79,13 @@
 
     else
     {
-      v17 = v4;
+      v17 = requestCopy;
     }
   }
 
   else
   {
-    v17 = v4;
+    v17 = requestCopy;
   }
 
   return v17;

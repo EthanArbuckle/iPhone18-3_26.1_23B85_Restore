@@ -1,12 +1,12 @@
 @interface NSPPrivacyProxyQuota
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyQuota
@@ -17,69 +17,69 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyQuota;
   v4 = [(NSPPrivacyProxyQuota *)&v8 description];
-  v5 = [(NSPPrivacyProxyQuota *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyQuota *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_expiration];
-    [v3 setObject:v4 forKey:@"expiration"];
+    [dictionary setObject:v4 forKey:@"expiration"];
   }
 
   cost = self->_cost;
   if (cost)
   {
-    v6 = [(NSPPrivacyProxyCost *)cost dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"cost"];
+    dictionaryRepresentation = [(NSPPrivacyProxyCost *)cost dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"cost"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     expiration = self->_expiration;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_cost)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_expiration;
-    *(v4 + 24) |= 1u;
+    toCopy[1] = self->_expiration;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_cost)
   {
-    v5 = v4;
-    [v4 setCost:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setCost:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -87,31 +87,31 @@
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(NSPPrivacyProxyCost *)self->_cost copyWithZone:a3];
+  v7 = [(NSPPrivacyProxyCost *)self->_cost copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_expiration != *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_expiration != *(equalCopy + 1))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -119,7 +119,7 @@ LABEL_9:
   }
 
   cost = self->_cost;
-  if (cost | *(v4 + 2))
+  if (cost | *(equalCopy + 2))
   {
     v7 = [(NSPPrivacyProxyCost *)cost isEqual:?];
   }
@@ -149,13 +149,13 @@ LABEL_10:
   return [(NSPPrivacyProxyCost *)self->_cost hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[3])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[3])
   {
-    self->_expiration = v4[1];
+    self->_expiration = fromCopy[1];
     *&self->_has |= 1u;
   }
 

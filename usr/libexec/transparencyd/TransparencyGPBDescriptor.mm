@@ -1,21 +1,21 @@
 @interface TransparencyGPBDescriptor
 - (NSString)fullName;
 - (TransparencyGPBDescriptor)containingType;
-- (TransparencyGPBDescriptor)initWithClass:(Class)a3 messageName:(id)a4 fileDescription:(TransparencyGPBFileDescription *)a5 fields:(id)a6 storageSize:(unsigned int)a7 wireFormat:(BOOL)a8;
+- (TransparencyGPBDescriptor)initWithClass:(Class)class messageName:(id)name fileDescription:(TransparencyGPBFileDescription *)description fields:(id)fields storageSize:(unsigned int)size wireFormat:(BOOL)format;
 - (TransparencyGPBFileDescriptor)file;
-- (id)fieldWithName:(id)a3;
-- (id)fieldWithNumber:(unsigned int)a3;
-- (id)oneofWithName:(id)a3;
+- (id)fieldWithName:(id)name;
+- (id)fieldWithNumber:(unsigned int)number;
+- (id)oneofWithName:(id)name;
 - (void)dealloc;
-- (void)setupContainingMessageClassName:(const char *)a3;
-- (void)setupExtraTextInfo:(const char *)a3;
-- (void)setupMessageClassNameSuffix:(id)a3;
-- (void)setupOneofs:(const char *)a3 count:(unsigned int)a4 firstHasIndex:(int)a5;
+- (void)setupContainingMessageClassName:(const char *)name;
+- (void)setupExtraTextInfo:(const char *)info;
+- (void)setupMessageClassNameSuffix:(id)suffix;
+- (void)setupOneofs:(const char *)oneofs count:(unsigned int)count firstHasIndex:(int)index;
 @end
 
 @implementation TransparencyGPBDescriptor
 
-- (TransparencyGPBDescriptor)initWithClass:(Class)a3 messageName:(id)a4 fileDescription:(TransparencyGPBFileDescription *)a5 fields:(id)a6 storageSize:(unsigned int)a7 wireFormat:(BOOL)a8
+- (TransparencyGPBDescriptor)initWithClass:(Class)class messageName:(id)name fileDescription:(TransparencyGPBFileDescription *)description fields:(id)fields storageSize:(unsigned int)size wireFormat:(BOOL)format
 {
   v17.receiver = self;
   v17.super_class = TransparencyGPBDescriptor;
@@ -23,12 +23,12 @@
   v15 = v14;
   if (v14)
   {
-    v14->messageClass_ = a3;
-    v14->messageName_ = [a4 copy];
-    v15->fileDescription_ = a5;
-    v15->fields_ = a6;
-    v15->storageSize_ = a7;
-    v15->wireFormat_ = a8;
+    v14->messageClass_ = class;
+    v14->messageName_ = [name copy];
+    v15->fileDescription_ = description;
+    v15->fields_ = fields;
+    v15->storageSize_ = size;
+    v15->wireFormat_ = format;
   }
 
   return v15;
@@ -41,16 +41,16 @@
   [(TransparencyGPBDescriptor *)&v3 dealloc];
 }
 
-- (void)setupOneofs:(const char *)a3 count:(unsigned int)a4 firstHasIndex:(int)a5
+- (void)setupOneofs:(const char *)oneofs count:(unsigned int)count firstHasIndex:(int)index
 {
-  v7 = a4;
-  v8 = [[NSMutableArray alloc] initWithCapacity:a4];
-  if (a4)
+  countCopy = count;
+  v8 = [[NSMutableArray alloc] initWithCapacity:count];
+  if (count)
   {
     v9 = 0;
     do
     {
-      v10 = a3[v9];
+      v10 = oneofs[v9];
       fields = self->fields_;
       v12 = objc_alloc_init(NSMutableArray);
       v20 = 0u;
@@ -72,7 +72,7 @@
               objc_enumerationMutation(fields);
             }
 
-            if (*(*(*(*(&v20 + 1) + 8 * v16) + 8) + 20) == a5)
+            if (*(*(*(*(&v20 + 1) + 8 * v16) + 8) + 20) == index)
             {
               [v12 addObject:?];
             }
@@ -91,18 +91,18 @@
       [(NSArray *)v8 addObject:v17];
 
       ++v9;
-      --a5;
+      --index;
     }
 
-    while (v9 != v7);
+    while (v9 != countCopy);
   }
 
   self->oneofs_ = v8;
 }
 
-- (void)setupExtraTextInfo:(const char *)a3
+- (void)setupExtraTextInfo:(const char *)info
 {
-  if (a3)
+  if (info)
   {
     v4 = [NSValue valueWithPointer:?];
     v11 = 0u;
@@ -143,19 +143,19 @@
   }
 }
 
-- (void)setupContainingMessageClassName:(const char *)a3
+- (void)setupContainingMessageClassName:(const char *)name
 {
-  Class = objc_getClass(a3);
+  Class = objc_getClass(name);
 
   [(TransparencyGPBDescriptor *)self setupContainingMessageClass:Class];
 }
 
-- (void)setupMessageClassNameSuffix:(id)a3
+- (void)setupMessageClassNameSuffix:(id)suffix
 {
-  if ([a3 length])
+  if ([suffix length])
   {
 
-    objc_setAssociatedObject(self, &unk_1002DEF07, a3, 1);
+    objc_setAssociatedObject(self, &unk_1002DEF07, suffix, 1);
   }
 }
 
@@ -204,14 +204,14 @@
 
 - (NSString)fullName
 {
-  v3 = [(TransparencyGPBDescriptor *)self containingType];
-  v4 = v3;
+  containingType = [(TransparencyGPBDescriptor *)self containingType];
+  v4 = containingType;
   messageName = self->messageName_;
   if (messageName)
   {
-    if (v3)
+    if (containingType)
     {
-      return [NSString stringWithFormat:@"%@.%@", [(TransparencyGPBDescriptor *)v3 fullName], self->messageName_];
+      return [NSString stringWithFormat:@"%@.%@", [(TransparencyGPBDescriptor *)containingType fullName], self->messageName_];
     }
 
     if (self->fileDescription_->var0)
@@ -223,9 +223,9 @@
   }
 
   v7 = NSStringFromClass([(TransparencyGPBDescriptor *)self messageClass]);
-  v8 = [(TransparencyGPBDescriptor *)self file];
-  v9 = [(TransparencyGPBFileDescriptor *)v8 objcPrefix];
-  if (v9 && ![(NSString *)v7 hasPrefix:v9])
+  file = [(TransparencyGPBDescriptor *)self file];
+  objcPrefix = [(TransparencyGPBFileDescriptor *)file objcPrefix];
+  if (objcPrefix && ![(NSString *)v7 hasPrefix:objcPrefix])
   {
     return 0;
   }
@@ -245,14 +245,14 @@
       v10 = -[NSString substringToIndex:](v10, "substringToIndex:", -[NSString length](v10, "length") - [v12 length]);
     }
 
-    v9 = [(NSString *)v10 stringByAppendingString:@"_"];
-    if (![(NSString *)v7 hasPrefix:v9])
+    objcPrefix = [(NSString *)v10 stringByAppendingString:@"_"];
+    if (![(NSString *)v7 hasPrefix:objcPrefix])
     {
       return 0;
     }
   }
 
-  messageName = [(NSString *)v7 substringFromIndex:[(NSString *)v9 length]];
+  messageName = [(NSString *)v7 substringFromIndex:[(NSString *)objcPrefix length]];
   v13 = objc_getAssociatedObject(self, &unk_1002DEF07);
   if (!v13)
   {
@@ -269,16 +269,16 @@
 LABEL_14:
   if (v4)
   {
-    v15 = [(TransparencyGPBDescriptor *)v4 fullName];
+    fullName = [(TransparencyGPBDescriptor *)v4 fullName];
   }
 
   else
   {
-    v15 = [(TransparencyGPBFileDescriptor *)v8 package];
+    fullName = [(TransparencyGPBFileDescriptor *)file package];
   }
 
-  v16 = v15;
-  if ([(NSString *)v15 length])
+  v16 = fullName;
+  if ([(NSString *)fullName length])
   {
     return [NSString stringWithFormat:@"%@.%@", v16, messageName];
   }
@@ -286,7 +286,7 @@ LABEL_14:
   return messageName;
 }
 
-- (id)fieldWithNumber:(unsigned int)a3
+- (id)fieldWithNumber:(unsigned int)number
 {
   v9 = 0u;
   v10 = 0u;
@@ -308,7 +308,7 @@ LABEL_3:
       }
 
       result = *(*(&v9 + 1) + 8 * v8);
-      if (*(*(result + 1) + 16) == a3)
+      if (*(*(result + 1) + 16) == number)
       {
         break;
       }
@@ -330,7 +330,7 @@ LABEL_3:
   return result;
 }
 
-- (id)fieldWithName:(id)a3
+- (id)fieldWithName:(id)name
 {
   v11 = 0u;
   v12 = 0u;
@@ -373,7 +373,7 @@ LABEL_3:
   }
 }
 
-- (id)oneofWithName:(id)a3
+- (id)oneofWithName:(id)name
 {
   v11 = 0u;
   v12 = 0u;

@@ -1,21 +1,21 @@
 @interface CAMSharedLibraryButtonAccessibility
-- (id)_axLabelForSharedLibraryMode:(int64_t)a3;
+- (id)_axLabelForSharedLibraryMode:(int64_t)mode;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation CAMSharedLibraryButtonAccessibility
 
-- (id)_axLabelForSharedLibraryMode:(int64_t)a3
+- (id)_axLabelForSharedLibraryMode:(int64_t)mode
 {
-  if (a3 > 5)
+  if (mode > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityCameraUILocalizedString(off_29F2ACD20[a3]);
+    v4 = accessibilityCameraUILocalizedString(off_29F2ACD20[mode]);
   }
 
   return v4;

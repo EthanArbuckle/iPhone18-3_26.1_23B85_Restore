@@ -3,21 +3,21 @@
 - (BOOL)haveAtLeastOneFinalASRResult;
 - (BOOL)haveFinalASRResults;
 - (BOOL)isLowConfidencePair;
-- (_LTLanguageDetector)initWithSelfLoggingManager:(id)a3;
-- (void)addSpeechAudioData:(id)a3;
-- (void)addSpeechRecognitionResult:(id)a3;
+- (_LTLanguageDetector)initWithSelfLoggingManager:(id)manager;
+- (void)addSpeechAudioData:(id)data;
+- (void)addSpeechRecognitionResult:(id)result;
 - (void)endAudio;
-- (void)languageDetectorDidDetectLanguageWithConfidence:(id)a3 confidence:(id)a4 isConfident:(BOOL)a5;
-- (void)sendFinalLanguageDetectionResult:(BOOL)a3;
-- (void)sendLIDResult:(id)a3;
-- (void)startLanguageDetectionWithContext:(id)a3 delegate:(id)a4;
+- (void)languageDetectorDidDetectLanguageWithConfidence:(id)confidence confidence:(id)a4 isConfident:(BOOL)confident;
+- (void)sendFinalLanguageDetectionResult:(BOOL)result;
+- (void)sendLIDResult:(id)result;
+- (void)startLanguageDetectionWithContext:(id)context delegate:(id)delegate;
 @end
 
 @implementation _LTLanguageDetector
 
-- (_LTLanguageDetector)initWithSelfLoggingManager:(id)a3
+- (_LTLanguageDetector)initWithSelfLoggingManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v40.receiver = self;
   v40.super_class = _LTLanguageDetector;
   v6 = [(_LTLanguageDetector *)&v40 init];
@@ -92,20 +92,20 @@
       v25 = v24;
       _Block_object_dispose(&v42, 8);
       v26 = [v24 alloc];
-      v27 = [v20 languageDetectorModelURL];
-      v28 = [v26 initWithModelURL:v27];
+      languageDetectorModelURL = [v20 languageDetectorModelURL];
+      v28 = [v26 initWithModelURL:languageDetectorModelURL];
       csLanguageDetector = v7->_csLanguageDetector;
       v7->_csLanguageDetector = v28;
 
       [(CSLanguageDetector *)v7->_csLanguageDetector setDelegate:v7];
       v30 = [_LTLanguageDetectorFeatureCombinationModel alloc];
-      v31 = [v20 featureCombinationConfigUrl];
-      v32 = [(_LTLanguageDetectorFeatureCombinationModel *)v30 initWithConfig:v31];
+      featureCombinationConfigUrl = [v20 featureCombinationConfigUrl];
+      v32 = [(_LTLanguageDetectorFeatureCombinationModel *)v30 initWithConfig:featureCombinationConfigUrl];
       featureCombinationModel = v7->_featureCombinationModel;
       v7->_featureCombinationModel = v32;
 
       v7->_featureCombinationModelSupported = 0;
-      objc_storeStrong(&v7->_selfLoggingManager, a3);
+      objc_storeStrong(&v7->_selfLoggingManager, manager);
       v34 = objc_alloc(MEMORY[0x277CBEB98]);
       v35 = _LTPreferencesGetLanguageDetectorUnsupportedPairs();
       v36 = [v34 initWithArray:v35];
@@ -124,13 +124,13 @@
   return v23;
 }
 
-- (void)startLanguageDetectionWithContext:(id)a3 delegate:(id)a4
+- (void)startLanguageDetectionWithContext:(id)context delegate:(id)delegate
 {
   v59 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_context, a3);
-  objc_storeWeak(&self->_delegate, v8);
+  contextCopy = context;
+  delegateCopy = delegate;
+  objc_storeStrong(&self->_context, context);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   acousticResults = self->_acousticResults;
   self->_acousticResults = v9;
@@ -146,15 +146,15 @@
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = self->_partialSpeechResultConfidences;
-  v16 = [v7 localePair];
-  v17 = [v16 sourceLocale];
-  [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:v17];
+  localePair = [contextCopy localePair];
+  sourceLocale = [localePair sourceLocale];
+  [(NSMutableDictionary *)v15 setObject:v14 forKeyedSubscript:sourceLocale];
 
   v18 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = self->_partialSpeechResultConfidences;
-  v20 = [v7 localePair];
-  v21 = [v20 targetLocale];
-  [(NSMutableDictionary *)v19 setObject:v18 forKeyedSubscript:v21];
+  localePair2 = [contextCopy localePair];
+  targetLocale = [localePair2 targetLocale];
+  [(NSMutableDictionary *)v19 setObject:v18 forKeyedSubscript:targetLocale];
 
   v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
   finalSpeechResults = self->_finalSpeechResults;
@@ -164,7 +164,7 @@
   modelVersions = self->_modelVersions;
   self->_modelVersions = v24;
 
-  if ([v7 autodetectLanguage])
+  if ([contextCopy autodetectLanguage])
   {
     v26 = _LTOSLogLID();
     v27 = v26;
@@ -175,14 +175,14 @@
       _os_signpost_emit_with_name_impl(&dword_232E53000, v27, OS_SIGNPOST_INTERVAL_BEGIN, lidSignpostID, "LID", "Start", buf, 2u);
     }
 
-    if ([v7 lidThreshold] < 0)
+    if ([contextCopy lidThreshold] < 0)
     {
-      v32 = [v7 localePair];
-      self->_sourceLocaleConfidenceThreshold = _LTPreferencesLanguageDetectorThresholdsForLocale(v32);
+      localePair3 = [contextCopy localePair];
+      self->_sourceLocaleConfidenceThreshold = _LTPreferencesLanguageDetectorThresholdsForLocale(localePair3);
 
-      v33 = [v7 localePair];
-      v34 = [v33 reversedPair];
-      self->_targetLocaleConfidenceThreshold = _LTPreferencesLanguageDetectorThresholdsForLocale(v34);
+      localePair4 = [contextCopy localePair];
+      reversedPair = [localePair4 reversedPair];
+      self->_targetLocaleConfidenceThreshold = _LTPreferencesLanguageDetectorThresholdsForLocale(reversedPair);
 
       v35 = _LTOSLogLID();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
@@ -212,23 +212,23 @@
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         v30 = v29;
-        v31 = [v7 lidThreshold];
+        lidThreshold = [contextCopy lidThreshold];
         *buf = 134217984;
-        *&buf[4] = v31;
+        *&buf[4] = lidThreshold;
         _os_log_impl(&dword_232E53000, v30, OS_LOG_TYPE_INFO, "Overriding confidence thresholds, setting to %ld", buf, 0xCu);
       }
 
-      self->_sourceLocaleConfidenceThreshold = [v7 lidThreshold] / 1000.0;
-      self->_targetLocaleConfidenceThreshold = [v7 lidThreshold] / 1000.0;
+      self->_sourceLocaleConfidenceThreshold = [contextCopy lidThreshold] / 1000.0;
+      self->_targetLocaleConfidenceThreshold = [contextCopy lidThreshold] / 1000.0;
     }
 
-    v39 = [v7 localePair];
-    v40 = [v39 sourceLocale];
-    v41 = [v40 _ltCsLocaleIdentifier];
+    localePair5 = [contextCopy localePair];
+    sourceLocale2 = [localePair5 sourceLocale];
+    _ltCsLocaleIdentifier = [sourceLocale2 _ltCsLocaleIdentifier];
 
-    v42 = [v7 localePair];
-    v43 = [v42 targetLocale];
-    v44 = [v43 _ltCsLocaleIdentifier];
+    localePair6 = [contextCopy localePair];
+    targetLocale2 = [localePair6 targetLocale];
+    _ltCsLocaleIdentifier2 = [targetLocale2 _ltCsLocaleIdentifier];
 
     v52 = 0;
     v53 = &v52;
@@ -252,14 +252,14 @@
     samplingRate = self->_samplingRate;
     *&samplingRate = samplingRate;
     [v47 setSamplingRate:samplingRate];
-    v49 = [MEMORY[0x277CBEB98] setWithObjects:{v41, v44, 0, v52}];
+    v49 = [MEMORY[0x277CBEB98] setWithObjects:{_ltCsLocaleIdentifier, _ltCsLocaleIdentifier2, 0, v52}];
     [v47 setDictationLanguages:v49];
 
     [(CSLanguageDetector *)self->_csLanguageDetector resetForNewRequest:v47];
     if (self->_featureCombinationModel)
     {
-      v50 = [v7 localePair];
-      self->_featureCombinationModelSupported = _LTPreferencesLanguageDetectorFeatureCombinationModelSupportedForLocale(v50);
+      localePair7 = [contextCopy localePair];
+      self->_featureCombinationModelSupported = _LTPreferencesLanguageDetectorFeatureCombinationModelSupportedForLocale(localePair7);
     }
 
     else
@@ -271,10 +271,10 @@
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendLIDResult:(id)a3
+- (void)sendLIDResult:(id)result
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultCopy = result;
   dispatch_assert_queue_V2(self->_resultQueue);
   if (!self->_finalLIDResultSent)
   {
@@ -283,12 +283,12 @@
 
     if (v6)
     {
-      self->_finalLIDResultSent = [v4 isFinal];
+      self->_finalLIDResultSent = [resultCopy isFinal];
       v7 = _LTOSLogLID();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v8 = v7;
-        if ([v4 isFinal])
+        if ([resultCopy isFinal])
         {
           v9 = @"final";
         }
@@ -298,19 +298,19 @@
           v9 = @"intermediate";
         }
 
-        v10 = [v4 dominantLanguage];
-        v11 = [v10 _ltLocaleIdentifier];
+        dominantLanguage = [resultCopy dominantLanguage];
+        _ltLocaleIdentifier = [dominantLanguage _ltLocaleIdentifier];
         v14 = 138543874;
         v15 = v9;
         v16 = 2114;
-        v17 = v11;
+        v17 = _ltLocaleIdentifier;
         v18 = 1024;
-        v19 = [v4 isConfident];
+        isConfident = [resultCopy isConfident];
         _os_log_impl(&dword_232E53000, v8, OS_LOG_TYPE_INFO, "Sending out new %{public}@ LID result, detected %{public}@, confident %{BOOL}i", &v14, 0x1Cu);
       }
 
       v12 = objc_loadWeakRetained(&self->_delegate);
-      [v12 languageDetectionResult:v4];
+      [v12 languageDetectionResult:resultCopy];
     }
   }
 
@@ -321,14 +321,14 @@
 {
   dispatch_assert_queue_V2(self->_resultQueue);
   finalSpeechResults = self->_finalSpeechResults;
-  v4 = [(_LTTranslationContext *)self->_context localePair];
-  v5 = [v4 sourceLocale];
-  v6 = [(NSMutableDictionary *)finalSpeechResults objectForKey:v5];
+  localePair = [(_LTTranslationContext *)self->_context localePair];
+  sourceLocale = [localePair sourceLocale];
+  v6 = [(NSMutableDictionary *)finalSpeechResults objectForKey:sourceLocale];
 
   v7 = self->_finalSpeechResults;
-  v8 = [(_LTTranslationContext *)self->_context localePair];
-  v9 = [v8 targetLocale];
-  v10 = [(NSMutableDictionary *)v7 objectForKey:v9];
+  localePair2 = [(_LTTranslationContext *)self->_context localePair];
+  targetLocale = [localePair2 targetLocale];
+  v10 = [(NSMutableDictionary *)v7 objectForKey:targetLocale];
 
   if (v6)
   {
@@ -349,21 +349,21 @@
 {
   dispatch_assert_queue_V2(self->_resultQueue);
   finalSpeechResults = self->_finalSpeechResults;
-  v4 = [(_LTTranslationContext *)self->_context localePair];
-  v5 = [v4 sourceLocale];
-  v6 = [(NSMutableDictionary *)finalSpeechResults objectForKey:v5];
+  localePair = [(_LTTranslationContext *)self->_context localePair];
+  sourceLocale = [localePair sourceLocale];
+  v6 = [(NSMutableDictionary *)finalSpeechResults objectForKey:sourceLocale];
 
   v7 = self->_finalSpeechResults;
-  v8 = [(_LTTranslationContext *)self->_context localePair];
-  v9 = [v8 targetLocale];
-  v10 = [(NSMutableDictionary *)v7 objectForKey:v9];
+  localePair2 = [(_LTTranslationContext *)self->_context localePair];
+  targetLocale = [localePair2 targetLocale];
+  v10 = [(NSMutableDictionary *)v7 objectForKey:targetLocale];
 
   return (v6 | v10) != 0;
 }
 
-- (void)sendFinalLanguageDetectionResult:(BOOL)a3
+- (void)sendFinalLanguageDetectionResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   v36 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_resultQueue);
   if (self->_finalLIDResultSent)
@@ -374,24 +374,24 @@
   lastResult = self->_lastResult;
   self->_lastResult = 0;
 
-  v7 = [(_LTLanguageDetector *)self haveFinalASRResults];
-  v8 = [(_LTLanguageDetector *)self haveAtLeastOneFinalASRResult];
+  haveFinalASRResults = [(_LTLanguageDetector *)self haveFinalASRResults];
+  haveAtLeastOneFinalASRResult = [(_LTLanguageDetector *)self haveAtLeastOneFinalASRResult];
   if (self->_havePartialASRConfidences)
   {
-    v9 = v8;
+    v9 = haveAtLeastOneFinalASRResult;
     v10 = [(NSMutableArray *)self->_acousticResults count]>= self->_minimumAcousticLanguageDetectorResults || v9;
-    if ((((v7 || self->_endAudioCalled) | v10) & 1) == 0)
+    if ((((haveFinalASRResults || self->_endAudioCalled) | v10) & 1) == 0)
     {
       goto LABEL_2;
     }
   }
 
-  else if (!v7)
+  else if (!haveFinalASRResults)
   {
     goto LABEL_2;
   }
 
-  self->_useFinalThresholds |= (v7 || v3) | ([(NSMutableArray *)self->_acousticResults count]>= self->_maximumAcousticLanguageDetectorResults);
+  self->_useFinalThresholds |= (haveFinalASRResults || resultCopy) | ([(NSMutableArray *)self->_acousticResults count]>= self->_maximumAcousticLanguageDetectorResults);
   v11 = _LTOSLogLID();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -413,7 +413,7 @@
     v31 = v14;
     v32 = 2114;
     v33 = v16;
-    if (v7)
+    if (haveFinalASRResults)
     {
       v15 = @", final ASR results";
     }
@@ -440,7 +440,7 @@
   {
     if (!self->_havePartialASRConfidences)
     {
-      if (!v7)
+      if (!haveFinalASRResults)
       {
         goto LABEL_2;
       }
@@ -452,7 +452,7 @@ LABEL_26:
       goto LABEL_2;
     }
 
-    v27 = [(_LTLanguageDetectionResult *)v26 isConfident];
+    isConfident = [(_LTLanguageDetectionResult *)v26 isConfident];
     if ([(NSMutableArray *)self->_acousticResults count]>= self->_maximumAcousticLanguageDetectorResults)
     {
       v28 = 1;
@@ -460,10 +460,10 @@ LABEL_26:
 
     else
     {
-      v28 = v27;
+      v28 = isConfident;
     }
 
-    if (((v7 | v28) & 1) != 0 || v3)
+    if (((haveFinalASRResults | v28) & 1) != 0 || resultCopy)
     {
       v26 = self->_lastResult;
       goto LABEL_26;
@@ -474,9 +474,9 @@ LABEL_2:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSpeechRecognitionResult:(id)a3
+- (void)addSpeechRecognitionResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if ([(_LTTranslationContext *)self->_context autodetectLanguage])
   {
     objc_initWeak(&location, self);
@@ -486,7 +486,7 @@ LABEL_2:
     block[2] = __50___LTLanguageDetector_addSpeechRecognitionResult___block_invoke;
     block[3] = &unk_2789B5288;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = resultCopy;
     dispatch_async(resultQueue, block);
 
     objc_destroyWeak(&v8);
@@ -494,11 +494,11 @@ LABEL_2:
   }
 }
 
-- (void)addSpeechAudioData:(id)a3
+- (void)addSpeechAudioData:(id)data
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && [(_LTTranslationContext *)self->_context autodetectLanguage])
+  dataCopy = data;
+  if (dataCopy && [(_LTTranslationContext *)self->_context autodetectLanguage])
   {
     if (self->_finalLIDResultSent)
     {
@@ -511,7 +511,7 @@ LABEL_2:
 
     else
     {
-      v6 = [v4 length] / self->_audioBitDepth;
+      v6 = [dataCopy length] / self->_audioBitDepth;
       v7 = _LTOSLogLID();
       if (os_signpost_enabled(v7))
       {
@@ -520,7 +520,7 @@ LABEL_2:
         _os_signpost_emit_with_name_impl(&dword_232E53000, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "LID Audio Data", "NumSamples: %ld", &v9, 0xCu);
       }
 
-      [(CSLanguageDetector *)self->_csLanguageDetector addSamples:v4 numSamples:v6];
+      [(CSLanguageDetector *)self->_csLanguageDetector addSamples:dataCopy numSamples:v6];
     }
   }
 
@@ -551,26 +551,26 @@ LABEL_2:
 
 - (BOOL)forceLanguageDetectionResult
 {
-  v2 = self;
+  selfCopy = self;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
   objc_initWeak(&location, self);
-  resultQueue = v2->_resultQueue;
+  resultQueue = selfCopy->_resultQueue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51___LTLanguageDetector_forceLanguageDetectionResult__block_invoke;
   v5[3] = &unk_2789B64C0;
   objc_copyWeak(&v6, &location);
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v8;
   dispatch_sync(resultQueue, v5);
-  LOBYTE(v2) = *(v9 + 24);
+  LOBYTE(selfCopy) = *(v9 + 24);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
   _Block_object_dispose(&v8, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isLowConfidencePair
@@ -581,17 +581,17 @@ LABEL_2:
   }
 
   lowConfidenceLanguagePairs = self->_lowConfidenceLanguagePairs;
-  v5 = [(_LTTranslationContext *)self->_context localePair];
-  v6 = [v5 canonicalLocalePair];
-  LOBYTE(lowConfidenceLanguagePairs) = [(NSSet *)lowConfidenceLanguagePairs containsObject:v6];
+  localePair = [(_LTTranslationContext *)self->_context localePair];
+  canonicalLocalePair = [localePair canonicalLocalePair];
+  LOBYTE(lowConfidenceLanguagePairs) = [(NSSet *)lowConfidenceLanguagePairs containsObject:canonicalLocalePair];
 
   return lowConfidenceLanguagePairs;
 }
 
-- (void)languageDetectorDidDetectLanguageWithConfidence:(id)a3 confidence:(id)a4 isConfident:(BOOL)a5
+- (void)languageDetectorDidDetectLanguageWithConfidence:(id)confidence confidence:(id)a4 isConfident:(BOOL)confident
 {
   v56 = *MEMORY[0x277D85DE8];
-  v43 = a3;
+  confidenceCopy = confidence;
   v7 = a4;
   v8 = _LTOSLogLID();
   if (os_signpost_enabled(v8))
@@ -601,33 +601,33 @@ LABEL_2:
     _os_signpost_emit_with_name_impl(&dword_232E53000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CS-LID Result", "confidence: %@", buf, 0xCu);
   }
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = [(_LTTranslationContext *)self->_context localePair];
-  v11 = [v10 sourceLocale];
-  v12 = [v11 _ltCsLocaleIdentifier];
-  v13 = [v7 objectForKeyedSubscript:v12];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  localePair = [(_LTTranslationContext *)self->_context localePair];
+  sourceLocale = [localePair sourceLocale];
+  _ltCsLocaleIdentifier = [sourceLocale _ltCsLocaleIdentifier];
+  v13 = [v7 objectForKeyedSubscript:_ltCsLocaleIdentifier];
 
   if (!v13)
   {
     goto LABEL_9;
   }
 
-  v14 = [(_LTTranslationContext *)self->_context localePair];
-  v15 = [v14 sourceLocale];
-  [v9 setObject:v13 forKeyedSubscript:v15];
+  localePair2 = [(_LTTranslationContext *)self->_context localePair];
+  sourceLocale2 = [localePair2 sourceLocale];
+  [dictionary setObject:v13 forKeyedSubscript:sourceLocale2];
 
   [v13 floatValue];
   if (v16 < self->_sourceLocaleConfidenceThreshold || ([v13 floatValue], v17 == 0.5))
   {
 LABEL_9:
-    v19 = 0;
+    sourceLocale3 = 0;
     v21 = 0;
   }
 
   else
   {
-    v18 = [(_LTTranslationContext *)self->_context localePair];
-    v19 = [v18 sourceLocale];
+    localePair3 = [(_LTTranslationContext *)self->_context localePair];
+    sourceLocale3 = [localePair3 sourceLocale];
 
     v20 = _LTOSLogLID();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -638,19 +638,19 @@ LABEL_9:
     v21 = 1;
   }
 
-  v22 = [(_LTTranslationContext *)self->_context localePair];
-  v23 = [v22 targetLocale];
-  v24 = [v23 _ltCsLocaleIdentifier];
-  v25 = [v7 objectForKeyedSubscript:v24];
+  localePair4 = [(_LTTranslationContext *)self->_context localePair];
+  targetLocale = [localePair4 targetLocale];
+  _ltCsLocaleIdentifier2 = [targetLocale _ltCsLocaleIdentifier];
+  v25 = [v7 objectForKeyedSubscript:_ltCsLocaleIdentifier2];
 
   if (!v25)
   {
     goto LABEL_15;
   }
 
-  v26 = [(_LTTranslationContext *)self->_context localePair];
-  v27 = [v26 targetLocale];
-  [v9 setObject:v25 forKeyedSubscript:v27];
+  localePair5 = [(_LTTranslationContext *)self->_context localePair];
+  targetLocale2 = [localePair5 targetLocale];
+  [dictionary setObject:v25 forKeyedSubscript:targetLocale2];
 
   [v25 floatValue];
   if (v28 < self->_targetLocaleConfidenceThreshold || ([v25 floatValue], v29 == 0.5))
@@ -661,13 +661,13 @@ LABEL_15:
       goto LABEL_18;
     }
 
-    v31 = v19;
+    targetLocale3 = sourceLocale3;
   }
 
   else
   {
-    v30 = [(_LTTranslationContext *)self->_context localePair];
-    v31 = [v30 targetLocale];
+    localePair6 = [(_LTTranslationContext *)self->_context localePair];
+    targetLocale3 = [localePair6 targetLocale];
 
     v32 = _LTOSLogLID();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -677,15 +677,15 @@ LABEL_15:
   }
 
   v21 = ![(_LTLanguageDetector *)self isLowConfidencePair];
-  v19 = v31;
+  sourceLocale3 = targetLocale3;
 LABEL_18:
   v33 = _LTOSLogLID();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
   {
     v41 = v33;
-    v42 = [v19 localeIdentifier];
+    localeIdentifier = [sourceLocale3 localeIdentifier];
     *buf = 138543874;
-    v51 = v42;
+    v51 = localeIdentifier;
     v52 = 1024;
     v53 = v21;
     v54 = 2114;
@@ -700,10 +700,10 @@ LABEL_18:
   block[2] = __94___LTLanguageDetector_languageDetectorDidDetectLanguageWithConfidence_confidence_isConfident___block_invoke;
   block[3] = &unk_2789B64E8;
   objc_copyWeak(&v48, buf);
-  v35 = v9;
+  v35 = dictionary;
   v46 = v35;
   v49 = v21;
-  v36 = v19;
+  v36 = sourceLocale3;
   v47 = v36;
   dispatch_async(resultQueue, block);
   v37 = _LTOSLogLID();

@@ -1,6 +1,6 @@
 @interface PKPaletteViewController
 - (PKPaletteViewControllerDelegate)delegate;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -24,29 +24,29 @@
 
   [(PKPaletteHostView *)self->_hostView setPaletteViewBottomEdgeSpacing:0.0];
   [(PKPaletteHostView *)self->_hostView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(PKPaletteViewController *)self view];
-  [v7 addSubview:self->_hostView];
+  view = [(PKPaletteViewController *)self view];
+  [view addSubview:self->_hostView];
 
   v18 = MEMORY[0x1E696ACD8];
-  v24 = [(PKPaletteHostView *)self->_hostView centerXAnchor];
-  v25 = [(PKPaletteViewController *)self view];
-  v23 = [v25 centerXAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  centerXAnchor = [(PKPaletteHostView *)self->_hostView centerXAnchor];
+  view2 = [(PKPaletteViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v22 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v27[0] = v22;
-  v20 = [(PKPaletteHostView *)self->_hostView centerYAnchor];
-  v21 = [(PKPaletteViewController *)self view];
-  v19 = [v21 centerYAnchor];
-  v17 = [v20 constraintEqualToAnchor:v19];
+  centerYAnchor = [(PKPaletteHostView *)self->_hostView centerYAnchor];
+  view3 = [(PKPaletteViewController *)self view];
+  centerYAnchor2 = [view3 centerYAnchor];
+  v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v27[1] = v17;
-  v16 = [(PKPaletteHostView *)self->_hostView widthAnchor];
-  v8 = [(PKPaletteViewController *)self view];
-  v9 = [v8 widthAnchor];
-  v10 = [v16 constraintEqualToAnchor:v9];
+  widthAnchor = [(PKPaletteHostView *)self->_hostView widthAnchor];
+  view4 = [(PKPaletteViewController *)self view];
+  widthAnchor2 = [view4 widthAnchor];
+  v10 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v27[2] = v10;
-  v11 = [(PKPaletteHostView *)self->_hostView heightAnchor];
-  v12 = [(PKPaletteViewController *)self view];
-  v13 = [v12 heightAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  heightAnchor = [(PKPaletteHostView *)self->_hostView heightAnchor];
+  view5 = [(PKPaletteViewController *)self view];
+  heightAnchor2 = [view5 heightAnchor];
+  v14 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v27[3] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:4];
   [v18 activateConstraints:v15];
@@ -54,11 +54,11 @@
   [(PKPaletteHostView *)self->_hostView setPaletteVisible:1 animated:0 completion:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKPaletteViewController;
-  [(PKPaletteViewController *)&v5 viewDidAppear:a3];
+  [(PKPaletteViewController *)&v5 viewDidAppear:appear];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained paletteViewControllerViewDidAppear:self];
 }

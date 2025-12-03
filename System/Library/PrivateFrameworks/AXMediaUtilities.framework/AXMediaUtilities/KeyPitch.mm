@@ -1,20 +1,20 @@
 @interface KeyPitch
-- (KeyPitch)initWithFrequency:(double)a3 volume:(double)a4 timeOffset:(double)a5;
+- (KeyPitch)initWithFrequency:(double)frequency volume:(double)volume timeOffset:(double)offset;
 - (id)description;
 @end
 
 @implementation KeyPitch
 
-- (KeyPitch)initWithFrequency:(double)a3 volume:(double)a4 timeOffset:(double)a5
+- (KeyPitch)initWithFrequency:(double)frequency volume:(double)volume timeOffset:(double)offset
 {
   v9.receiver = self;
   v9.super_class = KeyPitch;
   result = [(KeyPitch *)&v9 init];
   if (result)
   {
-    result->_timeOffsetMS = a5;
-    result->_volume = a4;
-    result->_frequency = a3;
+    result->_timeOffsetMS = offset;
+    result->_volume = volume;
+    result->_frequency = frequency;
   }
 
   return result;

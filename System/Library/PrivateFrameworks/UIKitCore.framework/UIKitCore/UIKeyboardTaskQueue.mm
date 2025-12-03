@@ -1,27 +1,27 @@
 @interface UIKeyboardTaskQueue
 - (BOOL)isEmpty;
 - (UIKeyboardTaskQueue)init;
-- (id)addAndReturnTask:(id)a3 breadcrumb:(id)a4;
-- (id)scheduleTask:(id)a3 timeInterval:(double)a4 repeats:(BOOL)a5;
-- (id)scheduleTask:(id)a3 timeInterval:(double)a4 repeats:(BOOL)a5 breadcrumb:(id)a6;
+- (id)addAndReturnTask:(id)task breadcrumb:(id)breadcrumb;
+- (id)scheduleTask:(id)task timeInterval:(double)interval repeats:(BOOL)repeats;
+- (id)scheduleTask:(id)task timeInterval:(double)interval repeats:(BOOL)repeats breadcrumb:(id)breadcrumb;
 - (void)_lockWhenReadyForMainThread;
-- (void)addDeferredTask:(id)a3;
-- (void)addDeferredTask:(id)a3 breadcrumb:(id)a4;
-- (void)addTask:(id)a3;
-- (void)addTask:(id)a3 breadcrumb:(id)a4;
+- (void)addDeferredTask:(id)task;
+- (void)addDeferredTask:(id)task breadcrumb:(id)breadcrumb;
+- (void)addTask:(id)task;
+- (void)addTask:(id)task breadcrumb:(id)breadcrumb;
 - (void)continueExecutionOnMainThread;
 - (void)finishExecution;
 - (void)lockWhenReadyForMainThread;
 - (void)performDeferredTaskIfIdle;
-- (void)performSingleTask:(id)a3;
-- (void)performSingleTask:(id)a3 breadcrumb:(id)a4;
-- (void)performTask:(id)a3;
-- (void)performTask:(id)a3 breadcrumb:(id)a4;
-- (void)performTaskOnMainThread:(id)a3 breadcrumb:(id)a4 waitUntilDone:(BOOL)a5;
+- (void)performSingleTask:(id)task;
+- (void)performSingleTask:(id)task breadcrumb:(id)breadcrumb;
+- (void)performTask:(id)task;
+- (void)performTask:(id)task breadcrumb:(id)breadcrumb;
+- (void)performTaskOnMainThread:(id)thread breadcrumb:(id)breadcrumb waitUntilDone:(BOOL)done;
 - (void)promoteDeferredTaskIfIdle;
 - (void)unlock;
 - (void)waitUntilAllTasksAreFinished;
-- (void)waitUntilTaskIsFinished:(id)a3;
+- (void)waitUntilTaskIsFinished:(id)finished;
 @end
 
 @implementation UIKeyboardTaskQueue
@@ -67,11 +67,11 @@
         self->_mainThreadContinuation = 0;
 
 LABEL_14:
-        v8 = [(UIKeyboardTaskEntry *)v5 originatingStack];
-        [(UIKeyboardTaskQueue *)self setActiveOriginator:v8];
+        originatingStack = [(UIKeyboardTaskEntry *)v5 originatingStack];
+        [(UIKeyboardTaskQueue *)self setActiveOriginator:originatingStack];
 
-        v9 = [(UIKeyboardTaskEntry *)v5 breadcrumb];
-        [(UIKeyboardTaskQueue *)self setActiveTaskBreadcrumb:v9];
+        breadcrumb = [(UIKeyboardTaskEntry *)v5 breadcrumb];
+        [(UIKeyboardTaskQueue *)self setActiveTaskBreadcrumb:breadcrumb];
 
         [(UIKeyboardTaskQueue *)self unlock];
         executingOnMainThread = self->_executingOnMainThread;
@@ -118,14 +118,14 @@ LABEL_14:
   [(UIKeyboardTaskQueue *)self lock];
   if (!self->_executionContext)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:505 description:@"Received keyboard task completion but there is no current keyboard task."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:505 description:@"Received keyboard task completion but there is no current keyboard task."];
   }
 
   if (self->_mainThreadContinuation)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:506 description:@"Received keyboard task completion before the task's continuation executed."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:506 description:@"Received keyboard task completion before the task's continuation executed."];
   }
 
   [(UIKeyboardTaskQueue *)self setExecutionContext:0];
@@ -153,16 +153,16 @@ LABEL_8:
     _os_signpost_emit_with_name_impl(&dword_188A29000, v5, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "keyboard.taskqueue.execution", "", v9, 2u);
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"UIKeyboardTaskQueueIsEmptyNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UIKeyboardTaskQueueIsEmptyNotification" object:self];
 }
 
 - (void)waitUntilAllTasksAreFinished
 {
   if (pthread_main_np() != 1)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:659 description:{@"%s may only be called from the main thread.", "-[UIKeyboardTaskQueue waitUntilAllTasksAreFinished]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:659 description:{@"%s may only be called from the main thread.", "-[UIKeyboardTaskQueue waitUntilAllTasksAreFinished]"}];
   }
 
   while (1)
@@ -198,8 +198,8 @@ LABEL_8:
     v6 = 0;
     do
     {
-      v7 = [(UIKeyboardTaskExecutionContext *)self->_executionContext takeOwnershipOfPendingCompletionBlock];
-      if (v7)
+      takeOwnershipOfPendingCompletionBlock = [(UIKeyboardTaskExecutionContext *)self->_executionContext takeOwnershipOfPendingCompletionBlock];
+      if (takeOwnershipOfPendingCompletionBlock)
       {
         v8 = _UIKeyboardTaskQueueLog();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -209,7 +209,7 @@ LABEL_8:
           _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEFAULT, "%s execute pending completion block", buf, 0xCu);
         }
 
-        v7[2](v7);
+        takeOwnershipOfPendingCompletionBlock[2](takeOwnershipOfPendingCompletionBlock);
       }
 
       else if (v4 >= 1.0)
@@ -219,12 +219,12 @@ LABEL_8:
           v9 = _UIKeyboardTaskQueueLog();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
           {
-            v12 = [(UIKeyboardTaskQueue *)self activeOriginator];
+            activeOriginator = [(UIKeyboardTaskQueue *)self activeOriginator];
             v13 = @"No stack!";
-            if (v12)
+            if (activeOriginator)
             {
-              v15 = [(UIKeyboardTaskQueue *)self activeOriginator];
-              v14 = [v15 description];
+              activeOriginator2 = [(UIKeyboardTaskQueue *)self activeOriginator];
+              v14 = [activeOriginator2 description];
               v13 = v14;
             }
 
@@ -233,7 +233,7 @@ LABEL_8:
             v18 = 2112;
             v19 = v13;
             _os_log_fault_impl(&dword_188A29000, v9, OS_LOG_TYPE_FAULT, "%s Keyboard queue task timeout detected\n\nLast Exception Backtrace:\n%@", buf, 0x16u);
-            if (v12)
+            if (activeOriginator)
             {
             }
           }
@@ -264,12 +264,12 @@ LABEL_8:
   aBlock[3] = &unk_1E70F3590;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(UIKeyboardTaskQueue *)self activeTaskBreadcrumb];
+  activeTaskBreadcrumb = [(UIKeyboardTaskQueue *)self activeTaskBreadcrumb];
 
-  if (v4)
+  if (activeTaskBreadcrumb)
   {
-    v5 = [(UIKeyboardTaskQueue *)self activeTaskBreadcrumb];
-    (v5)[2](v5, v3);
+    activeTaskBreadcrumb2 = [(UIKeyboardTaskQueue *)self activeTaskBreadcrumb];
+    (activeTaskBreadcrumb2)[2](activeTaskBreadcrumb2, v3);
   }
 
   else
@@ -320,25 +320,25 @@ LABEL_8:
   }
 }
 
-- (void)performTaskOnMainThread:(id)a3 breadcrumb:(id)a4 waitUntilDone:(BOOL)a5
+- (void)performTaskOnMainThread:(id)thread breadcrumb:(id)breadcrumb waitUntilDone:(BOOL)done
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
+  doneCopy = done;
+  threadCopy = thread;
+  breadcrumbCopy = breadcrumb;
   [(UIKeyboardTaskQueue *)self lock];
   if (!self->_executionContext)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:535 description:{@"Received request for main thread, but there is no current keyboard task executing."}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:535 description:{@"Received request for main thread, but there is no current keyboard task executing."}];
   }
 
   if (self->_mainThreadContinuation)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:536 description:@"Received more than one main-thread continuation for the current keyboard task."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:536 description:@"Received more than one main-thread continuation for the current keyboard task."];
   }
 
-  v11 = [[UIKeyboardTaskEntry alloc] initWithTask:v9 breadcrumb:v10];
+  v11 = [[UIKeyboardTaskEntry alloc] initWithTask:threadCopy breadcrumb:breadcrumbCopy];
   mainThreadContinuation = self->_mainThreadContinuation;
   self->_mainThreadContinuation = v11;
 
@@ -347,7 +347,7 @@ LABEL_8:
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 1;
-  if (v5)
+  if (doneCopy)
   {
     executionContext = self->_executionContext;
     v17[0] = MEMORY[0x1E69E9820];
@@ -359,7 +359,7 @@ LABEL_8:
   }
 
   [(UIKeyboardTaskQueue *)self continueExecutionOnMainThread];
-  if (v5)
+  if (doneCopy)
   {
     while (*(v19 + 24) == 1)
     {
@@ -372,31 +372,31 @@ LABEL_8:
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)addTask:(id)a3
+- (void)addTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = _UIKeyboardTaskBreadcrumbEmpty();
-  [(UIKeyboardTaskQueue *)self addTask:v4 breadcrumb:v5];
+  [(UIKeyboardTaskQueue *)self addTask:taskCopy breadcrumb:v5];
 }
 
-- (void)addTask:(id)a3 breadcrumb:(id)a4
+- (void)addTask:(id)task breadcrumb:(id)breadcrumb
 {
-  v6 = a4;
-  v7 = a3;
+  breadcrumbCopy = breadcrumb;
+  taskCopy = task;
   [(UIKeyboardTaskQueue *)self lock];
-  v8 = [[UIKeyboardTaskEntry alloc] initWithTask:v7 breadcrumb:v6];
+  v8 = [[UIKeyboardTaskEntry alloc] initWithTask:taskCopy breadcrumb:breadcrumbCopy];
 
   [(NSMutableArray *)self->_tasks addObject:v8];
   [(UIKeyboardTaskQueue *)self unlock];
   [(UIKeyboardTaskQueue *)self continueExecutionOnMainThread];
 }
 
-- (id)addAndReturnTask:(id)a3 breadcrumb:(id)a4
+- (id)addAndReturnTask:(id)task breadcrumb:(id)breadcrumb
 {
-  v6 = a4;
-  v7 = a3;
+  breadcrumbCopy = breadcrumb;
+  taskCopy = task;
   [(UIKeyboardTaskQueue *)self lock];
-  v8 = [[UIKeyboardTaskEntry alloc] initWithTask:v7 breadcrumb:v6];
+  v8 = [[UIKeyboardTaskEntry alloc] initWithTask:taskCopy breadcrumb:breadcrumbCopy];
 
   [(NSMutableArray *)self->_tasks addObject:v8];
   [(UIKeyboardTaskQueue *)self unlock];
@@ -404,19 +404,19 @@ LABEL_8:
   return v8;
 }
 
-- (void)addDeferredTask:(id)a3
+- (void)addDeferredTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = _UIKeyboardTaskBreadcrumbEmpty();
-  [(UIKeyboardTaskQueue *)self addDeferredTask:v4 breadcrumb:v5];
+  [(UIKeyboardTaskQueue *)self addDeferredTask:taskCopy breadcrumb:v5];
 }
 
-- (void)addDeferredTask:(id)a3 breadcrumb:(id)a4
+- (void)addDeferredTask:(id)task breadcrumb:(id)breadcrumb
 {
-  v6 = a4;
-  v7 = a3;
+  breadcrumbCopy = breadcrumb;
+  taskCopy = task;
   [(UIKeyboardTaskQueue *)self lock];
-  v8 = [[UIKeyboardTaskEntry alloc] initWithTask:v7 breadcrumb:v6];
+  v8 = [[UIKeyboardTaskEntry alloc] initWithTask:taskCopy breadcrumb:breadcrumbCopy];
 
   [(NSMutableArray *)self->_deferredTasks addObject:v8];
   [(UIKeyboardTaskQueue *)self unlock];
@@ -431,48 +431,48 @@ LABEL_8:
   return v3;
 }
 
-- (void)performTask:(id)a3
+- (void)performTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = _UIKeyboardTaskBreadcrumbEmpty();
-  [(UIKeyboardTaskQueue *)self performTask:v4 breadcrumb:v5];
+  [(UIKeyboardTaskQueue *)self performTask:taskCopy breadcrumb:v5];
 }
 
-- (void)performTask:(id)a3 breadcrumb:(id)a4
+- (void)performTask:(id)task breadcrumb:(id)breadcrumb
 {
-  v9 = a3;
-  v7 = a4;
+  taskCopy = task;
+  breadcrumbCopy = breadcrumb;
   if (pthread_main_np() != 1)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:696 description:{@"%s may only be called from the main thread.", "-[UIKeyboardTaskQueue performTask:breadcrumb:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:696 description:{@"%s may only be called from the main thread.", "-[UIKeyboardTaskQueue performTask:breadcrumb:]"}];
   }
 
   if ([(UIKeyboardTaskQueue *)self isMainThreadExecutingTask])
   {
-    [(UIKeyboardTaskQueue *)self performTaskOnMainThread:v9 breadcrumb:v7 waitUntilDone:1];
+    [(UIKeyboardTaskQueue *)self performTaskOnMainThread:taskCopy breadcrumb:breadcrumbCopy waitUntilDone:1];
   }
 
   else
   {
-    [(UIKeyboardTaskQueue *)self addTask:v9];
+    [(UIKeyboardTaskQueue *)self addTask:taskCopy];
     [(UIKeyboardTaskQueue *)self waitUntilAllTasksAreFinished];
   }
 }
 
-- (void)waitUntilTaskIsFinished:(id)a3
+- (void)waitUntilTaskIsFinished:(id)finished
 {
-  v6 = a3;
+  finishedCopy = finished;
   if (pthread_main_np() != 1)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:710 description:{@"%s may only be called from the main thread.", "-[UIKeyboardTaskQueue waitUntilTaskIsFinished:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:710 description:{@"%s may only be called from the main thread.", "-[UIKeyboardTaskQueue waitUntilTaskIsFinished:]"}];
   }
 
   while (1)
   {
     [(UIKeyboardTaskQueue *)self lockWhenReadyForMainThread];
-    if (!self->_executionContext && ![(NSMutableArray *)self->_tasks containsObject:v6])
+    if (!self->_executionContext && ![(NSMutableArray *)self->_tasks containsObject:finishedCopy])
     {
       break;
     }
@@ -484,57 +484,57 @@ LABEL_8:
   [(UIKeyboardTaskQueue *)self unlock];
 }
 
-- (void)performSingleTask:(id)a3
+- (void)performSingleTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = _UIKeyboardTaskBreadcrumbEmpty();
-  [(UIKeyboardTaskQueue *)self performSingleTask:v4 breadcrumb:v5];
+  [(UIKeyboardTaskQueue *)self performSingleTask:taskCopy breadcrumb:v5];
 }
 
-- (void)performSingleTask:(id)a3 breadcrumb:(id)a4
+- (void)performSingleTask:(id)task breadcrumb:(id)breadcrumb
 {
-  v10 = a3;
-  v7 = a4;
+  taskCopy = task;
+  breadcrumbCopy = breadcrumb;
   if (pthread_main_np() != 1)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:732 description:{@"%s may only be called from the main thread.", "-[UIKeyboardTaskQueue performSingleTask:breadcrumb:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:732 description:{@"%s may only be called from the main thread.", "-[UIKeyboardTaskQueue performSingleTask:breadcrumb:]"}];
   }
 
   if ([(UIKeyboardTaskQueue *)self isMainThreadExecutingTask])
   {
-    [(UIKeyboardTaskQueue *)self performTaskOnMainThread:v10 breadcrumb:v7 waitUntilDone:1];
+    [(UIKeyboardTaskQueue *)self performTaskOnMainThread:taskCopy breadcrumb:breadcrumbCopy waitUntilDone:1];
   }
 
   else
   {
-    v8 = [(UIKeyboardTaskQueue *)self addAndReturnTask:v10 breadcrumb:v7];
+    v8 = [(UIKeyboardTaskQueue *)self addAndReturnTask:taskCopy breadcrumb:breadcrumbCopy];
     [(UIKeyboardTaskQueue *)self waitUntilTaskIsFinished:v8];
   }
 }
 
-- (id)scheduleTask:(id)a3 timeInterval:(double)a4 repeats:(BOOL)a5
+- (id)scheduleTask:(id)task timeInterval:(double)interval repeats:(BOOL)repeats
 {
-  v5 = a5;
-  v8 = a3;
+  repeatsCopy = repeats;
+  taskCopy = task;
   v9 = _UIKeyboardTaskBreadcrumbEmpty();
-  v10 = [(UIKeyboardTaskQueue *)self scheduleTask:v8 timeInterval:v5 repeats:v9 breadcrumb:a4];
+  v10 = [(UIKeyboardTaskQueue *)self scheduleTask:taskCopy timeInterval:repeatsCopy repeats:v9 breadcrumb:interval];
 
   return v10;
 }
 
-- (id)scheduleTask:(id)a3 timeInterval:(double)a4 repeats:(BOOL)a5 breadcrumb:(id)a6
+- (id)scheduleTask:(id)task timeInterval:(double)interval repeats:(BOOL)repeats breadcrumb:(id)breadcrumb
 {
-  v6 = a5;
-  v11 = a6;
-  v12 = a3;
+  repeatsCopy = repeats;
+  breadcrumbCopy = breadcrumb;
+  taskCopy = task;
   if (pthread_main_np() != 1)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:761 description:{@"%s may only be called from the main thread.", "-[UIKeyboardTaskQueue(UIKeyboardScheduledTask) scheduleTask:timeInterval:repeats:breadcrumb:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIKeyboardTaskQueue.m" lineNumber:761 description:{@"%s may only be called from the main thread.", "-[UIKeyboardTaskQueue(UIKeyboardScheduledTask) scheduleTask:timeInterval:repeats:breadcrumb:]"}];
   }
 
-  v13 = [[UIKeyboardScheduledTask alloc] initWithTaskQueue:self timeInterval:v6 repeats:v12 task:v11 breadcrumb:a4];
+  v13 = [[UIKeyboardScheduledTask alloc] initWithTaskQueue:self timeInterval:repeatsCopy repeats:taskCopy task:breadcrumbCopy breadcrumb:interval];
 
   return v13;
 }

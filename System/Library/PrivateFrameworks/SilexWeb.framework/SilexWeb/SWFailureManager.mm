@@ -1,55 +1,55 @@
 @interface SWFailureManager
-- (SWFailureManager)initWithMessageHandlerManager:(id)a3 logger:(id)a4;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
-- (void)reportFailure:(id)a3;
+- (SWFailureManager)initWithMessageHandlerManager:(id)manager logger:(id)logger;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
+- (void)reportFailure:(id)failure;
 @end
 
 @implementation SWFailureManager
 
-- (SWFailureManager)initWithMessageHandlerManager:(id)a3 logger:(id)a4
+- (SWFailureManager)initWithMessageHandlerManager:(id)manager logger:(id)logger
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  loggerCopy = logger;
   v12.receiver = self;
   v12.super_class = SWFailureManager;
   v8 = [(SWFailureManager *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_logger, a4);
+    objc_storeStrong(&v8->_logger, logger);
     v10 = [SWWeakMessageHandler handlerWithMessageHandler:v9];
-    [v6 addMessageHandler:v10 name:@"failure"];
+    [managerCopy addMessageHandler:v10 name:@"failure"];
   }
 
   return v9;
 }
 
-- (void)reportFailure:(id)a3
+- (void)reportFailure:(id)failure
 {
-  v6 = a3;
-  v4 = [(SWFailureManager *)self block];
+  failureCopy = failure;
+  block = [(SWFailureManager *)self block];
 
-  if (v4)
+  if (block)
   {
-    v5 = [(SWFailureManager *)self block];
-    (v5)[2](v5, v6);
+    block2 = [(SWFailureManager *)self block];
+    (block2)[2](block2, failureCopy);
   }
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
-  v5 = a3;
-  v6 = [v5 body];
-  v16 = [v6 objectForKey:@"contentDomain"];
+  messageCopy = message;
+  body = [messageCopy body];
+  v16 = [body objectForKey:@"contentDomain"];
 
-  v7 = [v5 body];
-  v8 = [v7 objectForKey:@"embedName"];
+  body2 = [messageCopy body];
+  v8 = [body2 objectForKey:@"embedName"];
 
-  v9 = [v5 body];
+  body3 = [messageCopy body];
 
-  v10 = [v9 objectForKey:@"errorType"];
+  v10 = [body3 objectForKey:@"errorType"];
 
-  v11 = [(SWFailureManager *)self logger];
+  logger = [(SWFailureManager *)self logger];
   if (v16)
   {
     v12 = v8 == 0;
@@ -63,16 +63,16 @@
   if (v12 || v10 == 0)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Dropping failure message due to missing information: contentDomain=%@, embedName=%@, errorType=%@", v16, v8, v10];
-    [(SWFailureMessage *)v11 logError:v14];
+    [(SWFailureMessage *)logger logError:v14];
   }
 
   else
   {
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Recording web embed failure: contentDomain=%@, embedName=%@, errorType=%@", v16, v8, v10];
-    [(SWFailureMessage *)v11 log:v15];
+    [(SWFailureMessage *)logger log:v15];
 
-    v11 = [[SWFailureMessage alloc] initWithContentDomain:v16 embedName:v8 errorType:v10];
-    [(SWFailureManager *)self reportFailure:v11];
+    logger = [[SWFailureMessage alloc] initWithContentDomain:v16 embedName:v8 errorType:v10];
+    [(SWFailureManager *)self reportFailure:logger];
   }
 }
 

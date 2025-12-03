@@ -1,24 +1,24 @@
 @interface PGGraphIngestHolidaysProcessor
-- (BOOL)shouldRunWithGraphUpdate:(id)a3;
-- (PGGraphIngestHolidaysProcessor)initWithGraphBuilder:(id)a3;
-- (void)deleteHolidayEdgesWithMomentNodes:(id)a3 inGraph:(id)a4;
-- (void)insertHolidaysBetweenLocalDate:(id)a3 andLocalDate:(id)a4 graph:(id)a5 locale:(id)a6 loggingConnection:(id)a7 progressBlock:(id)a8;
-- (void)insertHolidaysWithMomentNodes:(id)a3 graph:(id)a4 locale:(id)a5 loggingConnection:(id)a6 progressBlock:(id)a7;
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4;
+- (BOOL)shouldRunWithGraphUpdate:(id)update;
+- (PGGraphIngestHolidaysProcessor)initWithGraphBuilder:(id)builder;
+- (void)deleteHolidayEdgesWithMomentNodes:(id)nodes inGraph:(id)graph;
+- (void)insertHolidaysBetweenLocalDate:(id)date andLocalDate:(id)localDate graph:(id)graph locale:(id)locale loggingConnection:(id)connection progressBlock:(id)block;
+- (void)insertHolidaysWithMomentNodes:(id)nodes graph:(id)graph locale:(id)locale loggingConnection:(id)connection progressBlock:(id)block;
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block;
 @end
 
 @implementation PGGraphIngestHolidaysProcessor
 
-- (void)insertHolidaysBetweenLocalDate:(id)a3 andLocalDate:(id)a4 graph:(id)a5 locale:(id)a6 loggingConnection:(id)a7 progressBlock:(id)a8
+- (void)insertHolidaysBetweenLocalDate:(id)date andLocalDate:(id)localDate graph:(id)graph locale:(id)locale loggingConnection:(id)connection progressBlock:(id)block
 {
   v57 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v33 = a4;
-  v14 = a5;
-  v15 = a6;
-  v34 = a7;
-  v16 = a8;
-  v17 = _Block_copy(v16);
+  dateCopy = date;
+  localDateCopy = localDate;
+  graphCopy = graph;
+  localeCopy = locale;
+  connectionCopy = connection;
+  blockCopy = block;
+  v17 = _Block_copy(blockCopy);
   v49 = 0;
   v50 = &v49;
   v51 = 0x2020000000;
@@ -29,17 +29,17 @@
   v48 = 0;
   if (!v17 || (v18 = CFAbsoluteTimeGetCurrent(), v18 - v46[3] < 0.01) || (v46[3] = v18, v44 = 0, (*(v17 + 2))(v17, &v44, 0.0), v19 = *(v50 + 24) | v44, *(v50 + 24) = v19, (v19 & 1) == 0))
   {
-    v20 = [v14 infoNode];
-    v21 = v20;
-    if (!v15)
+    infoNode = [graphCopy infoNode];
+    v21 = infoNode;
+    if (!localeCopy)
     {
-      v15 = [v20 locale];
+      localeCopy = [infoNode locale];
     }
 
-    v22 = [v15 countryCode];
-    v23 = [objc_alloc(MEMORY[0x277D276D8]) initWithLocale:v15];
+    countryCode = [localeCopy countryCode];
+    v23 = [objc_alloc(MEMORY[0x277D276D8]) initWithLocale:localeCopy];
     v24 = [PGGraphIngestHolidayProcessorHelper keyboardLanguageCodesForInfoNode:v21 holidayService:v23];
-    [(PGGraphIngestHolidayProcessorHelper *)self->_helper prepareIfNeededWithGraph:v14];
+    [(PGGraphIngestHolidayProcessorHelper *)self->_helper prepareIfNeededWithGraph:graphCopy];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __123__PGGraphIngestHolidaysProcessor_insertHolidaysBetweenLocalDate_andLocalDate_graph_locale_loggingConnection_progressBlock___block_invoke;
@@ -50,13 +50,13 @@
     v42 = &v49;
     v40 = v25;
     v35[4] = self;
-    v26 = v22;
+    v26 = countryCode;
     v36 = v26;
     v27 = v24;
     v37 = v27;
-    v38 = v14;
-    v39 = v34;
-    [v23 enumerateEventRulesForAllCountriesBetweenLocalDate:v32 andLocalDate:v33 usingBlock:v35];
+    v38 = graphCopy;
+    v39 = connectionCopy;
+    [v23 enumerateEventRulesForAllCountriesBetweenLocalDate:dateCopy andLocalDate:localDateCopy usingBlock:v35];
     if (*(v50 + 24) == 1)
     {
       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -256,19 +256,19 @@ void __123__PGGraphIngestHolidaysProcessor_insertHolidaysBetweenLocalDate_andLoc
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)insertHolidaysWithMomentNodes:(id)a3 graph:(id)a4 locale:(id)a5 loggingConnection:(id)a6 progressBlock:(id)a7
+- (void)insertHolidaysWithMomentNodes:(id)nodes graph:(id)graph locale:(id)locale loggingConnection:(id)connection progressBlock:(id)block
 {
-  v33 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [PGGraphMomentNode firstAndLastMomentNodesInMomentNodes:a3];
-  v16 = [v15 firstObject];
-  v17 = [v15 lastObject];
-  v18 = v17;
-  if (v16)
+  graphCopy = graph;
+  localeCopy = locale;
+  connectionCopy = connection;
+  blockCopy = block;
+  v15 = [PGGraphMomentNode firstAndLastMomentNodesInMomentNodes:nodes];
+  firstObject = [v15 firstObject];
+  lastObject = [v15 lastObject];
+  v18 = lastObject;
+  if (firstObject)
   {
-    v19 = v17 == 0;
+    v19 = lastObject == 0;
   }
 
   else
@@ -278,53 +278,53 @@ void __123__PGGraphIngestHolidaysProcessor_insertHolidaysBetweenLocalDate_andLoc
 
   if (!v19)
   {
-    v20 = [v33 localDatesForMomentNode:v16];
-    v31 = [v20 allObjects];
+    v20 = [graphCopy localDatesForMomentNode:firstObject];
+    allObjects = [v20 allObjects];
 
-    v21 = [v33 localDatesForMomentNode:v18];
-    v22 = [v21 allObjects];
+    v21 = [graphCopy localDatesForMomentNode:v18];
+    allObjects2 = [v21 allObjects];
 
-    [v31 sortedArrayUsingSelector:sel_compare_];
-    v32 = v14;
-    v23 = v13;
-    v24 = self;
-    v26 = v25 = v12;
-    v27 = [v26 firstObject];
+    [allObjects sortedArrayUsingSelector:sel_compare_];
+    v32 = blockCopy;
+    v23 = connectionCopy;
+    selfCopy = self;
+    v26 = v25 = localeCopy;
+    firstObject2 = [v26 firstObject];
 
-    v28 = [v22 sortedArrayUsingSelector:sel_compare_];
-    v29 = [v28 lastObject];
+    v28 = [allObjects2 sortedArrayUsingSelector:sel_compare_];
+    lastObject2 = [v28 lastObject];
 
-    v12 = v25;
-    v30 = v24;
-    v13 = v23;
-    v14 = v32;
-    [(PGGraphIngestHolidaysProcessor *)v30 insertHolidaysBetweenLocalDate:v27 andLocalDate:v29 graph:v33 locale:v25 loggingConnection:v13 progressBlock:v32];
+    localeCopy = v25;
+    v30 = selfCopy;
+    connectionCopy = v23;
+    blockCopy = v32;
+    [(PGGraphIngestHolidaysProcessor *)v30 insertHolidaysBetweenLocalDate:firstObject2 andLocalDate:lastObject2 graph:graphCopy locale:v25 loggingConnection:connectionCopy progressBlock:v32];
   }
 }
 
-- (void)deleteHolidayEdgesWithMomentNodes:(id)a3 inGraph:(id)a4
+- (void)deleteHolidayEdgesWithMomentNodes:(id)nodes inGraph:(id)graph
 {
   v5 = MEMORY[0x277D22C50];
-  v6 = a4;
-  v7 = a3;
+  graphCopy = graph;
+  nodesCopy = nodes;
   v10 = objc_alloc_init(v5);
-  v8 = [v7 celebratedHolidayNodes];
-  v9 = [(PGGraphEdgeCollection *)PGGraphCelebratingEdgeCollection edgesFromNodes:v7 toNodes:v8];
+  celebratedHolidayNodes = [nodesCopy celebratedHolidayNodes];
+  v9 = [(PGGraphEdgeCollection *)PGGraphCelebratingEdgeCollection edgesFromNodes:nodesCopy toNodes:celebratedHolidayNodes];
 
   [v10 removeEdges:v9];
-  [v6 executeGraphChangeRequest:v10];
+  [graphCopy executeGraphChangeRequest:v10];
 }
 
-- (void)runWithGraphUpdate:(id)a3 progressBlock:(id)a4
+- (void)runWithGraphUpdate:(id)update progressBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   graphBuilder = self->_graphBuilder;
-  v8 = a3;
-  v9 = [(PGGraphBuilder *)graphBuilder graph];
-  v10 = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
-  v11 = os_signpost_id_generate(v10);
-  v12 = v10;
+  updateCopy = update;
+  graph = [(PGGraphBuilder *)graphBuilder graph];
+  loggingConnection = [(PGGraphBuilder *)self->_graphBuilder loggingConnection];
+  v11 = os_signpost_id_generate(loggingConnection);
+  v12 = loggingConnection;
   v13 = v12;
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
@@ -335,13 +335,13 @@ void __123__PGGraphIngestHolidaysProcessor_insertHolidaysBetweenLocalDate_andLoc
   info = 0;
   mach_timebase_info(&info);
   v14 = mach_absolute_time();
-  v15 = [v8 momentNodesToProcessInGraph:v9 forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
+  v15 = [updateCopy momentNodesToProcessInGraph:graph forMomentUpdateTypes:objc_msgSend(objc_opt_class() includeInsertedNodes:{"requiredMomentUpdateTypes"), 1}];
 
   if ([v15 count])
   {
-    [(PGGraphIngestHolidaysProcessor *)self deleteHolidayEdgesWithMomentNodes:v15 inGraph:v9];
+    [(PGGraphIngestHolidaysProcessor *)self deleteHolidayEdgesWithMomentNodes:v15 inGraph:graph];
     v16 = [v15 set];
-    [(PGGraphIngestHolidaysProcessor *)self insertHolidaysWithMomentNodes:v16 graph:v9 locale:0 loggingConnection:v13 progressBlock:v6];
+    [(PGGraphIngestHolidaysProcessor *)self insertHolidaysWithMomentNodes:v16 graph:graph locale:0 loggingConnection:v13 progressBlock:blockCopy];
   }
 
   v17 = mach_absolute_time();
@@ -367,33 +367,33 @@ void __123__PGGraphIngestHolidaysProcessor_insertHolidaysBetweenLocalDate_andLoc
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldRunWithGraphUpdate:(id)a3
+- (BOOL)shouldRunWithGraphUpdate:(id)update
 {
-  v3 = a3;
-  if ([v3 isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(v3, "hasMomentsToInsert"))
+  updateCopy = update;
+  if ([updateCopy isResumingFullAnalysis] & 1) != 0 || (objc_msgSend(updateCopy, "hasMomentsToInsert"))
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v3 momentUpdateTypes];
-    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & v5) != 0;
+    momentUpdateTypes = [updateCopy momentUpdateTypes];
+    v4 = ([objc_opt_class() requiredMomentUpdateTypes] & momentUpdateTypes) != 0;
   }
 
   return v4;
 }
 
-- (PGGraphIngestHolidaysProcessor)initWithGraphBuilder:(id)a3
+- (PGGraphIngestHolidaysProcessor)initWithGraphBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   v11.receiver = self;
   v11.super_class = PGGraphIngestHolidaysProcessor;
   v6 = [(PGGraphIngestHolidaysProcessor *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphBuilder, a3);
+    objc_storeStrong(&v6->_graphBuilder, builder);
     v8 = objc_alloc_init(PGGraphIngestHolidayProcessorHelper);
     helper = v7->_helper;
     v7->_helper = v8;

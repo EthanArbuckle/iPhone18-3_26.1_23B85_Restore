@@ -1,6 +1,6 @@
 @interface BRNonLocalVersion
-+ (id)listVersionsOfDocumentAtURL:(id)a3;
-- (BRNonLocalVersion)initWithURL:(id)a3 physicalURL:(id)a4 size:(id)a5 extension:(id)a6 etag:(id)a7 hasThumbnail:(BOOL)a8 displayName:(id)a9 lastEditorDeviceName:(id)a10 lastEditorNameComponents:(id)a11 modificationDate:(id)a12 versionsStore:(id)a13;
++ (id)listVersionsOfDocumentAtURL:(id)l;
+- (BRNonLocalVersion)initWithURL:(id)l physicalURL:(id)rL size:(id)size extension:(id)extension etag:(id)etag hasThumbnail:(BOOL)thumbnail displayName:(id)name lastEditorDeviceName:(id)self0 lastEditorNameComponents:(id)self1 modificationDate:(id)self2 versionsStore:(id)self3;
 - (NSCopying)persistentIdentifier;
 - (id)description;
 - (void)dealloc;
@@ -8,37 +8,37 @@
 
 @implementation BRNonLocalVersion
 
-- (BRNonLocalVersion)initWithURL:(id)a3 physicalURL:(id)a4 size:(id)a5 extension:(id)a6 etag:(id)a7 hasThumbnail:(BOOL)a8 displayName:(id)a9 lastEditorDeviceName:(id)a10 lastEditorNameComponents:(id)a11 modificationDate:(id)a12 versionsStore:(id)a13
+- (BRNonLocalVersion)initWithURL:(id)l physicalURL:(id)rL size:(id)size extension:(id)extension etag:(id)etag hasThumbnail:(BOOL)thumbnail displayName:(id)name lastEditorDeviceName:(id)self0 lastEditorNameComponents:(id)self1 modificationDate:(id)self2 versionsStore:(id)self3
 {
   v45 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v36 = a4;
-  v18 = a5;
-  v19 = a6;
-  v35 = a7;
-  v34 = a9;
-  v33 = a10;
-  v32 = a11;
-  v20 = a12;
-  v31 = a13;
+  lCopy = l;
+  rLCopy = rL;
+  sizeCopy = size;
+  extensionCopy = extension;
+  etagCopy = etag;
+  nameCopy = name;
+  deviceNameCopy = deviceName;
+  componentsCopy = components;
+  dateCopy = date;
+  storeCopy = store;
   v38.receiver = self;
   v38.super_class = BRNonLocalVersion;
   v21 = [(BRNonLocalVersion *)&v38 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_etag, a7);
-    objc_storeStrong(&v22->_url, a3);
-    objc_storeStrong(&v22->_physicalURL, a4);
-    objc_storeStrong(&v22->_lastEditorDeviceName, a10);
-    objc_storeStrong(&v22->_lastEditorNameComponents, a11);
-    v22->_hasThumbnail = a8;
-    objc_storeStrong(&v22->_versionsStore, a13);
-    v22->_size = [v18 unsignedLongLongValue];
-    objc_storeStrong(&v22->_displayName, a9);
-    if ([v19 length])
+    objc_storeStrong(&v21->_etag, etag);
+    objc_storeStrong(&v22->_url, l);
+    objc_storeStrong(&v22->_physicalURL, rL);
+    objc_storeStrong(&v22->_lastEditorDeviceName, deviceName);
+    objc_storeStrong(&v22->_lastEditorNameComponents, components);
+    v22->_hasThumbnail = thumbnail;
+    objc_storeStrong(&v22->_versionsStore, store);
+    v22->_size = [sizeCopy unsignedLongLongValue];
+    objc_storeStrong(&v22->_displayName, name);
+    if ([extensionCopy length])
     {
-      [v19 bytes];
+      [extensionCopy bytes];
       v23 = sandbox_extension_consume();
       v22->_sandboxHandle = v23;
       if (v23 < 0)
@@ -49,7 +49,7 @@
         if (os_log_type_enabled(v26, 0x90u))
         {
           *buf = 138412802;
-          v40 = v19;
+          v40 = extensionCopy;
           v41 = 1024;
           v42 = v24;
           v43 = 2112;
@@ -66,7 +66,7 @@
       v22->_sandboxHandle = -1;
     }
 
-    objc_storeStrong(&v22->_modificationDate, a12);
+    objc_storeStrong(&v22->_modificationDate, date);
   }
 
   v27 = *MEMORY[0x1E69E9840];
@@ -87,18 +87,18 @@
 
 - (NSCopying)persistentIdentifier
 {
-  v3 = [MEMORY[0x1E69A07C0] manager];
+  manager = [MEMORY[0x1E69A07C0] manager];
   versionsStore = self->_versionsStore;
-  v5 = [(NSURL *)self->_url lastPathComponent];
-  v6 = [v3 persistentIdentifierInStorage:versionsStore forAdditionNamed:v5 inNameSpace:*MEMORY[0x1E69A0798]];
+  lastPathComponent = [(NSURL *)self->_url lastPathComponent];
+  v6 = [manager persistentIdentifierInStorage:versionsStore forAdditionNamed:lastPathComponent inNameSpace:*MEMORY[0x1E69A0798]];
 
   return v6;
 }
 
-+ (id)listVersionsOfDocumentAtURL:(id)a3
++ (id)listVersionsOfDocumentAtURL:(id)l
 {
-  v3 = a3;
-  v4 = [[BRListNonLocalVersionsOperation alloc] initWithDocumentURL:v3];
+  lCopy = l;
+  v4 = [[BRListNonLocalVersionsOperation alloc] initWithDocumentURL:lCopy];
 
   return v4;
 }
@@ -109,11 +109,11 @@
   v4 = objc_opt_class();
   displayName = self->_displayName;
   lastEditorDeviceName = self->_lastEditorDeviceName;
-  v7 = [(BRNonLocalVersion *)self lastEditorFormattedName];
-  v8 = v7;
-  if (v7)
+  lastEditorFormattedName = [(BRNonLocalVersion *)self lastEditorFormattedName];
+  v8 = lastEditorFormattedName;
+  if (lastEditorFormattedName)
   {
-    v9 = v7;
+    v9 = lastEditorFormattedName;
   }
 
   else
@@ -123,14 +123,14 @@
 
   v16 = *&self->_size;
   etag = self->_etag;
-  v11 = [(NSURL *)self->_url path];
-  v12 = [v3 stringWithFormat:@"<%@ name:'%@' device:'%@' owner:'%@' size:%llu mtime:%@ etag:%@ url:'%@'", v4, displayName, lastEditorDeviceName, v9, v16, etag, v11];
+  path = [(NSURL *)self->_url path];
+  v12 = [v3 stringWithFormat:@"<%@ name:'%@' device:'%@' owner:'%@' size:%llu mtime:%@ etag:%@ url:'%@'", v4, displayName, lastEditorDeviceName, v9, v16, etag, path];
 
   physicalURL = self->_physicalURL;
   if (physicalURL && self->_url != physicalURL)
   {
-    v14 = [(NSURL *)physicalURL path];
-    [v12 appendFormat:@" physical:'%@'", v14];
+    path2 = [(NSURL *)physicalURL path];
+    [v12 appendFormat:@" physical:'%@'", path2];
   }
 
   [v12 appendString:@">"];

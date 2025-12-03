@@ -1,27 +1,27 @@
 @interface MKPlaceHeaderButtonsViewController
-- (BOOL)shouldStackForButtons:(id)a3;
+- (BOOL)shouldStackForButtons:(id)buttons;
 - (MKPlaceHeaderButtonsViewController)init;
 - (MKPlaceHeaderButtonsViewControllerDelegate)delegate;
-- (id)attributedStringWith:(id)a3;
+- (id)attributedStringWith:(id)with;
 - (id)directionAttributedStringWithETAString;
-- (id)etaStringFor:(unint64_t)a3 travelTime:(double)a4;
+- (id)etaStringFor:(unint64_t)for travelTime:(double)time;
 - (id)infoCardChildPossibleActions;
 - (id)primaryAttributedString;
 - (id)rerouteAttributedString;
-- (id)updateButton:(id)a3 withController:(id)a4;
-- (void)ETAProviderUpdated:(id)a3;
+- (id)updateButton:(id)button withController:(id)controller;
+- (void)ETAProviderUpdated:(id)updated;
 - (void)_commonInit;
 - (void)_contentSizeDidChange;
-- (void)primaryButtonSelected:(id)a3;
-- (void)setAlternatePrimaryButtonController:(id)a3;
+- (void)primaryButtonSelected:(id)selected;
+- (void)setAlternatePrimaryButtonController:(id)controller;
 - (void)setConstraints;
-- (void)setLineItem:(id)a3;
-- (void)setPlaceItem:(id)a3;
-- (void)setPrimaryButtonType:(unint64_t)a3;
-- (void)setSecondaryButtonController:(id)a3;
+- (void)setLineItem:(id)item;
+- (void)setPlaceItem:(id)item;
+- (void)setPrimaryButtonType:(unint64_t)type;
+- (void)setSecondaryButtonController:(id)controller;
 - (void)setupPrimaryButton;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MKPlaceHeaderButtonsViewController
@@ -35,18 +35,18 @@
 
 - (id)infoCardChildPossibleActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   v5 = self->_primaryButtonType - 1;
   if (v5 <= 2)
   {
-    [v3 addObject:qword_1E76CCDA8[v5]];
+    [array addObject:qword_1E76CCDA8[v5]];
   }
 
-  v6 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  v7 = [v6 _hasFlyover];
+  mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+  _hasFlyover = [mapItem _hasFlyover];
 
-  if (v7)
+  if (_hasFlyover)
   {
     v8 = &unk_1F1611C50;
   }
@@ -68,18 +68,18 @@
 
   [v4 addObject:v8];
 LABEL_10:
-  v9 = [(MKPlaceHeaderButtonsViewController *)self secondaryButtonController];
-  v10 = [v9 conformsToProtocol:&unk_1F1642C28];
+  secondaryButtonController = [(MKPlaceHeaderButtonsViewController *)self secondaryButtonController];
+  v10 = [secondaryButtonController conformsToProtocol:&unk_1F1642C28];
 
   if (v10)
   {
-    v11 = [(MKPlaceHeaderButtonsViewController *)self secondaryButtonController];
+    secondaryButtonController2 = [(MKPlaceHeaderButtonsViewController *)self secondaryButtonController];
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v11 infoCardChildPossibleActions];
-      if ([v12 count])
+      infoCardChildPossibleActions = [secondaryButtonController2 infoCardChildPossibleActions];
+      if ([infoCardChildPossibleActions count])
       {
-        [v4 addObjectsFromArray:v12];
+        [v4 addObjectsFromArray:infoCardChildPossibleActions];
       }
     }
   }
@@ -87,16 +87,16 @@ LABEL_10:
   return v4;
 }
 
-- (void)setAlternatePrimaryButtonController:(id)a3
+- (void)setAlternatePrimaryButtonController:(id)controller
 {
-  v8 = a3;
-  if (self->_alternatePrimaryButtonController != v8)
+  controllerCopy = controller;
+  if (self->_alternatePrimaryButtonController != controllerCopy)
   {
     [(_MKPlaceActionControlledButton *)self->_alternatePrimaryButton removeFromSuperview];
     alternatePrimaryButton = self->_alternatePrimaryButton;
     self->_alternatePrimaryButton = 0;
 
-    objc_storeStrong(&self->_alternatePrimaryButtonController, a3);
+    objc_storeStrong(&self->_alternatePrimaryButtonController, controller);
     v6 = [(MKPlaceHeaderButtonsViewController *)self updateButton:self->_alternatePrimaryButton withController:self->_alternatePrimaryButtonController];
     v7 = self->_alternatePrimaryButton;
     self->_alternatePrimaryButton = v6;
@@ -108,16 +108,16 @@ LABEL_10:
   }
 }
 
-- (void)setSecondaryButtonController:(id)a3
+- (void)setSecondaryButtonController:(id)controller
 {
-  v8 = a3;
-  if (self->_secondaryButtonController != v8)
+  controllerCopy = controller;
+  if (self->_secondaryButtonController != controllerCopy)
   {
     [(_MKPlaceActionControlledButton *)self->_secondaryButton removeFromSuperview];
     secondaryButton = self->_secondaryButton;
     self->_secondaryButton = 0;
 
-    objc_storeStrong(&self->_secondaryButtonController, a3);
+    objc_storeStrong(&self->_secondaryButtonController, controller);
     v6 = [(MKPlaceHeaderButtonsViewController *)self updateButton:self->_secondaryButton withController:self->_secondaryButtonController];
     v7 = self->_secondaryButton;
     self->_secondaryButton = v6;
@@ -129,19 +129,19 @@ LABEL_10:
   }
 }
 
-- (id)updateButton:(id)a3 withController:(id)a4
+- (id)updateButton:(id)button withController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MKPlaceHeaderButtonsViewController *)self viewIfLoaded];
+  buttonCopy = button;
+  controllerCopy = controller;
+  viewIfLoaded = [(MKPlaceHeaderButtonsViewController *)self viewIfLoaded];
 
-  if (!v8)
+  if (!viewIfLoaded)
   {
     goto LABEL_4;
   }
 
-  v9 = [(MKPlaceHeaderButtonsViewController *)self traitCollection];
-  if ([v9 userInterfaceIdiom] == 5)
+  traitCollection = [(MKPlaceHeaderButtonsViewController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 5)
   {
     primaryButtonType = self->_primaryButtonType;
 
@@ -157,18 +157,18 @@ LABEL_4:
   {
   }
 
-  v12 = [v7 buttonTitle];
-  v13 = [v12 length];
-  if (!v6 && v13)
+  buttonTitle = [controllerCopy buttonTitle];
+  v13 = [buttonTitle length];
+  if (!buttonCopy && v13)
   {
-    v6 = objc_alloc_init(MKPlaceHeaderButton);
-    [(MKPlaceSectionRowView *)self->_buttonsContainerView addSubview:v6];
+    buttonCopy = objc_alloc_init(MKPlaceHeaderButton);
+    [(MKPlaceSectionRowView *)self->_buttonsContainerView addSubview:buttonCopy];
 LABEL_13:
-    [(MKPlaceHeaderButton *)v6 setButtonController:v7];
+    [(MKPlaceHeaderButton *)buttonCopy setButtonController:controllerCopy];
     goto LABEL_14;
   }
 
-  if (!v6 || v13)
+  if (!buttonCopy || v13)
   {
     if (v13)
     {
@@ -178,35 +178,35 @@ LABEL_13:
 
   else
   {
-    [(MKPlaceHeaderButton *)v6 removeFromSuperview];
+    [(MKPlaceHeaderButton *)buttonCopy removeFromSuperview];
 
-    v6 = 0;
+    buttonCopy = 0;
   }
 
 LABEL_14:
-  v6 = v6;
+  buttonCopy = buttonCopy;
 
-  v11 = v6;
+  v11 = buttonCopy;
 LABEL_15:
 
   return v11;
 }
 
-- (void)primaryButtonSelected:(id)a3
+- (void)primaryButtonSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [(MKPlaceHeaderButtonsViewController *)self delegate];
-  [v5 placeHeaderButtonsViewController:self didSelectPrimaryType:self->_primaryButtonType withView:v4];
+  selectedCopy = selected;
+  delegate = [(MKPlaceHeaderButtonsViewController *)self delegate];
+  [delegate placeHeaderButtonsViewController:self didSelectPrimaryType:self->_primaryButtonType withView:selectedCopy];
 }
 
 - (void)setupPrimaryButton
 {
-  v3 = [(MKPlaceHeaderButtonsViewController *)self viewIfLoaded];
+  viewIfLoaded = [(MKPlaceHeaderButtonsViewController *)self viewIfLoaded];
 
-  if (v3)
+  if (viewIfLoaded)
   {
-    v4 = [(MKPlaceHeaderButtonsViewController *)self traitCollection];
-    if ([v4 userInterfaceIdiom] == 5)
+    traitCollection = [(MKPlaceHeaderButtonsViewController *)self traitCollection];
+    if ([traitCollection userInterfaceIdiom] == 5)
     {
       primaryButtonType = self->_primaryButtonType;
 
@@ -242,16 +242,16 @@ LABEL_15:
     }
 
     v10 = self->_primaryButton;
-    v11 = [(MKPlaceHeaderButtonsViewController *)self primaryAttributedString];
-    [(_MKPlaceActionControlledButton *)v10 setPrimaryTitle:v11];
+    primaryAttributedString = [(MKPlaceHeaderButtonsViewController *)self primaryAttributedString];
+    [(_MKPlaceActionControlledButton *)v10 setPrimaryTitle:primaryAttributedString];
   }
 }
 
-- (void)setPrimaryButtonType:(unint64_t)a3
+- (void)setPrimaryButtonType:(unint64_t)type
 {
-  if (self->_primaryButtonType != a3)
+  if (self->_primaryButtonType != type)
   {
-    self->_primaryButtonType = a3;
+    self->_primaryButtonType = type;
     currentETAString = self->_currentETAString;
     self->_currentETAString = 0;
 
@@ -263,133 +263,133 @@ LABEL_15:
 
 - (void)setConstraints
 {
-  v2 = self;
+  selfCopy = self;
   v155[6] = *MEMORY[0x1E69E9840];
-  v3 = [(MKPlaceHeaderButtonsViewController *)self viewIfLoaded];
+  viewIfLoaded = [(MKPlaceHeaderButtonsViewController *)self viewIfLoaded];
 
-  if (v3)
+  if (viewIfLoaded)
   {
-    [MEMORY[0x1E696ACD8] deactivateConstraints:v2->_constraints];
+    [MEMORY[0x1E696ACD8] deactivateConstraints:selfCopy->_constraints];
     v4 = MEMORY[0x1E695E0F0];
     v139 = [MEMORY[0x1E695E0F0] mutableCopy];
     v5 = [v4 mutableCopy];
     v6 = v5;
-    if (v2->_primaryButton)
+    if (selfCopy->_primaryButton)
     {
       [v5 addObject:?];
     }
 
-    if (v2->_secondaryButton)
+    if (selfCopy->_secondaryButton)
     {
       [v6 addObject:?];
     }
 
-    v7 = [(MKPlaceHeaderButtonsViewController *)v2 shouldStackForButtons:v6];
-    if (v2->_primaryButton || v2->_secondaryButton)
+    v7 = [(MKPlaceHeaderButtonsViewController *)selfCopy shouldStackForButtons:v6];
+    if (selfCopy->_primaryButton || selfCopy->_secondaryButton)
     {
-      v8 = [(_MKPlaceActionControlledButton *)v2->_alternatePrimaryButton superview];
+      superview = [(_MKPlaceActionControlledButton *)selfCopy->_alternatePrimaryButton superview];
 
-      if (!v8)
+      if (!superview)
       {
-        [(MKPlaceSectionRowView *)v2->_buttonsContainerView addSubview:v2->_alternatePrimaryButton];
+        [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView addSubview:selfCopy->_alternatePrimaryButton];
       }
     }
 
     else
     {
-      [(_MKPlaceActionControlledButton *)v2->_alternatePrimaryButton removeFromSuperview];
+      [(_MKPlaceActionControlledButton *)selfCopy->_alternatePrimaryButton removeFromSuperview];
     }
 
-    alternatePrimaryButton = v2->_alternatePrimaryButton;
+    alternatePrimaryButton = selfCopy->_alternatePrimaryButton;
     if (alternatePrimaryButton)
     {
-      v10 = [(_MKPlaceActionControlledButton *)alternatePrimaryButton superview];
-      buttonsContainerView = v2->_buttonsContainerView;
+      superview2 = [(_MKPlaceActionControlledButton *)alternatePrimaryButton superview];
+      buttonsContainerView = selfCopy->_buttonsContainerView;
 
-      if (v10 != buttonsContainerView)
+      if (superview2 != buttonsContainerView)
       {
-        [(_MKPlaceActionControlledButton *)v2->_alternatePrimaryButton removeFromSuperview];
-        [(MKPlaceSectionRowView *)v2->_buttonsContainerView addSubview:v2->_alternatePrimaryButton];
+        [(_MKPlaceActionControlledButton *)selfCopy->_alternatePrimaryButton removeFromSuperview];
+        [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView addSubview:selfCopy->_alternatePrimaryButton];
       }
     }
 
-    primaryButton = v2->_primaryButton;
-    if (primaryButton && v2->_alternatePrimaryButton)
+    primaryButton = selfCopy->_primaryButton;
+    if (primaryButton && selfCopy->_alternatePrimaryButton)
     {
       v113 = v6;
-      v132 = [(_MKPlaceActionControlledButton *)primaryButton topAnchor];
-      v129 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView topAnchor];
-      v120 = [v132 constraintEqualToAnchor:v129];
+      topAnchor = [(_MKPlaceActionControlledButton *)primaryButton topAnchor];
+      topAnchor2 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView topAnchor];
+      v120 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v155[0] = v120;
-      v110 = [(_MKPlaceActionControlledButton *)v2->_primaryButton leadingAnchor];
-      obja = [(MKPlaceSectionRowView *)v2->_buttonsContainerView layoutMarginsGuide];
-      v107 = [obja leadingAnchor];
-      v104 = [v110 constraintEqualToAnchor:v107];
+      leadingAnchor = [(_MKPlaceActionControlledButton *)selfCopy->_primaryButton leadingAnchor];
+      obja = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView layoutMarginsGuide];
+      leadingAnchor2 = [obja leadingAnchor];
+      v104 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v155[1] = v104;
-      v102 = [(_MKPlaceActionControlledButton *)v2->_alternatePrimaryButton topAnchor];
-      v100 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView topAnchor];
-      v98 = [v102 constraintEqualToAnchor:v100];
+      topAnchor3 = [(_MKPlaceActionControlledButton *)selfCopy->_alternatePrimaryButton topAnchor];
+      topAnchor4 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView topAnchor];
+      v98 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       v155[2] = v98;
-      v96 = [(_MKPlaceActionControlledButton *)v2->_alternatePrimaryButton leadingAnchor];
-      v94 = [(_MKPlaceActionControlledButton *)v2->_primaryButton trailingAnchor];
-      v92 = [v96 constraintEqualToAnchor:v94 constant:6.0];
+      leadingAnchor3 = [(_MKPlaceActionControlledButton *)selfCopy->_alternatePrimaryButton leadingAnchor];
+      trailingAnchor = [(_MKPlaceActionControlledButton *)selfCopy->_primaryButton trailingAnchor];
+      v92 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:6.0];
       v155[3] = v92;
-      v13 = [(_MKPlaceActionControlledButton *)v2->_alternatePrimaryButton trailingAnchor];
-      v14 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView layoutMarginsGuide];
-      v15 = [v14 trailingAnchor];
-      v16 = [v13 constraintEqualToAnchor:v15];
+      trailingAnchor2 = [(_MKPlaceActionControlledButton *)selfCopy->_alternatePrimaryButton trailingAnchor];
+      layoutMarginsGuide = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView layoutMarginsGuide];
+      trailingAnchor3 = [layoutMarginsGuide trailingAnchor];
+      v16 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
       v155[4] = v16;
-      v17 = [(_MKPlaceActionControlledButton *)v2->_primaryButton widthAnchor];
-      v18 = [(_MKPlaceActionControlledButton *)v2->_alternatePrimaryButton widthAnchor];
-      v19 = [v17 constraintEqualToAnchor:v18];
+      widthAnchor = [(_MKPlaceActionControlledButton *)selfCopy->_primaryButton widthAnchor];
+      widthAnchor2 = [(_MKPlaceActionControlledButton *)selfCopy->_alternatePrimaryButton widthAnchor];
+      v19 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       v155[5] = v19;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v155 count:6];
       [v139 addObjectsFromArray:v20];
 
-      secondaryButton = v2->_secondaryButton;
+      secondaryButton = selfCopy->_secondaryButton;
       if (secondaryButton)
       {
-        v22 = [(_MKPlaceActionControlledButton *)secondaryButton leadingAnchor];
-        v23 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView layoutMarginsGuide];
-        v133 = [v23 leadingAnchor];
-        v121 = v22;
-        v130 = [v22 constraintEqualToAnchor:v133];
+        leadingAnchor4 = [(_MKPlaceActionControlledButton *)secondaryButton leadingAnchor];
+        layoutMarginsGuide2 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView layoutMarginsGuide];
+        leadingAnchor5 = [layoutMarginsGuide2 leadingAnchor];
+        v121 = leadingAnchor4;
+        v130 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
         v154[0] = v130;
-        v111 = [(_MKPlaceActionControlledButton *)v2->_secondaryButton trailingAnchor];
-        objb = [(MKPlaceSectionRowView *)v2->_buttonsContainerView layoutMarginsGuide];
-        v108 = [objb trailingAnchor];
-        v105 = [v111 constraintEqualToAnchor:v108];
+        trailingAnchor4 = [(_MKPlaceActionControlledButton *)selfCopy->_secondaryButton trailingAnchor];
+        objb = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView layoutMarginsGuide];
+        trailingAnchor5 = [objb trailingAnchor];
+        v105 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
         v154[1] = v105;
-        v24 = [(_MKPlaceActionControlledButton *)v2->_secondaryButton topAnchor];
-        v25 = [(_MKPlaceActionControlledButton *)v2->_primaryButton bottomAnchor];
-        v26 = v24;
-        v27 = [v24 constraintEqualToAnchor:v25 constant:10.0];
+        topAnchor5 = [(_MKPlaceActionControlledButton *)selfCopy->_secondaryButton topAnchor];
+        bottomAnchor = [(_MKPlaceActionControlledButton *)selfCopy->_primaryButton bottomAnchor];
+        v26 = topAnchor5;
+        v27 = [topAnchor5 constraintEqualToAnchor:bottomAnchor constant:10.0];
         v154[2] = v27;
-        v28 = [(_MKPlaceActionControlledButton *)v2->_secondaryButton bottomAnchor];
-        v29 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView bottomAnchor];
-        v30 = [v28 constraintEqualToAnchor:v29 constant:-0.0];
+        bottomAnchor2 = [(_MKPlaceActionControlledButton *)selfCopy->_secondaryButton bottomAnchor];
+        bottomAnchor3 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView bottomAnchor];
+        v30 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-0.0];
         v154[3] = v30;
         [MEMORY[0x1E695DEC8] arrayWithObjects:v154 count:4];
-        v32 = v31 = v2;
+        v32 = v31 = selfCopy;
         v33 = v139;
         [v139 addObjectsFromArray:v32];
 
-        v2 = v31;
-        v34 = v133;
+        selfCopy = v31;
+        bottomAnchor9 = leadingAnchor5;
 
-        v35 = v130;
+        layoutMarginsGuide7 = v130;
       }
 
       else
       {
-        v81 = [(_MKPlaceActionControlledButton *)v2->_primaryButton bottomAnchor];
-        v23 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView bottomAnchor];
-        v121 = v81;
-        v34 = [v81 constraintEqualToAnchor:v23 constant:-0.0];
-        v153 = v34;
-        v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v153 count:1];
+        bottomAnchor4 = [(_MKPlaceActionControlledButton *)selfCopy->_primaryButton bottomAnchor];
+        layoutMarginsGuide2 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView bottomAnchor];
+        v121 = bottomAnchor4;
+        bottomAnchor9 = [bottomAnchor4 constraintEqualToAnchor:layoutMarginsGuide2 constant:-0.0];
+        v153 = bottomAnchor9;
+        layoutMarginsGuide7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v153 count:1];
         v33 = v139;
-        [v139 addObjectsFromArray:v35];
+        [v139 addObjectsFromArray:layoutMarginsGuide7];
       }
 
 LABEL_47:
@@ -397,73 +397,73 @@ LABEL_47:
       goto LABEL_48;
     }
 
-    v36 = v2->_secondaryButton;
-    if (v36 && v2->_alternatePrimaryButton)
+    v36 = selfCopy->_secondaryButton;
+    if (v36 && selfCopy->_alternatePrimaryButton)
     {
-      v37 = [(_MKPlaceActionControlledButton *)v36 topAnchor];
-      v23 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView topAnchor];
-      v121 = v37;
-      v134 = [v37 constraintEqualToAnchor:v23];
+      topAnchor6 = [(_MKPlaceActionControlledButton *)v36 topAnchor];
+      layoutMarginsGuide2 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView topAnchor];
+      v121 = topAnchor6;
+      v134 = [topAnchor6 constraintEqualToAnchor:layoutMarginsGuide2];
       v152[0] = v134;
-      v131 = [(_MKPlaceActionControlledButton *)v2->_secondaryButton leadingAnchor];
-      v126 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView layoutMarginsGuide];
-      v123 = [v126 leadingAnchor];
-      objc = [v131 constraintEqualToAnchor:v123];
+      leadingAnchor6 = [(_MKPlaceActionControlledButton *)selfCopy->_secondaryButton leadingAnchor];
+      layoutMarginsGuide3 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView layoutMarginsGuide];
+      leadingAnchor7 = [layoutMarginsGuide3 leadingAnchor];
+      objc = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
       v152[1] = objc;
-      v112 = [(_MKPlaceActionControlledButton *)v2->_alternatePrimaryButton topAnchor];
-      v109 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView topAnchor];
-      v106 = [v112 constraintEqualToAnchor:v109];
+      topAnchor7 = [(_MKPlaceActionControlledButton *)selfCopy->_alternatePrimaryButton topAnchor];
+      topAnchor8 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView topAnchor];
+      v106 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
       v152[2] = v106;
-      v103 = [(_MKPlaceActionControlledButton *)v2->_alternatePrimaryButton leadingAnchor];
-      v101 = [(_MKPlaceActionControlledButton *)v2->_secondaryButton trailingAnchor];
-      v99 = [v103 constraintEqualToAnchor:v101 constant:6.0];
+      leadingAnchor8 = [(_MKPlaceActionControlledButton *)selfCopy->_alternatePrimaryButton leadingAnchor];
+      trailingAnchor6 = [(_MKPlaceActionControlledButton *)selfCopy->_secondaryButton trailingAnchor];
+      v99 = [leadingAnchor8 constraintEqualToAnchor:trailingAnchor6 constant:6.0];
       v152[3] = v99;
-      v95 = [(_MKPlaceActionControlledButton *)v2->_alternatePrimaryButton trailingAnchor];
-      v97 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView layoutMarginsGuide];
-      v93 = [v97 trailingAnchor];
-      v91 = [v95 constraintEqualToAnchor:v93];
+      trailingAnchor7 = [(_MKPlaceActionControlledButton *)selfCopy->_alternatePrimaryButton trailingAnchor];
+      layoutMarginsGuide4 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView layoutMarginsGuide];
+      trailingAnchor8 = [layoutMarginsGuide4 trailingAnchor];
+      v91 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
       v152[4] = v91;
-      v90 = [(_MKPlaceActionControlledButton *)v2->_alternatePrimaryButton bottomAnchor];
-      v89 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView bottomAnchor];
-      v88 = [v90 constraintEqualToAnchor:v89 constant:-0.0];
+      bottomAnchor5 = [(_MKPlaceActionControlledButton *)selfCopy->_alternatePrimaryButton bottomAnchor];
+      bottomAnchor6 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView bottomAnchor];
+      v88 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-0.0];
       v152[5] = v88;
-      v87 = [(_MKPlaceActionControlledButton *)v2->_secondaryButton widthAnchor];
-      v38 = [(_MKPlaceActionControlledButton *)v2->_alternatePrimaryButton widthAnchor];
-      v39 = [v87 constraintEqualToAnchor:v38];
+      widthAnchor3 = [(_MKPlaceActionControlledButton *)selfCopy->_secondaryButton widthAnchor];
+      widthAnchor4 = [(_MKPlaceActionControlledButton *)selfCopy->_alternatePrimaryButton widthAnchor];
+      v39 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
       v152[6] = v39;
-      [(_MKPlaceActionControlledButton *)v2->_secondaryButton bottomAnchor];
+      [(_MKPlaceActionControlledButton *)selfCopy->_secondaryButton bottomAnchor];
       v40 = v114 = v6;
-      v41 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView bottomAnchor];
-      v42 = [v40 constraintEqualToAnchor:v41 constant:-0.0];
+      bottomAnchor7 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView bottomAnchor];
+      v42 = [v40 constraintEqualToAnchor:bottomAnchor7 constant:-0.0];
       v152[7] = v42;
       v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v152 count:8];
       v33 = v139;
       [v139 addObjectsFromArray:v43];
 
-      v34 = v134;
+      bottomAnchor9 = v134;
       v6 = v114;
 
-      v35 = v131;
+      layoutMarginsGuide7 = leadingAnchor6;
 LABEL_48:
       v60 = 0x1E696A000uLL;
 LABEL_49:
 
 LABEL_50:
-      v61 = v121;
+      reverseObjectEnumerator = v121;
 LABEL_51:
 
 LABEL_52:
       v82 = [v6 copy];
-      buttons = v2->_buttons;
-      v2->_buttons = v82;
+      buttons = selfCopy->_buttons;
+      selfCopy->_buttons = v82;
 
       v84 = [v33 copy];
-      constraints = v2->_constraints;
-      v2->_constraints = v84;
+      constraints = selfCopy->_constraints;
+      selfCopy->_constraints = v84;
 
-      [*(v60 + 3288) activateConstraints:v2->_constraints];
-      v86 = [(MKPlaceHeaderButtonsViewController *)v2 view];
-      [v86 _mapkit_setNeedsLayout];
+      [*(v60 + 3288) activateConstraints:selfCopy->_constraints];
+      view = [(MKPlaceHeaderButtonsViewController *)selfCopy view];
+      [view _mapkit_setNeedsLayout];
 
       return;
     }
@@ -482,7 +482,7 @@ LABEL_52:
         v45 = 0;
         obj = v44;
         v122 = *v145;
-        v137 = v2;
+        v137 = selfCopy;
         do
         {
           v46 = 0;
@@ -496,32 +496,32 @@ LABEL_52:
             }
 
             v48 = *(*(&v144 + 1) + 8 * v46);
-            v127 = [v48 leadingAnchor];
-            v49 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView layoutMarginsGuide];
-            v50 = [v49 leadingAnchor];
-            v51 = [v127 constraintEqualToAnchor:v50];
+            leadingAnchor9 = [v48 leadingAnchor];
+            layoutMarginsGuide5 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView layoutMarginsGuide];
+            leadingAnchor10 = [layoutMarginsGuide5 leadingAnchor];
+            v51 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
             v150[0] = v51;
-            v52 = [v48 trailingAnchor];
-            v53 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView layoutMarginsGuide];
-            v54 = [v53 trailingAnchor];
-            v55 = [v52 constraintEqualToAnchor:v54];
+            trailingAnchor9 = [v48 trailingAnchor];
+            layoutMarginsGuide6 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView layoutMarginsGuide];
+            trailingAnchor10 = [layoutMarginsGuide6 trailingAnchor];
+            v55 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
             v150[1] = v55;
             v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:v150 count:2];
             [v139 addObjectsFromArray:v56];
 
-            v57 = [v48 topAnchor];
+            topAnchor9 = [v48 topAnchor];
             if (v135)
             {
-              v58 = [v135 bottomAnchor];
-              v59 = [v57 constraintEqualToAnchor:v58 constant:10.0];
-              v2 = v137;
+              bottomAnchor8 = [v135 bottomAnchor];
+              v59 = [topAnchor9 constraintEqualToAnchor:bottomAnchor8 constant:10.0];
+              selfCopy = v137;
             }
 
             else
             {
-              v2 = v137;
-              v58 = [(MKPlaceSectionRowView *)v137->_buttonsContainerView topAnchor];
-              v59 = [v57 constraintEqualToAnchor:v58];
+              selfCopy = v137;
+              bottomAnchor8 = [(MKPlaceSectionRowView *)v137->_buttonsContainerView topAnchor];
+              v59 = [topAnchor9 constraintEqualToAnchor:bottomAnchor8];
             }
 
             [v139 addObject:v59];
@@ -546,35 +546,35 @@ LABEL_52:
         }
 
         v121 = v45;
-        v23 = [v45 bottomAnchor];
-        v34 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView bottomAnchor];
-        v35 = [v23 constraintEqualToAnchor:v34 constant:-0.0];
-        [v139 addObject:v35];
+        layoutMarginsGuide2 = [v45 bottomAnchor];
+        bottomAnchor9 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView bottomAnchor];
+        layoutMarginsGuide7 = [layoutMarginsGuide2 constraintEqualToAnchor:bottomAnchor9 constant:-0.0];
+        [v139 addObject:layoutMarginsGuide7];
         goto LABEL_49;
       }
 
-      v61 = v44;
+      reverseObjectEnumerator = v44;
     }
 
     else
     {
-      v61 = [v6 reverseObjectEnumerator];
+      reverseObjectEnumerator = [v6 reverseObjectEnumerator];
       v140 = 0u;
       v141 = 0u;
       v142 = 0u;
       v143 = 0u;
-      v128 = [v61 countByEnumeratingWithState:&v140 objects:v149 count:16];
+      v128 = [reverseObjectEnumerator countByEnumeratingWithState:&v140 objects:v149 count:16];
       if (v128)
       {
         v113 = v6;
-        v23 = 0;
-        v121 = v61;
+        layoutMarginsGuide2 = 0;
+        v121 = reverseObjectEnumerator;
         v125 = *v141;
-        v138 = v2;
+        v138 = selfCopy;
         do
         {
           v62 = 0;
-          v63 = v23;
+          v63 = layoutMarginsGuide2;
           do
           {
             v136 = v63;
@@ -584,44 +584,44 @@ LABEL_52:
             }
 
             v64 = *(*(&v140 + 1) + 8 * v62);
-            v65 = [v64 topAnchor];
-            v66 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView topAnchor];
-            v67 = [v65 constraintEqualToAnchor:v66];
+            topAnchor10 = [v64 topAnchor];
+            topAnchor11 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView topAnchor];
+            v67 = [topAnchor10 constraintEqualToAnchor:topAnchor11];
             v148[0] = v67;
-            v68 = [v64 bottomAnchor];
-            v69 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView bottomAnchor];
-            v70 = [v68 constraintEqualToAnchor:v69 constant:-0.0];
+            bottomAnchor10 = [v64 bottomAnchor];
+            bottomAnchor11 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView bottomAnchor];
+            v70 = [bottomAnchor10 constraintEqualToAnchor:bottomAnchor11 constant:-0.0];
             v148[1] = v70;
             v71 = [MEMORY[0x1E695DEC8] arrayWithObjects:v148 count:2];
             [v139 addObjectsFromArray:v71];
 
             if (v136)
             {
-              v72 = [v64 widthAnchor];
-              v73 = [v136 widthAnchor];
-              v74 = [v72 constraintEqualToAnchor:v73];
+              widthAnchor5 = [v64 widthAnchor];
+              widthAnchor6 = [v136 widthAnchor];
+              v74 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
               [v139 addObject:v74];
 
-              v75 = [v64 leadingAnchor];
-              v76 = [v136 trailingAnchor];
-              v77 = [v75 constraintEqualToAnchor:v76 constant:10.0];
-              [v139 addObject:v77];
-              v2 = v138;
+              leadingAnchor11 = [v64 leadingAnchor];
+              trailingAnchor11 = [v136 trailingAnchor];
+              leadingAnchor12 = [leadingAnchor11 constraintEqualToAnchor:trailingAnchor11 constant:10.0];
+              [v139 addObject:leadingAnchor12];
+              selfCopy = v138;
             }
 
             else
             {
-              v75 = [v64 leadingAnchor];
-              v2 = v138;
-              v76 = [(MKPlaceSectionRowView *)v138->_buttonsContainerView layoutMarginsGuide];
-              v77 = [v76 leadingAnchor];
-              v78 = [v75 constraintEqualToAnchor:v77];
+              leadingAnchor11 = [v64 leadingAnchor];
+              selfCopy = v138;
+              trailingAnchor11 = [(MKPlaceSectionRowView *)v138->_buttonsContainerView layoutMarginsGuide];
+              leadingAnchor12 = [trailingAnchor11 leadingAnchor];
+              v78 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
               [v139 addObject:v78];
             }
 
-            v23 = v64;
+            layoutMarginsGuide2 = v64;
             ++v62;
-            v63 = v23;
+            v63 = layoutMarginsGuide2;
           }
 
           while (v128 != v62);
@@ -629,7 +629,7 @@ LABEL_52:
         }
 
         while (v128);
-        if (!v23)
+        if (!layoutMarginsGuide2)
         {
           v33 = v139;
           v6 = v113;
@@ -637,10 +637,10 @@ LABEL_52:
           goto LABEL_50;
         }
 
-        v34 = [v23 trailingAnchor];
-        v35 = [(MKPlaceSectionRowView *)v2->_buttonsContainerView layoutMarginsGuide];
-        v79 = [v35 trailingAnchor];
-        v80 = [v34 constraintEqualToAnchor:v79];
+        bottomAnchor9 = [layoutMarginsGuide2 trailingAnchor];
+        layoutMarginsGuide7 = [(MKPlaceSectionRowView *)selfCopy->_buttonsContainerView layoutMarginsGuide];
+        trailingAnchor12 = [layoutMarginsGuide7 trailingAnchor];
+        v80 = [bottomAnchor9 constraintEqualToAnchor:trailingAnchor12];
         v33 = v139;
         [v139 addObject:v80];
 
@@ -654,15 +654,15 @@ LABEL_52:
   }
 }
 
-- (BOOL)shouldStackForButtons:(id)a3
+- (BOOL)shouldStackForButtons:(id)buttons
 {
-  if ([a3 count] > 2)
+  if ([buttons count] > 2)
   {
     return 1;
   }
 
-  v4 = [(MKPlaceHeaderButtonsViewController *)self view];
-  [v4 frame];
+  view = [(MKPlaceHeaderButtonsViewController *)self view];
+  [view frame];
   Width = CGRectGetWidth(v18);
 
   if (Width <= 320.0)
@@ -704,8 +704,8 @@ LABEL_52:
 
   if (v11 <= v12)
   {
-    v14 = [(MKPlaceHeaderButtonsViewController *)self view];
-    [v14 frame];
+    view2 = [(MKPlaceHeaderButtonsViewController *)self view];
+    [view2 frame];
     v13 = CGRectGetWidth(v19) <= 320.0;
   }
 
@@ -724,14 +724,14 @@ LABEL_52:
   [(MKPlaceHeaderButtonsViewController *)self setConstraints];
 }
 
-- (void)ETAProviderUpdated:(id)a3
+- (void)ETAProviderUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [v4 etaTransportType];
-  [v4 etaTravelTime];
+  updatedCopy = updated;
+  etaTransportType = [updatedCopy etaTransportType];
+  [updatedCopy etaTravelTime];
   v7 = v6;
 
-  v8 = [(MKPlaceHeaderButtonsViewController *)self etaStringFor:v5 travelTime:v7];
+  v8 = [(MKPlaceHeaderButtonsViewController *)self etaStringFor:etaTransportType travelTime:v7];
   currentETAString = self->_currentETAString;
   self->_currentETAString = v8;
 
@@ -767,7 +767,7 @@ LABEL_52:
   {
     if (primaryButtonType == 1)
     {
-      v5 = [(MKPlaceHeaderButtonsViewController *)self directionAttributedStringWithETAString];
+      directionAttributedStringWithETAString = [(MKPlaceHeaderButtonsViewController *)self directionAttributedStringWithETAString];
     }
 
     else
@@ -777,10 +777,10 @@ LABEL_52:
         goto LABEL_12;
       }
 
-      v5 = [(MKPlaceHeaderButtonsViewController *)self rerouteAttributedString];
+      directionAttributedStringWithETAString = [(MKPlaceHeaderButtonsViewController *)self rerouteAttributedString];
     }
 
-    v3 = v5;
+    v3 = directionAttributedStringWithETAString;
   }
 
 LABEL_12:
@@ -788,13 +788,13 @@ LABEL_12:
   return v3;
 }
 
-- (id)attributedStringWith:(id)a3
+- (id)attributedStringWith:(id)with
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69DB7D0];
-  v4 = a3;
-  v5 = [v3 defaultParagraphStyle];
-  v6 = [v5 mutableCopy];
+  withCopy = with;
+  defaultParagraphStyle = [v3 defaultParagraphStyle];
+  v6 = [defaultParagraphStyle mutableCopy];
 
   [v6 setAlignment:1];
   v7 = objc_alloc(MEMORY[0x1E696AAB0]);
@@ -822,7 +822,7 @@ LABEL_12:
   v17[0] = v12;
   v17[1] = v6;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
-  v14 = [v7 initWithString:v4 attributes:v13];
+  v14 = [v7 initWithString:withCopy attributes:v13];
 
   return v14;
 }
@@ -830,14 +830,14 @@ LABEL_12:
 - (id)rerouteAttributedString
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v3 = [(_MKPlaceItem *)self->_placeItem mapItem];
-  v4 = [v3 _detourInfo];
-  [v4 detourTime];
+  mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+  _detourInfo = [mapItem _detourInfo];
+  [_detourInfo detourTime];
   if (v5 > 60.0)
   {
-    v6 = [(_MKPlaceItem *)self->_placeItem mapItem];
-    v7 = [v6 _detourInfo];
-    [v7 detourTime];
+    mapItem2 = [(_MKPlaceItem *)self->_placeItem mapItem];
+    _detourInfo2 = [mapItem2 _detourInfo];
+    [_detourInfo2 detourTime];
   }
 
   v8 = MEMORY[0x1E696AEC0];
@@ -854,8 +854,8 @@ LABEL_12:
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
   v17 = [v12 initWithString:v11 attributes:v16];
 
-  v18 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v19 = [v18 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v19 = [defaultParagraphStyle mutableCopy];
 
   [v19 setAlignment:1];
   v20 = objc_alloc(MEMORY[0x1E696AD40]);
@@ -870,8 +870,8 @@ LABEL_12:
   v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:2];
   v26 = [v20 initWithString:v21 attributes:v25];
 
-  v27 = [v26 string];
-  v28 = [v27 rangeOfString:@"%@"];
+  string = [v26 string];
+  v28 = [string rangeOfString:@"%@"];
   v30 = v29;
 
   if (v17 && v28 != 0x7FFFFFFFFFFFFFFFLL)
@@ -953,8 +953,8 @@ LABEL_12:
   v21 = v20;
   if (self->_currentETAString)
   {
-    v22 = [v20 string];
-    v23 = [v22 rangeOfString:@"%@"];
+    string = [v20 string];
+    v23 = [string rangeOfString:@"%@"];
     v25 = v24;
 
     if (v23 == 0x7FFFFFFFFFFFFFFFLL)
@@ -971,8 +971,8 @@ LABEL_12:
     }
   }
 
-  v27 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v28 = [v27 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v28 = [defaultParagraphStyle mutableCopy];
 
   [v28 setAlignment:1];
   [v28 setParagraphSpacing:-3.0];
@@ -983,10 +983,10 @@ LABEL_12:
   return v21;
 }
 
-- (id)etaStringFor:(unint64_t)a3 travelTime:(double)a4
+- (id)etaStringFor:(unint64_t)for travelTime:(double)time
 {
-  v4 = a3 - 1;
-  if (a3 - 1 <= 7 && ((0x8Bu >> v4) & 1) != 0)
+  v4 = for - 1;
+  if (for - 1 <= 7 && ((0x8Bu >> v4) & 1) != 0)
   {
     v5 = _MKLocalizedStringFromThisBundle(off_1E76CCD68[v4]);
     v6 = MEMORY[0x1E696AEC0];
@@ -1005,44 +1005,44 @@ LABEL_12:
   return v10;
 }
 
-- (void)setPlaceItem:(id)a3
+- (void)setPlaceItem:(id)item
 {
-  v5 = a3;
-  if (self->_placeItem != v5)
+  itemCopy = item;
+  if (self->_placeItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_placeItem, item);
     [(MKPlaceHeaderButtonsViewController *)self setPrimaryButtonType:0];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
-- (void)setLineItem:(id)a3
+- (void)setLineItem:(id)item
 {
-  v5 = a3;
-  if (self->_lineItem != v5)
+  itemCopy = item;
+  if (self->_lineItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_lineItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_lineItem, item);
     [(MKPlaceHeaderButtonsViewController *)self setPrimaryButtonType:0];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = MKPlaceHeaderButtonsViewController;
-  v7 = a4;
-  [(MKPlaceHeaderButtonsViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(MKPlaceHeaderButtonsViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __89__MKPlaceHeaderButtonsViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E76CCD48;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
 - (void)viewDidLoad
@@ -1058,11 +1058,11 @@ LABEL_12:
   v13.receiver = self;
   v13.super_class = MKPlaceHeaderButtonsViewController;
   [(MKPlaceHeaderButtonsViewController *)&v13 viewDidLoad];
-  v4 = [(MKPlaceSectionViewController *)self sectionView];
-  [v4 setPreservesSuperviewLayoutMargins:1];
+  sectionView = [(MKPlaceSectionViewController *)self sectionView];
+  [sectionView setPreservesSuperviewLayoutMargins:1];
 
-  v5 = [(MKPlaceSectionViewController *)self sectionView];
-  [v5 setShowsBottomHairline:0];
+  sectionView2 = [(MKPlaceSectionViewController *)self sectionView];
+  [sectionView2 setShowsBottomHairline:0];
 
   v6 = objc_alloc_init(MKPlaceSectionRowView);
   buttonsContainerView = self->_buttonsContainerView;
@@ -1071,10 +1071,10 @@ LABEL_12:
   [(MKPlaceSectionRowView *)self->_buttonsContainerView setPreservesSuperviewLayoutMargins:1];
   [(MKViewWithHairline *)self->_buttonsContainerView setTopHairlineHidden:1];
   [(MKViewWithHairline *)self->_buttonsContainerView setBottomHairlineHidden:1];
-  v8 = [(MKPlaceSectionViewController *)self sectionView];
+  sectionView3 = [(MKPlaceSectionViewController *)self sectionView];
   v15[0] = self->_buttonsContainerView;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  [v8 setRowViews:v9];
+  [sectionView3 setRowViews:v9];
 
   [(MKPlaceHeaderButtonsViewController *)self setupPrimaryButton];
   v10 = [(MKPlaceHeaderButtonsViewController *)self updateButton:self->_secondaryButton withController:self->_secondaryButtonController];
@@ -1092,8 +1092,8 @@ LABEL_12:
 
 - (void)_commonInit
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
 }
 
 - (MKPlaceHeaderButtonsViewController)init

@@ -8,15 +8,15 @@
 {
   if (a3)
   {
-    v3 = [a1 stringByAppendingString:@"_SHARED"];
+    selfCopy = [self stringByAppendingString:@"_SHARED"];
   }
 
   else
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

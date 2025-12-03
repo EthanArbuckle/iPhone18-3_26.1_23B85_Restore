@@ -3,21 +3,21 @@
 - (NSArray)containerViewsForPlatterTreatment;
 - (float)_backlightLevel;
 - (id)viewForTouchContinuation;
-- (void)_sliderEditingDidBegin:(id)a3;
-- (void)_sliderEditingDidEnd:(id)a3;
-- (void)_sliderPresentationValueDidChange:(id)a3;
+- (void)_sliderEditingDidBegin:(id)begin;
+- (void)_sliderEditingDidEnd:(id)end;
+- (void)_sliderPresentationValueDidChange:(id)change;
 - (void)_updateBrightnessControlAvailability;
 - (void)_updateBrightnessControlInteractionEnabled;
 - (void)dealloc;
 - (void)loadView;
-- (void)setCompactContinuousCornerRadius:(double)a3;
-- (void)setContentMetrics:(id)a3;
-- (void)setContentRenderingMode:(unint64_t)a3;
-- (void)setGlyphPackageDescription:(id)a3;
-- (void)setGlyphState:(id)a3;
+- (void)setCompactContinuousCornerRadius:(double)radius;
+- (void)setContentMetrics:(id)metrics;
+- (void)setContentRenderingMode:(unint64_t)mode;
+- (void)setGlyphPackageDescription:(id)description;
+- (void)setGlyphState:(id)state;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CCUIDisplayModuleViewController
@@ -85,20 +85,20 @@
   objc_destroyWeak(&location);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = CCUIDisplayModuleViewController;
-  v7 = a4;
-  [(CCUIDisplayModuleViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(CCUIDisplayModuleViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = sub_29C973718;
   v9[3] = &unk_29F338390;
   v9[4] = self;
-  objc_msgSend_animateAlongsideTransition_completion_(v7, v8, v9, 0);
+  objc_msgSend_animateAlongsideTransition_completion_(coordinatorCopy, v8, v9, 0);
 }
 
 - (void)viewWillLayoutSubviews
@@ -119,44 +119,44 @@
   objc_msgSend_setContinuousSliderCornerRadius_(self->_sliderView, v5, v6);
 }
 
-- (void)setGlyphPackageDescription:(id)a3
+- (void)setGlyphPackageDescription:(id)description
 {
-  v7 = a3;
+  descriptionCopy = description;
   objc_msgSend_loadViewIfNeeded(self, v4, v5);
-  objc_msgSend_setGlyphPackageDescription_(self->_sliderView, v6, v7);
+  objc_msgSend_setGlyphPackageDescription_(self->_sliderView, v6, descriptionCopy);
 }
 
-- (void)setGlyphState:(id)a3
+- (void)setGlyphState:(id)state
 {
-  v7 = a3;
+  stateCopy = state;
   objc_msgSend_loadViewIfNeeded(self, v4, v5);
-  objc_msgSend_setGlyphState_(self->_sliderView, v6, v7);
+  objc_msgSend_setGlyphState_(self->_sliderView, v6, stateCopy);
 }
 
-- (void)setCompactContinuousCornerRadius:(double)a3
+- (void)setCompactContinuousCornerRadius:(double)radius
 {
-  if (self->_compactContinuousCornerRadius != a3)
+  if (self->_compactContinuousCornerRadius != radius)
   {
-    self->_compactContinuousCornerRadius = a3;
+    self->_compactContinuousCornerRadius = radius;
     v7 = objc_msgSend_viewIfLoaded(self, a2, v3);
     objc_msgSend_setNeedsLayout(v7, v5, v6);
   }
 }
 
-- (void)setContentRenderingMode:(unint64_t)a3
+- (void)setContentRenderingMode:(unint64_t)mode
 {
-  if (self->_contentRenderingMode != a3)
+  if (self->_contentRenderingMode != mode)
   {
-    self->_contentRenderingMode = a3;
+    self->_contentRenderingMode = mode;
     objc_msgSend__updateWithCurrentBrightnessAnimated_(self, a2, 0);
   }
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
-  v7 = a3;
+  metricsCopy = metrics;
   objc_msgSend_loadViewIfNeeded(self, v4, v5);
-  objc_msgSend_setContentMetrics_(self->_sliderView, v6, v7);
+  objc_msgSend_setContentMetrics_(self->_sliderView, v6, metricsCopy);
 }
 
 - (NSArray)containerViewsForPlatterTreatment
@@ -221,7 +221,7 @@
   MEMORY[0x2A1C70FE8](sliderView, sel_setUserInteractionEnabled_, isAppearingOrAppeared);
 }
 
-- (void)_sliderEditingDidBegin:(id)a3
+- (void)_sliderEditingDidBegin:(id)begin
 {
   if (!self->_brightnessTransaction)
   {
@@ -229,11 +229,11 @@
   }
 }
 
-- (void)_sliderPresentationValueDidChange:(id)a3
+- (void)_sliderPresentationValueDidChange:(id)change
 {
   if (self->_brightnessTransaction)
   {
-    objc_msgSend_presentationValue(a3, a2, a3);
+    objc_msgSend_presentationValue(change, a2, change);
     objc_msgSend__setBacklightLevel_(self, v4, v5);
   }
 
@@ -242,7 +242,7 @@
   objc_msgSend_displayModuleViewController_brightnessDidChange_(WeakRetained, v8, self);
 }
 
-- (void)_sliderEditingDidEnd:(id)a3
+- (void)_sliderEditingDidEnd:(id)end
 {
   brightnessTransaction = self->_brightnessTransaction;
   if (brightnessTransaction)

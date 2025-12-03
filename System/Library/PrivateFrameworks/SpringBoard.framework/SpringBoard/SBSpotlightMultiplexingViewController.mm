@@ -1,6 +1,6 @@
 @interface SBSpotlightMultiplexingViewController
-+ (BOOL)isShownWithinWindow:(id)a3;
-+ (BOOL)isShownWithinWindowScene:(id)a3;
++ (BOOL)isShownWithinWindow:(id)window;
++ (BOOL)isShownWithinWindowScene:(id)scene;
 + (SBSpotlightHostedContentMetrics)_class_spotlightHostedContentMetrics;
 + (SPUIRemoteSearchViewController)sharedRemoteSearchViewController;
 + (double)effectiveSpotlightSearchFieldAvoidanceHeight;
@@ -13,59 +13,59 @@
 - (BOOL)isVisibleOnScreen;
 - (FBSDisplayConfiguration)targetDisplayConfiguration;
 - (SBSpotlightHostedContentMetrics)spotlightHostedContentMetrics;
-- (SBSpotlightMultiplexingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SBSpotlightMultiplexingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (SBSpotlightMultiplexingViewControllerDelegate)delegate;
 - (SPUIRemoteSearchViewDelegate)spotlightDelegate;
 - (id)_displayConfigurationForExternalClients;
 - (id)_effectiveKeyboardContentView;
-- (id)_getSceneHandleFromSceneManager:(id)a3;
+- (id)_getSceneHandleFromSceneManager:(id)manager;
 - (id)_spotlightSceneIdentifier;
-- (id)dismissScene:(id)a3;
+- (id)dismissScene:(id)scene;
 - (id)parentSceneIdentityToken;
-- (id)presentScene:(id)a3 viewControllerBuilderBlock:(id)a4;
+- (id)presentScene:(id)scene viewControllerBuilderBlock:(id)block;
 - (id)sceneHandle;
-- (unint64_t)_appStatusBarSettingsLevelForSpotlightMultiplexingLevel:(unint64_t)a3;
+- (unint64_t)_appStatusBarSettingsLevelForSpotlightMultiplexingLevel:(unint64_t)level;
 - (unint64_t)remoteSearchViewPresentationSource;
 - (void)_acquireInputUIPresentingAssertionIfNecessary;
 - (void)_clearStatusBarHiddenAssertion;
-- (void)_clearStatusBarStyleAssertionAnimated:(BOOL)a3;
+- (void)_clearStatusBarStyleAssertionAnimated:(BOOL)animated;
 - (void)_configureExternalKeyboardView;
-- (void)_configureExternalKeyboardView:(BOOL)a3;
-- (void)_configureSceneObservation:(BOOL)a3 forScene:(id)a4;
+- (void)_configureExternalKeyboardView:(BOOL)view;
+- (void)_configureSceneObservation:(BOOL)observation forScene:(id)scene;
 - (void)_configureStatusBarScrollToTopView;
-- (void)_evaluateSearchContentAvailabilityForScene:(id)a3;
+- (void)_evaluateSearchContentAvailabilityForScene:(id)scene;
 - (void)_invalidateInputUIPresentingAssertion;
-- (void)_notifyExternalKeyboardViewContainsKeyboard:(BOOL)a3;
+- (void)_notifyExternalKeyboardViewContainsKeyboard:(BOOL)keyboard;
 - (void)_registerStatusBarScrollToTopView;
-- (void)_registerStatusBarScrollToTopViewWithWindow:(id)a3;
+- (void)_registerStatusBarScrollToTopViewWithWindow:(id)window;
 - (void)_returnKeyboardToSpotlightIfNecessary;
 - (void)_unregisterStatusBarScrollToTopView;
-- (void)_unregisterStatusBarScrollToTopViewWithWindow:(id)a3;
+- (void)_unregisterStatusBarScrollToTopViewWithWindow:(id)window;
 - (void)_updateStatusBarHiddenAssertion;
 - (void)_updateStatusBarStyleAssertion;
-- (void)_updateStatusBarStyleAssertionToStyle:(int64_t)a3 animated:(BOOL)a4;
+- (void)_updateStatusBarStyleAssertionToStyle:(int64_t)style animated:(BOOL)animated;
 - (void)dealloc;
 - (void)didBecomeActiveDelegate;
-- (void)didResignActiveDelegate:(BOOL)a3;
+- (void)didResignActiveDelegate:(BOOL)delegate;
 - (void)dismissSearchView;
 - (void)invalidate;
-- (void)keyboardLayersDidChange:(id)a3;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
-- (void)sceneManager:(id)a3 didAddScene:(id)a4;
-- (void)sceneManager:(id)a3 didDestroyScene:(id)a4;
-- (void)sceneWithIdentifier:(id)a3 didChangeStatusBarAlphaTo:(double)a4;
-- (void)sceneWithIdentifier:(id)a3 didChangeStatusBarHiddenTo:(BOOL)a4 withAnimation:(int64_t)a5;
-- (void)sceneWithIdentifier:(id)a3 didChangeStatusBarStyleTo:(int64_t)a4;
+- (void)keyboardLayersDidChange:(id)change;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
+- (void)sceneManager:(id)manager didAddScene:(id)scene;
+- (void)sceneManager:(id)manager didDestroyScene:(id)scene;
+- (void)sceneWithIdentifier:(id)identifier didChangeStatusBarAlphaTo:(double)to;
+- (void)sceneWithIdentifier:(id)identifier didChangeStatusBarHiddenTo:(BOOL)to withAnimation:(int64_t)animation;
+- (void)sceneWithIdentifier:(id)identifier didChangeStatusBarStyleTo:(int64_t)to;
 - (void)searchViewContentAvailabilityDidChange;
 - (void)searchViewKeyboardPresentationStateDidChange;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setWantsExternalKeyboardView:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setWantsExternalKeyboardView:(BOOL)view;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SBSpotlightMultiplexingViewController
@@ -86,82 +86,82 @@
 {
   v29 = *MEMORY[0x277D85DE8];
   [(SBSpotlightMultiplexingViewController *)self setActiveDelegate:1];
-  v3 = [MEMORY[0x277D0AAD8] sharedInstance];
-  [v3 addObserver:self];
+  mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+  [mEMORY[0x277D0AAD8] addObserver:self];
 
   v4 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
   [v4 addObserver:self];
 
-  v5 = [(UIViewController *)self _sbWindowScene];
-  v6 = [v5 medusaHostedKeyboardWindowController];
-  [v6 addObserver:self];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+  medusaHostedKeyboardWindowController = [_sbWindowScene medusaHostedKeyboardWindowController];
+  [medusaHostedKeyboardWindowController addObserver:self];
 
   [(SBSpotlightMultiplexingViewController *)self _configureStatusBarScrollToTopView];
-  v7 = [objc_opt_class() sharedRemoteSearchViewController];
-  v8 = [(SBSpotlightMultiplexingViewController *)self legibilitySettings];
-  [v7 setLegibilitySettings:v8];
+  sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
+  legibilitySettings = [(SBSpotlightMultiplexingViewController *)self legibilitySettings];
+  [sharedRemoteSearchViewController setLegibilitySettings:legibilitySettings];
 
-  [v7 setSource:{-[SBSpotlightMultiplexingViewController remoteSearchViewPresentationSource](self, "remoteSearchViewPresentationSource")}];
+  [sharedRemoteSearchViewController setSource:{-[SBSpotlightMultiplexingViewController remoteSearchViewPresentationSource](self, "remoteSearchViewPresentationSource")}];
   [(SBSpotlightMultiplexingViewController *)self _configureExternalKeyboardView];
-  v9 = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
-  v10 = [v9 sceneIfExists];
-  [(SBSpotlightMultiplexingViewController *)self _configureSceneObservation:1 forScene:v10];
+  sceneHandle = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
+  [(SBSpotlightMultiplexingViewController *)self _configureSceneObservation:1 forScene:sceneIfExists];
 
-  v11 = [v7 parentViewController];
-  v12 = v11;
-  if (v11 != self)
+  parentViewController = [sharedRemoteSearchViewController parentViewController];
+  v12 = parentViewController;
+  if (parentViewController != self)
   {
-    if (v11)
+    if (parentViewController)
     {
-      [v7 willMoveToParentViewController:0];
-      v13 = [v7 view];
-      [v13 removeFromSuperview];
+      [sharedRemoteSearchViewController willMoveToParentViewController:0];
+      view = [sharedRemoteSearchViewController view];
+      [view removeFromSuperview];
 
-      [v7 removeFromParentViewController];
+      [sharedRemoteSearchViewController removeFromParentViewController];
     }
 
-    [(SBSpotlightMultiplexingViewController *)self addChildViewController:v7];
-    v14 = [v7 view];
-    v15 = [(SBSpotlightMultiplexingViewController *)self view];
-    [v15 bounds];
-    [v14 setFrame:?];
+    [(SBSpotlightMultiplexingViewController *)self addChildViewController:sharedRemoteSearchViewController];
+    view2 = [sharedRemoteSearchViewController view];
+    view3 = [(SBSpotlightMultiplexingViewController *)self view];
+    [view3 bounds];
+    [view2 setFrame:?];
 
-    [v14 setAutoresizingMask:18];
-    v16 = [(SBSpotlightMultiplexingViewController *)self view];
-    [v16 addSubview:v14];
+    [view2 setAutoresizingMask:18];
+    view4 = [(SBSpotlightMultiplexingViewController *)self view];
+    [view4 addSubview:view2];
 
-    [v7 didMoveToParentViewController:self];
+    [sharedRemoteSearchViewController didMoveToParentViewController:self];
   }
 
-  v17 = [(SBSpotlightMultiplexingViewController *)self _appearState];
-  v18 = [v7 _appearState];
-  if (v17 != v18)
+  _appearState = [(SBSpotlightMultiplexingViewController *)self _appearState];
+  _appearState2 = [sharedRemoteSearchViewController _appearState];
+  if (_appearState != _appearState2)
   {
-    if ((v17 - 1) < 2)
+    if ((_appearState - 1) < 2)
     {
-      if ((v18 - 3) <= 0xFFFFFFFD)
+      if ((_appearState2 - 3) <= 0xFFFFFFFD)
       {
         v22 = SBLogSpotlight();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           v27 = 138543362;
-          v28 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_DEFAULT, "didBecomeActiveDelegate: %{public}@ is putting search VC in Appearing state", &v27, 0xCu);
         }
 
-        v23 = [(SBSpotlightMultiplexingViewController *)self _displayConfigurationForExternalClients];
-        [v7 setDisplayConfiguration:v23];
+        _displayConfigurationForExternalClients = [(SBSpotlightMultiplexingViewController *)self _displayConfigurationForExternalClients];
+        [sharedRemoteSearchViewController setDisplayConfiguration:_displayConfigurationForExternalClients];
 
-        [(SBSpotlightMultiplexingViewController *)self bs_beginAppearanceTransitionForChildViewController:v7 toVisible:1 animated:v17 == 1];
+        [(SBSpotlightMultiplexingViewController *)self bs_beginAppearanceTransitionForChildViewController:sharedRemoteSearchViewController toVisible:1 animated:_appearState == 1];
       }
 
-      if (v17 == 2)
+      if (_appearState == 2)
       {
         v20 = SBLogSpotlight();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           v27 = 138543362;
-          v28 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "didBecomeActiveDelegate: %{public}@ is putting search VC in Appeared state", &v27, 0xCu);
         }
 
@@ -170,43 +170,43 @@
       }
     }
 
-    else if (v17 == 3 || !v17)
+    else if (_appearState == 3 || !_appearState)
     {
-      if (v18 && v18 != 3)
+      if (_appearState2 && _appearState2 != 3)
       {
         v19 = SBLogSpotlight();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v27 = 138543362;
-          v28 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_DEFAULT, "didBecomeActiveDelegate: %{public}@ is putting search VC in Disappearing state", &v27, 0xCu);
         }
 
-        [(SBSpotlightMultiplexingViewController *)self bs_beginAppearanceTransitionForChildViewController:v7 toVisible:0 animated:v17 == 3];
+        [(SBSpotlightMultiplexingViewController *)self bs_beginAppearanceTransitionForChildViewController:sharedRemoteSearchViewController toVisible:0 animated:_appearState == 3];
       }
 
-      if (!v17)
+      if (!_appearState)
       {
         v20 = SBLogSpotlight();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           v27 = 138543362;
-          v28 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "didBecomeActiveDelegate: %{public}@ is putting search VC in Disappeared state", &v27, 0xCu);
         }
 
         v21 = 0;
 LABEL_26:
 
-        [(SBSpotlightMultiplexingViewController *)self bs_endAppearanceTransitionForChildViewController:v7 toVisible:v21];
+        [(SBSpotlightMultiplexingViewController *)self bs_endAppearanceTransitionForChildViewController:sharedRemoteSearchViewController toVisible:v21];
       }
     }
   }
 
   v24 = +[SBKeyboardFocusCoordinator sharedInstance];
-  v25 = [(UIViewController *)self _sbWindowScene];
+  _sbWindowScene2 = [(UIViewController *)self _sbWindowScene];
   v26 = +[SBKeyboardFocusArbitrationReason spotlightMultiplexingDidBecomeActiveDelegate];
-  [v24 requestArbitrationForSBWindowScene:v25 forReason:v26];
+  [v24 requestArbitrationForSBWindowScene:_sbWindowScene2 forReason:v26];
 
   [(SBSpotlightMultiplexingViewController *)self _updateStatusBarHiddenAssertion];
   [(SBSpotlightMultiplexingViewController *)self _analyticsLogSpotlightInvocationWhereAndHowWithSource:[(SBSpotlightMultiplexingViewController *)self remoteSearchViewPresentationSource]];
@@ -217,11 +217,11 @@ LABEL_26:
   if ([(SBSpotlightMultiplexingViewController *)self _isStatusBarEffectivelyHidden])
   {
     v3 = [(SBSpotlightMultiplexingViewController *)self _appStatusBarSettingsLevelForSpotlightMultiplexingLevel:[(SBSpotlightMultiplexingViewController *)self level]];
-    v4 = [(UIViewController *)self _sbWindowScene];
-    v5 = [v4 statusBarManager];
-    v8 = [v5 assertionManager];
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+    statusBarManager = [_sbWindowScene statusBarManager];
+    assertionManager = [statusBarManager assertionManager];
 
-    v6 = [v8 newSettingsAssertionWithStatusBarHidden:1 atLevel:v3 reason:@"hiding for Spotlight"];
+    v6 = [assertionManager newSettingsAssertionWithStatusBarHidden:1 atLevel:v3 reason:@"hiding for Spotlight"];
     hideStatusBarAssertion = self->_hideStatusBarAssertion;
     self->_hideStatusBarAssertion = v6;
 
@@ -237,34 +237,34 @@ LABEL_26:
 
 - (BOOL)_isStatusBarEffectivelyHidden
 {
-  v3 = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
-  v4 = [v3 sceneIfExists];
-  if (v4)
+  sceneHandle = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
+  if (sceneIfExists)
   {
-    v5 = [(SBSpotlightMultiplexingViewController *)self isActiveDelegate];
+    isActiveDelegate = [(SBSpotlightMultiplexingViewController *)self isActiveDelegate];
 
-    if (v5)
+    if (isActiveDelegate)
     {
-      v6 = [v3 statusBarStateProvider];
-      if ([v6 statusBarHidden])
+      statusBarStateProvider = [sceneHandle statusBarStateProvider];
+      if ([statusBarStateProvider statusBarHidden])
       {
-        LOBYTE(v4) = 1;
+        LOBYTE(sceneIfExists) = 1;
       }
 
       else
       {
-        [v6 statusBarAlpha];
-        LOBYTE(v4) = v7 == 0.0;
+        [statusBarStateProvider statusBarAlpha];
+        LOBYTE(sceneIfExists) = v7 == 0.0;
       }
     }
 
     else
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(sceneIfExists) = 0;
     }
   }
 
-  return v4;
+  return sceneIfExists;
 }
 
 - (id)sceneHandle
@@ -292,38 +292,38 @@ LABEL_26:
 
 - (void)_registerStatusBarScrollToTopView
 {
-  v4 = [(SBSpotlightMultiplexingViewController *)self view];
-  v3 = [v4 window];
-  [(SBSpotlightMultiplexingViewController *)self _registerStatusBarScrollToTopViewWithWindow:v3];
+  view = [(SBSpotlightMultiplexingViewController *)self view];
+  window = [view window];
+  [(SBSpotlightMultiplexingViewController *)self _registerStatusBarScrollToTopViewWithWindow:window];
 }
 
 - (void)_updateStatusBarStyleAssertion
 {
-  v3 = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
-  v4 = [v3 sceneIfExists];
-  v8 = [v4 settings];
+  sceneHandle = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
+  settings = [sceneIfExists settings];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v8 forcedStatusBarStyle];
-    v6 = v5;
-    if (v5)
+    forcedStatusBarStyle = [settings forcedStatusBarStyle];
+    v6 = forcedStatusBarStyle;
+    if (forcedStatusBarStyle)
     {
-      v7 = [v5 integerValue];
+      integerValue = [forcedStatusBarStyle integerValue];
     }
 
     else
     {
-      v7 = 0;
+      integerValue = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  [(SBSpotlightMultiplexingViewController *)self _updateStatusBarStyleAssertionToStyle:v7 animated:1];
+  [(SBSpotlightMultiplexingViewController *)self _updateStatusBarStyleAssertionToStyle:integerValue animated:1];
 }
 
 - (SBSpotlightHostedContentMetrics)spotlightHostedContentMetrics
@@ -352,9 +352,9 @@ LABEL_26:
 
 - (void)_configureExternalKeyboardView
 {
-  v3 = [(SBSpotlightMultiplexingViewController *)self _remoteSearchViewControllerHasKeyboardPresented];
+  _remoteSearchViewControllerHasKeyboardPresented = [(SBSpotlightMultiplexingViewController *)self _remoteSearchViewControllerHasKeyboardPresented];
 
-  [(SBSpotlightMultiplexingViewController *)self _configureExternalKeyboardView:v3];
+  [(SBSpotlightMultiplexingViewController *)self _configureExternalKeyboardView:_remoteSearchViewControllerHasKeyboardPresented];
 }
 
 - (id)_effectiveKeyboardContentView
@@ -376,58 +376,58 @@ LABEL_26:
 - (id)_displayConfigurationForExternalClients
 {
   WeakRetained = objc_loadWeakRetained(&self->_targetDisplayConfiguration);
-  v3 = [WeakRetained identity];
-  v4 = [v3 isMainDisplay];
+  identity = [WeakRetained identity];
+  isMainDisplay = [identity isMainDisplay];
 
-  if (v4)
+  if (isMainDisplay)
   {
-    v5 = [MEMORY[0x277D0AA90] mainConfiguration];
+    mainConfiguration = [MEMORY[0x277D0AA90] mainConfiguration];
   }
 
   else
   {
-    v5 = WeakRetained;
+    mainConfiguration = WeakRetained;
   }
 
-  v6 = v5;
+  v6 = mainConfiguration;
 
   return v6;
 }
 
 + (SBSpotlightHostedContentMetrics)_class_spotlightHostedContentMetrics
 {
-  v31 = [objc_opt_class() sharedRemoteSearchViewController];
-  [v31 keyboardHeight];
+  sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
+  [sharedRemoteSearchViewController keyboardHeight];
   v5 = v4;
   retstr->keyboardHeight = v4;
-  [v31 keyboardProtectorHeight];
+  [sharedRemoteSearchViewController keyboardProtectorHeight];
   retstr->keyboardProtectorHeight = v6;
-  [v31 searchBarSize];
+  [sharedRemoteSearchViewController searchBarSize];
   v8 = v7;
   v10 = v9;
   retstr->searchBarSize.width = v7;
   retstr->searchBarSize.height = v9;
-  [v31 dockedSearchBarSize];
+  [sharedRemoteSearchViewController dockedSearchBarSize];
   v12 = v11;
   v14 = v13;
   retstr->dockedSearchBarSize.width = v11;
   retstr->dockedSearchBarSize.height = v13;
   p_dockedSearchBarSize = &retstr->dockedSearchBarSize;
-  [v31 searchBarCornerRadius];
+  [sharedRemoteSearchViewController searchBarCornerRadius];
   retstr->searchBarCornerRadius = v16;
-  v17 = [v31 _sbDisplayConfiguration];
-  v18 = [v17 identity];
-  if ([v18 isContinuityDisplay])
+  _sbDisplayConfiguration = [sharedRemoteSearchViewController _sbDisplayConfiguration];
+  identity = [_sbDisplayConfiguration identity];
+  if ([identity isContinuityDisplay])
   {
-    v19 = 1;
+    isInHardwareKeyboardMode = 1;
   }
 
   else
   {
-    v19 = [MEMORY[0x277D75658] isInHardwareKeyboardMode];
+    isInHardwareKeyboardMode = [MEMORY[0x277D75658] isInHardwareKeyboardMode];
   }
 
-  if (BSFloatIsZero() && (v19 & 1) == 0)
+  if (BSFloatIsZero() && (isInHardwareKeyboardMode & 1) == 0)
   {
     [MEMORY[0x277D75658] sizeForInterfaceOrientation:1];
     v5 = v20;
@@ -450,8 +450,8 @@ LABEL_26:
   v24 = *(MEMORY[0x277CBF3A8] + 8);
   if (v8 == *MEMORY[0x277CBF3A8] && v10 == v24)
   {
-    v26 = [MEMORY[0x277D759A0] mainScreen];
-    [v26 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v28 = v27;
 
     retstr->searchBarSize.width = v28 + -16.0;
@@ -474,17 +474,17 @@ LABEL_26:
 
 - (BOOL)_remoteSearchViewControllerHasKeyboardPresented
 {
-  v2 = [objc_opt_class() sharedRemoteSearchViewController];
-  v3 = [v2 isKeyboardPresented];
+  sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
+  isKeyboardPresented = [sharedRemoteSearchViewController isKeyboardPresented];
 
-  return v3;
+  return isKeyboardPresented;
 }
 
 - (BOOL)externalKeyboardViewContainsKeyboard
 {
-  v3 = [(SBSpotlightMultiplexingViewController *)self _effectiveKeyboardContentView];
+  _effectiveKeyboardContentView = [(SBSpotlightMultiplexingViewController *)self _effectiveKeyboardContentView];
 
-  if (!v3)
+  if (!_effectiveKeyboardContentView)
   {
     return 0;
   }
@@ -497,27 +497,27 @@ LABEL_26:
   v6.receiver = self;
   v6.super_class = SBSpotlightMultiplexingViewController;
   [(SBSpotlightMultiplexingViewController *)&v6 viewDidLayoutSubviews];
-  v3 = [(SBSpotlightMultiplexingViewController *)self inputUIView];
-  if (v3)
+  inputUIView = [(SBSpotlightMultiplexingViewController *)self inputUIView];
+  if (inputUIView)
   {
-    v4 = [(SBSpotlightMultiplexingViewController *)self view];
-    v5 = [v3 superview];
+    view = [(SBSpotlightMultiplexingViewController *)self view];
+    superview = [inputUIView superview];
 
-    if (v5 == v4)
+    if (superview == view)
     {
-      [v4 bounds];
+      [view bounds];
       UIRectGetCenter();
-      [v3 setCenter:?];
+      [inputUIView setCenter:?];
     }
   }
 }
 
 - (id)_spotlightSceneIdentifier
 {
-  v2 = [objc_opt_class() sharedRemoteSearchViewController];
-  v3 = [v2 sceneIdentifier];
+  sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
+  sceneIdentifier = [sharedRemoteSearchViewController sceneIdentifier];
 
-  return v3;
+  return sceneIdentifier;
 }
 
 - (SBSpotlightMultiplexingViewControllerDelegate)delegate
@@ -529,10 +529,10 @@ LABEL_26:
 
 + (unint64_t)spotlightSupportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v4 = 30;
   }
@@ -554,13 +554,13 @@ LABEL_26:
 
 + (double)effectiveSpotlightSearchFieldAvoidanceHeight
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   result = 0.0;
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    [a1 _class_spotlightHostedContentMetrics];
+    [self _class_spotlightHostedContentMetrics];
     return 0.0;
   }
 
@@ -578,43 +578,43 @@ void __73__SBSpotlightMultiplexingViewController_sharedRemoteSearchViewControlle
   [v2 setDelegate:v3];
 }
 
-+ (BOOL)isShownWithinWindow:(id)a3
++ (BOOL)isShownWithinWindow:(id)window
 {
-  v3 = a3;
-  v4 = [objc_opt_class() sharedRemoteSearchViewControllerIfExists];
-  v5 = v4;
-  if (v4)
+  windowCopy = window;
+  sharedRemoteSearchViewControllerIfExists = [objc_opt_class() sharedRemoteSearchViewControllerIfExists];
+  v5 = sharedRemoteSearchViewControllerIfExists;
+  if (sharedRemoteSearchViewControllerIfExists)
   {
-    v6 = [v4 view];
-    v7 = [v6 window];
-    if (v7 == v3)
+    view = [sharedRemoteSearchViewControllerIfExists view];
+    window = [view window];
+    if (window == windowCopy)
     {
-      v8 = [v5 isBeingPresented];
+      isBeingPresented = [v5 isBeingPresented];
     }
 
     else
     {
-      v8 = 0;
+      isBeingPresented = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    isBeingPresented = 0;
   }
 
-  return v8;
+  return isBeingPresented;
 }
 
-+ (BOOL)isShownWithinWindowScene:(id)a3
++ (BOOL)isShownWithinWindowScene:(id)scene
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a3 windows];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  windows = [scene windows];
+  v5 = [windows countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -625,17 +625,17 @@ void __73__SBSpotlightMultiplexingViewController_sharedRemoteSearchViewControlle
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(windows);
         }
 
-        if ([a1 isShownWithinWindow:*(*(&v11 + 1) + 8 * i)])
+        if ([self isShownWithinWindow:*(*(&v11 + 1) + 8 * i)])
         {
           v9 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [windows countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -659,11 +659,11 @@ LABEL_11:
   v15 = __Block_byref_object_copy__87;
   v16 = __Block_byref_object_dispose__87;
   v17 = 0;
-  v2 = [objc_opt_class() sharedRemoteSearchViewController];
-  v3 = [v2 sceneIdentifier];
+  sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
+  sceneIdentifier = [sharedRemoteSearchViewController sceneIdentifier];
 
-  v4 = [MEMORY[0x277D0ADC0] identityForIdentifier:v3 workspaceIdentifier:@"com.apple.Spotlight"];
-  v5 = [MEMORY[0x277D0AAD8] sharedInstance];
+  v4 = [MEMORY[0x277D0ADC0] identityForIdentifier:sceneIdentifier workspaceIdentifier:@"com.apple.Spotlight"];
+  mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __78__SBSpotlightMultiplexingViewController_keyboardFocusTargetIfActiveForeground__block_invoke;
@@ -671,7 +671,7 @@ LABEL_11:
   v6 = v4;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateScenesWithBlock:v9];
+  [mEMORY[0x277D0AAD8] enumerateScenesWithBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -715,11 +715,11 @@ void __78__SBSpotlightMultiplexingViewController_keyboardFocusTargetIfActiveFore
   v15 = __Block_byref_object_copy__87;
   v16 = __Block_byref_object_dispose__87;
   v17 = 0;
-  v2 = [objc_opt_class() sharedRemoteSearchViewController];
-  v3 = [v2 sceneIdentifier];
+  sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
+  sceneIdentifier = [sharedRemoteSearchViewController sceneIdentifier];
 
-  v4 = [MEMORY[0x277D0ADC0] identityForIdentifier:v3 workspaceIdentifier:@"com.apple.Spotlight"];
-  v5 = [MEMORY[0x277D0AAD8] sharedInstance];
+  v4 = [MEMORY[0x277D0ADC0] identityForIdentifier:sceneIdentifier workspaceIdentifier:@"com.apple.Spotlight"];
+  mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfActiveForeground__block_invoke;
@@ -727,7 +727,7 @@ void __78__SBSpotlightMultiplexingViewController_keyboardFocusTargetIfActiveFore
   v6 = v4;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateScenesWithBlock:v9];
+  [mEMORY[0x277D0AAD8] enumerateScenesWithBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -763,11 +763,11 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
   }
 }
 
-- (SBSpotlightMultiplexingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBSpotlightMultiplexingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = SBSpotlightMultiplexingViewController;
-  v4 = [(SBSpotlightMultiplexingViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(SBSpotlightMultiplexingViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -786,7 +786,7 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ was deallocated without being invalidated. Invalidating now.", buf, 0xCu);
     }
 
@@ -798,16 +798,16 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
   [(SBSpotlightMultiplexingViewController *)&v4 dealloc];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v6 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_legibilitySettings isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     if ([(SBSpotlightMultiplexingViewController *)self isActiveDelegate])
     {
-      v5 = [objc_opt_class() sharedRemoteSearchViewController];
-      [v5 setLegibilitySettings:v6];
+      sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
+      [sharedRemoteSearchViewController setLegibilitySettings:settingsCopy];
     }
   }
 }
@@ -821,32 +821,32 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
     v3 = +[SBSpotlightDelegateManager sharedInstance];
     [v3 removeSpotlightDelegate:self forLevel:{-[SBSpotlightMultiplexingViewController level](self, "level")}];
 
-    v4 = [(SBSpotlightMultiplexingViewController *)self keyboardPresenter];
-    [v4 invalidate];
+    keyboardPresenter = [(SBSpotlightMultiplexingViewController *)self keyboardPresenter];
+    [keyboardPresenter invalidate];
   }
 }
 
-- (void)setWantsExternalKeyboardView:(BOOL)a3
+- (void)setWantsExternalKeyboardView:(BOOL)view
 {
-  if (self->_wantsExternalKeyboardView != a3)
+  if (self->_wantsExternalKeyboardView != view)
   {
-    self->_wantsExternalKeyboardView = a3;
+    self->_wantsExternalKeyboardView = view;
     [(SBSpotlightMultiplexingViewController *)self _configureExternalKeyboardView];
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = SBSpotlightMultiplexingViewController;
-  [(SBSpotlightMultiplexingViewController *)&v8 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if (a3)
+  [(SBSpotlightMultiplexingViewController *)&v8 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if (window)
   {
     if ([(SBSpotlightMultiplexingViewController *)self isActiveDelegate])
     {
-      v6 = [(UIViewController *)self _sbWindowScene];
-      v7 = [v6 medusaHostedKeyboardWindowController];
-      [v7 addObserver:self];
+      _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+      medusaHostedKeyboardWindowController = [_sbWindowScene medusaHostedKeyboardWindowController];
+      [medusaHostedKeyboardWindowController addObserver:self];
 
       [(SBSpotlightMultiplexingViewController *)self _updateStatusBarHiddenAssertion];
       [(SBSpotlightMultiplexingViewController *)self _configureExternalKeyboardView];
@@ -854,21 +854,21 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v18 = *MEMORY[0x277D85DE8];
   v5 = +[SBControlCenterCoordinator sharedInstanceIfExists];
   [v5 dismissAnimated:1];
 
-  v6 = [objc_opt_class() sharedRemoteSearchViewController];
+  sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
   if ([(SBSpotlightMultiplexingViewController *)self isInvalidated])
   {
     v7 = SBLogSpotlight();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ is invalidated, so not adding spotlight delegate", buf, 0xCu);
     }
   }
@@ -882,15 +882,15 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
   [(SBSpotlightMultiplexingViewController *)self _registerStatusBarScrollToTopView];
   if ([(SBSpotlightMultiplexingViewController *)self isActiveDelegate])
   {
-    [v6 setSource:{-[SBSpotlightMultiplexingViewController remoteSearchViewPresentationSource](self, "remoteSearchViewPresentationSource")}];
+    [sharedRemoteSearchViewController setSource:{-[SBSpotlightMultiplexingViewController remoteSearchViewPresentationSource](self, "remoteSearchViewPresentationSource")}];
   }
 
   v15.receiver = self;
   v15.super_class = SBSpotlightMultiplexingViewController;
-  [(SBSpotlightMultiplexingViewController *)&v15 viewWillAppear:v3];
-  v8 = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
-  v9 = [v8 statusBarStateProvider];
-  [v9 addStatusBarObserver:self];
+  [(SBSpotlightMultiplexingViewController *)&v15 viewWillAppear:appearCopy];
+  sceneHandle = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
+  statusBarStateProvider = [sceneHandle statusBarStateProvider];
+  [statusBarStateProvider addStatusBarObserver:self];
 
   [(SBSpotlightMultiplexingViewController *)self _updateStatusBarHiddenAssertion];
   [(SBSpotlightMultiplexingViewController *)self _updateStatusBarStyleAssertion];
@@ -898,22 +898,22 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
   {
     if ([MEMORY[0x277D65D28] enableFloatingWindow])
     {
-      v10 = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
-      [v10 setKeyboardContextMaskStyle:2];
+      sceneHandle2 = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
+      [sceneHandle2 setKeyboardContextMaskStyle:2];
     }
 
     v11 = SBLogSpotlight();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ is appearing, and is the active Spotlight delegate", buf, 0xCu);
     }
 
-    v12 = [(SBSpotlightMultiplexingViewController *)self _displayConfigurationForExternalClients];
-    [v6 setDisplayConfiguration:v12];
+    _displayConfigurationForExternalClients = [(SBSpotlightMultiplexingViewController *)self _displayConfigurationForExternalClients];
+    [sharedRemoteSearchViewController setDisplayConfiguration:_displayConfigurationForExternalClients];
 
-    [(SBSpotlightMultiplexingViewController *)self bs_beginAppearanceTransitionForChildViewController:v6 toVisible:1 animated:v3];
+    [(SBSpotlightMultiplexingViewController *)self bs_beginAppearanceTransitionForChildViewController:sharedRemoteSearchViewController toVisible:1 animated:appearCopy];
   }
 
   else
@@ -922,7 +922,7 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ is appearing, but is not the active Spotlight delegate", buf, 0xCu);
     }
   }
@@ -931,45 +931,45 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
   [WeakRetained scenePresenterVisibilityDidChange:self];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v16 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = SBSpotlightMultiplexingViewController;
-  [(SBSpotlightMultiplexingViewController *)&v13 viewDidAppear:a3];
+  [(SBSpotlightMultiplexingViewController *)&v13 viewDidAppear:appear];
   if ([(SBSpotlightMultiplexingViewController *)self isActiveDelegate])
   {
-    v4 = [objc_opt_class() sharedRemoteSearchViewController];
+    sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
     v5 = SBLogSpotlight();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ did appear, and is the active Spotlight delegate", buf, 0xCu);
     }
 
-    [(SBSpotlightMultiplexingViewController *)self bs_endAppearanceTransitionForChildViewController:v4 toVisible:1];
+    [(SBSpotlightMultiplexingViewController *)self bs_endAppearanceTransitionForChildViewController:sharedRemoteSearchViewController toVisible:1];
   }
 
   else
   {
-    v4 = SBLogSpotlight();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    sharedRemoteSearchViewController = SBLogSpotlight();
+    if (os_log_type_enabled(sharedRemoteSearchViewController, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = self;
-      _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ did appear, but is not the active Spotlight delegate", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_21ED4E000, sharedRemoteSearchViewController, OS_LOG_TYPE_DEFAULT, "%{public}@ did appear, but is not the active Spotlight delegate", buf, 0xCu);
     }
   }
 
   if (!self->_medusaHostedKeyboardWindowLevelAssertion && [MEMORY[0x277D65D28] enableFloatingWindow])
   {
-    v6 = [(UIViewController *)self _sbWindowScene];
-    v7 = [v6 medusaHostedKeyboardWindowController];
-    v8 = [(SBSpotlightMultiplexingViewController *)self view];
-    v9 = [v8 window];
-    [v9 windowLevel];
-    v11 = [v7 newMedusaHostedKeyboardWindowLevelAssertionWithPriority:2 windowLevel:v10 + 1.0];
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+    medusaHostedKeyboardWindowController = [_sbWindowScene medusaHostedKeyboardWindowController];
+    view = [(SBSpotlightMultiplexingViewController *)self view];
+    window = [view window];
+    [window windowLevel];
+    v11 = [medusaHostedKeyboardWindowController newMedusaHostedKeyboardWindowLevelAssertionWithPriority:2 windowLevel:v10 + 1.0];
     medusaHostedKeyboardWindowLevelAssertion = self->_medusaHostedKeyboardWindowLevelAssertion;
     self->_medusaHostedKeyboardWindowLevelAssertion = v11;
   }
@@ -977,84 +977,84 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
   [(SBSpotlightMultiplexingViewController *)self _updateStatusBarStyleAssertion];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v10 = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = SBSpotlightMultiplexingViewController;
   [(SBSpotlightMultiplexingViewController *)&v7 viewWillDisappear:?];
   if ([(SBSpotlightMultiplexingViewController *)self isActiveDelegate])
   {
-    v5 = [objc_opt_class() sharedRemoteSearchViewController];
+    sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
     v6 = SBLogSpotlight();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ is disappearing, and is the active Spotlight delegate", buf, 0xCu);
     }
 
-    [(SBSpotlightMultiplexingViewController *)self bs_beginAppearanceTransitionForChildViewController:v5 toVisible:0 animated:v3];
+    [(SBSpotlightMultiplexingViewController *)self bs_beginAppearanceTransitionForChildViewController:sharedRemoteSearchViewController toVisible:0 animated:disappearCopy];
   }
 
   else
   {
-    v5 = SBLogSpotlight();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    sharedRemoteSearchViewController = SBLogSpotlight();
+    if (os_log_type_enabled(sharedRemoteSearchViewController, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v9 = self;
-      _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ is disappearing, but is not the active Spotlight delegate", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_21ED4E000, sharedRemoteSearchViewController, OS_LOG_TYPE_DEFAULT, "%{public}@ is disappearing, but is not the active Spotlight delegate", buf, 0xCu);
     }
   }
 
   [(SBSpotlightMultiplexingViewController *)self _clearStatusBarStyleAssertionAnimated:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v19 = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = SBSpotlightMultiplexingViewController;
-  [(SBSpotlightMultiplexingViewController *)&v16 viewDidDisappear:a3];
-  v4 = [(SBSpotlightMultiplexingViewController *)self isActiveDelegate];
-  v5 = SBLogSpotlight();
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  [(SBSpotlightMultiplexingViewController *)&v16 viewDidDisappear:disappear];
+  isActiveDelegate = [(SBSpotlightMultiplexingViewController *)self isActiveDelegate];
+  sharedRemoteSearchViewController = SBLogSpotlight();
+  v6 = os_log_type_enabled(sharedRemoteSearchViewController, OS_LOG_TYPE_DEFAULT);
+  if (isActiveDelegate)
   {
     if (v6)
     {
       *buf = 138543362;
-      v18 = self;
-      _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ did disappear, and is the active Spotlight delegate", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_21ED4E000, sharedRemoteSearchViewController, OS_LOG_TYPE_DEFAULT, "%{public}@ did disappear, and is the active Spotlight delegate", buf, 0xCu);
     }
 
-    v5 = [objc_opt_class() sharedRemoteSearchViewController];
-    [(SBSpotlightMultiplexingViewController *)self bs_endAppearanceTransitionForChildViewController:v5 toVisible:0];
+    sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
+    [(SBSpotlightMultiplexingViewController *)self bs_endAppearanceTransitionForChildViewController:sharedRemoteSearchViewController toVisible:0];
   }
 
   else if (v6)
   {
     *buf = 138543362;
-    v18 = self;
-    _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ did disappear, but is not the active Spotlight delegate", buf, 0xCu);
+    selfCopy2 = self;
+    _os_log_impl(&dword_21ED4E000, sharedRemoteSearchViewController, OS_LOG_TYPE_DEFAULT, "%{public}@ did disappear, but is not the active Spotlight delegate", buf, 0xCu);
   }
 
   v7 = +[SBSpotlightDelegateManager sharedInstance];
   [v7 removeSpotlightDelegate:self forLevel:{-[SBSpotlightMultiplexingViewController level](self, "level")}];
 
-  v8 = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
-  v9 = [v8 statusBarStateProvider];
-  [v9 removeStatusBarObserver:self];
+  sceneHandle = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
+  statusBarStateProvider = [sceneHandle statusBarStateProvider];
+  [statusBarStateProvider removeStatusBarObserver:self];
 
   [(SBSpotlightMultiplexingViewController *)self _clearStatusBarHiddenAssertion];
   [(SBSpotlightMultiplexingViewController *)self _clearStatusBarStyleAssertionAnimated:1];
   [(SBSpotlightMultiplexingViewController *)self _unregisterStatusBarScrollToTopView];
   v10 = +[SBKeyboardFocusCoordinator sharedInstance];
-  v11 = [(UIViewController *)self _sbWindowScene];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
   v12 = +[SBKeyboardFocusArbitrationReason spotlightMultiplexingViewDidDisappear];
-  [v10 requestArbitrationForSBWindowScene:v11 forReason:v12];
+  [v10 requestArbitrationForSBWindowScene:_sbWindowScene forReason:v12];
 
   medusaHostedKeyboardWindowLevelAssertion = self->_medusaHostedKeyboardWindowLevelAssertion;
   if (medusaHostedKeyboardWindowLevelAssertion)
@@ -1070,8 +1070,8 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
 
 - (void)dismissSearchView
 {
-  v2 = [(SBSpotlightMultiplexingViewController *)self spotlightDelegate];
-  [v2 dismissSearchView];
+  spotlightDelegate = [(SBSpotlightMultiplexingViewController *)self spotlightDelegate];
+  [spotlightDelegate dismissSearchView];
 }
 
 - (void)searchViewKeyboardPresentationStateDidChange
@@ -1083,146 +1083,146 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
 
 - (void)searchViewContentAvailabilityDidChange
 {
-  v2 = [(SBSpotlightMultiplexingViewController *)self spotlightDelegate];
+  spotlightDelegate = [(SBSpotlightMultiplexingViewController *)self spotlightDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v2 searchViewContentAvailabilityDidChange];
+    [spotlightDelegate searchViewContentAvailabilityDidChange];
   }
 }
 
-- (void)didResignActiveDelegate:(BOOL)a3
+- (void)didResignActiveDelegate:(BOOL)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v16 = *MEMORY[0x277D85DE8];
   v5 = SBLogSpotlight();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543362;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "didResignActiveDelegate called on %{public}@", &v14, 0xCu);
   }
 
   [(SBSpotlightMultiplexingViewController *)self setActiveDelegate:0];
   [(SBSpotlightMultiplexingViewController *)self _configureExternalKeyboardView];
-  v6 = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
-  v7 = [v6 sceneIfExists];
-  [(SBSpotlightMultiplexingViewController *)self _configureSceneObservation:0 forScene:v7];
+  sceneHandle = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
+  [(SBSpotlightMultiplexingViewController *)self _configureSceneObservation:0 forScene:sceneIfExists];
 
-  if (v3)
+  if (delegateCopy)
   {
-    v8 = [objc_opt_class() sharedRemoteSearchViewController];
-    v9 = [v8 parentViewController];
+    sharedRemoteSearchViewController = [objc_opt_class() sharedRemoteSearchViewController];
+    parentViewController = [sharedRemoteSearchViewController parentViewController];
 
-    if (v9 == self && [v8 _appearState])
+    if (parentViewController == self && [sharedRemoteSearchViewController _appearState])
     {
-      [(SBSpotlightMultiplexingViewController *)self bs_endAppearanceTransitionForChildViewController:v8 toVisible:0];
+      [(SBSpotlightMultiplexingViewController *)self bs_endAppearanceTransitionForChildViewController:sharedRemoteSearchViewController toVisible:0];
     }
   }
 
-  v10 = [MEMORY[0x277D0AAD8] sharedInstance];
-  [v10 removeObserver:self];
+  mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+  [mEMORY[0x277D0AAD8] removeObserver:self];
 
   v11 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
   [v11 removeObserver:self];
 
-  v12 = [(UIViewController *)self _sbWindowScene];
-  v13 = [v12 medusaHostedKeyboardWindowController];
-  [v13 removeObserver:self];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+  medusaHostedKeyboardWindowController = [_sbWindowScene medusaHostedKeyboardWindowController];
+  [medusaHostedKeyboardWindowController removeObserver:self];
 }
 
-- (void)sceneManager:(id)a3 didAddScene:(id)a4
+- (void)sceneManager:(id)manager didAddScene:(id)scene
 {
-  v13 = a4;
-  v5 = [v13 identifier];
-  v6 = [(SBSpotlightMultiplexingViewController *)self _spotlightSceneIdentifier];
-  v7 = [v5 isEqualToString:v6];
+  sceneCopy = scene;
+  identifier = [sceneCopy identifier];
+  _spotlightSceneIdentifier = [(SBSpotlightMultiplexingViewController *)self _spotlightSceneIdentifier];
+  v7 = [identifier isEqualToString:_spotlightSceneIdentifier];
 
   if (v7)
   {
     v8 = +[SBKeyboardFocusCoordinator sharedInstance];
-    v9 = [(UIViewController *)self _sbWindowScene];
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
     v10 = +[SBKeyboardFocusArbitrationReason spotlightMultiplexingDidCreateScene];
-    [v8 requestArbitrationForSBWindowScene:v9 forReason:v10];
+    [v8 requestArbitrationForSBWindowScene:_sbWindowScene forReason:v10];
 
     [(SBSpotlightMultiplexingViewController *)self _updateStatusBarHiddenAssertion];
     [(SBSpotlightMultiplexingViewController *)self _updateStatusBarStyleAssertion];
-    [(SBSpotlightMultiplexingViewController *)self _configureSceneObservation:1 forScene:v13];
+    [(SBSpotlightMultiplexingViewController *)self _configureSceneObservation:1 forScene:sceneCopy];
     if (([MEMORY[0x277D75658] usesInputSystemUI] & 1) == 0)
     {
-      v11 = [(SBSpotlightMultiplexingViewController *)self externalKeyboardView];
-      if (v11)
+      externalKeyboardView = [(SBSpotlightMultiplexingViewController *)self externalKeyboardView];
+      if (externalKeyboardView)
       {
-        v12 = [v13 settings];
-        [v12 frame];
-        [v11 setFrame:?];
+        settings = [sceneCopy settings];
+        [settings frame];
+        [externalKeyboardView setFrame:?];
       }
     }
   }
 }
 
-- (void)sceneManager:(id)a3 didDestroyScene:(id)a4
+- (void)sceneManager:(id)manager didDestroyScene:(id)scene
 {
-  v11 = a4;
-  v5 = [v11 identifier];
-  v6 = [(SBSpotlightMultiplexingViewController *)self _spotlightSceneIdentifier];
-  v7 = [v5 isEqualToString:v6];
+  sceneCopy = scene;
+  identifier = [sceneCopy identifier];
+  _spotlightSceneIdentifier = [(SBSpotlightMultiplexingViewController *)self _spotlightSceneIdentifier];
+  v7 = [identifier isEqualToString:_spotlightSceneIdentifier];
 
   if (v7)
   {
     v8 = +[SBKeyboardFocusCoordinator sharedInstance];
-    v9 = [(UIViewController *)self _sbWindowScene];
+    _sbWindowScene = [(UIViewController *)self _sbWindowScene];
     v10 = +[SBKeyboardFocusArbitrationReason spotlightMultiplexingDidDestroyScene];
-    [v8 requestArbitrationForSBWindowScene:v9 forReason:v10];
+    [v8 requestArbitrationForSBWindowScene:_sbWindowScene forReason:v10];
 
     [(SBSpotlightMultiplexingViewController *)self _updateStatusBarHiddenAssertion];
     [(SBSpotlightMultiplexingViewController *)self _updateStatusBarStyleAssertion];
-    [(SBSpotlightMultiplexingViewController *)self _configureSceneObservation:0 forScene:v11];
+    [(SBSpotlightMultiplexingViewController *)self _configureSceneObservation:0 forScene:sceneCopy];
   }
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 previousSettings];
-  v9 = [v8 sb_displayIdentityForSceneManagers];
+  sceneCopy = scene;
+  settingsCopy = settings;
+  previousSettings = [settingsCopy previousSettings];
+  sb_displayIdentityForSceneManagers = [previousSettings sb_displayIdentityForSceneManagers];
 
-  v10 = [v7 settings];
+  settings = [settingsCopy settings];
 
-  v11 = [v10 sb_displayIdentityForSceneManagers];
+  sb_displayIdentityForSceneManagers2 = [settings sb_displayIdentityForSceneManagers];
 
-  if (v9 && v11 && ([v11 isEqual:v9] & 1) == 0)
+  if (sb_displayIdentityForSceneManagers && sb_displayIdentityForSceneManagers2 && ([sb_displayIdentityForSceneManagers2 isEqual:sb_displayIdentityForSceneManagers] & 1) == 0)
   {
     v12 = SBLogSpotlight();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138543874;
-      v23 = self;
+      selfCopy = self;
       v24 = 2114;
-      v25 = v9;
+      v25 = sb_displayIdentityForSceneManagers;
       v26 = 2114;
-      v27 = v11;
+      v27 = sb_displayIdentityForSceneManagers2;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ notified that Spotlight scene has changed displays from %{public}@ to %{public}@", &v22, 0x20u);
     }
 
-    v13 = [SBApp windowSceneManager];
-    v14 = [v13 windowSceneForDisplayIdentity:v11];
-    v15 = [v14 sceneManager];
+    windowSceneManager = [SBApp windowSceneManager];
+    v14 = [windowSceneManager windowSceneForDisplayIdentity:sb_displayIdentityForSceneManagers2];
+    sceneManager = [v14 sceneManager];
 
-    if (v15)
+    if (sceneManager)
     {
-      v16 = [v15 existingSceneHandleForScene:v6];
+      v16 = [sceneManager existingSceneHandleForScene:sceneCopy];
 
       if (!v16)
       {
-        v17 = [v13 windowSceneForDisplayIdentity:v9];
-        v18 = [v17 sceneManager];
+        v17 = [windowSceneManager windowSceneForDisplayIdentity:sb_displayIdentityForSceneManagers];
+        sceneManager2 = [v17 sceneManager];
 
-        v19 = [v6 identity];
-        [v18 transferOwnershipOfSceneWithIdentity:v19 toSceneManager:v15];
+        identity = [sceneCopy identity];
+        [sceneManager2 transferOwnershipOfSceneWithIdentity:identity toSceneManager:sceneManager];
 
-        v20 = [(SBSpotlightMultiplexingViewController *)self _getSceneHandleFromSceneManager:v15];
+        v20 = [(SBSpotlightMultiplexingViewController *)self _getSceneHandleFromSceneManager:sceneManager];
         sceneHandle = self->_sceneHandle;
         self->_sceneHandle = v20;
       }
@@ -1230,18 +1230,18 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
   }
 }
 
-- (id)_getSceneHandleFromSceneManager:(id)a3
+- (id)_getSceneHandleFromSceneManager:(id)manager
 {
   v4 = MEMORY[0x277D0ADC0];
-  v5 = a3;
-  v6 = [(SBSpotlightMultiplexingViewController *)self _spotlightSceneIdentifier];
-  v7 = [v4 identityForIdentifier:v6 workspaceIdentifier:@"com.apple.Spotlight"];
+  managerCopy = manager;
+  _spotlightSceneIdentifier = [(SBSpotlightMultiplexingViewController *)self _spotlightSceneIdentifier];
+  v7 = [v4 identityForIdentifier:_spotlightSceneIdentifier workspaceIdentifier:@"com.apple.Spotlight"];
 
   v8 = _SBApp(@"com.apple.Spotlight");
-  v9 = [v5 displayIdentity];
-  v10 = [SBApplicationSceneHandleRequest defaultRequestForApplication:v8 sceneIdentity:v7 displayIdentity:v9];
+  displayIdentity = [managerCopy displayIdentity];
+  v10 = [SBApplicationSceneHandleRequest defaultRequestForApplication:v8 sceneIdentity:v7 displayIdentity:displayIdentity];
 
-  v11 = [v5 fetchOrCreateApplicationSceneHandleForRequest:v10];
+  v11 = [managerCopy fetchOrCreateApplicationSceneHandleForRequest:v10];
 
   v12 = objc_opt_class();
   v13 = v11;
@@ -1263,38 +1263,38 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
   return v12;
 }
 
-- (void)_configureSceneObservation:(BOOL)a3 forScene:(id)a4
+- (void)_configureSceneObservation:(BOOL)observation forScene:(id)scene
 {
-  v4 = a3;
-  v6 = a4;
-  v8 = v6;
-  if (v6)
+  observationCopy = observation;
+  sceneCopy = scene;
+  v8 = sceneCopy;
+  if (sceneCopy)
   {
-    if (v4 && (v7 = [(SBSpotlightMultiplexingViewController *)self isActiveDelegate], v6 = v8, v7))
+    if (observationCopy && (v7 = [(SBSpotlightMultiplexingViewController *)self isActiveDelegate], sceneCopy = v8, v7))
     {
       [v8 addObserver:self];
     }
 
     else
     {
-      [v6 removeObserver:self];
+      [sceneCopy removeObserver:self];
     }
 
-    v6 = v8;
+    sceneCopy = v8;
   }
 
-  [(SBSpotlightMultiplexingViewController *)self _evaluateSearchContentAvailabilityForScene:v6];
+  [(SBSpotlightMultiplexingViewController *)self _evaluateSearchContentAvailabilityForScene:sceneCopy];
 }
 
-- (void)_evaluateSearchContentAvailabilityForScene:(id)a3
+- (void)_evaluateSearchContentAvailabilityForScene:(id)scene
 {
-  v7 = a3;
-  v4 = [(SBSpotlightMultiplexingViewController *)self isSearchContentAvailable];
-  if (v7 && [(SBSpotlightMultiplexingViewController *)self isActiveDelegate])
+  sceneCopy = scene;
+  isSearchContentAvailable = [(SBSpotlightMultiplexingViewController *)self isSearchContentAvailable];
+  if (sceneCopy && [(SBSpotlightMultiplexingViewController *)self isActiveDelegate])
   {
-    v5 = [v7 contentState] == 2;
+    v5 = [sceneCopy contentState] == 2;
     [(SBSpotlightMultiplexingViewController *)self setSearchContentAvailable:v5];
-    if (v4 == v5)
+    if (isSearchContentAvailable == v5)
     {
       goto LABEL_9;
     }
@@ -1304,26 +1304,26 @@ void __86__SBSpotlightMultiplexingViewController_spotlightSceneIdentityTokenIfAc
   {
     [(SBSpotlightMultiplexingViewController *)self setSearchContentAvailable:0];
     v5 = 0;
-    if (!v4)
+    if (!isSearchContentAvailable)
     {
       goto LABEL_9;
     }
   }
 
-  v6 = [(SBSpotlightMultiplexingViewController *)self delegate];
+  delegate = [(SBSpotlightMultiplexingViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 spotlightMultiplexingViewController:self searchContentAvailabilityDidChange:v5];
+    [delegate spotlightMultiplexingViewController:self searchContentAvailabilityDidChange:v5];
   }
 
 LABEL_9:
 }
 
-- (void)keyboardLayersDidChange:(id)a3
+- (void)keyboardLayersDidChange:(id)change
 {
-  v4 = [a3 identifier];
-  v5 = [(SBSpotlightMultiplexingViewController *)self _spotlightSceneIdentifier];
-  v6 = [v4 isEqualToString:v5];
+  identifier = [change identifier];
+  _spotlightSceneIdentifier = [(SBSpotlightMultiplexingViewController *)self _spotlightSceneIdentifier];
+  v6 = [identifier isEqualToString:_spotlightSceneIdentifier];
 
   if (v6)
   {
@@ -1336,54 +1336,54 @@ LABEL_9:
 {
   if (!self->_scrollToTopView)
   {
-    v8 = [(SBSpotlightMultiplexingViewController *)self view];
+    view = [(SBSpotlightMultiplexingViewController *)self view];
     v3 = [SBScrollToTopSceneProxyView alloc];
-    [v8 bounds];
+    [view bounds];
     v4 = [(SBScrollToTopSceneProxyView *)v3 initWithFrame:?];
     scrollToTopView = self->_scrollToTopView;
     self->_scrollToTopView = v4;
 
     v6 = self->_scrollToTopView;
-    v7 = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
-    [(SBScrollToTopSceneProxyView *)v6 setSceneHandle:v7];
+    sceneHandle = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
+    [(SBScrollToTopSceneProxyView *)v6 setSceneHandle:sceneHandle];
 
     [(SBScrollToTopSceneProxyView *)self->_scrollToTopView setDelegate:self];
-    [v8 addSubview:self->_scrollToTopView];
+    [view addSubview:self->_scrollToTopView];
     [(SBSpotlightMultiplexingViewController *)self _registerStatusBarScrollToTopView];
   }
 }
 
-- (void)_registerStatusBarScrollToTopViewWithWindow:(id)a3
+- (void)_registerStatusBarScrollToTopViewWithWindow:(id)window
 {
   scrollToTopView = self->_scrollToTopView;
   if (scrollToTopView)
   {
-    [a3 _registerScrollToTopView:scrollToTopView];
+    [window _registerScrollToTopView:scrollToTopView];
   }
 }
 
 - (void)_unregisterStatusBarScrollToTopView
 {
-  v4 = [(SBSpotlightMultiplexingViewController *)self view];
-  v3 = [v4 window];
-  [(SBSpotlightMultiplexingViewController *)self _unregisterStatusBarScrollToTopViewWithWindow:v3];
+  view = [(SBSpotlightMultiplexingViewController *)self view];
+  window = [view window];
+  [(SBSpotlightMultiplexingViewController *)self _unregisterStatusBarScrollToTopViewWithWindow:window];
 }
 
-- (void)_unregisterStatusBarScrollToTopViewWithWindow:(id)a3
+- (void)_unregisterStatusBarScrollToTopViewWithWindow:(id)window
 {
   scrollToTopView = self->_scrollToTopView;
   if (scrollToTopView)
   {
-    [a3 _unregisterScrollToTopView:scrollToTopView];
+    [window _unregisterScrollToTopView:scrollToTopView];
   }
 }
 
-- (void)sceneWithIdentifier:(id)a3 didChangeStatusBarAlphaTo:(double)a4
+- (void)sceneWithIdentifier:(id)identifier didChangeStatusBarAlphaTo:(double)to
 {
-  v5 = a3;
-  v6 = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
-  v7 = [v6 sceneIdentifier];
-  v8 = [v7 isEqualToString:v5];
+  identifierCopy = identifier;
+  sceneHandle = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
+  sceneIdentifier = [sceneHandle sceneIdentifier];
+  v8 = [sceneIdentifier isEqualToString:identifierCopy];
 
   if (v8)
   {
@@ -1392,12 +1392,12 @@ LABEL_9:
   }
 }
 
-- (void)sceneWithIdentifier:(id)a3 didChangeStatusBarHiddenTo:(BOOL)a4 withAnimation:(int64_t)a5
+- (void)sceneWithIdentifier:(id)identifier didChangeStatusBarHiddenTo:(BOOL)to withAnimation:(int64_t)animation
 {
-  v6 = a3;
-  v7 = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
-  v8 = [v7 sceneIdentifier];
-  v9 = [v8 isEqualToString:v6];
+  identifierCopy = identifier;
+  sceneHandle = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
+  sceneIdentifier = [sceneHandle sceneIdentifier];
+  v9 = [sceneIdentifier isEqualToString:identifierCopy];
 
   if (v9)
   {
@@ -1406,48 +1406,48 @@ LABEL_9:
   }
 }
 
-- (void)sceneWithIdentifier:(id)a3 didChangeStatusBarStyleTo:(int64_t)a4
+- (void)sceneWithIdentifier:(id)identifier didChangeStatusBarStyleTo:(int64_t)to
 {
-  v6 = a3;
-  v7 = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
-  v8 = [v7 sceneIdentifier];
-  v9 = [v8 isEqualToString:v6];
+  identifierCopy = identifier;
+  sceneHandle = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
+  sceneIdentifier = [sceneHandle sceneIdentifier];
+  v9 = [sceneIdentifier isEqualToString:identifierCopy];
 
   if (v9)
   {
 
-    [(SBSpotlightMultiplexingViewController *)self _updateStatusBarStyleAssertionToStyle:a4 animated:1];
+    [(SBSpotlightMultiplexingViewController *)self _updateStatusBarStyleAssertionToStyle:to animated:1];
   }
 }
 
-- (void)_updateStatusBarStyleAssertionToStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)_updateStatusBarStyleAssertionToStyle:(int64_t)style animated:(BOOL)animated
 {
   v15 = objc_alloc_init(SBMutableStatusBarSettings);
-  [(SBMutableStatusBarSettings *)v15 setStyle:_SBStatusBarLegacyStyleFromStyle(a3)];
-  v6 = [MEMORY[0x277D760A8] sharedInstanceForStyle:_SBStatusBarLegibilityStyleFromStyle(a3)];
+  [(SBMutableStatusBarSettings *)v15 setStyle:_SBStatusBarLegacyStyleFromStyle(style)];
+  v6 = [MEMORY[0x277D760A8] sharedInstanceForStyle:_SBStatusBarLegibilityStyleFromStyle(style)];
   [(SBMutableStatusBarSettings *)v15 setLegibilitySettings:v6];
 
   v7 = [(SBSpotlightMultiplexingViewController *)self _appStatusBarSettingsLevelForSpotlightMultiplexingLevel:[(SBSpotlightMultiplexingViewController *)self level]];
-  v8 = [(UIViewController *)self _sbWindowScene];
-  v9 = [v8 statusBarManager];
-  v10 = [v9 assertionManager];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+  statusBarManager = [_sbWindowScene statusBarManager];
+  assertionManager = [statusBarManager assertionManager];
 
-  v11 = [v10 newSettingsAssertionWithSettings:v15 atLevel:v7 reason:@"style for Spotlight"];
+  v11 = [assertionManager newSettingsAssertionWithSettings:v15 atLevel:v7 reason:@"style for Spotlight"];
   statusBarStyleAssertion = self->_statusBarStyleAssertion;
   self->_statusBarStyleAssertion = v11;
 
   v13 = self->_statusBarStyleAssertion;
-  v14 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
-  [(SBWindowSceneStatusBarSettingsAssertion *)v13 acquireWithAnimationParameters:v14];
+  initWithDefaultParameters = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
+  [(SBWindowSceneStatusBarSettingsAssertion *)v13 acquireWithAnimationParameters:initWithDefaultParameters];
 }
 
-- (void)_clearStatusBarStyleAssertionAnimated:(BOOL)a3
+- (void)_clearStatusBarStyleAssertionAnimated:(BOOL)animated
 {
   statusBarStyleAssertion = self->_statusBarStyleAssertion;
-  if (a3)
+  if (animated)
   {
-    v5 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
-    [(SBWindowSceneStatusBarSettingsAssertion *)statusBarStyleAssertion invalidateWithAnimationParameters:v5];
+    initWithDefaultParameters = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
+    [(SBWindowSceneStatusBarSettingsAssertion *)statusBarStyleAssertion invalidateWithAnimationParameters:initWithDefaultParameters];
   }
 
   else
@@ -1459,35 +1459,35 @@ LABEL_9:
   self->_statusBarStyleAssertion = 0;
 }
 
-- (unint64_t)_appStatusBarSettingsLevelForSpotlightMultiplexingLevel:(unint64_t)a3
+- (unint64_t)_appStatusBarSettingsLevelForSpotlightMultiplexingLevel:(unint64_t)level
 {
-  if (a3 == 3)
+  if (level == 3)
   {
     return 8;
   }
 
   else
   {
-    return 4 * (a3 == 2);
+    return 4 * (level == 2);
   }
 }
 
 - (unint64_t)remoteSearchViewPresentationSource
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBSpotlightMultiplexingViewController.m" lineNumber:874 description:@"Subclassers must override to use"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSpotlightMultiplexingViewController.m" lineNumber:874 description:@"Subclassers must override to use"];
 
   return 0;
 }
 
-- (void)_configureExternalKeyboardView:(BOOL)a3
+- (void)_configureExternalKeyboardView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D75658] usesInputSystemUI];
-  v6 = [(SBSpotlightMultiplexingViewController *)self _effectiveKeyboardContentView];
-  if (v6)
+  viewCopy = view;
+  usesInputSystemUI = [MEMORY[0x277D75658] usesInputSystemUI];
+  _effectiveKeyboardContentView = [(SBSpotlightMultiplexingViewController *)self _effectiveKeyboardContentView];
+  if (_effectiveKeyboardContentView)
   {
-    v7 = v3;
+    v7 = viewCopy;
   }
 
   else
@@ -1502,17 +1502,17 @@ LABEL_9:
     goto LABEL_24;
   }
 
-  v8 = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
-  v9 = [v8 sceneIfExists];
-  v10 = [(SBSpotlightMultiplexingViewController *)self externalKeyboardView];
-  if (!v10)
+  sceneHandle = [(SBSpotlightMultiplexingViewController *)self sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
+  externalKeyboardView = [(SBSpotlightMultiplexingViewController *)self externalKeyboardView];
+  if (!externalKeyboardView)
   {
     v11 = objc_alloc(MEMORY[0x277D75D18]);
-    v12 = [v9 settings];
-    [v12 frame];
-    v10 = [v11 initWithFrame:?];
+    settings = [sceneIfExists settings];
+    [settings frame];
+    externalKeyboardView = [v11 initWithFrame:?];
 
-    [(SBSpotlightMultiplexingViewController *)self setExternalKeyboardView:v10];
+    [(SBSpotlightMultiplexingViewController *)self setExternalKeyboardView:externalKeyboardView];
   }
 
   if (![(SBSpotlightMultiplexingViewController *)self isActiveDelegate])
@@ -1521,52 +1521,52 @@ LABEL_9:
     goto LABEL_23;
   }
 
-  if (!v5)
+  if (!usesInputSystemUI)
   {
-    v15 = [(SBSpotlightMultiplexingViewController *)self keyboardPresenter];
-    if (v15)
+    keyboardPresenter = [(SBSpotlightMultiplexingViewController *)self keyboardPresenter];
+    if (keyboardPresenter)
     {
-      v14 = v15;
+      inputUIView = keyboardPresenter;
       goto LABEL_16;
     }
 
-    v18 = [v9 layerManager];
-    v19 = [v18 layers];
-    v20 = [v19 bs_firstObjectPassingTest:&__block_literal_global_158];
+    layerManager = [sceneIfExists layerManager];
+    layers = [layerManager layers];
+    v20 = [layers bs_firstObjectPassingTest:&__block_literal_global_158];
 
     if (v20)
     {
-      v21 = [v9 uiPresentationManager];
-      v22 = [MEMORY[0x277CCAD78] UUID];
-      v23 = [v22 UUIDString];
-      v14 = [v21 createPresenterForLayerTarget:v20 identifier:v23];
+      uiPresentationManager = [sceneIfExists uiPresentationManager];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      inputUIView = [uiPresentationManager createPresenterForLayerTarget:v20 identifier:uUIDString];
 
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __72__SBSpotlightMultiplexingViewController__configureExternalKeyboardView___block_invoke_2;
       v25[3] = &unk_2783A9210;
       v25[4] = self;
-      [v14 modifyPresentationContext:v25];
-      [(SBSpotlightMultiplexingViewController *)self setKeyboardPresenter:v14];
-      [v14 activate];
+      [inputUIView modifyPresentationContext:v25];
+      [(SBSpotlightMultiplexingViewController *)self setKeyboardPresenter:inputUIView];
+      [inputUIView activate];
 
-      if (v14)
+      if (inputUIView)
       {
 LABEL_16:
-        v16 = [(SBSpotlightMultiplexingViewController *)self keyboardHostView];
+        keyboardHostView = [(SBSpotlightMultiplexingViewController *)self keyboardHostView];
 
-        if (!v16)
+        if (!keyboardHostView)
         {
-          v17 = [v14 presentationView];
-          [(SBSpotlightMultiplexingViewController *)self setKeyboardHostView:v17];
-          [v10 addSubview:v17];
+          presentationView = [inputUIView presentationView];
+          [(SBSpotlightMultiplexingViewController *)self setKeyboardHostView:presentationView];
+          [externalKeyboardView addSubview:presentationView];
         }
       }
     }
 
     else
     {
-      v14 = 0;
+      inputUIView = 0;
     }
 
 LABEL_22:
@@ -1574,17 +1574,17 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v13 = [(SBSpotlightMultiplexingViewController *)self hostedInputUIView];
+  hostedInputUIView = [(SBSpotlightMultiplexingViewController *)self hostedInputUIView];
 
-  if (!v13)
+  if (!hostedInputUIView)
   {
-    v14 = [(SBSpotlightMultiplexingViewController *)self inputUIView];
-    if (v14)
+    inputUIView = [(SBSpotlightMultiplexingViewController *)self inputUIView];
+    if (inputUIView)
     {
-      [(SBSpotlightMultiplexingViewController *)self setHostedInputUIView:v14];
-      [v10 bounds];
-      [v14 setFrame:?];
-      [v10 addSubview:v14];
+      [(SBSpotlightMultiplexingViewController *)self setHostedInputUIView:inputUIView];
+      [externalKeyboardView bounds];
+      [inputUIView setFrame:?];
+      [externalKeyboardView addSubview:inputUIView];
     }
 
     goto LABEL_22;
@@ -1593,10 +1593,10 @@ LABEL_22:
 LABEL_23:
 
 LABEL_24:
-  v24 = [(SBSpotlightMultiplexingViewController *)self externalKeyboardViewContainsKeyboard];
-  if (v7 != v24)
+  externalKeyboardViewContainsKeyboard = [(SBSpotlightMultiplexingViewController *)self externalKeyboardViewContainsKeyboard];
+  if (v7 != externalKeyboardViewContainsKeyboard)
   {
-    [(SBSpotlightMultiplexingViewController *)self _notifyExternalKeyboardViewContainsKeyboard:v24];
+    [(SBSpotlightMultiplexingViewController *)self _notifyExternalKeyboardViewContainsKeyboard:externalKeyboardViewContainsKeyboard];
   }
 }
 
@@ -1643,13 +1643,13 @@ void __72__SBSpotlightMultiplexingViewController__configureExternalKeyboardView_
   }
 }
 
-- (void)_notifyExternalKeyboardViewContainsKeyboard:(BOOL)a3
+- (void)_notifyExternalKeyboardViewContainsKeyboard:(BOOL)keyboard
 {
-  v3 = a3;
-  v5 = [(SBSpotlightMultiplexingViewController *)self delegate];
+  keyboardCopy = keyboard;
+  delegate = [(SBSpotlightMultiplexingViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 spotlightMultiplexingViewController:self externalKeyboardViewContainsKeyboardDidChange:v3];
+    [delegate spotlightMultiplexingViewController:self externalKeyboardViewContainsKeyboardDidChange:keyboardCopy];
   }
 }
 
@@ -1657,41 +1657,41 @@ void __72__SBSpotlightMultiplexingViewController__configureExternalKeyboardView_
 {
   if ([MEMORY[0x277D75658] usesInputSystemUI])
   {
-    v3 = [(SBSpotlightMultiplexingViewController *)self hostedInputUIView];
-    v4 = [v3 window];
-    v5 = [(SBSpotlightMultiplexingViewController *)self view];
-    v6 = [v5 window];
-    v7 = [v4 isEqual:v6];
+    hostedInputUIView = [(SBSpotlightMultiplexingViewController *)self hostedInputUIView];
+    window = [hostedInputUIView window];
+    view = [(SBSpotlightMultiplexingViewController *)self view];
+    window2 = [view window];
+    v7 = [window isEqual:window2];
 
     if (v7)
     {
-      v8 = [(SBSpotlightMultiplexingViewController *)self hostedInputUIView];
-      [v8 removeFromSuperview];
+      hostedInputUIView2 = [(SBSpotlightMultiplexingViewController *)self hostedInputUIView];
+      [hostedInputUIView2 removeFromSuperview];
     }
 
     [(SBSpotlightMultiplexingViewController *)self setHostedInputUIView:0];
-    v9 = [(SBSpotlightMultiplexingViewController *)self inputUIView];
-    if (v9)
+    inputUIView = [(SBSpotlightMultiplexingViewController *)self inputUIView];
+    if (inputUIView)
     {
-      v13 = v9;
-      v10 = [(SBSpotlightMultiplexingViewController *)self view];
-      [v10 addSubview:v13];
-      [v10 bounds];
+      v13 = inputUIView;
+      view2 = [(SBSpotlightMultiplexingViewController *)self view];
+      [view2 addSubview:v13];
+      [view2 bounds];
       UIRectGetCenter();
       [v13 setCenter:?];
 
-      v9 = v13;
+      inputUIView = v13;
     }
   }
 
   else
   {
-    v11 = [(SBSpotlightMultiplexingViewController *)self keyboardHostView];
-    [v11 removeFromSuperview];
+    keyboardHostView = [(SBSpotlightMultiplexingViewController *)self keyboardHostView];
+    [keyboardHostView removeFromSuperview];
 
     [(SBSpotlightMultiplexingViewController *)self setKeyboardHostView:0];
-    v12 = [(SBSpotlightMultiplexingViewController *)self keyboardPresenter];
-    [v12 invalidate];
+    keyboardPresenter = [(SBSpotlightMultiplexingViewController *)self keyboardPresenter];
+    [keyboardPresenter invalidate];
 
     [(SBSpotlightMultiplexingViewController *)self setKeyboardPresenter:0];
   }
@@ -1701,9 +1701,9 @@ void __72__SBSpotlightMultiplexingViewController__configureExternalKeyboardView_
 {
   if (!self->_inputUIPresenterAssertion)
   {
-    v6 = [SBApp systemUIScenesCoordinator];
-    v3 = [v6 inputUISceneController];
-    v4 = [v3 addPresenter:self];
+    systemUIScenesCoordinator = [SBApp systemUIScenesCoordinator];
+    inputUISceneController = [systemUIScenesCoordinator inputUISceneController];
+    v4 = [inputUISceneController addPresenter:self];
     inputUIPresenterAssertion = self->_inputUIPresenterAssertion;
     self->_inputUIPresenterAssertion = v4;
   }
@@ -1730,22 +1730,22 @@ id __95__SBSpotlightMultiplexingViewController__analyticsLogSpotlightInvocationW
   return v4;
 }
 
-- (id)presentScene:(id)a3 viewControllerBuilderBlock:(id)a4
+- (id)presentScene:(id)scene viewControllerBuilderBlock:(id)block
 {
-  v5 = (*(a4 + 2))(a4, a2, a3);
-  v6 = [v5 traitsOrientedViewController];
+  v5 = (*(block + 2))(block, a2, scene);
+  traitsOrientedViewController = [v5 traitsOrientedViewController];
 
-  v7 = [v6 view];
-  [(SBSpotlightMultiplexingViewController *)self setInputUIView:v7];
+  view = [traitsOrientedViewController view];
+  [(SBSpotlightMultiplexingViewController *)self setInputUIView:view];
 
   [(SBSpotlightMultiplexingViewController *)self _configureExternalKeyboardView];
   return 0;
 }
 
-- (id)dismissScene:(id)a3
+- (id)dismissScene:(id)scene
 {
-  v4 = [(SBSpotlightMultiplexingViewController *)self inputUIView];
-  [v4 removeFromSuperview];
+  inputUIView = [(SBSpotlightMultiplexingViewController *)self inputUIView];
+  [inputUIView removeFromSuperview];
 
   [(SBSpotlightMultiplexingViewController *)self setInputUIView:0];
   [(SBSpotlightMultiplexingViewController *)self _configureExternalKeyboardView];
@@ -1754,17 +1754,17 @@ id __95__SBSpotlightMultiplexingViewController__analyticsLogSpotlightInvocationW
 
 - (id)parentSceneIdentityToken
 {
-  v2 = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
-  v3 = [v2 identityToken];
+  sceneIfExists = [(SBDeviceApplicationSceneHandle *)self->_sceneHandle sceneIfExists];
+  identityToken = [sceneIfExists identityToken];
 
-  return v3;
+  return identityToken;
 }
 
 - (BOOL)isVisibleOnScreen
 {
-  v2 = [(SBSpotlightMultiplexingViewController *)self view];
-  v3 = [v2 window];
-  v4 = v3 != 0;
+  view = [(SBSpotlightMultiplexingViewController *)self view];
+  window = [view window];
+  v4 = window != 0;
 
   return v4;
 }

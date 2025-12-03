@@ -1,7 +1,7 @@
 @interface BWMattingInferenceAdapter
 - (BWMattingInferenceAdapter)init;
-- (id)_newInferenceProviderWithType:(uint64_t)a3 configuration:(unsigned __int16)a4 version:(uint64_t)a5 additionalCacheAttributes:;
-- (id)inferenceProviderForType:(int)a3 version:(id)a4 configuration:(id)a5 resourceProvider:(id)a6 statusOut:(int *)a7;
+- (id)_newInferenceProviderWithType:(uint64_t)type configuration:(unsigned __int16)configuration version:(uint64_t)version additionalCacheAttributes:;
+- (id)inferenceProviderForType:(int)type version:(id)version configuration:(id)configuration resourceProvider:(id)provider statusOut:(int *)out;
 - (void)dealloc;
 @end
 
@@ -219,35 +219,35 @@ id __103__BWMattingInferenceAdapter_inferenceProviderForType_version_configurati
   return bwmia_mv2ipOutputMatteInferenceVideoFormat(a2, v4, v5);
 }
 
-- (id)inferenceProviderForType:(int)a3 version:(id)a4 configuration:(id)a5 resourceProvider:(id)a6 statusOut:(int *)a7
+- (id)inferenceProviderForType:(int)type version:(id)version configuration:(id)configuration resourceProvider:(id)provider statusOut:(int *)out
 {
-  var0 = a4.var0;
-  if (a4.var0 != 1)
+  var0 = version.var0;
+  if (version.var0 != 1)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v61 = 0;
     v11 = -31701;
-    if (!a5 || (isKindOfClass & 1) == 0)
+    if (!configuration || (isKindOfClass & 1) == 0)
     {
 LABEL_71:
-      if (!a7)
+      if (!out)
       {
         return v61;
       }
 
 LABEL_72:
-      *a7 = v11;
+      *out = v11;
       return v61;
     }
 
-    v23 = [a5 mainImageDownscalingFactor];
-    if (v26 == 0.0 || (v27 = OUTLINED_FUNCTION_3_115(v23, v24, v25, var0)) == 0)
+    mainImageDownscalingFactor = [configuration mainImageDownscalingFactor];
+    if (v26 == 0.0 || (v27 = OUTLINED_FUNCTION_3_115(mainImageDownscalingFactor, v24, v25, var0)) == 0)
     {
 LABEL_79:
       v61 = 0;
       v11 = -31701;
-      if (!a7)
+      if (!out)
       {
         return v61;
       }
@@ -256,38 +256,38 @@ LABEL_79:
     }
 
     v28 = v27;
-    v29 = a5;
-    [a5 targetAspectRatio];
+    configurationCopy2 = configuration;
+    [configuration targetAspectRatio];
     v31 = v30;
-    v32 = [a5 appliesFinalCropRect];
+    appliesFinalCropRect = [configuration appliesFinalCropRect];
     v76[0] = MEMORY[0x1E69E9820];
     v76[1] = 3221225472;
     v76[2] = __103__BWMattingInferenceAdapter_inferenceProviderForType_version_configuration_resourceProvider_statusOut___block_invoke_2;
     v76[3] = &unk_1E7990C40;
     v77 = v31;
-    v76[4] = a5;
-    v78 = v32;
+    v76[4] = configuration;
+    v78 = appliesFinalCropRect;
     [v28 bindMattingInput:@"primary_format:0" fromAttachedMediaUsingKey:@"PrimaryFormat" preparedByAttachedMediaKey:@"PrimaryFormat" withVideoFormatProvider:v76];
     [OUTLINED_FUNCTION_4() setPrimaryFormatInputVideoRequirement:?];
-    if ([a5 depthDataDeliveryEnabled])
+    if ([configuration depthDataDeliveryEnabled])
     {
       [OUTLINED_FUNCTION_1_135() bindMattingInput:? fromAttachedMediaUsingKey:? preparedByAttachedMediaKey:? withVideoFormatProvider:?];
       [OUTLINED_FUNCTION_4() setDepthInputVideoRequirement:?];
-      v29 = a5;
+      configurationCopy2 = configuration;
       [OUTLINED_FUNCTION_1_135() bindMattingInput:? fromAttachedMediaUsingKey:? preparedByAttachedMediaKey:? withVideoFormatProvider:?];
       [OUTLINED_FUNCTION_4() setDisparityInputVideoRequirement:?];
     }
 
-    v33 = [v29 enabledMattes];
-    v34 = [MEMORY[0x1E695DF70] array];
-    v35 = v34;
-    if ((v33 & 4) != 0)
+    enabledMattes = [configurationCopy2 enabledMattes];
+    array = [MEMORY[0x1E695DF70] array];
+    v35 = array;
+    if ((enabledMattes & 4) != 0)
     {
-      [v34 addObject:&unk_1F22478F0];
-      if ((v33 & 8) == 0)
+      [array addObject:&unk_1F22478F0];
+      if ((enabledMattes & 8) == 0)
       {
 LABEL_21:
-        if ((v33 & 0x10) == 0)
+        if ((enabledMattes & 0x10) == 0)
         {
           goto LABEL_22;
         }
@@ -296,16 +296,16 @@ LABEL_21:
       }
     }
 
-    else if ((v33 & 8) == 0)
+    else if ((enabledMattes & 8) == 0)
     {
       goto LABEL_21;
     }
 
     [v35 addObject:&unk_1F2247908];
-    if ((v33 & 0x10) == 0)
+    if ((enabledMattes & 0x10) == 0)
     {
 LABEL_22:
-      if ((v33 & 0x20) == 0)
+      if ((enabledMattes & 0x20) == 0)
       {
         goto LABEL_23;
       }
@@ -315,44 +315,44 @@ LABEL_22:
 
 LABEL_76:
     [v35 addObject:&unk_1F2247920];
-    if ((v33 & 0x20) == 0)
+    if ((enabledMattes & 0x20) == 0)
     {
 LABEL_23:
-      if ((v33 & 0x40) == 0)
+      if ((enabledMattes & 0x40) == 0)
       {
 LABEL_25:
         [v28 setEnabledSemanticMattingOutputTypes:v35];
         v61 = v28;
         v57 = v35;
-        if ((v33 & 2) != 0)
+        if ((enabledMattes & 2) != 0)
         {
           v75[0] = MEMORY[0x1E69E9820];
           v75[1] = 3221225472;
           v75[2] = __103__BWMattingInferenceAdapter_inferenceProviderForType_version_configuration_resourceProvider_statusOut___block_invoke_86;
           v75[3] = &unk_1E798F7E0;
-          v75[4] = v29;
+          v75[4] = configurationCopy2;
           [v28 bindMattingInput:@"segmentation_input:0" fromAttachedMediaUsingKey:0x1F219E750 preparedByAttachedMediaKey:@"PrimaryFormat" withVideoFormatProvider:v75];
           [OUTLINED_FUNCTION_4() setSegmentationInputVideoRequirement:?];
           v73[0] = MEMORY[0x1E69E9820];
           v73[1] = 3221225472;
           v73[2] = __103__BWMattingInferenceAdapter_inferenceProviderForType_version_configuration_resourceProvider_statusOut___block_invoke_92;
           v73[3] = &unk_1E798F7B8;
-          v73[4] = v29;
+          v73[4] = configurationCopy2;
           v74 = v31;
           [v28 bindMattingOutput:@"segmentation_output:0" fromAttachedMediaUsingKey:0x1F21AABB0 preparedByAttachedMediaKey:@"PrimaryFormat" withVideoFormatProvider:v73];
           [OUTLINED_FUNCTION_4() setSegmentationOutputVideoRequirement:?];
-          if ([v29 depthDataDeliveryEnabled] && (v33 & 1) != 0)
+          if ([configurationCopy2 depthDataDeliveryEnabled] && (enabledMattes & 1) != 0)
           {
             v72[0] = MEMORY[0x1E69E9820];
             v72[1] = 3221225472;
             v72[2] = __103__BWMattingInferenceAdapter_inferenceProviderForType_version_configuration_resourceProvider_statusOut___block_invoke_2_93;
             v72[3] = &unk_1E798F7E0;
-            v72[4] = v29;
+            v72[4] = configurationCopy2;
             [v28 bindMattingOutput:@"refined_depth_output:0" fromAttachedMediaUsingKey:0x1F21AABD0 preparedByAttachedMediaKey:@"PrimaryFormat" withVideoFormatProvider:v72];
             [OUTLINED_FUNCTION_4() setRefinedDepthOutputVideoRequirement:?];
           }
 
-          if ((v33 & 0x80) != 0)
+          if ((enabledMattes & 0x80) != 0)
           {
             v36 = -[BWInferenceCloneVideoRequirement initWithAttachedMediaKey:sourceVideoRequirement:]([BWInferenceCloneVideoRequirement alloc], "initWithAttachedMediaKey:sourceVideoRequirement:", 0x1F21AADF0, [v28 segmentationInputVideoRequirement]);
             if (!v36)
@@ -366,8 +366,8 @@ LABEL_70:
           }
         }
 
-        v59 = [MEMORY[0x1E695DF90] dictionary];
-        v58 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         v68 = 0u;
         v69 = 0u;
         v70 = 0u;
@@ -392,55 +392,55 @@ LABEL_70:
               v41 = *(*(&v68 + 1) + 8 * v40);
               if ([v35 containsObject:v41])
               {
-                v42 = [v41 intValue];
-                v43 = v42;
+                intValue = [v41 intValue];
+                v43 = intValue;
                 if (!v45 & v44)
                 {
                   v53 = @"PersonSemanticsTeeth";
                   v52 = 0x1F219E7D0;
-                  if (v42 != 16)
+                  if (intValue != 16)
                   {
                     v53 = @"PersonSemanticsGlasses";
                     v52 = 0x1F219E7F0;
-                    if (v42 != 32)
+                    if (intValue != 32)
                     {
                       v53 = @"PersonSemanticsSky";
                       v52 = 0x1F219E810;
-                      if (v42 != 64)
+                      if (intValue != 64)
                       {
                         v47 = 0x1F21AADD0;
                         v46 = 0x1F219E8B0;
-                        if (v42 != 0x2000)
+                        if (intValue != 0x2000)
                         {
                           v46 = 0;
                           v47 = 0;
                         }
 
-                        if (v42 == 4096)
+                        if (intValue == 4096)
                         {
                           v46 = 0x1F219E890;
                           v47 = 0x1F21AADB0;
                         }
 
-                        if (v42 == 2048)
+                        if (intValue == 2048)
                         {
                           v46 = 0x1F219E870;
                           v47 = 0x1F21AAD90;
                         }
 
-                        if (v42 == 1024)
+                        if (intValue == 1024)
                         {
                           v46 = 0x1F219E830;
                           v47 = 0x1F21AAD90;
                         }
 
-                        if (v42 == 512)
+                        if (intValue == 512)
                         {
                           v46 = 0x1F219E850;
                           v47 = 0x1F21AAD70;
                         }
 
-                        if (v42 == 128)
+                        if (intValue == 128)
                         {
                           v52 = 0x1F219E750;
                         }
@@ -450,7 +450,7 @@ LABEL_70:
                           v52 = v46;
                         }
 
-                        if (v42 == 128)
+                        if (intValue == 128)
                         {
                           v53 = @"LowResPersonSegmentationMaskClone";
                         }
@@ -468,7 +468,7 @@ LABEL_70:
                 {
                   v52 = 0;
                   v53 = 0;
-                  switch(v42)
+                  switch(intValue)
                   {
                     case 1:
                       v52 = 0;
@@ -501,18 +501,18 @@ LABEL_70:
                 v66[1] = 3221225472;
                 v66[2] = __103__BWMattingInferenceAdapter_inferenceProviderForType_version_configuration_resourceProvider_statusOut___block_invoke_3;
                 v66[3] = &unk_1E798F7E0;
-                v66[4] = a5;
+                v66[4] = configuration;
                 v49 = [v61 bindMattingInput:v48 fromAttachedMediaUsingKey:v52 preparedByAttachedMediaKey:@"PrimaryFormat" withVideoFormatProvider:v66];
-                [v59 setObject:v49 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v43)}];
+                [dictionary setObject:v49 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v43)}];
                 v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:0", v53];
                 v64[0] = MEMORY[0x1E69E9820];
                 v64[1] = 3221225472;
                 v64[2] = __103__BWMattingInferenceAdapter_inferenceProviderForType_version_configuration_resourceProvider_statusOut___block_invoke_4;
                 v64[3] = &unk_1E798F7B8;
-                v64[4] = a5;
+                v64[4] = configuration;
                 v65 = v31;
                 v51 = [v61 bindMattingOutput:v50 fromAttachedMediaUsingKey:v53 preparedByAttachedMediaKey:@"PrimaryFormat" withVideoFormatProvider:v64];
-                [v58 setObject:v51 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v43)}];
+                [dictionary2 setObject:v51 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v43)}];
                 v35 = v57;
                 v39 = v56;
                 v38 = v62;
@@ -529,9 +529,9 @@ LABEL_70:
           while (v54);
         }
 
-        [v61 setSemanticMatteInputVideoRequirementsByMattingOutputType:v59];
-        [v61 setSemanticMatteOutputVideoRequirementsByMattingOutputType:v58];
-        if ((v33 & 0x100) != 0)
+        [v61 setSemanticMatteInputVideoRequirementsByMattingOutputType:dictionary];
+        [v61 setSemanticMatteOutputVideoRequirementsByMattingOutputType:dictionary2];
+        if ((enabledMattes & 0x100) != 0)
         {
           v63 = 0x1F219E710;
           [v61 setOutputMasksContainsValidContentRequirement:{objc_msgSend(v61, "bindMattingOutput:asMetadataUsingKeys:", @"output_masks_contain_valid_content:0", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", &v63, 1))}];
@@ -547,7 +547,7 @@ LABEL_24:
 
 LABEL_77:
     [v35 addObject:&unk_1F2247938];
-    if ((v33 & 0x40) == 0)
+    if ((enabledMattes & 0x40) == 0)
     {
       goto LABEL_25;
     }
@@ -559,25 +559,25 @@ LABEL_77:
   v10 = objc_opt_isKindOfClass();
   v61 = 0;
   v11 = -31701;
-  if (!a5 || (v10 & 1) == 0)
+  if (!configuration || (v10 & 1) == 0)
   {
     goto LABEL_71;
   }
 
-  v12 = [a5 mainImageDownscalingFactor];
+  mainImageDownscalingFactor2 = [configuration mainImageDownscalingFactor];
   if (v15 == 0.0)
   {
     goto LABEL_79;
   }
 
-  v16 = OUTLINED_FUNCTION_3_115(v12, v13, v14, var0 & 1);
+  v16 = OUTLINED_FUNCTION_3_115(mainImageDownscalingFactor2, v13, v14, var0 & 1);
   if (!v16)
   {
     goto LABEL_79;
   }
 
   v17 = v16;
-  [a5 mainImageDownscalingFactor];
+  [configuration mainImageDownscalingFactor];
   v19 = v18;
   v85[0] = MEMORY[0x1E69E9820];
   v85[1] = 3221225472;
@@ -618,7 +618,7 @@ LABEL_77:
   v82 = v19;
   [v61 bindMattingOutput:@"segmentation_output:0" fromAttachedMediaUsingKey:0x1F21AABB0 preparedByAttachedMediaKey:@"PrimaryFormat" withVideoFormatProvider:v81];
   [OUTLINED_FUNCTION_4() setSegmentationOutputVideoRequirement:?];
-  if ([a5 refinedDepthDeliveryEnabled])
+  if ([configuration refinedDepthDeliveryEnabled])
   {
     v79[0] = MEMORY[0x1E69E9820];
     v79[1] = 3221225472;
@@ -630,7 +630,7 @@ LABEL_77:
   }
 
   v11 = 0;
-  if (a7)
+  if (out)
   {
     goto LABEL_72;
   }
@@ -638,9 +638,9 @@ LABEL_77:
   return v61;
 }
 
-- (id)_newInferenceProviderWithType:(uint64_t)a3 configuration:(unsigned __int16)a4 version:(uint64_t)a5 additionalCacheAttributes:
+- (id)_newInferenceProviderWithType:(uint64_t)type configuration:(unsigned __int16)configuration version:(uint64_t)version additionalCacheAttributes:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -650,29 +650,29 @@ LABEL_77:
   v28[0] = @"InferenceType";
   v28[1] = @"VersionMajor";
   v29[0] = [MEMORY[0x1E696AD98] numberWithInt:a2];
-  v29[1] = [MEMORY[0x1E696AD98] numberWithUnsignedShort:a4];
+  v29[1] = [MEMORY[0x1E696AD98] numberWithUnsignedShort:configuration];
   v11 = [v10 dictionaryWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v29, v28, 2)}];
   v12 = v11;
-  if (a5)
+  if (version)
   {
-    [v11 addEntriesFromDictionary:a5];
+    [v11 addEntriesFromDictionary:version];
   }
 
-  v13 = [(BWTiledEspressoInferenceAdapter *)a1 _generateInferenceProviderCacheKeyWithAttributes:v12];
+  v13 = [(BWTiledEspressoInferenceAdapter *)self _generateInferenceProviderCacheKeyWithAttributes:v12];
   if (!v13)
   {
     return 0;
   }
 
   v14 = v13;
-  v27.receiver = a1;
+  v27.receiver = self;
   v27.super_class = BWMattingInferenceAdapter;
   v15 = objc_msgSendSuper2(&v27, sel_shouldCacheInferenceProvider);
   if (v8 == 201)
   {
     if (v15)
     {
-      v26.receiver = a1;
+      v26.receiver = self;
       v26.super_class = BWMattingInferenceAdapter;
       v16 = [objc_msgSendSuper2(&v26 cachedInferenceProviderByCacheKey)];
       if (v16)
@@ -682,12 +682,12 @@ LABEL_77:
     }
   }
 
-  if (a4 == 1)
+  if (configuration == 1)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v17 = 0;
-    if (!a3 || (isKindOfClass & 1) == 0)
+    if (!type || (isKindOfClass & 1) == 0)
     {
       return v17;
     }
@@ -700,7 +700,7 @@ LABEL_77:
     objc_opt_class();
     v20 = objc_opt_isKindOfClass();
     v17 = 0;
-    if (!a3 || (v20 & 1) == 0)
+    if (!type || (v20 & 1) == 0)
     {
       return v17;
     }
@@ -708,19 +708,19 @@ LABEL_77:
     v19 = BWMattingV2InferenceProvider;
   }
 
-  v21 = [[v19 alloc] initWithConfiguration:a3];
+  v21 = [[v19 alloc] initWithConfiguration:type];
   v17 = v21;
   if (v21)
   {
     [v21 setCustomInferenceIdentifier:v14];
-    v25.receiver = a1;
+    v25.receiver = self;
     v25.super_class = BWMattingInferenceAdapter;
     v22 = objc_msgSendSuper2(&v25, sel_shouldCacheInferenceProvider);
     if (v8 == 201)
     {
       if (v22)
       {
-        v24.receiver = a1;
+        v24.receiver = self;
         v24.super_class = BWMattingInferenceAdapter;
         [objc_msgSendSuper2(&v24 cachedInferenceProviderByCacheKey)];
       }

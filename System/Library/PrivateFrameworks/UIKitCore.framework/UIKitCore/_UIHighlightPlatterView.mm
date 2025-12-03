@@ -1,25 +1,25 @@
 @interface _UIHighlightPlatterView
-- (_UIHighlightPlatterView)initWithTargetedPreview:(id)a3;
-- (void)setBackgroundAlpha:(double)a3;
-- (void)setShadowAlpha:(double)a3;
+- (_UIHighlightPlatterView)initWithTargetedPreview:(id)preview;
+- (void)setBackgroundAlpha:(double)alpha;
+- (void)setShadowAlpha:(double)alpha;
 @end
 
 @implementation _UIHighlightPlatterView
 
-- (_UIHighlightPlatterView)initWithTargetedPreview:(id)a3
+- (_UIHighlightPlatterView)initWithTargetedPreview:(id)preview
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = [v4 parameters];
-  v7 = [v6 visiblePath];
+  previewCopy = preview;
+  view = [previewCopy view];
+  parameters = [previewCopy parameters];
+  visiblePath = [parameters visiblePath];
 
-  [v7 bounds];
+  [visiblePath bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [v5 bounds];
-  if (v7)
+  [view bounds];
+  if (visiblePath)
   {
     v19 = v15;
     v18 = v13;
@@ -34,15 +34,15 @@
   if (v20)
   {
     [(UIView *)v20 setUserInteractionEnabled:0];
-    [(_UIHighlightPlatterView *)v21 setTargetedPreview:v4];
-    if ([v4 _sourceViewIsInViewHierarchy])
+    [(_UIHighlightPlatterView *)v21 setTargetedPreview:previewCopy];
+    if ([previewCopy _sourceViewIsInViewHierarchy])
     {
       v22 = [_UIPortalView alloc];
-      [v5 bounds];
+      [view bounds];
       v23 = [(_UIPortalView *)v22 initWithFrame:?];
       [(_UIPortalView *)v23 setName:@"_UIHighlightPlatterView.contentPortal"];
-      v24 = [v4 view];
-      [(_UIPortalView *)v23 setSourceView:v24];
+      view2 = [previewCopy view];
+      [(_UIPortalView *)v23 setSourceView:view2];
 
       [(_UIPortalView *)v23 setHidesSourceView:1];
       [(_UIPortalView *)v23 setMatchesAlpha:1];
@@ -51,16 +51,16 @@
       [(UIView *)v21 addSubview:v23];
       [(_UIHighlightPlatterView *)v21 setPortalView:v23];
 
-      v25 = [(_UIHighlightPlatterView *)v21 portalView];
+      portalView = [(_UIHighlightPlatterView *)v21 portalView];
     }
 
     else
     {
-      [(UIView *)v21 addSubview:v5];
-      v25 = v5;
+      [(UIView *)v21 addSubview:view];
+      portalView = view;
     }
 
-    v26 = v25;
+    v26 = portalView;
     v53.origin.x = v9;
     v53.origin.y = v11;
     v53.size.width = v13;
@@ -71,57 +71,57 @@
     v54.size.width = v13;
     v54.size.height = v15;
     v28 = -CGRectGetMinY(v54);
-    if ([v4 _previewMode] != 4)
+    if ([previewCopy _previewMode] != 4)
     {
       [v26 bounds];
       v56 = CGRectOffset(v55, v27, v28);
       [v26 setFrame:{v56.origin.x, v56.origin.y, v56.size.width, v56.size.height}];
-      if ([v4 _previewMode] != 5)
+      if ([previewCopy _previewMode] != 5)
       {
-        if (v7)
+        if (visiblePath)
         {
           v29 = [_UIShapeView alloc];
           [v26 bounds];
           v30 = [(UIView *)v29 initWithFrame:?];
-          v31 = [v7 CGPath];
-          v32 = [(_UIShapeView *)v30 shapeLayer];
-          [v32 setPath:v31];
+          cGPath = [visiblePath CGPath];
+          shapeLayer = [(_UIShapeView *)v30 shapeLayer];
+          [shapeLayer setPath:cGPath];
 
           [(UIView *)v26 _setSafeMaskView:v30];
         }
 
         else
         {
-          v7 = [(UIView *)v5 _outlinePath];
+          visiblePath = [(UIView *)view _outlinePath];
         }
       }
     }
 
-    v33 = [v4 parameters];
-    v34 = [v33 appliesShadow];
+    parameters2 = [previewCopy parameters];
+    appliesShadow = [parameters2 appliesShadow];
 
-    if (v34)
+    if (appliesShadow)
     {
-      v35 = [v4 parameters];
-      v36 = [v35 backgroundColor];
+      parameters3 = [previewCopy parameters];
+      backgroundColor = [parameters3 backgroundColor];
 
       v37 = [UIView alloc];
-      v50 = v36;
-      if (v7)
+      v50 = backgroundColor;
+      if (visiblePath)
       {
         [(UIView *)v21 bounds];
         v38 = [(UIView *)v37 initWithFrame:?];
-        [(UIView *)v38 setBackgroundColor:v36];
+        [(UIView *)v38 setBackgroundColor:backgroundColor];
         [(UIView *)v38 setAlpha:0.0];
         v39 = [_UIShapeView alloc];
         [(UIView *)v38 bounds];
         v40 = [(UIView *)v39 initWithFrame:?];
-        v41 = [v7 copy];
+        v41 = [visiblePath copy];
         CGAffineTransformMakeTranslation(&v51, v27, v28);
         [v41 applyTransform:&v51];
-        v42 = [v41 CGPath];
-        v43 = [(_UIShapeView *)v40 shapeLayer];
-        [v43 setPath:v42];
+        cGPath2 = [v41 CGPath];
+        shapeLayer2 = [(_UIShapeView *)v40 shapeLayer];
+        [shapeLayer2 setPath:cGPath2];
 
         [(UIView *)v38 setMaskView:v40];
       }
@@ -130,27 +130,27 @@
       {
         [v26 frame];
         v38 = [(UIView *)v37 initWithFrame:?];
-        [(UIView *)v38 setBackgroundColor:v36];
+        [(UIView *)v38 setBackgroundColor:backgroundColor];
       }
 
       [(_UIHighlightPlatterView *)v21 setBackgroundView:v38];
 
-      v44 = [v4 parameters];
-      v45 = [v44 effectiveShadowPath];
+      parameters4 = [previewCopy parameters];
+      effectiveShadowPath = [parameters4 effectiveShadowPath];
 
-      if (!v45)
+      if (!effectiveShadowPath)
       {
-        v45 = [(UIView *)v5 _outlinePath];
+        effectiveShadowPath = [(UIView *)view _outlinePath];
       }
 
       v46 = [_UIPlatterSoftShadowView alloc];
       [v26 frame];
-      v47 = [(_UIPlatterSoftShadowView *)v46 initWithFrame:v45 shadowPath:?];
+      v47 = [(_UIPlatterSoftShadowView *)v46 initWithFrame:effectiveShadowPath shadowPath:?];
       [(UIView *)v47 setAlpha:0.0];
       if ([v50 _isOpaque])
       {
-        v48 = [v5 backgroundColor];
-        -[_UIPlatterSoftShadowView setNeedsPunchOut:](v47, "setNeedsPunchOut:", [v48 _isOpaque] ^ 1);
+        backgroundColor2 = [view backgroundColor];
+        -[_UIPlatterSoftShadowView setNeedsPunchOut:](v47, "setNeedsPunchOut:", [backgroundColor2 _isOpaque] ^ 1);
       }
 
       else
@@ -165,55 +165,55 @@
   return v21;
 }
 
-- (void)setShadowAlpha:(double)a3
+- (void)setShadowAlpha:(double)alpha
 {
-  if (self->_shadowAlpha != a3)
+  if (self->_shadowAlpha != alpha)
   {
-    self->_shadowAlpha = a3;
-    v4 = [(_UIHighlightPlatterView *)self shadowView];
-    v5 = [v4 superview];
+    self->_shadowAlpha = alpha;
+    shadowView = [(_UIHighlightPlatterView *)self shadowView];
+    superview = [shadowView superview];
 
-    if (!v5)
+    if (!superview)
     {
-      v6 = [(_UIHighlightPlatterView *)self shadowView];
-      [(UIView *)self insertSubview:v6 atIndex:0];
+      shadowView2 = [(_UIHighlightPlatterView *)self shadowView];
+      [(UIView *)self insertSubview:shadowView2 atIndex:0];
     }
 
     shadowAlpha = self->_shadowAlpha;
-    v8 = [(_UIHighlightPlatterView *)self shadowView];
-    [v8 setAlpha:shadowAlpha];
+    shadowView3 = [(_UIHighlightPlatterView *)self shadowView];
+    [shadowView3 setAlpha:shadowAlpha];
   }
 }
 
-- (void)setBackgroundAlpha:(double)a3
+- (void)setBackgroundAlpha:(double)alpha
 {
-  if (self->_backgroundAlpha != a3)
+  if (self->_backgroundAlpha != alpha)
   {
-    self->_backgroundAlpha = a3;
-    v4 = [(_UIHighlightPlatterView *)self backgroundView];
-    v5 = [v4 superview];
+    self->_backgroundAlpha = alpha;
+    backgroundView = [(_UIHighlightPlatterView *)self backgroundView];
+    superview = [backgroundView superview];
 
-    if (!v5)
+    if (!superview)
     {
-      v6 = [(_UIHighlightPlatterView *)self shadowView];
-      v7 = [v6 superview];
+      shadowView = [(_UIHighlightPlatterView *)self shadowView];
+      superview2 = [shadowView superview];
 
-      v8 = [(_UIHighlightPlatterView *)self backgroundView];
-      if (v7)
+      backgroundView2 = [(_UIHighlightPlatterView *)self backgroundView];
+      if (superview2)
       {
-        v9 = [(_UIHighlightPlatterView *)self shadowView];
-        [(UIView *)self insertSubview:v8 aboveSubview:v9];
+        shadowView2 = [(_UIHighlightPlatterView *)self shadowView];
+        [(UIView *)self insertSubview:backgroundView2 aboveSubview:shadowView2];
       }
 
       else
       {
-        [(UIView *)self insertSubview:v8 atIndex:0];
+        [(UIView *)self insertSubview:backgroundView2 atIndex:0];
       }
     }
 
     backgroundAlpha = self->_backgroundAlpha;
-    v11 = [(_UIHighlightPlatterView *)self backgroundView];
-    [v11 setAlpha:backgroundAlpha];
+    backgroundView3 = [(_UIHighlightPlatterView *)self backgroundView];
+    [backgroundView3 setAlpha:backgroundAlpha];
   }
 }
 

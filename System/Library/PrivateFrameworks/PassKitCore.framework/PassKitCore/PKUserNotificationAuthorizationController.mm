@@ -1,18 +1,18 @@
 @interface PKUserNotificationAuthorizationController
 + (id)sharedInstance;
 - (PKUserNotificationAuthorizationController)init;
-- (unint64_t)_contentTypeToDisplayWithPasses:(id)a3;
-- (void)_authorizationStatusRequiresPromptWithCompletion:(id)a3;
-- (void)_shouldOfferAuthorizationPromptForPeerPaymentReasonWithPeerPaymentPass:(id)a3 completion:(id)a4;
-- (void)addDelegate:(id)a3;
-- (void)authorizationStatusWithCompletion:(id)a3;
-- (void)removeDelegate:(id)a3;
-- (void)requestNotificationAuthorizationWithCompletion:(id)a3;
+- (unint64_t)_contentTypeToDisplayWithPasses:(id)passes;
+- (void)_authorizationStatusRequiresPromptWithCompletion:(id)completion;
+- (void)_shouldOfferAuthorizationPromptForPeerPaymentReasonWithPeerPaymentPass:(id)pass completion:(id)completion;
+- (void)addDelegate:(id)delegate;
+- (void)authorizationStatusWithCompletion:(id)completion;
+- (void)removeDelegate:(id)delegate;
+- (void)requestNotificationAuthorizationWithCompletion:(id)completion;
 - (void)setPresentedNotificationAuthorizationPromptShown;
-- (void)shouldOfferAuthorizationPromptWithPasses:(id)a3 completion:(id)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)userNotificationCenter:(id)a3 openSettingsForNotification:(id)a4;
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5;
+- (void)shouldOfferAuthorizationPromptWithPasses:(id)passes completion:(id)completion;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)userNotificationCenter:(id)center openSettingsForNotification:(id)notification;
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler;
 @end
 
 @implementation PKUserNotificationAuthorizationController
@@ -33,22 +33,22 @@ void __59__PKUserNotificationAuthorizationController_sharedInstance__block_invok
   {
     if (PKRunningInPassbook())
     {
-      v3 = [MEMORY[0x1E6983308] currentNotificationCenter];
+      currentNotificationCenter = [MEMORY[0x1E6983308] currentNotificationCenter];
     }
 
     else
     {
-      v3 = [objc_alloc(MEMORY[0x1E6983308]) initWithBundleIdentifier:@"com.apple.Passbook"];
+      currentNotificationCenter = [objc_alloc(MEMORY[0x1E6983308]) initWithBundleIdentifier:@"com.apple.Passbook"];
     }
 
     center = v2->_center;
-    v2->_center = v3;
+    v2->_center = currentNotificationCenter;
 
     [(UNUserNotificationCenter *)v2->_center setDelegate:v2];
     v2->_delegatesLock._os_unfair_lock_opaque = 0;
-    v5 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     delegates = v2->_delegates;
-    v2->_delegates = v5;
+    v2->_delegates = pk_weakObjectsHashTableUsingPointerPersonality;
 
     v7 = +[PKPaymentService paymentService];
     paymentService = v2->_paymentService;
@@ -70,11 +70,11 @@ void __59__PKUserNotificationAuthorizationController_sharedInstance__block_invok
   return v3;
 }
 
-- (void)shouldOfferAuthorizationPromptWithPasses:(id)a3 completion:(id)a4
+- (void)shouldOfferAuthorizationPromptWithPasses:(id)passes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  passesCopy = passes;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = objc_alloc_init(PKAsyncUnaryOperationComposer);
     v66[0] = 0;
@@ -90,16 +90,16 @@ void __59__PKUserNotificationAuthorizationController_sharedInstance__block_invok
     v60 = 0;
     v61 = &v60;
     v62 = 0x2020000000;
-    v63 = [(PKUserNotificationAuthorizationController *)self _contentTypeToDisplayWithPasses:v6];
+    v63 = [(PKUserNotificationAuthorizationController *)self _contentTypeToDisplayWithPasses:passesCopy];
     v9 = MEMORY[0x1E69E96A0];
     v10 = MEMORY[0x1E69E96A0];
     v11 = PKGetNotificationAuthorizationPromptCount();
     v12 = +[PKPaymentWebService sharedService];
-    v13 = [v12 context];
-    v14 = [v13 configuration];
-    v15 = [v14 notificationAuthorizationPromptPresentationCount];
+    context = [v12 context];
+    configuration = [context configuration];
+    notificationAuthorizationPromptPresentationCount = [configuration notificationAuthorizationPromptPresentationCount];
 
-    if (v11 >= v15)
+    if (v11 >= notificationAuthorizationPromptPresentationCount)
     {
       v16 = 1;
     }
@@ -140,7 +140,7 @@ void __59__PKUserNotificationAuthorizationController_sharedInstance__block_invok
     v52[3] = &unk_1E79CD838;
     v19 = v9;
     v53 = v9;
-    v54 = self;
+    selfCopy = self;
     v55 = v66;
     [(PKAsyncUnaryOperationComposer *)v8 addOperation:v52];
     v48[0] = MEMORY[0x1E69E9820];
@@ -149,7 +149,7 @@ void __59__PKUserNotificationAuthorizationController_sharedInstance__block_invok
     v48[3] = &unk_1E79CD838;
     v20 = v9;
     v49 = v9;
-    v21 = v6;
+    v21 = passesCopy;
     v50 = v21;
     v51 = v66;
     [(PKAsyncUnaryOperationComposer *)v8 addOperation:v48];
@@ -161,7 +161,7 @@ void __59__PKUserNotificationAuthorizationController_sharedInstance__block_invok
     v42 = v9;
     v47 = v16;
     v43 = v21;
-    v44 = self;
+    selfCopy2 = self;
     v45 = v64;
     v46 = v66;
     [(PKAsyncUnaryOperationComposer *)v8 addOperation:v41];
@@ -175,21 +175,21 @@ void __59__PKUserNotificationAuthorizationController_sharedInstance__block_invok
     v38 = v66;
     v39 = v64;
     [(PKAsyncUnaryOperationComposer *)v8 addOperation:v36];
-    v24 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __97__PKUserNotificationAuthorizationController_shouldOfferAuthorizationPromptWithPasses_completion___block_invoke_10;
     v27[3] = &unk_1E79CD900;
     v25 = v9;
     v28 = v9;
-    v29 = self;
+    selfCopy3 = self;
     v31 = v64;
     v32 = &v60;
     v35 = v16;
     v33 = v66;
     v34 = v11;
-    v30 = v7;
-    v26 = [(PKAsyncUnaryOperationComposer *)v8 evaluateWithInput:v24 completion:v27];
+    v30 = completionCopy;
+    v26 = [(PKAsyncUnaryOperationComposer *)v8 evaluateWithInput:null completion:v27];
 
     _Block_object_dispose(&v60, 8);
     _Block_object_dispose(v64, 8);
@@ -404,18 +404,18 @@ void __97__PKUserNotificationAuthorizationController_shouldOfferAuthorizationPro
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_shouldOfferAuthorizationPromptForPeerPaymentReasonWithPeerPaymentPass:(id)a3 completion:(id)a4
+- (void)_shouldOfferAuthorizationPromptForPeerPaymentReasonWithPeerPaymentPass:(id)pass completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  passCopy = pass;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
-    if (v5)
+    if (passCopy)
     {
-      v8 = [v5 devicePrimaryPaymentApplication];
+      devicePrimaryPaymentApplication = [passCopy devicePrimaryPaymentApplication];
 
-      if (v8)
+      if (devicePrimaryPaymentApplication)
       {
         v9 = +[PKPeerPaymentService sharedInstance];
         v10[0] = MEMORY[0x1E69E9820];
@@ -434,7 +434,7 @@ void __97__PKUserNotificationAuthorizationController_shouldOfferAuthorizationPro
 
     else
     {
-      (*(v6 + 2))(v6, 0, @"no apple cash pass");
+      (*(completionCopy + 2))(completionCopy, 0, @"no apple cash pass");
     }
   }
 }
@@ -450,14 +450,14 @@ void __127__PKUserNotificationAuthorizationController__shouldOfferAuthorizationP
   (*(*(a1 + 32) + 16))();
 }
 
-- (unint64_t)_contentTypeToDisplayWithPasses:(id)a3
+- (unint64_t)_contentTypeToDisplayWithPasses:(id)passes
 {
   v33 = *MEMORY[0x1E69E9840];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = a3;
+  obj = passes;
   v3 = [obj countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (!v3)
   {
@@ -469,8 +469,8 @@ void __127__PKUserNotificationAuthorizationController__shouldOfferAuthorizationP
   v6 = 0;
   v23 = 0;
   log = 0;
-  v7 = 0;
-  v8 = 0;
+  isTransitPass = 0;
+  isAppleCardPass = 0;
   v9 = 0;
   v10 = *v27;
   *&v4 = 138412290;
@@ -493,39 +493,39 @@ void __127__PKUserNotificationAuthorizationController__shouldOfferAuthorizationP
         if ((v9 & 1) != 0 || [v13 cardType] == 1 || objc_msgSend(v14, "isEMoneyPass"))
         {
           v9 = 1;
-          if (v8)
+          if (isAppleCardPass)
           {
             goto LABEL_11;
           }
 
 LABEL_18:
-          v8 = [v14 isAppleCardPass];
-          if (v7)
+          isAppleCardPass = [v14 isAppleCardPass];
+          if (isTransitPass)
           {
             goto LABEL_19;
           }
 
 LABEL_12:
-          v7 = [v14 isTransitPass];
+          isTransitPass = [v14 isTransitPass];
         }
 
         else
         {
           v9 = 0;
-          if ((v8 & 1) == 0)
+          if ((isAppleCardPass & 1) == 0)
           {
             goto LABEL_18;
           }
 
 LABEL_11:
-          v8 = 1;
-          if ((v7 & 1) == 0)
+          isAppleCardPass = 1;
+          if ((isTransitPass & 1) == 0)
           {
             goto LABEL_12;
           }
 
 LABEL_19:
-          v7 = 1;
+          isTransitPass = 1;
         }
 
         if (v23 & log)
@@ -536,16 +536,16 @@ LABEL_19:
 
         else if ([v14 isIdentityPass])
         {
-          v15 = [v14 identityType];
-          if ((v15 - 3) >= 3)
+          identityType = [v14 identityType];
+          if ((identityType - 3) >= 3)
           {
-            if ((v15 - 1) < 2)
+            if ((identityType - 1) < 2)
             {
               v23 = 1;
               goto LABEL_32;
             }
 
-            if (v15)
+            if (identityType)
             {
               goto LABEL_32;
             }
@@ -553,9 +553,9 @@ LABEL_19:
             loga = PKLogFacilityTypeGetObject(0);
             if (os_log_type_enabled(loga, OS_LOG_TYPE_DEFAULT))
             {
-              v20 = [v14 localizedDescription];
+              localizedDescription = [v14 localizedDescription];
               *buf = v19;
-              v31 = v20;
+              v31 = localizedDescription;
               _os_log_impl(&dword_1AD337000, loga, OS_LOG_TYPE_DEFAULT, "PKUserNotificationAuthorizationController: Unknown Identity pass type encountered, assuming type IDCard behavior. pass: %@", buf, 0xCu);
             }
           }
@@ -576,10 +576,10 @@ LABEL_32:
   }
 
   while (v5);
-  if ((v8 | v7))
+  if ((isAppleCardPass | isTransitPass))
   {
     v16 = 1;
-    if ((v8 & 1) == 0)
+    if ((isAppleCardPass & 1) == 0)
     {
       v16 = 2;
     }
@@ -644,10 +644,10 @@ LABEL_52:
   return v17;
 }
 
-- (void)_authorizationStatusRequiresPromptWithCompletion:(id)a3
+- (void)_authorizationStatusRequiresPromptWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = PKLogFacilityTypeGetObject(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -660,7 +660,7 @@ LABEL_52:
     v6[1] = 3221225472;
     v6[2] = __94__PKUserNotificationAuthorizationController__authorizationStatusRequiresPromptWithCompletion___block_invoke;
     v6[3] = &unk_1E79CD950;
-    v7 = v4;
+    v7 = completionCopy;
     [(PKUserNotificationAuthorizationController *)self authorizationStatusWithCompletion:v6];
   }
 }
@@ -701,10 +701,10 @@ uint64_t __94__PKUserNotificationAuthorizationController__authorizationStatusReq
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)authorizationStatusWithCompletion:(id)a3
+- (void)authorizationStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = PKLogFacilityTypeGetObject(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -718,7 +718,7 @@ uint64_t __94__PKUserNotificationAuthorizationController__authorizationStatusReq
     v7[1] = 3221225472;
     v7[2] = __79__PKUserNotificationAuthorizationController_authorizationStatusWithCompletion___block_invoke;
     v7[3] = &unk_1E79CD978;
-    v8 = v4;
+    v8 = completionCopy;
     [(UNUserNotificationCenter *)center getNotificationSettingsWithCompletionHandler:v7];
   }
 }
@@ -738,9 +738,9 @@ void __79__PKUserNotificationAuthorizationController_authorizationStatusWithComp
   (*(*(a1 + 32) + 16))(*(a1 + 32), [v3 authorizationStatus], v3 != 0);
 }
 
-- (void)requestNotificationAuthorizationWithCompletion:(id)a3
+- (void)requestNotificationAuthorizationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -753,8 +753,8 @@ void __79__PKUserNotificationAuthorizationController_authorizationStatusWithComp
   v8[1] = 3221225472;
   v8[2] = __92__PKUserNotificationAuthorizationController_requestNotificationAuthorizationWithCompletion___block_invoke;
   v8[3] = &unk_1E79C4E50;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(PKPaymentService *)paymentService requestNotificationAuthorizationWithCompletion:v8];
 }
 
@@ -802,58 +802,58 @@ void __92__PKUserNotificationAuthorizationController_requestNotificationAuthoriz
   }
 
   PKIncrementNotificationAuthorizationPromptCount();
-  v4 = [MEMORY[0x1E695DF00] date];
-  PKSetLastUserNotificationAuthorizationPromptDate(v4);
+  date = [MEMORY[0x1E695DF00] date];
+  PKSetLastUserNotificationAuthorizationPromptDate(date);
 
   PKSetHasPromptedNotificationAuthorizationForContentType(self->_previouslyCheckedContentType, 1);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v4 = a3;
+    delegateCopy = delegate;
     os_unfair_lock_lock(&self->_delegatesLock);
-    [(NSHashTable *)self->_delegates addObject:v4];
+    [(NSHashTable *)self->_delegates addObject:delegateCopy];
 
     os_unfair_lock_unlock(&self->_delegatesLock);
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v4 = a3;
+    delegateCopy = delegate;
     os_unfair_lock_lock(&self->_delegatesLock);
-    [(NSHashTable *)self->_delegates removeObject:v4];
+    [(NSHashTable *)self->_delegates removeObject:delegateCopy];
 
     os_unfair_lock_unlock(&self->_delegatesLock);
   }
 }
 
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
+  centerCopy = center;
+  notificationCopy = notification;
+  handlerCopy = handler;
   v10 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v8;
+    v29 = notificationCopy;
     _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "PKUserNotificationAuthorizationController: willPresentNotification: %@", buf, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_delegatesLock);
-  v11 = [(NSHashTable *)self->_delegates allObjects];
+  allObjects = [(NSHashTable *)self->_delegates allObjects];
   os_unfair_lock_unlock(&self->_delegatesLock);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = v11;
+  v12 = allObjects;
   v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v13)
   {
@@ -876,15 +876,15 @@ void __92__PKUserNotificationAuthorizationController_requestNotificationAuthoriz
         block[2] = __114__PKUserNotificationAuthorizationController_userNotificationCenter_willPresentNotification_withCompletionHandler___block_invoke;
         block[3] = &unk_1E79C4D60;
         block[4] = v18;
-        v21 = v8;
-        v22 = v9;
+        v21 = notificationCopy;
+        v22 = handlerCopy;
         dispatch_async(v16, block);
 
         ++v17;
       }
 
       while (v14 != v17);
-      v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:{16, v19}];
+      v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:{16, centerCopy}];
     }
 
     while (v14);
@@ -906,27 +906,27 @@ uint64_t __114__PKUserNotificationAuthorizationController_userNotificationCenter
   return result;
 }
 
-- (void)userNotificationCenter:(id)a3 openSettingsForNotification:(id)a4
+- (void)userNotificationCenter:(id)center openSettingsForNotification:(id)notification
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  centerCopy = center;
+  notificationCopy = notification;
   v8 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v7;
+    v25 = notificationCopy;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "PKUserNotificationAuthorizationController: openSettingsForNotification : %@", buf, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_delegatesLock);
-  v9 = [(NSHashTable *)self->_delegates allObjects];
+  allObjects = [(NSHashTable *)self->_delegates allObjects];
   os_unfair_lock_unlock(&self->_delegatesLock);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v9;
+  v10 = allObjects;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -949,7 +949,7 @@ uint64_t __114__PKUserNotificationAuthorizationController_userNotificationCenter
         v17[2] = __96__PKUserNotificationAuthorizationController_userNotificationCenter_openSettingsForNotification___block_invoke;
         v17[3] = &unk_1E79C4DD8;
         v17[4] = v16;
-        v18 = v7;
+        v18 = notificationCopy;
         dispatch_async(v14, v17);
 
         ++v15;
@@ -977,32 +977,32 @@ uint64_t __96__PKUserNotificationAuthorizationController_userNotificationCenter_
   return result;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  responseCopy = response;
+  handlerCopy = handler;
   v11 = PKLogFacilityTypeGetObject(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = v9;
+    v19 = responseCopy;
     _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "PKUserNotificationAuthorizationController: didReceiveNotificationResponse: %@", &v18, 0xCu);
   }
 
-  v12 = [v9 actionIdentifier];
-  v13 = PKUserNotificationActionFromUNNotificationActionIdentifier(v12);
+  actionIdentifier = [responseCopy actionIdentifier];
+  v13 = PKUserNotificationActionFromUNNotificationActionIdentifier(actionIdentifier);
 
   paymentService = self->_paymentService;
-  v15 = [v9 notification];
-  v16 = [v15 request];
-  v17 = [v16 identifier];
-  [(PKPaymentService *)paymentService userNotificationActionPerformed:v13 applicationMessageContentIdentifier:v17 completion:0];
+  notification = [responseCopy notification];
+  request = [notification request];
+  identifier = [request identifier];
+  [(PKPaymentService *)paymentService userNotificationActionPerformed:v13 applicationMessageContentIdentifier:identifier completion:0];
 
-  if (v10)
+  if (handlerCopy)
   {
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 }
 

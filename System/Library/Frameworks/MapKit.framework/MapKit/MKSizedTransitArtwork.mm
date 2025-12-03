@@ -1,20 +1,20 @@
 @interface MKSizedTransitArtwork
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTransitArtworkViewMode:(id)a3;
-- (MKSizedTransitArtwork)initWithArtwork:(id)a3 shieldSize:(int64_t)a4 fallbackShieldSize:(int64_t)a5 artworkCache:(id)a6;
-- (id)badgeImageToDisplayWithScreenScale:(double)a3 nightMode:(BOOL)a4;
-- (id)imageToDisplayWithScreenScale:(double)a3 nightMode:(BOOL)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTransitArtworkViewMode:(id)mode;
+- (MKSizedTransitArtwork)initWithArtwork:(id)artwork shieldSize:(int64_t)size fallbackShieldSize:(int64_t)shieldSize artworkCache:(id)cache;
+- (id)badgeImageToDisplayWithScreenScale:(double)scale nightMode:(BOOL)mode;
+- (id)imageToDisplayWithScreenScale:(double)scale nightMode:(BOOL)mode;
 - (unint64_t)hash;
 @end
 
 @implementation MKSizedTransitArtwork
 
-- (id)badgeImageToDisplayWithScreenScale:(double)a3 nightMode:(BOOL)a4
+- (id)badgeImageToDisplayWithScreenScale:(double)scale nightMode:(BOOL)mode
 {
-  v5 = [(MKSizedTransitArtwork *)self artwork];
-  if ([v5 hasRoutingIncidentBadge])
+  artwork = [(MKSizedTransitArtwork *)self artwork];
+  if ([artwork hasRoutingIncidentBadge])
   {
-    v6 = [MKIconManager imageForTrafficIncidentType:4 size:0 forScale:a3];
+    v6 = [MKIconManager imageForTrafficIncidentType:4 size:0 forScale:scale];
   }
 
   else
@@ -25,14 +25,14 @@
   return v6;
 }
 
-- (id)imageToDisplayWithScreenScale:(double)a3 nightMode:(BOOL)a4
+- (id)imageToDisplayWithScreenScale:(double)scale nightMode:(BOOL)mode
 {
-  v4 = a4;
-  v7 = [(MKSizedTransitArtwork *)self artwork];
-  v8 = MKTransitArtworkDataSourceAllowMasking(v7);
+  modeCopy = mode;
+  artwork = [(MKSizedTransitArtwork *)self artwork];
+  v8 = MKTransitArtworkDataSourceAllowMasking(artwork);
 
-  v9 = [(MKSizedTransitArtwork *)self artworkCache];
-  v10 = [v9 imageForSizedArtwork:self scale:v4 nightMode:a3];
+  artworkCache = [(MKSizedTransitArtwork *)self artworkCache];
+  v10 = [artworkCache imageForSizedArtwork:self scale:modeCopy nightMode:scale];
 
   if (v8)
   {
@@ -48,34 +48,34 @@
 {
   v33 = 2654435761 * [(MKSizedTransitArtwork *)self shieldSize];
   v32 = 2654435761 * [(MKSizedTransitArtwork *)self fallbackShieldSize];
-  v3 = [(MKSizedTransitArtwork *)self artwork];
-  v31 = 2654435761 * [v3 artworkSourceType];
-  v4 = [v3 shieldDataSource];
-  v30 = 2654435761 * [v4 shieldType];
-  v5 = [v4 shieldText];
-  v29 = [v5 hash];
-  v6 = [v4 shieldColorString];
-  v28 = [v6 hash];
+  artwork = [(MKSizedTransitArtwork *)self artwork];
+  v31 = 2654435761 * [artwork artworkSourceType];
+  shieldDataSource = [artwork shieldDataSource];
+  v30 = 2654435761 * [shieldDataSource shieldType];
+  shieldText = [shieldDataSource shieldText];
+  v29 = [shieldText hash];
+  shieldColorString = [shieldDataSource shieldColorString];
+  v28 = [shieldColorString hash];
 
-  v7 = [v3 iconDataSource];
-  v27 = 2654435761 * [v7 iconType];
-  v26 = 2654435761 * [v7 cartoID];
-  v25 = 2654435761 * [v7 defaultTransitType];
-  v24 = 2654435761 * [v7 iconAttributeKey];
-  v23 = 2654435761 * [v7 iconAttributeValue];
-  v8 = [v3 iconFallbackShieldDataSource];
-  v22 = 2654435761 * [v8 shieldType];
-  v9 = [v8 shieldText];
-  v21 = [v9 hash];
-  v10 = [v8 shieldColorString];
-  v19 = [v10 hash];
+  iconDataSource = [artwork iconDataSource];
+  v27 = 2654435761 * [iconDataSource iconType];
+  v26 = 2654435761 * [iconDataSource cartoID];
+  v25 = 2654435761 * [iconDataSource defaultTransitType];
+  v24 = 2654435761 * [iconDataSource iconAttributeKey];
+  v23 = 2654435761 * [iconDataSource iconAttributeValue];
+  iconFallbackShieldDataSource = [artwork iconFallbackShieldDataSource];
+  v22 = 2654435761 * [iconFallbackShieldDataSource shieldType];
+  shieldText2 = [iconFallbackShieldDataSource shieldText];
+  v21 = [shieldText2 hash];
+  shieldColorString2 = [iconFallbackShieldDataSource shieldColorString];
+  v19 = [shieldColorString2 hash];
 
-  v11 = [v3 textDataSource];
-  v12 = [v11 text];
-  v13 = [v12 hash];
+  textDataSource = [artwork textDataSource];
+  text = [textDataSource text];
+  v13 = [text hash];
 
-  v14 = 2654435761 * [v3 artworkUseType];
-  if ([v3 hasRoutingIncidentBadge])
+  v14 = 2654435761 * [artwork artworkUseType];
+  if ([artwork hasRoutingIncidentBadge])
   {
     v15 = 2654435761;
   }
@@ -85,23 +85,23 @@
     v15 = 0;
   }
 
-  v16 = [v3 accessibilityText];
-  v17 = [v16 hash];
+  accessibilityText = [artwork accessibilityText];
+  v17 = [accessibilityText hash];
 
   return v32 ^ v33 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v13 ^ v14 ^ v15 ^ v17;
 }
 
-- (BOOL)isEqualToTransitArtworkViewMode:(id)a3
+- (BOOL)isEqualToTransitArtworkViewMode:(id)mode
 {
   v163 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 shieldSize];
-  if (v5 == [(MKSizedTransitArtwork *)self shieldSize])
+  modeCopy = mode;
+  shieldSize = [modeCopy shieldSize];
+  if (shieldSize == [(MKSizedTransitArtwork *)self shieldSize])
   {
-    v6 = [v4 artwork];
-    v7 = [(MKSizedTransitArtwork *)self artwork];
-    v8 = v6;
-    v9 = v7;
+    artwork = [modeCopy artwork];
+    artwork2 = [(MKSizedTransitArtwork *)self artwork];
+    v8 = artwork;
+    v9 = artwork2;
     v10 = v9;
     if (!v8 || !v9)
     {
@@ -112,26 +112,26 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v11 = [v8 artworkSourceType];
-    if (v11 != [v10 artworkSourceType] || (v12 = objc_msgSend(v8, "artworkUseType"), v12 != objc_msgSend(v10, "artworkUseType")))
+    artworkSourceType = [v8 artworkSourceType];
+    if (artworkSourceType != [v10 artworkSourceType] || (v12 = objc_msgSend(v8, "artworkUseType"), v12 != objc_msgSend(v10, "artworkUseType")))
     {
 
       v35 = 0;
       goto LABEL_16;
     }
 
-    v13 = [v8 shieldDataSource];
-    v14 = [v10 shieldDataSource];
-    v15 = v13;
-    v16 = v14;
+    shieldDataSource = [v8 shieldDataSource];
+    shieldDataSource2 = [v10 shieldDataSource];
+    v15 = shieldDataSource;
+    v16 = shieldDataSource2;
     v17 = v16;
     if (!(v15 | v16))
     {
 LABEL_7:
-      v18 = [v8 iconDataSource];
-      v19 = [v10 iconDataSource];
-      v20 = v18;
-      v21 = v19;
+      iconDataSource = [v8 iconDataSource];
+      iconDataSource2 = [v10 iconDataSource];
+      v20 = iconDataSource;
+      v21 = iconDataSource2;
       v22 = v21;
       if (v20 | v21)
       {
@@ -145,19 +145,19 @@ LABEL_88:
           goto LABEL_89;
         }
 
-        v46 = [v20 iconAttributeValue];
-        v47 = [v22 iconAttributeValue];
+        iconAttributeValue = [v20 iconAttributeValue];
+        iconAttributeValue2 = [v22 iconAttributeValue];
 
-        if (v46 != v47)
+        if (iconAttributeValue != iconAttributeValue2)
         {
           goto LABEL_72;
         }
       }
 
-      v23 = [v8 iconFallbackShieldDataSource];
-      v24 = [v10 iconFallbackShieldDataSource];
-      v25 = v23;
-      v26 = v24;
+      iconFallbackShieldDataSource = [v8 iconFallbackShieldDataSource];
+      iconFallbackShieldDataSource2 = [v10 iconFallbackShieldDataSource];
+      v25 = iconFallbackShieldDataSource;
+      v26 = iconFallbackShieldDataSource2;
       v27 = v26;
       if (!(v25 | v26))
       {
@@ -166,51 +166,51 @@ LABEL_88:
 
       if ((v25 == 0) == (v26 == 0))
       {
-        v48 = [v25 shieldType];
-        if (v48 == [v27 shieldType])
+        shieldType = [v25 shieldType];
+        if (shieldType == [v27 shieldType])
         {
-          v147 = [v25 shieldText];
-          if (!v147)
+          shieldText = [v25 shieldText];
+          if (!shieldText)
           {
-            v142 = [v27 shieldText];
-            if (!v142)
+            shieldText2 = [v27 shieldText];
+            if (!shieldText2)
             {
               v137 = v20;
-              v142 = 0;
+              shieldText2 = 0;
               LODWORD(v136) = 0;
               goto LABEL_91;
             }
           }
 
-          v49 = [v25 shieldText];
-          v50 = [v27 shieldText];
-          v151 = v49;
-          v51 = v49;
-          v48 = v50;
-          if ([v51 isEqualToString:v50])
+          shieldText3 = [v25 shieldText];
+          shieldText4 = [v27 shieldText];
+          v151 = shieldText3;
+          v51 = shieldText3;
+          shieldType = shieldText4;
+          if ([v51 isEqualToString:shieldText4])
           {
             v137 = v20;
             LODWORD(v136) = 1;
             v20 = v151;
 LABEL_91:
             v157 = v25;
-            v86 = [v25 shieldColorString];
-            if (v86 || ([v27 shieldColorString], (v130 = objc_claimAutoreleasedReturnValue()) != 0))
+            shieldColorString = [v25 shieldColorString];
+            if (shieldColorString || ([v27 shieldColorString], (v130 = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v133 = v48;
+              v133 = shieldType;
               v152 = v20;
-              v87 = [v157 shieldColorString];
+              shieldColorString2 = [v157 shieldColorString];
               v88 = v27;
-              v89 = [v27 shieldColorString];
-              v135 = [v87 isEqualToString:v89];
+              shieldColorString3 = [v27 shieldColorString];
+              v135 = [shieldColorString2 isEqualToString:shieldColorString3];
 
-              if (v86)
+              if (shieldColorString)
               {
 
                 v25 = v157;
                 v27 = v88;
                 v20 = v152;
-                v48 = v133;
+                shieldType = v133;
                 if (!v136)
                 {
                   goto LABEL_96;
@@ -222,7 +222,7 @@ LABEL_91:
               v27 = v88;
               v20 = v152;
               v90 = v130;
-              v48 = v133;
+              shieldType = v133;
             }
 
             else
@@ -235,7 +235,7 @@ LABEL_91:
             if ((v136 & 1) == 0)
             {
 LABEL_96:
-              if (v147)
+              if (shieldText)
               {
 
                 v20 = v137;
@@ -257,10 +257,10 @@ LABEL_96:
 
 LABEL_9:
               v153 = v27;
-              v28 = [v8 textDataSource];
-              v29 = [v10 textDataSource];
-              v30 = v28;
-              v31 = v29;
+              textDataSource = [v8 textDataSource];
+              textDataSource2 = [v10 textDataSource];
+              v30 = textDataSource;
+              v31 = textDataSource2;
               v32 = v30;
               v33 = v31;
               v150 = v17;
@@ -276,10 +276,10 @@ LABEL_9:
               }
 
               v136 = v22;
-              v56 = [v32 text];
+              text = [v32 text];
               [v33 text];
               v58 = v57 = v32;
-              v59 = v56;
+              v59 = text;
               v60 = v58;
               if (!(v59 | v60))
               {
@@ -303,11 +303,11 @@ LABEL_9:
               }
 
               v132 = v59;
-              v70 = [v59 formatStrings];
+              formatStrings = [v59 formatStrings];
               v131 = v61;
-              v71 = [v61 formatStrings];
-              v72 = v70;
-              v73 = v71;
+              formatStrings2 = [v61 formatStrings];
+              v72 = formatStrings;
+              v73 = formatStrings2;
               v74 = v73;
               v22 = v136;
               if (v72 | v73)
@@ -385,10 +385,10 @@ LABEL_116:
                 v126 = v72;
               }
 
-              v75 = [v132 separators];
-              v76 = [v131 separators];
-              v77 = v75;
-              v78 = v76;
+              separators = [v132 separators];
+              separators2 = [v131 separators];
+              v77 = separators;
+              v78 = separators2;
               v79 = v78;
               if (v77 | v78)
               {
@@ -478,10 +478,10 @@ LABEL_87:
                 v123 = v77;
               }
 
-              v80 = [v132 formatTokens];
-              v81 = [v131 formatTokens];
-              v82 = v80;
-              v124 = v81;
+              formatTokens = [v132 formatTokens];
+              formatTokens2 = [v131 formatTokens];
+              v82 = formatTokens;
+              v124 = formatTokens2;
               if (!(v82 | v124))
               {
                 v121 = v82;
@@ -544,11 +544,11 @@ LABEL_87:
                   }
 
 LABEL_82:
-                  v83 = [v132 alternativeString];
-                  v84 = [v131 alternativeString];
-                  if (v83 | v84)
+                  alternativeString = [v132 alternativeString];
+                  alternativeString2 = [v131 alternativeString];
+                  if (alternativeString | alternativeString2)
                   {
-                    v85 = [v83 isEqual:v84];
+                    v85 = [alternativeString isEqual:alternativeString2];
                   }
 
                   else
@@ -568,8 +568,8 @@ LABEL_82:
 
 LABEL_10:
                   v146 = v33;
-                  v34 = [v8 hasRoutingIncidentBadge];
-                  if (v34 != [v10 hasRoutingIncidentBadge])
+                  hasRoutingIncidentBadge = [v8 hasRoutingIncidentBadge];
+                  if (hasRoutingIncidentBadge != [v10 hasRoutingIncidentBadge])
                   {
                     v35 = 0;
 LABEL_47:
@@ -580,15 +580,15 @@ LABEL_86:
                   }
 
                   v143 = v32;
-                  v53 = [v8 accessibilityText];
-                  if (v53 || ([v10 accessibilityText], (v136 = objc_claimAutoreleasedReturnValue()) != 0))
+                  accessibilityText = [v8 accessibilityText];
+                  if (accessibilityText || ([v10 accessibilityText], (v136 = objc_claimAutoreleasedReturnValue()) != 0))
                   {
                     v138 = v20;
-                    v54 = [v8 accessibilityText];
-                    v55 = [v10 accessibilityText];
-                    v35 = [v54 isEqualToString:v55];
+                    accessibilityText2 = [v8 accessibilityText];
+                    accessibilityText3 = [v10 accessibilityText];
+                    v35 = [accessibilityText2 isEqualToString:accessibilityText3];
 
-                    if (v53)
+                    if (accessibilityText)
                     {
 
                       v20 = v138;
@@ -627,10 +627,10 @@ LABEL_95:
             goto LABEL_96;
           }
 
-          v69 = v142;
-          if (v147)
+          v69 = shieldText2;
+          if (shieldText)
           {
-            v69 = v147;
+            v69 = shieldText;
           }
         }
       }
@@ -641,38 +641,38 @@ LABEL_71:
 
     if ((v15 == 0) == (v16 == 0))
     {
-      v37 = [v15 shieldType];
-      if (v37 == [v17 shieldType])
+      shieldType2 = [v15 shieldType];
+      if (shieldType2 == [v17 shieldType])
       {
-        v38 = [v15 shieldText];
-        if (!v38)
+        shieldText5 = [v15 shieldText];
+        if (!shieldText5)
         {
-          v149 = [v17 shieldText];
-          if (!v149)
+          shieldText6 = [v17 shieldText];
+          if (!shieldText6)
           {
-            v149 = 0;
+            shieldText6 = 0;
             v41 = 0;
             goto LABEL_56;
           }
         }
 
-        v39 = [v15 shieldText];
-        v40 = [v17 shieldText];
-        if ([v39 isEqualToString:v40])
+        shieldText7 = [v15 shieldText];
+        shieldText8 = [v17 shieldText];
+        if ([shieldText7 isEqualToString:shieldText8])
         {
-          v145 = v40;
-          v155 = v39;
+          v145 = shieldText8;
+          v155 = shieldText7;
           v41 = 1;
 LABEL_56:
-          v62 = [v15 shieldColorString];
-          if (v62 || ([v17 shieldColorString], (v142 = objc_claimAutoreleasedReturnValue()) != 0))
+          shieldColorString4 = [v15 shieldColorString];
+          if (shieldColorString4 || ([v17 shieldColorString], (shieldText2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
             v154 = v41;
-            v63 = [v15 shieldColorString];
-            v64 = [v17 shieldColorString];
-            v65 = [v63 isEqualToString:v64];
+            shieldColorString5 = [v15 shieldColorString];
+            shieldColorString6 = [v17 shieldColorString];
+            v65 = [shieldColorString5 isEqualToString:shieldColorString6];
 
-            if (v62)
+            if (shieldColorString4)
             {
 
               v66 = v155;
@@ -686,7 +686,7 @@ LABEL_56:
 
             v66 = v155;
             LOBYTE(v41) = v154;
-            v67 = v142;
+            v67 = shieldText2;
           }
 
           else
@@ -699,7 +699,7 @@ LABEL_56:
           if ((v41 & 1) == 0)
           {
 LABEL_61:
-            if (!v38)
+            if (!shieldText5)
             {
             }
 
@@ -720,7 +720,7 @@ LABEL_60:
           goto LABEL_61;
         }
 
-        if (v38)
+        if (shieldText5)
         {
         }
 
@@ -739,31 +739,31 @@ LABEL_17:
   return v35;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MKSizedTransitArtwork *)self isEqualToTransitArtworkViewMode:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MKSizedTransitArtwork *)self isEqualToTransitArtworkViewMode:equalCopy];
 
   return v5;
 }
 
-- (MKSizedTransitArtwork)initWithArtwork:(id)a3 shieldSize:(int64_t)a4 fallbackShieldSize:(int64_t)a5 artworkCache:(id)a6
+- (MKSizedTransitArtwork)initWithArtwork:(id)artwork shieldSize:(int64_t)size fallbackShieldSize:(int64_t)shieldSize artworkCache:(id)cache
 {
-  v11 = a3;
-  v12 = a6;
+  artworkCopy = artwork;
+  cacheCopy = cache;
   v18.receiver = self;
   v18.super_class = MKSizedTransitArtwork;
   v13 = [(MKSizedTransitArtwork *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_artwork, a3);
-    v14->_shieldSize = a4;
-    v14->_fallbackShieldSize = a5;
-    if (v12)
+    objc_storeStrong(&v13->_artwork, artwork);
+    v14->_shieldSize = size;
+    v14->_fallbackShieldSize = shieldSize;
+    if (cacheCopy)
     {
-      v15 = v12;
+      v15 = cacheCopy;
     }
 
     else

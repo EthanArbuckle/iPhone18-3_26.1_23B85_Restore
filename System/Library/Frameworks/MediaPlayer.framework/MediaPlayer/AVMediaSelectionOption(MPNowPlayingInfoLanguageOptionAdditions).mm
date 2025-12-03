@@ -8,12 +8,12 @@
 - (id)_languageOptionIdentifier
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 extendedLanguageTag];
-  v4 = v3;
+  extendedLanguageTag = [self extendedLanguageTag];
+  v4 = extendedLanguageTag;
   v5 = @"NULL";
-  if (v3)
+  if (extendedLanguageTag)
   {
-    v6 = v3;
+    v6 = extendedLanguageTag;
   }
 
   else
@@ -21,19 +21,19 @@
     v6 = @"NULL";
   }
 
-  v7 = [a1 mediaType];
-  v8 = v7;
-  if (v7)
+  mediaType = [self mediaType];
+  v8 = mediaType;
+  if (mediaType)
   {
-    v5 = v7;
+    v5 = mediaType;
   }
 
-  v9 = [a1 displayName];
-  v10 = v9;
+  displayName = [self displayName];
+  v10 = displayName;
   v11 = @"?";
-  if (v9)
+  if (displayName)
   {
-    v11 = v9;
+    v11 = displayName;
   }
 
   v12 = [v2 stringWithFormat:@"MediaRemoteLanguageOption/%@/%@ %@", v6, v5, v11];
@@ -43,14 +43,14 @@
 
 - (MPNowPlayingInfoLanguageOption)makeNowPlayingInfoLanguageOption
 {
-  if ([a1 hasMediaCharacteristic:*MEMORY[0x1E69874F8]])
+  if ([self hasMediaCharacteristic:*MEMORY[0x1E69874F8]])
   {
     v2 = 0;
   }
 
   else
   {
-    if (![a1 hasMediaCharacteristic:*MEMORY[0x1E6987578]])
+    if (![self hasMediaCharacteristic:*MEMORY[0x1E6987578]])
     {
       v18 = 0;
       goto LABEL_32;
@@ -61,84 +61,84 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v3 = [a1 mediaCharacteristics];
+    mediaCharacteristics = [self mediaCharacteristics];
   }
 
   else
   {
-    v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    mediaCharacteristics = objc_alloc_init(MEMORY[0x1E695DF70]);
     v4 = *MEMORY[0x1E6987558];
-    if ([a1 hasMediaCharacteristic:*MEMORY[0x1E6987558]])
+    if ([self hasMediaCharacteristic:*MEMORY[0x1E6987558]])
     {
-      [v3 addObject:v4];
+      [mediaCharacteristics addObject:v4];
     }
 
     v5 = *MEMORY[0x1E6987550];
-    if ([a1 hasMediaCharacteristic:*MEMORY[0x1E6987550]])
+    if ([self hasMediaCharacteristic:*MEMORY[0x1E6987550]])
     {
-      [v3 addObject:v5];
+      [mediaCharacteristics addObject:v5];
     }
 
     v6 = *MEMORY[0x1E6987518];
-    if ([a1 hasMediaCharacteristic:*MEMORY[0x1E6987518]])
+    if ([self hasMediaCharacteristic:*MEMORY[0x1E6987518]])
     {
-      [v3 addObject:v6];
+      [mediaCharacteristics addObject:v6];
     }
 
     v7 = *MEMORY[0x1E6987588];
-    if ([a1 hasMediaCharacteristic:*MEMORY[0x1E6987588]])
+    if ([self hasMediaCharacteristic:*MEMORY[0x1E6987588]])
     {
-      [v3 addObject:v7];
+      [mediaCharacteristics addObject:v7];
     }
 
     v8 = *MEMORY[0x1E6987528];
-    if ([a1 hasMediaCharacteristic:*MEMORY[0x1E6987528]])
+    if ([self hasMediaCharacteristic:*MEMORY[0x1E6987528]])
     {
-      [v3 addObject:v8];
+      [mediaCharacteristics addObject:v8];
     }
 
     v9 = *MEMORY[0x1E6987530];
-    if ([a1 hasMediaCharacteristic:*MEMORY[0x1E6987530]])
+    if ([self hasMediaCharacteristic:*MEMORY[0x1E6987530]])
     {
-      [v3 addObject:v9];
+      [mediaCharacteristics addObject:v9];
     }
 
     v10 = *MEMORY[0x1E6987540];
-    if ([a1 hasMediaCharacteristic:*MEMORY[0x1E6987540]])
+    if ([self hasMediaCharacteristic:*MEMORY[0x1E6987540]])
     {
-      [v3 addObject:v10];
+      [mediaCharacteristics addObject:v10];
     }
 
     v11 = *MEMORY[0x1E6987570];
-    if ([a1 hasMediaCharacteristic:*MEMORY[0x1E6987570]])
+    if ([self hasMediaCharacteristic:*MEMORY[0x1E6987570]])
     {
-      [v3 addObject:v11];
+      [mediaCharacteristics addObject:v11];
     }
 
     v12 = *MEMORY[0x1E6987538];
-    if ([a1 hasMediaCharacteristic:*MEMORY[0x1E6987538]])
+    if ([self hasMediaCharacteristic:*MEMORY[0x1E6987538]])
     {
-      [v3 addObject:v12];
+      [mediaCharacteristics addObject:v12];
     }
 
     v13 = *MEMORY[0x1E6987598];
-    if ([a1 hasMediaCharacteristic:*MEMORY[0x1E6987598]])
+    if ([self hasMediaCharacteristic:*MEMORY[0x1E6987598]])
     {
-      [v3 addObject:v13];
+      [mediaCharacteristics addObject:v13];
     }
   }
 
-  if (v3 && ![v3 count])
+  if (mediaCharacteristics && ![mediaCharacteristics count])
   {
 
-    v3 = 0;
+    mediaCharacteristics = 0;
   }
 
   v14 = [MPNowPlayingInfoLanguageOption alloc];
-  v15 = [a1 extendedLanguageTag];
-  v16 = [a1 displayName];
-  v17 = [a1 _languageOptionIdentifier];
-  v18 = [(MPNowPlayingInfoLanguageOption *)v14 initWithType:v2 languageTag:v15 characteristics:v3 displayName:v16 identifier:v17];
+  extendedLanguageTag = [self extendedLanguageTag];
+  displayName = [self displayName];
+  _languageOptionIdentifier = [self _languageOptionIdentifier];
+  v18 = [(MPNowPlayingInfoLanguageOption *)v14 initWithType:v2 languageTag:extendedLanguageTag characteristics:mediaCharacteristics displayName:displayName identifier:_languageOptionIdentifier];
 
 LABEL_32:
 

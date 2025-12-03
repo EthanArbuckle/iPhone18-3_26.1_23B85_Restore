@@ -1,17 +1,17 @@
 @interface C2Multipeer
-- (C2Multipeer)initWithChunkDelegate:(id)a3 createListener:(BOOL)a4;
-- (void)addClientConnection:(id)a3 peerID:(id)a4;
-- (void)addServerConnection:(id)a3 peerID:(id)a4;
-- (void)discoverChunkSignature:(id)a3 forContainerIdentifier:(id)a4 chunkDataCallback:(id)a5;
+- (C2Multipeer)initWithChunkDelegate:(id)delegate createListener:(BOOL)listener;
+- (void)addClientConnection:(id)connection peerID:(id)d;
+- (void)addServerConnection:(id)connection peerID:(id)d;
+- (void)discoverChunkSignature:(id)signature forContainerIdentifier:(id)identifier chunkDataCallback:(id)callback;
 @end
 
 @implementation C2Multipeer
 
-- (C2Multipeer)initWithChunkDelegate:(id)a3 createListener:(BOOL)a4
+- (C2Multipeer)initWithChunkDelegate:(id)delegate createListener:(BOOL)listener
 {
-  v4 = a4;
+  listenerCopy = listener;
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = C2Multipeer;
   v8 = [(C2Multipeer *)&v26 init];
@@ -22,7 +22,7 @@
     queue = v8->_queue;
     v8->_queue = v10;
 
-    if (v4)
+    if (listenerCopy)
     {
       v12 = [[C2MultipeerDiscovery alloc] initWithParent:v8];
       listener = v8->_listener;
@@ -37,7 +37,7 @@
     serverConnectionByPeer = v8->_serverConnectionByPeer;
     v8->_serverConnectionByPeer = v16;
 
-    objc_storeStrong(&v8->_chunkDelegate, a3);
+    objc_storeStrong(&v8->_chunkDelegate, delegate);
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v19 = dispatch_queue_create("c2.multipeer.delegateQueue", v18);
     chunkDelegateQueue = v8->_chunkDelegateQueue;
@@ -59,7 +59,7 @@
     *buf = 138412546;
     v28 = v8;
     v29 = 2112;
-    v30 = v7;
+    v30 = delegateCopy;
     _os_log_impl(&dword_242158000, v23, OS_LOG_TYPE_DEFAULT, "[%@ initWithChunkDelegate:%@]", buf, 0x16u);
   }
 
@@ -74,33 +74,33 @@ uint64_t __52__C2Multipeer_initWithChunkDelegate_createListener___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)addClientConnection:(id)a3 peerID:(id)a4
+- (void)addClientConnection:(id)connection peerID:(id)d
 {
   clientConnectionByPeer = self->_clientConnectionByPeer;
-  v6 = a3;
-  [(NSMutableDictionary *)clientConnectionByPeer setObject:v6 forKeyedSubscript:a4];
-  [v6 startConnection];
+  connectionCopy = connection;
+  [(NSMutableDictionary *)clientConnectionByPeer setObject:connectionCopy forKeyedSubscript:d];
+  [connectionCopy startConnection];
 }
 
-- (void)addServerConnection:(id)a3 peerID:(id)a4
+- (void)addServerConnection:(id)connection peerID:(id)d
 {
   serverConnectionByPeer = self->_serverConnectionByPeer;
-  v6 = a3;
-  [(NSMutableDictionary *)serverConnectionByPeer setObject:v6 forKeyedSubscript:a4];
-  [v6 startConnection];
+  connectionCopy = connection;
+  [(NSMutableDictionary *)serverConnectionByPeer setObject:connectionCopy forKeyedSubscript:d];
+  [connectionCopy startConnection];
 }
 
-- (void)discoverChunkSignature:(id)a3 forContainerIdentifier:(id)a4 chunkDataCallback:(id)a5
+- (void)discoverChunkSignature:(id)signature forContainerIdentifier:(id)identifier chunkDataCallback:(id)callback
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  signatureCopy = signature;
+  identifierCopy = identifier;
+  callbackCopy = callback;
   v11 = objc_alloc_init(C2MultipeerClientContext);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v12 = [(C2MultipeerClientContext *)v11 osActivity];
-  os_activity_scope_enter(v12, &state);
+  osActivity = [(C2MultipeerClientContext *)v11 osActivity];
+  os_activity_scope_enter(osActivity, &state);
 
   if (C2_MULTIPEER_LOG_BLOCK_2 != -1)
   {
@@ -111,13 +111,13 @@ uint64_t __52__C2Multipeer_initWithChunkDelegate_createListener___block_invoke()
   if (os_log_type_enabled(C2_MULTIPEER_LOG_INTERNAL_2, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = _Block_copy(v10);
+    v15 = _Block_copy(callbackCopy);
     *buf = 138413058;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
-    v31 = v8;
+    v31 = signatureCopy;
     v32 = 2112;
-    v33 = v9;
+    v33 = identifierCopy;
     v34 = 2048;
     v35 = v15;
     _os_log_impl(&dword_242158000, v14, OS_LOG_TYPE_DEFAULT, "[%@ discoverChunkSignature:%@ forContainerIdentifier:%@ chunkDataCallback:%p]", buf, 0x2Au);
@@ -129,14 +129,14 @@ uint64_t __52__C2Multipeer_initWithChunkDelegate_createListener___block_invoke()
   block[2] = __79__C2Multipeer_discoverChunkSignature_forContainerIdentifier_chunkDataCallback___block_invoke_10;
   block[3] = &unk_278D407A8;
   block[4] = self;
-  v23 = v8;
-  v24 = v9;
+  v23 = signatureCopy;
+  v24 = identifierCopy;
   v25 = v11;
-  v26 = v10;
-  v17 = v10;
+  v26 = callbackCopy;
+  v17 = callbackCopy;
   v18 = v11;
-  v19 = v9;
-  v20 = v8;
+  v19 = identifierCopy;
+  v20 = signatureCopy;
   dispatch_async(queue, block);
 
   os_activity_scope_leave(&state);

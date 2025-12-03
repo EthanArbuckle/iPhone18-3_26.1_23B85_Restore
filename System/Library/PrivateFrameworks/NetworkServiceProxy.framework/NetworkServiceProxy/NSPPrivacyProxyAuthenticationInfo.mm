@@ -1,19 +1,19 @@
 @interface NSPPrivacyProxyAuthenticationInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAuthType:(id)a3;
+- (int)StringAsAuthType:(id)type;
 - (int)authType;
 - (unint64_t)hash;
-- (unsigned)accessTokenTypesAtIndex:(unint64_t)a3;
-- (void)addAccessTokenBlockedIssuers:(id)a3;
-- (void)addAccessTokenKnownOrigins:(id)a3;
-- (void)addNonDefaultAttesters:(id)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)accessTokenTypesAtIndex:(unint64_t)index;
+- (void)addAccessTokenBlockedIssuers:(id)issuers;
+- (void)addAccessTokenKnownOrigins:(id)origins;
+- (void)addNonDefaultAttesters:(id)attesters;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyAuthenticationInfo
@@ -39,30 +39,30 @@
   }
 }
 
-- (int)StringAsAuthType:(id)a3
+- (int)StringAsAuthType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BAA"])
+  else if ([typeCopy isEqualToString:@"BAA"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ANISETTE"])
+  else if ([typeCopy isEqualToString:@"ANISETTE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BAA_ANISETTE"])
+  else if ([typeCopy isEqualToString:@"BAA_ANISETTE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"TOKEN"])
+  else if ([typeCopy isEqualToString:@"TOKEN"])
   {
     v4 = 4;
   }
@@ -75,74 +75,74 @@
   return v4;
 }
 
-- (unsigned)accessTokenTypesAtIndex:(unint64_t)a3
+- (unsigned)accessTokenTypesAtIndex:(unint64_t)index
 {
   p_accessTokenTypes = &self->_accessTokenTypes;
   count = self->_accessTokenTypes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_accessTokenTypes->list[a3];
+  return p_accessTokenTypes->list[index];
 }
 
-- (void)addAccessTokenKnownOrigins:(id)a3
+- (void)addAccessTokenKnownOrigins:(id)origins
 {
-  v4 = a3;
+  originsCopy = origins;
   accessTokenKnownOrigins = self->_accessTokenKnownOrigins;
-  v8 = v4;
+  v8 = originsCopy;
   if (!accessTokenKnownOrigins)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_accessTokenKnownOrigins;
     self->_accessTokenKnownOrigins = v6;
 
-    v4 = v8;
+    originsCopy = v8;
     accessTokenKnownOrigins = self->_accessTokenKnownOrigins;
   }
 
-  [(NSMutableArray *)accessTokenKnownOrigins addObject:v4];
+  [(NSMutableArray *)accessTokenKnownOrigins addObject:originsCopy];
 }
 
-- (void)addAccessTokenBlockedIssuers:(id)a3
+- (void)addAccessTokenBlockedIssuers:(id)issuers
 {
-  v4 = a3;
+  issuersCopy = issuers;
   accessTokenBlockedIssuers = self->_accessTokenBlockedIssuers;
-  v8 = v4;
+  v8 = issuersCopy;
   if (!accessTokenBlockedIssuers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_accessTokenBlockedIssuers;
     self->_accessTokenBlockedIssuers = v6;
 
-    v4 = v8;
+    issuersCopy = v8;
     accessTokenBlockedIssuers = self->_accessTokenBlockedIssuers;
   }
 
-  [(NSMutableArray *)accessTokenBlockedIssuers addObject:v4];
+  [(NSMutableArray *)accessTokenBlockedIssuers addObject:issuersCopy];
 }
 
-- (void)addNonDefaultAttesters:(id)a3
+- (void)addNonDefaultAttesters:(id)attesters
 {
-  v4 = a3;
+  attestersCopy = attesters;
   nonDefaultAttesters = self->_nonDefaultAttesters;
-  v8 = v4;
+  v8 = attestersCopy;
   if (!nonDefaultAttesters)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_nonDefaultAttesters;
     self->_nonDefaultAttesters = v6;
 
-    v4 = v8;
+    attestersCopy = v8;
     nonDefaultAttesters = self->_nonDefaultAttesters;
   }
 
-  [(NSMutableArray *)nonDefaultAttesters addObject:v4];
+  [(NSMutableArray *)nonDefaultAttesters addObject:attestersCopy];
 }
 
 - (id)description
@@ -151,8 +151,8 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyAuthenticationInfo;
   v4 = [(NSPPrivacyProxyAuthenticationInfo *)&v8 description];
-  v5 = [(NSPPrivacyProxyAuthenticationInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyAuthenticationInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -160,7 +160,7 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     authType = self->_authType;
@@ -174,34 +174,34 @@
       v5 = off_1E7A308C8[authType];
     }
 
-    [v3 setObject:v5 forKey:@"authType"];
+    [dictionary setObject:v5 forKey:@"authType"];
   }
 
   authURL = self->_authURL;
   if (authURL)
   {
-    [v3 setObject:authURL forKey:@"authURL"];
+    [dictionary setObject:authURL forKey:@"authURL"];
   }
 
   accessTokenURL = self->_accessTokenURL;
   if (accessTokenURL)
   {
-    [v3 setObject:accessTokenURL forKey:@"accessTokenURL"];
+    [dictionary setObject:accessTokenURL forKey:@"accessTokenURL"];
   }
 
   v8 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v8 forKey:@"accessTokenTypes"];
+  [dictionary setObject:v8 forKey:@"accessTokenTypes"];
 
   accessTokenKnownOrigins = self->_accessTokenKnownOrigins;
   if (accessTokenKnownOrigins)
   {
-    [v3 setObject:accessTokenKnownOrigins forKey:@"accessTokenKnownOrigins"];
+    [dictionary setObject:accessTokenKnownOrigins forKey:@"accessTokenKnownOrigins"];
   }
 
   accessTokenBlockedIssuers = self->_accessTokenBlockedIssuers;
   if (accessTokenBlockedIssuers)
   {
-    [v3 setObject:accessTokenBlockedIssuers forKey:@"accessTokenBlockedIssuers"];
+    [dictionary setObject:accessTokenBlockedIssuers forKey:@"accessTokenBlockedIssuers"];
   }
 
   if ([(NSMutableArray *)self->_nonDefaultAttesters count])
@@ -226,8 +226,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -236,18 +236,18 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"nonDefaultAttesters"];
+    [dictionary setObject:v11 forKey:@"nonDefaultAttesters"];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     authType = self->_authType;
@@ -368,17 +368,17 @@
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[14] = self->_authType;
-    *(v4 + 80) |= 1u;
+    toCopy[14] = self->_authType;
+    *(toCopy + 80) |= 1u;
   }
 
-  v20 = v4;
-  [v4 setAuthURL:self->_authURL];
+  v20 = toCopy;
+  [toCopy setAuthURL:self->_authURL];
   if (self->_accessTokenURL)
   {
     [v20 setAccessTokenURL:?];
@@ -387,10 +387,10 @@
   if ([(NSPPrivacyProxyAuthenticationInfo *)self accessTokenTypesCount])
   {
     [v20 clearAccessTokenTypes];
-    v5 = [(NSPPrivacyProxyAuthenticationInfo *)self accessTokenTypesCount];
-    if (v5)
+    accessTokenTypesCount = [(NSPPrivacyProxyAuthenticationInfo *)self accessTokenTypesCount];
+    if (accessTokenTypesCount)
     {
-      v6 = v5;
+      v6 = accessTokenTypesCount;
       for (i = 0; i != v6; ++i)
       {
         [v20 addAccessTokenTypes:{-[NSPPrivacyProxyAuthenticationInfo accessTokenTypesAtIndex:](self, "accessTokenTypesAtIndex:", i)}];
@@ -401,10 +401,10 @@
   if ([(NSPPrivacyProxyAuthenticationInfo *)self accessTokenKnownOriginsCount])
   {
     [v20 clearAccessTokenKnownOrigins];
-    v8 = [(NSPPrivacyProxyAuthenticationInfo *)self accessTokenKnownOriginsCount];
-    if (v8)
+    accessTokenKnownOriginsCount = [(NSPPrivacyProxyAuthenticationInfo *)self accessTokenKnownOriginsCount];
+    if (accessTokenKnownOriginsCount)
     {
-      v9 = v8;
+      v9 = accessTokenKnownOriginsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NSPPrivacyProxyAuthenticationInfo *)self accessTokenKnownOriginsAtIndex:j];
@@ -416,10 +416,10 @@
   if ([(NSPPrivacyProxyAuthenticationInfo *)self accessTokenBlockedIssuersCount])
   {
     [v20 clearAccessTokenBlockedIssuers];
-    v12 = [(NSPPrivacyProxyAuthenticationInfo *)self accessTokenBlockedIssuersCount];
-    if (v12)
+    accessTokenBlockedIssuersCount = [(NSPPrivacyProxyAuthenticationInfo *)self accessTokenBlockedIssuersCount];
+    if (accessTokenBlockedIssuersCount)
     {
-      v13 = v12;
+      v13 = accessTokenBlockedIssuersCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(NSPPrivacyProxyAuthenticationInfo *)self accessTokenBlockedIssuersAtIndex:k];
@@ -431,10 +431,10 @@
   if ([(NSPPrivacyProxyAuthenticationInfo *)self nonDefaultAttestersCount])
   {
     [v20 clearNonDefaultAttesters];
-    v16 = [(NSPPrivacyProxyAuthenticationInfo *)self nonDefaultAttestersCount];
-    if (v16)
+    nonDefaultAttestersCount = [(NSPPrivacyProxyAuthenticationInfo *)self nonDefaultAttestersCount];
+    if (nonDefaultAttestersCount)
     {
-      v17 = v16;
+      v17 = nonDefaultAttestersCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(NSPPrivacyProxyAuthenticationInfo *)self nonDefaultAttestersAtIndex:m];
@@ -444,10 +444,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -455,11 +455,11 @@
     *(v5 + 80) |= 1u;
   }
 
-  v7 = [(NSString *)self->_authURL copyWithZone:a3];
+  v7 = [(NSString *)self->_authURL copyWithZone:zone];
   v8 = v6[8];
   v6[8] = v7;
 
-  v9 = [(NSString *)self->_accessTokenURL copyWithZone:a3];
+  v9 = [(NSString *)self->_accessTokenURL copyWithZone:zone];
   v10 = v6[6];
   v6[6] = v9;
 
@@ -483,7 +483,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v39 + 1) + 8 * i) copyWithZone:a3];
+        v16 = [*(*(&v39 + 1) + 8 * i) copyWithZone:zone];
         [v6 addAccessTokenKnownOrigins:v16];
       }
 
@@ -512,7 +512,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v35 + 1) + 8 * j) copyWithZone:a3];
+        v22 = [*(*(&v35 + 1) + 8 * j) copyWithZone:zone];
         [v6 addAccessTokenBlockedIssuers:v22];
       }
 
@@ -541,7 +541,7 @@
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v31 + 1) + 8 * k) copyWithZone:{a3, v31}];
+        v28 = [*(*(&v31 + 1) + 8 * k) copyWithZone:{zone, v31}];
         [v6 addNonDefaultAttesters:v28];
       }
 
@@ -555,24 +555,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 80);
+  v5 = *(equalCopy + 80);
   if (*&self->_has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_authType != *(v4 + 14))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_authType != *(equalCopy + 14))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
 LABEL_18:
     v11 = 0;
@@ -580,13 +580,13 @@ LABEL_18:
   }
 
   authURL = self->_authURL;
-  if (authURL | *(v4 + 8) && ![(NSString *)authURL isEqual:?])
+  if (authURL | *(equalCopy + 8) && ![(NSString *)authURL isEqual:?])
   {
     goto LABEL_18;
   }
 
   accessTokenURL = self->_accessTokenURL;
-  if (accessTokenURL | *(v4 + 6))
+  if (accessTokenURL | *(equalCopy + 6))
   {
     if (![(NSString *)accessTokenURL isEqual:?])
     {
@@ -600,7 +600,7 @@ LABEL_18:
   }
 
   accessTokenKnownOrigins = self->_accessTokenKnownOrigins;
-  if (accessTokenKnownOrigins | *(v4 + 5))
+  if (accessTokenKnownOrigins | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)accessTokenKnownOrigins isEqual:?])
     {
@@ -609,7 +609,7 @@ LABEL_18:
   }
 
   accessTokenBlockedIssuers = self->_accessTokenBlockedIssuers;
-  if (accessTokenBlockedIssuers | *(v4 + 4))
+  if (accessTokenBlockedIssuers | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)accessTokenBlockedIssuers isEqual:?])
     {
@@ -618,7 +618,7 @@ LABEL_18:
   }
 
   nonDefaultAttesters = self->_nonDefaultAttesters;
-  if (nonDefaultAttesters | *(v4 + 9))
+  if (nonDefaultAttesters | *(equalCopy + 9))
   {
     v11 = [(NSMutableArray *)nonDefaultAttesters isEqual:?];
   }
@@ -653,18 +653,18 @@ LABEL_19:
   return v6 ^ v8 ^ [(NSMutableArray *)self->_nonDefaultAttesters hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4[20])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[20])
   {
-    self->_authType = v4[14];
+    self->_authType = fromCopy[14];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(NSPPrivacyProxyAuthenticationInfo *)self setAuthURL:?];
   }
@@ -674,10 +674,10 @@ LABEL_19:
     [(NSPPrivacyProxyAuthenticationInfo *)self setAccessTokenURL:?];
   }
 
-  v6 = [v5 accessTokenTypesCount];
-  if (v6)
+  accessTokenTypesCount = [v5 accessTokenTypesCount];
+  if (accessTokenTypesCount)
   {
-    v7 = v6;
+    v7 = accessTokenTypesCount;
     for (i = 0; i != v7; ++i)
     {
       -[NSPPrivacyProxyAuthenticationInfo addAccessTokenTypes:](self, "addAccessTokenTypes:", [v5 accessTokenTypesAtIndex:i]);

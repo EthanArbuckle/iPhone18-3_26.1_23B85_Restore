@@ -1,62 +1,62 @@
 @interface CRKZipOperation
-- (BOOL)createDestinationDirectoryWithError:(id *)a3;
-- (BOOL)populateArchive:(archive *)a3 error:(id *)a4;
-- (BOOL)populateArchive:(archive *)a3 usingDisk:(archive *)a4 error:(id *)a5;
-- (BOOL)validateParametersWithError:(id *)a3;
-- (BOOL)writeArchiveOfDirectoryAtURL:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)writeDataForFTSEntry:(id)a3 toArchive:(archive *)a4 fileDescriptor:(int)a5 error:(id *)a6;
-- (BOOL)writeDataFromFileDescriptor:(int)a3 toArchive:(archive *)a4 usingBuffer:(id)a5 error:(id *)a6;
-- (BOOL)writeFTSEntry:(id)a3 toArchive:(archive *)a4 usingDisk:(archive *)a5 error:(id *)a6;
-- (BOOL)writeHeaderForFTSEntry:(id)a3 toArchive:(archive *)a4 usingDisk:(archive *)a5 fileDescriptor:(int)a6 error:(id *)a7;
-- (CRKZipOperation)initWithDirectoryURL:(id)a3;
-- (CRKZipOperation)initWithDirectoryURL:(id)a3 destinationZipName:(id)a4;
-- (CRKZipOperation)initWithDirectoryURL:(id)a3 destinationZipURL:(id)a4;
-- (archive)makeArchiveWithError:(id *)a3;
-- (const)relativePathForPathOnDisk:(id)a3;
-- (id)errorFromArchive:(archive *)a3;
-- (int64_t)lengthOfBufferForFileDescriptor:(int)a3 stat:(stat *)a4;
-- (void)finalizeArchive:(archive *)a3;
+- (BOOL)createDestinationDirectoryWithError:(id *)error;
+- (BOOL)populateArchive:(archive *)archive error:(id *)error;
+- (BOOL)populateArchive:(archive *)archive usingDisk:(archive *)disk error:(id *)error;
+- (BOOL)validateParametersWithError:(id *)error;
+- (BOOL)writeArchiveOfDirectoryAtURL:(id)l toURL:(id)rL error:(id *)error;
+- (BOOL)writeDataForFTSEntry:(id)entry toArchive:(archive *)archive fileDescriptor:(int)descriptor error:(id *)error;
+- (BOOL)writeDataFromFileDescriptor:(int)descriptor toArchive:(archive *)archive usingBuffer:(id)buffer error:(id *)error;
+- (BOOL)writeFTSEntry:(id)entry toArchive:(archive *)archive usingDisk:(archive *)disk error:(id *)error;
+- (BOOL)writeHeaderForFTSEntry:(id)entry toArchive:(archive *)archive usingDisk:(archive *)disk fileDescriptor:(int)descriptor error:(id *)error;
+- (CRKZipOperation)initWithDirectoryURL:(id)l;
+- (CRKZipOperation)initWithDirectoryURL:(id)l destinationZipName:(id)name;
+- (CRKZipOperation)initWithDirectoryURL:(id)l destinationZipURL:(id)rL;
+- (archive)makeArchiveWithError:(id *)error;
+- (const)relativePathForPathOnDisk:(id)disk;
+- (id)errorFromArchive:(archive *)archive;
+- (int64_t)lengthOfBufferForFileDescriptor:(int)descriptor stat:(stat *)stat;
+- (void)finalizeArchive:(archive *)archive;
 - (void)main;
 @end
 
 @implementation CRKZipOperation
 
-- (CRKZipOperation)initWithDirectoryURL:(id)a3
+- (CRKZipOperation)initWithDirectoryURL:(id)l
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v7 stringByAppendingPathExtension:@"zip"];
+  lCopy = l;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [uUIDString stringByAppendingPathExtension:@"zip"];
 
-  v9 = [(CRKZipOperation *)self initWithDirectoryURL:v5 destinationZipName:v8];
+  v9 = [(CRKZipOperation *)self initWithDirectoryURL:lCopy destinationZipName:v8];
   return v9;
 }
 
-- (CRKZipOperation)initWithDirectoryURL:(id)a3 destinationZipName:(id)a4
+- (CRKZipOperation)initWithDirectoryURL:(id)l destinationZipName:(id)name
 {
-  v7 = a4;
-  v8 = a3;
-  if (![v7 length])
+  nameCopy = name;
+  lCopy = l;
+  if (![nameCopy length])
   {
     [CRKZipOperation initWithDirectoryURL:a2 destinationZipName:self];
   }
 
-  v9 = [MEMORY[0x277CBEBC0] crk_uniqueTemporaryDirectoryURL];
-  v10 = [v9 URLByAppendingPathComponent:v7];
+  crk_uniqueTemporaryDirectoryURL = [MEMORY[0x277CBEBC0] crk_uniqueTemporaryDirectoryURL];
+  v10 = [crk_uniqueTemporaryDirectoryURL URLByAppendingPathComponent:nameCopy];
 
-  v11 = [(CRKZipOperation *)self initWithDirectoryURL:v8 destinationZipURL:v10];
+  v11 = [(CRKZipOperation *)self initWithDirectoryURL:lCopy destinationZipURL:v10];
   return v11;
 }
 
-- (CRKZipOperation)initWithDirectoryURL:(id)a3 destinationZipURL:(id)a4
+- (CRKZipOperation)initWithDirectoryURL:(id)l destinationZipURL:(id)rL
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  lCopy = l;
+  rLCopy = rL;
+  v10 = rLCopy;
+  if (lCopy)
   {
-    if (v9)
+    if (rLCopy)
     {
       goto LABEL_3;
     }
@@ -79,8 +79,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_directoryURL, a3);
-    objc_storeStrong(&v12->_destinationZipFileURL, a4);
+    objc_storeStrong(&v11->_directoryURL, l);
+    objc_storeStrong(&v12->_destinationZipFileURL, rL);
   }
 
   return v12;
@@ -108,16 +108,16 @@ LABEL_3:
     goto LABEL_7;
   }
 
-  v8 = [(CRKZipOperation *)self directoryURL];
-  v9 = [(CRKZipOperation *)self destinationZipFileURL];
+  directoryURL = [(CRKZipOperation *)self directoryURL];
+  destinationZipFileURL = [(CRKZipOperation *)self destinationZipFileURL];
   v12 = v7;
-  v10 = [(CRKZipOperation *)self writeArchiveOfDirectoryAtURL:v8 toURL:v9 error:&v12];
+  v10 = [(CRKZipOperation *)self writeArchiveOfDirectoryAtURL:directoryURL toURL:destinationZipFileURL error:&v12];
   v5 = v12;
 
   if (v10)
   {
-    v11 = [(CRKZipOperation *)self destinationZipFileURL];
-    [(CRKZipOperation *)self endOperationWithResultObject:v11];
+    destinationZipFileURL2 = [(CRKZipOperation *)self destinationZipFileURL];
+    [(CRKZipOperation *)self endOperationWithResultObject:destinationZipFileURL2];
   }
 
   else
@@ -129,31 +129,31 @@ LABEL_5:
 LABEL_7:
 }
 
-- (BOOL)validateParametersWithError:(id *)a3
+- (BOOL)validateParametersWithError:(id *)error
 {
-  v5 = [(CRKZipOperation *)self directoryURL];
-  v6 = [v5 fileSystemRepresentation];
+  directoryURL = [(CRKZipOperation *)self directoryURL];
+  fileSystemRepresentation = [directoryURL fileSystemRepresentation];
 
-  if (v6)
+  if (fileSystemRepresentation)
   {
-    v7 = [(CRKZipOperation *)self destinationZipFileURL];
-    v8 = [v7 fileSystemRepresentation];
+    destinationZipFileURL = [(CRKZipOperation *)self destinationZipFileURL];
+    fileSystemRepresentation2 = [destinationZipFileURL fileSystemRepresentation];
 
-    result = v8 != 0;
-    if (a3 && !v8)
+    result = fileSystemRepresentation2 != 0;
+    if (error && !fileSystemRepresentation2)
     {
       v10 = &unk_285672360;
 LABEL_7:
       v11 = CRKErrorWithCodeAndUserInfo(2, v10);
       v12 = v11;
       result = 0;
-      *a3 = v11;
+      *error = v11;
     }
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
       v10 = &unk_285672338;
       goto LABEL_7;
@@ -165,24 +165,24 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)createDestinationDirectoryWithError:(id *)a3
+- (BOOL)createDestinationDirectoryWithError:(id *)error
 {
-  v4 = [(CRKZipOperation *)self destinationZipFileURL];
-  v5 = [v4 URLByDeletingLastPathComponent];
+  destinationZipFileURL = [(CRKZipOperation *)self destinationZipFileURL];
+  uRLByDeletingLastPathComponent = [destinationZipFileURL URLByDeletingLastPathComponent];
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  LOBYTE(a3) = [v6 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:a3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  LOBYTE(error) = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)writeArchiveOfDirectoryAtURL:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)writeArchiveOfDirectoryAtURL:(id)l toURL:(id)rL error:(id *)error
 {
-  v7 = [(CRKZipOperation *)self makeArchiveWithError:a5, a4];
+  v7 = [(CRKZipOperation *)self makeArchiveWithError:error, rL];
   if (v7)
   {
     v8 = v7;
-    v9 = [(CRKZipOperation *)self populateArchive:v7 error:a5];
+    v9 = [(CRKZipOperation *)self populateArchive:v7 error:error];
     [(CRKZipOperation *)self finalizeArchive:v8];
     LOBYTE(v7) = v9;
   }
@@ -190,7 +190,7 @@ LABEL_7:
   return v7;
 }
 
-- (archive)makeArchiveWithError:(id *)a3
+- (archive)makeArchiveWithError:(id *)error
 {
   v5 = archive_write_new();
   archive_write_set_format_zip();
@@ -203,15 +203,15 @@ LABEL_7:
     }
   }
 
-  v7 = [(CRKZipOperation *)self destinationZipFileURL];
-  [v7 fileSystemRepresentation];
+  destinationZipFileURL = [(CRKZipOperation *)self destinationZipFileURL];
+  [destinationZipFileURL fileSystemRepresentation];
   v8 = archive_write_open_filename();
 
   if (v8)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
     }
 
     free(v5);
@@ -221,23 +221,23 @@ LABEL_7:
   return v5;
 }
 
-- (void)finalizeArchive:(archive *)a3
+- (void)finalizeArchive:(archive *)archive
 {
   if (archive_write_free())
   {
     v5 = _CRKLogGeneral_0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(CRKZipOperation *)self finalizeArchive:a3];
+      [(CRKZipOperation *)self finalizeArchive:archive];
     }
   }
 }
 
-- (BOOL)populateArchive:(archive *)a3 error:(id *)a4
+- (BOOL)populateArchive:(archive *)archive error:(id *)error
 {
   disk_new = archive_read_disk_new();
   archive_read_disk_set_standard_lookup();
-  v8 = [(CRKZipOperation *)self populateArchive:a3 usingDisk:disk_new error:a4];
+  v8 = [(CRKZipOperation *)self populateArchive:archive usingDisk:disk_new error:error];
   if (archive_read_free())
   {
     v9 = _CRKLogGeneral_0();
@@ -250,15 +250,15 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)populateArchive:(archive *)a3 usingDisk:(archive *)a4 error:(id *)a5
+- (BOOL)populateArchive:(archive *)archive usingDisk:(archive *)disk error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
   v9 = [CRKFTSEnumeration alloc];
-  v10 = [(CRKZipOperation *)self directoryURL];
-  v11 = [v10 path];
-  v12 = [(CRKFTSEnumeration *)v9 initWithDirectoryPath:v11];
+  directoryURL = [(CRKZipOperation *)self directoryURL];
+  path = [directoryURL path];
+  v12 = [(CRKFTSEnumeration *)v9 initWithDirectoryPath:path];
 
-  v13 = [(CRKFTSEnumeration *)v12 entriesWithError:a5];
+  v13 = [(CRKFTSEnumeration *)v12 entriesWithError:error];
   v14 = v13;
   if (v13)
   {
@@ -273,7 +273,7 @@ LABEL_7:
       v16 = v15;
       v26 = v14;
       v27 = v12;
-      v28 = a5;
+      errorCopy = error;
       v17 = 0;
       v18 = *v32;
       while (2)
@@ -290,7 +290,7 @@ LABEL_7:
           v21 = *(*(&v31 + 1) + 8 * v19);
           v22 = objc_autoreleasePoolPush();
           v30 = v20;
-          LODWORD(v21) = [(CRKZipOperation *)self writeFTSEntry:v21 toArchive:a3 usingDisk:a4 error:&v30];
+          LODWORD(v21) = [(CRKZipOperation *)self writeFTSEntry:v21 toArchive:archive usingDisk:disk error:&v30];
           v17 = v30;
 
           objc_autoreleasePoolPop(v22);
@@ -317,7 +317,7 @@ LABEL_7:
       v23 = 1;
 LABEL_12:
       v12 = v27;
-      a5 = v28;
+      error = errorCopy;
       v14 = v26;
     }
 
@@ -327,10 +327,10 @@ LABEL_12:
       v23 = 1;
     }
 
-    if (a5)
+    if (error)
     {
       v24 = v17;
-      *a5 = v17;
+      *error = v17;
     }
   }
 
@@ -342,25 +342,25 @@ LABEL_12:
   return v23;
 }
 
-- (BOOL)writeFTSEntry:(id)a3 toArchive:(archive *)a4 usingDisk:(archive *)a5 error:(id *)a6
+- (BOOL)writeFTSEntry:(id)entry toArchive:(archive *)archive usingDisk:(archive *)disk error:(id *)error
 {
-  v10 = a3;
+  entryCopy = entry;
   v11 = MEMORY[0x277CCA9F8];
   v12 = MEMORY[0x277CBEBC0];
-  v13 = [v10 path];
-  v14 = [v12 fileURLWithPath:v13];
-  v15 = [v11 fileHandleForReadingFromURL:v14 error:a6];
+  path = [entryCopy path];
+  v14 = [v12 fileURLWithPath:path];
+  v15 = [v11 fileHandleForReadingFromURL:v14 error:error];
 
-  v17 = v15 && (v16 = [v15 fileDescriptor], -[CRKZipOperation writeHeaderForFTSEntry:toArchive:usingDisk:fileDescriptor:error:](self, "writeHeaderForFTSEntry:toArchive:usingDisk:fileDescriptor:error:", v10, a4, a5, v16, a6)) && -[CRKZipOperation writeDataForFTSEntry:toArchive:fileDescriptor:error:](self, "writeDataForFTSEntry:toArchive:fileDescriptor:error:", v10, a4, v16, a6);
+  v17 = v15 && (v16 = [v15 fileDescriptor], -[CRKZipOperation writeHeaderForFTSEntry:toArchive:usingDisk:fileDescriptor:error:](self, "writeHeaderForFTSEntry:toArchive:usingDisk:fileDescriptor:error:", entryCopy, archive, disk, v16, error)) && -[CRKZipOperation writeDataForFTSEntry:toArchive:fileDescriptor:error:](self, "writeDataForFTSEntry:toArchive:fileDescriptor:error:", entryCopy, archive, v16, error);
   return v17;
 }
 
-- (BOOL)writeHeaderForFTSEntry:(id)a3 toArchive:(archive *)a4 usingDisk:(archive *)a5 fileDescriptor:(int)a6 error:(id *)a7
+- (BOOL)writeHeaderForFTSEntry:(id)entry toArchive:(archive *)archive usingDisk:(archive *)disk fileDescriptor:(int)descriptor error:(id *)error
 {
-  v11 = a3;
+  entryCopy = entry;
   archive_entry_new();
-  v12 = [v11 path];
-  [(CRKZipOperation *)self relativePathForPathOnDisk:v12];
+  path = [entryCopy path];
+  [(CRKZipOperation *)self relativePathForPathOnDisk:path];
   archive_entry_set_pathname();
 
   v22 = 0u;
@@ -372,9 +372,9 @@ LABEL_12:
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
-  if (v11)
+  if (entryCopy)
   {
-    [v11 stat];
+    [entryCopy stat];
   }
 
   if (!archive_read_disk_entry_from_file())
@@ -385,8 +385,8 @@ LABEL_12:
       goto LABEL_10;
     }
 
-    a5 = a4;
-    if (a7)
+    disk = archive;
+    if (error)
     {
       goto LABEL_5;
     }
@@ -396,38 +396,38 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (!a7)
+  if (!error)
   {
     goto LABEL_8;
   }
 
 LABEL_5:
-  [(CRKZipOperation *)self errorFromArchive:a5, v15, v16, v17, v18, v19, v20, v21, v22, v23];
-  *a7 = v13 = 0;
+  [(CRKZipOperation *)self errorFromArchive:disk, v15, v16, v17, v18, v19, v20, v21, v22, v23];
+  *error = v13 = 0;
 LABEL_10:
   archive_entry_free();
 
   return v13;
 }
 
-- (const)relativePathForPathOnDisk:(id)a3
+- (const)relativePathForPathOnDisk:(id)disk
 {
-  v5 = a3;
-  v6 = [a3 fileSystemRepresentation];
-  v7 = [(CRKZipOperation *)self directoryURL];
-  v8 = [v7 path];
-  v9 = [v8 stringByDeletingLastPathComponent];
-  v10 = strlen([v9 fileSystemRepresentation]);
+  diskCopy = disk;
+  fileSystemRepresentation = [disk fileSystemRepresentation];
+  directoryURL = [(CRKZipOperation *)self directoryURL];
+  path = [directoryURL path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+  v10 = strlen([stringByDeletingLastPathComponent fileSystemRepresentation]);
 
-  return (v6 + v10 + 1);
+  return (fileSystemRepresentation + v10 + 1);
 }
 
-- (BOOL)writeDataForFTSEntry:(id)a3 toArchive:(archive *)a4 fileDescriptor:(int)a5 error:(id *)a6
+- (BOOL)writeDataForFTSEntry:(id)entry toArchive:(archive *)archive fileDescriptor:(int)descriptor error:(id *)error
 {
-  v7 = *&a5;
-  if (a3)
+  v7 = *&descriptor;
+  if (entry)
   {
-    [a3 stat];
+    [entry stat];
   }
 
   else
@@ -437,17 +437,17 @@ LABEL_10:
 
   v10 = [(CRKZipOperation *)self lengthOfBufferForFileDescriptor:v7 stat:v14];
   v11 = [MEMORY[0x277CBEB28] dataWithLength:v10];
-  v12 = [(CRKZipOperation *)self writeDataFromFileDescriptor:v7 toArchive:a4 usingBuffer:v11 error:a6];
+  v12 = [(CRKZipOperation *)self writeDataFromFileDescriptor:v7 toArchive:archive usingBuffer:v11 error:error];
 
   return v12;
 }
 
-- (int64_t)lengthOfBufferForFileDescriptor:(int)a3 stat:(stat *)a4
+- (int64_t)lengthOfBufferForFileDescriptor:(int)descriptor stat:(stat *)stat
 {
-  v5 = [CRKChunkedFile preferredChunkSizeForFileDescriptor:*&a3];
-  if (v5 >= a4->st_size)
+  v5 = [CRKChunkedFile preferredChunkSizeForFileDescriptor:*&descriptor];
+  if (v5 >= stat->st_size)
   {
-    st_size = a4->st_size;
+    st_size = stat->st_size;
   }
 
   else
@@ -457,7 +457,7 @@ LABEL_10:
 
   if (v5 <= 0)
   {
-    return a4->st_size;
+    return stat->st_size;
   }
 
   else
@@ -466,28 +466,28 @@ LABEL_10:
   }
 }
 
-- (BOOL)writeDataFromFileDescriptor:(int)a3 toArchive:(archive *)a4 usingBuffer:(id)a5 error:(id *)a6
+- (BOOL)writeDataFromFileDescriptor:(int)descriptor toArchive:(archive *)archive usingBuffer:(id)buffer error:(id *)error
 {
-  v8 = *&a3;
-  v10 = a5;
+  v8 = *&descriptor;
+  bufferCopy = buffer;
   v11 = [[CRKChunkedFile alloc] initWithFileDescriptor:v8];
   do
   {
-    v12 = [(CRKChunkedFile *)v11 readNextChunkIntoBuffer:v10 error:a6];
+    v12 = [(CRKChunkedFile *)v11 readNextChunkIntoBuffer:bufferCopy error:error];
     if (v12 < 1)
     {
       v13 = v12 == 0;
       goto LABEL_8;
     }
 
-    [v10 bytes];
+    [bufferCopy bytes];
   }
 
   while (archive_write_data() != -1);
-  if (a6)
+  if (error)
   {
-    [(CRKZipOperation *)self errorFromArchive:a4];
-    *a6 = v13 = 0;
+    [(CRKZipOperation *)self errorFromArchive:archive];
+    *error = v13 = 0;
   }
 
   else
@@ -500,7 +500,7 @@ LABEL_8:
   return v13;
 }
 
-- (id)errorFromArchive:(archive *)a3
+- (id)errorFromArchive:(archive *)archive
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = archive_errno();

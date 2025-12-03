@@ -1,35 +1,35 @@
 @interface SBExternalDisplaySystemGestureManager
-- (BOOL)_shouldEnableSystemGestureWithType:(unint64_t)a3;
-- (SBExternalDisplaySystemGestureManager)initWithDisplayIdentity:(id)a3;
+- (BOOL)_shouldEnableSystemGestureWithType:(unint64_t)type;
+- (SBExternalDisplaySystemGestureManager)initWithDisplayIdentity:(id)identity;
 @end
 
 @implementation SBExternalDisplaySystemGestureManager
 
-- (SBExternalDisplaySystemGestureManager)initWithDisplayIdentity:(id)a3
+- (SBExternalDisplaySystemGestureManager)initWithDisplayIdentity:(id)identity
 {
-  v6 = a3;
-  if (!v6)
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [(SBExternalDisplaySystemGestureManager *)a2 initWithDisplayIdentity:?];
   }
 
   v10.receiver = self;
   v10.super_class = SBExternalDisplaySystemGestureManager;
-  v7 = [(SBSystemGestureManager *)&v10 _initWithDisplayIdentity:v6];
+  v7 = [(SBSystemGestureManager *)&v10 _initWithDisplayIdentity:identityCopy];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(v7 + 23, a3);
+    objc_storeStrong(v7 + 23, identity);
   }
 
   return v8;
 }
 
-- (BOOL)_shouldEnableSystemGestureWithType:(unint64_t)a3
+- (BOOL)_shouldEnableSystemGestureWithType:(unint64_t)type
 {
   result = 1;
-  v5 = a3 - 8;
-  if (a3 - 8 <= 0x3F)
+  v5 = type - 8;
+  if (type - 8 <= 0x3F)
   {
     if (((1 << v5) & 0x800091804EFA04D1) != 0)
     {
@@ -42,18 +42,18 @@
       return SBFIsChamoisOverflowGestureAvailable();
     }
 
-    if (a3 == 16)
+    if (type == 16)
     {
-      v6 = [SBApp windowSceneManager];
-      v7 = [v6 windowSceneForDisplayIdentity:self->_displayIdentity];
-      v8 = [v7 supportsMultitasking];
+      windowSceneManager = [SBApp windowSceneManager];
+      v7 = [windowSceneManager windowSceneForDisplayIdentity:self->_displayIdentity];
+      supportsMultitasking = [v7 supportsMultitasking];
 
-      return v8;
+      return supportsMultitasking;
     }
   }
 
-  v9 = a3 - 112;
-  if (a3 - 112 > 0x20)
+  v9 = type - 112;
+  if (type - 112 > 0x20)
   {
     return 0;
   }

@@ -1,15 +1,15 @@
 @interface CLSCurationDebugItem
-+ (id)stringForDedupingType:(unint64_t)a3;
-- (CLSCurationDebugItem)initWithItem:(id)a3;
++ (id)stringForDedupingType:(unint64_t)type;
+- (CLSCurationDebugItem)initWithItem:(id)item;
 - (id)dictionaryRepresentation;
-- (void)dupeToDebugItem:(id)a3 withDedupingType:(unint64_t)a4;
+- (void)dupeToDebugItem:(id)item withDedupingType:(unint64_t)type;
 @end
 
 @implementation CLSCurationDebugItem
 
-- (void)dupeToDebugItem:(id)a3 withDedupingType:(unint64_t)a4
+- (void)dupeToDebugItem:(id)item withDedupingType:(unint64_t)type
 {
-  v7 = a3;
+  itemCopy = item;
   if ([(CLSCurationDebugObject *)self state]== 2)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -21,8 +21,8 @@
 
   else
   {
-    self->_dedupingType = a4;
-    objc_storeStrong(&self->_dedupedDebugItem, a3);
+    self->_dedupingType = type;
+    objc_storeStrong(&self->_dedupedDebugItem, item);
   }
 }
 
@@ -30,8 +30,8 @@
 {
   v15.receiver = self;
   v15.super_class = CLSCurationDebugItem;
-  v3 = [(CLSCurationDebugObject *)&v15 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(CLSCurationDebugObject *)&v15 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   if (([(CLSCurationItem *)self->_item clsIsInterestingSDOF]& 1) != 0 || [(CLSCurationItem *)self->_item clsIsInterestingHDR])
   {
@@ -73,39 +73,39 @@
     v11 = [objc_opt_class() stringForDedupingType:self->_dedupingType];
     [v4 setObject:v11 forKeyedSubscript:@"dedupingType"];
 
-    v12 = [(CLSCurationDebugItem *)self->_dedupedDebugItem item];
-    v13 = [v12 clsIdentifier];
-    [v4 setObject:v13 forKeyedSubscript:@"dedupedItemIdentifier"];
+    item = [(CLSCurationDebugItem *)self->_dedupedDebugItem item];
+    clsIdentifier = [item clsIdentifier];
+    [v4 setObject:clsIdentifier forKeyedSubscript:@"dedupedItemIdentifier"];
   }
 
   return v4;
 }
 
-- (CLSCurationDebugItem)initWithItem:(id)a3
+- (CLSCurationDebugItem)initWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = CLSCurationDebugItem;
   v6 = [(CLSCurationDebugObject *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
+    objc_storeStrong(&v6->_item, item);
   }
 
   return v7;
 }
 
-+ (id)stringForDedupingType:(unint64_t)a3
++ (id)stringForDedupingType:(unint64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
     return @"Invalid Type";
   }
 
   else
   {
-    return off_2788A87F8[a3];
+    return off_2788A87F8[type];
   }
 }
 

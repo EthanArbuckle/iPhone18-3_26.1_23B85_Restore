@@ -1,19 +1,19 @@
 @interface BWMotionDataTimeMachine
-- (BWMotionDataTimeMachine)initWithCapacity:(unint64_t)a3 synchronizedSlaveMotionDataCachingEnabled:(BOOL)a4 cacheEntireMetadataDictionary:(BOOL)a5;
-- (id)copyMotionDataForSerialNumber:(unint64_t)a3;
-- (id)copyMotionDataForStartingSerialNumber:(unint64_t)a3 endingSerialNumber:(unint64_t)a4;
-- (unint64_t)addMotionDataToCacheForSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (BWMotionDataTimeMachine)initWithCapacity:(unint64_t)capacity synchronizedSlaveMotionDataCachingEnabled:(BOOL)enabled cacheEntireMetadataDictionary:(BOOL)dictionary;
+- (id)copyMotionDataForSerialNumber:(unint64_t)number;
+- (id)copyMotionDataForStartingSerialNumber:(unint64_t)number endingSerialNumber:(unint64_t)serialNumber;
+- (unint64_t)addMotionDataToCacheForSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (unint64_t)earliestAvailableMotionDataSerialNumber;
 - (unint64_t)latestAvailableMotionDataSerialNumber;
-- (void)_copyMotionDataForSampleBuffer:(uint64_t)a1;
+- (void)_copyMotionDataForSampleBuffer:(uint64_t)buffer;
 - (void)dealloc;
 @end
 
 @implementation BWMotionDataTimeMachine
 
-- (BWMotionDataTimeMachine)initWithCapacity:(unint64_t)a3 synchronizedSlaveMotionDataCachingEnabled:(BOOL)a4 cacheEntireMetadataDictionary:(BOOL)a5
+- (BWMotionDataTimeMachine)initWithCapacity:(unint64_t)capacity synchronizedSlaveMotionDataCachingEnabled:(BOOL)enabled cacheEntireMetadataDictionary:(BOOL)dictionary
 {
-  if (!a3)
+  if (!capacity)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Capacity must be non-zero" userInfo:0]);
   }
@@ -23,10 +23,10 @@
   v8 = [(BWMotionDataTimeMachine *)&v28 init];
   if (v8)
   {
-    v8->_cache = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
-    v8->_capacity = a3;
-    v8->_synchronizedSlaveMotionDataCachingEnabled = a4;
-    v8->_cacheEntireMetadataDictionary = a5;
+    v8->_cache = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:capacity];
+    v8->_capacity = capacity;
+    v8->_synchronizedSlaveMotionDataCachingEnabled = enabled;
+    v8->_cacheEntireMetadataDictionary = dictionary;
     v8->_propertyMutex = FigSimpleMutexCreate();
     v9 = objc_alloc(MEMORY[0x1E695DEC8]);
     v10 = *off_1E798B208;
@@ -105,12 +105,12 @@
   return latestAvailableMotionDataSerialNumber;
 }
 
-- (unint64_t)addMotionDataToCacheForSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (unint64_t)addMotionDataToCacheForSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v5 = [(BWMotionDataTimeMachine *)self _copyMotionDataForSampleBuffer:a3];
+  v5 = [(BWMotionDataTimeMachine *)self _copyMotionDataForSampleBuffer:buffer];
   if (self->_synchronizedSlaveMotionDataCachingEnabled)
   {
-    AttachedMedia = BWSampleBufferGetAttachedMedia(a3, 0x1F21AAA50);
+    AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, 0x1F21AAA50);
     if (AttachedMedia)
     {
       v7 = AttachedMedia;
@@ -118,7 +118,7 @@
 
     else
     {
-      v7 = BWSampleBufferGetAttachedMedia(a3, @"SynchronizedSlaveFrame");
+      v7 = BWSampleBufferGetAttachedMedia(buffer, @"SynchronizedSlaveFrame");
       if (!v7)
       {
         v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -160,11 +160,11 @@ LABEL_7:
   [v5 setObject:v13 forKeyedSubscript:*off_1E798CE70];
   [v9 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedLongLong:", v12), v14}];
   v15 = *off_1E798A2D8;
-  v16 = BWSampleBufferGetAttachedMedia(a3, *off_1E798A2D8);
+  v16 = BWSampleBufferGetAttachedMedia(buffer, *off_1E798A2D8);
   if (v16)
   {
     v17 = v16;
-    v18 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v18 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
     CMSetAttachment(v17, *off_1E798A4B0, [v18 objectForKeyedSubscript:*off_1E798A8F8], 1u);
     [v5 setObject:v17 forKeyedSubscript:v15];
     if (v18)
@@ -205,32 +205,32 @@ LABEL_7:
   return v12;
 }
 
-- (id)copyMotionDataForSerialNumber:(unint64_t)a3
+- (id)copyMotionDataForSerialNumber:(unint64_t)number
 {
   FigSimpleMutexLock();
   earliestAvailableMotionDataSerialNumber = self->_earliestAvailableMotionDataSerialNumber;
-  if (a3 < earliestAvailableMotionDataSerialNumber || self->_latestAvailableMotionDataSerialNumber < a3)
+  if (number < earliestAvailableMotionDataSerialNumber || self->_latestAvailableMotionDataSerialNumber < number)
   {
     FigSimpleMutexUnlock();
     return 0;
   }
 
-  v7 = [(NSMutableArray *)self->_cache objectAtIndexedSubscript:a3 - earliestAvailableMotionDataSerialNumber];
+  earliestAvailableMotionDataSerialNumber = [(NSMutableArray *)self->_cache objectAtIndexedSubscript:number - earliestAvailableMotionDataSerialNumber];
   FigSimpleMutexUnlock();
-  if (!v7)
+  if (!earliestAvailableMotionDataSerialNumber)
   {
     return 0;
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v7];
+  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:earliestAvailableMotionDataSerialNumber];
 
   return v8;
 }
 
-- (id)copyMotionDataForStartingSerialNumber:(unint64_t)a3 endingSerialNumber:(unint64_t)a4
+- (id)copyMotionDataForStartingSerialNumber:(unint64_t)number endingSerialNumber:(unint64_t)serialNumber
 {
-  v4 = a4 - a3;
-  if (a4 < a3)
+  v4 = serialNumber - number;
+  if (serialNumber < number)
   {
     [BWMotionDataTimeMachine copyMotionDataForStartingSerialNumber:endingSerialNumber:];
     return 0;
@@ -238,8 +238,8 @@ LABEL_7:
 
   FigSimpleMutexLock();
   earliestAvailableMotionDataSerialNumber = self->_earliestAvailableMotionDataSerialNumber;
-  v9 = a3 - earliestAvailableMotionDataSerialNumber;
-  if (a3 >= earliestAvailableMotionDataSerialNumber && self->_latestAvailableMotionDataSerialNumber >= a4)
+  v9 = number - earliestAvailableMotionDataSerialNumber;
+  if (number >= earliestAvailableMotionDataSerialNumber && self->_latestAvailableMotionDataSerialNumber >= serialNumber)
   {
     v14 = v4 + 1;
     v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v14];
@@ -308,15 +308,15 @@ LABEL_6:
   return v12;
 }
 
-- (void)_copyMotionDataForSampleBuffer:(uint64_t)a1
+- (void)_copyMotionDataForSampleBuffer:(uint64_t)buffer
 {
-  if (!a1)
+  if (!buffer)
   {
     return 0;
   }
 
   v4 = CMGetAttachment(target, *off_1E798A3C8, 0);
-  v5 = *(a1 + 57);
+  v5 = *(buffer + 57);
   v6 = objc_alloc(MEMORY[0x1E695DF90]);
   if (v5 == 1)
   {
@@ -331,7 +331,7 @@ LABEL_6:
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v16 = *(a1 + 16);
+    v16 = *(buffer + 16);
     v7 = OUTLINED_FUNCTION_0_75(v15, v17, v18, v19, v20, v21, v22, v23, v54.value, *&v54.timescale, v54.epoch, v55.value, *&v55.timescale, v55.epoch, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, v72, *(&v72 + 1), v73, *(&v73 + 1), v74, *(&v74 + 1), v75, *(&v75 + 1), v76);
     if (v7)
     {
@@ -370,7 +370,7 @@ LABEL_6:
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v36 = *(a1 + 24);
+  v36 = *(buffer + 24);
   v37 = OUTLINED_FUNCTION_1_84(v7, v8, v9, v10, v11, v12, v13, v14, v54.value, *&v54.timescale, v54.epoch, v55.value, *&v55.timescale, v55.epoch, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, v67, v68, v69, v70, v71, 0);
   if (v37)
   {

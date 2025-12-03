@@ -1,8 +1,8 @@
 @interface CAEmitterLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)CA_validateValue:(id)a3 forKey:(id)a4;
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)CA_validateValue:(id)value forKey:(id)key;
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property;
 - (BOOL)preservesDepth;
 - (CAEmitterLayerEmitterMode)emitterMode;
 - (CAEmitterLayerEmitterShape)emitterShape;
@@ -26,25 +26,25 @@
 - (float)spin;
 - (float)spinBias;
 - (float)velocity;
-- (id)implicitAnimationForKeyPath:(id)a3;
-- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)a3;
+- (id)implicitAnimationForKeyPath:(id)path;
+- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)flags;
 - (unsigned)seed;
 - (void)_colorSpaceDidChange;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
-- (void)didChangeValueForKey:(id)a3;
-- (void)reloadValueForKeyPath:(id)a3;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
+- (void)didChangeValueForKey:(id)key;
+- (void)reloadValueForKeyPath:(id)path;
 - (void)setBirthRate:(float)birthRate;
-- (void)setCullMaxZ:(double)a3;
-- (void)setCullMinZ:(double)a3;
-- (void)setCullRect:(CGRect)a3;
-- (void)setEmitterBehaviors:(id)a3;
+- (void)setCullMaxZ:(double)z;
+- (void)setCullMinZ:(double)z;
+- (void)setCullRect:(CGRect)rect;
+- (void)setEmitterBehaviors:(id)behaviors;
 - (void)setEmitterCells:(NSArray *)emitterCells;
 - (void)setEmitterDepth:(CGFloat)emitterDepth;
-- (void)setEmitterDuration:(float)a3;
+- (void)setEmitterDuration:(float)duration;
 - (void)setEmitterMode:(CAEmitterLayerEmitterMode)emitterMode;
-- (void)setEmitterPath:(CGPath *)a3;
+- (void)setEmitterPath:(CGPath *)path;
 - (void)setEmitterPosition:(CGPoint)emitterPosition;
-- (void)setEmitterRects:(id)a3;
+- (void)setEmitterRects:(id)rects;
 - (void)setEmitterShape:(CAEmitterLayerEmitterShape)emitterShape;
 - (void)setEmitterSize:(CGSize)emitterSize;
 - (void)setEmitterZPosition:(CGFloat)emitterZPosition;
@@ -54,8 +54,8 @@
 - (void)setScale:(float)scale;
 - (void)setSeed:(unsigned int)seed;
 - (void)setSpin:(float)spin;
-- (void)setSpinBias:(float)a3;
-- (void)setUpdateInterval:(double)a3;
+- (void)setSpinBias:(float)bias;
+- (void)setUpdateInterval:(double)interval;
 - (void)setVelocity:(float)velocity;
 @end
 
@@ -265,17 +265,17 @@
   return *v3;
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CAEmitterLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
 - (void)setSeed:(unsigned int)seed
@@ -383,29 +383,29 @@
   CA::Layer::setter(self->super._attr.layer, 0xDF, 3, v3);
 }
 
-- (BOOL)CA_validateValue:(id)a3 forKey:(id)a4
+- (BOOL)CA_validateValue:(id)value forKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3 && ([a4 isEqualToString:@"emitterCells"] || objc_msgSend(a4, "isEqualToString:", @"emitterRects") || objc_msgSend(a4, "isEqualToString:", @"emitterBehaviors")))
+  if (value && ([key isEqualToString:@"emitterCells"] || objc_msgSend(key, "isEqualToString:", @"emitterRects") || objc_msgSend(key, "isEqualToString:", @"emitterBehaviors")))
   {
     objc_opt_class();
 
-    return CAObject_validateArrayOfClass(a3);
+    return CAObject_validateArrayOfClass(value);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CAEmitterLayer;
-    return [(CALayer *)&v8 CA_validateValue:a3 forKey:a4];
+    return [(CALayer *)&v8 CA_validateValue:value forKey:key];
   }
 }
 
-- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)a3
+- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)flags
 {
-  v3 = *&a3;
+  v3 = *&flags;
   v7 = *MEMORY[0x1E69E9840];
-  if (CAAtomIndexInArray(23, &defines_property::atoms, a3) != -1)
+  if (CAAtomIndexInArray(23, &defines_property::atoms, flags) != -1)
   {
     return 32;
   }
@@ -415,11 +415,11 @@
   return [(CALayer *)&v6 _renderLayerPropertyAnimationFlags:v3];
 }
 
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v7 = *MEMORY[0x1E69E9840];
-  if (CAAtomIndexInArray(23, &defines_property::atoms, a3) != -1)
+  if (CAAtomIndexInArray(23, &defines_property::atoms, property) != -1)
   {
     return 1;
   }
@@ -434,23 +434,23 @@
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = CAEmitterLayer;
-  v3 = [(CALayer *)&v5 _colorSpaceDidChange];
+  _colorSpaceDidChange = [(CALayer *)&v5 _colorSpaceDidChange];
   v4 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v4)
   {
-    v4 = CA::Transaction::create(v3);
+    v4 = CA::Transaction::create(_colorSpaceDidChange);
   }
 
   CA::Layer::set_commit_needed(self->super._attr.layer, v4, 0x10000);
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v76 = *MEMORY[0x1E69E9840];
   v70.receiver = self;
   v70.super_class = CAEmitterLayer;
-  v69 = [(CALayer *)&v70 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (v69 && (*(a5 + 2) & 1) != 0)
+  v69 = [(CALayer *)&v70 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (v69 && (*(commitFlags + 2) & 1) != 0)
   {
     if (x_malloc_get_zone::once != -1)
     {
@@ -539,10 +539,10 @@
       [(CAEmitterLayer *)self cullMaxZ];
       *&v32 = v32;
       *(v8 + 37) = LODWORD(v32);
-      v33 = [(CAEmitterLayer *)self emitterCells];
-      if (v33)
+      emitterCells = [(CAEmitterLayer *)self emitterCells];
+      if (emitterCells)
       {
-        v34 = CA::Render::copy_render_array(v33, 14);
+        v34 = CA::Render::copy_render_array(emitterCells, 14);
         v35 = *(v8 + 4);
         if (v35 != v34)
         {
@@ -575,10 +575,10 @@
         }
       }
 
-      v37 = [(CAEmitterLayer *)self emitterBehaviors];
-      if (v37)
+      emitterBehaviors = [(CAEmitterLayer *)self emitterBehaviors];
+      if (emitterBehaviors)
       {
-        v38 = CA::Render::copy_render_array(v37, 13);
+        v38 = CA::Render::copy_render_array(emitterBehaviors, 13);
         v39 = *(v8 + 5);
         if (v39 != v38)
         {
@@ -611,10 +611,10 @@
         }
       }
 
-      v41 = [(CAEmitterLayer *)self emitterPath];
-      if (v41)
+      emitterPath = [(CAEmitterLayer *)self emitterPath];
+      if (emitterPath)
       {
-        v43 = CA::Render::Path::new_path(v41, v42);
+        v43 = CA::Render::Path::new_path(emitterPath, v42);
         if (v43)
         {
           v44 = v43;
@@ -630,11 +630,11 @@
         }
       }
 
-      v46 = [(CAEmitterLayer *)self emitterRects];
-      v47 = v46;
-      if (v46)
+      emitterRects = [(CAEmitterLayer *)self emitterRects];
+      v47 = emitterRects;
+      if (emitterRects)
       {
-        v48 = [(NSArray *)v46 count];
+        v48 = [(NSArray *)emitterRects count];
         v68 = CA::Render::Vector::new_vector((5 * v48), 0, v49);
         if (v68)
         {
@@ -688,22 +688,22 @@
         }
       }
 
-      v63 = [(CAEmitterLayer *)self emitterShape];
-      if (v63)
+      emitterShape = [(CAEmitterLayer *)self emitterShape];
+      if (emitterShape)
       {
-        *(v8 + 16) = CAInternAtom(v63, 0);
+        *(v8 + 16) = CAInternAtom(emitterShape, 0);
       }
 
-      v64 = [(CAEmitterLayer *)self emitterMode];
-      if (v64)
+      emitterMode = [(CAEmitterLayer *)self emitterMode];
+      if (emitterMode)
       {
-        *(v8 + 17) = CAInternAtom(v64, 0);
+        *(v8 + 17) = CAInternAtom(emitterMode, 0);
       }
 
-      v65 = [(CAEmitterLayer *)self renderMode];
-      if (v65)
+      renderMode = [(CAEmitterLayer *)self renderMode];
+      if (renderMode)
       {
-        *(v8 + 18) = CAInternAtom(v65, 0);
+        *(v8 + 18) = CAInternAtom(renderMode, 0);
       }
 
       if ([(CAEmitterLayer *)self preservesDepth])
@@ -725,7 +725,7 @@
   return v69;
 }
 
-- (id)implicitAnimationForKeyPath:(id)a3
+- (id)implicitAnimationForKeyPath:(id)path
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -733,11 +733,11 @@
   result = [(CALayer *)&v9 implicitAnimationForKeyPath:?];
   if (!result)
   {
-    v6 = [a3 rangeOfString:@"."];
+    v6 = [path rangeOfString:@"."];
     if (v7)
     {
       v8 = 0;
-      if ((CAInternAtom([a3 substringToIndex:v6], 0) & 0xFFFFFFFE) != 0xDE)
+      if ((CAInternAtom([path substringToIndex:v6], 0) & 0xFFFFFFFE) != 0xDE)
       {
         return 0;
       }
@@ -745,31 +745,31 @@
 
     else
     {
-      v8 = CAInternAtom(a3, 0);
+      v8 = CAInternAtom(path, 0);
       if (CAAtomIndexInArray(14, &[CAEmitterLayer implicitAnimationForKeyPath:]::atoms, v8) == -1)
       {
         return 0;
       }
     }
 
-    return CALayerCreateImplicitAnimation(self, a3, v8);
+    return CALayerCreateImplicitAnimation(self, path, v8);
   }
 
   return result;
 }
 
-- (void)reloadValueForKeyPath:(id)a3
+- (void)reloadValueForKeyPath:(id)path
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = [a3 rangeOfString:@"."];
-  v6 = a3;
+  v5 = [path rangeOfString:@"."];
+  pathCopy = path;
   if (v7)
   {
-    v6 = [a3 substringToIndex:v5];
+    pathCopy = [path substringToIndex:v5];
   }
 
-  v8 = [v6 isEqualToString:@"emitterCells"];
-  if ((v8 & 1) != 0 || (v8 = [v6 isEqualToString:@"emitterBehaviors"], v8))
+  v8 = [pathCopy isEqualToString:@"emitterCells"];
+  if ((v8 & 1) != 0 || (v8 = [pathCopy isEqualToString:@"emitterBehaviors"], v8))
   {
     v9 = CA::Transaction::ensure_compat(v8);
     layer = self->super._attr.layer;
@@ -781,14 +781,14 @@
   {
     v11.receiver = self;
     v11.super_class = CAEmitterLayer;
-    [(CALayer *)&v11 reloadValueForKeyPath:a3];
+    [(CALayer *)&v11 reloadValueForKeyPath:path];
   }
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   v6 = CAAtomIndexInArray(24, &[CAEmitterLayer didChangeValueForKey:]::atoms, v5);
   if (v6 != -1)
   {
@@ -798,13 +798,13 @@
 
   v8.receiver = self;
   v8.super_class = CAEmitterLayer;
-  [(CAEmitterLayer *)&v8 didChangeValueForKey:a3];
+  [(CAEmitterLayer *)&v8 didChangeValueForKey:key];
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   if (v5 > 229)
   {
     if (v5 > 620)
@@ -857,9 +857,9 @@ LABEL_27:
       }
 
 LABEL_30:
-      v15.receiver = a1;
+      v15.receiver = self;
       v15.super_class = &OBJC_METACLASS___CAEmitterLayer;
-      return objc_msgSendSuper2(&v15, sel_defaultValueForKey_, a3);
+      return objc_msgSendSuper2(&v15, sel_defaultValueForKey_, key);
     }
 
     goto LABEL_19;
@@ -892,68 +892,68 @@ LABEL_19:
   return [v10 valueWithRect:{v11, v12, v13, v14}];
 }
 
-- (void)setCullMaxZ:(double)a3
+- (void)setCullMaxZ:(double)z
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = z;
   CA::Layer::setter(self->super._attr.layer, 0xAC, 0x12, v3);
 }
 
-- (void)setCullMinZ:(double)a3
+- (void)setCullMinZ:(double)z
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = z;
   CA::Layer::setter(self->super._attr.layer, 0xAD, 0x12, v3);
 }
 
-- (void)setCullRect:(CGRect)a3
+- (void)setCullRect:(CGRect)rect
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0xAE, 0x15, &v3.origin.x);
+  rectCopy = rect;
+  CA::Layer::setter(self->super._attr.layer, 0xAE, 0x15, &rectCopy.origin.x);
 }
 
-- (void)setSpinBias:(float)a3
+- (void)setSpinBias:(float)bias
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x2A2, 0x11, &v3);
+  biasCopy = bias;
+  CA::Layer::setter(self->super._attr.layer, 0x2A2, 0x11, &biasCopy);
 }
 
-- (void)setUpdateInterval:(double)a3
+- (void)setUpdateInterval:(double)interval
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = interval;
   CA::Layer::setter(self->super._attr.layer, 0x2D8, 0x12, v3);
 }
 
-- (void)setEmitterDuration:(float)a3
+- (void)setEmitterDuration:(float)duration
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0xE1, 0x11, &v3);
+  durationCopy = duration;
+  CA::Layer::setter(self->super._attr.layer, 0xE1, 0x11, &durationCopy);
 }
 
-- (void)setEmitterBehaviors:(id)a3
+- (void)setEmitterBehaviors:(id)behaviors
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = behaviors;
   CA::Layer::setter(self->super._attr.layer, 0xDE, 3, v3);
 }
 
-- (void)setEmitterRects:(id)a3
+- (void)setEmitterRects:(id)rects
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = rects;
   CA::Layer::setter(self->super._attr.layer, 0xE5, 3, v3);
 }
 
-- (void)setEmitterPath:(CGPath *)a3
+- (void)setEmitterPath:(CGPath *)path
 {
   v6[1] = *MEMORY[0x1E69E9840];
   if (dyld_program_sdk_at_least())
   {
-    v5 = MEMORY[0x1865E8EB0](a3);
+    v5 = MEMORY[0x1865E8EB0](path);
     *&v6[0] = v5;
     CA::Layer::setter(self->super._attr.layer, 0xE3, 2, v6);
 
@@ -962,7 +962,7 @@ LABEL_19:
 
   else
   {
-    *&v6[0] = a3;
+    *&v6[0] = path;
     CA::Layer::setter(self->super._attr.layer, 0xE3, 2, v6);
   }
 }

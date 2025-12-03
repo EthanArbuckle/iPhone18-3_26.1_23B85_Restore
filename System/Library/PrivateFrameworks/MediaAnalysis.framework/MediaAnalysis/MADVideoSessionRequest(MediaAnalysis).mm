@@ -8,9 +8,9 @@
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v6 = a3;
-  if ([a1 isMemberOfClass:objc_opt_class()])
+  if ([self isMemberOfClass:objc_opt_class()])
   {
-    a4 = [objc_opt_class() taskWithRequest:a1 signpostPayload:v6];
+    a4 = [objc_opt_class() taskWithRequest:self signpostPayload:v6];
   }
 
   else if (a4)

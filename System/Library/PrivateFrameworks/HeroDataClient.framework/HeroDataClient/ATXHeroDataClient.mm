@@ -1,13 +1,13 @@
 @interface ATXHeroDataClient
 - (ATXHeroDataClient)init;
-- (void)addConfirmForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4;
-- (void)addHardRejectForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4;
-- (void)addSoftRejectForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4;
+- (void)addConfirmForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion;
+- (void)addHardRejectForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion;
+- (void)addSoftRejectForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion;
 - (void)dealloc;
-- (void)donateHeroAppPredictions:(id)a3 completion:(id)a4;
-- (void)feedbackScoreForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4;
-- (void)getCurrentHeroPoiCategoryWithCompletion:(id)a3;
-- (void)openAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4;
+- (void)donateHeroAppPredictions:(id)predictions completion:(id)completion;
+- (void)feedbackScoreForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion;
+- (void)getCurrentHeroPoiCategoryWithCompletion:(id)completion;
+- (void)openAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion;
 @end
 
 @implementation ATXHeroDataClient
@@ -49,13 +49,13 @@ void __25__ATXHeroDataClient_init__block_invoke()
   [(ATXHeroDataClient *)&v3 dealloc];
 }
 
-- (void)donateHeroAppPredictions:(id)a3 completion:(id)a4
+- (void)donateHeroAppPredictions:(id)predictions completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = &__block_literal_global_5;
-  if (v6)
+  if (completionCopy)
   {
-    v7 = v6;
+    v7 = completionCopy;
   }
 
   xpcConnection = self->_xpcConnection;
@@ -65,9 +65,9 @@ void __25__ATXHeroDataClient_init__block_invoke()
   v12[3] = &unk_27970A238;
   v13 = v7;
   v9 = v7;
-  v10 = a3;
+  predictionsCopy = predictions;
   v11 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v12];
-  [v11 donateHeroAppPredictions:v10 completion:v9];
+  [v11 donateHeroAppPredictions:predictionsCopy completion:v9];
 }
 
 void __57__ATXHeroDataClient_donateHeroAppPredictions_completion___block_invoke_2(uint64_t a1, void *a2)
@@ -81,13 +81,13 @@ void __57__ATXHeroDataClient_donateHeroAppPredictions_completion___block_invoke_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)addConfirmForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4
+- (void)addConfirmForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = &__block_literal_global_7;
-  if (v6)
+  if (completionCopy)
   {
-    v7 = v6;
+    v7 = completionCopy;
   }
 
   xpcConnection = self->_xpcConnection;
@@ -97,9 +97,9 @@ void __57__ATXHeroDataClient_donateHeroAppPredictions_completion___block_invoke_
   v12[3] = &unk_27970A238;
   v13 = v7;
   v9 = v7;
-  v10 = a3;
+  predictionCopy = prediction;
   v11 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v12];
-  [v11 addConfirmForAppClipWithHeroAppPrediction:v10 completion:v9];
+  [v11 addConfirmForAppClipWithHeroAppPrediction:predictionCopy completion:v9];
 }
 
 void __74__ATXHeroDataClient_addConfirmForAppClipWithHeroAppPrediction_completion___block_invoke_2(uint64_t a1, void *a2)
@@ -113,13 +113,13 @@ void __74__ATXHeroDataClient_addConfirmForAppClipWithHeroAppPrediction_completio
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)addSoftRejectForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4
+- (void)addSoftRejectForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = &__block_literal_global_9;
-  if (v6)
+  if (completionCopy)
   {
-    v7 = v6;
+    v7 = completionCopy;
   }
 
   xpcConnection = self->_xpcConnection;
@@ -129,9 +129,9 @@ void __74__ATXHeroDataClient_addConfirmForAppClipWithHeroAppPrediction_completio
   v12[3] = &unk_27970A238;
   v13 = v7;
   v9 = v7;
-  v10 = a3;
+  predictionCopy = prediction;
   v11 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v12];
-  [v11 addSoftRejectForAppClipWithHeroAppPrediction:v10 completion:v9];
+  [v11 addSoftRejectForAppClipWithHeroAppPrediction:predictionCopy completion:v9];
 }
 
 void __77__ATXHeroDataClient_addSoftRejectForAppClipWithHeroAppPrediction_completion___block_invoke_2(uint64_t a1, void *a2)
@@ -145,13 +145,13 @@ void __77__ATXHeroDataClient_addSoftRejectForAppClipWithHeroAppPrediction_comple
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)addHardRejectForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4
+- (void)addHardRejectForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = &__block_literal_global_11;
-  if (v6)
+  if (completionCopy)
   {
-    v7 = v6;
+    v7 = completionCopy;
   }
 
   xpcConnection = self->_xpcConnection;
@@ -161,9 +161,9 @@ void __77__ATXHeroDataClient_addSoftRejectForAppClipWithHeroAppPrediction_comple
   v12[3] = &unk_27970A238;
   v13 = v7;
   v9 = v7;
-  v10 = a3;
+  predictionCopy = prediction;
   v11 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v12];
-  [v11 addHardRejectForAppClipWithHeroAppPrediction:v10 completion:v9];
+  [v11 addHardRejectForAppClipWithHeroAppPrediction:predictionCopy completion:v9];
 }
 
 void __77__ATXHeroDataClient_addHardRejectForAppClipWithHeroAppPrediction_completion___block_invoke_2(uint64_t a1, void *a2)
@@ -177,13 +177,13 @@ void __77__ATXHeroDataClient_addHardRejectForAppClipWithHeroAppPrediction_comple
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)feedbackScoreForAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4
+- (void)feedbackScoreForAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = &__block_literal_global_14;
-  if (v6)
+  if (completionCopy)
   {
-    v7 = v6;
+    v7 = completionCopy;
   }
 
   xpcConnection = self->_xpcConnection;
@@ -193,9 +193,9 @@ void __77__ATXHeroDataClient_addHardRejectForAppClipWithHeroAppPrediction_comple
   v12[3] = &unk_27970A238;
   v13 = v7;
   v9 = v7;
-  v10 = a3;
+  predictionCopy = prediction;
   v11 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v12];
-  [v11 feedbackScoreForAppClipWithHeroAppPrediction:v10 completion:v9];
+  [v11 feedbackScoreForAppClipWithHeroAppPrediction:predictionCopy completion:v9];
 }
 
 void __77__ATXHeroDataClient_feedbackScoreForAppClipWithHeroAppPrediction_completion___block_invoke_2(uint64_t a1, void *a2)
@@ -209,13 +209,13 @@ void __77__ATXHeroDataClient_feedbackScoreForAppClipWithHeroAppPrediction_comple
   (*(*(a1 + 32) + 16))(0.0);
 }
 
-- (void)openAppClipWithHeroAppPrediction:(id)a3 completion:(id)a4
+- (void)openAppClipWithHeroAppPrediction:(id)prediction completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = &__block_literal_global_16;
-  if (v6)
+  if (completionCopy)
   {
-    v7 = v6;
+    v7 = completionCopy;
   }
 
   xpcConnection = self->_xpcConnection;
@@ -225,9 +225,9 @@ void __77__ATXHeroDataClient_feedbackScoreForAppClipWithHeroAppPrediction_comple
   v12[3] = &unk_27970A238;
   v13 = v7;
   v9 = v7;
-  v10 = a3;
+  predictionCopy = prediction;
   v11 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v12];
-  [v11 openAppClipWithHeroAppPrediction:v10 completion:v9];
+  [v11 openAppClipWithHeroAppPrediction:predictionCopy completion:v9];
 }
 
 void __65__ATXHeroDataClient_openAppClipWithHeroAppPrediction_completion___block_invoke_2(uint64_t a1, void *a2)
@@ -241,13 +241,13 @@ void __65__ATXHeroDataClient_openAppClipWithHeroAppPrediction_completion___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getCurrentHeroPoiCategoryWithCompletion:(id)a3
+- (void)getCurrentHeroPoiCategoryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = &__block_literal_global_19;
-  if (v4)
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   xpcConnection = self->_xpcConnection;

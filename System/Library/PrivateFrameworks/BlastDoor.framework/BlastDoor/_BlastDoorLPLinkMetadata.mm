@@ -1,15 +1,15 @@
 @interface _BlastDoorLPLinkMetadata
-+ (_BlastDoorLPLinkMetadata)metadataWithDataRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (_BlastDoorLPLinkMetadata)metadataWithDataRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
 - (_BlastDoorLPLinkMetadata)init;
-- (_BlastDoorLPLinkMetadata)initWithCoder:(id)a3;
-- (id)_initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_BlastDoorLPLinkMetadata)initWithCoder:(id)coder;
+- (id)_initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dataRepresentation;
 - (unint64_t)_encodedSize;
-- (void)_copyPropertiesFrom:(id)a3 onlyUpgradeFields:(BOOL)a4;
-- (void)_copyPropertiesOnlyUpgradingFieldsFrom:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_copyPropertiesFrom:(id)from onlyUpgradeFields:(BOOL)fields;
+- (void)_copyPropertiesOnlyUpgradingFieldsFrom:(id)from;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPLinkMetadata
@@ -31,69 +31,69 @@
   return v3;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
   v143 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(_BlastDoorLPLinkMetadata *)self init];
   if (v5)
   {
-    v6 = URLForKey(v4, @"LPMetadataURL");
+    v6 = URLForKey(dictionaryCopy, @"LPMetadataURL");
     URL = v5->_URL;
     v5->_URL = v6;
 
-    v8 = stringForKey(v4, @"LPMetadataTitle");
+    v8 = stringForKey(dictionaryCopy, @"LPMetadataTitle");
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = stringForKey(v4, @"LPMetadataDescription");
+    v10 = stringForKey(dictionaryCopy, @"LPMetadataDescription");
     summary = v5->_summary;
     v5->_summary = v10;
 
-    v12 = stringForKey(v4, @"LPMetadataSelectedText");
+    v12 = stringForKey(dictionaryCopy, @"LPMetadataSelectedText");
     selectedText = v5->_selectedText;
     v5->_selectedText = v12;
 
-    v14 = stringForKey(v4, @"LPMetadataSiteName");
+    v14 = stringForKey(dictionaryCopy, @"LPMetadataSiteName");
     siteName = v5->_siteName;
     v5->_siteName = v14;
 
-    v16 = stringForKey(v4, @"LPMetadataItemType");
+    v16 = stringForKey(dictionaryCopy, @"LPMetadataItemType");
     itemType = v5->_itemType;
     v5->_itemType = v16;
 
-    v18 = URLForKey(v4, @"LPMetadataRelatedURL");
+    v18 = URLForKey(dictionaryCopy, @"LPMetadataRelatedURL");
     relatedURL = v5->_relatedURL;
     v5->_relatedURL = v18;
 
-    v20 = stringForKey(v4, @"LPMetadataCreator");
+    v20 = stringForKey(dictionaryCopy, @"LPMetadataCreator");
     creator = v5->_creator;
     v5->_creator = v20;
 
-    v22 = stringForKey(v4, @"LPMetadataCreatorFacebookProfile");
+    v22 = stringForKey(dictionaryCopy, @"LPMetadataCreatorFacebookProfile");
     creatorFacebookProfile = v5->_creatorFacebookProfile;
     v5->_creatorFacebookProfile = v22;
 
-    v24 = stringForKey(v4, @"LPMetadataCreatorTwitterUsername");
+    v24 = stringForKey(dictionaryCopy, @"LPMetadataCreatorTwitterUsername");
     creatorTwitterUsername = v5->_creatorTwitterUsername;
     v5->_creatorTwitterUsername = v24;
 
-    v26 = stringForKey(v4, @"LPMetadataTwitterCard");
+    v26 = stringForKey(dictionaryCopy, @"LPMetadataTwitterCard");
     twitterCard = v5->_twitterCard;
     v5->_twitterCard = v26;
 
-    v28 = numberForKey(v4, @"LPMetadataUsesActivityPub");
+    v28 = numberForKey(dictionaryCopy, @"LPMetadataUsesActivityPub");
     v5->_usesActivityPub = [v28 BOOLValue];
 
-    v29 = stringForKey(v4, @"LPMetadataAppleContentID");
+    v29 = stringForKey(dictionaryCopy, @"LPMetadataAppleContentID");
     appleContentID = v5->_appleContentID;
     v5->_appleContentID = v29;
 
-    v31 = stringForKey(v4, @"LPMetadataAppleDescription");
+    v31 = stringForKey(dictionaryCopy, @"LPMetadataAppleDescription");
     appleSummary = v5->_appleSummary;
     v5->_appleSummary = v31;
 
-    v33 = v4;
+    v33 = dictionaryCopy;
     v34 = [v33 objectForKey:@"LPMetadataIcons"];
     if (v34)
     {
@@ -106,7 +106,7 @@
 
     objc_opt_class();
     p_isa = &v5->super.isa;
-    v101 = v4;
+    v101 = dictionaryCopy;
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v34 count])
     {
       v35 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -375,10 +375,10 @@ LABEL_18:
             objc_enumerationMutation(v83);
           }
 
-          v88 = [[_BlastDoorLPAudioMetadata alloc] _initWithDictionary:*(*(&v109 + 1) + 8 * jj), v98, v99, v100];
-          if (v88)
+          v100 = [[_BlastDoorLPAudioMetadata alloc] _initWithDictionary:*(*(&v109 + 1) + 8 * jj), v98, v99, v100];
+          if (v100)
           {
-            [v82 addObject:v88];
+            [v82 addObject:v100];
           }
         }
 
@@ -404,7 +404,7 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v101;
+      dictionaryCopy = v101;
       if ([v90 count])
       {
         v91 = v90;
@@ -419,7 +419,7 @@ LABEL_18:
     else
     {
       v91 = 0;
-      v4 = v101;
+      dictionaryCopy = v101;
     }
 
     if (v91)
@@ -439,10 +439,10 @@ LABEL_18:
   return v5;
 }
 
-- (_BlastDoorLPLinkMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPLinkMetadata)initWithCoder:(id)coder
 {
   v103 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v93.receiver = self;
   v93.super_class = _BlastDoorLPLinkMetadata;
   v5 = [(_BlastDoorLPLinkMetadata *)&v93 init];
@@ -451,150 +451,150 @@ LABEL_18:
     goto LABEL_3;
   }
 
-  v5->_version = [v4 decodeInt32ForKey:@"version"];
-  v6 = decodeURLForKey(v4, @"originalURL");
+  v5->_version = [coderCopy decodeInt32ForKey:@"version"];
+  v6 = decodeURLForKey(coderCopy, @"originalURL");
   originalURL = v5->_originalURL;
   v5->_originalURL = v6;
 
-  v8 = decodeURLForKey(v4, @"URL");
+  v8 = decodeURLForKey(coderCopy, @"URL");
   URL = v5->_URL;
   v5->_URL = v8;
 
-  v10 = decodeStringForKey(v4, @"title");
+  v10 = decodeStringForKey(coderCopy, @"title");
   title = v5->_title;
   v5->_title = v10;
 
-  v12 = decodeStringForKey(v4, @"summary");
+  v12 = decodeStringForKey(coderCopy, @"summary");
   summary = v5->_summary;
   v5->_summary = v12;
 
-  v14 = decodeStringForKey(v4, @"selection");
+  v14 = decodeStringForKey(coderCopy, @"selection");
   selectedText = v5->_selectedText;
   v5->_selectedText = v14;
 
-  v16 = decodeStringForKey(v4, @"siteName");
+  v16 = decodeStringForKey(coderCopy, @"siteName");
   siteName = v5->_siteName;
   v5->_siteName = v16;
 
-  v18 = decodeStringForKey(v4, @"itemType");
+  v18 = decodeStringForKey(coderCopy, @"itemType");
   itemType = v5->_itemType;
   v5->_itemType = v18;
 
-  v20 = decodeURLForKey(v4, @"relatedURL");
+  v20 = decodeURLForKey(coderCopy, @"relatedURL");
   relatedURL = v5->_relatedURL;
   v5->_relatedURL = v20;
 
-  v22 = decodeStringForKey(v4, @"creator");
+  v22 = decodeStringForKey(coderCopy, @"creator");
   creator = v5->_creator;
   v5->_creator = v22;
 
-  v24 = decodeStringForKey(v4, @"creatorFacebookProfile");
+  v24 = decodeStringForKey(coderCopy, @"creatorFacebookProfile");
   creatorFacebookProfile = v5->_creatorFacebookProfile;
   v5->_creatorFacebookProfile = v24;
 
-  v26 = decodeStringForKey(v4, @"creatorTwitterUsername");
+  v26 = decodeStringForKey(coderCopy, @"creatorTwitterUsername");
   creatorTwitterUsername = v5->_creatorTwitterUsername;
   v5->_creatorTwitterUsername = v26;
 
-  v28 = decodeStringForKey(v4, @"twitterCard");
+  v28 = decodeStringForKey(coderCopy, @"twitterCard");
   twitterCard = v5->_twitterCard;
   v5->_twitterCard = v28;
 
-  v5->_usesActivityPub = [v4 decodeBoolForKey:@"usesActivityPub"];
-  v30 = decodeStringForKey(v4, @"appleContentID");
+  v5->_usesActivityPub = [coderCopy decodeBoolForKey:@"usesActivityPub"];
+  v30 = decodeStringForKey(coderCopy, @"appleContentID");
   appleContentID = v5->_appleContentID;
   v5->_appleContentID = v30;
 
-  v32 = decodeStringForKey(v4, @"appleSummary");
+  v32 = decodeStringForKey(coderCopy, @"appleSummary");
   appleSummary = v5->_appleSummary;
   v5->_appleSummary = v32;
 
-  v34 = [v4 _bd_lp_strictlyDecodeColorForKey:@"themeColor"];
+  v34 = [coderCopy _bd_lp_strictlyDecodeColorForKey:@"themeColor"];
   themeColor = v5->_themeColor;
   v5->_themeColor = v34;
 
-  v36 = [v4 _bd_lp_strictlyDecodeLPImageForKey:@"icon"];
+  v36 = [coderCopy _bd_lp_strictlyDecodeLPImageForKey:@"icon"];
   [(_BlastDoorLPLinkMetadata *)v5 setIcon:v36];
 
-  v37 = [v4 _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"iconMetadata"];
+  v37 = [coderCopy _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"iconMetadata"];
   iconMetadata = v5->_iconMetadata;
   v5->_iconMetadata = v37;
 
-  v39 = [v4 _bd_lp_strictlyDecodeLPImageForKey:@"image"];
+  v39 = [coderCopy _bd_lp_strictlyDecodeLPImageForKey:@"image"];
   [(_BlastDoorLPLinkMetadata *)v5 setImage:v39];
 
-  v40 = [v4 _bd_lp_strictlyDecodeArrayOfLPImagesForKey:@"alternateImages"];
+  v40 = [coderCopy _bd_lp_strictlyDecodeArrayOfLPImagesForKey:@"alternateImages"];
   [(_BlastDoorLPLinkMetadata *)v5 setAlternateImages:v40];
 
-  v41 = [v4 _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"imageMetadata"];
+  v41 = [coderCopy _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"imageMetadata"];
   imageMetadata = v5->_imageMetadata;
   v5->_imageMetadata = v41;
 
-  v43 = [v4 _bd_lp_strictlyDecodeArrayOfLPImagesForKey:@"contentImages"];
+  v43 = [coderCopy _bd_lp_strictlyDecodeArrayOfLPImagesForKey:@"contentImages"];
   [(_BlastDoorLPLinkMetadata *)v5 setContentImages:v43];
 
-  v44 = [v4 _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"contentImagesMetadata"];
+  v44 = [coderCopy _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"contentImagesMetadata"];
   contentImagesMetadata = v5->_contentImagesMetadata;
   v5->_contentImagesMetadata = v44;
 
-  v46 = [v4 _bd_lp_strictlyDecodeLPVideoForKey:@"video"];
+  v46 = [coderCopy _bd_lp_strictlyDecodeLPVideoForKey:@"video"];
   [(_BlastDoorLPLinkMetadata *)v5 setVideo:v46];
 
-  v47 = [v4 _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"videoMetadata"];
+  v47 = [coderCopy _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"videoMetadata"];
   videoMetadata = v5->_videoMetadata;
   v5->_videoMetadata = v47;
 
-  v49 = [v4 _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"audio"];
+  v49 = [coderCopy _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"audio"];
   [(_BlastDoorLPLinkMetadata *)v5 setAudio:v49];
 
-  v50 = [v4 _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"audioMetadata"];
+  v50 = [coderCopy _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"audioMetadata"];
   audioMetadata = v5->_audioMetadata;
   v5->_audioMetadata = v50;
 
-  v52 = [v4 _bd_lp_strictlyDecodeLPARAssetForKey:@"arAsset"];
+  v52 = [coderCopy _bd_lp_strictlyDecodeLPARAssetForKey:@"arAsset"];
   [(_BlastDoorLPLinkMetadata *)v5 setArAsset:v52];
 
-  v53 = [v4 _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"arAssetMetadata"];
+  v53 = [coderCopy _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"arAssetMetadata"];
   arAssetMetadata = v5->_arAssetMetadata;
   v5->_arAssetMetadata = v53;
 
-  v55 = [v4 _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"icons"];
+  v55 = [coderCopy _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"icons"];
   icons = v5->_icons;
   v5->_icons = v55;
 
-  v57 = [v4 _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"images"];
+  v57 = [coderCopy _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"images"];
   images = v5->_images;
   v5->_images = v57;
 
-  v59 = [v4 _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"availableContentImages"];
+  v59 = [coderCopy _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"availableContentImages"];
   availableContentImages = v5->_availableContentImages;
   v5->_availableContentImages = v59;
 
-  v61 = [v4 _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"videos"];
+  v61 = [coderCopy _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"videos"];
   videos = v5->_videos;
   v5->_videos = v61;
 
-  v63 = [v4 _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"streamingVideos"];
+  v63 = [coderCopy _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"streamingVideos"];
   streamingVideos = v5->_streamingVideos;
   v5->_streamingVideos = v63;
 
-  v65 = [v4 _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"audios"];
+  v65 = [coderCopy _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"audios"];
   audios = v5->_audios;
   v5->_audios = v65;
 
-  v67 = [v4 _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"arAssets"];
+  v67 = [coderCopy _bd_lp_strictlyDecodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"arAssets"];
   arAssets = v5->_arAssets;
   v5->_arAssets = v67;
 
-  v69 = [v4 _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"associatedApplication"];
+  v69 = [coderCopy _bd_lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"associatedApplication"];
   associatedApplication = v5->_associatedApplication;
   v5->_associatedApplication = v69;
 
-  v71 = [v4 error];
+  error = [coderCopy error];
 
-  if (!v71)
+  if (!error)
   {
-    if ([v4 containsValueForKey:@"collaborationMetadata"])
+    if ([coderCopy containsValueForKey:@"collaborationMetadata"])
     {
       v73 = MEMORY[0x277CBEB98];
       v99 = 0;
@@ -634,26 +634,26 @@ LABEL_18:
       v77 = v76;
       _Block_object_dispose(&v99, 8);
       v78 = [v73 setWithObjects:{v74, v76, 0}];
-      v79 = [v4 _bd_lp_strictlyDecodeObjectOfClasses:v78 forKey:@"collaborationMetadata"];
+      v79 = [coderCopy _bd_lp_strictlyDecodeObjectOfClasses:v78 forKey:@"collaborationMetadata"];
       collaborationMetadata = v5->_collaborationMetadata;
       v5->_collaborationMetadata = v79;
     }
 
-    if ([v4 containsValueForKey:@"specialization2"])
+    if ([coderCopy containsValueForKey:@"specialization2"])
     {
       v81 = allKnownSpecializationClasses();
       v92 = 0;
-      v82 = [v4 _bd_lp_strictlyDecodeTopLevelObjectOfClasses:v81 forKey:@"specialization2" error:&v92];
+      v82 = [coderCopy _bd_lp_strictlyDecodeTopLevelObjectOfClasses:v81 forKey:@"specialization2" error:&v92];
       v83 = v92;
       specialization = v5->_specialization;
       v5->_specialization = v82;
     }
 
-    if (!v5->_specialization && [v4 containsValueForKey:@"specialization"])
+    if (!v5->_specialization && [coderCopy containsValueForKey:@"specialization"])
     {
       v85 = allKnownSpecializationClasses();
       v91 = 0;
-      v86 = [v4 _bd_lp_strictlyDecodeTopLevelObjectOfClasses:v85 forKey:@"specialization" error:&v91];
+      v86 = [coderCopy _bd_lp_strictlyDecodeTopLevelObjectOfClasses:v85 forKey:@"specialization" error:&v91];
       v87 = v91;
       v88 = v5->_specialization;
       v5->_specialization = v86;
@@ -672,9 +672,9 @@ LABEL_3:
   return v72;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPLinkMetadata allocWithZone:a3];
+  v4 = [_BlastDoorLPLinkMetadata allocWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -685,512 +685,512 @@ LABEL_3:
   return v5;
 }
 
-- (void)_copyPropertiesOnlyUpgradingFieldsFrom:(id)a3
+- (void)_copyPropertiesOnlyUpgradingFieldsFrom:(id)from
 {
-  v181 = a3;
-  self->_version = [v181 version];
-  v4 = [(_BlastDoorLPLinkMetadata *)self originalURL];
-  if (!v4 || (v5 = v4, [v181 originalURL], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  fromCopy = from;
+  self->_version = [fromCopy version];
+  originalURL = [(_BlastDoorLPLinkMetadata *)self originalURL];
+  if (!originalURL || (v5 = originalURL, [fromCopy originalURL], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
-    v7 = [v181 originalURL];
-    [(_BlastDoorLPLinkMetadata *)self setOriginalURL:v7];
+    originalURL2 = [fromCopy originalURL];
+    [(_BlastDoorLPLinkMetadata *)self setOriginalURL:originalURL2];
   }
 
   v8 = [(_BlastDoorLPLinkMetadata *)self URL];
-  if (!v8 || (v9 = v8, [v181 URL], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+  if (!v8 || (v9 = v8, [fromCopy URL], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
   {
-    v11 = [v181 URL];
+    v11 = [fromCopy URL];
     [(_BlastDoorLPLinkMetadata *)self setURL:v11];
   }
 
-  v12 = [(_BlastDoorLPLinkMetadata *)self title];
-  if (!v12 || (v13 = v12, [v181 title], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
+  title = [(_BlastDoorLPLinkMetadata *)self title];
+  if (!title || (v13 = title, [fromCopy title], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v14))
   {
-    v15 = [v181 title];
-    v16 = [v15 copy];
+    title2 = [fromCopy title];
+    v16 = [title2 copy];
     [(_BlastDoorLPLinkMetadata *)self setTitle:v16];
   }
 
-  v17 = [(_BlastDoorLPLinkMetadata *)self summary];
-  if (!v17 || (v18 = v17, [v181 summary], v19 = objc_claimAutoreleasedReturnValue(), v19, v18, v19))
+  summary = [(_BlastDoorLPLinkMetadata *)self summary];
+  if (!summary || (v18 = summary, [fromCopy summary], v19 = objc_claimAutoreleasedReturnValue(), v19, v18, v19))
   {
-    v20 = [v181 summary];
-    v21 = [v20 copy];
+    summary2 = [fromCopy summary];
+    v21 = [summary2 copy];
     [(_BlastDoorLPLinkMetadata *)self setSummary:v21];
   }
 
-  v22 = [(_BlastDoorLPLinkMetadata *)self selectedText];
-  if (!v22 || (v23 = v22, [v181 selectedText], v24 = objc_claimAutoreleasedReturnValue(), v24, v23, v24))
+  selectedText = [(_BlastDoorLPLinkMetadata *)self selectedText];
+  if (!selectedText || (v23 = selectedText, [fromCopy selectedText], v24 = objc_claimAutoreleasedReturnValue(), v24, v23, v24))
   {
-    v25 = [v181 selectedText];
-    v26 = [v25 copy];
+    selectedText2 = [fromCopy selectedText];
+    v26 = [selectedText2 copy];
     [(_BlastDoorLPLinkMetadata *)self setSelectedText:v26];
   }
 
-  v27 = [(_BlastDoorLPLinkMetadata *)self siteName];
-  if (!v27 || (v28 = v27, [v181 siteName], v29 = objc_claimAutoreleasedReturnValue(), v29, v28, v29))
+  siteName = [(_BlastDoorLPLinkMetadata *)self siteName];
+  if (!siteName || (v28 = siteName, [fromCopy siteName], v29 = objc_claimAutoreleasedReturnValue(), v29, v28, v29))
   {
-    v30 = [v181 siteName];
-    v31 = [v30 copy];
+    siteName2 = [fromCopy siteName];
+    v31 = [siteName2 copy];
     [(_BlastDoorLPLinkMetadata *)self setSiteName:v31];
   }
 
-  v32 = [(_BlastDoorLPLinkMetadata *)self itemType];
-  if (!v32 || (v33 = v32, [v181 itemType], v34 = objc_claimAutoreleasedReturnValue(), v34, v33, v34))
+  itemType = [(_BlastDoorLPLinkMetadata *)self itemType];
+  if (!itemType || (v33 = itemType, [fromCopy itemType], v34 = objc_claimAutoreleasedReturnValue(), v34, v33, v34))
   {
-    v35 = [v181 itemType];
-    v36 = [v35 copy];
+    itemType2 = [fromCopy itemType];
+    v36 = [itemType2 copy];
     [(_BlastDoorLPLinkMetadata *)self setItemType:v36];
   }
 
-  v37 = [(_BlastDoorLPLinkMetadata *)self relatedURL];
-  if (!v37 || (v38 = v37, [v181 relatedURL], v39 = objc_claimAutoreleasedReturnValue(), v39, v38, v39))
+  relatedURL = [(_BlastDoorLPLinkMetadata *)self relatedURL];
+  if (!relatedURL || (v38 = relatedURL, [fromCopy relatedURL], v39 = objc_claimAutoreleasedReturnValue(), v39, v38, v39))
   {
-    v40 = [v181 relatedURL];
-    [(_BlastDoorLPLinkMetadata *)self setRelatedURL:v40];
+    relatedURL2 = [fromCopy relatedURL];
+    [(_BlastDoorLPLinkMetadata *)self setRelatedURL:relatedURL2];
   }
 
-  v41 = [(_BlastDoorLPLinkMetadata *)self creator];
-  if (!v41 || (v42 = v41, [v181 creator], v43 = objc_claimAutoreleasedReturnValue(), v43, v42, v43))
+  creator = [(_BlastDoorLPLinkMetadata *)self creator];
+  if (!creator || (v42 = creator, [fromCopy creator], v43 = objc_claimAutoreleasedReturnValue(), v43, v42, v43))
   {
-    v44 = [v181 creator];
-    v45 = [v44 copy];
+    creator2 = [fromCopy creator];
+    v45 = [creator2 copy];
     [(_BlastDoorLPLinkMetadata *)self setCreator:v45];
   }
 
-  v46 = [(_BlastDoorLPLinkMetadata *)self creatorFacebookProfile];
-  if (!v46 || (v47 = v46, [v181 creatorFacebookProfile], v48 = objc_claimAutoreleasedReturnValue(), v48, v47, v48))
+  creatorFacebookProfile = [(_BlastDoorLPLinkMetadata *)self creatorFacebookProfile];
+  if (!creatorFacebookProfile || (v47 = creatorFacebookProfile, [fromCopy creatorFacebookProfile], v48 = objc_claimAutoreleasedReturnValue(), v48, v47, v48))
   {
-    v49 = [v181 creatorFacebookProfile];
-    v50 = [v49 copy];
+    creatorFacebookProfile2 = [fromCopy creatorFacebookProfile];
+    v50 = [creatorFacebookProfile2 copy];
     [(_BlastDoorLPLinkMetadata *)self setCreatorFacebookProfile:v50];
   }
 
-  v51 = [(_BlastDoorLPLinkMetadata *)self creatorTwitterUsername];
-  if (!v51 || (v52 = v51, [v181 creatorTwitterUsername], v53 = objc_claimAutoreleasedReturnValue(), v53, v52, v53))
+  creatorTwitterUsername = [(_BlastDoorLPLinkMetadata *)self creatorTwitterUsername];
+  if (!creatorTwitterUsername || (v52 = creatorTwitterUsername, [fromCopy creatorTwitterUsername], v53 = objc_claimAutoreleasedReturnValue(), v53, v52, v53))
   {
-    v54 = [v181 creatorTwitterUsername];
-    v55 = [v54 copy];
+    creatorTwitterUsername2 = [fromCopy creatorTwitterUsername];
+    v55 = [creatorTwitterUsername2 copy];
     [(_BlastDoorLPLinkMetadata *)self setCreatorTwitterUsername:v55];
   }
 
-  v56 = [(_BlastDoorLPLinkMetadata *)self twitterCard];
-  if (!v56 || (v57 = v56, [v181 twitterCard], v58 = objc_claimAutoreleasedReturnValue(), v58, v57, v58))
+  twitterCard = [(_BlastDoorLPLinkMetadata *)self twitterCard];
+  if (!twitterCard || (v57 = twitterCard, [fromCopy twitterCard], v58 = objc_claimAutoreleasedReturnValue(), v58, v57, v58))
   {
-    v59 = [v181 twitterCard];
-    v60 = [v59 copy];
+    twitterCard2 = [fromCopy twitterCard];
+    v60 = [twitterCard2 copy];
     [(_BlastDoorLPLinkMetadata *)self setTwitterCard:v60];
   }
 
   if ([(_BlastDoorLPLinkMetadata *)self usesActivityPub])
   {
-    v61 = 1;
+    usesActivityPub = 1;
   }
 
   else
   {
-    v61 = [v181 usesActivityPub];
+    usesActivityPub = [fromCopy usesActivityPub];
   }
 
-  [(_BlastDoorLPLinkMetadata *)self setUsesActivityPub:v61];
-  v62 = [(_BlastDoorLPLinkMetadata *)self appleContentID];
-  if (!v62 || (v63 = v62, [v181 appleContentID], v64 = objc_claimAutoreleasedReturnValue(), v64, v63, v64))
+  [(_BlastDoorLPLinkMetadata *)self setUsesActivityPub:usesActivityPub];
+  appleContentID = [(_BlastDoorLPLinkMetadata *)self appleContentID];
+  if (!appleContentID || (v63 = appleContentID, [fromCopy appleContentID], v64 = objc_claimAutoreleasedReturnValue(), v64, v63, v64))
   {
-    v65 = [v181 appleContentID];
-    v66 = [v65 copy];
+    appleContentID2 = [fromCopy appleContentID];
+    v66 = [appleContentID2 copy];
     [(_BlastDoorLPLinkMetadata *)self setAppleContentID:v66];
   }
 
-  v67 = [(_BlastDoorLPLinkMetadata *)self appleSummary];
-  if (!v67 || (v68 = v67, [v181 appleSummary], v69 = objc_claimAutoreleasedReturnValue(), v69, v68, v69))
+  appleSummary = [(_BlastDoorLPLinkMetadata *)self appleSummary];
+  if (!appleSummary || (v68 = appleSummary, [fromCopy appleSummary], v69 = objc_claimAutoreleasedReturnValue(), v69, v68, v69))
   {
-    v70 = [v181 appleSummary];
-    v71 = [v70 copy];
+    appleSummary2 = [fromCopy appleSummary];
+    v71 = [appleSummary2 copy];
     [(_BlastDoorLPLinkMetadata *)self setAppleSummary:v71];
   }
 
-  v72 = [(_BlastDoorLPLinkMetadata *)self themeColor];
-  if (!v72 || (v73 = v72, [v181 themeColor], v74 = objc_claimAutoreleasedReturnValue(), v74, v73, v74))
+  themeColor = [(_BlastDoorLPLinkMetadata *)self themeColor];
+  if (!themeColor || (v73 = themeColor, [fromCopy themeColor], v74 = objc_claimAutoreleasedReturnValue(), v74, v73, v74))
   {
-    v75 = [v181 themeColor];
-    v76 = [v75 copy];
+    themeColor2 = [fromCopy themeColor];
+    v76 = [themeColor2 copy];
     [(_BlastDoorLPLinkMetadata *)self setThemeColor:v76];
   }
 
-  v77 = [(_BlastDoorLPLinkMetadata *)self icon];
-  if (!v77 || (v78 = v77, [v181 icon], v79 = objc_claimAutoreleasedReturnValue(), v79, v78, v79))
+  icon = [(_BlastDoorLPLinkMetadata *)self icon];
+  if (!icon || (v78 = icon, [fromCopy icon], v79 = objc_claimAutoreleasedReturnValue(), v79, v78, v79))
   {
-    v80 = [v181 icon];
-    [(_BlastDoorLPLinkMetadata *)self setIcon:v80];
+    icon2 = [fromCopy icon];
+    [(_BlastDoorLPLinkMetadata *)self setIcon:icon2];
   }
 
-  v81 = [(_BlastDoorLPLinkMetadata *)self iconMetadata];
-  if (!v81 || (v82 = v81, [v181 iconMetadata], v83 = objc_claimAutoreleasedReturnValue(), v83, v82, v83))
+  iconMetadata = [(_BlastDoorLPLinkMetadata *)self iconMetadata];
+  if (!iconMetadata || (v82 = iconMetadata, [fromCopy iconMetadata], v83 = objc_claimAutoreleasedReturnValue(), v83, v82, v83))
   {
-    v84 = [v181 iconMetadata];
-    [(_BlastDoorLPLinkMetadata *)self setIconMetadata:v84];
+    iconMetadata2 = [fromCopy iconMetadata];
+    [(_BlastDoorLPLinkMetadata *)self setIconMetadata:iconMetadata2];
   }
 
-  v85 = [(_BlastDoorLPLinkMetadata *)self arAsset];
-  if (!v85 || (v86 = v85, [v181 arAsset], v87 = objc_claimAutoreleasedReturnValue(), v87, v86, v87))
+  arAsset = [(_BlastDoorLPLinkMetadata *)self arAsset];
+  if (!arAsset || (v86 = arAsset, [fromCopy arAsset], v87 = objc_claimAutoreleasedReturnValue(), v87, v86, v87))
   {
-    v88 = [v181 arAsset];
-    [(_BlastDoorLPLinkMetadata *)self setArAsset:v88];
+    arAsset2 = [fromCopy arAsset];
+    [(_BlastDoorLPLinkMetadata *)self setArAsset:arAsset2];
   }
 
-  v89 = [(_BlastDoorLPLinkMetadata *)self arAssetMetadata];
-  if (!v89 || (v90 = v89, [v181 arAssetMetadata], v91 = objc_claimAutoreleasedReturnValue(), v91, v90, v91))
+  arAssetMetadata = [(_BlastDoorLPLinkMetadata *)self arAssetMetadata];
+  if (!arAssetMetadata || (v90 = arAssetMetadata, [fromCopy arAssetMetadata], v91 = objc_claimAutoreleasedReturnValue(), v91, v90, v91))
   {
-    v92 = [v181 arAssetMetadata];
-    [(_BlastDoorLPLinkMetadata *)self setArAssetMetadata:v92];
+    arAssetMetadata2 = [fromCopy arAssetMetadata];
+    [(_BlastDoorLPLinkMetadata *)self setArAssetMetadata:arAssetMetadata2];
   }
 
-  v93 = [(_BlastDoorLPLinkMetadata *)self arAsset];
-  if (!v93 || (v94 = v93, [v181 arAsset], v95 = objc_claimAutoreleasedReturnValue(), v95, v94, v95))
+  arAsset3 = [(_BlastDoorLPLinkMetadata *)self arAsset];
+  if (!arAsset3 || (v94 = arAsset3, [fromCopy arAsset], v95 = objc_claimAutoreleasedReturnValue(), v95, v94, v95))
   {
-    v96 = [v181 image];
-    [(_BlastDoorLPLinkMetadata *)self setImage:v96];
+    image = [fromCopy image];
+    [(_BlastDoorLPLinkMetadata *)self setImage:image];
   }
 
-  v97 = [(_BlastDoorLPLinkMetadata *)self imageMetadata];
-  if (!v97 || (v98 = v97, [v181 imageMetadata], v99 = objc_claimAutoreleasedReturnValue(), v99, v98, v99))
+  imageMetadata = [(_BlastDoorLPLinkMetadata *)self imageMetadata];
+  if (!imageMetadata || (v98 = imageMetadata, [fromCopy imageMetadata], v99 = objc_claimAutoreleasedReturnValue(), v99, v98, v99))
   {
-    v100 = [v181 imageMetadata];
-    [(_BlastDoorLPLinkMetadata *)self setImageMetadata:v100];
+    imageMetadata2 = [fromCopy imageMetadata];
+    [(_BlastDoorLPLinkMetadata *)self setImageMetadata:imageMetadata2];
   }
 
-  v101 = [(_BlastDoorLPLinkMetadata *)self contentImages];
-  if (!v101 || (v102 = v101, [v181 contentImages], v103 = objc_claimAutoreleasedReturnValue(), v103, v102, v103))
+  contentImages = [(_BlastDoorLPLinkMetadata *)self contentImages];
+  if (!contentImages || (v102 = contentImages, [fromCopy contentImages], v103 = objc_claimAutoreleasedReturnValue(), v103, v102, v103))
   {
-    v104 = [v181 contentImages];
-    [(_BlastDoorLPLinkMetadata *)self setContentImages:v104];
+    contentImages2 = [fromCopy contentImages];
+    [(_BlastDoorLPLinkMetadata *)self setContentImages:contentImages2];
   }
 
-  v105 = [(_BlastDoorLPLinkMetadata *)self contentImagesMetadata];
-  if (!v105 || (v106 = v105, [v181 contentImagesMetadata], v107 = objc_claimAutoreleasedReturnValue(), v107, v106, v107))
+  contentImagesMetadata = [(_BlastDoorLPLinkMetadata *)self contentImagesMetadata];
+  if (!contentImagesMetadata || (v106 = contentImagesMetadata, [fromCopy contentImagesMetadata], v107 = objc_claimAutoreleasedReturnValue(), v107, v106, v107))
   {
-    v108 = [v181 contentImagesMetadata];
-    [(_BlastDoorLPLinkMetadata *)self setContentImagesMetadata:v108];
+    contentImagesMetadata2 = [fromCopy contentImagesMetadata];
+    [(_BlastDoorLPLinkMetadata *)self setContentImagesMetadata:contentImagesMetadata2];
   }
 
-  v109 = [(_BlastDoorLPLinkMetadata *)self video];
-  if (!v109 || (v110 = v109, [v181 video], v111 = objc_claimAutoreleasedReturnValue(), v111, v110, v111))
+  video = [(_BlastDoorLPLinkMetadata *)self video];
+  if (!video || (v110 = video, [fromCopy video], v111 = objc_claimAutoreleasedReturnValue(), v111, v110, v111))
   {
-    v112 = [v181 video];
-    [(_BlastDoorLPLinkMetadata *)self setVideo:v112];
+    video2 = [fromCopy video];
+    [(_BlastDoorLPLinkMetadata *)self setVideo:video2];
   }
 
-  v113 = [(_BlastDoorLPLinkMetadata *)self videoMetadata];
-  if (!v113 || (v114 = v113, [v181 videoMetadata], v115 = objc_claimAutoreleasedReturnValue(), v115, v114, v115))
+  videoMetadata = [(_BlastDoorLPLinkMetadata *)self videoMetadata];
+  if (!videoMetadata || (v114 = videoMetadata, [fromCopy videoMetadata], v115 = objc_claimAutoreleasedReturnValue(), v115, v114, v115))
   {
-    v116 = [v181 videoMetadata];
-    [(_BlastDoorLPLinkMetadata *)self setVideoMetadata:v116];
+    videoMetadata2 = [fromCopy videoMetadata];
+    [(_BlastDoorLPLinkMetadata *)self setVideoMetadata:videoMetadata2];
   }
 
-  v117 = [(_BlastDoorLPLinkMetadata *)self audio];
-  if (!v117 || (v118 = v117, [v181 audio], v119 = objc_claimAutoreleasedReturnValue(), v119, v118, v119))
+  audio = [(_BlastDoorLPLinkMetadata *)self audio];
+  if (!audio || (v118 = audio, [fromCopy audio], v119 = objc_claimAutoreleasedReturnValue(), v119, v118, v119))
   {
-    v120 = [v181 audio];
-    [(_BlastDoorLPLinkMetadata *)self setAudio:v120];
+    audio2 = [fromCopy audio];
+    [(_BlastDoorLPLinkMetadata *)self setAudio:audio2];
   }
 
-  v121 = [(_BlastDoorLPLinkMetadata *)self audioMetadata];
-  if (!v121 || (v122 = v121, [v181 audioMetadata], v123 = objc_claimAutoreleasedReturnValue(), v123, v122, v123))
+  audioMetadata = [(_BlastDoorLPLinkMetadata *)self audioMetadata];
+  if (!audioMetadata || (v122 = audioMetadata, [fromCopy audioMetadata], v123 = objc_claimAutoreleasedReturnValue(), v123, v122, v123))
   {
-    v124 = [v181 audioMetadata];
-    [(_BlastDoorLPLinkMetadata *)self setAudioMetadata:v124];
+    audioMetadata2 = [fromCopy audioMetadata];
+    [(_BlastDoorLPLinkMetadata *)self setAudioMetadata:audioMetadata2];
   }
 
-  v125 = [(_BlastDoorLPLinkMetadata *)self icons];
-  if (!v125 || (v126 = v125, [v181 icons], v127 = objc_claimAutoreleasedReturnValue(), v127, v126, v127))
+  icons = [(_BlastDoorLPLinkMetadata *)self icons];
+  if (!icons || (v126 = icons, [fromCopy icons], v127 = objc_claimAutoreleasedReturnValue(), v127, v126, v127))
   {
-    v128 = [v181 icons];
-    v129 = [v128 copy];
+    icons2 = [fromCopy icons];
+    v129 = [icons2 copy];
     [(_BlastDoorLPLinkMetadata *)self setIcons:v129];
   }
 
-  v130 = [(_BlastDoorLPLinkMetadata *)self arAssets];
-  if (!v130 || (v131 = v130, [v181 arAssets], v132 = objc_claimAutoreleasedReturnValue(), v132, v131, v132))
+  arAssets = [(_BlastDoorLPLinkMetadata *)self arAssets];
+  if (!arAssets || (v131 = arAssets, [fromCopy arAssets], v132 = objc_claimAutoreleasedReturnValue(), v132, v131, v132))
   {
-    v133 = [v181 arAssets];
-    v134 = [v133 copy];
+    arAssets2 = [fromCopy arAssets];
+    v134 = [arAssets2 copy];
     [(_BlastDoorLPLinkMetadata *)self setArAssets:v134];
   }
 
-  v135 = [(_BlastDoorLPLinkMetadata *)self images];
-  if (!v135 || (v136 = v135, [v181 images], v137 = objc_claimAutoreleasedReturnValue(), v137, v136, v137))
+  images = [(_BlastDoorLPLinkMetadata *)self images];
+  if (!images || (v136 = images, [fromCopy images], v137 = objc_claimAutoreleasedReturnValue(), v137, v136, v137))
   {
-    v138 = [v181 images];
-    v139 = [v138 copy];
+    images2 = [fromCopy images];
+    v139 = [images2 copy];
     [(_BlastDoorLPLinkMetadata *)self setImages:v139];
   }
 
-  v140 = [(_BlastDoorLPLinkMetadata *)self alternateImages];
-  if (!v140 || (v141 = v140, [v181 alternateImages], v142 = objc_claimAutoreleasedReturnValue(), v142, v141, v142))
+  alternateImages = [(_BlastDoorLPLinkMetadata *)self alternateImages];
+  if (!alternateImages || (v141 = alternateImages, [fromCopy alternateImages], v142 = objc_claimAutoreleasedReturnValue(), v142, v141, v142))
   {
-    v143 = [v181 alternateImages];
-    v144 = [v143 copy];
+    alternateImages2 = [fromCopy alternateImages];
+    v144 = [alternateImages2 copy];
     [(_BlastDoorLPLinkMetadata *)self setAlternateImages:v144];
   }
 
-  v145 = [(_BlastDoorLPLinkMetadata *)self availableContentImages];
-  if (!v145 || (v146 = v145, [v181 availableContentImages], v147 = objc_claimAutoreleasedReturnValue(), v147, v146, v147))
+  availableContentImages = [(_BlastDoorLPLinkMetadata *)self availableContentImages];
+  if (!availableContentImages || (v146 = availableContentImages, [fromCopy availableContentImages], v147 = objc_claimAutoreleasedReturnValue(), v147, v146, v147))
   {
-    v148 = [v181 availableContentImages];
-    v149 = [v148 copy];
+    availableContentImages2 = [fromCopy availableContentImages];
+    v149 = [availableContentImages2 copy];
     [(_BlastDoorLPLinkMetadata *)self setAvailableContentImages:v149];
   }
 
-  v150 = [(_BlastDoorLPLinkMetadata *)self videos];
-  if (!v150 || (v151 = v150, [v181 videos], v152 = objc_claimAutoreleasedReturnValue(), v152, v151, v152))
+  videos = [(_BlastDoorLPLinkMetadata *)self videos];
+  if (!videos || (v151 = videos, [fromCopy videos], v152 = objc_claimAutoreleasedReturnValue(), v152, v151, v152))
   {
-    v153 = [v181 videos];
-    v154 = [v153 copy];
+    videos2 = [fromCopy videos];
+    v154 = [videos2 copy];
     [(_BlastDoorLPLinkMetadata *)self setVideos:v154];
   }
 
-  v155 = [(_BlastDoorLPLinkMetadata *)self streamingVideos];
-  if (!v155 || (v156 = v155, [v181 streamingVideos], v157 = objc_claimAutoreleasedReturnValue(), v157, v156, v157))
+  streamingVideos = [(_BlastDoorLPLinkMetadata *)self streamingVideos];
+  if (!streamingVideos || (v156 = streamingVideos, [fromCopy streamingVideos], v157 = objc_claimAutoreleasedReturnValue(), v157, v156, v157))
   {
-    v158 = [v181 streamingVideos];
-    v159 = [v158 copy];
+    streamingVideos2 = [fromCopy streamingVideos];
+    v159 = [streamingVideos2 copy];
     [(_BlastDoorLPLinkMetadata *)self setStreamingVideos:v159];
   }
 
-  v160 = [(_BlastDoorLPLinkMetadata *)self audios];
-  if (!v160 || (v161 = v160, [v181 audios], v162 = objc_claimAutoreleasedReturnValue(), v162, v161, v162))
+  audios = [(_BlastDoorLPLinkMetadata *)self audios];
+  if (!audios || (v161 = audios, [fromCopy audios], v162 = objc_claimAutoreleasedReturnValue(), v162, v161, v162))
   {
-    v163 = [v181 audios];
-    v164 = [v163 copy];
+    audios2 = [fromCopy audios];
+    v164 = [audios2 copy];
     [(_BlastDoorLPLinkMetadata *)self setAudios:v164];
   }
 
-  v165 = [(_BlastDoorLPLinkMetadata *)self associatedApplication];
-  if (!v165 || (v166 = v165, [v181 associatedApplication], v167 = objc_claimAutoreleasedReturnValue(), v167, v166, v167))
+  associatedApplication = [(_BlastDoorLPLinkMetadata *)self associatedApplication];
+  if (!associatedApplication || (v166 = associatedApplication, [fromCopy associatedApplication], v167 = objc_claimAutoreleasedReturnValue(), v167, v166, v167))
   {
-    v168 = [v181 associatedApplication];
-    v169 = [v168 copy];
+    associatedApplication2 = [fromCopy associatedApplication];
+    v169 = [associatedApplication2 copy];
     [(_BlastDoorLPLinkMetadata *)self setAssociatedApplication:v169];
   }
 
-  v170 = [(_BlastDoorLPLinkMetadata *)self collaborationMetadata];
-  if (!v170 || (v171 = v170, [v181 collaborationMetadata], v172 = objc_claimAutoreleasedReturnValue(), v172, v171, v172))
+  collaborationMetadata = [(_BlastDoorLPLinkMetadata *)self collaborationMetadata];
+  if (!collaborationMetadata || (v171 = collaborationMetadata, [fromCopy collaborationMetadata], v172 = objc_claimAutoreleasedReturnValue(), v172, v171, v172))
   {
-    v173 = [v181 collaborationMetadata];
-    v174 = [v173 copy];
+    collaborationMetadata2 = [fromCopy collaborationMetadata];
+    v174 = [collaborationMetadata2 copy];
     [(_BlastDoorLPLinkMetadata *)self setCollaborationMetadata:v174];
   }
 
-  v175 = [(_BlastDoorLPLinkMetadata *)self specialization];
-  if (!v175 || (v176 = v175, [v181 specialization], v177 = objc_claimAutoreleasedReturnValue(), v177, v176, v178 = v181, v177))
+  specialization = [(_BlastDoorLPLinkMetadata *)self specialization];
+  if (!specialization || (v176 = specialization, [fromCopy specialization], v177 = objc_claimAutoreleasedReturnValue(), v177, v176, v178 = fromCopy, v177))
   {
-    v179 = [v181 specialization];
-    v180 = [v179 copy];
+    specialization2 = [fromCopy specialization];
+    v180 = [specialization2 copy];
     [(_BlastDoorLPLinkMetadata *)self setSpecialization:v180];
 
-    v178 = v181;
+    v178 = fromCopy;
   }
 }
 
-- (void)_copyPropertiesFrom:(id)a3 onlyUpgradeFields:(BOOL)a4
+- (void)_copyPropertiesFrom:(id)from onlyUpgradeFields:(BOOL)fields
 {
-  v4 = a4;
-  v6 = a3;
-  v69 = v6;
-  if (v4)
+  fieldsCopy = fields;
+  fromCopy = from;
+  v69 = fromCopy;
+  if (fieldsCopy)
   {
-    [(_BlastDoorLPLinkMetadata *)self _copyPropertiesOnlyUpgradingFieldsFrom:v6];
+    [(_BlastDoorLPLinkMetadata *)self _copyPropertiesOnlyUpgradingFieldsFrom:fromCopy];
     v7 = v69;
   }
 
   else
   {
-    self->_version = [v6 version];
-    v8 = [v69 originalURL];
-    [(_BlastDoorLPLinkMetadata *)self setOriginalURL:v8];
+    self->_version = [fromCopy version];
+    originalURL = [v69 originalURL];
+    [(_BlastDoorLPLinkMetadata *)self setOriginalURL:originalURL];
 
     v9 = [v69 URL];
     [(_BlastDoorLPLinkMetadata *)self setURL:v9];
 
-    v10 = [v69 title];
-    v11 = [v10 copy];
+    title = [v69 title];
+    v11 = [title copy];
     [(_BlastDoorLPLinkMetadata *)self setTitle:v11];
 
-    v12 = [v69 summary];
-    v13 = [v12 copy];
+    summary = [v69 summary];
+    v13 = [summary copy];
     [(_BlastDoorLPLinkMetadata *)self setSummary:v13];
 
-    v14 = [v69 selectedText];
-    v15 = [v14 copy];
+    selectedText = [v69 selectedText];
+    v15 = [selectedText copy];
     [(_BlastDoorLPLinkMetadata *)self setSelectedText:v15];
 
-    v16 = [v69 siteName];
-    v17 = [v16 copy];
+    siteName = [v69 siteName];
+    v17 = [siteName copy];
     [(_BlastDoorLPLinkMetadata *)self setSiteName:v17];
 
-    v18 = [v69 itemType];
-    v19 = [v18 copy];
+    itemType = [v69 itemType];
+    v19 = [itemType copy];
     [(_BlastDoorLPLinkMetadata *)self setItemType:v19];
 
-    v20 = [v69 relatedURL];
-    [(_BlastDoorLPLinkMetadata *)self setRelatedURL:v20];
+    relatedURL = [v69 relatedURL];
+    [(_BlastDoorLPLinkMetadata *)self setRelatedURL:relatedURL];
 
-    v21 = [v69 creator];
-    v22 = [v21 copy];
+    creator = [v69 creator];
+    v22 = [creator copy];
     [(_BlastDoorLPLinkMetadata *)self setCreator:v22];
 
-    v23 = [v69 creatorFacebookProfile];
-    v24 = [v23 copy];
+    creatorFacebookProfile = [v69 creatorFacebookProfile];
+    v24 = [creatorFacebookProfile copy];
     [(_BlastDoorLPLinkMetadata *)self setCreatorFacebookProfile:v24];
 
-    v25 = [v69 creatorTwitterUsername];
-    v26 = [v25 copy];
+    creatorTwitterUsername = [v69 creatorTwitterUsername];
+    v26 = [creatorTwitterUsername copy];
     [(_BlastDoorLPLinkMetadata *)self setCreatorTwitterUsername:v26];
 
-    v27 = [v69 twitterCard];
-    v28 = [v27 copy];
+    twitterCard = [v69 twitterCard];
+    v28 = [twitterCard copy];
     [(_BlastDoorLPLinkMetadata *)self setTwitterCard:v28];
 
     -[_BlastDoorLPLinkMetadata setUsesActivityPub:](self, "setUsesActivityPub:", [v69 usesActivityPub]);
-    v29 = [v69 appleContentID];
-    v30 = [v29 copy];
+    appleContentID = [v69 appleContentID];
+    v30 = [appleContentID copy];
     [(_BlastDoorLPLinkMetadata *)self setAppleContentID:v30];
 
-    v31 = [v69 appleSummary];
-    v32 = [v31 copy];
+    appleSummary = [v69 appleSummary];
+    v32 = [appleSummary copy];
     [(_BlastDoorLPLinkMetadata *)self setAppleSummary:v32];
 
-    v33 = [v69 themeColor];
-    v34 = [v33 copy];
+    themeColor = [v69 themeColor];
+    v34 = [themeColor copy];
     [(_BlastDoorLPLinkMetadata *)self setThemeColor:v34];
 
-    v35 = [v69 icon];
-    [(_BlastDoorLPLinkMetadata *)self setIcon:v35];
+    icon = [v69 icon];
+    [(_BlastDoorLPLinkMetadata *)self setIcon:icon];
 
-    v36 = [v69 iconMetadata];
-    [(_BlastDoorLPLinkMetadata *)self setIconMetadata:v36];
+    iconMetadata = [v69 iconMetadata];
+    [(_BlastDoorLPLinkMetadata *)self setIconMetadata:iconMetadata];
 
-    v37 = [v69 arAsset];
-    [(_BlastDoorLPLinkMetadata *)self setArAsset:v37];
+    arAsset = [v69 arAsset];
+    [(_BlastDoorLPLinkMetadata *)self setArAsset:arAsset];
 
-    v38 = [v69 arAssetMetadata];
-    [(_BlastDoorLPLinkMetadata *)self setArAssetMetadata:v38];
+    arAssetMetadata = [v69 arAssetMetadata];
+    [(_BlastDoorLPLinkMetadata *)self setArAssetMetadata:arAssetMetadata];
 
-    v39 = [v69 image];
-    [(_BlastDoorLPLinkMetadata *)self setImage:v39];
+    image = [v69 image];
+    [(_BlastDoorLPLinkMetadata *)self setImage:image];
 
-    v40 = [v69 imageMetadata];
-    [(_BlastDoorLPLinkMetadata *)self setImageMetadata:v40];
+    imageMetadata = [v69 imageMetadata];
+    [(_BlastDoorLPLinkMetadata *)self setImageMetadata:imageMetadata];
 
-    v41 = [v69 contentImages];
-    [(_BlastDoorLPLinkMetadata *)self setContentImages:v41];
+    contentImages = [v69 contentImages];
+    [(_BlastDoorLPLinkMetadata *)self setContentImages:contentImages];
 
-    v42 = [v69 contentImagesMetadata];
-    [(_BlastDoorLPLinkMetadata *)self setContentImagesMetadata:v42];
+    contentImagesMetadata = [v69 contentImagesMetadata];
+    [(_BlastDoorLPLinkMetadata *)self setContentImagesMetadata:contentImagesMetadata];
 
-    v43 = [v69 video];
-    [(_BlastDoorLPLinkMetadata *)self setVideo:v43];
+    video = [v69 video];
+    [(_BlastDoorLPLinkMetadata *)self setVideo:video];
 
-    v44 = [v69 videoMetadata];
-    [(_BlastDoorLPLinkMetadata *)self setVideoMetadata:v44];
+    videoMetadata = [v69 videoMetadata];
+    [(_BlastDoorLPLinkMetadata *)self setVideoMetadata:videoMetadata];
 
-    v45 = [v69 audio];
-    [(_BlastDoorLPLinkMetadata *)self setAudio:v45];
+    audio = [v69 audio];
+    [(_BlastDoorLPLinkMetadata *)self setAudio:audio];
 
-    v46 = [v69 audioMetadata];
-    [(_BlastDoorLPLinkMetadata *)self setAudioMetadata:v46];
+    audioMetadata = [v69 audioMetadata];
+    [(_BlastDoorLPLinkMetadata *)self setAudioMetadata:audioMetadata];
 
-    v47 = [v69 icons];
-    v48 = [v47 copy];
+    icons = [v69 icons];
+    v48 = [icons copy];
     [(_BlastDoorLPLinkMetadata *)self setIcons:v48];
 
-    v49 = [v69 arAssets];
-    v50 = [v49 copy];
+    arAssets = [v69 arAssets];
+    v50 = [arAssets copy];
     [(_BlastDoorLPLinkMetadata *)self setArAssets:v50];
 
-    v51 = [v69 images];
-    v52 = [v51 copy];
+    images = [v69 images];
+    v52 = [images copy];
     [(_BlastDoorLPLinkMetadata *)self setImages:v52];
 
-    v53 = [v69 alternateImages];
-    v54 = [v53 copy];
+    alternateImages = [v69 alternateImages];
+    v54 = [alternateImages copy];
     [(_BlastDoorLPLinkMetadata *)self setAlternateImages:v54];
 
-    v55 = [v69 availableContentImages];
-    v56 = [v55 copy];
+    availableContentImages = [v69 availableContentImages];
+    v56 = [availableContentImages copy];
     [(_BlastDoorLPLinkMetadata *)self setAvailableContentImages:v56];
 
-    v57 = [v69 videos];
-    v58 = [v57 copy];
+    videos = [v69 videos];
+    v58 = [videos copy];
     [(_BlastDoorLPLinkMetadata *)self setVideos:v58];
 
-    v59 = [v69 streamingVideos];
-    v60 = [v59 copy];
+    streamingVideos = [v69 streamingVideos];
+    v60 = [streamingVideos copy];
     [(_BlastDoorLPLinkMetadata *)self setStreamingVideos:v60];
 
-    v61 = [v69 audios];
-    v62 = [v61 copy];
+    audios = [v69 audios];
+    v62 = [audios copy];
     [(_BlastDoorLPLinkMetadata *)self setAudios:v62];
 
-    v63 = [v69 associatedApplication];
-    v64 = [v63 copy];
+    associatedApplication = [v69 associatedApplication];
+    v64 = [associatedApplication copy];
     [(_BlastDoorLPLinkMetadata *)self setAssociatedApplication:v64];
 
-    v65 = [v69 collaborationMetadata];
-    v66 = [v65 copy];
+    collaborationMetadata = [v69 collaborationMetadata];
+    v66 = [collaborationMetadata copy];
     [(_BlastDoorLPLinkMetadata *)self setCollaborationMetadata:v66];
 
-    v67 = [v69 specialization];
+    specialization = [v69 specialization];
 
-    v68 = [v67 copy];
+    v68 = [specialization copy];
     [(_BlastDoorLPLinkMetadata *)self setSpecialization:v68];
 
-    v7 = v67;
+    v7 = specialization;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v19[11] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 encodeInt32:self->_version forKey:@"version"];
-  [v4 _bd_lp_encodeURLIfNotNilOrLocalFile:self->_originalURL forKey:@"originalURL"];
-  [v4 _bd_lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_title forKey:@"title"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_summary forKey:@"summary"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_selectedText forKey:@"selection"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_siteName forKey:@"siteName"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_itemType forKey:@"itemType"];
-  [v4 _bd_lp_encodeURLIfNotNilOrLocalFile:self->_relatedURL forKey:@"relatedURL"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_creator forKey:@"creator"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_creatorFacebookProfile forKey:@"creatorFacebookProfile"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_creatorTwitterUsername forKey:@"creatorTwitterUsername"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_twitterCard forKey:@"twitterCard"];
-  [v4 encodeBool:self->_usesActivityPub forKey:@"usesActivityPub"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_appleContentID forKey:@"appleContentID"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_appleSummary forKey:@"appleSummary"];
-  [v4 _bd_lp_encodeColorIfNotNil:self->_themeColor forKey:@"themeColor"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_icon forKey:@"icon"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_iconMetadata forKey:@"iconMetadata"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_arAsset forKey:@"arAsset"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_arAssetMetadata forKey:@"arAssetMetadata"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_image forKey:@"image"];
-  [v4 _bd_lp_encodeArrayIfNotEmpty:self->_alternateImages forKey:@"alternateImages"];
-  [v4 _bd_lp_encodeArrayIfNotEmpty:self->_contentImages forKey:@"contentImages"];
-  [v4 _bd_lp_encodeArrayIfNotEmpty:self->_contentImagesMetadata forKey:@"contentImagesMetadata"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_imageMetadata forKey:@"imageMetadata"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_video forKey:@"video"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_videoMetadata forKey:@"videoMetadata"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_audio forKey:@"audio"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_audioMetadata forKey:@"audioMetadata"];
-  [v4 _bd_lp_encodeArrayIfNotEmpty:self->_icons forKey:@"icons"];
-  [v4 _bd_lp_encodeArrayIfNotEmpty:self->_images forKey:@"images"];
-  [v4 _bd_lp_encodeArrayIfNotEmpty:self->_availableContentImages forKey:@"availableContentImages"];
-  [v4 _bd_lp_encodeArrayIfNotEmpty:self->_videos forKey:@"videos"];
-  [v4 _bd_lp_encodeArrayIfNotEmpty:self->_streamingVideos forKey:@"streamingVideos"];
-  [v4 _bd_lp_encodeArrayIfNotEmpty:self->_audios forKey:@"audios"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_associatedApplication forKey:@"associatedApplication"];
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_collaborationMetadata forKey:@"collaborationMetadata"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:self->_version forKey:@"version"];
+  [coderCopy _bd_lp_encodeURLIfNotNilOrLocalFile:self->_originalURL forKey:@"originalURL"];
+  [coderCopy _bd_lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_title forKey:@"title"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_summary forKey:@"summary"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_selectedText forKey:@"selection"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_siteName forKey:@"siteName"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_itemType forKey:@"itemType"];
+  [coderCopy _bd_lp_encodeURLIfNotNilOrLocalFile:self->_relatedURL forKey:@"relatedURL"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_creator forKey:@"creator"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_creatorFacebookProfile forKey:@"creatorFacebookProfile"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_creatorTwitterUsername forKey:@"creatorTwitterUsername"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_twitterCard forKey:@"twitterCard"];
+  [coderCopy encodeBool:self->_usesActivityPub forKey:@"usesActivityPub"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_appleContentID forKey:@"appleContentID"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_appleSummary forKey:@"appleSummary"];
+  [coderCopy _bd_lp_encodeColorIfNotNil:self->_themeColor forKey:@"themeColor"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_icon forKey:@"icon"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_iconMetadata forKey:@"iconMetadata"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_arAsset forKey:@"arAsset"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_arAssetMetadata forKey:@"arAssetMetadata"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_image forKey:@"image"];
+  [coderCopy _bd_lp_encodeArrayIfNotEmpty:self->_alternateImages forKey:@"alternateImages"];
+  [coderCopy _bd_lp_encodeArrayIfNotEmpty:self->_contentImages forKey:@"contentImages"];
+  [coderCopy _bd_lp_encodeArrayIfNotEmpty:self->_contentImagesMetadata forKey:@"contentImagesMetadata"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_imageMetadata forKey:@"imageMetadata"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_video forKey:@"video"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_videoMetadata forKey:@"videoMetadata"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_audio forKey:@"audio"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_audioMetadata forKey:@"audioMetadata"];
+  [coderCopy _bd_lp_encodeArrayIfNotEmpty:self->_icons forKey:@"icons"];
+  [coderCopy _bd_lp_encodeArrayIfNotEmpty:self->_images forKey:@"images"];
+  [coderCopy _bd_lp_encodeArrayIfNotEmpty:self->_availableContentImages forKey:@"availableContentImages"];
+  [coderCopy _bd_lp_encodeArrayIfNotEmpty:self->_videos forKey:@"videos"];
+  [coderCopy _bd_lp_encodeArrayIfNotEmpty:self->_streamingVideos forKey:@"streamingVideos"];
+  [coderCopy _bd_lp_encodeArrayIfNotEmpty:self->_audios forKey:@"audios"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_associatedApplication forKey:@"associatedApplication"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_collaborationMetadata forKey:@"collaborationMetadata"];
   v5 = self->_specialization;
   v19[0] = objc_opt_class();
   v19[1] = objc_opt_class();
@@ -1247,18 +1247,18 @@ LABEL_3:
 
   v12 = @"specialization2";
 LABEL_11:
-  [v4 _bd_lp_encodeObjectIfNotNil:self->_specialization forKey:v12];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_specialization forKey:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v48.receiver = self;
   v48.super_class = _BlastDoorLPLinkMetadata;
-  if ([(_BlastDoorLPLinkMetadata *)&v48 isEqual:v4])
+  if ([(_BlastDoorLPLinkMetadata *)&v48 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -1268,7 +1268,7 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6;
       if (*(v6 + 3) != self->_version)
       {
@@ -1497,13 +1497,13 @@ LABEL_83:
   return v5;
 }
 
-+ (_BlastDoorLPLinkMetadata)metadataWithDataRepresentation:(id)a3
++ (_BlastDoorLPLinkMetadata)metadataWithDataRepresentation:(id)representation
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length] <= 0xA00000)
+  representationCopy = representation;
+  if ([representationCopy length] <= 0xA00000)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v3 error:0];
+    v5 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:representationCopy error:0];
     [v5 _enableStrictSecureDecodingMode];
     [v5 setDecodingFailurePolicy:1];
     v6 = objc_opt_class();
@@ -1537,9 +1537,9 @@ LABEL_83:
 {
   v3 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
   [v3 encodeObject:self forKey:*MEMORY[0x277CCA308]];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
 - (unint64_t)_encodedSize
@@ -1579,12 +1579,12 @@ LABEL_83:
     v6 = 0;
   }
 
-  v9 = [(_BlastDoorLPImage *)self->_icon _encodedSize];
-  v10 = [(_BlastDoorLPImage *)self->_image _encodedSize];
-  v11 = [(_BlastDoorLPVideo *)self->_video _encodedSize];
-  v12 = [(_BlastDoorLPAudio *)self->_audio _encodedSize];
+  _encodedSize = [(_BlastDoorLPImage *)self->_icon _encodedSize];
+  _encodedSize2 = [(_BlastDoorLPImage *)self->_image _encodedSize];
+  _encodedSize3 = [(_BlastDoorLPVideo *)self->_video _encodedSize];
+  _encodedSize4 = [(_BlastDoorLPAudio *)self->_audio _encodedSize];
   v13 = *MEMORY[0x277D85DE8];
-  return v9 + v6 + v10 + v11 + v12;
+  return _encodedSize + v6 + _encodedSize2 + _encodedSize3 + _encodedSize4;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface ViewLayout
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation ViewLayout
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   sub_1E3C3B19C(v5);

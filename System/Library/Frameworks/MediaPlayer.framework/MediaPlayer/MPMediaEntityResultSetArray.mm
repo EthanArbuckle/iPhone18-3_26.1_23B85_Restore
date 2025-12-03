@@ -1,12 +1,12 @@
 @interface MPMediaEntityResultSetArray
 - (BOOL)isQueryResultSetInvalidated;
-- (MPMediaEntityResultSetArray)initWithResultSet:(id)a3 queryCriteria:(id)a4 entityType:(int64_t)a5 library:(id)a6;
-- (id)objectAtIndex:(unint64_t)a3;
+- (MPMediaEntityResultSetArray)initWithResultSet:(id)set queryCriteria:(id)criteria entityType:(int64_t)type library:(id)library;
+- (id)objectAtIndex:(unint64_t)index;
 @end
 
 @implementation MPMediaEntityResultSetArray
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v7 = 0;
   v8 = &v7;
@@ -19,7 +19,7 @@
   v6[1] = 3221225472;
   v6[2] = __45__MPMediaEntityResultSetArray_objectAtIndex___block_invoke;
   v6[3] = &unk_1E76799F8;
-  v6[6] = a3;
+  v6[6] = index;
   v6[7] = a2;
   v6[4] = self;
   v6[5] = &v7;
@@ -117,21 +117,21 @@ LABEL_14:
   return revision != [(MPMediaLibraryResultSet *)self->_resultSet localRevision];
 }
 
-- (MPMediaEntityResultSetArray)initWithResultSet:(id)a3 queryCriteria:(id)a4 entityType:(int64_t)a5 library:(id)a6
+- (MPMediaEntityResultSetArray)initWithResultSet:(id)set queryCriteria:(id)criteria entityType:(int64_t)type library:(id)library
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  setCopy = set;
+  criteriaCopy = criteria;
+  libraryCopy = library;
   v31.receiver = self;
   v31.super_class = MPMediaEntityResultSetArray;
   v14 = [(MPMediaEntityResultSetArray *)&v31 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_resultSet, a3);
-    v16 = v12;
+    objc_storeStrong(&v14->_resultSet, set);
+    v16 = criteriaCopy;
     v17 = v16;
-    if (a5)
+    if (type)
     {
       [v16 groupingType];
     }
@@ -140,8 +140,8 @@ LABEL_14:
 
     v19 = v18;
     v15->_entityClass = v18;
-    objc_storeWeak(&v15->_library, v13);
-    objc_storeStrong(&v15->_queryCriteria, a4);
+    objc_storeWeak(&v15->_library, libraryCopy);
+    objc_storeStrong(&v15->_queryCriteria, criteria);
     v20 = objc_alloc_init(MPMediaQueryMutableSectionInfo);
     resultSet = v15->_resultSet;
     v29[0] = MEMORY[0x1E69E9820];
@@ -151,8 +151,8 @@ LABEL_14:
     v22 = v20;
     v30 = v22;
     [(MPMediaLibraryResultSet *)resultSet enumerateSectionHeadersUsingBlock:v29];
-    v23 = [(MPMediaLibraryResultSet *)v15->_resultSet sectionIndexTitles];
-    [(MPMediaQuerySectionInfo *)v22 setSectionIndexTitles:v23];
+    sectionIndexTitles = [(MPMediaLibraryResultSet *)v15->_resultSet sectionIndexTitles];
+    [(MPMediaQuerySectionInfo *)v22 setSectionIndexTitles:sectionIndexTitles];
 
     sectionInfo = v15->_sectionInfo;
     v15->_sectionInfo = &v22->super;

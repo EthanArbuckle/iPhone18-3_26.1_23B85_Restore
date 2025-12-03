@@ -1,17 +1,17 @@
 @interface FMDDaemon
 + (id)sharedInstance;
 - (FMDDaemon)init;
-- (id)apsHandlerForEnvironment:(id)a3;
+- (id)apsHandlerForEnvironment:(id)environment;
 - (id)xpcDarwinEventHandlers;
 - (id)xpcDistributedEventHandlers;
 - (void)_performPostStartupTasks;
-- (void)_startupNowWithCompletion:(id)a3;
+- (void)_startupNowWithCompletion:(id)completion;
 - (void)calculateFirstRunStatus;
 - (void)checkInAllAPSHandlers;
 - (void)cleanupPostWipe;
 - (void)initialLaunchProcessing;
 - (void)migrateAosnotifydStuff;
-- (void)migrateFromVersion:(id)a3 toVersion:(id)a4;
+- (void)migrateFromVersion:(id)version toVersion:(id)toVersion;
 - (void)startServiceProviders;
 - (void)versionCheck;
 - (void)waitForSpringBoard;
@@ -49,16 +49,16 @@
     v7 = objc_alloc_init(FMStateCapture);
     [(FMDDaemon *)v2 setStateCapture:v7];
 
-    v8 = [(FMDDaemon *)v2 stateCapture];
-    [v8 setStateCaptureBlock:&stru_1002CDA20];
+    stateCapture = [(FMDDaemon *)v2 stateCapture];
+    [stateCapture setStateCaptureBlock:&stru_1002CDA20];
   }
 
   return v2;
 }
 
-- (void)_startupNowWithCompletion:(id)a3
+- (void)_startupNowWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(FMDDaemon *)self migrateAosnotifydStuff];
   v5 = +[FMDFMIPSharedStateManager sharedInstance];
   [v5 recalculateLostMode];
@@ -90,9 +90,9 @@
   if ([v11 isInternalBuild])
   {
     v12 = +[FMDSystemConfig sharedInstance];
-    v13 = [v12 isRunningInRecovery];
+    isRunningInRecovery = [v12 isRunningInRecovery];
 
-    if (v13)
+    if (isRunningInRecovery)
     {
       goto LABEL_12;
     }
@@ -118,9 +118,9 @@ LABEL_12:
   [(FMDDaemon *)self startServiceProviders];
   v16 = +[FMXPCTransactionManager sharedInstance];
   v17 = +[FMNetworkMonitor sharedInstance];
-  v18 = [v17 isMonitoring];
+  isMonitoring = [v17 isMonitoring];
 
-  if ((v18 & 1) == 0)
+  if ((isMonitoring & 1) == 0)
   {
     v19 = +[FMNetworkMonitor sharedInstance];
     [v19 startMonitoring];
@@ -129,21 +129,21 @@ LABEL_12:
   [(FMDDaemon *)self cleanupPostWipe];
   [(FMDDaemon *)self setStartupComplete:1];
   [(FMDDaemon *)self checkInAllAPSHandlers];
-  v20 = [(FMDDaemon *)self apsHandlersModQueue];
+  apsHandlersModQueue = [(FMDDaemon *)self apsHandlersModQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10013BDF4;
   block[3] = &unk_1002CD4C8;
   block[4] = self;
-  dispatch_sync(v20, block);
+  dispatch_sync(apsHandlersModQueue, block);
 
   v21 = +[FMDXPCManager sharedInstance];
   [v21 initializeXPC];
 
   [(FMDDaemon *)self _performPostStartupTasks];
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   v22 = [[FMDEventLoggerEventLaunch alloc] initWithEventName:@"FMDDaemonLaunchEvent"];
@@ -182,26 +182,26 @@ LABEL_12:
   [v3 enumerateObjectsUsingBlock:v4];
 }
 
-- (id)apsHandlerForEnvironment:(id)a3
+- (id)apsHandlerForEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_10000A9B4;
   v16 = sub_100002AA4;
   v17 = 0;
-  if (v4)
+  if (environmentCopy)
   {
-    v5 = [(FMDDaemon *)self apsHandlersModQueue];
+    apsHandlersModQueue = [(FMDDaemon *)self apsHandlersModQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10013C264;
     block[3] = &unk_1002CDA70;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
-    dispatch_sync(v5, block);
+    v10 = environmentCopy;
+    dispatch_sync(apsHandlersModQueue, block);
   }
 
   else
@@ -224,20 +224,20 @@ LABEL_12:
   v3 = objc_alloc_init(FMDFMIPServiceProvider);
   [(FMDDaemon *)self setActiveServiceProvider:v3];
 
-  v4 = [(FMDDaemon *)self activeServiceProvider];
-  [v4 start];
+  activeServiceProvider = [(FMDDaemon *)self activeServiceProvider];
+  [activeServiceProvider start];
 
   v5 = +[FMDAppleAccountManager sharedInstance];
   [v5 syncFMIPAccountInfo];
 
-  v6 = [(FMDDaemon *)self activeServiceProvider];
-  v7 = [v6 newLocationManager];
+  activeServiceProvider2 = [(FMDDaemon *)self activeServiceProvider];
+  newLocationManager = [activeServiceProvider2 newLocationManager];
 
   v8 = sub_100002880();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = v7;
+    v10 = newLocationManager;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Started Location Manager (handling launch event) %p", &v9, 0xCu);
   }
 }
@@ -269,14 +269,14 @@ LABEL_12:
 - (void)versionCheck
 {
   v3 = +[FMDSystemConfig sharedInstance];
-  v4 = [v3 buildVersion];
+  buildVersion = [v3 buildVersion];
 
   v5 = +[FMDSystemConfig sharedInstance];
-  v6 = [v5 isRunningInRecovery];
+  isRunningInRecovery = [v5 isRunningInRecovery];
 
   v7 = sub_100002880();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isRunningInRecovery)
   {
     if (!v8)
     {
@@ -284,7 +284,7 @@ LABEL_12:
     }
 
     *v12 = 138412290;
-    *&v12[4] = v4;
+    *&v12[4] = buildVersion;
     v9 = "OS: %@ [Recovery Partition]";
   }
 
@@ -296,7 +296,7 @@ LABEL_12:
     }
 
     *v12 = 138412290;
-    *&v12[4] = v4;
+    *&v12[4] = buildVersion;
     v9 = "OS: %@";
   }
 
@@ -307,9 +307,9 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    if (([v10 isEqualToString:v4] & 1) == 0)
+    if (([v10 isEqualToString:buildVersion] & 1) == 0)
     {
-      [(FMDDaemon *)self migrateFromVersion:v11 toVersion:v4];
+      [(FMDDaemon *)self migrateFromVersion:v11 toVersion:buildVersion];
     }
   }
 
@@ -318,7 +318,7 @@ LABEL_7:
     [(FMDDaemon *)self initialLaunchProcessing];
   }
 
-  [FMDPreferencesMgr setLastLaunchVersion:v4, *v12];
+  [FMDPreferencesMgr setLastLaunchVersion:buildVersion, *v12];
 }
 
 - (void)initialLaunchProcessing
@@ -331,11 +331,11 @@ LABEL_7:
   }
 }
 
-- (void)migrateFromVersion:(id)a3 toVersion:(id)a4
+- (void)migrateFromVersion:(id)version toVersion:(id)toVersion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 compare:v6];
+  versionCopy = version;
+  toVersionCopy = toVersion;
+  v7 = [versionCopy compare:toVersionCopy];
   v8 = sub_100002880();
   v9 = v8;
   if (v7 == 1)
@@ -343,9 +343,9 @@ LABEL_7:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = v5;
+      v17 = versionCopy;
       v18 = 2112;
-      v19 = v6;
+      v19 = toVersionCopy;
       v12 = "Back-migration from %@ to %@";
       v13 = v9;
       v14 = 22;
@@ -370,13 +370,13 @@ LABEL_14:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = v5;
+    v17 = versionCopy;
     v18 = 2112;
-    v19 = v6;
+    v19 = toVersionCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Migrating from %@ to %@", buf, 0x16u);
   }
 
-  if ([@"12A196" compare:v5] != -1)
+  if ([@"12A196" compare:versionCopy] != -1)
   {
     v10 = +[NSFileManager defaultManager];
     v15 = 0;
@@ -540,15 +540,15 @@ LABEL_16:
 - (void)cleanupPostWipe
 {
   v2 = +[FMDSystemConfig sharedInstance];
-  v3 = [v2 isBuddyDone];
+  isBuddyDone = [v2 isBuddyDone];
 
-  if (v3)
+  if (isBuddyDone)
   {
     v4 = [FMPreferencesUtil dictionaryForKey:@"FMIPWipeLostModeInfo" inDomain:kFMDPostWipePrefDomain];
     v5 = [v4 objectForKey:@"lostModeEnabled"];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
       v7 = MAEGetActivationStateWithError();
       v8 = 0;

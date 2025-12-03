@@ -1,19 +1,19 @@
 @interface _NTKCUltraCubePhotoListViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation _NTKCUltraCubePhotoListViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_NTKCFaceDetailCustomPhotosViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"_NTKCUltraCubePhotoListViewController" hasInstanceMethod:@"editor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKCompanionUltraCubePhotosEditor" hasInstanceVariable:@"_orderList" withType:"NSMutableArray"];
-  [v3 validateClass:@"NTKCompanionUltraCubePhotosEditor" hasInstanceVariable:@"_photos" withType:"NSMutableDictionary"];
-  [v3 validateClass:@"_NTKEditedUltraCubePhoto" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_NTKCFaceDetailCustomPhotosViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"_NTKCUltraCubePhotoListViewController" hasInstanceMethod:@"editor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKCompanionUltraCubePhotosEditor" hasInstanceVariable:@"_orderList" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"NTKCompanionUltraCubePhotosEditor" hasInstanceVariable:@"_photos" withType:"NSMutableDictionary"];
+  [validationsCopy validateClass:@"_NTKEditedUltraCubePhoto" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -29,24 +29,24 @@
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v22.receiver = self;
   v22.super_class = _NTKCUltraCubePhotoListViewControllerAccessibility;
-  v8 = [(_NTKCUltraCubePhotoListViewControllerAccessibility *)&v22 collectionView:v6 cellForItemAtIndexPath:v7];
+  v8 = [(_NTKCUltraCubePhotoListViewControllerAccessibility *)&v22 collectionView:viewCopy cellForItemAtIndexPath:pathCopy];
   v9 = [(_NTKCUltraCubePhotoListViewControllerAccessibility *)self safeValueForKey:@"editor"];
   v10 = [v9 safeArrayForKey:@"_orderList"];
-  v11 = [v7 item];
-  if (v11 >= [v10 count])
+  item = [pathCopy item];
+  if (item >= [v10 count])
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [v10 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+    v12 = [v10 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
   }
 
   v13 = [v9 safeDictionaryForKey:@"_photos"];
@@ -61,14 +61,14 @@
     if (v17 && v8)
     {
       [v8 setIsAccessibilityElement:1];
-      v18 = [v17 accessibilityLabel];
-      [v8 setAccessibilityLabel:v18];
+      accessibilityLabel = [v17 accessibilityLabel];
+      [v8 setAccessibilityLabel:accessibilityLabel];
 
-      v19 = [v17 accessibilityValue];
-      [v8 setAccessibilityValue:v19];
+      accessibilityValue = [v17 accessibilityValue];
+      [v8 setAccessibilityValue:accessibilityValue];
 
-      v20 = [v17 accessibilityCustomContent];
-      [v8 setAccessibilityCustomContent:v20];
+      accessibilityCustomContent = [v17 accessibilityCustomContent];
+      [v8 setAccessibilityCustomContent:accessibilityCustomContent];
 
       [v8 setAccessibilityTraits:UIAccessibilityTraitButton];
     }

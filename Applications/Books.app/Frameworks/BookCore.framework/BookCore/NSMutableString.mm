@@ -1,65 +1,65 @@
 @interface NSMutableString
-- (void)AEReplaceTemplatePlaceholder:(id)a3 withString:(id)a4;
-- (void)bkMakeSubstitutionsWithDictionary:(id)a3;
-- (void)bkReplaceTemplatePlaceholder:(id)a3 withString:(id)a4;
+- (void)AEReplaceTemplatePlaceholder:(id)placeholder withString:(id)string;
+- (void)bkMakeSubstitutionsWithDictionary:(id)dictionary;
+- (void)bkReplaceTemplatePlaceholder:(id)placeholder withString:(id)string;
 @end
 
 @implementation NSMutableString
 
-- (void)AEReplaceTemplatePlaceholder:(id)a3 withString:(id)a4
+- (void)AEReplaceTemplatePlaceholder:(id)placeholder withString:(id)string
 {
-  v12 = a4;
-  v6 = a3;
-  v7 = [(__CFString *)v12 length];
+  stringCopy = string;
+  placeholderCopy = placeholder;
+  v7 = [(__CFString *)stringCopy length];
   v8 = [(NSMutableString *)self length];
   if (v7)
   {
-    v9 = self;
-    v10 = v6;
-    v11 = v12;
+    selfCopy2 = self;
+    v10 = placeholderCopy;
+    v11 = stringCopy;
   }
 
   else
   {
     v11 = &stru_2D2930;
-    v9 = self;
-    v10 = v6;
+    selfCopy2 = self;
+    v10 = placeholderCopy;
   }
 
-  [(NSMutableString *)v9 replaceOccurrencesOfString:v10 withString:v11 options:0 range:0, v8];
+  [(NSMutableString *)selfCopy2 replaceOccurrencesOfString:v10 withString:v11 options:0 range:0, v8];
 }
 
-- (void)bkReplaceTemplatePlaceholder:(id)a3 withString:(id)a4
+- (void)bkReplaceTemplatePlaceholder:(id)placeholder withString:(id)string
 {
-  v12 = a4;
-  v6 = a3;
-  v7 = [(__CFString *)v12 length];
+  stringCopy = string;
+  placeholderCopy = placeholder;
+  v7 = [(__CFString *)stringCopy length];
   v8 = [(NSMutableString *)self length];
   if (v7)
   {
-    v9 = self;
-    v10 = v6;
-    v11 = v12;
+    selfCopy2 = self;
+    v10 = placeholderCopy;
+    v11 = stringCopy;
   }
 
   else
   {
     v11 = &stru_2D2930;
-    v9 = self;
-    v10 = v6;
+    selfCopy2 = self;
+    v10 = placeholderCopy;
   }
 
-  [(NSMutableString *)v9 replaceOccurrencesOfString:v10 withString:v11 options:0 range:0, v8];
+  [(NSMutableString *)selfCopy2 replaceOccurrencesOfString:v10 withString:v11 options:0 range:0, v8];
 }
 
-- (void)bkMakeSubstitutionsWithDictionary:(id)a3
+- (void)bkMakeSubstitutionsWithDictionary:(id)dictionary
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_D95EC;
   v3[3] = &unk_2CCDD0;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v3];
 }
 
 @end

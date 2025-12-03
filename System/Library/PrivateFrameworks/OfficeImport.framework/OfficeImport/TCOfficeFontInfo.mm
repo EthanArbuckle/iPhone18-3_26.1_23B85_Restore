@@ -1,37 +1,37 @@
 @interface TCOfficeFontInfo
-+ (id)officeFontInfoWithFullName:(id)a3 isBold:(BOOL)a4 isItalic:(BOOL)a5;
-- (TCOfficeFontInfo)initWithFullName:(id)a3 isBold:(BOOL)a4 isItalic:(BOOL)a5;
++ (id)officeFontInfoWithFullName:(id)name isBold:(BOOL)bold isItalic:(BOOL)italic;
+- (TCOfficeFontInfo)initWithFullName:(id)name isBold:(BOOL)bold isItalic:(BOOL)italic;
 - (id)description;
 - (id)officeName;
 @end
 
 @implementation TCOfficeFontInfo
 
-- (TCOfficeFontInfo)initWithFullName:(id)a3 isBold:(BOOL)a4 isItalic:(BOOL)a5
+- (TCOfficeFontInfo)initWithFullName:(id)name isBold:(BOOL)bold isItalic:(BOOL)italic
 {
-  v8 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = TCOfficeFontInfo;
   v9 = [(TCOfficeFontInfo *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [nameCopy copy];
     fullName = v9->_fullName;
     v9->_fullName = v10;
 
-    v9->_isBold = a4;
-    v9->_isItalic = a5;
+    v9->_isBold = bold;
+    v9->_isItalic = italic;
   }
 
   return v9;
 }
 
-+ (id)officeFontInfoWithFullName:(id)a3 isBold:(BOOL)a4 isItalic:(BOOL)a5
++ (id)officeFontInfoWithFullName:(id)name isBold:(BOOL)bold isItalic:(BOOL)italic
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [[a1 alloc] initWithFullName:v8 isBold:v6 isItalic:v5];
+  italicCopy = italic;
+  boldCopy = bold;
+  nameCopy = name;
+  v9 = [[self alloc] initWithFullName:nameCopy isBold:boldCopy isItalic:italicCopy];
 
   return v9;
 }
@@ -56,8 +56,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(TCOfficeFontInfo *)self fullName];
-  v5 = [v3 stringWithFormat:@"office_font={%@ B:%d I:%d}", v4, -[TCOfficeFontInfo isBold](self, "isBold"), -[TCOfficeFontInfo isItalic](self, "isItalic")];
+  fullName = [(TCOfficeFontInfo *)self fullName];
+  v5 = [v3 stringWithFormat:@"office_font={%@ B:%d I:%d}", fullName, -[TCOfficeFontInfo isBold](self, "isBold"), -[TCOfficeFontInfo isItalic](self, "isItalic")];
 
   return v5;
 }

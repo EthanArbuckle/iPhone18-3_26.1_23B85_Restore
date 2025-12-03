@@ -1,12 +1,12 @@
 @interface _MRPlaybackSessionMigratePostMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRPlaybackSessionMigratePostMessageProtobuf
@@ -17,155 +17,155 @@
   v8.receiver = self;
   v8.super_class = _MRPlaybackSessionMigratePostMessageProtobuf;
   v4 = [(_MRPlaybackSessionMigratePostMessageProtobuf *)&v8 description];
-  v5 = [(_MRPlaybackSessionMigratePostMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRPlaybackSessionMigratePostMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   request = self->_request;
   if (request)
   {
-    v5 = [(_MRPlaybackSessionMigrateRequestProtobuf *)request dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request"];
+    dictionaryRepresentation = [(_MRPlaybackSessionMigrateRequestProtobuf *)request dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"request"];
   }
 
   playerPath = self->_playerPath;
   if (playerPath)
   {
-    v7 = [(_MRNowPlayingPlayerPathProtobuf *)playerPath dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"playerPath"];
+    dictionaryRepresentation2 = [(_MRNowPlayingPlayerPathProtobuf *)playerPath dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"playerPath"];
   }
 
   setPlaybackSessionCommandID = self->_setPlaybackSessionCommandID;
   if (setPlaybackSessionCommandID)
   {
-    [v3 setObject:setPlaybackSessionCommandID forKey:@"setPlaybackSessionCommandID"];
+    [dictionary setObject:setPlaybackSessionCommandID forKey:@"setPlaybackSessionCommandID"];
   }
 
   metrics = self->_metrics;
   if (metrics)
   {
-    v10 = [(_MRDictionaryProtobuf *)metrics dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"metrics"];
+    dictionaryRepresentation3 = [(_MRDictionaryProtobuf *)metrics dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"metrics"];
   }
 
   error = self->_error;
   if (error)
   {
-    v12 = [(_MRErrorProtobuf *)error dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"error"];
+    dictionaryRepresentation4 = [(_MRErrorProtobuf *)error dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"error"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_request)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_playerPath)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_setPlaybackSessionCommandID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_metrics)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_error)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_request)
   {
-    [v4 setRequest:?];
-    v4 = v5;
+    [toCopy setRequest:?];
+    toCopy = v5;
   }
 
   if (self->_playerPath)
   {
     [v5 setPlayerPath:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_setPlaybackSessionCommandID)
   {
     [v5 setSetPlaybackSessionCommandID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_metrics)
   {
     [v5 setMetrics:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_error)
   {
     [v5 setError:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRPlaybackSessionMigrateRequestProtobuf *)self->_request copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRPlaybackSessionMigrateRequestProtobuf *)self->_request copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(_MRNowPlayingPlayerPathProtobuf *)self->_playerPath copyWithZone:a3];
+  v8 = [(_MRNowPlayingPlayerPathProtobuf *)self->_playerPath copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_setPlaybackSessionCommandID copyWithZone:a3];
+  v10 = [(NSString *)self->_setPlaybackSessionCommandID copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(_MRDictionaryProtobuf *)self->_metrics copyWithZone:a3];
+  v12 = [(_MRDictionaryProtobuf *)self->_metrics copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(_MRErrorProtobuf *)self->_error copyWithZone:a3];
+  v14 = [(_MRErrorProtobuf *)self->_error copyWithZone:zone];
   v15 = v5[1];
   v5[1] = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((request = self->_request, !(request | v4[4])) || -[_MRPlaybackSessionMigrateRequestProtobuf isEqual:](request, "isEqual:")) && ((playerPath = self->_playerPath, !(playerPath | v4[3])) || -[_MRNowPlayingPlayerPathProtobuf isEqual:](playerPath, "isEqual:")) && ((setPlaybackSessionCommandID = self->_setPlaybackSessionCommandID, !(setPlaybackSessionCommandID | v4[5])) || -[NSString isEqual:](setPlaybackSessionCommandID, "isEqual:")) && ((metrics = self->_metrics, !(metrics | v4[2])) || -[_MRDictionaryProtobuf isEqual:](metrics, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((request = self->_request, !(request | equalCopy[4])) || -[_MRPlaybackSessionMigrateRequestProtobuf isEqual:](request, "isEqual:")) && ((playerPath = self->_playerPath, !(playerPath | equalCopy[3])) || -[_MRNowPlayingPlayerPathProtobuf isEqual:](playerPath, "isEqual:")) && ((setPlaybackSessionCommandID = self->_setPlaybackSessionCommandID, !(setPlaybackSessionCommandID | equalCopy[5])) || -[NSString isEqual:](setPlaybackSessionCommandID, "isEqual:")) && ((metrics = self->_metrics, !(metrics | equalCopy[2])) || -[_MRDictionaryProtobuf isEqual:](metrics, "isEqual:")))
   {
     error = self->_error;
-    if (error | v4[1])
+    if (error | equalCopy[1])
     {
       v10 = [(_MRErrorProtobuf *)error isEqual:?];
     }
@@ -193,12 +193,12 @@
   return v6 ^ [(_MRErrorProtobuf *)self->_error hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   request = self->_request;
-  v13 = v4;
-  v6 = v4[4];
+  v13 = fromCopy;
+  v6 = fromCopy[4];
   if (request)
   {
     if (v6)

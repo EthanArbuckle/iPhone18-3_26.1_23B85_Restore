@@ -1,24 +1,24 @@
 @interface BLPrepareDownloadOperation
-+ (void)enumerateOperationsWithDownloads:(id)a3 downloadPolicyManager:(id)a4 usingBlock:(id)a5;
++ (void)enumerateOperationsWithDownloads:(id)downloads downloadPolicyManager:(id)manager usingBlock:(id)block;
 - (NSString)downloadIdentifier;
-- (id)_initWithDownload:(id)a3 policy:(id)a4;
+- (id)_initWithDownload:(id)download policy:(id)policy;
 - (id)outputBlock;
 - (void)run;
-- (void)setOutputBlock:(id)a3;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation BLPrepareDownloadOperation
 
-- (id)_initWithDownload:(id)a3 policy:(id)a4
+- (id)_initWithDownload:(id)download policy:(id)policy
 {
-  v6 = a3;
-  v7 = a4;
+  downloadCopy = download;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = BLPrepareDownloadOperation;
   v8 = [(BLOperation *)&v12 init];
   if (v8)
   {
-    v9 = [[_BLPrepareDownloadOperation alloc] _initWithOperation:v8 download:v6 policy:v7];
+    v9 = [[_BLPrepareDownloadOperation alloc] _initWithOperation:v8 download:downloadCopy policy:policyCopy];
     operation = v8->_operation;
     v8->_operation = v9;
   }
@@ -26,33 +26,33 @@
   return v8;
 }
 
-+ (void)enumerateOperationsWithDownloads:(id)a3 downloadPolicyManager:(id)a4 usingBlock:(id)a5
++ (void)enumerateOperationsWithDownloads:(id)downloads downloadPolicyManager:(id)manager usingBlock:(id)block
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10009974C;
   v9[3] = &unk_10011E200;
-  v10 = a4;
-  v11 = a5;
-  v7 = v11;
-  v8 = v10;
-  [a3 enumerateObjectsUsingBlock:v9];
+  managerCopy = manager;
+  blockCopy = block;
+  v7 = blockCopy;
+  v8 = managerCopy;
+  [downloads enumerateObjectsUsingBlock:v9];
 }
 
 - (NSString)downloadIdentifier
 {
-  v2 = [(BLPrepareDownloadOperation *)self operation];
-  v3 = [v2 downloadIdentifier];
+  operation = [(BLPrepareDownloadOperation *)self operation];
+  downloadIdentifier = [operation downloadIdentifier];
 
-  return v3;
+  return downloadIdentifier;
 }
 
 - (id)outputBlock
 {
   [(BLOperation *)self lock];
-  v3 = [(BLPrepareDownloadOperation *)self operation];
-  v4 = [v3 outputBlock];
-  v5 = [v4 copy];
+  operation = [(BLPrepareDownloadOperation *)self operation];
+  outputBlock = [operation outputBlock];
+  v5 = [outputBlock copy];
 
   [(BLOperation *)self unlock];
   v6 = objc_retainBlock(v5);
@@ -60,20 +60,20 @@
   return v6;
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(BLOperation *)self lock];
-  v5 = [(BLPrepareDownloadOperation *)self operation];
-  [v5 setOutputBlock:v4];
+  operation = [(BLPrepareDownloadOperation *)self operation];
+  [operation setOutputBlock:blockCopy];
 
   [(BLOperation *)self unlock];
 }
 
 - (void)run
 {
-  v2 = [(BLPrepareDownloadOperation *)self operation];
-  [v2 run];
+  operation = [(BLPrepareDownloadOperation *)self operation];
+  [operation run];
 }
 
 @end

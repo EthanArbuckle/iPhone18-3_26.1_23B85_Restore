@@ -1,46 +1,46 @@
 @interface MFComposeStyleSelectorButton
-+ (id)buttonWithStyleType:(int64_t)a3 target:(id)a4 action:(SEL)a5;
-+ (id)buttonWithStyleType:(int64_t)a3 target:(id)a4 action:(SEL)a5 maximumContentSizeCategory:(id)a6;
-- (MFComposeStyleSelectorButton)initWithCoder:(id)a3;
-- (MFComposeStyleSelectorButton)initWithFrame:(CGRect)a3;
-- (id)_imageForTextStyleType:(int64_t)a3 maximumContentSizeCategory:(id)a4;
++ (id)buttonWithStyleType:(int64_t)type target:(id)target action:(SEL)action;
++ (id)buttonWithStyleType:(int64_t)type target:(id)target action:(SEL)action maximumContentSizeCategory:(id)category;
+- (MFComposeStyleSelectorButton)initWithCoder:(id)coder;
+- (MFComposeStyleSelectorButton)initWithFrame:(CGRect)frame;
+- (id)_imageForTextStyleType:(int64_t)type maximumContentSizeCategory:(id)category;
 - (void)_commonInit;
-- (void)setSelected:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSelected:(BOOL)selected;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MFComposeStyleSelectorButton
 
-+ (id)buttonWithStyleType:(int64_t)a3 target:(id)a4 action:(SEL)a5
++ (id)buttonWithStyleType:(int64_t)type target:(id)target action:(SEL)action
 {
-  v5 = [MFComposeStyleSelectorButton buttonWithStyleType:a3 target:a4 action:a5 maximumContentSizeCategory:*MEMORY[0x1E69DDC90]];
+  v5 = [MFComposeStyleSelectorButton buttonWithStyleType:type target:target action:action maximumContentSizeCategory:*MEMORY[0x1E69DDC90]];
 
   return v5;
 }
 
-+ (id)buttonWithStyleType:(int64_t)a3 target:(id)a4 action:(SEL)a5 maximumContentSizeCategory:(id)a6
++ (id)buttonWithStyleType:(int64_t)type target:(id)target action:(SEL)action maximumContentSizeCategory:(id)category
 {
-  v9 = a4;
-  v10 = a6;
+  targetCopy = target;
+  categoryCopy = category;
   v11 = [MFComposeStyleSelectorButton buttonWithType:0];
-  v11[93] = a3;
-  v11[94] = v10;
-  v12 = [MFComposeTextStyle accessibilityIdenitifierForTextStyleType:a3];
+  v11[93] = type;
+  v11[94] = categoryCopy;
+  v12 = [MFComposeTextStyle accessibilityIdenitifierForTextStyleType:type];
   [v11 setAccessibilityIdentifier:v12];
 
-  v13 = [v11 _imageForTextStyleType:a3 maximumContentSizeCategory:v10];
+  v13 = [v11 _imageForTextStyleType:type maximumContentSizeCategory:categoryCopy];
   [v11 setImage:v13 forState:0];
 
-  [v11 addTarget:v9 action:a5 forControlEvents:64];
+  [v11 addTarget:targetCopy action:action forControlEvents:64];
 
   return v11;
 }
 
-- (MFComposeStyleSelectorButton)initWithFrame:(CGRect)a3
+- (MFComposeStyleSelectorButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MFComposeStyleSelectorButton;
-  v3 = [(MFComposeStyleSelectorButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFComposeStyleSelectorButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -50,12 +50,12 @@
   return v4;
 }
 
-- (MFComposeStyleSelectorButton)initWithCoder:(id)a3
+- (MFComposeStyleSelectorButton)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = MFComposeStyleSelectorButton;
-  v5 = [(MFComposeStyleSelectorButton *)&v8 initWithCoder:v4];
+  v5 = [(MFComposeStyleSelectorButton *)&v8 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -67,23 +67,23 @@
 
 - (void)_commonInit
 {
-  v3 = [MEMORY[0x1E69DC888] labelColor];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
   [(MFComposeStyleSelectorButton *)self setTintColor:?];
 
-  v4 = [MEMORY[0x1E69DC888] labelColor];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
   [MFComposeStyleSelectorButton setTitleColor:"setTitleColor:forState:" forState:?];
 
-  v5 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
   [(MFComposeStyleSelectorButton *)self setBackgroundColor:?];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = MFComposeStyleSelectorButton;
   [(MFComposeStyleSelectorButton *)&v6 setSelected:?];
-  if (v3)
+  if (selectedCopy)
   {
     [MEMORY[0x1E69DC888] mailComposeFormatButtonSelectedBackgroundColor];
   }
@@ -96,15 +96,15 @@
   [(MFComposeStyleSelectorButton *)self setBackgroundColor:v5];
 }
 
-- (id)_imageForTextStyleType:(int64_t)a3 maximumContentSizeCategory:(id)a4
+- (id)_imageForTextStyleType:(int64_t)type maximumContentSizeCategory:(id)category
 {
-  v5 = a4;
-  if (a3 != 7 || ([MEMORY[0x1E69DCAB8] mf_systemImageNamedNumberAware:@"list.number" textStyle:*MEMORY[0x1E69DDCF8] scale:3 weight:0 maximumContentSizeCategory:v5], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  categoryCopy = category;
+  if (type != 7 || ([MEMORY[0x1E69DCAB8] mf_systemImageNamedNumberAware:@"list.number" textStyle:*MEMORY[0x1E69DDCF8] scale:3 weight:0 maximumContentSizeCategory:categoryCopy], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v7 = [MFComposeTextStyle imageNameForTextStyleType:a3];
+    v7 = [MFComposeTextStyle imageNameForTextStyleType:type];
     if (v7)
     {
-      v6 = [MEMORY[0x1E69DCAB8] mf_systemImageNamed:v7 textStyle:*MEMORY[0x1E69DDCF8] scale:3 weight:0 maximumContentSizeCategory:v5];
+      v6 = [MEMORY[0x1E69DCAB8] mf_systemImageNamed:v7 textStyle:*MEMORY[0x1E69DDCF8] scale:3 weight:0 maximumContentSizeCategory:categoryCopy];
     }
 
     else
@@ -116,17 +116,17 @@
   return v6;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = MFComposeStyleSelectorButton;
-  [(MFComposeStyleSelectorButton *)&v10 traitCollectionDidChange:v4];
-  v5 = [(MFComposeStyleSelectorButton *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  [(MFComposeStyleSelectorButton *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [(MFComposeStyleSelectorButton *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     styleType = self->_styleType;
     if (styleType)

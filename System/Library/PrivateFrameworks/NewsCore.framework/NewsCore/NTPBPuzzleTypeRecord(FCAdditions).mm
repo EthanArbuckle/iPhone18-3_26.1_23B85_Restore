@@ -20,23 +20,23 @@
 - (id)generateNameImageAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 nameImageURL];
-  if (v5)
+  nameImageURL = [self nameImageURL];
+  if (nameImageURL)
   {
-    v6 = [a1 nameImageURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    nameImageURL2 = [self nameImageURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:nameImageURL2 lifetimeHint:v9];
   }
 
   else
@@ -50,23 +50,23 @@
 - (id)generateNameImageCompactAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 nameImageCompactURL];
-  if (v5)
+  nameImageCompactURL = [self nameImageCompactURL];
+  if (nameImageCompactURL)
   {
-    v6 = [a1 nameImageCompactURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    nameImageCompactURL2 = [self nameImageCompactURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:nameImageCompactURL2 lifetimeHint:v9];
   }
 
   else
@@ -80,23 +80,23 @@
 - (id)generateNameImageForDarkBackgroundAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 nameImageForDarkBackgroundURL];
-  if (v5)
+  nameImageForDarkBackgroundURL = [self nameImageForDarkBackgroundURL];
+  if (nameImageForDarkBackgroundURL)
   {
-    v6 = [a1 nameImageForDarkBackgroundURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    nameImageForDarkBackgroundURL2 = [self nameImageForDarkBackgroundURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:nameImageForDarkBackgroundURL2 lifetimeHint:v9];
   }
 
   else
@@ -110,23 +110,23 @@
 - (id)generateNameImageMaskAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 nameImageMaskURL];
-  if (v5)
+  nameImageMaskURL = [self nameImageMaskURL];
+  if (nameImageMaskURL)
   {
-    v6 = [a1 nameImageMaskURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    nameImageMaskURL2 = [self nameImageMaskURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:nameImageMaskURL2 lifetimeHint:v9];
   }
 
   else
@@ -140,23 +140,23 @@
 - (id)generateCoverImageAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 coverImageURL];
-  if (v5)
+  coverImageURL = [self coverImageURL];
+  if (coverImageURL)
   {
-    v6 = [a1 coverImageURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    coverImageURL2 = [self coverImageURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:coverImageURL2 lifetimeHint:v9];
   }
 
   else
@@ -170,23 +170,23 @@
 - (id)generateFeedNavImageAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 feedNavImageURL];
-  if (v5)
+  feedNavImageURL = [self feedNavImageURL];
+  if (feedNavImageURL)
   {
-    v6 = [a1 feedNavImageURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    feedNavImageURL2 = [self feedNavImageURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:feedNavImageURL2 lifetimeHint:v9];
   }
 
   else
@@ -200,23 +200,23 @@
 - (id)generateExploreTileImageAssetHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 exploreTileImageURL];
-  if (v5)
+  exploreTileImageURL = [self exploreTileImageURL];
+  if (exploreTileImageURL)
   {
-    v6 = [a1 exploreTileImageURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    exploreTileImageURL2 = [self exploreTileImageURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:exploreTileImageURL2 lifetimeHint:v9];
   }
 
   else
@@ -230,23 +230,23 @@
 - (id)generateNavigationChromeBackgroundImageHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 navigationChromeBackgroundImageURL];
-  if (v5)
+  navigationChromeBackgroundImageURL = [self navigationChromeBackgroundImageURL];
+  if (navigationChromeBackgroundImageURL)
   {
-    v6 = [a1 navigationChromeBackgroundImageURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    navigationChromeBackgroundImageURL2 = [self navigationChromeBackgroundImageURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:navigationChromeBackgroundImageURL2 lifetimeHint:v9];
   }
 
   else
@@ -260,23 +260,23 @@
 - (id)generateNavigationChromeBackgroundImageCompactHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 navigationChromeBackgroundImageCompactURL];
-  if (v5)
+  navigationChromeBackgroundImageCompactURL = [self navigationChromeBackgroundImageCompactURL];
+  if (navigationChromeBackgroundImageCompactURL)
   {
-    v6 = [a1 navigationChromeBackgroundImageCompactURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    navigationChromeBackgroundImageCompactURL2 = [self navigationChromeBackgroundImageCompactURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:navigationChromeBackgroundImageCompactURL2 lifetimeHint:v9];
   }
 
   else
@@ -290,23 +290,23 @@
 - (id)generateNavigationChromeBackgroundImageLargeHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 navigationChromeBackgroundImageLargeURL];
-  if (v5)
+  navigationChromeBackgroundImageLargeURL = [self navigationChromeBackgroundImageLargeURL];
+  if (navigationChromeBackgroundImageLargeURL)
   {
-    v6 = [a1 navigationChromeBackgroundImageLargeURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    navigationChromeBackgroundImageLargeURL2 = [self navigationChromeBackgroundImageLargeURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:navigationChromeBackgroundImageLargeURL2 lifetimeHint:v9];
   }
 
   else
@@ -320,23 +320,23 @@
 - (id)generateNavigationChromeBackgroundDarkModeImageHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 navigationChromeBackgroundDarkModeImageURL];
-  if (v5)
+  navigationChromeBackgroundDarkModeImageURL = [self navigationChromeBackgroundDarkModeImageURL];
+  if (navigationChromeBackgroundDarkModeImageURL)
   {
-    v6 = [a1 navigationChromeBackgroundDarkModeImageURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    navigationChromeBackgroundDarkModeImageURL2 = [self navigationChromeBackgroundDarkModeImageURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:navigationChromeBackgroundDarkModeImageURL2 lifetimeHint:v9];
   }
 
   else
@@ -350,23 +350,23 @@
 - (id)generateNavigationChromeBackgroundDarkModeImageCompactHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 navigationChromeBackgroundDarkModeImageCompactURL];
-  if (v5)
+  navigationChromeBackgroundDarkModeImageCompactURL = [self navigationChromeBackgroundDarkModeImageCompactURL];
+  if (navigationChromeBackgroundDarkModeImageCompactURL)
   {
-    v6 = [a1 navigationChromeBackgroundDarkModeImageCompactURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    navigationChromeBackgroundDarkModeImageCompactURL2 = [self navigationChromeBackgroundDarkModeImageCompactURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:navigationChromeBackgroundDarkModeImageCompactURL2 lifetimeHint:v9];
   }
 
   else
@@ -380,23 +380,23 @@
 - (id)generateNavigationChromeBackgroundDarkModeImageLargeHandleWithAssetManager:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 navigationChromeBackgroundDarkModeImageLargeURL];
-  if (v5)
+  navigationChromeBackgroundDarkModeImageLargeURL = [self navigationChromeBackgroundDarkModeImageLargeURL];
+  if (navigationChromeBackgroundDarkModeImageLargeURL)
   {
-    v6 = [a1 navigationChromeBackgroundDarkModeImageLargeURL];
-    v7 = [a1 base];
-    v8 = [v7 cacheLifetimeHint];
-    if (v8 == 2)
+    navigationChromeBackgroundDarkModeImageLargeURL2 = [self navigationChromeBackgroundDarkModeImageLargeURL];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v9 = 2;
     }
 
     else
     {
-      v9 = v8 == 1;
+      v9 = cacheLifetimeHint == 1;
     }
 
-    v10 = [v4 assetHandleForCKAssetURLString:v6 lifetimeHint:v9];
+    v10 = [v4 assetHandleForCKAssetURLString:navigationChromeBackgroundDarkModeImageLargeURL2 lifetimeHint:v9];
   }
 
   else
@@ -412,20 +412,20 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [a1 imagesResourceID];
-  if (v11)
+  imagesResourceID = [self imagesResourceID];
+  if (imagesResourceID)
   {
-    v12 = [FCPuzzleThumbnailURLProtocol URLForResourceMapID:v11 publishDate:v8 difficulty:v9];
-    v13 = [a1 base];
-    v14 = [v13 cacheLifetimeHint];
-    if (v14 == 2)
+    v12 = [FCPuzzleThumbnailURLProtocol URLForResourceMapID:imagesResourceID publishDate:v8 difficulty:v9];
+    base = [self base];
+    cacheLifetimeHint = [base cacheLifetimeHint];
+    if (cacheLifetimeHint == 2)
     {
       v15 = 2;
     }
 
     else
     {
-      v15 = v14 == 1;
+      v15 = cacheLifetimeHint == 1;
     }
 
     v16 = [v10 assetHandleForURL:v12 lifetimeHint:v15];

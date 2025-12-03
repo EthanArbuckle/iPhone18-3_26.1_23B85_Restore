@@ -1,12 +1,12 @@
 @interface TVLibraryGalleryViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9SeymourUI30TVLibraryGalleryViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI30TVLibraryGalleryViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9SeymourUI30TVLibraryGalleryViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI30TVLibraryGalleryViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TVLibraryGalleryViewController
@@ -25,7 +25,7 @@
   return v6;
 }
 
-- (_TtC9SeymourUI30TVLibraryGalleryViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI30TVLibraryGalleryViewController)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtC9SeymourUI30TVLibraryGalleryViewController_layout);
   *v4 = xmmword_20C15B0B0;
@@ -43,31 +43,31 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C006080();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C0061CC();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for TVLibraryGalleryViewController();
   v4 = v5.receiver;
-  [(TVLibraryGalleryViewController *)&v5 viewDidDisappear:v3];
+  [(TVLibraryGalleryViewController *)&v5 viewDidDisappear:disappearCopy];
   sub_20C006E68(&unk_27C771C50);
   sub_20C006E68(&qword_27C771C68);
   sub_20C139374();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = sub_20C1333A4();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
@@ -75,10 +75,10 @@
   v9 = type metadata accessor for TVLibraryGalleryViewController();
   v12.receiver = self;
   v12.super_class = v9;
-  v10 = self;
-  [(TVLibraryGalleryViewController *)&v12 viewDidAppear:v3];
-  v11[1] = v10;
-  (*(v6 + 16))(v8, *(&v10->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI30TVLibraryGalleryViewController_dataProvider) + OBJC_IVAR____TtC9SeymourUI28TVLibraryGalleryDataProvider_metricPage, v5);
+  selfCopy = self;
+  [(TVLibraryGalleryViewController *)&v12 viewDidAppear:appearCopy];
+  v11[1] = selfCopy;
+  (*(v6 + 16))(v8, *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI30TVLibraryGalleryViewController_dataProvider) + OBJC_IVAR____TtC9SeymourUI28TVLibraryGalleryDataProvider_metricPage, v5);
   sub_20C006E68(&qword_27C771C60);
   sub_20C138C54();
   (*(v6 + 8))(v8, v5);
@@ -87,13 +87,13 @@
   sub_20C139364();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_20C00657C(a3);
+  selfCopy = self;
+  sub_20C00657C(disappear);
 }
 
-- (_TtC9SeymourUI30TVLibraryGalleryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI30TVLibraryGalleryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

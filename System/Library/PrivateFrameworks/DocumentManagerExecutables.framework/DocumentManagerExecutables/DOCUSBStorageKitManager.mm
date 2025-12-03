@@ -16,7 +16,7 @@
 
 - (void)initialPopulateComplete
 {
-  v2 = self;
+  selfCopy = self;
   DOCUSBStorageKitManager.initialPopulateComplete()();
 }
 

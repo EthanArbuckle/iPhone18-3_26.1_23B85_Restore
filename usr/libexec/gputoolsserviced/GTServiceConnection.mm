@@ -1,39 +1,39 @@
 @interface GTServiceConnection
-- (GTServiceConnection)initWithConnection:(id)a3 device:(id)a4 port:(unint64_t)a5;
-- (id)sendMessageWithReplySync:(id)a3 error:(id *)a4;
-- (id)sendMessageWithReplySync:(id)a3 replyStreamId:(unint64_t)a4 error:(id *)a5;
-- (void)_setRoutingPropertiesForMessage:(id)a3;
-- (void)_setRoutingPropertiesForMessage:(id)a3 withReplyStreamId:(unint64_t)a4;
-- (void)sendMessage:(id)a3;
-- (void)sendMessage:(id)a3 replyHandler:(id)a4;
-- (void)sendMessage:(id)a3 withReplyStreamId:(unint64_t)a4;
-- (void)sendMessage:(id)a3 withReplyStreamId:(unint64_t)a4 replyHandler:(id)a5;
-- (void)sendMessageAndWaitForDelivery:(id)a3;
+- (GTServiceConnection)initWithConnection:(id)connection device:(id)device port:(unint64_t)port;
+- (id)sendMessageWithReplySync:(id)sync error:(id *)error;
+- (id)sendMessageWithReplySync:(id)sync replyStreamId:(unint64_t)id error:(id *)error;
+- (void)_setRoutingPropertiesForMessage:(id)message;
+- (void)_setRoutingPropertiesForMessage:(id)message withReplyStreamId:(unint64_t)id;
+- (void)sendMessage:(id)message;
+- (void)sendMessage:(id)message replyHandler:(id)handler;
+- (void)sendMessage:(id)message withReplyStreamId:(unint64_t)id;
+- (void)sendMessage:(id)message withReplyStreamId:(unint64_t)id replyHandler:(id)handler;
+- (void)sendMessageAndWaitForDelivery:(id)delivery;
 @end
 
 @implementation GTServiceConnection
 
-- (GTServiceConnection)initWithConnection:(id)a3 device:(id)a4 port:(unint64_t)a5
+- (GTServiceConnection)initWithConnection:(id)connection device:(id)device port:(unint64_t)port
 {
-  v9 = a3;
-  v10 = a4;
+  connectionCopy = connection;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = GTServiceConnection;
   v11 = [(GTServiceConnection *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_connection, a3);
-    objc_storeStrong(&v12->_deviceUDID, a4);
-    v12->_servicePort = a5;
+    objc_storeStrong(&v11->_connection, connection);
+    objc_storeStrong(&v12->_deviceUDID, device);
+    v12->_servicePort = port;
   }
 
   return v12;
 }
 
-- (void)_setRoutingPropertiesForMessage:(id)a3
+- (void)_setRoutingPropertiesForMessage:(id)message
 {
-  xdict = a3;
+  xdict = message;
   deviceUDID = self->_deviceUDID;
   if (deviceUDID)
   {
@@ -47,69 +47,69 @@
   }
 }
 
-- (void)_setRoutingPropertiesForMessage:(id)a3 withReplyStreamId:(unint64_t)a4
+- (void)_setRoutingPropertiesForMessage:(id)message withReplyStreamId:(unint64_t)id
 {
-  xdict = a3;
+  xdict = message;
   [(GTServiceConnection *)self _setRoutingPropertiesForMessage:xdict];
-  xpc_dictionary_set_uint64(xdict, "_replyStreamId", a4);
+  xpc_dictionary_set_uint64(xdict, "_replyStreamId", id);
   xpc_dictionary_set_flag(xdict, "_flags", 2);
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v4 = a3;
-  [(GTServiceConnection *)self _setRoutingPropertiesForMessage:v4];
-  [(GTXPCConnection *)self->_connection sendMessage:v4];
+  messageCopy = message;
+  [(GTServiceConnection *)self _setRoutingPropertiesForMessage:messageCopy];
+  [(GTXPCConnection *)self->_connection sendMessage:messageCopy];
 }
 
-- (void)sendMessage:(id)a3 replyHandler:(id)a4
+- (void)sendMessage:(id)message replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  [(GTServiceConnection *)self _setRoutingPropertiesForMessage:v7];
-  MessageSetHasReply(v7);
-  [(GTXPCConnection *)self->_connection sendMessage:v7 replyHandler:v6];
+  handlerCopy = handler;
+  messageCopy = message;
+  [(GTServiceConnection *)self _setRoutingPropertiesForMessage:messageCopy];
+  MessageSetHasReply(messageCopy);
+  [(GTXPCConnection *)self->_connection sendMessage:messageCopy replyHandler:handlerCopy];
 }
 
-- (id)sendMessageWithReplySync:(id)a3 error:(id *)a4
+- (id)sendMessageWithReplySync:(id)sync error:(id *)error
 {
-  v6 = a3;
-  [(GTServiceConnection *)self _setRoutingPropertiesForMessage:v6];
-  MessageSetHasReply(v6);
-  v7 = [(GTXPCConnection *)self->_connection sendMessageWithReplySync:v6 error:a4];
+  syncCopy = sync;
+  [(GTServiceConnection *)self _setRoutingPropertiesForMessage:syncCopy];
+  MessageSetHasReply(syncCopy);
+  v7 = [(GTXPCConnection *)self->_connection sendMessageWithReplySync:syncCopy error:error];
 
   return v7;
 }
 
-- (void)sendMessageAndWaitForDelivery:(id)a3
+- (void)sendMessageAndWaitForDelivery:(id)delivery
 {
-  v4 = a3;
-  [(GTServiceConnection *)self _setRoutingPropertiesForMessage:v4];
-  [(GTXPCConnection *)self->_connection sendMessageAndWaitForDelivery:v4];
+  deliveryCopy = delivery;
+  [(GTServiceConnection *)self _setRoutingPropertiesForMessage:deliveryCopy];
+  [(GTXPCConnection *)self->_connection sendMessageAndWaitForDelivery:deliveryCopy];
 }
 
-- (void)sendMessage:(id)a3 withReplyStreamId:(unint64_t)a4
+- (void)sendMessage:(id)message withReplyStreamId:(unint64_t)id
 {
-  v6 = a3;
-  [(GTServiceConnection *)self _setRoutingPropertiesForMessage:v6 withReplyStreamId:a4];
-  [(GTXPCConnection *)self->_connection sendMessage:v6];
+  messageCopy = message;
+  [(GTServiceConnection *)self _setRoutingPropertiesForMessage:messageCopy withReplyStreamId:id];
+  [(GTXPCConnection *)self->_connection sendMessage:messageCopy];
 }
 
-- (void)sendMessage:(id)a3 withReplyStreamId:(unint64_t)a4 replyHandler:(id)a5
+- (void)sendMessage:(id)message withReplyStreamId:(unint64_t)id replyHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  [(GTServiceConnection *)self _setRoutingPropertiesForMessage:v9 withReplyStreamId:a4];
-  MessageSetHasReply(v9);
-  [(GTServiceConnection *)self sendMessage:v9 replyHandler:v8];
+  handlerCopy = handler;
+  messageCopy = message;
+  [(GTServiceConnection *)self _setRoutingPropertiesForMessage:messageCopy withReplyStreamId:id];
+  MessageSetHasReply(messageCopy);
+  [(GTServiceConnection *)self sendMessage:messageCopy replyHandler:handlerCopy];
 }
 
-- (id)sendMessageWithReplySync:(id)a3 replyStreamId:(unint64_t)a4 error:(id *)a5
+- (id)sendMessageWithReplySync:(id)sync replyStreamId:(unint64_t)id error:(id *)error
 {
-  v8 = a3;
-  [(GTServiceConnection *)self _setRoutingPropertiesForMessage:v8 withReplyStreamId:a4];
-  MessageSetHasReply(v8);
-  v9 = [(GTXPCConnection *)self->_connection sendMessageWithReplySync:v8 error:a5];
+  syncCopy = sync;
+  [(GTServiceConnection *)self _setRoutingPropertiesForMessage:syncCopy withReplyStreamId:id];
+  MessageSetHasReply(syncCopy);
+  v9 = [(GTXPCConnection *)self->_connection sendMessageWithReplySync:syncCopy error:error];
 
   return v9;
 }

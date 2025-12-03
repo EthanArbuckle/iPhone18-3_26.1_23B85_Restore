@@ -1,19 +1,19 @@
 @interface CKBrowserSwitcherFooterViewAccessibility
-- (void)adjustMagnificationAtPoint:(CGPoint)a3 minifyImmediately:(BOOL)a4;
+- (void)adjustMagnificationAtPoint:(CGPoint)point minifyImmediately:(BOOL)immediately;
 @end
 
 @implementation CKBrowserSwitcherFooterViewAccessibility
 
-- (void)adjustMagnificationAtPoint:(CGPoint)a3 minifyImmediately:(BOOL)a4
+- (void)adjustMagnificationAtPoint:(CGPoint)point minifyImmediately:(BOOL)immediately
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  immediatelyCopy = immediately;
+  y = point.y;
+  x = point.x;
   if (!UIAccessibilityIsVoiceOverRunning())
   {
     v8.receiver = self;
     v8.super_class = CKBrowserSwitcherFooterViewAccessibility;
-    [(CKBrowserSwitcherFooterViewAccessibility *)&v8 adjustMagnificationAtPoint:v4 minifyImmediately:x, y];
+    [(CKBrowserSwitcherFooterViewAccessibility *)&v8 adjustMagnificationAtPoint:immediatelyCopy minifyImmediately:x, y];
   }
 }
 

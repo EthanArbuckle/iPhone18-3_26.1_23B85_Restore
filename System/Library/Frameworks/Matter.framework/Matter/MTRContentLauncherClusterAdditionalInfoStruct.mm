@@ -1,6 +1,6 @@
 @interface MTRContentLauncherClusterAdditionalInfoStruct
 - (MTRContentLauncherClusterAdditionalInfoStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentLauncherClusterAdditionalInfoStruct);
-  v5 = [(MTRContentLauncherClusterAdditionalInfoStruct *)self name];
-  [(MTRContentLauncherClusterAdditionalInfoStruct *)v4 setName:v5];
+  name = [(MTRContentLauncherClusterAdditionalInfoStruct *)self name];
+  [(MTRContentLauncherClusterAdditionalInfoStruct *)v4 setName:name];
 
-  v6 = [(MTRContentLauncherClusterAdditionalInfoStruct *)self value];
-  [(MTRContentLauncherClusterAdditionalInfoStruct *)v4 setValue:v6];
+  value = [(MTRContentLauncherClusterAdditionalInfoStruct *)self value];
+  [(MTRContentLauncherClusterAdditionalInfoStruct *)v4 setValue:value];
 
   return v4;
 }

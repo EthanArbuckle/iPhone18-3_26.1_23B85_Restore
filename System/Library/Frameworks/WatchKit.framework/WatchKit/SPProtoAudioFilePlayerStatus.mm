@@ -1,22 +1,22 @@
 @interface SPProtoAudioFilePlayerStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)sockPuppetMessageForPlayerItemSetStatus;
 - (id)sockPuppetMessageForQueuePlayerSetStatus;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SPProtoAudioFilePlayerStatus
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -35,20 +35,20 @@
   v8.receiver = self;
   v8.super_class = SPProtoAudioFilePlayerStatus;
   v4 = [(SPProtoAudioFilePlayerStatus *)&v8 description];
-  v5 = [(SPProtoAudioFilePlayerStatus *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SPProtoAudioFilePlayerStatus *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -78,82 +78,82 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     status = self->_status;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_errorDomain)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     errorCode = self->_errorCode;
     PBDataWriterWriteInt64Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_errorDict)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v5;
+    [toCopy setIdentifier:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 10) = self->_status;
-    *(v4 + 44) |= 2u;
+    *(toCopy + 10) = self->_status;
+    *(toCopy + 44) |= 2u;
   }
 
   if (self->_errorDomain)
   {
     [v5 setErrorDomain:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_errorCode;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 1) = self->_errorCode;
+    *(toCopy + 44) |= 1u;
   }
 
   if (self->_errorDict)
   {
     [v5 setErrorDict:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -163,7 +163,7 @@
     *(v5 + 44) |= 2u;
   }
 
-  v8 = [(NSString *)self->_errorDomain copyWithZone:a3];
+  v8 = [(NSString *)self->_errorDomain copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -173,23 +173,23 @@
     *(v5 + 44) |= 1u;
   }
 
-  v10 = [(NSData *)self->_errorDict copyWithZone:a3];
+  v10 = [(NSData *)self->_errorDict copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 4))
+  if (identifier | *(equalCopy + 4))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -198,22 +198,22 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 44);
+  v7 = *(equalCopy + 44);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_status != *(v4 + 10))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_status != *(equalCopy + 10))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   errorDomain = self->_errorDomain;
-  if (errorDomain | *(v4 + 3))
+  if (errorDomain | *(equalCopy + 3))
   {
     if (![(NSString *)errorDomain isEqual:?])
     {
@@ -225,22 +225,22 @@ LABEL_19:
     has = self->_has;
   }
 
-  v9 = *(v4 + 44);
+  v9 = *(equalCopy + 44);
   if (has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_errorCode != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_errorCode != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_19;
   }
 
   errorDict = self->_errorDict;
-  if (errorDict | *(v4 + 2))
+  if (errorDict | *(equalCopy + 2))
   {
     v11 = [(NSData *)errorDict isEqual:?];
   }
@@ -282,38 +282,38 @@ LABEL_20:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSData *)self->_errorDict hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(SPProtoAudioFilePlayerStatus *)self setIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 44) & 2) != 0)
+  if ((*(fromCopy + 44) & 2) != 0)
   {
-    self->_status = *(v4 + 10);
+    self->_status = *(fromCopy + 10);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(SPProtoAudioFilePlayerStatus *)self setErrorDomain:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
-    self->_errorCode = *(v4 + 1);
+    self->_errorCode = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SPProtoAudioFilePlayerStatus *)self setErrorDict:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -321,18 +321,18 @@ LABEL_20:
 {
   v3 = objc_alloc_init(SPProtoAudioFilePlayerItem);
   [(SPProtoAudioFilePlayerItem *)v3 setSetStatus:self];
-  v4 = [(SPProtoAudioFilePlayerItem *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFilePlayerItem *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 - (id)sockPuppetMessageForQueuePlayerSetStatus
 {
   v3 = objc_alloc_init(SPProtoAudioFileQueuePlayer);
   [(SPProtoAudioFileQueuePlayer *)v3 setSetStatus:self];
-  v4 = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
+  sockPuppetMessage = [(SPProtoAudioFileQueuePlayer *)v3 sockPuppetMessage];
 
-  return v4;
+  return sockPuppetMessage;
 }
 
 @end

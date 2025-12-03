@@ -1,64 +1,64 @@
 @interface HDHRHypertensionNotificationsRescindedAlertManager
-- (BOOL)_isFeatureRescindedWithUsageEvaluation:(id)a3;
-- (BOOL)_isFeatureUnavailableForNonRescindedReasonsWithUsageEvaluation:(id)a3;
-- (HDHRHypertensionNotificationsRescindedAlertManager)initWithProfile:(id)a3 featureStatusProvider:(id)a4;
-- (HDHRHypertensionNotificationsRescindedAlertManager)initWithProfile:(id)a3 featureStatusProvider:(id)a4 pairedSyncStateProvider:(id)a5 keyValueDomain:(id)a6;
-- (id)_rescindedAlertBodyForUsageEvaluation:(id)a3;
-- (id)_rescindedAlertTitleForUsageEvaluation:(id)a3;
-- (int64_t)_rescindedAlertTypeForUsageEvaluation:(id)a3;
+- (BOOL)_isFeatureRescindedWithUsageEvaluation:(id)evaluation;
+- (BOOL)_isFeatureUnavailableForNonRescindedReasonsWithUsageEvaluation:(id)evaluation;
+- (HDHRHypertensionNotificationsRescindedAlertManager)initWithProfile:(id)profile featureStatusProvider:(id)provider;
+- (HDHRHypertensionNotificationsRescindedAlertManager)initWithProfile:(id)profile featureStatusProvider:(id)provider pairedSyncStateProvider:(id)stateProvider keyValueDomain:(id)domain;
+- (id)_rescindedAlertBodyForUsageEvaluation:(id)evaluation;
+- (id)_rescindedAlertTitleForUsageEvaluation:(id)evaluation;
+- (int64_t)_rescindedAlertTypeForUsageEvaluation:(id)evaluation;
 - (void)_presentHypertensionNotificationsReEnabledAlert;
-- (void)_presentHypertensionNotificationsRescindedAlertForUsageEvaluation:(id)a3;
-- (void)_presentNotificationWithTitle:(id)a3 message:(id)a4 type:(int64_t)a5;
-- (void)_queue_presentRescindedOrReEnabledAlertIfNeededWithFeatureStatus:(id)a3;
+- (void)_presentHypertensionNotificationsRescindedAlertForUsageEvaluation:(id)evaluation;
+- (void)_presentNotificationWithTitle:(id)title message:(id)message type:(int64_t)type;
+- (void)_queue_presentRescindedOrReEnabledAlertIfNeededWithFeatureStatus:(id)status;
 - (void)_queue_pullFeatureStatusAndPresentAlertIfNeeded;
 - (void)_unitTesting_callNotificationNotPostedHandlerIfSet;
-- (void)daemonReady:(id)a3;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)daemonReady:(id)ready;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
 @end
 
 @implementation HDHRHypertensionNotificationsRescindedAlertManager
 
-- (HDHRHypertensionNotificationsRescindedAlertManager)initWithProfile:(id)a3 featureStatusProvider:(id)a4
+- (HDHRHypertensionNotificationsRescindedAlertManager)initWithProfile:(id)profile featureStatusProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
+  providerCopy = provider;
+  profileCopy = profile;
   v8 = objc_alloc_init(HDHRPairedSyncStateProvider);
-  v9 = [MEMORY[0x277D10718] hdhr_hypertensionNotificationsDeviceLocalDomainForProfile:v7];
-  v10 = [(HDHRHypertensionNotificationsRescindedAlertManager *)self initWithProfile:v7 featureStatusProvider:v6 pairedSyncStateProvider:v8 keyValueDomain:v9];
+  v9 = [MEMORY[0x277D10718] hdhr_hypertensionNotificationsDeviceLocalDomainForProfile:profileCopy];
+  v10 = [(HDHRHypertensionNotificationsRescindedAlertManager *)self initWithProfile:profileCopy featureStatusProvider:providerCopy pairedSyncStateProvider:v8 keyValueDomain:v9];
 
   return v10;
 }
 
-- (HDHRHypertensionNotificationsRescindedAlertManager)initWithProfile:(id)a3 featureStatusProvider:(id)a4 pairedSyncStateProvider:(id)a5 keyValueDomain:(id)a6
+- (HDHRHypertensionNotificationsRescindedAlertManager)initWithProfile:(id)profile featureStatusProvider:(id)provider pairedSyncStateProvider:(id)stateProvider keyValueDomain:(id)domain
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  profileCopy = profile;
+  providerCopy = provider;
+  stateProviderCopy = stateProvider;
+  domainCopy = domain;
   v24.receiver = self;
   v24.super_class = HDHRHypertensionNotificationsRescindedAlertManager;
   v14 = [(HDHRHypertensionNotificationsRescindedAlertManager *)&v24 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_profile, v10);
-    objc_storeStrong(&v15->_featureStatusProvider, a4);
-    objc_storeStrong(&v15->_pairedSyncStateProvider, a5);
+    objc_storeWeak(&v14->_profile, profileCopy);
+    objc_storeStrong(&v15->_featureStatusProvider, provider);
+    objc_storeStrong(&v15->_pairedSyncStateProvider, stateProvider);
     v16 = HKCreateSerialDispatchQueue();
     queue = v15->_queue;
     v15->_queue = v16;
 
-    objc_storeStrong(&v15->_localKeyValueDomain, a6);
+    objc_storeStrong(&v15->_localKeyValueDomain, domain);
     v18 = objc_alloc(MEMORY[0x277CCCFE8]);
-    v19 = [v18 initWithLoggingCategory:*MEMORY[0x277CCC2D0] healthDataSource:v10];
+    v19 = [v18 initWithLoggingCategory:*MEMORY[0x277CCC2D0] healthDataSource:profileCopy];
     analyticsEventSubmissionManager = v15->_analyticsEventSubmissionManager;
     v15->_analyticsEventSubmissionManager = v19;
 
     WeakRetained = objc_loadWeakRetained(&v15->_profile);
-    v22 = [WeakRetained daemon];
-    [v22 registerDaemonReadyObserver:v15 queue:v15->_queue];
+    daemon = [WeakRetained daemon];
+    [daemon registerDaemonReadyObserver:v15 queue:v15->_queue];
   }
 
   return v15;
@@ -67,8 +67,8 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
-  [v4 removeProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database removeProtectedDataObserver:self];
 
   [(HKFeatureStatusProviding *)self->_featureStatusProvider unregisterObserver:self];
   v5.receiver = self;
@@ -76,39 +76,39 @@
   [(HDHRHypertensionNotificationsRescindedAlertManager *)&v5 dealloc];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   dispatch_assert_queue_V2(self->_queue);
   [(HKFeatureStatusProviding *)self->_featureStatusProvider registerObserver:self];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained database];
-  [v5 addProtectedDataObserver:self queue:self->_queue];
+  database = [WeakRetained database];
+  [database addProtectedDataObserver:self queue:self->_queue];
 
   [(HDHRHypertensionNotificationsRescindedAlertManager *)self _queue_pullFeatureStatusAndPresentAlertIfNeeded];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (availableCopy)
   {
 
     [(HDHRHypertensionNotificationsRescindedAlertManager *)self _queue_pullFeatureStatusAndPresentAlertIfNeeded];
   }
 }
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
-  v5 = a4;
+  statusCopy = status;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __100__HDHRHypertensionNotificationsRescindedAlertManager_featureStatusProviding_didUpdateFeatureStatus___block_invoke;
   v8[3] = &unk_27865FE98;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = statusCopy;
+  v7 = statusCopy;
   dispatch_async(queue, v8);
 }
 
@@ -147,14 +147,14 @@ uint64_t __100__HDHRHypertensionNotificationsRescindedAlertManager_featureStatus
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_presentRescindedOrReEnabledAlertIfNeededWithFeatureStatus:(id)a3
+- (void)_queue_presentRescindedOrReEnabledAlertIfNeededWithFeatureStatus:(id)status
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statusCopy = status;
   dispatch_assert_queue_V2(self->_queue);
   if (([(HDHRPairedSyncStateProviding *)self->_pairedSyncStateProvider isPairedSyncCompleted]& 1) != 0)
   {
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
+    v5 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
     if (([v5 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF38]] & 1) == 0)
     {
       _HKInitializeLogging();
@@ -229,9 +229,9 @@ LABEL_11:
       {
         [(HDHRHypertensionNotificationsRescindedAlertManager *)self _presentHypertensionNotificationsRescindedAlertForUsageEvaluation:v5];
         v18 = self->_localKeyValueDomain;
-        v19 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
         v26 = 0;
-        [(HDKeyValueDomain *)v18 setDate:v19 forKey:@"HypertensionNotificationsDisabledNotificationShownDateKey" error:&v26];
+        [(HDKeyValueDomain *)v18 setDate:date forKey:@"HypertensionNotificationsDisabledNotificationShownDateKey" error:&v26];
         v14 = v26;
 
         if (!v14)
@@ -313,23 +313,23 @@ LABEL_19:
 
 - (void)_unitTesting_callNotificationNotPostedHandlerIfSet
 {
-  v3 = [(HDHRHypertensionNotificationsRescindedAlertManager *)self unitTesting_notificationNotPostedHandler];
+  unitTesting_notificationNotPostedHandler = [(HDHRHypertensionNotificationsRescindedAlertManager *)self unitTesting_notificationNotPostedHandler];
 
-  if (v3)
+  if (unitTesting_notificationNotPostedHandler)
   {
-    v4 = [(HDHRHypertensionNotificationsRescindedAlertManager *)self unitTesting_notificationNotPostedHandler];
-    v4[2]();
+    unitTesting_notificationNotPostedHandler2 = [(HDHRHypertensionNotificationsRescindedAlertManager *)self unitTesting_notificationNotPostedHandler];
+    unitTesting_notificationNotPostedHandler2[2]();
   }
 }
 
-- (id)_rescindedAlertTitleForUsageEvaluation:(id)a3
+- (id)_rescindedAlertTitleForUsageEvaluation:(id)evaluation
 {
-  v3 = a3;
-  if ([v3 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF08]] && objc_msgSend(v3, "isRequirementSatisfiedWithIdentifier:", *MEMORY[0x277CCBF00]))
+  evaluationCopy = evaluation;
+  if ([evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF08]] && objc_msgSend(evaluationCopy, "isRequirementSatisfiedWithIdentifier:", *MEMORY[0x277CCBF00]))
   {
-    if ([v3 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFD0]])
+    if ([evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFD0]])
     {
-      if ([v3 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF30]])
+      if ([evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF30]])
       {
         v4 = 0;
         goto LABEL_8;
@@ -357,14 +357,14 @@ LABEL_8:
   return v4;
 }
 
-- (id)_rescindedAlertBodyForUsageEvaluation:(id)a3
+- (id)_rescindedAlertBodyForUsageEvaluation:(id)evaluation
 {
-  v3 = a3;
-  if ([v3 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF08]] && objc_msgSend(v3, "isRequirementSatisfiedWithIdentifier:", *MEMORY[0x277CCBF00]))
+  evaluationCopy = evaluation;
+  if ([evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF08]] && objc_msgSend(evaluationCopy, "isRequirementSatisfiedWithIdentifier:", *MEMORY[0x277CCBF00]))
   {
-    if ([v3 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFD0]])
+    if ([evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFD0]])
     {
-      if ([v3 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF30]])
+      if ([evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF30]])
       {
         v4 = 0;
         goto LABEL_8;
@@ -392,16 +392,16 @@ LABEL_8:
   return v4;
 }
 
-- (int64_t)_rescindedAlertTypeForUsageEvaluation:(id)a3
+- (int64_t)_rescindedAlertTypeForUsageEvaluation:(id)evaluation
 {
-  v3 = a3;
-  if ([v3 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF08]])
+  evaluationCopy = evaluation;
+  if ([evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF08]])
   {
-    if ([v3 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF00]])
+    if ([evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF00]])
     {
-      if ([v3 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFD0]])
+      if ([evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFD0]])
       {
-        if ([v3 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF30]])
+        if ([evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF30]])
         {
           v4 = 1;
         }
@@ -432,13 +432,13 @@ LABEL_8:
   return v4;
 }
 
-- (void)_presentHypertensionNotificationsRescindedAlertForUsageEvaluation:(id)a3
+- (void)_presentHypertensionNotificationsRescindedAlertForUsageEvaluation:(id)evaluation
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDHRHypertensionNotificationsRescindedAlertManager *)self _rescindedAlertTitleForUsageEvaluation:v4];
-  v6 = [(HDHRHypertensionNotificationsRescindedAlertManager *)self _rescindedAlertBodyForUsageEvaluation:v4];
-  v7 = [(HDHRHypertensionNotificationsRescindedAlertManager *)self _rescindedAlertTypeForUsageEvaluation:v4];
+  evaluationCopy = evaluation;
+  v5 = [(HDHRHypertensionNotificationsRescindedAlertManager *)self _rescindedAlertTitleForUsageEvaluation:evaluationCopy];
+  v6 = [(HDHRHypertensionNotificationsRescindedAlertManager *)self _rescindedAlertBodyForUsageEvaluation:evaluationCopy];
+  v7 = [(HDHRHypertensionNotificationsRescindedAlertManager *)self _rescindedAlertTypeForUsageEvaluation:evaluationCopy];
 
   _HKInitializeLogging();
   v8 = HKLogHeartRateCategory();
@@ -489,15 +489,15 @@ LABEL_8:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isFeatureRescindedWithUsageEvaluation:(id)a3
+- (BOOL)_isFeatureRescindedWithUsageEvaluation:(id)evaluation
 {
   v27 = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CCBF08];
-  v4 = a3;
-  v5 = [v4 isRequirementSatisfiedWithIdentifier:v3];
-  v6 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF00]];
-  v7 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFD0]];
-  v8 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF30]];
+  evaluationCopy = evaluation;
+  v5 = [evaluationCopy isRequirementSatisfiedWithIdentifier:v3];
+  v6 = [evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF00]];
+  v7 = [evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFD0]];
+  v8 = [evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF30]];
 
   _HKInitializeLogging();
   v9 = HKLogHeartRateCategory();
@@ -525,19 +525,19 @@ LABEL_8:
   return v5 & v6 & v7 & v8 ^ 1;
 }
 
-- (BOOL)_isFeatureUnavailableForNonRescindedReasonsWithUsageEvaluation:(id)a3
+- (BOOL)_isFeatureUnavailableForNonRescindedReasonsWithUsageEvaluation:(id)evaluation
 {
   v49 = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CCBF28];
-  v4 = a3;
-  v5 = [v4 isRequirementSatisfiedWithIdentifier:v3];
-  v6 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF70]];
-  v7 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF50]];
-  v8 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFE8]];
-  v9 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF48]];
-  v10 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF80]];
-  v11 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBED8]];
-  v30 = [v4 isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBEF0]];
+  evaluationCopy = evaluation;
+  v5 = [evaluationCopy isRequirementSatisfiedWithIdentifier:v3];
+  v6 = [evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF70]];
+  v7 = [evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF50]];
+  v8 = [evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBFE8]];
+  v9 = [evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF48]];
+  v10 = [evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBF80]];
+  v11 = [evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBED8]];
+  v30 = [evaluationCopy isRequirementSatisfiedWithIdentifier:*MEMORY[0x277CCBEF0]];
 
   _HKInitializeLogging();
   v12 = HKLogHeartRateCategory();
@@ -592,29 +592,29 @@ LABEL_8:
   return (v5 & v6 & v7 & v8 & v9 & v10 & v11 & v30 & 1) == 0;
 }
 
-- (void)_presentNotificationWithTitle:(id)a3 message:(id)a4 type:(int64_t)a5
+- (void)_presentNotificationWithTitle:(id)title message:(id)message type:(int64_t)type
 {
   v8 = MEMORY[0x277CE1F60];
-  v9 = a4;
-  v10 = a3;
+  messageCopy = message;
+  titleCopy = title;
   v11 = objc_alloc_init(v8);
-  [v11 setTitle:v10];
+  [v11 setTitle:titleCopy];
 
-  [v11 setBody:v9];
+  [v11 setBody:messageCopy];
   v12 = *MEMORY[0x277D13048];
   [v11 setCategoryIdentifier:*MEMORY[0x277D13048]];
   v13 = [MEMORY[0x277CE1F70] soundWithAlertType:25];
-  v14 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   [v11 setSound:v13];
-  [v11 setDate:v14];
-  v15 = [MEMORY[0x277CBEA80] currentCalendar];
-  v16 = [v15 hk_dateByAddingDays:1 toDate:v14];
+  [v11 setDate:date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v16 = [currentCalendar hk_dateByAddingDays:1 toDate:date];
   [v11 setExpirationDate:v16];
 
   v17 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:MEMORY[0x277CBEC10]];
-  v18 = [MEMORY[0x277CBEBC0] _hk_urlForHypertensionEventType];
-  v19 = [v18 absoluteString];
-  [v17 setObject:v19 forKeyedSubscript:*MEMORY[0x277CCE4E0]];
+  _hk_urlForHypertensionEventType = [MEMORY[0x277CBEBC0] _hk_urlForHypertensionEventType];
+  absoluteString = [_hk_urlForHypertensionEventType absoluteString];
+  [v17 setObject:absoluteString forKeyedSubscript:*MEMORY[0x277CCE4E0]];
 
   [v17 setObject:&unk_283CD26F8 forKeyedSubscript:*MEMORY[0x277CCE4D0]];
   [v11 setUserInfo:v17];
@@ -628,7 +628,7 @@ LABEL_8:
   v23 = v20;
   v21 = v20;
   objc_copyWeak(v24, &location);
-  v24[1] = a5;
+  v24[1] = type;
   dispatch_async(MEMORY[0x277D85CD0], block);
   objc_destroyWeak(v24);
 

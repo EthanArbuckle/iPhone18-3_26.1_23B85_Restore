@@ -1,65 +1,65 @@
 @interface MechanismACM
-- (MechanismACM)initWithEventIdentifier:(int64_t)a3 remoteViewController:(int64_t)a4 acmContextRecord:(id)a5 request:(id)a6;
-- (id)mergeResult:(id)a3 withUpdateOfIdentityUUID:(id)a4;
+- (MechanismACM)initWithEventIdentifier:(int64_t)identifier remoteViewController:(int64_t)controller acmContextRecord:(id)record request:(id)request;
+- (id)mergeResult:(id)result withUpdateOfIdentityUUID:(id)d;
 @end
 
 @implementation MechanismACM
 
-- (MechanismACM)initWithEventIdentifier:(int64_t)a3 remoteViewController:(int64_t)a4 acmContextRecord:(id)a5 request:(id)a6
+- (MechanismACM)initWithEventIdentifier:(int64_t)identifier remoteViewController:(int64_t)controller acmContextRecord:(id)record request:(id)request
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = [v11 cachedExternalizationDelegate];
+  recordCopy = record;
+  requestCopy = request;
+  cachedExternalizationDelegate = [recordCopy cachedExternalizationDelegate];
   v16.receiver = self;
   v16.super_class = MechanismACM;
-  v14 = [(MechanismBase *)&v16 initWithEventIdentifier:a3 remoteViewController:a4 cachedExternalizationDelegate:v13 request:v12];
+  v14 = [(MechanismBase *)&v16 initWithEventIdentifier:identifier remoteViewController:controller cachedExternalizationDelegate:cachedExternalizationDelegate request:requestCopy];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_acmContextRecord, a5);
-    v14->_acmContext = [v11 context];
-    v14->_acmFlags = [v11 flags];
+    objc_storeStrong(&v14->_acmContextRecord, record);
+    v14->_acmContext = [recordCopy context];
+    v14->_acmFlags = [recordCopy flags];
   }
 
   return v14;
 }
 
-- (id)mergeResult:(id)a3 withUpdateOfIdentityUUID:(id)a4
+- (id)mergeResult:(id)result withUpdateOfIdentityUUID:(id)d
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MechanismACM *)self updateConstraintOffset];
+  resultCopy = result;
+  dCopy = d;
+  updateConstraintOffset = [(MechanismACM *)self updateConstraintOffset];
 
-  if (!v8)
+  if (!updateConstraintOffset)
   {
-    v21 = v6;
+    v21 = resultCopy;
     goto LABEL_22;
   }
 
-  v9 = [(MechanismBase *)self internalOptions];
-  v10 = [v9 objectForKeyedSubscript:@"ConstraintOp"];
+  internalOptions = [(MechanismBase *)self internalOptions];
+  v10 = [internalOptions objectForKeyedSubscript:@"ConstraintOp"];
 
-  v11 = [(MechanismBase *)self internalOptions];
-  v12 = [v11 objectForKeyedSubscript:@"Constraint"];
+  internalOptions2 = [(MechanismBase *)self internalOptions];
+  v12 = [internalOptions2 objectForKeyedSubscript:@"Constraint"];
 
-  v13 = [(MechanismBase *)self internalOptions];
-  v14 = [v13 objectForKeyedSubscript:@"ConstraintData"];
+  internalOptions3 = [(MechanismBase *)self internalOptions];
+  v14 = [internalOptions3 objectForKeyedSubscript:@"ConstraintData"];
   v15 = [v14 mutableCopy];
 
   if (v10 && v12 && v15)
   {
-    v16 = [(MechanismACM *)self updateConstraintOffset];
-    v17 = [v16 unsignedIntegerValue] + 16;
+    updateConstraintOffset2 = [(MechanismACM *)self updateConstraintOffset];
+    v17 = [updateConstraintOffset2 unsignedIntegerValue] + 16;
     v18 = [v15 length];
 
     if (v17 <= v18)
     {
       v49[0] = 0;
       v49[1] = 0;
-      [v7 getUUIDBytes:v49];
-      v23 = [(MechanismACM *)self updateConstraintOffset];
-      [v15 replaceBytesInRange:objc_msgSend(v23 withBytes:{"unsignedIntegerValue"), 16, v49}];
+      [dCopy getUUIDBytes:v49];
+      updateConstraintOffset3 = [(MechanismACM *)self updateConstraintOffset];
+      [v15 replaceBytesInRange:objc_msgSend(updateConstraintOffset3 withBytes:{"unsignedIntegerValue"), 16, v49}];
 
       v24 = [v12 objectForKeyedSubscript:@"cbio"];
       v25 = [v24 mutableCopy];
@@ -71,20 +71,20 @@
 
         v40 = [v12 mutableCopy];
         [v40 setObject:v25 forKey:@"cbio"];
-        v28 = [(MechanismBase *)self request];
-        v29 = [v28 log];
+        request = [(MechanismBase *)self request];
+        v29 = [request log];
 
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [(MechanismACM *)self updateConstraintOffset];
+          updateConstraintOffset4 = [(MechanismACM *)self updateConstraintOffset];
           *buf = 138544130;
-          v51 = self;
+          selfCopy2 = self;
           v52 = 2114;
           v53 = v10;
           v54 = 2114;
-          v55 = v30;
+          v55 = updateConstraintOffset4;
           v56 = 2114;
-          v57 = v7;
+          v57 = dCopy;
           _os_log_impl(&dword_238B95000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@ has resolved the unbound UUID for operation '%{public}@' at index %{public}@ to %{public}@", buf, 0x2Au);
         }
 
@@ -103,27 +103,27 @@
         v48[1] = v33;
         v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:2];
 
-        v21 = [v34 dictionaryByMergingWith:v6];
+        v21 = [v34 dictionaryByMergingWith:resultCopy];
       }
 
       else
       {
-        v35 = [(MechanismBase *)self request];
-        v36 = [v35 log];
+        request2 = [(MechanismBase *)self request];
+        v36 = [request2 log];
 
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
           [MechanismACM mergeResult:v25 withUpdateOfIdentityUUID:v36];
         }
 
-        v21 = v6;
+        v21 = resultCopy;
       }
 
       goto LABEL_21;
     }
 
-    v19 = [(MechanismBase *)self request];
-    v20 = [v19 log];
+    request3 = [(MechanismBase *)self request];
+    v20 = [request3 log];
 
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
@@ -133,14 +133,14 @@
 
   else
   {
-    v22 = [(MechanismBase *)self request];
-    v20 = [v22 log];
+    request4 = [(MechanismBase *)self request];
+    v20 = [request4 log];
 
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v39 = [(MechanismACM *)self updateConstraintOffset];
+      updateConstraintOffset5 = [(MechanismACM *)self updateConstraintOffset];
       *buf = 138544386;
-      v51 = self;
+      selfCopy2 = self;
       v52 = 2114;
       v53 = v12;
       v54 = 2114;
@@ -148,12 +148,12 @@
       v56 = 2114;
       v57 = v10;
       v58 = 2114;
-      v59 = v39;
+      v59 = updateConstraintOffset5;
       _os_log_error_impl(&dword_238B95000, v20, OS_LOG_TYPE_ERROR, "%{public}@ is missing constraint: %{public}@, data: %{public}@ or operation: %{public}@ use offset %{public}@", buf, 0x34u);
     }
   }
 
-  v21 = v6;
+  v21 = resultCopy;
 LABEL_21:
 
 LABEL_22:

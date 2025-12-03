@@ -1,9 +1,9 @@
 @interface PDUserEvaluationEnvironment
-+ (BOOL)isTransactionRelevant:(id)a3;
++ (BOOL)isTransactionRelevant:(id)relevant;
 + (id)availableKeysAndOperators;
-- (BOOL)_hasDefaultCreditAccountTransactionOfTransactionSourceType:(unint64_t)a3;
-- (BOOL)_hasPaymentOfferCriteriaOfType:(unint64_t)a3;
-- (BOOL)_hasSavingsAccountAccountTransactionOfTransactionType:(int64_t)a3 fundingSourceTypes:(id)a4;
+- (BOOL)_hasDefaultCreditAccountTransactionOfTransactionSourceType:(unint64_t)type;
+- (BOOL)_hasPaymentOfferCriteriaOfType:(unint64_t)type;
+- (BOOL)_hasSavingsAccountAccountTransactionOfTransactionType:(int64_t)type fundingSourceTypes:(id)types;
 - (BOOL)anyCreditAccountStateIsClosed;
 - (BOOL)anyCreditAccountStateIsRemoved;
 - (BOOL)defaultCreditAccountHasActiveInstallment;
@@ -11,12 +11,12 @@
 - (BOOL)defaultCreditAccountHasDynamicSecurityCode;
 - (BOOL)defaultCreditAccountHasInAppTransaction;
 - (BOOL)defaultCreditAccountHasInStoreTransaction;
-- (BOOL)defaultCreditAccountHasMapsBrandIdentifier:(id)a3;
-- (BOOL)defaultCreditAccountHasMapsBrandIdentifierLast30Days:(id)a3;
-- (BOOL)defaultCreditAccountHasMapsIdentifier:(id)a3;
-- (BOOL)defaultCreditAccountHasMapsIdentifierLast30Days:(id)a3;
-- (BOOL)defaultCreditAccountHasMerchantIdentifier30Days:(id)a3;
-- (BOOL)defaultCreditAccountHasMerchantIdentifier:(id)a3;
+- (BOOL)defaultCreditAccountHasMapsBrandIdentifier:(id)identifier;
+- (BOOL)defaultCreditAccountHasMapsBrandIdentifierLast30Days:(id)days;
+- (BOOL)defaultCreditAccountHasMapsIdentifier:(id)identifier;
+- (BOOL)defaultCreditAccountHasMapsIdentifierLast30Days:(id)days;
+- (BOOL)defaultCreditAccountHasMerchantIdentifier30Days:(id)days;
+- (BOOL)defaultCreditAccountHasMerchantIdentifier:(id)identifier;
 - (BOOL)defaultCreditAccountHasPhysicalCard;
 - (BOOL)defaultCreditAccountHasPhysicalCardTransaction;
 - (BOOL)defaultCreditAccountHasUnderageParticipant;
@@ -32,24 +32,24 @@
 - (BOOL)familyCircleFamilyOrganizer;
 - (BOOL)familyCircleHasFamily;
 - (BOOL)familyCircleParent;
-- (BOOL)hasActivePromotionIdentifier:(id)a3;
-- (BOOL)hasActivePromotionIdentifierExpiringSoon:(id)a3;
+- (BOOL)hasActivePromotionIdentifier:(id)identifier;
+- (BOOL)hasActivePromotionIdentifierExpiringSoon:(id)soon;
 - (BOOL)hasAnyConnectedCardWithBankConnect;
 - (BOOL)hasAppleAccountCardProvisioned;
 - (BOOL)hasApplePayTransaction;
 - (BOOL)hasBankConnectEligibleCard;
 - (BOOL)hasCreditCard;
 - (BOOL)hasDebitCard;
-- (BOOL)hasInstalledApp:(id)a3;
-- (BOOL)hasMapsBrandIdentifier:(id)a3;
-- (BOOL)hasMapsIdentifier:(id)a3;
-- (BOOL)hasMerchantIdentifier:(id)a3;
+- (BOOL)hasInstalledApp:(id)app;
+- (BOOL)hasMapsBrandIdentifier:(id)identifier;
+- (BOOL)hasMapsIdentifier:(id)identifier;
+- (BOOL)hasMerchantIdentifier:(id)identifier;
 - (BOOL)hasPairedWatch;
 - (BOOL)hasPaymentCard;
 - (BOOL)hasPaymentTransaction;
 - (BOOL)hasPeerPaymentPassProvisioned;
 - (BOOL)hasSecureElementPass;
-- (BOOL)hasTransactionOfTransactionSourceType:(id)a3;
+- (BOOL)hasTransactionOfTransactionSourceType:(id)type;
 - (BOOL)hasTransitTransaction;
 - (BOOL)isApplePayActive;
 - (BOOL)isApplePaySetupAvailable;
@@ -92,17 +92,17 @@
 - (NSString)currentDefaultCreditApplicationState;
 - (NSString)defaultCreditAccountPhysicalAppleCardStatus;
 - (NSString)defaultCreditAccountRewardsDestination;
-- (PDUserEvaluationEnvironment)initWithAccountManager:(id)a3 applyManager:(id)a4 databaseManager:(id)a5 peerPaymentWebServiceCoordinator:(id)a6 paymentWebServiceCoordinator:(id)a7 transitNotificationService:(id)a8 familyCircleManager:(id)a9 expressPassManager:(id)a10 discoveryManager:(id)a11;
-- (id)_accountUsersForAccountIdentifier:(id)a3 accessLevel:(unint64_t)a4;
-- (id)_creditAccountPhysicalCardsForAccountIdentifier:(id)a3;
-- (id)_creditAccountUsersForAccountIdentifier:(id)a3;
-- (id)_creditAccountWithIdentifier:(id)a3;
+- (PDUserEvaluationEnvironment)initWithAccountManager:(id)manager applyManager:(id)applyManager databaseManager:(id)databaseManager peerPaymentWebServiceCoordinator:(id)coordinator paymentWebServiceCoordinator:(id)serviceCoordinator transitNotificationService:(id)service familyCircleManager:(id)circleManager expressPassManager:(id)self0 discoveryManager:(id)self1;
+- (id)_accountUsersForAccountIdentifier:(id)identifier accessLevel:(unint64_t)level;
+- (id)_creditAccountPhysicalCardsForAccountIdentifier:(id)identifier;
+- (id)_creditAccountUsersForAccountIdentifier:(id)identifier;
+- (id)_creditAccountWithIdentifier:(id)identifier;
 - (id)_defaultCreditAccountAccountStatement;
 - (id)_defaultCreditAccountAccountSummary;
 - (id)_defaultCreditAccountCreditAccountDetails;
 - (id)_defaultCreditAccountSupportedDestinations;
-- (id)_familyMemberWithAltDSID:(id)a3;
-- (id)_unactivatedPhysicalCardForAltDSID:(id)a3;
+- (id)_familyMemberWithAltDSID:(id)d;
+- (id)_unactivatedPhysicalCardForAltDSID:(id)d;
 - (id)debugDescription;
 - (id)discoveryItemStatus;
 - (id)enumeratorOfDefaultCreditAccountActivePromotionIdentifiers;
@@ -118,20 +118,20 @@
 - (id)enumeratorOfMapsIdentifiers;
 - (id)enumeratorOfMerchantIdentifiers;
 - (id)hasUserPreferencesEnabledByIdentifier;
-- (id)issuerMessagingFlagsForDefaultAccountType:(id)a3;
-- (id)memberOfDefaultCreditAccountActivePromotionIdentifiers:(id)a3;
-- (id)memberOfDefaultCreditAccountActivePromotionIdentifiersExpiringSoon:(id)a3;
-- (id)memberOfDefaultCreditAccountMapsBrandIdentifiers:(id)a3;
-- (id)memberOfDefaultCreditAccountMapsBrandIdentifiersLast30Days:(id)a3;
-- (id)memberOfDefaultCreditAccountMapsIdentifiers:(id)a3;
-- (id)memberOfDefaultCreditAccountMapsIdentifiersLast30Days:(id)a3;
-- (id)memberOfDefaultCreditAccountMerchantIdentifiers:(id)a3;
-- (id)memberOfDefaultCreditAccountMerchantIdentifiersLast30Days:(id)a3;
-- (id)memberOfInstalledApps:(id)a3;
-- (id)memberOfMapsBrandIdentifiers:(id)a3;
-- (id)memberOfMapsIdentifiers:(id)a3;
-- (id)memberOfMerchantIdentifiers:(id)a3;
-- (int64_t)appleAccountCardDaysSinceTopUpOfType:(id)a3;
+- (id)issuerMessagingFlagsForDefaultAccountType:(id)type;
+- (id)memberOfDefaultCreditAccountActivePromotionIdentifiers:(id)identifiers;
+- (id)memberOfDefaultCreditAccountActivePromotionIdentifiersExpiringSoon:(id)soon;
+- (id)memberOfDefaultCreditAccountMapsBrandIdentifiers:(id)identifiers;
+- (id)memberOfDefaultCreditAccountMapsBrandIdentifiersLast30Days:(id)days;
+- (id)memberOfDefaultCreditAccountMapsIdentifiers:(id)identifiers;
+- (id)memberOfDefaultCreditAccountMapsIdentifiersLast30Days:(id)days;
+- (id)memberOfDefaultCreditAccountMerchantIdentifiers:(id)identifiers;
+- (id)memberOfDefaultCreditAccountMerchantIdentifiersLast30Days:(id)days;
+- (id)memberOfInstalledApps:(id)apps;
+- (id)memberOfMapsBrandIdentifiers:(id)identifiers;
+- (id)memberOfMapsIdentifiers:(id)identifiers;
+- (id)memberOfMerchantIdentifiers:(id)identifiers;
+- (int64_t)appleAccountCardDaysSinceTopUpOfType:(id)type;
 - (int64_t)currentDefaultCreditApplictionDaysSinceLastUpdated;
 - (int64_t)daysSinceAppleAccountInStoreTopUp;
 - (int64_t)daysSinceLastDeviceTapSendTransaction;
@@ -141,12 +141,12 @@
 - (int64_t)daysSinceOldestCreditCardIngestDate;
 - (int64_t)daysSinceOldestPaymentPassIngestDate;
 - (int64_t)daysSinceParticipantPeerPaymentAccountIdentifiedDate;
-- (int64_t)daysSinceProvisionedPassBySpecifiedType:(id)a3;
+- (int64_t)daysSinceProvisionedPassBySpecifiedType:(id)type;
 - (int64_t)defaultCreditAccountBalanceStatus;
 - (int64_t)defaultCreditAccountCyclesPastDue;
 - (int64_t)defaultCreditAccountDaysSinceCreatedDate;
 - (int64_t)defaultCreditAccountDaysSinceLastTransaction;
-- (int64_t)defaultCreditAccountDaysUntilActivePromotionExpires:(id)a3;
+- (int64_t)defaultCreditAccountDaysUntilActivePromotionExpires:(id)expires;
 - (int64_t)defaultCreditAccountParticipantUsersCount;
 - (int64_t)defaultCreditAccountSetupFeatureState;
 - (int64_t)defaultCreditAccountState;
@@ -173,8 +173,8 @@
 - (int64_t)savingsAccountDaysSinceCreatedDate;
 - (unint64_t)countOfInstalledApps;
 - (unint64_t)peerPaymentAccountRole;
-- (void)_prefetchDataSources:(id)a3 completion:(id)a4;
-- (void)preflightForKeys:(id)a3 completion:(id)a4;
+- (void)_prefetchDataSources:(id)sources completion:(id)completion;
+- (void)preflightForKeys:(id)keys completion:(id)completion;
 - (void)updateDisputeState;
 @end
 
@@ -505,44 +505,44 @@
   return v2;
 }
 
-+ (BOOL)isTransactionRelevant:(id)a3
++ (BOOL)isTransactionRelevant:(id)relevant
 {
-  v4 = a3;
-  v5 = [a1 _applePayRelevantTransactionTypes];
-  v6 = [v4 transactionType];
+  relevantCopy = relevant;
+  _applePayRelevantTransactionTypes = [self _applePayRelevantTransactionTypes];
+  transactionType = [relevantCopy transactionType];
 
-  v7 = [NSNumber numberWithInteger:v6];
-  v8 = [v5 containsObject:v7];
+  v7 = [NSNumber numberWithInteger:transactionType];
+  v8 = [_applePayRelevantTransactionTypes containsObject:v7];
 
   return v8;
 }
 
-- (PDUserEvaluationEnvironment)initWithAccountManager:(id)a3 applyManager:(id)a4 databaseManager:(id)a5 peerPaymentWebServiceCoordinator:(id)a6 paymentWebServiceCoordinator:(id)a7 transitNotificationService:(id)a8 familyCircleManager:(id)a9 expressPassManager:(id)a10 discoveryManager:(id)a11
+- (PDUserEvaluationEnvironment)initWithAccountManager:(id)manager applyManager:(id)applyManager databaseManager:(id)databaseManager peerPaymentWebServiceCoordinator:(id)coordinator paymentWebServiceCoordinator:(id)serviceCoordinator transitNotificationService:(id)service familyCircleManager:(id)circleManager expressPassManager:(id)self0 discoveryManager:(id)self1
 {
-  v65 = a3;
-  v64 = a4;
-  v63 = a5;
-  v62 = a6;
-  v61 = a7;
-  v60 = a8;
-  v59 = a9;
-  v58 = a10;
-  v57 = a11;
+  managerCopy = manager;
+  applyManagerCopy = applyManager;
+  databaseManagerCopy = databaseManager;
+  coordinatorCopy = coordinator;
+  serviceCoordinatorCopy = serviceCoordinator;
+  serviceCopy = service;
+  circleManagerCopy = circleManager;
+  passManagerCopy = passManager;
+  discoveryManagerCopy = discoveryManager;
   v66.receiver = self;
   v66.super_class = PDUserEvaluationEnvironment;
   v18 = [(PDUserEvaluationEnvironment *)&v66 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_accountManager, a3);
-    objc_storeStrong(&v19->_applyManager, a4);
-    objc_storeStrong(&v19->_databaseManager, a5);
-    objc_storeStrong(&v19->_peerPaymentWebServiceCoordinator, a6);
-    objc_storeStrong(&v19->_paymentWebServiceCoordinator, a7);
-    objc_storeStrong(&v19->_transitNotificationService, a8);
-    objc_storeStrong(&v19->_familyCircleManager, a9);
-    objc_storeStrong(&v19->_expressPassManager, a10);
-    objc_storeStrong(&v19->_discoveryManager, a11);
+    objc_storeStrong(&v18->_accountManager, manager);
+    objc_storeStrong(&v19->_applyManager, applyManager);
+    objc_storeStrong(&v19->_databaseManager, databaseManager);
+    objc_storeStrong(&v19->_peerPaymentWebServiceCoordinator, coordinator);
+    objc_storeStrong(&v19->_paymentWebServiceCoordinator, serviceCoordinator);
+    objc_storeStrong(&v19->_transitNotificationService, service);
+    objc_storeStrong(&v19->_familyCircleManager, circleManager);
+    objc_storeStrong(&v19->_expressPassManager, passManager);
+    objc_storeStrong(&v19->_discoveryManager, discoveryManager);
     v19->_prefetchedFamilyMemberType = -1;
     v19->_daysSinceLastPeerPaymentP2PTransaction = -1;
     v19->_peerPaymentDaysSinceLastP2PTransactionToAnyParticipant = -1;
@@ -674,10 +674,10 @@
       LOBYTE(v4) = 0;
     }
 
-    v5 = [(PDPaymentWebServiceCoordinator *)self->_paymentWebServiceCoordinator sharedWebService];
-    v6 = [v5 paymentSetupSupportedInRegion];
+    sharedWebService = [(PDPaymentWebServiceCoordinator *)self->_paymentWebServiceCoordinator sharedWebService];
+    paymentSetupSupportedInRegion = [sharedWebService paymentSetupSupportedInRegion];
 
-    if (v6)
+    if (paymentSetupSupportedInRegion)
     {
       v3 = v4;
     }
@@ -698,9 +698,9 @@
 {
   if (!self->_hasQueriedBrokerRegistration)
   {
-    v3 = [(PDPaymentWebServiceCoordinator *)self->_paymentWebServiceCoordinator sharedWebService];
-    v4 = [v3 context];
-    self->_isBrokerRegistered = [v4 isRegistered];
+    sharedWebService = [(PDPaymentWebServiceCoordinator *)self->_paymentWebServiceCoordinator sharedWebService];
+    context = [sharedWebService context];
+    self->_isBrokerRegistered = [context isRegistered];
 
     self->_hasQueriedBrokerRegistration = 1;
   }
@@ -782,8 +782,8 @@
   {
     v3 = +[PDUserEvaluationEnvironment _applePayRelevantTransactionTypes];
     v4 = [(PDDatabaseManager *)self->_databaseManager transactionsOfTypes:v3 withTransactionSource:0 withBackingData:0 limit:1];
-    v5 = [v4 firstObject];
-    self->_hasApplePayTransaction = v5 != 0;
+    firstObject = [v4 firstObject];
+    self->_hasApplePayTransaction = firstObject != 0;
 
     self->_hasQueriedApplePayTransactions = 1;
   }
@@ -839,12 +839,12 @@
   {
     v3 = +[PDUserEvaluationEnvironment _applePayRelevantTransactionTypes];
     v4 = [(PDDatabaseManager *)self->_databaseManager transactionsOfTypes:v3 withTransactionSource:0 withBackingData:0 limit:1];
-    v5 = [v4 firstObject];
-    if (v5)
+    firstObject = [v4 firstObject];
+    if (firstObject)
     {
       v6 = +[NSDate date];
-      v7 = [v5 transactionDate];
-      [v6 timeIntervalSinceDate:v7];
+      transactionDate = [firstObject transactionDate];
+      [v6 timeIntervalSinceDate:transactionDate];
       v9 = v8;
 
       self->_daysSinceLastApplePayTransaction = vcvtmd_s64_f64(v9 / 86400.0);
@@ -926,21 +926,21 @@
   return self->_daysSinceOldestCardInPendingVerification;
 }
 
-- (int64_t)daysSinceProvisionedPassBySpecifiedType:(id)a3
+- (int64_t)daysSinceProvisionedPassBySpecifiedType:(id)type
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == @"appleCash")
+  typeCopy = type;
+  v5 = typeCopy;
+  if (typeCopy == @"appleCash")
   {
     goto LABEL_4;
   }
 
-  if (!v4)
+  if (!typeCopy)
   {
     goto LABEL_34;
   }
 
-  v6 = [(__CFString *)v4 isEqualToString:@"appleCash"];
+  v6 = [(__CFString *)typeCopy isEqualToString:@"appleCash"];
 
   if (!v6)
   {
@@ -948,8 +948,8 @@
     if (v15 == @"appleCard" || (v16 = v15, v17 = [(__CFString *)v15 isEqualToString:@"appleCard"], v16, v17))
     {
       v7 = objc_alloc_init(PDSecureElementPassDatabaseRequest);
-      v8 = [(PKAccount *)self->_prefetchedDefaultCreditAccount associatedPassUniqueID];
-      v53 = v8;
+      associatedPassUniqueID = [(PKAccount *)self->_prefetchedDefaultCreditAccount associatedPassUniqueID];
+      v53 = associatedPassUniqueID;
       v9 = &v53;
       goto LABEL_5;
     }
@@ -958,8 +958,8 @@
     if (v18 == @"appleBalance" || (v19 = v18, v20 = [(__CFString *)v18 isEqualToString:@"appleBalance"], v19, v20))
     {
       v7 = objc_alloc_init(PDSecureElementPassDatabaseRequest);
-      v8 = [(PKAccount *)self->_prefetchedAppleBalanceAccount associatedPassUniqueID];
-      v52 = v8;
+      associatedPassUniqueID = [(PKAccount *)self->_prefetchedAppleBalanceAccount associatedPassUniqueID];
+      v52 = associatedPassUniqueID;
       v9 = &v52;
       goto LABEL_5;
     }
@@ -1030,14 +1030,14 @@ LABEL_33:
     }
 
 LABEL_34:
-    v14 = -1;
+    integerValue = -1;
     goto LABEL_35;
   }
 
 LABEL_4:
   v7 = objc_alloc_init(PDSecureElementPassDatabaseRequest);
-  v8 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount associatedPassUniqueID];
-  v54 = v8;
+  associatedPassUniqueID = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount associatedPassUniqueID];
+  v54 = associatedPassUniqueID;
   v9 = &v54;
 LABEL_5:
   v10 = [NSArray arrayWithObjects:v9 count:1];
@@ -1049,14 +1049,14 @@ LABEL_6:
   v47 = 3221225472;
   v48 = sub_100126D80;
   v49 = &unk_100847888;
-  v50 = self;
+  selfCopy = self;
   v51 = v7;
   v12 = v7;
   v13 = [(NSMutableDictionary *)queriedDaysSinceProvisionedPassBySpecifiedType getOrCreateObjectForKey:v5 creationBlock:&v46];
-  v14 = [v13 integerValue];
+  integerValue = [v13 integerValue];
 
 LABEL_35:
-  return v14;
+  return integerValue;
 }
 
 - (id)hasUserPreferencesEnabledByIdentifier
@@ -1109,13 +1109,13 @@ LABEL_35:
 - (NSDecimalNumber)defaultCreditAccountLifetimeRewards
 {
   v3 = +[NSDecimalNumber zero];
-  v4 = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountAccountStatement];
-  v5 = v4;
-  if (v4)
+  _defaultCreditAccountAccountStatement = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountAccountStatement];
+  v5 = _defaultCreditAccountAccountStatement;
+  if (_defaultCreditAccountAccountStatement)
   {
-    v6 = [v4 rewardsLifetime];
+    rewardsLifetime = [_defaultCreditAccountAccountStatement rewardsLifetime];
 
-    v3 = v6;
+    v3 = rewardsLifetime;
   }
 
   return v3;
@@ -1129,8 +1129,8 @@ LABEL_35:
     return 0;
   }
 
-  v4 = [(PKAccount *)prefetchedDefaultCreditAccount accountIdentifier];
-  v5 = [(PDUserEvaluationEnvironment *)self _creditAccountPhysicalCardsForAccountIdentifier:v4];
+  accountIdentifier = [(PKAccount *)prefetchedDefaultCreditAccount accountIdentifier];
+  v5 = [(PDUserEvaluationEnvironment *)self _creditAccountPhysicalCardsForAccountIdentifier:accountIdentifier];
 
   if (v5)
   {
@@ -1147,15 +1147,15 @@ LABEL_35:
 
 - (BOOL)defaultCreditAccountHasVirtualCard
 {
-  v2 = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountCreditAccountDetails];
-  v3 = v2;
-  if (v2)
+  _defaultCreditAccountCreditAccountDetails = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountCreditAccountDetails];
+  v3 = _defaultCreditAccountCreditAccountDetails;
+  if (_defaultCreditAccountCreditAccountDetails)
   {
-    v4 = [v2 virtualCards];
-    v5 = v4;
-    if (v4)
+    virtualCards = [_defaultCreditAccountCreditAccountDetails virtualCards];
+    v5 = virtualCards;
+    if (virtualCards)
     {
-      v6 = [v4 count] != 0;
+      v6 = [virtualCards count] != 0;
     }
 
     else
@@ -1174,99 +1174,99 @@ LABEL_35:
 
 - (BOOL)defaultCreditAccountHasDynamicSecurityCode
 {
-  v2 = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountCreditAccountDetails];
-  v3 = v2;
-  if (v2)
+  _defaultCreditAccountCreditAccountDetails = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountCreditAccountDetails];
+  v3 = _defaultCreditAccountCreditAccountDetails;
+  if (_defaultCreditAccountCreditAccountDetails)
   {
-    v4 = [v2 virtualCards];
-    v5 = v4;
-    if (v4 && [v4 count])
+    virtualCards = [_defaultCreditAccountCreditAccountDetails virtualCards];
+    v5 = virtualCards;
+    if (virtualCards && [virtualCards count])
     {
-      v6 = [v5 anyObject];
-      v7 = [v6 hasDynamicSecurityCode];
+      anyObject = [v5 anyObject];
+      hasDynamicSecurityCode = [anyObject hasDynamicSecurityCode];
     }
 
     else
     {
-      v7 = 0;
+      hasDynamicSecurityCode = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    hasDynamicSecurityCode = 0;
   }
 
-  return v7;
+  return hasDynamicSecurityCode;
 }
 
 - (BOOL)defaultCreditAccountRequiresDebtCollectionNotices
 {
-  v2 = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountAccountSummary];
-  v3 = v2;
-  if (v2)
+  _defaultCreditAccountAccountSummary = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountAccountSummary];
+  v3 = _defaultCreditAccountAccountSummary;
+  if (_defaultCreditAccountAccountSummary)
   {
-    v4 = [v2 requiresDebtCollectionNotices];
+    requiresDebtCollectionNotices = [_defaultCreditAccountAccountSummary requiresDebtCollectionNotices];
   }
 
   else
   {
-    v4 = 0;
+    requiresDebtCollectionNotices = 0;
   }
 
-  return v4;
+  return requiresDebtCollectionNotices;
 }
 
 - (int64_t)defaultCreditAccountBalanceStatus
 {
-  v2 = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountAccountSummary];
-  v3 = v2;
-  if (v2)
+  _defaultCreditAccountAccountSummary = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountAccountSummary];
+  v3 = _defaultCreditAccountAccountSummary;
+  if (_defaultCreditAccountAccountSummary)
   {
-    v4 = [v2 balanceStatus];
+    balanceStatus = [_defaultCreditAccountAccountSummary balanceStatus];
   }
 
   else
   {
-    v4 = 0;
+    balanceStatus = 0;
   }
 
-  return v4;
+  return balanceStatus;
 }
 
 - (int64_t)defaultCreditAccountCyclesPastDue
 {
-  v2 = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountAccountSummary];
-  v3 = v2;
-  if (v2)
+  _defaultCreditAccountAccountSummary = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountAccountSummary];
+  v3 = _defaultCreditAccountAccountSummary;
+  if (_defaultCreditAccountAccountSummary)
   {
-    v4 = [v2 cyclesPastDue];
+    cyclesPastDue = [_defaultCreditAccountAccountSummary cyclesPastDue];
   }
 
   else
   {
-    v4 = 0;
+    cyclesPastDue = 0;
   }
 
-  return v4;
+  return cyclesPastDue;
 }
 
 - (BOOL)defaultCreditAccountInGrace
 {
-  v2 = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountCreditAccountDetails];
-  v3 = [v2 accountSummary];
-  v4 = v3;
-  if (v3)
+  _defaultCreditAccountCreditAccountDetails = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountCreditAccountDetails];
+  accountSummary = [_defaultCreditAccountCreditAccountDetails accountSummary];
+  v4 = accountSummary;
+  if (accountSummary)
   {
-    v5 = [v3 inGrace];
+    inGrace = [accountSummary inGrace];
   }
 
   else
   {
-    v5 = 0;
+    inGrace = 0;
   }
 
-  return v5;
+  return inGrace;
 }
 
 - (BOOL)defaultCreditAccountInDisasterRecovery
@@ -1292,10 +1292,10 @@ LABEL_35:
       if ([v8 count])
       {
         self->_defaultCreditAccountHasDisputeOpen = 1;
-        v3 = [v8 firstObject];
-        v4 = [v3 transactionDate];
+        firstObject = [v8 firstObject];
+        transactionDate = [firstObject transactionDate];
         v5 = +[NSDate date];
-        [v5 timeIntervalSinceDate:v4];
+        [v5 timeIntervalSinceDate:transactionDate];
         v7 = v6;
 
         self->_defaultCreditAccountDaysSinceDisputeOpened = vcvtmd_s64_f64(v7 / 86400.0);
@@ -1315,13 +1315,13 @@ LABEL_35:
 - (NSDecimalNumber)defaultCreditAccountAvailableCredit
 {
   v3 = +[NSDecimalNumber zero];
-  v4 = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountAccountSummary];
-  v5 = v4;
-  if (v4)
+  _defaultCreditAccountAccountSummary = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountAccountSummary];
+  v5 = _defaultCreditAccountAccountSummary;
+  if (_defaultCreditAccountAccountSummary)
   {
-    v6 = [v4 availableCredit];
+    availableCredit = [_defaultCreditAccountAccountSummary availableCredit];
 
-    v3 = v6;
+    v3 = availableCredit;
   }
 
   return v3;
@@ -1355,9 +1355,9 @@ LABEL_35:
     prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
   }
 
-  v6 = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
+  associatedPassUniqueID = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
   v7 = self->_defaultPassUniqueIdentifier;
-  v8 = v6;
+  v8 = associatedPassUniqueID;
   v9 = v7;
   v10 = v9;
   if (v8 == v9)
@@ -1382,15 +1382,15 @@ LABEL_35:
   result = self->_daysSinceLastDefaultCreditAccountTransaction;
   if (result < 0 && self->_prefetchedDefaultCreditAccount)
   {
-    v4 = [(PKAccount *)self->_prefetchedDefaultCreditAccount associatedPassUniqueID];
-    v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
+    associatedPassUniqueID = [(PKAccount *)self->_prefetchedDefaultCreditAccount associatedPassUniqueID];
+    v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
     v6 = [(PDDatabaseManager *)self->_databaseManager transactionsForTransactionSourceIdentifiers:v5 withTransactionSource:0 withBackingData:0 limit:1];
     if ([v6 count] == 1)
     {
-      v7 = [v6 anyObject];
-      v8 = [v7 transactionDate];
+      anyObject = [v6 anyObject];
+      transactionDate = [anyObject transactionDate];
       v9 = +[NSDate date];
-      [v9 timeIntervalSinceDate:v8];
+      [v9 timeIntervalSinceDate:transactionDate];
       v11 = v10;
 
       self->_daysSinceLastDefaultCreditAccountTransaction = vcvtmd_s64_f64(v11 / 86400.0);
@@ -1495,14 +1495,14 @@ LABEL_35:
     return -1;
   }
 
-  if (!-[PKAccount isCoOwner](prefetchedDefaultCreditAccount, "isCoOwner") || (-[PKAccount previousAccountIdentifiers](self->_prefetchedDefaultCreditAccount, "previousAccountIdentifiers"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 count], v4, !v5) || (-[PKAccount previousAccountIdentifiers](self->_prefetchedDefaultCreditAccount, "previousAccountIdentifiers"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "anyObject"), v7 = objc_claimAutoreleasedReturnValue(), v6, -[PDUserEvaluationEnvironment _creditAccountWithIdentifier:](self, "_creditAccountWithIdentifier:", v7), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "creditDetails"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "createdDate"), v10 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, !v10))
+  if (!-[PKAccount isCoOwner](prefetchedDefaultCreditAccount, "isCoOwner") || (-[PKAccount previousAccountIdentifiers](self->_prefetchedDefaultCreditAccount, "previousAccountIdentifiers"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 count], v4, !v5) || (-[PKAccount previousAccountIdentifiers](self->_prefetchedDefaultCreditAccount, "previousAccountIdentifiers"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "anyObject"), v7 = objc_claimAutoreleasedReturnValue(), v6, -[PDUserEvaluationEnvironment _creditAccountWithIdentifier:](self, "_creditAccountWithIdentifier:", v7), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "creditDetails"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "createdDate"), createdDate = objc_claimAutoreleasedReturnValue(), v9, v8, v7, !createdDate))
   {
-    v11 = [(PKAccount *)self->_prefetchedDefaultCreditAccount creditDetails];
-    v10 = [v11 createdDate];
+    creditDetails = [(PKAccount *)self->_prefetchedDefaultCreditAccount creditDetails];
+    createdDate = [creditDetails createdDate];
   }
 
   v12 = +[NSDate date];
-  [v12 timeIntervalSinceDate:v10];
+  [v12 timeIntervalSinceDate:createdDate];
   v14 = v13;
 
   v15 = vcvtmd_s64_f64(v14 / 86400.0);
@@ -1511,13 +1511,13 @@ LABEL_35:
 
 - (BOOL)defaultCreditAccountHasActiveInstallment
 {
-  v2 = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountCreditAccountDetails];
+  _defaultCreditAccountCreditAccountDetails = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountCreditAccountDetails];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [v2 installmentPlans];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  installmentPlans = [_defaultCreditAccountCreditAccountDetails installmentPlans];
+  v4 = [installmentPlans countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -1527,7 +1527,7 @@ LABEL_35:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(installmentPlans);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) state] == 2)
@@ -1537,7 +1537,7 @@ LABEL_35:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [installmentPlans countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -1554,8 +1554,8 @@ LABEL_11:
 
 - (NSString)defaultCreditAccountRewardsDestination
 {
-  v2 = [(PKAccount *)self->_prefetchedDefaultCreditAccount creditDetails];
-  [v2 rewardsDestination];
+  creditDetails = [(PKAccount *)self->_prefetchedDefaultCreditAccount creditDetails];
+  [creditDetails rewardsDestination];
   v3 = PKAccountRewardRedemptionTypeToString();
 
   return v3;
@@ -1563,20 +1563,20 @@ LABEL_11:
 
 - (BOOL)defaultCreditAccountHasUsedInstallments
 {
-  v2 = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountCreditAccountDetails];
-  v3 = [v2 installmentPlans];
-  v4 = [v3 count] != 0;
+  _defaultCreditAccountCreditAccountDetails = [(PDUserEvaluationEnvironment *)self _defaultCreditAccountCreditAccountDetails];
+  installmentPlans = [_defaultCreditAccountCreditAccountDetails installmentPlans];
+  v4 = [installmentPlans count] != 0;
 
   return v4;
 }
 
 - (BOOL)defaultCreditAccountHasAutopaySetup
 {
-  v3 = [(PKAccount *)self->_prefetchedDefaultCreditAccount accountIdentifier];
-  v4 = v3;
-  if (!self->_hasQueriedDefaultCreditAccountHasAutopaySetup && v3)
+  accountIdentifier = [(PKAccount *)self->_prefetchedDefaultCreditAccount accountIdentifier];
+  v4 = accountIdentifier;
+  if (!self->_hasQueriedDefaultCreditAccountHasAutopaySetup && accountIdentifier)
   {
-    v5 = [(PDDatabaseManager *)self->_databaseManager scheduledPaymentsWithAccountIdentifier:v3 includeFailedRecurringPayments:0];
+    v5 = [(PDDatabaseManager *)self->_databaseManager scheduledPaymentsWithAccountIdentifier:accountIdentifier includeFailedRecurringPayments:0];
     self->_hasDefaultCreditAccountAutopaySetup = [v5 pk_containsObjectPassingTest:&stru_1008478F0];
     self->_hasQueriedDefaultCreditAccountHasAutopaySetup = 1;
   }
@@ -1586,22 +1586,22 @@ LABEL_11:
   return hasDefaultCreditAccountAutopaySetup;
 }
 
-- (id)memberOfDefaultCreditAccountMerchantIdentifiers:(id)a3
+- (id)memberOfDefaultCreditAccountMerchantIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMerchantIdentifierPresence objectForKeyedSubscript:v4];
+  identifiersCopy = identifiers;
+  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMerchantIdentifierPresence objectForKeyedSubscript:identifiersCopy];
   if (!v5)
   {
     prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
     if (prefetchedDefaultCreditAccount)
     {
-      v7 = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
+      associatedPassUniqueID = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
       databaseManager = self->_databaseManager;
-      v9 = [[NSSet alloc] initWithObjects:{v4, 0}];
-      v10 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMerchantIdentifiers:v9 forPassUniqueIdentifier:v7];
+      v9 = [[NSSet alloc] initWithObjects:{identifiersCopy, 0}];
+      v10 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMerchantIdentifiers:v9 forPassUniqueIdentifier:associatedPassUniqueID];
 
       v5 = [NSNumber numberWithBool:v10];
-      [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMerchantIdentifierPresence setObject:v5 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMerchantIdentifierPresence setObject:v5 forKeyedSubscript:identifiersCopy];
     }
 
     else
@@ -1612,7 +1612,7 @@ LABEL_11:
 
   if ([v5 BOOLValue])
   {
-    v11 = v4;
+    v11 = identifiersCopy;
   }
 
   else
@@ -1628,29 +1628,29 @@ LABEL_11:
   queriedDefaultCreditAccountMerchantIdentifierPresence = self->_queriedDefaultCreditAccountMerchantIdentifierPresence;
   v3 = [NSNumber numberWithBool:1];
   v4 = [(NSMutableDictionary *)queriedDefaultCreditAccountMerchantIdentifierPresence allKeysForObject:v3];
-  v5 = [v4 objectEnumerator];
+  objectEnumerator = [v4 objectEnumerator];
 
-  return v5;
+  return objectEnumerator;
 }
 
-- (id)memberOfDefaultCreditAccountMerchantIdentifiersLast30Days:(id)a3
+- (id)memberOfDefaultCreditAccountMerchantIdentifiersLast30Days:(id)days
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMerchantIdentifierLast30DaysPresence objectForKeyedSubscript:v4];
+  daysCopy = days;
+  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMerchantIdentifierLast30DaysPresence objectForKeyedSubscript:daysCopy];
   if (!v5)
   {
     prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
     if (prefetchedDefaultCreditAccount)
     {
-      v7 = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
+      associatedPassUniqueID = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
       v8 = [NSDate dateWithTimeIntervalSinceNow:-2592000.0];
       databaseManager = self->_databaseManager;
-      v10 = [[NSSet alloc] initWithObjects:{v4, 0}];
+      v10 = [[NSSet alloc] initWithObjects:{daysCopy, 0}];
       v11 = +[NSDate date];
-      v12 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMerchantIdentifiers:v10 forPassUniqueIdentifier:v7 startDate:v8 endDate:v11];
+      v12 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMerchantIdentifiers:v10 forPassUniqueIdentifier:associatedPassUniqueID startDate:v8 endDate:v11];
 
       v5 = [NSNumber numberWithBool:v12];
-      [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMerchantIdentifierLast30DaysPresence setObject:v5 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMerchantIdentifierLast30DaysPresence setObject:v5 forKeyedSubscript:daysCopy];
     }
 
     else
@@ -1661,7 +1661,7 @@ LABEL_11:
 
   if ([v5 BOOLValue])
   {
-    v13 = v4;
+    v13 = daysCopy;
   }
 
   else
@@ -1677,27 +1677,27 @@ LABEL_11:
   queriedDefaultCreditAccountMerchantIdentifierLast30DaysPresence = self->_queriedDefaultCreditAccountMerchantIdentifierLast30DaysPresence;
   v3 = [NSNumber numberWithBool:1];
   v4 = [(NSMutableDictionary *)queriedDefaultCreditAccountMerchantIdentifierLast30DaysPresence allKeysForObject:v3];
-  v5 = [v4 objectEnumerator];
+  objectEnumerator = [v4 objectEnumerator];
 
-  return v5;
+  return objectEnumerator;
 }
 
-- (id)memberOfDefaultCreditAccountMapsIdentifiers:(id)a3
+- (id)memberOfDefaultCreditAccountMapsIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsIdentifierPresence objectForKeyedSubscript:v4];
+  identifiersCopy = identifiers;
+  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsIdentifierPresence objectForKeyedSubscript:identifiersCopy];
   if (!v5)
   {
     prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
     if (prefetchedDefaultCreditAccount)
     {
-      v7 = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
+      associatedPassUniqueID = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
       databaseManager = self->_databaseManager;
-      v9 = [[NSSet alloc] initWithObjects:{v4, 0}];
-      v10 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMapsIdentifiers:v9 forPassUniqueIdentifier:v7];
+      v9 = [[NSSet alloc] initWithObjects:{identifiersCopy, 0}];
+      v10 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMapsIdentifiers:v9 forPassUniqueIdentifier:associatedPassUniqueID];
 
       v5 = [NSNumber numberWithBool:v10];
-      [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsIdentifierPresence setObject:v5 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsIdentifierPresence setObject:v5 forKeyedSubscript:identifiersCopy];
     }
 
     else
@@ -1708,7 +1708,7 @@ LABEL_11:
 
   if ([v5 BOOLValue])
   {
-    v11 = v4;
+    v11 = identifiersCopy;
   }
 
   else
@@ -1724,29 +1724,29 @@ LABEL_11:
   queriedDefaultCreditAccountMapsIdentifierPresence = self->_queriedDefaultCreditAccountMapsIdentifierPresence;
   v3 = [NSNumber numberWithBool:1];
   v4 = [(NSMutableDictionary *)queriedDefaultCreditAccountMapsIdentifierPresence allKeysForObject:v3];
-  v5 = [v4 objectEnumerator];
+  objectEnumerator = [v4 objectEnumerator];
 
-  return v5;
+  return objectEnumerator;
 }
 
-- (id)memberOfDefaultCreditAccountMapsIdentifiersLast30Days:(id)a3
+- (id)memberOfDefaultCreditAccountMapsIdentifiersLast30Days:(id)days
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsIdentifierLast30DaysPresence objectForKeyedSubscript:v4];
+  daysCopy = days;
+  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsIdentifierLast30DaysPresence objectForKeyedSubscript:daysCopy];
   if (!v5)
   {
     prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
     if (prefetchedDefaultCreditAccount)
     {
-      v7 = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
+      associatedPassUniqueID = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
       v8 = [NSDate dateWithTimeIntervalSinceNow:-2592000.0];
       databaseManager = self->_databaseManager;
-      v10 = [[NSSet alloc] initWithObjects:{v4, 0}];
+      v10 = [[NSSet alloc] initWithObjects:{daysCopy, 0}];
       v11 = +[NSDate date];
-      v12 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMapsIdentifiers:v10 forPassUniqueIdentifier:v7 startDate:v8 endDate:v11];
+      v12 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMapsIdentifiers:v10 forPassUniqueIdentifier:associatedPassUniqueID startDate:v8 endDate:v11];
 
       v5 = [NSNumber numberWithBool:v12];
-      [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsIdentifierLast30DaysPresence setObject:v5 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsIdentifierLast30DaysPresence setObject:v5 forKeyedSubscript:daysCopy];
     }
 
     else
@@ -1757,7 +1757,7 @@ LABEL_11:
 
   if ([v5 BOOLValue])
   {
-    v13 = v4;
+    v13 = daysCopy;
   }
 
   else
@@ -1773,27 +1773,27 @@ LABEL_11:
   queriedDefaultCreditAccountMapsIdentifierLast30DaysPresence = self->_queriedDefaultCreditAccountMapsIdentifierLast30DaysPresence;
   v3 = [NSNumber numberWithBool:1];
   v4 = [(NSMutableDictionary *)queriedDefaultCreditAccountMapsIdentifierLast30DaysPresence allKeysForObject:v3];
-  v5 = [v4 objectEnumerator];
+  objectEnumerator = [v4 objectEnumerator];
 
-  return v5;
+  return objectEnumerator;
 }
 
-- (id)memberOfDefaultCreditAccountMapsBrandIdentifiers:(id)a3
+- (id)memberOfDefaultCreditAccountMapsBrandIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsBrandIdentifierPresence objectForKeyedSubscript:v4];
+  identifiersCopy = identifiers;
+  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsBrandIdentifierPresence objectForKeyedSubscript:identifiersCopy];
   if (!v5)
   {
     prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
     if (prefetchedDefaultCreditAccount)
     {
-      v7 = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
+      associatedPassUniqueID = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
       databaseManager = self->_databaseManager;
-      v9 = [[NSSet alloc] initWithObjects:{v4, 0}];
-      v10 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMapsBrandIdentifiers:v9 forPassUniqueIdentifier:v7];
+      v9 = [[NSSet alloc] initWithObjects:{identifiersCopy, 0}];
+      v10 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMapsBrandIdentifiers:v9 forPassUniqueIdentifier:associatedPassUniqueID];
 
       v5 = [NSNumber numberWithBool:v10];
-      [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsBrandIdentifierPresence setObject:v5 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsBrandIdentifierPresence setObject:v5 forKeyedSubscript:identifiersCopy];
     }
 
     else
@@ -1804,7 +1804,7 @@ LABEL_11:
 
   if ([v5 BOOLValue])
   {
-    v11 = v4;
+    v11 = identifiersCopy;
   }
 
   else
@@ -1820,29 +1820,29 @@ LABEL_11:
   queriedDefaultCreditAccountMapsBrandIdentifierPresence = self->_queriedDefaultCreditAccountMapsBrandIdentifierPresence;
   v3 = [NSNumber numberWithBool:1];
   v4 = [(NSMutableDictionary *)queriedDefaultCreditAccountMapsBrandIdentifierPresence allKeysForObject:v3];
-  v5 = [v4 objectEnumerator];
+  objectEnumerator = [v4 objectEnumerator];
 
-  return v5;
+  return objectEnumerator;
 }
 
-- (id)memberOfDefaultCreditAccountMapsBrandIdentifiersLast30Days:(id)a3
+- (id)memberOfDefaultCreditAccountMapsBrandIdentifiersLast30Days:(id)days
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsBrandIdentifierLast30DaysPresence objectForKeyedSubscript:v4];
+  daysCopy = days;
+  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsBrandIdentifierLast30DaysPresence objectForKeyedSubscript:daysCopy];
   if (!v5)
   {
     prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
     if (prefetchedDefaultCreditAccount)
     {
-      v7 = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
+      associatedPassUniqueID = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
       v8 = [NSDate dateWithTimeIntervalSinceNow:-2592000.0];
       databaseManager = self->_databaseManager;
-      v10 = [[NSSet alloc] initWithObjects:{v4, 0}];
+      v10 = [[NSSet alloc] initWithObjects:{daysCopy, 0}];
       v11 = +[NSDate date];
-      v12 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMapsBrandIdentifiers:v10 forPassUniqueIdentifier:v7 startDate:v8 endDate:v11];
+      v12 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMapsBrandIdentifiers:v10 forPassUniqueIdentifier:associatedPassUniqueID startDate:v8 endDate:v11];
 
       v5 = [NSNumber numberWithBool:v12];
-      [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsBrandIdentifierLast30DaysPresence setObject:v5 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_queriedDefaultCreditAccountMapsBrandIdentifierLast30DaysPresence setObject:v5 forKeyedSubscript:daysCopy];
     }
 
     else
@@ -1853,7 +1853,7 @@ LABEL_11:
 
   if ([v5 BOOLValue])
   {
-    v13 = v4;
+    v13 = daysCopy;
   }
 
   else
@@ -1869,9 +1869,9 @@ LABEL_11:
   queriedDefaultCreditAccountMapsBrandIdentifierLast30DaysPresence = self->_queriedDefaultCreditAccountMapsBrandIdentifierLast30DaysPresence;
   v3 = [NSNumber numberWithBool:1];
   v4 = [(NSMutableDictionary *)queriedDefaultCreditAccountMapsBrandIdentifierLast30DaysPresence allKeysForObject:v3];
-  v5 = [v4 objectEnumerator];
+  objectEnumerator = [v4 objectEnumerator];
 
-  return v5;
+  return objectEnumerator;
 }
 
 - (int64_t)defaultCreditAccountParticipantUsersCount
@@ -1882,8 +1882,8 @@ LABEL_11:
     return 0;
   }
 
-  v4 = [(PKAccount *)prefetchedDefaultCreditAccount accountIdentifier];
-  v5 = [(PDUserEvaluationEnvironment *)self _accountUsersForAccountIdentifier:v4 accessLevel:2];
+  accountIdentifier = [(PKAccount *)prefetchedDefaultCreditAccount accountIdentifier];
+  v5 = [(PDUserEvaluationEnvironment *)self _accountUsersForAccountIdentifier:accountIdentifier accessLevel:2];
   v6 = [v5 count];
 
   return v6;
@@ -1898,8 +1898,8 @@ LABEL_11:
     {
       if (self->_prefetchedCreditAccountUsers && self->_prefetchedFamilyMembers)
       {
-        v4 = [(PKAccount *)prefetchedDefaultCreditAccount accountIdentifier];
-        [(PDUserEvaluationEnvironment *)self _accountUsersForAccountIdentifier:v4 accessLevel:2];
+        accountIdentifier = [(PKAccount *)prefetchedDefaultCreditAccount accountIdentifier];
+        [(PDUserEvaluationEnvironment *)self _accountUsersForAccountIdentifier:accountIdentifier accessLevel:2];
         v14 = 0u;
         v15 = 0u;
         v16 = 0u;
@@ -1918,8 +1918,8 @@ LABEL_11:
                 objc_enumerationMutation(v5);
               }
 
-              v10 = [*(*(&v14 + 1) + 8 * i) altDSID];
-              v11 = [(PDUserEvaluationEnvironment *)self _familyMemberWithAltDSID:v10];
+              altDSID = [*(*(&v14 + 1) + 8 * i) altDSID];
+              v11 = [(PDUserEvaluationEnvironment *)self _familyMemberWithAltDSID:altDSID];
               v12 = v11;
               if (v11 && [v11 age] >= 0xD && objc_msgSend(v12, "age") <= 0x11)
               {
@@ -1963,12 +1963,12 @@ LABEL_17:
   }
 }
 
-- (id)memberOfDefaultCreditAccountActivePromotionIdentifiers:(id)a3
+- (id)memberOfDefaultCreditAccountActivePromotionIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountActivePromotionIdentifiersPresence objectForKeyedSubscript:v4];
-  v6 = [(PKAccount *)self->_prefetchedDefaultCreditAccount accountIdentifier];
-  v7 = v6;
+  identifiersCopy = identifiers;
+  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountActivePromotionIdentifiersPresence objectForKeyedSubscript:identifiersCopy];
+  accountIdentifier = [(PKAccount *)self->_prefetchedDefaultCreditAccount accountIdentifier];
+  v7 = accountIdentifier;
   if (v5)
   {
     v8 = 1;
@@ -1976,12 +1976,12 @@ LABEL_17:
 
   else
   {
-    v8 = v6 == 0;
+    v8 = accountIdentifier == 0;
   }
 
   if (!v8)
   {
-    v9 = [(PDDatabaseManager *)self->_databaseManager accountPromotionForProgramIdentifier:v4 accountIdentifier:v6];
+    v9 = [(PDDatabaseManager *)self->_databaseManager accountPromotionForProgramIdentifier:identifiersCopy accountIdentifier:accountIdentifier];
     v10 = v9;
     if (v9)
     {
@@ -1994,12 +1994,12 @@ LABEL_17:
     }
 
     v5 = [NSNumber numberWithBool:v11];
-    [(NSMutableDictionary *)self->_queriedDefaultCreditAccountActivePromotionIdentifiersPresence setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_queriedDefaultCreditAccountActivePromotionIdentifiersPresence setObject:v5 forKeyedSubscript:identifiersCopy];
   }
 
   if ([v5 BOOLValue])
   {
-    v12 = v4;
+    v12 = identifiersCopy;
   }
 
   else
@@ -2015,17 +2015,17 @@ LABEL_17:
   queriedDefaultCreditAccountActivePromotionIdentifiersPresence = self->_queriedDefaultCreditAccountActivePromotionIdentifiersPresence;
   v3 = [NSNumber numberWithBool:1];
   v4 = [(NSMutableDictionary *)queriedDefaultCreditAccountActivePromotionIdentifiersPresence allKeysForObject:v3];
-  v5 = [v4 objectEnumerator];
+  objectEnumerator = [v4 objectEnumerator];
 
-  return v5;
+  return objectEnumerator;
 }
 
-- (id)memberOfDefaultCreditAccountActivePromotionIdentifiersExpiringSoon:(id)a3
+- (id)memberOfDefaultCreditAccountActivePromotionIdentifiersExpiringSoon:(id)soon
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountActivePromotionIdentifiersExpiringSoonPresence objectForKeyedSubscript:v4];
-  v6 = [(PKAccount *)self->_prefetchedDefaultCreditAccount accountIdentifier];
-  v7 = v6;
+  soonCopy = soon;
+  v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountActivePromotionIdentifiersExpiringSoonPresence objectForKeyedSubscript:soonCopy];
+  accountIdentifier = [(PKAccount *)self->_prefetchedDefaultCreditAccount accountIdentifier];
+  v7 = accountIdentifier;
   if (v5)
   {
     v8 = 1;
@@ -2033,30 +2033,30 @@ LABEL_17:
 
   else
   {
-    v8 = v6 == 0;
+    v8 = accountIdentifier == 0;
   }
 
   if (!v8)
   {
-    v9 = [(PDDatabaseManager *)self->_databaseManager accountPromotionForProgramIdentifier:v4 accountIdentifier:v6];
+    v9 = [(PDDatabaseManager *)self->_databaseManager accountPromotionForProgramIdentifier:soonCopy accountIdentifier:accountIdentifier];
     v10 = v9;
     if (v9 && [v9 state] == 2)
     {
-      v11 = [v10 expiringSoon];
+      expiringSoon = [v10 expiringSoon];
     }
 
     else
     {
-      v11 = 0;
+      expiringSoon = 0;
     }
 
-    v5 = [NSNumber numberWithBool:v11];
-    [(NSMutableDictionary *)self->_queriedDefaultCreditAccountActivePromotionIdentifiersExpiringSoonPresence setObject:v5 forKeyedSubscript:v4];
+    v5 = [NSNumber numberWithBool:expiringSoon];
+    [(NSMutableDictionary *)self->_queriedDefaultCreditAccountActivePromotionIdentifiersExpiringSoonPresence setObject:v5 forKeyedSubscript:soonCopy];
   }
 
   if ([v5 BOOLValue])
   {
-    v12 = v4;
+    v12 = soonCopy;
   }
 
   else
@@ -2072,9 +2072,9 @@ LABEL_17:
   queriedDefaultCreditAccountActivePromotionIdentifiersExpiringSoonPresence = self->_queriedDefaultCreditAccountActivePromotionIdentifiersExpiringSoonPresence;
   v3 = [NSNumber numberWithBool:1];
   v4 = [(NSMutableDictionary *)queriedDefaultCreditAccountActivePromotionIdentifiersExpiringSoonPresence allKeysForObject:v3];
-  v5 = [v4 objectEnumerator];
+  objectEnumerator = [v4 objectEnumerator];
 
-  return v5;
+  return objectEnumerator;
 }
 
 - (BOOL)anyCreditAccountStateIsClosed
@@ -2188,8 +2188,8 @@ LABEL_13:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(PDDatabaseManager *)self->_databaseManager passStyles];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    passStyles = [(PDDatabaseManager *)self->_databaseManager passStyles];
+    v7 = [passStyles countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2201,7 +2201,7 @@ LABEL_13:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(passStyles);
           }
 
           v11 = self->_passStyles;
@@ -2213,7 +2213,7 @@ LABEL_13:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [passStyles countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -2240,8 +2240,8 @@ LABEL_13:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(PDDatabaseManager *)self->_databaseManager unexpiredPassStyles];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    unexpiredPassStyles = [(PDDatabaseManager *)self->_databaseManager unexpiredPassStyles];
+    v7 = [unexpiredPassStyles countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2253,7 +2253,7 @@ LABEL_13:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(unexpiredPassStyles);
           }
 
           v11 = self->_unexpiredPassStyles;
@@ -2265,7 +2265,7 @@ LABEL_13:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [unexpiredPassStyles countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -2292,8 +2292,8 @@ LABEL_13:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(PDDatabaseManager *)self->_databaseManager secureElementCardTypes];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    secureElementCardTypes = [(PDDatabaseManager *)self->_databaseManager secureElementCardTypes];
+    v7 = [secureElementCardTypes countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2305,7 +2305,7 @@ LABEL_13:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(secureElementCardTypes);
           }
 
           v11 = self->_cardTypes;
@@ -2317,7 +2317,7 @@ LABEL_13:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [secureElementCardTypes countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -2344,8 +2344,8 @@ LABEL_13:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(PDDatabaseManager *)self->_databaseManager unexpiredSecureElementCardTypes];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    unexpiredSecureElementCardTypes = [(PDDatabaseManager *)self->_databaseManager unexpiredSecureElementCardTypes];
+    v7 = [unexpiredSecureElementCardTypes countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2357,7 +2357,7 @@ LABEL_13:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(unexpiredSecureElementCardTypes);
           }
 
           v11 = self->_unexpiredCardTypes;
@@ -2369,7 +2369,7 @@ LABEL_13:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [unexpiredSecureElementCardTypes countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -2415,23 +2415,23 @@ LABEL_13:
   return [NSSet setWithArray:transitNetworksPresentAndUnexpired];
 }
 
-- (id)memberOfMerchantIdentifiers:(id)a3
+- (id)memberOfMerchantIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_queriedMerchantIdentifierPresence objectForKeyedSubscript:v4];
+  identifiersCopy = identifiers;
+  v5 = [(NSMutableDictionary *)self->_queriedMerchantIdentifierPresence objectForKeyedSubscript:identifiersCopy];
   if (!v5)
   {
     databaseManager = self->_databaseManager;
-    v7 = [[NSSet alloc] initWithObjects:{v4, 0}];
+    v7 = [[NSSet alloc] initWithObjects:{identifiersCopy, 0}];
     v8 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMerchantIdentifiers:v7];
 
     v5 = [NSNumber numberWithBool:v8];
-    [(NSMutableDictionary *)self->_queriedMerchantIdentifierPresence setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_queriedMerchantIdentifierPresence setObject:v5 forKeyedSubscript:identifiersCopy];
   }
 
   if ([v5 BOOLValue])
   {
-    v9 = v4;
+    v9 = identifiersCopy;
   }
 
   else
@@ -2447,28 +2447,28 @@ LABEL_13:
   queriedMerchantIdentifierPresence = self->_queriedMerchantIdentifierPresence;
   v3 = [NSNumber numberWithBool:1];
   v4 = [(NSMutableDictionary *)queriedMerchantIdentifierPresence allKeysForObject:v3];
-  v5 = [v4 objectEnumerator];
+  objectEnumerator = [v4 objectEnumerator];
 
-  return v5;
+  return objectEnumerator;
 }
 
-- (id)memberOfMapsIdentifiers:(id)a3
+- (id)memberOfMapsIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_queriedMapsIdentifierPresence objectForKeyedSubscript:v4];
+  identifiersCopy = identifiers;
+  v5 = [(NSMutableDictionary *)self->_queriedMapsIdentifierPresence objectForKeyedSubscript:identifiersCopy];
   if (!v5)
   {
     databaseManager = self->_databaseManager;
-    v7 = [[NSSet alloc] initWithObjects:{v4, 0}];
+    v7 = [[NSSet alloc] initWithObjects:{identifiersCopy, 0}];
     v8 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMapsIdentifiers:v7];
 
     v5 = [NSNumber numberWithBool:v8];
-    [(NSMutableDictionary *)self->_queriedMapsIdentifierPresence setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_queriedMapsIdentifierPresence setObject:v5 forKeyedSubscript:identifiersCopy];
   }
 
   if ([v5 BOOLValue])
   {
-    v9 = v4;
+    v9 = identifiersCopy;
   }
 
   else
@@ -2484,28 +2484,28 @@ LABEL_13:
   queriedMapsIdentifierPresence = self->_queriedMapsIdentifierPresence;
   v3 = [NSNumber numberWithBool:1];
   v4 = [(NSMutableDictionary *)queriedMapsIdentifierPresence allKeysForObject:v3];
-  v5 = [v4 objectEnumerator];
+  objectEnumerator = [v4 objectEnumerator];
 
-  return v5;
+  return objectEnumerator;
 }
 
-- (id)memberOfMapsBrandIdentifiers:(id)a3
+- (id)memberOfMapsBrandIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_queriedMapsBrandIdentifierPresence objectForKeyedSubscript:v4];
+  identifiersCopy = identifiers;
+  v5 = [(NSMutableDictionary *)self->_queriedMapsBrandIdentifierPresence objectForKeyedSubscript:identifiersCopy];
   if (!v5)
   {
     databaseManager = self->_databaseManager;
-    v7 = [[NSSet alloc] initWithObjects:{v4, 0}];
+    v7 = [[NSSet alloc] initWithObjects:{identifiersCopy, 0}];
     v8 = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMapsBrandIdentifiers:v7];
 
     v5 = [NSNumber numberWithBool:v8];
-    [(NSMutableDictionary *)self->_queriedMapsBrandIdentifierPresence setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_queriedMapsBrandIdentifierPresence setObject:v5 forKeyedSubscript:identifiersCopy];
   }
 
   if ([v5 BOOLValue])
   {
-    v9 = v4;
+    v9 = identifiersCopy;
   }
 
   else
@@ -2521,9 +2521,9 @@ LABEL_13:
   queriedMapsBrandIdentifierPresence = self->_queriedMapsBrandIdentifierPresence;
   v3 = [NSNumber numberWithBool:1];
   v4 = [(NSMutableDictionary *)queriedMapsBrandIdentifierPresence allKeysForObject:v3];
-  v5 = [v4 objectEnumerator];
+  objectEnumerator = [v4 objectEnumerator];
 
-  return v5;
+  return objectEnumerator;
 }
 
 - (BOOL)hasPaymentTransaction
@@ -2560,7 +2560,7 @@ LABEL_13:
   return hasTransitTransaction & 1;
 }
 
-- (BOOL)hasTransactionOfTransactionSourceType:(id)a3
+- (BOOL)hasTransactionOfTransactionSourceType:(id)type
 {
   v4 = PKPaymentTransactionSourceFromString();
   if (!v4)
@@ -2579,8 +2579,8 @@ LABEL_13:
   v11[5] = v5;
   v8 = [(NSMutableDictionary *)queriedTransactionOfTransactionSourceTypePresence getOrCreateObjectForKey:v7 creationBlock:v11];
 
-  v9 = [v8 BOOLValue];
-  return v9;
+  bOOLValue = [v8 BOOLValue];
+  return bOOLValue;
 }
 
 - (int64_t)defaultCreditApplicationCount
@@ -2602,8 +2602,8 @@ LABEL_13:
   }
 
   v3 = +[NSDate date];
-  v4 = [(PKFeatureApplication *)self->_prefetchedCurrentCreditApplication lastUpdated];
-  [v3 timeIntervalSinceDate:v4];
+  lastUpdated = [(PKFeatureApplication *)self->_prefetchedCurrentCreditApplication lastUpdated];
+  [v3 timeIntervalSinceDate:lastUpdated];
   v6 = v5;
 
   return vcvtmd_s64_f64(v6 / 86400.0);
@@ -2611,9 +2611,9 @@ LABEL_13:
 
 - (NSString)currentDefaultCreditApplicationState
 {
-  v2 = [(PKFeatureApplication *)self->_prefetchedCurrentCreditApplication applicationState];
+  applicationState = [(PKFeatureApplication *)self->_prefetchedCurrentCreditApplication applicationState];
 
-  return _PKFeatureApplicationStateToString(v2);
+  return _PKFeatureApplicationStateToString(applicationState);
 }
 
 - (BOOL)hasPeerPaymentPassProvisioned
@@ -2624,12 +2624,12 @@ LABEL_13:
     if (prefetchedPeerPaymentAccount)
     {
       databaseManager = self->_databaseManager;
-      v5 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
-      v6 = [(PDDatabaseManager *)databaseManager passWithUniqueIdentifier:v5];
-      v7 = [v6 paymentPass];
+      associatedPassUniqueID = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
+      v6 = [(PDDatabaseManager *)databaseManager passWithUniqueIdentifier:associatedPassUniqueID];
+      paymentPass = [v6 paymentPass];
 
-      v8 = [v7 devicePrimaryPaymentApplication];
-      self->_peerPaymentPassProvisioned = v8 != 0;
+      devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
+      self->_peerPaymentPassProvisioned = devicePrimaryPaymentApplication != 0;
 
       self->_hasQueriedPeerPaymentPassProvisioned = 1;
     }
@@ -2678,8 +2678,8 @@ LABEL_13:
     prefetchedPeerPaymentAccount = self->_prefetchedPeerPaymentAccount;
     if (prefetchedPeerPaymentAccount)
     {
-      v4 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
-      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
+      associatedPassUniqueID = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
+      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
       v6 = [(PDDatabaseManager *)self->_databaseManager transactionsForTransactionSourceIdentifiers:v5 withTransactionSource:0 withBackingData:0 limit:1];
       self->_hasPeerPaymentTransaction = [v6 count] != 0;
       self->_hasQueriedPeerPaymentTransaction = 1;
@@ -2696,8 +2696,8 @@ LABEL_13:
     prefetchedPeerPaymentAccount = self->_prefetchedPeerPaymentAccount;
     if (prefetchedPeerPaymentAccount)
     {
-      v4 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
-      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
+      associatedPassUniqueID = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
+      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
       self->_hasPeerPaymentContactlessTransaction = [(PDDatabaseManager *)self->_databaseManager hasPaymentTransactionForTransactionSourceIdentifiers:v5 withTransactionSource:1];
       self->_hasQueriedPeerPaymentContaclessTransaction = 1;
     }
@@ -2713,8 +2713,8 @@ LABEL_13:
     prefetchedPeerPaymentAccount = self->_prefetchedPeerPaymentAccount;
     if (prefetchedPeerPaymentAccount)
     {
-      v4 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
-      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
+      associatedPassUniqueID = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
+      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
       v6 = objc_alloc_init(PKPaymentTransactionRequest);
       [v6 setTransactionSourceIdentifiers:v5];
       [v6 setTransactionSources:&off_1008A4710];
@@ -2735,16 +2735,16 @@ LABEL_13:
     prefetchedPeerPaymentAccount = self->_prefetchedPeerPaymentAccount;
     if (prefetchedPeerPaymentAccount)
     {
-      v4 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
-      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
+      associatedPassUniqueID = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
+      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
       v6 = [(PDDatabaseManager *)self->_databaseManager transactionsForTransactionSourceIdentifiers:v5 withTransactionSource:0 withBackingData:0 limit:1];
-      v7 = [v6 anyObject];
+      anyObject = [v6 anyObject];
 
-      if (v7)
+      if (anyObject)
       {
         v8 = +[NSDate date];
-        v9 = [v7 transactionDate];
-        [v8 timeIntervalSinceDate:v9];
+        transactionDate = [anyObject transactionDate];
+        [v8 timeIntervalSinceDate:transactionDate];
         v11 = v10;
 
         self->_daysSinceLastPeerPaymentTransaction = vcvtmd_s64_f64(v11 / 86400.0);
@@ -2764,13 +2764,13 @@ LABEL_13:
     prefetchedPeerPaymentAccount = self->_prefetchedPeerPaymentAccount;
     if (prefetchedPeerPaymentAccount)
     {
-      v4 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
-      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
+      associatedPassUniqueID = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
+      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
       databaseManager = self->_databaseManager;
-      v7 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount transactionSourceIdentifier];
-      v8 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
+      transactionSourceIdentifier = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount transactionSourceIdentifier];
+      createdDate = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
       v9 = +[NSDate date];
-      v10 = [(PDDatabaseManager *)databaseManager peerPaymentCounterpartHandlesForTransactionSourceIdentifier:v7 startDate:v8 endDate:v9];
+      v10 = [(PDDatabaseManager *)databaseManager peerPaymentCounterpartHandlesForTransactionSourceIdentifier:transactionSourceIdentifier startDate:createdDate endDate:v9];
       v11 = [NSSet setWithArray:v10];
 
       if (![v11 count])
@@ -2782,22 +2782,22 @@ LABEL_16:
       }
 
       v12 = [(PDDatabaseManager *)self->_databaseManager transactionsForTransactionSourceIdentifiers:v5 withPeerPaymentCounterpartHandles:v11 forPeerPaymentSubtype:1 withTransactionSource:0 withBackingData:0 limit:1];
-      v13 = [v12 anyObject];
+      anyObject = [v12 anyObject];
 
       v14 = [(PDDatabaseManager *)self->_databaseManager transactionsForTransactionSourceIdentifiers:v5 withPeerPaymentCounterpartHandles:v11 forPeerPaymentSubtype:2 withTransactionSource:0 withBackingData:0 limit:1];
-      v15 = [v14 anyObject];
+      anyObject2 = [v14 anyObject];
 
-      if (v13 && v15)
+      if (anyObject && anyObject2)
       {
         v16 = +[NSDate date];
-        v17 = [v13 transactionDate];
-        [v16 timeIntervalSinceDate:v17];
+        transactionDate = [anyObject transactionDate];
+        [v16 timeIntervalSinceDate:transactionDate];
         v19 = v18;
 
         v20 = vcvtmd_s64_f64(v19 / 86400.0);
         v21 = +[NSDate date];
-        v22 = [v15 transactionDate];
-        [v21 timeIntervalSinceDate:v22];
+        transactionDate2 = [anyObject2 transactionDate];
+        [v21 timeIntervalSinceDate:transactionDate2];
         v24 = v23;
 
         v25 = vcvtmd_s64_f64(v24 / 86400.0);
@@ -2809,15 +2809,15 @@ LABEL_16:
 
       else
       {
-        if (v13)
+        if (anyObject)
         {
           v26 = +[NSDate date];
-          v27 = v13;
+          v27 = anyObject;
         }
 
         else
         {
-          if (!v15)
+          if (!anyObject2)
           {
 LABEL_15:
 
@@ -2825,11 +2825,11 @@ LABEL_15:
           }
 
           v26 = +[NSDate date];
-          v27 = v15;
+          v27 = anyObject2;
         }
 
-        v28 = [v27 transactionDate];
-        [v26 timeIntervalSinceDate:v28];
+        transactionDate3 = [v27 transactionDate];
+        [v26 timeIntervalSinceDate:transactionDate3];
         v30 = v29;
 
         v25 = vcvtmd_s64_f64(v30 / 86400.0);
@@ -2852,17 +2852,17 @@ LABEL_15:
     {
       if (self->_prefetchedFamilyMembers)
       {
-        v33 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
+        associatedPassUniqueID = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
         v32 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:?];
         v4 = objc_alloc_init(NSMutableSet);
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v5 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount associatedAccountInformation];
-        v6 = [v5 associatedAccounts];
+        associatedAccountInformation = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount associatedAccountInformation];
+        associatedAccounts = [associatedAccountInformation associatedAccounts];
 
-        v7 = [v6 countByEnumeratingWithState:&v38 objects:v43 count:16];
+        v7 = [associatedAccounts countByEnumeratingWithState:&v38 objects:v43 count:16];
         if (v7)
         {
           v8 = v7;
@@ -2873,18 +2873,18 @@ LABEL_15:
             {
               if (*v39 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(associatedAccounts);
               }
 
               v11 = *(*(&v38 + 1) + 8 * i);
               if ([v11 role] == 1)
               {
-                v12 = [v11 altDSID];
-                [v4 addObject:v12];
+                altDSID = [v11 altDSID];
+                [v4 addObject:altDSID];
               }
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v38 objects:v43 count:16];
+            v8 = [associatedAccounts countByEnumeratingWithState:&v38 objects:v43 count:16];
           }
 
           while (v8);
@@ -2913,17 +2913,17 @@ LABEL_15:
               v19 = *(*(&v34 + 1) + 8 * j);
               if (([v19 isMe] & 1) == 0)
               {
-                v20 = [v19 altDSID];
-                v21 = [v4 containsObject:v20];
+                altDSID2 = [v19 altDSID];
+                v21 = [v4 containsObject:altDSID2];
 
                 if (v21)
                 {
-                  v22 = [v19 appleID];
-                  [v13 addObject:v22];
+                  appleID = [v19 appleID];
+                  [v13 addObject:appleID];
 
-                  v23 = [v19 appleIDAliases];
-                  v24 = [v23 allObjects];
-                  [v13 addObjectsFromArray:v24];
+                  appleIDAliases = [v19 appleIDAliases];
+                  allObjects = [appleIDAliases allObjects];
+                  [v13 addObjectsFromArray:allObjects];
                 }
               }
             }
@@ -2937,13 +2937,13 @@ LABEL_15:
         if ([v13 count])
         {
           v25 = [(PDDatabaseManager *)self->_databaseManager transactionsForTransactionSourceIdentifiers:v32 withPeerPaymentCounterpartHandles:v13 forPeerPaymentSubtype:1 withTransactionSource:0 withBackingData:0 limit:1];
-          v26 = [v25 anyObject];
+          anyObject = [v25 anyObject];
 
-          if (v26)
+          if (anyObject)
           {
             v27 = +[NSDate date];
-            v28 = [v26 transactionDate];
-            [v27 timeIntervalSinceDate:v28];
+            transactionDate = [anyObject transactionDate];
+            [v27 timeIntervalSinceDate:transactionDate];
             v30 = v29;
 
             self->_peerPaymentDaysSinceLastP2PTransactionToAnyParticipant = vcvtmd_s64_f64(v30 / 86400.0);
@@ -2966,11 +2966,11 @@ LABEL_15:
     return 0;
   }
 
-  v3 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount currentBalance];
-  v4 = [v3 amount];
+  currentBalance = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount currentBalance];
+  amount = [currentBalance amount];
 
   v5 = +[NSDecimalNumber zero];
-  v6 = [v4 compare:v5] == 1;
+  v6 = [amount compare:v5] == 1;
 
   return v6;
 }
@@ -2983,28 +2983,28 @@ LABEL_15:
     return 0;
   }
 
-  v3 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount currentBalance];
-  v4 = [v3 currency];
-  v5 = [v4 isEqualToString:@"USD"];
+  currentBalance = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount currentBalance];
+  currency = [currentBalance currency];
+  v5 = [currency isEqualToString:@"USD"];
 
   if (v5)
   {
-    v6 = [v3 amountByConvertingToSmallestCommonCurrencyUnit];
-    v7 = [v6 longLongValue];
+    amountByConvertingToSmallestCommonCurrencyUnit = [currentBalance amountByConvertingToSmallestCommonCurrencyUnit];
+    longLongValue = [amountByConvertingToSmallestCommonCurrencyUnit longLongValue];
 
     v8 = 50;
     v9 = 20;
-    if (v7 <= 1999)
+    if (longLongValue <= 1999)
     {
       v9 = 0;
     }
 
-    if (v7 <= 4999)
+    if (longLongValue <= 4999)
     {
       v8 = v9;
     }
 
-    if (v7 <= 9999)
+    if (longLongValue <= 9999)
     {
       v10 = v8;
     }
@@ -3030,12 +3030,12 @@ LABEL_15:
     prefetchedPeerPaymentAccount = self->_prefetchedPeerPaymentAccount;
     if (prefetchedPeerPaymentAccount)
     {
-      v4 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
-      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
+      associatedPassUniqueID = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
+      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
       databaseManager = self->_databaseManager;
-      v7 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
+      createdDate = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
       v8 = +[NSDate date];
-      v9 = [(PDDatabaseManager *)databaseManager peerPaymentTransactionServiceIdentifiersForTransactionSourceIdentifiers:v5 withPeerPaymentSubtype:1 withTransactionSource:0 withBackingData:0 startDate:v7 endDate:v8];
+      v9 = [(PDDatabaseManager *)databaseManager peerPaymentTransactionServiceIdentifiersForTransactionSourceIdentifiers:v5 withPeerPaymentSubtype:1 withTransactionSource:0 withBackingData:0 startDate:createdDate endDate:v8];
       if ([v9 count])
       {
         self->_hasPeerPaymentP2PTransaction = 1;
@@ -3044,9 +3044,9 @@ LABEL_15:
       else
       {
         v10 = self->_databaseManager;
-        v11 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
+        createdDate2 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
         v12 = +[NSDate date];
-        v13 = [(PDDatabaseManager *)v10 peerPaymentTransactionServiceIdentifiersForTransactionSourceIdentifiers:v5 withPeerPaymentSubtype:2 withTransactionSource:0 withBackingData:0 startDate:v11 endDate:v12];
+        v13 = [(PDDatabaseManager *)v10 peerPaymentTransactionServiceIdentifiersForTransactionSourceIdentifiers:v5 withPeerPaymentSubtype:2 withTransactionSource:0 withBackingData:0 startDate:createdDate2 endDate:v12];
         self->_hasPeerPaymentP2PTransaction = [v13 count] != 0;
       }
 
@@ -3126,10 +3126,10 @@ LABEL_12:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v4 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount associatedAccountInformation];
-    v5 = [v4 associatedAccounts];
+    associatedAccountInformation = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount associatedAccountInformation];
+    associatedAccounts = [associatedAccountInformation associatedAccounts];
 
-    v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    v6 = [associatedAccounts countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3140,18 +3140,18 @@ LABEL_12:
         {
           if (*v27 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(associatedAccounts);
           }
 
           v10 = *(*(&v26 + 1) + 8 * i);
           if ([v10 role] == 1)
           {
-            v11 = [v10 altDSID];
-            [v3 addObject:v11];
+            altDSID = [v10 altDSID];
+            [v3 addObject:altDSID];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v7 = [associatedAccounts countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v7);
@@ -3179,12 +3179,12 @@ LABEL_12:
           }
 
           v18 = *(*(&v22 + 1) + 8 * j);
-          v19 = [v18 recipientAltDSID];
-          if ([v3 containsObject:v19])
+          recipientAltDSID = [v18 recipientAltDSID];
+          if ([v3 containsObject:recipientAltDSID])
           {
-            v20 = [v18 sentByMe];
+            sentByMe = [v18 sentByMe];
 
-            if (v20)
+            if (sentByMe)
             {
               self->_hasPeerPaymentSetupRecurringP2PPaymentForAnyParticipant = 1;
               goto LABEL_23;
@@ -3217,26 +3217,26 @@ LABEL_23:
     prefetchedPeerPaymentAccount = self->_prefetchedPeerPaymentAccount;
     if (prefetchedPeerPaymentAccount)
     {
-      v4 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
-      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
+      associatedPassUniqueID = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
+      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
       v6 = objc_alloc_init(PKPaymentTransactionRequest);
       [v6 setTransactionSourceIdentifiers:v5];
       [v6 setTransactionTypes:&off_1008A4740];
-      v7 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
-      [v6 setStartDate:v7];
+      createdDate = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
+      [v6 setStartDate:createdDate];
 
       v8 = +[NSDate date];
       [v6 setEndDate:v8];
 
       [v6 setLimit:1];
       v9 = [(PDDatabaseManager *)self->_databaseManager transactionsForRequest:v6];
-      v10 = [v9 firstObject];
+      firstObject = [v9 firstObject];
 
-      if (v10)
+      if (firstObject)
       {
         v11 = +[NSDate date];
-        v12 = [v10 transactionDate];
-        [v11 timeIntervalSinceDate:v12];
+        transactionDate = [firstObject transactionDate];
+        [v11 timeIntervalSinceDate:transactionDate];
         v14 = v13;
 
         self->_peerPaymentDaysSinceLastPurchaseTransaction = vcvtmd_s64_f64(v14 / 86400.0);
@@ -3256,12 +3256,12 @@ LABEL_23:
     prefetchedPeerPaymentAccount = self->_prefetchedPeerPaymentAccount;
     if (prefetchedPeerPaymentAccount)
     {
-      v4 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
-      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
+      associatedPassUniqueID = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
+      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
       databaseManager = self->_databaseManager;
-      v7 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
+      createdDate = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
       v8 = +[NSDate date];
-      v9 = [(PDDatabaseManager *)databaseManager peerPaymentTransactionServiceIdentifiersForTransactionSourceIdentifiers:v5 withPeerPaymentSubtype:1 withTransactionSource:0 withBackingData:0 startDate:v7 endDate:v8];
+      v9 = [(PDDatabaseManager *)databaseManager peerPaymentTransactionServiceIdentifiersForTransactionSourceIdentifiers:v5 withPeerPaymentSubtype:1 withTransactionSource:0 withBackingData:0 startDate:createdDate endDate:v8];
       self->_hasSentPeerPaymentP2PPayment = [v9 count] != 0;
 
       self->_hasQueriedPeerPaymentHasSentP2PPayment = 1;
@@ -3278,12 +3278,12 @@ LABEL_23:
     prefetchedPeerPaymentAccount = self->_prefetchedPeerPaymentAccount;
     if (prefetchedPeerPaymentAccount)
     {
-      v4 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
-      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
+      associatedPassUniqueID = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
+      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
       databaseManager = self->_databaseManager;
-      v7 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
+      createdDate = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
       v8 = +[NSDate date];
-      v9 = [(PDDatabaseManager *)databaseManager peerPaymentTransactionServiceIdentifiersForTransactionSourceIdentifiers:v5 withPeerPaymentSubtype:2 withTransactionSource:0 withBackingData:0 startDate:v7 endDate:v8];
+      v9 = [(PDDatabaseManager *)databaseManager peerPaymentTransactionServiceIdentifiersForTransactionSourceIdentifiers:v5 withPeerPaymentSubtype:2 withTransactionSource:0 withBackingData:0 startDate:createdDate endDate:v8];
       self->_hasReceivedPeerPaymentP2PPayment = [v9 count] != 0;
 
       self->_hasQueriedPeerPaymentHasReceivedP2PPayment = 1;
@@ -3300,16 +3300,16 @@ LABEL_23:
     prefetchedPeerPaymentAccount = self->_prefetchedPeerPaymentAccount;
     if (prefetchedPeerPaymentAccount)
     {
-      v4 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
-      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
+      associatedPassUniqueID = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
+      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
       if ([v5 count])
       {
         v6 = objc_alloc_init(PKPaymentTransactionRequest);
         [v6 setTransactionSourceIdentifiers:v5];
         [v6 setPeerPaymentSubType:1];
         [v6 setPeerPaymentPaymentMode:2];
-        v7 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
-        [v6 setStartDate:v7];
+        createdDate = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
+        [v6 setStartDate:createdDate];
 
         v8 = +[NSDate date];
         [v6 setEndDate:v8];
@@ -3330,16 +3330,16 @@ LABEL_23:
     prefetchedPeerPaymentAccount = self->_prefetchedPeerPaymentAccount;
     if (prefetchedPeerPaymentAccount)
     {
-      v4 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
-      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
+      associatedPassUniqueID = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
+      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
       if ([v5 count])
       {
         v6 = objc_alloc_init(PKPaymentTransactionRequest);
         [v6 setTransactionSourceIdentifiers:v5];
         [v6 setPeerPaymentSubType:2];
         [v6 setPeerPaymentPaymentMode:2];
-        v7 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
-        [v6 setStartDate:v7];
+        createdDate = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
+        [v6 setStartDate:createdDate];
 
         v8 = +[NSDate date];
         [v6 setEndDate:v8];
@@ -3355,8 +3355,8 @@ LABEL_23:
 
 - (int64_t)peerPaymentNumberOfDeviceTapTransactions
 {
-  v3 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount associatedPassUniqueID];
-  v4 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v3];
+  associatedPassUniqueID = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount associatedPassUniqueID];
+  v4 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
   if ([v4 count])
   {
     v5 = objc_alloc_init(PKPaymentTransactionRequest);
@@ -3401,27 +3401,27 @@ LABEL_23:
     prefetchedPeerPaymentAccount = self->_prefetchedPeerPaymentAccount;
     if (prefetchedPeerPaymentAccount)
     {
-      v4 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
-      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
+      associatedPassUniqueID = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedPassUniqueID];
+      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
       v6 = objc_alloc_init(PKPaymentTransactionRequest);
       [v6 setTransactionSourceIdentifiers:v5];
       [v6 setPeerPaymentSubType:1];
       [v6 setPeerPaymentPaymentMode:2];
-      v7 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
-      [v6 setStartDate:v7];
+      createdDate = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
+      [v6 setStartDate:createdDate];
 
       v8 = +[NSDate date];
       [v6 setEndDate:v8];
 
       [v6 setLimit:1];
       v9 = [(PDDatabaseManager *)self->_databaseManager transactionsForRequest:v6];
-      v10 = [v9 firstObject];
+      firstObject = [v9 firstObject];
 
-      if (v10)
+      if (firstObject)
       {
         v11 = +[NSDate date];
-        v12 = [v10 transactionDate];
-        [v11 timeIntervalSinceDate:v12];
+        transactionDate = [firstObject transactionDate];
+        [v11 timeIntervalSinceDate:transactionDate];
         v14 = v13;
 
         self->_peerPaymentDaysSinceLastDeviceTapSendTransaction = vcvtmd_s64_f64(v14 / 86400.0);
@@ -3446,10 +3446,10 @@ LABEL_23:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedAccountInformation];
-  v4 = [v3 associatedAccounts];
+  associatedAccountInformation = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedAccountInformation];
+  associatedAccounts = [associatedAccountInformation associatedAccounts];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [associatedAccounts countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3461,7 +3461,7 @@ LABEL_4:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(associatedAccounts);
       }
 
       if ([*(*(&v11 + 1) + 8 * v9) role] == 1)
@@ -3471,7 +3471,7 @@ LABEL_4:
 
       if (v6 == ++v9)
       {
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [associatedAccounts countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           goto LABEL_4;
@@ -3504,11 +3504,11 @@ LABEL_10:
 
 - (int64_t)peerPaymentAccountDaysSinceCreatedDate
 {
-  v3 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
-  v4 = v3;
+  createdDate = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount createdDate];
+  v4 = createdDate;
   if (self->_prefetchedPeerPaymentAccount)
   {
-    v5 = v3 == 0;
+    v5 = createdDate == 0;
   }
 
   else
@@ -3534,11 +3534,11 @@ LABEL_10:
 
 - (int64_t)peerPaymentAccountDaysSinceIdentifiedDate
 {
-  v3 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount identifiedDate];
-  v4 = v3;
+  identifiedDate = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount identifiedDate];
+  v4 = identifiedDate;
   if (self->_prefetchedPeerPaymentAccount)
   {
-    v5 = v3 == 0;
+    v5 = identifiedDate == 0;
   }
 
   else
@@ -3572,10 +3572,10 @@ LABEL_10:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v3 = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedAccountInformation];
-    v4 = [v3 associatedAccounts];
+    associatedAccountInformation = [(PKPeerPaymentAccount *)prefetchedPeerPaymentAccount associatedAccountInformation];
+    associatedAccounts = [associatedAccountInformation associatedAccounts];
 
-    v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v5 = [associatedAccounts countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (!v5)
     {
       v17 = -1;
@@ -3591,15 +3591,15 @@ LABEL_10:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(associatedAccounts);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
         if ([v10 role] == 1)
         {
-          v11 = [v10 identifiedDate];
-          v12 = v11;
-          if (!v7 || [v11 compare:v7] == 1)
+          identifiedDate = [v10 identifiedDate];
+          v12 = identifiedDate;
+          if (!v7 || [identifiedDate compare:v7] == 1)
           {
             v13 = v12;
 
@@ -3608,7 +3608,7 @@ LABEL_10:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [associatedAccounts countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
@@ -3620,7 +3620,7 @@ LABEL_10:
       v16 = v15;
 
       v17 = vcvtmd_s64_f64(v16 / 86400.0);
-      v4 = v7;
+      associatedAccounts = v7;
 LABEL_18:
 
       return v17;
@@ -3660,11 +3660,11 @@ LABEL_18:
         if ([v8 isMe])
         {
           v9 = [NSMutableSet alloc];
-          v10 = [v8 appleIDAliases];
-          v5 = [v9 initWithSet:v10];
+          appleIDAliases = [v8 appleIDAliases];
+          v5 = [v9 initWithSet:appleIDAliases];
 
-          v11 = [v8 appleID];
-          [v5 addObject:v11];
+          appleID = [v8 appleID];
+          [v5 addObject:appleID];
 
           goto LABEL_14;
         }
@@ -3689,10 +3689,10 @@ LABEL_14:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v12 = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount associatedAccountInformation];
-    v13 = [v12 associatedAccounts];
+    associatedAccountInformation = [(PKPeerPaymentAccount *)self->_prefetchedPeerPaymentAccount associatedAccountInformation];
+    associatedAccounts = [associatedAccountInformation associatedAccounts];
 
-    v14 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    v14 = [associatedAccounts countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v14)
     {
       v15 = v14;
@@ -3703,18 +3703,18 @@ LABEL_14:
         {
           if (*v29 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(associatedAccounts);
           }
 
           v18 = *(*(&v28 + 1) + 8 * j);
           if ([v18 role] == 1)
           {
             databaseManager = self->_databaseManager;
-            v20 = [v18 transactionSourceIdentifier];
-            v21 = [NSSet setWithObject:v20];
-            v22 = [v18 createdDate];
+            transactionSourceIdentifier = [v18 transactionSourceIdentifier];
+            v21 = [NSSet setWithObject:transactionSourceIdentifier];
+            createdDate = [v18 createdDate];
             v23 = +[NSDate date];
-            v24 = [(PDDatabaseManager *)databaseManager transactionsCountForTransactionSourceIdentifiers:v21 withPeerPaymentCounterpartHandles:v27 forPeerPaymentSubtype:2 startDate:v22 endDate:v23];
+            v24 = [(PDDatabaseManager *)databaseManager transactionsCountForTransactionSourceIdentifiers:v21 withPeerPaymentCounterpartHandles:v27 forPeerPaymentSubtype:2 startDate:createdDate endDate:v23];
 
             if (v24)
             {
@@ -3724,7 +3724,7 @@ LABEL_14:
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v15 = [associatedAccounts countByEnumeratingWithState:&v28 objects:v36 count:16];
         if (v15)
         {
           continue;
@@ -3844,12 +3844,12 @@ LABEL_14:
               self->_hasQueriedFamilyCircleParent = 1;
               if (v11)
               {
-                v10 = [v11 isParent];
+                isParent = [v11 isParent];
               }
 
               else
               {
-                v10 = 0;
+                isParent = 0;
               }
 
               goto LABEL_15;
@@ -3866,10 +3866,10 @@ LABEL_14:
         }
       }
 
-      v10 = 0;
+      isParent = 0;
       self->_hasQueriedFamilyCircleParent = 1;
 LABEL_15:
-      self->_familyCircleParent = v10;
+      self->_familyCircleParent = isParent;
     }
   }
 
@@ -3925,25 +3925,25 @@ LABEL_15:
               self->_hasQueriedFamilyCircleCurrentUserAge = 1;
               if (v10)
               {
-                v11 = [v10 age];
-                if (!v11)
+                year = [v10 age];
+                if (!year)
                 {
-                  v12 = [v10 dateOfBirth];
+                  dateOfBirth = [v10 dateOfBirth];
                   v13 = PKLogFacilityTypeGetObject();
                   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-                  if (v12)
+                  if (dateOfBirth)
                   {
                     if (v14)
                     {
                       *buf = 138412290;
-                      v23 = v12;
+                      v23 = dateOfBirth;
                       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "The current users age is zero. Trying to figure out age from date of birth %@", buf, 0xCu);
                     }
 
                     v13 = +[NSCalendar currentCalendar];
                     v15 = +[NSDate date];
-                    v16 = [v13 components:4 fromDate:v12 toDate:v15 options:0];
-                    v11 = [v16 year];
+                    v16 = [v13 components:4 fromDate:dateOfBirth toDate:v15 options:0];
+                    year = [v16 year];
                   }
 
                   else
@@ -3954,13 +3954,13 @@ LABEL_15:
                       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "The current users age is zero and there is no date of birth defined", buf, 2u);
                     }
 
-                    v11 = 0;
+                    year = 0;
                   }
                 }
 
-                if (v11 >= 1)
+                if (year >= 1)
                 {
-                  self->_familyCircleCurrentUserAge = v11;
+                  self->_familyCircleCurrentUserAge = year;
                 }
               }
 
@@ -4074,9 +4074,9 @@ LABEL_24:
             objc_enumerationMutation(v4);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) joinedDate];
-          v11 = v10;
-          if (!v7 || [v10 compare:v7] == 1)
+          joinedDate = [*(*(&v16 + 1) + 8 * i) joinedDate];
+          v11 = joinedDate;
+          if (!v7 || [joinedDate compare:v7] == 1)
           {
             v12 = v11;
 
@@ -4202,8 +4202,8 @@ LABEL_17:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(PDDatabaseManager *)self->_databaseManager discoveryItems];
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    discoveryItems = [(PDDatabaseManager *)self->_databaseManager discoveryItems];
+    v7 = [discoveryItems countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -4214,17 +4214,17 @@ LABEL_17:
         {
           if (*v18 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(discoveryItems);
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
           v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v11 status]);
           v13 = self->_discoveryItemStatus;
-          v14 = [v11 identifier];
-          [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:v14];
+          identifier = [v11 identifier];
+          [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:identifier];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [discoveryItems countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v8);
@@ -4241,8 +4241,8 @@ LABEL_17:
 - (NSSet)discoveryItemsWithActiveStatus
 {
   v3 = [NSNumber numberWithInt:2];
-  v4 = [(PDUserEvaluationEnvironment *)self discoveryItemStatus];
-  v5 = [v4 allKeysForObject:v3];
+  discoveryItemStatus = [(PDUserEvaluationEnvironment *)self discoveryItemStatus];
+  v5 = [discoveryItemStatus allKeysForObject:v3];
   v6 = [NSSet setWithArray:v5];
 
   return v6;
@@ -4251,8 +4251,8 @@ LABEL_17:
 - (NSSet)discoveryItemsWithActionedStatus
 {
   v3 = [NSNumber numberWithInt:3];
-  v4 = [(PDUserEvaluationEnvironment *)self discoveryItemStatus];
-  v5 = [v4 allKeysForObject:v3];
+  discoveryItemStatus = [(PDUserEvaluationEnvironment *)self discoveryItemStatus];
+  v5 = [discoveryItemStatus allKeysForObject:v3];
   v6 = [NSSet setWithArray:v5];
 
   return v6;
@@ -4261,8 +4261,8 @@ LABEL_17:
 - (NSSet)discoveryItemsWithDismissedStatus
 {
   v3 = [NSNumber numberWithInt:4];
-  v4 = [(PDUserEvaluationEnvironment *)self discoveryItemStatus];
-  v5 = [v4 allKeysForObject:v3];
+  discoveryItemStatus = [(PDUserEvaluationEnvironment *)self discoveryItemStatus];
+  v5 = [discoveryItemStatus allKeysForObject:v3];
   v6 = [NSSet setWithArray:v5];
 
   return v6;
@@ -4271,8 +4271,8 @@ LABEL_17:
 - (NSSet)discoveryItemsWithWaitingForTriggerStatus
 {
   v3 = [NSNumber numberWithInt:5];
-  v4 = [(PDUserEvaluationEnvironment *)self discoveryItemStatus];
-  v5 = [v4 allKeysForObject:v3];
+  discoveryItemStatus = [(PDUserEvaluationEnvironment *)self discoveryItemStatus];
+  v5 = [discoveryItemStatus allKeysForObject:v3];
   v6 = [NSSet setWithArray:v5];
 
   return v6;
@@ -4283,11 +4283,11 @@ LABEL_17:
   discoveryItemsExpanded = self->_discoveryItemsExpanded;
   if (!discoveryItemsExpanded)
   {
-    v4 = [(PDDiscoveryManager *)self->_discoveryManager identifiersOfTappedDiscoveryItems];
-    v5 = v4;
-    if (v4)
+    identifiersOfTappedDiscoveryItems = [(PDDiscoveryManager *)self->_discoveryManager identifiersOfTappedDiscoveryItems];
+    v5 = identifiersOfTappedDiscoveryItems;
+    if (identifiersOfTappedDiscoveryItems)
     {
-      v6 = v4;
+      v6 = identifiersOfTappedDiscoveryItems;
     }
 
     else
@@ -4309,11 +4309,11 @@ LABEL_17:
   discoveryItemsDismissed = self->_discoveryItemsDismissed;
   if (!discoveryItemsDismissed)
   {
-    v4 = [(PDDiscoveryManager *)self->_discoveryManager identifiersOfDismissedDiscoveryItems];
-    v5 = v4;
-    if (v4)
+    identifiersOfDismissedDiscoveryItems = [(PDDiscoveryManager *)self->_discoveryManager identifiersOfDismissedDiscoveryItems];
+    v5 = identifiersOfDismissedDiscoveryItems;
+    if (identifiersOfDismissedDiscoveryItems)
     {
-      v6 = v4;
+      v6 = identifiersOfDismissedDiscoveryItems;
     }
 
     else
@@ -4335,11 +4335,11 @@ LABEL_17:
   discoveryCTAsTapped = self->_discoveryCTAsTapped;
   if (!discoveryCTAsTapped)
   {
-    v4 = [(PDDiscoveryManager *)self->_discoveryManager identifiersOfTappedDiscoveryItems];
-    v5 = v4;
-    if (v4)
+    identifiersOfTappedDiscoveryItems = [(PDDiscoveryManager *)self->_discoveryManager identifiersOfTappedDiscoveryItems];
+    v5 = identifiersOfTappedDiscoveryItems;
+    if (identifiersOfTappedDiscoveryItems)
     {
-      v6 = v4;
+      v6 = identifiersOfTappedDiscoveryItems;
     }
 
     else
@@ -4361,11 +4361,11 @@ LABEL_17:
   discoveryCTAsCompleted = self->_discoveryCTAsCompleted;
   if (!discoveryCTAsCompleted)
   {
-    v4 = [(PDDiscoveryManager *)self->_discoveryManager identifiersOfCompletedDiscoveryItems];
-    v5 = v4;
-    if (v4)
+    identifiersOfCompletedDiscoveryItems = [(PDDiscoveryManager *)self->_discoveryManager identifiersOfCompletedDiscoveryItems];
+    v5 = identifiersOfCompletedDiscoveryItems;
+    if (identifiersOfCompletedDiscoveryItems)
     {
-      v6 = v4;
+      v6 = identifiersOfCompletedDiscoveryItems;
     }
 
     else
@@ -4384,11 +4384,11 @@ LABEL_17:
 
 - (int64_t)savingsAccountDaysSinceCreatedDate
 {
-  v3 = [(PKAccount *)self->_prefetchedSavingsAccount createdDate];
-  v4 = v3;
+  createdDate = [(PKAccount *)self->_prefetchedSavingsAccount createdDate];
+  v4 = createdDate;
   if (self->_prefetchedSavingsAccount)
   {
-    v5 = v3 == 0;
+    v5 = createdDate == 0;
   }
 
   else
@@ -4471,47 +4471,47 @@ LABEL_17:
     return -1;
   }
 
-  v3 = [(PKAccount *)prefetchedSavingsAccount savingsDetails];
-  v4 = [v3 accountSummary];
-  v5 = [v4 currentBalance];
+  savingsDetails = [(PKAccount *)prefetchedSavingsAccount savingsDetails];
+  accountSummary = [savingsDetails accountSummary];
+  currentBalance = [accountSummary currentBalance];
 
-  v6 = [v3 currencyCode];
-  v7 = v6;
-  if (v5 && [v6 isEqualToString:@"USD"])
+  currencyCode = [savingsDetails currencyCode];
+  v7 = currencyCode;
+  if (currentBalance && [currencyCode isEqualToString:@"USD"])
   {
     v8 = PKCurrencyAmountMake();
-    v9 = [v8 amountByConvertingToSmallestCommonCurrencyUnit];
-    v10 = [v9 longLongValue];
+    amountByConvertingToSmallestCommonCurrencyUnit = [v8 amountByConvertingToSmallestCommonCurrencyUnit];
+    longLongValue = [amountByConvertingToSmallestCommonCurrencyUnit longLongValue];
 
-    if (v10 <= 14999999)
+    if (longLongValue <= 14999999)
     {
-      if (v10 <= 9999999)
+      if (longLongValue <= 9999999)
       {
-        if (v10 <= 7499999)
+        if (longLongValue <= 7499999)
         {
-          if (v10 <= 4999999)
+          if (longLongValue <= 4999999)
           {
-            if (v10 <= 1999999)
+            if (longLongValue <= 1999999)
             {
-              if (v10 <= 999999)
+              if (longLongValue <= 999999)
               {
-                if (v10 <= 499999)
+                if (longLongValue <= 499999)
                 {
-                  if (v10 <= 399999)
+                  if (longLongValue <= 399999)
                   {
-                    if (v10 <= 299999)
+                    if (longLongValue <= 299999)
                     {
-                      if (v10 <= 199999)
+                      if (longLongValue <= 199999)
                       {
-                        if (v10 <= 149999)
+                        if (longLongValue <= 149999)
                         {
-                          if (v10 <= 99999)
+                          if (longLongValue <= 99999)
                           {
-                            if (v10 <= 74999)
+                            if (longLongValue <= 74999)
                             {
-                              if (v10 <= 49999)
+                              if (longLongValue <= 49999)
                               {
-                                if (v10 <= 24999)
+                                if (longLongValue <= 24999)
                                 {
                                   v11 = 0;
                                 }
@@ -4616,12 +4616,12 @@ LABEL_17:
 
 - (NSDecimalNumber)savingsAccountAPY
 {
-  v2 = [(PKAccount *)self->_prefetchedDefaultCreditAccount redeemRewardsFeatureDescriptor];
-  v3 = [v2 savingsAPY];
-  v4 = v3;
-  if (v3)
+  redeemRewardsFeatureDescriptor = [(PKAccount *)self->_prefetchedDefaultCreditAccount redeemRewardsFeatureDescriptor];
+  savingsAPY = [redeemRewardsFeatureDescriptor savingsAPY];
+  v4 = savingsAPY;
+  if (savingsAPY)
   {
-    v5 = v3;
+    v5 = savingsAPY;
   }
 
   else
@@ -4634,7 +4634,7 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)_hasPaymentOfferCriteriaOfType:(unint64_t)a3
+- (BOOL)_hasPaymentOfferCriteriaOfType:(unint64_t)type
 {
   prefetchedPaymentOfferCatalog = self->_prefetchedPaymentOfferCatalog;
   if (!prefetchedPaymentOfferCatalog)
@@ -4642,14 +4642,14 @@ LABEL_17:
     return 0;
   }
 
-  v5 = [(PKPaymentOfferCatalog *)prefetchedPaymentOfferCatalog catalog];
-  v6 = [v5 allObjects];
+  catalog = [(PKPaymentOfferCatalog *)prefetchedPaymentOfferCatalog catalog];
+  allObjects = [catalog allObjects];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10012D0D8;
   v9[3] = &unk_100847938;
-  v9[4] = a3;
-  v7 = [v6 pk_containsObjectPassingTest:v9];
+  v9[4] = type;
+  v7 = [allObjects pk_containsObjectPassingTest:v9];
 
   return v7;
 }
@@ -4657,8 +4657,8 @@ LABEL_17:
 - (BOOL)hasBankConnectEligibleCard
 {
   bankConnectEvaluationManager = self->_bankConnectEvaluationManager;
-  v3 = [(PDDatabaseManager *)self->_databaseManager secureElementPassSerialNumbers];
-  LOBYTE(bankConnectEvaluationManager) = [(FKBankConnectEvaluationManager *)bankConnectEvaluationManager hasAnyEligibleCardWithSerialNumbers:v3];
+  secureElementPassSerialNumbers = [(PDDatabaseManager *)self->_databaseManager secureElementPassSerialNumbers];
+  LOBYTE(bankConnectEvaluationManager) = [(FKBankConnectEvaluationManager *)bankConnectEvaluationManager hasAnyEligibleCardWithSerialNumbers:secureElementPassSerialNumbers];
 
   return bankConnectEvaluationManager;
 }
@@ -4666,8 +4666,8 @@ LABEL_17:
 - (BOOL)hasAnyConnectedCardWithBankConnect
 {
   bankConnectEvaluationManager = self->_bankConnectEvaluationManager;
-  v3 = [(PDDatabaseManager *)self->_databaseManager secureElementPassPrimaryAccountIdentifiers];
-  LOBYTE(bankConnectEvaluationManager) = [(FKBankConnectEvaluationManager *)bankConnectEvaluationManager hasAnyConnectedCardWithPrimaryAccountIdentifiers:v3];
+  secureElementPassPrimaryAccountIdentifiers = [(PDDatabaseManager *)self->_databaseManager secureElementPassPrimaryAccountIdentifiers];
+  LOBYTE(bankConnectEvaluationManager) = [(FKBankConnectEvaluationManager *)bankConnectEvaluationManager hasAnyConnectedCardWithPrimaryAccountIdentifiers:secureElementPassPrimaryAccountIdentifiers];
 
   return bankConnectEvaluationManager;
 }
@@ -4680,8 +4680,8 @@ LABEL_17:
     if (prefetchedAppleBalanceAccount)
     {
       self->_hasQueriedHasAppleAccountCard = 1;
-      v4 = [(PKAccount *)prefetchedAppleBalanceAccount associatedPassUniqueID];
-      self->_hasAppleAccountCard = [(PDDatabaseManager *)self->_databaseManager passExistsWithUniqueID:v4];
+      associatedPassUniqueID = [(PKAccount *)prefetchedAppleBalanceAccount associatedPassUniqueID];
+      self->_hasAppleAccountCard = [(PDDatabaseManager *)self->_databaseManager passExistsWithUniqueID:associatedPassUniqueID];
     }
   }
 
@@ -4697,21 +4697,21 @@ LABEL_17:
     prefetchedAppleBalanceAccount = self->_prefetchedAppleBalanceAccount;
     if (prefetchedAppleBalanceAccount)
     {
-      v4 = [(PKAccount *)prefetchedAppleBalanceAccount associatedPassUniqueID];
-      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
+      associatedPassUniqueID = [(PKAccount *)prefetchedAppleBalanceAccount associatedPassUniqueID];
+      v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
       v6 = objc_alloc_init(PKPaymentTransactionRequest);
       [v6 setTransactionSourceIdentifiers:v5];
       [v6 setTransactionTypes:&off_1008A47A0];
       [v6 setTopUpSubtype:6];
       [v6 setLimit:1];
       v7 = [(PDDatabaseManager *)self->_databaseManager transactionsForRequest:v6];
-      v8 = [v7 firstObject];
+      firstObject = [v7 firstObject];
 
-      if (v8)
+      if (firstObject)
       {
         v9 = +[NSDate date];
-        v10 = [v8 transactionDate];
-        [v9 timeIntervalSinceDate:v10];
+        transactionDate = [firstObject transactionDate];
+        [v9 timeIntervalSinceDate:transactionDate];
         v12 = v11;
 
         self->_daysSinceAppleAccountInStoreTopUp = vcvtmd_s64_f64(v12 / 86400.0);
@@ -4722,7 +4722,7 @@ LABEL_17:
   return self->_daysSinceAppleAccountInStoreTopUp;
 }
 
-- (int64_t)appleAccountCardDaysSinceTopUpOfType:(id)a3
+- (int64_t)appleAccountCardDaysSinceTopUpOfType:(id)type
 {
   v4 = PKPaymentTransactionTopUpSubtypeFromString();
   if ((v4 - 5) > 3 || !self->_prefetchedAppleBalanceAccount)
@@ -4741,8 +4741,8 @@ LABEL_17:
   v11[5] = v5;
   v8 = [(NSMutableDictionary *)queriedAppleAccountCardDaysSinceTopUpOfType getOrCreateObjectForKey:v7 creationBlock:v11];
 
-  v9 = [v8 integerValue];
-  return v9;
+  integerValue = [v8 integerValue];
+  return integerValue;
 }
 
 - (NSArray)appleAccountCardActivePromotionIdentifiers
@@ -4754,13 +4754,13 @@ LABEL_17:
     if (appleAccountCardActivePromotionIdentifiers)
     {
       databaseManager = self->_databaseManager;
-      v5 = [appleAccountCardActivePromotionIdentifiers accountIdentifier];
-      v6 = [(PDDatabaseManager *)databaseManager appleBalancePromotionForAccountIdentifier:v5];
+      accountIdentifier = [appleAccountCardActivePromotionIdentifiers accountIdentifier];
+      v6 = [(PDDatabaseManager *)databaseManager appleBalancePromotionForAccountIdentifier:accountIdentifier];
 
-      v7 = [v6 programIdentifier];
-      if ([v7 length])
+      programIdentifier = [v6 programIdentifier];
+      if ([programIdentifier length])
       {
-        v11 = v7;
+        v11 = programIdentifier;
         v8 = [NSArray arrayWithObjects:&v11 count:1];
         v9 = self->_appleAccountCardActivePromotionIdentifiers;
         self->_appleAccountCardActivePromotionIdentifiers = v8;
@@ -4779,10 +4779,10 @@ LABEL_17:
   return appleAccountCardActivePromotionIdentifiers;
 }
 
-- (id)issuerMessagingFlagsForDefaultAccountType:(id)a3
+- (id)issuerMessagingFlagsForDefaultAccountType:(id)type
 {
-  v4 = a3;
-  v5 = PDUEEAccountFeatureToFeatureIdentifier(v4);
+  typeCopy = type;
+  v5 = PDUEEAccountFeatureToFeatureIdentifier(typeCopy);
   if ([(PDUserEvaluationEnvironment *)self _issuerMessagingFlagsSupportsFeatureIdentifier:v5])
   {
     queriedIssuerMessagingFlagsForDefaultAccountType = self->_queriedIssuerMessagingFlagsForDefaultAccountType;
@@ -4792,7 +4792,7 @@ LABEL_17:
     v10[3] = &unk_100847918;
     v10[4] = self;
     v10[5] = v5;
-    v7 = [(NSMutableDictionary *)queriedIssuerMessagingFlagsForDefaultAccountType getOrCreateObjectForKey:v4 creationBlock:v10];
+    v7 = [(NSMutableDictionary *)queriedIssuerMessagingFlagsForDefaultAccountType getOrCreateObjectForKey:typeCopy creationBlock:v10];
   }
 
   else
@@ -4801,7 +4801,7 @@ LABEL_17:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v4;
+      v12 = typeCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Trying to evaluate issuerMessagingFlagsForDefaultAccountType for unsupported feature %@", buf, 0xCu);
     }
 
@@ -4811,18 +4811,18 @@ LABEL_17:
   return v7;
 }
 
-- (id)memberOfInstalledApps:(id)a3
+- (id)memberOfInstalledApps:(id)apps
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_queriedAppIdentifierPresence objectForKeyedSubscript:v4];
+  appsCopy = apps;
+  v5 = [(NSMutableDictionary *)self->_queriedAppIdentifierPresence objectForKeyedSubscript:appsCopy];
   if (!v5)
   {
-    v6 = [[LSApplicationRecord alloc] initWithStoreItemIdentifier:objc_msgSend(v4 error:{"unsignedLongLongValue"), 0}];
+    v6 = [[LSApplicationRecord alloc] initWithStoreItemIdentifier:objc_msgSend(appsCopy error:{"unsignedLongLongValue"), 0}];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 applicationState];
-      v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 isInstalled]);
+      applicationState = [v6 applicationState];
+      v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [applicationState isInstalled]);
     }
 
     else
@@ -4830,12 +4830,12 @@ LABEL_17:
       v5 = [NSNumber numberWithBool:0];
     }
 
-    [(NSMutableDictionary *)self->_queriedAppIdentifierPresence setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_queriedAppIdentifierPresence setObject:v5 forKeyedSubscript:appsCopy];
   }
 
   if ([v5 BOOLValue])
   {
-    v9 = v4;
+    v9 = appsCopy;
   }
 
   else
@@ -4863,9 +4863,9 @@ LABEL_17:
   queriedAppIdentifierPresence = self->_queriedAppIdentifierPresence;
   v3 = [NSNumber numberWithBool:1];
   v4 = [(NSMutableDictionary *)queriedAppIdentifierPresence allKeysForObject:v3];
-  v5 = [v4 objectEnumerator];
+  objectEnumerator = [v4 objectEnumerator];
 
-  return v5;
+  return objectEnumerator;
 }
 
 - (BOOL)hasPairedWatch
@@ -4890,7 +4890,7 @@ LABEL_17:
   prefetchedEnrolledAuthenticationMechanisms = self->_prefetchedEnrolledAuthenticationMechanisms;
   if (!prefetchedEnrolledAuthenticationMechanisms)
   {
-    v20 = self;
+    selfCopy = self;
     v4 = [[NSMutableSet alloc] initWithCapacity:4];
     if (PKPasscodeEnabled())
     {
@@ -4917,8 +4917,8 @@ LABEL_17:
           }
 
           v9 = *(*(&v24 + 1) + 8 * i);
-          v10 = [v9 type];
-          if (v10 == 2)
+          type = [v9 type];
+          if (type == 2)
           {
             v11 = @"Face ID";
           }
@@ -4928,7 +4928,7 @@ LABEL_17:
             v11 = 0;
           }
 
-          if (v10 == 1)
+          if (type == 1)
           {
             v12 = @"Touch ID";
           }
@@ -4961,25 +4961,25 @@ LABEL_17:
     }
 
     v17 = [v4 copy];
-    v18 = v20->_prefetchedEnrolledAuthenticationMechanisms;
-    v20->_prefetchedEnrolledAuthenticationMechanisms = v17;
+    v18 = selfCopy->_prefetchedEnrolledAuthenticationMechanisms;
+    selfCopy->_prefetchedEnrolledAuthenticationMechanisms = v17;
 
-    prefetchedEnrolledAuthenticationMechanisms = v20->_prefetchedEnrolledAuthenticationMechanisms;
+    prefetchedEnrolledAuthenticationMechanisms = selfCopy->_prefetchedEnrolledAuthenticationMechanisms;
   }
 
   return prefetchedEnrolledAuthenticationMechanisms;
 }
 
-- (void)preflightForKeys:(id)a3 completion:(id)a4
+- (void)preflightForKeys:(id)keys completion:(id)completion
 {
-  v5 = a3;
-  v27 = a4;
+  keysCopy = keys;
+  completionCopy = completion;
   v6 = objc_alloc_init(NSMutableSet);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = v5;
+  v7 = keysCopy;
   v8 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v8)
   {
@@ -5103,7 +5103,7 @@ LABEL_17:
             v14 = v6;
             v15 = &off_1008A2BD0;
 LABEL_25:
-            [v14 addObject:{v15, v27}];
+            [v14 addObject:{v15, completionCopy}];
             goto LABEL_26;
           case 96:
           case 97:
@@ -5165,11 +5165,11 @@ LABEL_16:
             v16 = v6;
             v17 = &off_1008A2CF0;
 LABEL_21:
-            [v16 addObject:{v17, v27}];
+            [v16 addObject:{v17, completionCopy}];
 LABEL_22:
             v13 = &off_1008A2BB8;
 LABEL_27:
-            [v6 addObject:{v13, v27}];
+            [v6 addObject:{v13, completionCopy}];
             break;
           default:
             break;
@@ -5208,9 +5208,9 @@ LABEL_27:
   }
 
   self->_rulesNeedLocation = v20;
-  [(PDDiscoveryManager *)self->_discoveryManager setRulesNeedLocation:v19, v27];
+  [(PDDiscoveryManager *)self->_discoveryManager setRulesNeedLocation:v19, completionCopy];
 LABEL_38:
-  v21 = [v6 containsObject:{&off_1008A2CD8, v27}];
+  v21 = [v6 containsObject:{&off_1008A2CD8, completionCopy}];
   if (v21)
   {
     if (self->_rulesNeedPlacemark)
@@ -5238,29 +5238,29 @@ LABEL_44:
   if ([v7 containsObject:@"hasTransitPassForCurrentLocation"])
   {
     databaseManager = self->_databaseManager;
-    v24 = [(PDUserEvaluationEnvironment *)self supportedTransitNetworksForCurrentLocation];
-    self->_hasTransitPassForCurrentLocation = [(PDDatabaseManager *)databaseManager passExistsForTransitNetworks:v24 isTransitCard:1 expired:0];
+    supportedTransitNetworksForCurrentLocation = [(PDUserEvaluationEnvironment *)self supportedTransitNetworksForCurrentLocation];
+    self->_hasTransitPassForCurrentLocation = [(PDDatabaseManager *)databaseManager passExistsForTransitNetworks:supportedTransitNetworksForCurrentLocation isTransitCard:1 expired:0];
   }
 
   if ([v7 containsObject:@"hasUnexpiredTransitPassForCurrentLocation"])
   {
     v25 = self->_databaseManager;
-    v26 = [(PDUserEvaluationEnvironment *)self supportedTransitNetworksForCurrentLocation];
-    self->_hasUnexpiredTransitPassForCurrentLocation = [(PDDatabaseManager *)v25 passExistsForTransitNetworks:v26 isTransitCard:1 expired:2];
+    supportedTransitNetworksForCurrentLocation2 = [(PDUserEvaluationEnvironment *)self supportedTransitNetworksForCurrentLocation];
+    self->_hasUnexpiredTransitPassForCurrentLocation = [(PDDatabaseManager *)v25 passExistsForTransitNetworks:supportedTransitNetworksForCurrentLocation2 isTransitCard:1 expired:2];
   }
 }
 
-- (void)_prefetchDataSources:(id)a3 completion:(id)a4
+- (void)_prefetchDataSources:(id)sources completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  sourcesCopy = sources;
+  completionCopy = completion;
+  if ([sourcesCopy count])
   {
-    v8 = [v6 anyObject];
-    v9 = [v8 intValue];
-    [v6 removeObject:v8];
+    anyObject = [sourcesCopy anyObject];
+    intValue = [anyObject intValue];
+    [sourcesCopy removeObject:anyObject];
     objc_initWeak(&location, self);
-    switch(v9)
+    switch(intValue)
     {
       case 1u:
         v10 = PKLogFacilityTypeGetObject();
@@ -5276,8 +5276,8 @@ LABEL_44:
         v103[2] = sub_10012EDEC;
         v103[3] = &unk_1008479A0;
         objc_copyWeak(&v106, &location);
-        v104 = v6;
-        v105 = v7;
+        v104 = sourcesCopy;
+        v105 = completionCopy;
         [(PDAccountManager *)accountManager accountsForFeature:2 completion:v103];
 
         v13 = v104;
@@ -5296,8 +5296,8 @@ LABEL_44:
         v99[2] = sub_10012EE68;
         v99[3] = &unk_1008479C8;
         objc_copyWeak(&v102, &location);
-        v100 = v6;
-        v101 = v7;
+        v100 = sourcesCopy;
+        v101 = completionCopy;
         [(PDAccountManager *)v36 defaultAccountForFeature:2 completion:v99];
 
         v13 = v100;
@@ -5316,8 +5316,8 @@ LABEL_44:
         v95[2] = sub_10012F018;
         v95[3] = &unk_1008479F0;
         objc_copyWeak(&v98, &location);
-        v96 = v6;
-        v97 = v7;
+        v96 = sourcesCopy;
+        v97 = completionCopy;
         [(PDPeerPaymentWebServiceCoordinator *)peerPaymentWebServiceCoordinator accountWithPreventingServerFetch:1 completion:v95];
 
         v13 = v96;
@@ -5329,16 +5329,16 @@ LABEL_44:
           sub_1005C1E7C();
         }
 
-        v31 = [(PDPaymentWebServiceCoordinator *)self->_paymentWebServiceCoordinator paymentSetupFeaturesCoordinator];
+        paymentSetupFeaturesCoordinator = [(PDPaymentWebServiceCoordinator *)self->_paymentWebServiceCoordinator paymentSetupFeaturesCoordinator];
         v32 = PKPassdBundleIdentifier;
         v91[0] = _NSConcreteStackBlock;
         v91[1] = 3221225472;
         v91[2] = sub_10012F094;
         v91[3] = &unk_100847A18;
         objc_copyWeak(&v94, &location);
-        v92 = v6;
-        v93 = v7;
-        [v31 staticPaymentSetupFeaturesForSourceApplicationID:v32 blockServerFetch:1 completion:v91];
+        v92 = sourcesCopy;
+        v93 = completionCopy;
+        [paymentSetupFeaturesCoordinator staticPaymentSetupFeaturesForSourceApplicationID:v32 blockServerFetch:1 completion:v91];
 
         v19 = &v94;
         goto LABEL_54;
@@ -5356,8 +5356,8 @@ LABEL_44:
         v87[2] = sub_10012F1C8;
         v87[3] = &unk_100847A18;
         objc_copyWeak(&v90, &location);
-        v88 = v6;
-        v89 = v7;
+        v88 = sourcesCopy;
+        v89 = completionCopy;
         [(PDApplyManager *)applyManager applicationsWithCompletion:v87];
 
         v13 = v88;
@@ -5376,8 +5376,8 @@ LABEL_44:
         v83[2] = sub_10012F3F8;
         v83[3] = &unk_100847A40;
         objc_copyWeak(&v86, &location);
-        v84 = v6;
-        v85 = v7;
+        v84 = sourcesCopy;
+        v85 = completionCopy;
         [(PDTransitNotificationService *)transitNotificationService sentTransitNotificationStateWithHandler:v83];
 
         v13 = v84;
@@ -5396,8 +5396,8 @@ LABEL_44:
         v79[2] = sub_10012F4BC;
         v79[3] = &unk_100847A18;
         objc_copyWeak(&v82, &location);
-        v80 = v6;
-        v81 = v7;
+        v80 = sourcesCopy;
+        v81 = completionCopy;
         [(PDFamilyCircleManager *)familyCircleManager familyMembersWithCachePolicy:2 completion:v79];
 
         v13 = v80;
@@ -5416,8 +5416,8 @@ LABEL_44:
         v75[2] = sub_10012F538;
         v75[3] = &unk_100847A68;
         objc_copyWeak(&v78, &location);
-        v76 = v6;
-        v77 = v7;
+        v76 = sourcesCopy;
+        v77 = completionCopy;
         [(PDFamilyCircleManager *)v34 memberTypeForCurrentUserWithCachePolicy:2 completion:v75];
 
         v13 = v76;
@@ -5436,8 +5436,8 @@ LABEL_44:
         v71[2] = sub_10012F594;
         v71[3] = &unk_1008479A0;
         objc_copyWeak(&v74, &location);
-        v72 = v6;
-        v73 = v7;
+        v72 = sourcesCopy;
+        v73 = completionCopy;
         sub_10017F518(expressPassManager, v71);
 
         v13 = v72;
@@ -5456,8 +5456,8 @@ LABEL_44:
         v67[2] = sub_10012F70C;
         v67[3] = &unk_100847A90;
         objc_copyWeak(&v70, &location);
-        v68 = v6;
-        v69 = v7;
+        v68 = sourcesCopy;
+        v69 = completionCopy;
         [(PDAccountManager *)v25 accountUsersByAccountIdentifierForFeature:2 completion:v67];
 
         v13 = v68;
@@ -5475,8 +5475,8 @@ LABEL_44:
         v59[2] = sub_10012F804;
         v59[3] = &unk_100847B80;
         v59[4] = self;
-        v60 = v6;
-        v61 = v7;
+        v60 = sourcesCopy;
+        v61 = completionCopy;
         objc_copyWeak(&v62, &location);
         dispatch_async(v44, v59);
 
@@ -5496,8 +5496,8 @@ LABEL_44:
         block[3] = &unk_100847BD0;
         block[4] = self;
         objc_copyWeak(&v58, &location);
-        v56 = v6;
-        v57 = v7;
+        v56 = sourcesCopy;
+        v57 = completionCopy;
         dispatch_async(v18, block);
 
         v19 = &v58;
@@ -5516,8 +5516,8 @@ LABEL_44:
         v63[2] = sub_10012F788;
         v63[3] = &unk_100847A90;
         objc_copyWeak(&v66, &location);
-        v64 = v6;
-        v65 = v7;
+        v64 = sourcesCopy;
+        v65 = completionCopy;
         [(PDAccountManager *)v23 physicalCardsByAccountIdentifierForFeature:2 completion:v63];
 
         v13 = v64;
@@ -5536,8 +5536,8 @@ LABEL_44:
         v51[2] = sub_100130220;
         v51[3] = &unk_1008479C8;
         objc_copyWeak(&v54, &location);
-        v52 = v6;
-        v53 = v7;
+        v52 = sourcesCopy;
+        v53 = completionCopy;
         [(PDAccountManager *)v40 defaultAccountForFeature:5 completion:v51];
 
         v13 = v52;
@@ -5549,11 +5549,11 @@ LABEL_44:
           sub_1005C1C40();
         }
 
-        v15 = [(PDDatabaseManager *)self->_databaseManager paymentOfferCatalog];
+        paymentOfferCatalog = [(PDDatabaseManager *)self->_databaseManager paymentOfferCatalog];
         prefetchedPaymentOfferCatalog = self->_prefetchedPaymentOfferCatalog;
-        self->_prefetchedPaymentOfferCatalog = v15;
+        self->_prefetchedPaymentOfferCatalog = paymentOfferCatalog;
 
-        [(PDUserEvaluationEnvironment *)self _prefetchDataSources:v6 completion:v7];
+        [(PDUserEvaluationEnvironment *)self _prefetchDataSources:sourcesCopy completion:completionCopy];
         break;
       case 0x10u:
         v28 = PKLogFacilityTypeGetObject();
@@ -5569,8 +5569,8 @@ LABEL_44:
         v47[2] = sub_10013029C;
         v47[3] = &unk_1008479C8;
         objc_copyWeak(&v50, &location);
-        v48 = v6;
-        v49 = v7;
+        v48 = sourcesCopy;
+        v49 = completionCopy;
         [(PDAccountManager *)v29 defaultAccountForFeature:4 completion:v47];
 
         v13 = v48;
@@ -5587,27 +5587,27 @@ LABEL_54:
     objc_destroyWeak(&location);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
-- (BOOL)_hasSavingsAccountAccountTransactionOfTransactionType:(int64_t)a3 fundingSourceTypes:(id)a4
+- (BOOL)_hasSavingsAccountAccountTransactionOfTransactionType:(int64_t)type fundingSourceTypes:(id)types
 {
-  v6 = a4;
-  v7 = [(PKAccount *)self->_prefetchedSavingsAccount transactionSourceIdentifier];
-  if (v7)
+  typesCopy = types;
+  transactionSourceIdentifier = [(PKAccount *)self->_prefetchedSavingsAccount transactionSourceIdentifier];
+  if (transactionSourceIdentifier)
   {
-    v8 = [NSSet setWithObject:v7];
+    v8 = [NSSet setWithObject:transactionSourceIdentifier];
     v9 = objc_alloc_init(PKPaymentTransactionRequest);
     [v9 setTransactionSourceIdentifiers:v8];
-    v10 = [NSNumber numberWithInteger:a3];
+    v10 = [NSNumber numberWithInteger:type];
     v14 = v10;
     v11 = [NSArray arrayWithObjects:&v14 count:1];
     [v9 setTransactionTypes:v11];
 
-    [v9 setFundingSourceTypes:v6];
+    [v9 setFundingSourceTypes:typesCopy];
     v12 = [(PDDatabaseManager *)self->_databaseManager transactionsCountForRequest:v9]!= 0;
   }
 
@@ -5619,16 +5619,16 @@ LABEL_54:
   return v12;
 }
 
-- (BOOL)_hasDefaultCreditAccountTransactionOfTransactionSourceType:(unint64_t)a3
+- (BOOL)_hasDefaultCreditAccountTransactionOfTransactionSourceType:(unint64_t)type
 {
   prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
   if (prefetchedDefaultCreditAccount)
   {
-    v6 = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
-    v7 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v6];
-    LOBYTE(a3) = [(PDDatabaseManager *)self->_databaseManager hasPaymentTransactionForTransactionSourceIdentifiers:v7 withTransactionSource:a3];
+    associatedPassUniqueID = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
+    v7 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:associatedPassUniqueID];
+    LOBYTE(type) = [(PDDatabaseManager *)self->_databaseManager hasPaymentTransactionForTransactionSourceIdentifiers:v7 withTransactionSource:type];
 
-    LOBYTE(prefetchedDefaultCreditAccount) = a3;
+    LOBYTE(prefetchedDefaultCreditAccount) = type;
   }
 
   return prefetchedDefaultCreditAccount;
@@ -5639,11 +5639,11 @@ LABEL_54:
   prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
   if (prefetchedDefaultCreditAccount)
   {
-    v3 = [(PKAccount *)prefetchedDefaultCreditAccount creditDetails];
-    v4 = v3;
-    if (v3)
+    creditDetails = [(PKAccount *)prefetchedDefaultCreditAccount creditDetails];
+    v4 = creditDetails;
+    if (creditDetails)
     {
-      v5 = v3;
+      v5 = creditDetails;
     }
   }
 
@@ -5660,15 +5660,15 @@ LABEL_54:
   prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
   if (prefetchedDefaultCreditAccount)
   {
-    v3 = [(PKAccount *)prefetchedDefaultCreditAccount creditDetails];
-    v4 = v3;
-    if (v3)
+    creditDetails = [(PKAccount *)prefetchedDefaultCreditAccount creditDetails];
+    v4 = creditDetails;
+    if (creditDetails)
     {
-      v5 = [v3 accountSummary];
-      v6 = v5;
-      if (v5)
+      accountSummary = [creditDetails accountSummary];
+      v6 = accountSummary;
+      if (accountSummary)
       {
-        v7 = v5;
+        v7 = accountSummary;
       }
     }
 
@@ -5691,19 +5691,19 @@ LABEL_54:
   prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
   if (prefetchedDefaultCreditAccount)
   {
-    v3 = [(PKAccount *)prefetchedDefaultCreditAccount creditDetails];
-    v4 = v3;
-    if (v3)
+    creditDetails = [(PKAccount *)prefetchedDefaultCreditAccount creditDetails];
+    v4 = creditDetails;
+    if (creditDetails)
     {
-      v5 = [v3 accountSummary];
-      v6 = v5;
-      if (v5)
+      accountSummary = [creditDetails accountSummary];
+      v6 = accountSummary;
+      if (accountSummary)
       {
-        v7 = [v5 currentStatement];
-        v8 = v7;
-        if (v7)
+        currentStatement = [accountSummary currentStatement];
+        v8 = currentStatement;
+        if (currentStatement)
         {
-          v9 = v7;
+          v9 = currentStatement;
         }
       }
 
@@ -5732,12 +5732,12 @@ LABEL_54:
   prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
   if (prefetchedDefaultCreditAccount)
   {
-    v3 = [(PKAccount *)prefetchedDefaultCreditAccount redeemRewardsFeatureDescriptor];
-    v4 = [v3 supportedDestinations];
+    redeemRewardsFeatureDescriptor = [(PKAccount *)prefetchedDefaultCreditAccount redeemRewardsFeatureDescriptor];
+    supportedDestinations = [redeemRewardsFeatureDescriptor supportedDestinations];
 
-    if (v4)
+    if (supportedDestinations)
     {
-      v5 = [NSSet setWithArray:v4];
+      v5 = [NSSet setWithArray:supportedDestinations];
     }
 
     else
@@ -5754,9 +5754,9 @@ LABEL_54:
   return v5;
 }
 
-- (id)_creditAccountWithIdentifier:(id)a3
+- (id)_creditAccountWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -5776,9 +5776,9 @@ LABEL_54:
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 accountIdentifier];
-        v11 = v4;
-        v12 = v10;
+        accountIdentifier = [v9 accountIdentifier];
+        v11 = identifierCopy;
+        v12 = accountIdentifier;
         v13 = v12;
         if (v12 == v11)
         {
@@ -5788,7 +5788,7 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        if (v4 && v12)
+        if (identifierCopy && v12)
         {
           v14 = [v11 isEqualToString:v12];
 
@@ -5818,9 +5818,9 @@ LABEL_17:
   return v6;
 }
 
-- (id)_familyMemberWithAltDSID:(id)a3
+- (id)_familyMemberWithAltDSID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -5840,9 +5840,9 @@ LABEL_17:
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 altDSID];
-        v11 = v4;
-        v12 = v10;
+        altDSID = [v9 altDSID];
+        v11 = dCopy;
+        v12 = altDSID;
         v13 = v12;
         if (v12 == v11)
         {
@@ -5852,7 +5852,7 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        if (v4 && v12)
+        if (dCopy && v12)
         {
           v14 = [v11 isEqualToString:v12];
 
@@ -5882,9 +5882,9 @@ LABEL_17:
   return v6;
 }
 
-- (id)_creditAccountPhysicalCardsForAccountIdentifier:(id)a3
+- (id)_creditAccountPhysicalCardsForAccountIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(NSDictionary *)self->_prefetchedPhysicalCards objectForKey:?];
   }
@@ -5897,9 +5897,9 @@ LABEL_17:
   return v4;
 }
 
-- (id)_creditAccountUsersForAccountIdentifier:(id)a3
+- (id)_creditAccountUsersForAccountIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(NSDictionary *)self->_prefetchedCreditAccountUsers objectForKey:?];
   }
@@ -5912,16 +5912,16 @@ LABEL_17:
   return v4;
 }
 
-- (id)_accountUsersForAccountIdentifier:(id)a3 accessLevel:(unint64_t)a4
+- (id)_accountUsersForAccountIdentifier:(id)identifier accessLevel:(unint64_t)level
 {
-  if (a3)
+  if (identifier)
   {
     v5 = [(NSDictionary *)self->_prefetchedCreditAccountUsers objectForKey:?];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100130B30;
     v8[3] = &unk_100847BF0;
-    v8[4] = a4;
+    v8[4] = level;
     v6 = [v5 objectsPassingTest:v8];
   }
 
@@ -5933,11 +5933,11 @@ LABEL_17:
   return v6;
 }
 
-- (id)_unactivatedPhysicalCardForAltDSID:(id)a3
+- (id)_unactivatedPhysicalCardForAltDSID:(id)d
 {
-  v4 = a3;
-  v5 = [(PKAccount *)self->_prefetchedDefaultCreditAccount accountIdentifier];
-  v6 = [(PDUserEvaluationEnvironment *)self _creditAccountPhysicalCardsForAccountIdentifier:v5];
+  dCopy = d;
+  accountIdentifier = [(PKAccount *)self->_prefetchedDefaultCreditAccount accountIdentifier];
+  v6 = [(PDUserEvaluationEnvironment *)self _creditAccountPhysicalCardsForAccountIdentifier:accountIdentifier];
 
   v21 = 0u;
   v22 = 0u;
@@ -5958,9 +5958,9 @@ LABEL_17:
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 accountUserAltDSID];
-        v13 = v4;
-        v14 = v12;
+        accountUserAltDSID = [v11 accountUserAltDSID];
+        v13 = dCopy;
+        v14 = accountUserAltDSID;
         v15 = v14;
         if (v14 == v13)
         {
@@ -5968,7 +5968,7 @@ LABEL_17:
 
         else
         {
-          if (!v4 || !v14)
+          if (!dCopy || !v14)
           {
 
 LABEL_15:
@@ -5983,9 +5983,9 @@ LABEL_15:
           }
         }
 
-        v17 = [v11 state];
+        state = [v11 state];
 
-        if (v17 == 1)
+        if (state == 1)
         {
           v8 = v11;
           goto LABEL_18;
@@ -6003,144 +6003,144 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)defaultCreditAccountHasMerchantIdentifier:(id)a3
+- (BOOL)defaultCreditAccountHasMerchantIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
-  v3 = self;
+  selfCopy = self;
   prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
-  v5 = a3;
-  v6 = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
-  v7 = [[NSSet alloc] initWithObjects:{v5, 0}];
+  identifierCopy = identifier;
+  associatedPassUniqueID = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
+  v7 = [[NSSet alloc] initWithObjects:{identifierCopy, 0}];
 
-  LOBYTE(v3) = [(PDDatabaseManager *)v3->_databaseManager hasAnyTransactionsWithMerchantIdentifiers:v7 forPassUniqueIdentifier:v6];
-  return v3;
+  LOBYTE(selfCopy) = [(PDDatabaseManager *)selfCopy->_databaseManager hasAnyTransactionsWithMerchantIdentifiers:v7 forPassUniqueIdentifier:associatedPassUniqueID];
+  return selfCopy;
 }
 
-- (BOOL)defaultCreditAccountHasMerchantIdentifier30Days:(id)a3
+- (BOOL)defaultCreditAccountHasMerchantIdentifier30Days:(id)days
 {
-  if (!a3)
+  if (!days)
   {
     return 0;
   }
 
   prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
-  v5 = a3;
-  v6 = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
-  v7 = [[NSSet alloc] initWithObjects:{v5, 0}];
+  daysCopy = days;
+  associatedPassUniqueID = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
+  v7 = [[NSSet alloc] initWithObjects:{daysCopy, 0}];
 
   v8 = [NSDate dateWithTimeIntervalSinceNow:-2592000.0];
   databaseManager = self->_databaseManager;
   v10 = +[NSDate date];
-  LOBYTE(databaseManager) = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMerchantIdentifiers:v7 forPassUniqueIdentifier:v6 startDate:v8 endDate:v10];
+  LOBYTE(databaseManager) = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMerchantIdentifiers:v7 forPassUniqueIdentifier:associatedPassUniqueID startDate:v8 endDate:v10];
 
   return databaseManager;
 }
 
-- (BOOL)defaultCreditAccountHasMapsIdentifier:(id)a3
+- (BOOL)defaultCreditAccountHasMapsIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
-  v3 = self;
+  selfCopy = self;
   prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
-  v5 = a3;
-  v6 = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
+  identifierCopy = identifier;
+  associatedPassUniqueID = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
   v7 = [NSSet alloc];
-  v8 = [v5 integerValue];
+  integerValue = [identifierCopy integerValue];
 
-  v9 = [NSNumber numberWithInteger:v8];
+  v9 = [NSNumber numberWithInteger:integerValue];
   v10 = [v7 initWithObjects:{v9, 0}];
 
-  LOBYTE(v3) = [(PDDatabaseManager *)v3->_databaseManager hasAnyTransactionsWithMapsIdentifiers:v10 forPassUniqueIdentifier:v6];
-  return v3;
+  LOBYTE(selfCopy) = [(PDDatabaseManager *)selfCopy->_databaseManager hasAnyTransactionsWithMapsIdentifiers:v10 forPassUniqueIdentifier:associatedPassUniqueID];
+  return selfCopy;
 }
 
-- (BOOL)defaultCreditAccountHasMapsIdentifierLast30Days:(id)a3
+- (BOOL)defaultCreditAccountHasMapsIdentifierLast30Days:(id)days
 {
-  if (!a3)
+  if (!days)
   {
     return 0;
   }
 
   prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
-  v5 = a3;
-  v6 = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
+  daysCopy = days;
+  associatedPassUniqueID = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
   v7 = [NSSet alloc];
-  v8 = [v5 integerValue];
+  integerValue = [daysCopy integerValue];
 
-  v9 = [NSNumber numberWithInteger:v8];
+  v9 = [NSNumber numberWithInteger:integerValue];
   v10 = [v7 initWithObjects:{v9, 0}];
 
   v11 = [NSDate dateWithTimeIntervalSinceNow:-2592000.0];
   databaseManager = self->_databaseManager;
   v13 = +[NSDate date];
-  LOBYTE(databaseManager) = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMapsIdentifiers:v10 forPassUniqueIdentifier:v6 startDate:v11 endDate:v13];
+  LOBYTE(databaseManager) = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMapsIdentifiers:v10 forPassUniqueIdentifier:associatedPassUniqueID startDate:v11 endDate:v13];
 
   return databaseManager;
 }
 
-- (BOOL)defaultCreditAccountHasMapsBrandIdentifier:(id)a3
+- (BOOL)defaultCreditAccountHasMapsBrandIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
-  v3 = self;
+  selfCopy = self;
   prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
-  v5 = a3;
-  v6 = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
+  identifierCopy = identifier;
+  associatedPassUniqueID = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
   v7 = [NSSet alloc];
-  v8 = [v5 integerValue];
+  integerValue = [identifierCopy integerValue];
 
-  v9 = [NSNumber numberWithInteger:v8];
+  v9 = [NSNumber numberWithInteger:integerValue];
   v10 = [v7 initWithObjects:{v9, 0}];
 
-  LOBYTE(v3) = [(PDDatabaseManager *)v3->_databaseManager hasAnyTransactionsWithMapsBrandIdentifiers:v10 forPassUniqueIdentifier:v6];
-  return v3;
+  LOBYTE(selfCopy) = [(PDDatabaseManager *)selfCopy->_databaseManager hasAnyTransactionsWithMapsBrandIdentifiers:v10 forPassUniqueIdentifier:associatedPassUniqueID];
+  return selfCopy;
 }
 
-- (BOOL)defaultCreditAccountHasMapsBrandIdentifierLast30Days:(id)a3
+- (BOOL)defaultCreditAccountHasMapsBrandIdentifierLast30Days:(id)days
 {
-  if (!a3)
+  if (!days)
   {
     return 0;
   }
 
   prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
-  v5 = a3;
-  v6 = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
+  daysCopy = days;
+  associatedPassUniqueID = [(PKAccount *)prefetchedDefaultCreditAccount associatedPassUniqueID];
   v7 = [NSSet alloc];
-  v8 = [v5 integerValue];
+  integerValue = [daysCopy integerValue];
 
-  v9 = [NSNumber numberWithInteger:v8];
+  v9 = [NSNumber numberWithInteger:integerValue];
   v10 = [v7 initWithObjects:{v9, 0}];
 
   v11 = [NSDate dateWithTimeIntervalSinceNow:-2592000.0];
   databaseManager = self->_databaseManager;
   v13 = +[NSDate date];
-  LOBYTE(databaseManager) = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMapsBrandIdentifiers:v10 forPassUniqueIdentifier:v6 startDate:v11 endDate:v13];
+  LOBYTE(databaseManager) = [(PDDatabaseManager *)databaseManager hasAnyTransactionsWithMapsBrandIdentifiers:v10 forPassUniqueIdentifier:associatedPassUniqueID startDate:v11 endDate:v13];
 
   return databaseManager;
 }
 
-- (BOOL)hasActivePromotionIdentifier:(id)a3
+- (BOOL)hasActivePromotionIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
   prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
-  v5 = a3;
-  v6 = [(PKAccount *)prefetchedDefaultCreditAccount accountIdentifier];
-  v7 = [(PDDatabaseManager *)self->_databaseManager accountPromotionForProgramIdentifier:v5 accountIdentifier:v6];
+  identifierCopy = identifier;
+  accountIdentifier = [(PKAccount *)prefetchedDefaultCreditAccount accountIdentifier];
+  v7 = [(PDDatabaseManager *)self->_databaseManager accountPromotionForProgramIdentifier:identifierCopy accountIdentifier:accountIdentifier];
 
   if (v7)
   {
@@ -6155,149 +6155,149 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)hasActivePromotionIdentifierExpiringSoon:(id)a3
+- (BOOL)hasActivePromotionIdentifierExpiringSoon:(id)soon
 {
-  if (!a3)
+  if (!soon)
   {
     return 0;
   }
 
   prefetchedDefaultCreditAccount = self->_prefetchedDefaultCreditAccount;
-  v5 = a3;
-  v6 = [(PKAccount *)prefetchedDefaultCreditAccount accountIdentifier];
-  v7 = [(PDDatabaseManager *)self->_databaseManager accountPromotionForProgramIdentifier:v5 accountIdentifier:v6];
+  soonCopy = soon;
+  accountIdentifier = [(PKAccount *)prefetchedDefaultCreditAccount accountIdentifier];
+  v7 = [(PDDatabaseManager *)self->_databaseManager accountPromotionForProgramIdentifier:soonCopy accountIdentifier:accountIdentifier];
 
   if (v7 && [v7 state] == 2)
   {
-    v8 = [v7 expiringSoon];
+    expiringSoon = [v7 expiringSoon];
   }
 
   else
   {
-    v8 = 0;
+    expiringSoon = 0;
   }
 
-  return v8;
+  return expiringSoon;
 }
 
-- (int64_t)defaultCreditAccountDaysUntilActivePromotionExpires:(id)a3
+- (int64_t)defaultCreditAccountDaysUntilActivePromotionExpires:(id)expires
 {
-  v4 = a3;
-  if (v4)
+  expiresCopy = expires;
+  if (expiresCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountDaysUntilActivePromotionExpires objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_queriedDefaultCreditAccountDaysUntilActivePromotionExpires objectForKeyedSubscript:expiresCopy];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 integerValue];
+      integerValue = [v5 integerValue];
     }
 
     else
     {
-      v7 = -1;
+      integerValue = -1;
     }
 
-    v8 = [(PKAccount *)self->_prefetchedDefaultCreditAccount accountIdentifier];
-    v9 = v8;
-    if (!v6 && v8)
+    accountIdentifier = [(PKAccount *)self->_prefetchedDefaultCreditAccount accountIdentifier];
+    v9 = accountIdentifier;
+    if (!v6 && accountIdentifier)
     {
-      v10 = [(PDDatabaseManager *)self->_databaseManager accountPromotionForProgramIdentifier:v4 accountIdentifier:v8];
+      v10 = [(PDDatabaseManager *)self->_databaseManager accountPromotionForProgramIdentifier:expiresCopy accountIdentifier:accountIdentifier];
       v11 = v10;
       if (v10 && [v10 state] == 2)
       {
-        v12 = [v11 endDate];
-        [v12 timeIntervalSinceNow];
-        v7 = vcvtmd_s64_f64(v13 / 86400.0);
+        endDate = [v11 endDate];
+        [endDate timeIntervalSinceNow];
+        integerValue = vcvtmd_s64_f64(v13 / 86400.0);
       }
 
-      v14 = [NSNumber numberWithInteger:v7];
-      [(NSMutableDictionary *)self->_queriedDefaultCreditAccountDaysUntilActivePromotionExpires setObject:v14 forKeyedSubscript:v4];
+      v14 = [NSNumber numberWithInteger:integerValue];
+      [(NSMutableDictionary *)self->_queriedDefaultCreditAccountDaysUntilActivePromotionExpires setObject:v14 forKeyedSubscript:expiresCopy];
     }
   }
 
   else
   {
-    v7 = -1;
+    integerValue = -1;
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (BOOL)hasMerchantIdentifier:(id)a3
+- (BOOL)hasMerchantIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [[NSSet alloc] initWithObjects:{v4, 0}];
+  identifierCopy = identifier;
+  v5 = [[NSSet alloc] initWithObjects:{identifierCopy, 0}];
 
   LOBYTE(self) = [(PDDatabaseManager *)self->_databaseManager hasAnyTransactionsWithMerchantIdentifiers:v5];
   return self;
 }
 
-- (BOOL)hasMapsIdentifier:(id)a3
+- (BOOL)hasMapsIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [NSSet alloc];
-  v6 = [v4 integerValue];
+  integerValue = [identifierCopy integerValue];
 
-  v7 = [NSNumber numberWithInteger:v6];
+  v7 = [NSNumber numberWithInteger:integerValue];
   v8 = [v5 initWithObjects:{v7, 0}];
 
   LOBYTE(self) = [(PDDatabaseManager *)self->_databaseManager hasAnyTransactionsWithMapsIdentifiers:v8];
   return self;
 }
 
-- (BOOL)hasMapsBrandIdentifier:(id)a3
+- (BOOL)hasMapsBrandIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [NSSet alloc];
-  v6 = [v4 integerValue];
+  integerValue = [identifierCopy integerValue];
 
-  v7 = [NSNumber numberWithInteger:v6];
+  v7 = [NSNumber numberWithInteger:integerValue];
   v8 = [v5 initWithObjects:{v7, 0}];
 
   LOBYTE(self) = [(PDDatabaseManager *)self->_databaseManager hasAnyTransactionsWithMapsBrandIdentifiers:v8];
   return self;
 }
 
-- (BOOL)hasInstalledApp:(id)a3
+- (BOOL)hasInstalledApp:(id)app
 {
-  if (!a3)
+  if (!app)
   {
     return 0;
   }
 
-  v3 = a3;
+  appCopy = app;
   v4 = [LSApplicationRecord alloc];
-  v5 = [v3 integerValue];
+  integerValue = [appCopy integerValue];
 
-  v6 = [v4 initWithStoreItemIdentifier:v5 error:0];
+  v6 = [v4 initWithStoreItemIdentifier:integerValue error:0];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 applicationState];
-    v9 = [v8 isInstalled];
+    applicationState = [v6 applicationState];
+    isInstalled = [applicationState isInstalled];
   }
 
   else
   {
-    v9 = 0;
+    isInstalled = 0;
   }
 
-  return v9;
+  return isInstalled;
 }
 
 - (id)debugDescription

@@ -1,11 +1,11 @@
 @interface MapsSuggestionsRoutineRelevanceScoreProvider
-- (MapsSuggestionsRelevanceScore)_confidencesForMapItem:(uint64_t)a1;
-- (MapsSuggestionsRoutineRelevanceScoreProvider)initWithRoutine:(id)a3;
-- (NSObject)_confidencesForMapItems:(uint64_t)a1;
+- (MapsSuggestionsRelevanceScore)_confidencesForMapItem:(uint64_t)item;
+- (MapsSuggestionsRoutineRelevanceScoreProvider)initWithRoutine:(id)routine;
+- (NSObject)_confidencesForMapItems:(uint64_t)items;
 - (NSString)uniqueName;
-- (char)relevanceScoreForNames:(id)a3 addresses:(id)a4 mapItems:(id)a5 completion:(id)a6;
+- (char)relevanceScoreForNames:(id)names addresses:(id)addresses mapItems:(id)items completion:(id)completion;
 - (id).cxx_construct;
-- (uint64_t)_fetchLOIsWithCallback:(uint64_t)a1;
+- (uint64_t)_fetchLOIsWithCallback:(uint64_t)callback;
 - (void)preLoad;
 @end
 
@@ -18,9 +18,9 @@
   return [v2 description];
 }
 
-- (MapsSuggestionsRoutineRelevanceScoreProvider)initWithRoutine:(id)a3
+- (MapsSuggestionsRoutineRelevanceScoreProvider)initWithRoutine:(id)routine
 {
-  v5 = a3;
+  routineCopy = routine;
   v20.receiver = self;
   v20.super_class = MapsSuggestionsRoutineRelevanceScoreProvider;
   v6 = [(MapsSuggestionsRoutineRelevanceScoreProvider *)&v20 init];
@@ -47,20 +47,20 @@
     routineLocations = v6->_routineLocations;
     v6->_routineLocations = v15;
 
-    objc_storeStrong(&v6->_routine, a3);
+    objc_storeStrong(&v6->_routine, routine);
   }
 
   return v6;
 }
 
-- (char)relevanceScoreForNames:(id)a3 addresses:(id)a4 mapItems:(id)a5 completion:(id)a6
+- (char)relevanceScoreForNames:(id)names addresses:(id)addresses mapItems:(id)items completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v13)
+  namesCopy = names;
+  addressesCopy = addresses;
+  itemsCopy = items;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -90,13 +90,13 @@
     }
   }
 
-  if (!v12)
+  if (!itemsCopy)
   {
-    v12 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    itemsCopy = GEOFindOrCreateLog();
+    if (os_log_type_enabled(itemsCopy, OS_LOG_TYPE_DEBUG))
     {
       *buf = 0;
-      _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "mapItems was nil", buf, 2u);
+      _os_log_impl(&dword_1C5126000, itemsCopy, OS_LOG_TYPE_DEBUG, "mapItems was nil", buf, 2u);
     }
 
     goto LABEL_16;
@@ -126,7 +126,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v18 = [v12 copy];
+  v18 = [itemsCopy copy];
 
   if ([v18 count])
   {
@@ -135,8 +135,8 @@ LABEL_16:
     v20[2] = __101__MapsSuggestionsRoutineRelevanceScoreProvider_relevanceScoreForNames_addresses_mapItems_completion___block_invoke;
     v20[3] = &unk_1E81F5488;
     v21 = v18;
-    v22 = v13;
-    v12 = v18;
+    v22 = completionCopy;
+    itemsCopy = v18;
     MSg::Queue::async<MapsSuggestionsRoutineRelevanceScoreProvider>(&self->_queue, self, v20);
 
     v16 = 1;
@@ -159,7 +159,7 @@ LABEL_16:
     }
 
     v16 = 0;
-    v12 = v18;
+    itemsCopy = v18;
   }
 
 LABEL_17:
@@ -174,16 +174,16 @@ void __101__MapsSuggestionsRoutineRelevanceScoreProvider_relevanceScoreForNames_
   (*(v2 + 16))(v2);
 }
 
-- (NSObject)_confidencesForMapItems:(uint64_t)a1
+- (NSObject)_confidencesForMapItems:(uint64_t)items
 {
   v38 = *MEMORY[0x1E69E9840];
   v25 = a2;
-  if (a1)
+  if (items)
   {
-    v3 = [*(a1 + 40) count];
-    if (v3 == [*(a1 + 48) count])
+    v3 = [*(items + 40) count];
+    if (v3 == [*(items + 48) count])
     {
-      v4 = *(a1 + 40);
+      v4 = *(items + 40);
       objc_sync_enter(v4);
       if (v3)
       {
@@ -209,10 +209,10 @@ void __101__MapsSuggestionsRoutineRelevanceScoreProvider_relevanceScoreForNames_
               }
 
               v8 = *(*(&v27 + 1) + 8 * i);
-              v9 = [MEMORY[0x1E695DFB0] null];
+              null = [MEMORY[0x1E695DFB0] null];
               if (v8)
               {
-                v10 = v9 == v8;
+                v10 = null == v8;
               }
 
               else
@@ -230,19 +230,19 @@ void __101__MapsSuggestionsRoutineRelevanceScoreProvider_relevanceScoreForNames_
 
               else
               {
-                v12 = [(MapsSuggestionsRoutineRelevanceScoreProvider *)a1 _confidencesForMapItem:v8];
+                v12 = [(MapsSuggestionsRoutineRelevanceScoreProvider *)items _confidencesForMapItem:v8];
                 [(MapsSuggestionsRelevanceScore *)v12 confidence];
                 if (v13 == MapsSuggestionsConfidenceDontKnow() && MapsSuggestionsLoggingIsVerbose())
                 {
                   v14 = GEOFindOrCreateLog();
                   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
                   {
-                    v15 = [v8 name];
+                    name = [v8 name];
                     [v8 coordinate];
                     v17 = v16;
                     [v8 coordinate];
                     *buf = 138412802;
-                    *&buf[4] = v15;
+                    *&buf[4] = name;
                     v33 = 2048;
                     v34 = v17;
                     v35 = 2048;
@@ -402,11 +402,11 @@ void __55__MapsSuggestionsRoutineRelevanceScoreProvider_preLoad__block_invoke_2(
   }
 }
 
-- (uint64_t)_fetchLOIsWithCallback:(uint64_t)a1
+- (uint64_t)_fetchLOIsWithCallback:(uint64_t)callback
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (callback)
   {
     if (v3)
     {
@@ -420,18 +420,18 @@ void __55__MapsSuggestionsRoutineRelevanceScoreProvider_preLoad__block_invoke_2(
         }
       }
 
-      objc_initWeak(buf, a1);
-      v6 = [MEMORY[0x1E69A22C8] sharedManager];
-      v7 = [v6 isEnabledForSubTestWithName:@"MSGPPTTest_Insights_ACRanking_RoutineCall"];
+      objc_initWeak(buf, callback);
+      mEMORY[0x1E69A22C8] = [MEMORY[0x1E69A22C8] sharedManager];
+      v7 = [mEMORY[0x1E69A22C8] isEnabledForSubTestWithName:@"MSGPPTTest_Insights_ACRanking_RoutineCall"];
 
       if (v7)
       {
-        v8 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v8 postNotificationName:@"MSGPPTTest_Insights_ACRanking_RoutineCallBEGIN" object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"MSGPPTTest_Insights_ACRanking_RoutineCallBEGIN" object:0];
       }
 
-      v9 = *(a1 + 32);
-      v10 = *(a1 + 8);
+      v9 = *(callback + 32);
+      v10 = *(callback + 8);
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __71__MapsSuggestionsRoutineRelevanceScoreProvider__fetchLOIsWithCallback___block_invoke;
@@ -442,40 +442,40 @@ void __55__MapsSuggestionsRoutineRelevanceScoreProvider_preLoad__block_invoke_2(
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(buf);
-      a1 = 1;
+      callback = 1;
     }
 
     else
     {
       v12 = GEOFindOrCreateLog();
       [MapsSuggestionsRoutineRelevanceScoreProvider _fetchLOIsWithCallback:v12];
-      a1 = 0;
+      callback = 0;
     }
   }
 
-  return a1;
+  return callback;
 }
 
-- (MapsSuggestionsRelevanceScore)_confidencesForMapItem:(uint64_t)a1
+- (MapsSuggestionsRelevanceScore)_confidencesForMapItem:(uint64_t)item
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (item)
   {
     v4 = objc_alloc_init(MapsSuggestionsRelevanceScore);
-    v5 = [v3 geoFenceMapRegionOrNil];
+    geoFenceMapRegionOrNil = [v3 geoFenceMapRegionOrNil];
     GEOMapRectForMapRegion();
 
-    v6 = *(a1 + 40);
+    v6 = *(item + 40);
     objc_sync_enter(v6);
-    v7 = [*(a1 + 40) count];
+    v7 = [*(item + 40) count];
     if (v7)
     {
       v8 = 0;
       v9 = 0;
       while (1)
       {
-        v10 = [*(a1 + 40) objectAtIndexedSubscript:v9];
+        v10 = [*(item + 40) objectAtIndexedSubscript:v9];
 
         [v10 coordinate];
         [v10 coordinate];
@@ -496,12 +496,12 @@ void __55__MapsSuggestionsRoutineRelevanceScoreProvider_preLoad__block_invoke_2(
       v11 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [v3 name];
+        name = [v3 name];
         [v3 coordinate];
         v14 = v13;
         [v3 coordinate];
         v19 = 138412802;
-        v20 = v12;
+        v20 = name;
         v21 = 2048;
         v22 = v14;
         v23 = 2048;
@@ -510,11 +510,11 @@ void __55__MapsSuggestionsRoutineRelevanceScoreProvider_preLoad__block_invoke_2(
       }
 
       [(MapsSuggestionsRelevanceScore *)v4 setConfidence:MapsSuggestionsConfidenceDefinitelyTrue()];
-      v16 = *(a1 + 48);
+      v16 = *(item + 48);
       objc_sync_enter(v16);
-      if ([*(a1 + 48) count] > v9)
+      if ([*(item + 48) count] > v9)
       {
-        v17 = [*(a1 + 48) objectAtIndexedSubscript:v9];
+        v17 = [*(item + 48) objectAtIndexedSubscript:v9];
         [(MapsSuggestionsRelevanceScore *)v4 setLastInteractionTime:v17];
       }
 

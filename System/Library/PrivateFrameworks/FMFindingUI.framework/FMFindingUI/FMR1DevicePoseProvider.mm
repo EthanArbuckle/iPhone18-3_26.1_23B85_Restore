@@ -1,35 +1,35 @@
 @interface FMR1DevicePoseProvider
 - (_TtC11FMFindingUI22FMR1DevicePoseProvider)init;
-- (_TtC11FMFindingUI22FMR1DevicePoseProvider)initWithARSession:(id)a3;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
+- (_TtC11FMFindingUI22FMR1DevicePoseProvider)initWithARSession:(id)session;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didUpdateFrame:(id)frame;
 @end
 
 @implementation FMR1DevicePoseProvider
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_24A5A7CC0(v6, v7);
+  sessionCopy = session;
+  frameCopy = frame;
+  selfCopy = self;
+  sub_24A5A7CC0(sessionCopy, frameCopy);
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_24A5A8004(v8);
+  sessionCopy = session;
+  errorCopy = error;
+  selfCopy = self;
+  sub_24A5A8004(errorCopy);
 }
 
-- (_TtC11FMFindingUI22FMR1DevicePoseProvider)initWithARSession:(id)a3
+- (_TtC11FMFindingUI22FMR1DevicePoseProvider)initWithARSession:(id)session
 {
   *(&self->super.super._delegate + OBJC_IVAR____TtC11FMFindingUI22FMR1DevicePoseProvider_frameDelegate) = 0;
   swift_unknownObjectWeakInit();
   v6.receiver = self;
   v6.super_class = type metadata accessor for FMR1DevicePoseProvider();
-  return [(PRVIODevicePoseProvider *)&v6 initWithARSession:a3];
+  return [(PRVIODevicePoseProvider *)&v6 initWithARSession:session];
 }
 
 - (_TtC11FMFindingUI22FMR1DevicePoseProvider)init

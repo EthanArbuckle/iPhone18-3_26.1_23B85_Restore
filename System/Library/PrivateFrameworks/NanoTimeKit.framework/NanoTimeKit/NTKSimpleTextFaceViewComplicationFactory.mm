@@ -2,8 +2,8 @@
 - (CGRect)_referenceFrame;
 - (NTKFaceView)faceView;
 - (NTKSimpleTextFaceViewComplicationFactory)init;
-- (id)keylineViewForComplicationSlot:(id)a3;
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
+- (id)keylineViewForComplicationSlot:(id)slot;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
 - (void)loadLayoutRules;
 @end
 
@@ -17,9 +17,9 @@
   if (v2)
   {
     v3 = +[(CLKRenderingContext *)NTKFaceViewRenderingContext];
-    v4 = [v3 device];
+    device = [v3 device];
     device = v2->_device;
-    v2->_device = v4;
+    v2->_device = device;
 
     v2->_verticalCenterOffset = ___LayoutConstants_block_invoke_19(v6, v2->_device);
   }
@@ -60,12 +60,12 @@ void __59__NTKSimpleTextFaceViewComplicationFactory_loadLayoutRules__block_invok
 - (CGRect)_referenceFrame
 {
   NTKWhistlerSubdialComplicationDiameter(self->_device);
-  v3 = [(NTKSimpleTextFaceViewComplicationFactory *)self device];
-  [v3 screenBounds];
+  device = [(NTKSimpleTextFaceViewComplicationFactory *)self device];
+  [device screenBounds];
 
-  v4 = [(NTKSimpleTextFaceViewComplicationFactory *)self faceView];
-  [v4 bounds];
-  v5 = [(NTKSimpleTextFaceViewComplicationFactory *)self device];
+  faceView = [(NTKSimpleTextFaceViewComplicationFactory *)self faceView];
+  [faceView bounds];
+  device2 = [(NTKSimpleTextFaceViewComplicationFactory *)self device];
   CLKRectCenteredXInRectForDevice();
   v7 = v6;
   v9 = v8;
@@ -83,18 +83,18 @@ void __59__NTKSimpleTextFaceViewComplicationFactory_loadLayoutRules__block_invok
   return result;
 }
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
   v5 = [[NTKRichComplicationCircularBaseView alloc] initWithFamily:10];
   [(NTKRichComplicationCircularBaseView *)v5 setHidden:1];
   return v5;
 }
 
-- (id)keylineViewForComplicationSlot:(id)a3
+- (id)keylineViewForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKSimpleTextFaceViewComplicationFactory *)self faceView];
-  v6 = [v5 _defaultKeylineViewForComplicationSlot:v4];
+  slotCopy = slot;
+  faceView = [(NTKSimpleTextFaceViewComplicationFactory *)self faceView];
+  v6 = [faceView _defaultKeylineViewForComplicationSlot:slotCopy];
 
   return v6;
 }

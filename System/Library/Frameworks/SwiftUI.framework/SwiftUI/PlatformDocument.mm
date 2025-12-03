@@ -1,10 +1,10 @@
 @interface PlatformDocument
-- (_TtC7SwiftUI16PlatformDocument)initWithFileURL:(id)a3;
+- (_TtC7SwiftUI16PlatformDocument)initWithFileURL:(id)l;
 @end
 
 @implementation PlatformDocument
 
-- (_TtC7SwiftUI16PlatformDocument)initWithFileURL:(id)a3
+- (_TtC7SwiftUI16PlatformDocument)initWithFileURL:(id)l
 {
   v3 = type metadata accessor for URL();
   MEMORY[0x1EEE9AC00](v3 - 8);

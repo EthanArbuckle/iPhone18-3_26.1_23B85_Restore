@@ -1,13 +1,13 @@
 @interface APSLaunchUtil
-+ (id)lsRecordForLaunchPayload:(id)a3 error:(id *)a4;
++ (id)lsRecordForLaunchPayload:(id)payload error:(id *)error;
 - (APSLaunchUtil)init;
 @end
 
 @implementation APSLaunchUtil
 
-+ (id)lsRecordForLaunchPayload:(id)a3 error:(id *)a4
++ (id)lsRecordForLaunchPayload:(id)payload error:(id *)error
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = sub_22258FD78();
   v7 = v6;
 

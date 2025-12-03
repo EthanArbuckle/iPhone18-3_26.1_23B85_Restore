@@ -1,10 +1,10 @@
 @interface CVAPRDevice
 + (id)classes;
-+ (id)withData:(id)a3;
++ (id)withData:(id)data;
 - (CVAPRDevice)init;
-- (CVAPRDevice)initWithCoder:(id)a3;
+- (CVAPRDevice)initWithCoder:(id)coder;
 - (void)addTimes;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVAPRDevice
@@ -72,11 +72,11 @@
   return v2;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVAPRDevice classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -94,42 +94,42 @@
   return v6;
 }
 
-- (CVAPRDevice)initWithCoder:(id)a3
+- (CVAPRDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CVAPRDevice *)self init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v5->_referenceFrame = [v4 decodeIntegerForKey:@"reff"];
-    [v4 decodeDoubleForKey:@"rngm"];
+    v5->_referenceFrame = [coderCopy decodeIntegerForKey:@"reff"];
+    [coderCopy decodeDoubleForKey:@"rngm"];
     [(CVAPRRangeMeasurement *)v5->_range setMeasurement:?];
-    [v4 decodeDoubleForKey:@"rngu"];
+    [coderCopy decodeDoubleForKey:@"rngu"];
     [(CVAPRRangeMeasurement *)v5->_range setUncertainty:?];
-    [v4 decodeDoubleForKey:@"azmm"];
+    [coderCopy decodeDoubleForKey:@"azmm"];
     [(CVAPRAngleMeasurement *)v5->_azimuth setMeasurement:?];
-    [v4 decodeDoubleForKey:@"azmu"];
+    [coderCopy decodeDoubleForKey:@"azmu"];
     [(CVAPRAngleMeasurement *)v5->_azimuth setUncertainty:?];
-    [v4 decodeDoubleForKey:@"elvm"];
+    [coderCopy decodeDoubleForKey:@"elvm"];
     [(CVAPRAngleMeasurement *)v5->_elevation setMeasurement:?];
-    [v4 decodeDoubleForKey:@"elvu"];
+    [coderCopy decodeDoubleForKey:@"elvu"];
     [(CVAPRAngleMeasurement *)v5->_elevation setUncertainty:?];
-    v7 = [v4 decodeObjectForKey:@"uuid"];
+    v7 = [coderCopy decodeObjectForKey:@"uuid"];
     UUID = v5->_UUID;
     v5->_UUID = v7;
 
-    v9 = [v4 decodeObjectForKey:@"sid"];
+    v9 = [coderCopy decodeObjectForKey:@"sid"];
     sessionID = v5->_sessionID;
     v5->_sessionID = v9;
 
-    v5->_measurementNumber = [v4 decodeIntegerForKey:@"mesn"];
-    [v4 decodeDoubleForKey:@"mest"];
+    v5->_measurementNumber = [coderCopy decodeIntegerForKey:@"mesn"];
+    [coderCopy decodeDoubleForKey:@"mest"];
     v5->_measurementTimestamp = v11;
-    [v4 decodeDoubleForKey:@"t"];
+    [coderCopy decodeDoubleForKey:@"t"];
     v5->_timestamp = v12;
-    [v4 decodeDoubleForKey:@"mct"];
+    [coderCopy decodeDoubleForKey:@"mct"];
     v5->_mach_continuous_time = v13;
-    [v4 decodeDoubleForKey:@"ut"];
+    [coderCopy decodeDoubleForKey:@"ut"];
     v5->_utc_time = v14;
     objc_autoreleasePoolPop(v6);
   }
@@ -137,30 +137,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v5 encodeInteger:self->_referenceFrame forKey:@"reff"];
+  [coderCopy encodeInteger:self->_referenceFrame forKey:@"reff"];
   [(CVAPRRangeMeasurement *)self->_range measurement];
-  [v5 encodeDouble:@"rngm" forKey:?];
+  [coderCopy encodeDouble:@"rngm" forKey:?];
   [(CVAPRRangeMeasurement *)self->_range uncertainty];
-  [v5 encodeDouble:@"rngu" forKey:?];
+  [coderCopy encodeDouble:@"rngu" forKey:?];
   [(CVAPRAngleMeasurement *)self->_azimuth measurement];
-  [v5 encodeDouble:@"azmm" forKey:?];
+  [coderCopy encodeDouble:@"azmm" forKey:?];
   [(CVAPRAngleMeasurement *)self->_azimuth uncertainty];
-  [v5 encodeDouble:@"azmu" forKey:?];
+  [coderCopy encodeDouble:@"azmu" forKey:?];
   [(CVAPRAngleMeasurement *)self->_elevation measurement];
-  [v5 encodeDouble:@"elvm" forKey:?];
+  [coderCopy encodeDouble:@"elvm" forKey:?];
   [(CVAPRAngleMeasurement *)self->_elevation uncertainty];
-  [v5 encodeDouble:@"elvu" forKey:?];
-  [v5 encodeObject:self->_UUID forKey:@"uuid"];
-  [v5 encodeObject:self->_sessionID forKey:@"sid"];
-  [v5 encodeInteger:self->_measurementNumber forKey:@"mesn"];
-  [v5 encodeDouble:@"mest" forKey:self->_measurementTimestamp];
-  [v5 encodeDouble:@"t" forKey:self->_timestamp];
-  [v5 encodeDouble:@"mct" forKey:self->_mach_continuous_time];
-  [v5 encodeDouble:@"ut" forKey:self->_utc_time];
+  [coderCopy encodeDouble:@"elvu" forKey:?];
+  [coderCopy encodeObject:self->_UUID forKey:@"uuid"];
+  [coderCopy encodeObject:self->_sessionID forKey:@"sid"];
+  [coderCopy encodeInteger:self->_measurementNumber forKey:@"mesn"];
+  [coderCopy encodeDouble:@"mest" forKey:self->_measurementTimestamp];
+  [coderCopy encodeDouble:@"t" forKey:self->_timestamp];
+  [coderCopy encodeDouble:@"mct" forKey:self->_mach_continuous_time];
+  [coderCopy encodeDouble:@"ut" forKey:self->_utc_time];
   objc_autoreleasePoolPop(v4);
 }
 

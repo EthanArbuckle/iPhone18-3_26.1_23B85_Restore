@@ -1,17 +1,17 @@
 @interface PLVideoRemaker
-+ (double)maximumDurationForTrimMode:(int)a3;
-+ (int)getHDRemakerModeForMode:(int)a3;
-+ (int64_t)approximateByteSizeForMode:(int)a3 duration:(double)a4;
-+ (int64_t)fileLengthLimitForRemakerMode:(int)a3;
++ (double)maximumDurationForTrimMode:(int)mode;
++ (int)getHDRemakerModeForMode:(int)mode;
++ (int64_t)approximateByteSizeForMode:(int)mode duration:(double)duration;
++ (int64_t)fileLengthLimitForRemakerMode:(int)mode;
 - (NSString)exportPreset;
-- (PLVideoRemaker)initWithAVAsset:(id)a3;
-- (PLVideoRemaker)initWithManagedAsset:(id)a3 applyVideoAdjustments:(BOOL)a4;
-- (PLVideoRemaker)initWithPublishingMedia:(id)a3;
-- (id)_fileFormatForURL:(id)a3;
+- (PLVideoRemaker)initWithAVAsset:(id)asset;
+- (PLVideoRemaker)initWithManagedAsset:(id)asset applyVideoAdjustments:(BOOL)adjustments;
+- (PLVideoRemaker)initWithPublishingMedia:(id)media;
+- (id)_fileFormatForURL:(id)l;
 - (id)_metadata;
 - (id)progressView;
-- (void)_didEndRemakingWithTemporaryPath:(id)a3;
-- (void)_exportCompletedWithSuccess:(BOOL)a3;
+- (void)_didEndRemakingWithTemporaryPath:(id)path;
+- (void)_exportCompletedWithSuccess:(BOOL)success;
 - (void)_removeProgressTimer;
 - (void)_resetProgressTimer;
 - (void)_updateProgress;
@@ -22,15 +22,15 @@
 
 @implementation PLVideoRemaker
 
-- (void)_exportCompletedWithSuccess:(BOOL)a3
+- (void)_exportCompletedWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   [(PLVideoRemaker *)self _removeProgressTimer];
   [(PLProgressView *)self->_progressView removeFromSuperview];
 
   self->_progressView = 0;
-  v5 = self;
-  if (v3)
+  selfCopy = self;
+  if (successCopy)
   {
     [(PLVideoRemaker *)self _didEndRemakingWithTemporaryPath:self->_trimmedPath];
   }
@@ -58,7 +58,7 @@
   }
 }
 
-- (void)_didEndRemakingWithTemporaryPath:(id)a3
+- (void)_didEndRemakingWithTemporaryPath:(id)path
 {
   if (objc_loadWeak(&self->_delegate))
   {
@@ -67,15 +67,15 @@
     {
       Weak = objc_loadWeak(&self->_delegate);
 
-      [Weak videoRemakerDidEndRemaking:self temporaryPath:a3];
+      [Weak videoRemakerDidEndRemaking:self temporaryPath:path];
     }
   }
 }
 
-- (id)_fileFormatForURL:(id)a3
+- (id)_fileFormatForURL:(id)l
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = [objc_msgSend(objc_msgSend(a3 "absoluteString")];
+  v4 = [objc_msgSend(objc_msgSend(l "absoluteString")];
   if ([v4 length])
   {
     v32 = MEMORY[0x277CBEAC0];
@@ -101,8 +101,8 @@
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v15 = [v14 allKeys];
-    v16 = [v15 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    allKeys = [v14 allKeys];
+    v16 = [allKeys countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v16)
     {
       v17 = v16;
@@ -114,7 +114,7 @@
         {
           if (*v34 != v19)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allKeys);
           }
 
           v21 = *(*(&v33 + 1) + 8 * i);
@@ -124,7 +124,7 @@
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v17 = [allKeys countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v17);
@@ -159,22 +159,22 @@
   if (!self->_exportSession)
   {
 
-    v3 = [(PLVideoRemaker *)self shouldExportToPhotoDataDirectory];
+    shouldExportToPhotoDataDirectory = [(PLVideoRemaker *)self shouldExportToPhotoDataDirectory];
     self->_trimmedPath = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
-    v4 = [MEMORY[0x277CCAA00] defaultManager];
-    if ([v4 fileExistsAtPath:self->_trimmedPath])
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    if ([defaultManager fileExistsAtPath:self->_trimmedPath])
     {
-      [v4 removeItemAtPath:self->_trimmedPath error:0];
+      [defaultManager removeItemAtPath:self->_trimmedPath error:0];
     }
 
-    v5 = [(PLVideoRemaker *)self exportPreset];
+    exportPreset = [(PLVideoRemaker *)self exportPreset];
     videoAVObjectBuilder = self->__videoAVObjectBuilder;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __24__PLVideoRemaker_remake__block_invoke;
     v20[3] = &unk_2782A2278;
     v20[4] = self;
-    [(PFVideoAVObjectBuilder *)videoAVObjectBuilder requestExportSessionWithExportPreset:v5 resultHandler:v20];
+    [(PFVideoAVObjectBuilder *)videoAVObjectBuilder requestExportSessionWithExportPreset:exportPreset resultHandler:v20];
     v7 = [PLVideoRemaker fileLengthLimitForRemakerMode:self->_mode];
     if (v7 >= 1)
     {
@@ -219,7 +219,7 @@
     v13[3] = &unk_2782A1FB0;
     v13[5] = v8;
     v13[6] = &v17;
-    v14 = v3;
+    v14 = shouldExportToPhotoDataDirectory;
     v13[4] = self;
     [(AVAssetExportSession *)v12 exportAsynchronouslyWithCompletionHandler:v13];
     if ((*(*&v17.start.timescale + 24) & 1) == 0)
@@ -398,9 +398,9 @@ LABEL_10:
   [(PLVideoRemaker *)&v3 dealloc];
 }
 
-- (PLVideoRemaker)initWithManagedAsset:(id)a3 applyVideoAdjustments:(BOOL)a4
+- (PLVideoRemaker)initWithManagedAsset:(id)asset applyVideoAdjustments:(BOOL)adjustments
 {
-  v4 = a4;
+  adjustmentsCopy = adjustments;
   v15.receiver = self;
   v15.super_class = PLVideoRemaker;
   v6 = [(PLVideoRemaker *)&v15 init];
@@ -409,9 +409,9 @@ LABEL_10:
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
-    [a3 duration];
+    [asset duration];
     v14 = v7;
-    v8 = [MEMORY[0x277D3AD80] videoAVObjectBuilderForManagedAsset:a3 applyVideoAdjustments:v4];
+    v8 = [MEMORY[0x277D3AD80] videoAVObjectBuilderForManagedAsset:asset applyVideoAdjustments:adjustmentsCopy];
     v6->__videoAVObjectBuilder = v8;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -445,32 +445,32 @@ void __61__PLVideoRemaker_initWithManagedAsset_applyVideoAdjustments___block_inv
   }
 }
 
-- (PLVideoRemaker)initWithAVAsset:(id)a3
+- (PLVideoRemaker)initWithAVAsset:(id)asset
 {
   v6.receiver = self;
   v6.super_class = PLVideoRemaker;
   v4 = [(PLVideoRemaker *)&v6 init];
   if (v4)
   {
-    v4->__videoAVObjectBuilder = [objc_alloc(MEMORY[0x277D3B510]) initWithVideoAsset:a3 videoAdjustments:0];
+    v4->__videoAVObjectBuilder = [objc_alloc(MEMORY[0x277D3B510]) initWithVideoAsset:asset videoAdjustments:0];
   }
 
   return v4;
 }
 
-- (PLVideoRemaker)initWithPublishingMedia:(id)a3
+- (PLVideoRemaker)initWithPublishingMedia:(id)media
 {
-  if (!a3)
+  if (!media)
   {
     [objc_msgSend(MEMORY[0x277CCA890] "currentHandler")];
   }
 
-  v5 = [a3 asset];
+  asset = [media asset];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    return [(PLVideoRemaker *)self initWithAVAsset:v5];
+    return [(PLVideoRemaker *)self initWithAVAsset:asset];
   }
 
   else
@@ -479,7 +479,7 @@ void __61__PLVideoRemaker_initWithManagedAsset_applyVideoAdjustments___block_inv
     if (objc_opt_isKindOfClass())
     {
 
-      return [(PLVideoRemaker *)self initWithManagedAsset:v5 applyVideoAdjustments:1];
+      return [(PLVideoRemaker *)self initWithManagedAsset:asset applyVideoAdjustments:1];
     }
 
     else
@@ -489,9 +489,9 @@ void __61__PLVideoRemaker_initWithManagedAsset_applyVideoAdjustments___block_inv
   }
 }
 
-+ (int)getHDRemakerModeForMode:(int)a3
++ (int)getHDRemakerModeForMode:(int)mode
 {
-  if ((a3 & 0xFFFFFFFE) == 4)
+  if ((mode & 0xFFFFFFFE) == 4)
   {
     return 5;
   }
@@ -502,23 +502,23 @@ void __61__PLVideoRemaker_initWithManagedAsset_applyVideoAdjustments___block_inv
   }
 }
 
-+ (int64_t)approximateByteSizeForMode:(int)a3 duration:(double)a4
++ (int64_t)approximateByteSizeForMode:(int)mode duration:(double)duration
 {
-  v5 = AVAssetExportPresetForRemakerMode(a3);
+  v5 = AVAssetExportPresetForRemakerMode(mode);
   v6 = MEMORY[0x277CE6400];
-  CMTimeMakeWithSeconds(&v8, a4, 60);
+  CMTimeMakeWithSeconds(&v8, duration, 60);
   return [v6 estimatedOutputFileLengthForPreset:v5 duration:&v8 properties:0];
 }
 
-+ (double)maximumDurationForTrimMode:(int)a3
++ (double)maximumDurationForTrimMode:(int)mode
 {
   v9[1] = *MEMORY[0x277D85DE8];
   result = 3.40282347e38;
-  if (a3 <= 1)
+  if (mode <= 1)
   {
-    if (a3)
+    if (mode)
     {
-      if (a3 == 1)
+      if (mode == 1)
       {
         return result;
       }
@@ -529,25 +529,25 @@ void __61__PLVideoRemaker_initWithManagedAsset_applyVideoAdjustments___block_inv
     goto LABEL_9;
   }
 
-  if (a3 != 4)
+  if (mode != 4)
   {
-    if (a3 == 3)
+    if (mode == 3)
     {
       return result;
     }
 
-    if (a3 != 2)
+    if (mode != 2)
     {
       return 600.0;
     }
 
 LABEL_9:
-    v5 = [a1 fileLengthLimitForRemakerMode:{*&a3, 3.40282347e38}];
+    v5 = [self fileLengthLimitForRemakerMode:{*&mode, 3.40282347e38}];
     v8 = @"fileLengthLimit";
     v9[0] = [MEMORY[0x277CCABB0] numberWithLongLong:v5];
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
     memset(&v7[32], 0, 24);
-    [MEMORY[0x277CE6400] maximumDurationForPreset:AVAssetExportPresetForRemakerMode(a3) properties:v6];
+    [MEMORY[0x277CE6400] maximumDurationForPreset:AVAssetExportPresetForRemakerMode(mode) properties:v6];
     *v7 = *&v7[32];
     return CMTimeGetSeconds(v7);
   }
@@ -555,9 +555,9 @@ LABEL_9:
   return 900.0;
 }
 
-+ (int64_t)fileLengthLimitForRemakerMode:(int)a3
++ (int64_t)fileLengthLimitForRemakerMode:(int)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     return 15728640;
   }

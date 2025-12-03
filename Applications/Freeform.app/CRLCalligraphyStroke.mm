@@ -1,39 +1,39 @@
 @interface CRLCalligraphyStroke
-- (CGAffineTransform)transformInContext:(SEL)a3;
-- (CGRect)boundsForLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 transform:(CGAffineTransform *)a7;
-- (CRLCalligraphyStroke)initWithColor:(id)a3 width:(double)a4 cap:(unint64_t)a5 join:(unint64_t)a6 pattern:(id)a7 miterLimit:(double)a8;
+- (CGAffineTransform)transformInContext:(SEL)context;
+- (CGRect)boundsForLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale transform:(CGAffineTransform *)transform;
+- (CRLCalligraphyStroke)initWithColor:(id)color width:(double)width cap:(unint64_t)cap join:(unint64_t)join pattern:(id)pattern miterLimit:(double)limit;
 - (double)horizontalMarginForSwatch;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)applyToContext:(CGContext *)a3 insideStroke:(BOOL)a4;
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7 useFastDrawing:(BOOL)a8;
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)applyToContext:(CGContext *)context insideStroke:(BOOL)stroke;
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context useFastDrawing:(BOOL)drawing;
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order;
 @end
 
 @implementation CRLCalligraphyStroke
 
-- (CRLCalligraphyStroke)initWithColor:(id)a3 width:(double)a4 cap:(unint64_t)a5 join:(unint64_t)a6 pattern:(id)a7 miterLimit:(double)a8
+- (CRLCalligraphyStroke)initWithColor:(id)color width:(double)width cap:(unint64_t)cap join:(unint64_t)join pattern:(id)pattern miterLimit:(double)limit
 {
   v9.receiver = self;
   v9.super_class = CRLCalligraphyStroke;
-  return [(CRLSmartStroke *)&v9 initWithName:@"Calligraphy" color:a3 width:a5 cap:a6 join:a7 pattern:a4 miterLimit:a8];
+  return [(CRLSmartStroke *)&v9 initWithName:@"Calligraphy" color:color width:cap cap:join join:pattern pattern:width miterLimit:limit];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CRLMutableCalligraphyStroke alloc];
-  v5 = [(CRLStroke *)self color];
+  color = [(CRLStroke *)self color];
   [(CRLStroke *)self width];
   v7 = v6;
   v8 = [(CRLStroke *)self cap];
-  v9 = [(CRLStroke *)self join];
-  v10 = [(CRLStroke *)self pattern];
+  join = [(CRLStroke *)self join];
+  pattern = [(CRLStroke *)self pattern];
   [(CRLStroke *)self miterLimit];
-  v12 = [(CRLCalligraphyStroke *)v4 initWithColor:v5 width:v8 cap:v9 join:v10 pattern:v7 miterLimit:v11];
+  v12 = [(CRLCalligraphyStroke *)v4 initWithColor:color width:v8 cap:join join:pattern pattern:v7 miterLimit:v11];
 
   return v12;
 }
 
-- (CGAffineTransform)transformInContext:(SEL)a3
+- (CGAffineTransform)transformInContext:(SEL)context
 {
   v19 = *&CGAffineTransformIdentity.c;
   v20 = *&CGAffineTransformIdentity.a;
@@ -87,125 +87,125 @@
   return result;
 }
 
-- (void)applyToContext:(CGContext *)a3 insideStroke:(BOOL)a4
+- (void)applyToContext:(CGContext *)context insideStroke:(BOOL)stroke
 {
   v5.receiver = self;
   v5.super_class = CRLCalligraphyStroke;
-  [(CRLStroke *)&v5 applyToContext:a3 insideStroke:a4];
-  CGContextSetLineCap(a3, kCGLineCapRound);
-  CGContextSetLineJoin(a3, kCGLineJoinRound);
+  [(CRLStroke *)&v5 applyToContext:context insideStroke:stroke];
+  CGContextSetLineCap(context, kCGLineCapRound);
+  CGContextSetLineJoin(context, kCGLineJoinRound);
 }
 
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order
 {
-  v9 = a4;
-  if ([(CRLStroke *)self shouldRender:a3])
+  strokeCopy = stroke;
+  if ([(CRLStroke *)self shouldRender:path])
   {
     memset(&v19, 0, sizeof(v19));
-    [(CRLCalligraphyStroke *)self transformInContext:a5];
+    [(CRLCalligraphyStroke *)self transformInContext:context];
     transform = v19;
-    v12 = sub_10007187C(a3, &transform);
-    CGContextSaveGState(a5);
-    [(CRLCalligraphyStroke *)self applyToContext:a5 insideStroke:v9];
+    v12 = sub_10007187C(path, &transform);
+    CGContextSaveGState(context);
+    [(CRLCalligraphyStroke *)self applyToContext:context insideStroke:strokeCopy];
     v17 = v19;
     CGAffineTransformInvert(&transform, &v17);
-    CGContextConcatCTM(a5, &transform);
+    CGContextConcatCTM(context, &transform);
     if ([(CRLCalligraphyStroke *)self chisel])
     {
       v13 = [CRLBezierPath bezierPathWithCGPath:v12];
       [(CRLStroke *)self width];
       [v13 setLineWidth:?];
-      v14 = [v13 chisel];
-      v15 = [v14 CGPath];
+      chisel = [v13 chisel];
+      cGPath = [chisel CGPath];
 
-      CGContextAddPath(a5, v15);
-      v16 = [(CRLStroke *)self color];
-      CGContextSetFillColorWithColor(a5, [v16 CGColor]);
+      CGContextAddPath(context, cGPath);
+      color = [(CRLStroke *)self color];
+      CGContextSetFillColorWithColor(context, [color CGColor]);
 
-      CGContextFillPath(a5);
+      CGContextFillPath(context);
     }
 
     else
     {
-      CGContextAddPath(a5, v12);
-      CGContextStrokePath(a5);
+      CGContextAddPath(context, v12);
+      CGContextStrokePath(context);
     }
 
     CGPathRelease(v12);
-    CGContextRestoreGState(a5);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7 useFastDrawing:(BOOL)a8
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context useFastDrawing:(BOOL)drawing
 {
-  y = a4.y;
-  x = a4.x;
-  v14 = a3;
-  CGContextSaveGState(a7);
-  [(CRLCalligraphyStroke *)self applyToContext:a7 insideStroke:0];
+  y = point.y;
+  x = point.x;
+  endCopy = end;
+  CGContextSaveGState(context);
+  [(CRLCalligraphyStroke *)self applyToContext:context insideStroke:0];
   memset(&v26, 0, sizeof(v26));
-  [(CRLCalligraphyStroke *)self transformInContext:a7];
+  [(CRLCalligraphyStroke *)self transformInContext:context];
   v24 = v26;
   CGAffineTransformInvert(&transform, &v24);
-  CGContextConcatCTM(a7, &transform);
+  CGContextConcatCTM(context, &transform);
   memset(&transform, 0, sizeof(transform));
   CGAffineTransformMakeTranslation(&transform, x, y);
   t1 = transform;
-  CGAffineTransformScale(&v24, &t1, a6, a6);
+  CGAffineTransformScale(&v24, &t1, scale, scale);
   transform = v24;
   t1 = v24;
-  CGAffineTransformRotate(&v24, &t1, a5);
+  CGAffineTransformRotate(&v24, &t1, angle);
   transform = v24;
-  [v14 endPoint];
+  [endCopy endPoint];
   v16 = -v15;
-  [v14 endPoint];
+  [endCopy endPoint];
   t1 = transform;
   CGAffineTransformTranslate(&v24, &t1, v16, -v17);
   transform = v24;
-  v18 = [v14 path];
-  v19 = [v18 CGPath];
+  path = [endCopy path];
+  cGPath = [path CGPath];
   t1 = transform;
   v22 = v26;
   CGAffineTransformConcat(&v24, &t1, &v22);
-  v20 = sub_10007187C(v19, &v24);
+  v20 = sub_10007187C(cGPath, &v24);
 
-  CGContextAddPath(a7, v20);
+  CGContextAddPath(context, v20);
   CGPathRelease(v20);
-  if ([v14 isFilled])
+  if ([endCopy isFilled])
   {
-    CGContextFillPath(a7);
+    CGContextFillPath(context);
   }
 
   else
   {
     [(CRLStroke *)self width];
-    CGContextSetLineWidth(a7, v21);
-    CGContextSetLineJoin(a7, [v14 lineJoin]);
-    CGContextStrokePath(a7);
+    CGContextSetLineWidth(context, v21);
+    CGContextSetLineJoin(context, [endCopy lineJoin]);
+    CGContextStrokePath(context);
   }
 
-  CGContextRestoreGState(a7);
+  CGContextRestoreGState(context);
 }
 
-- (CGRect)boundsForLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 transform:(CGAffineTransform *)a7
+- (CGRect)boundsForLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale transform:(CGAffineTransform *)transform
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v34.receiver = self;
   v34.super_class = CRLCalligraphyStroke;
-  v12 = *&a7->c;
-  v31 = *&a7->a;
+  v12 = *&transform->c;
+  v31 = *&transform->a;
   v32 = v12;
-  v33 = *&a7->tx;
-  v13 = a3;
-  [(CRLStroke *)&v34 boundsForLineEnd:v13 atPoint:&v31 atAngle:x withScale:y transform:a5, a6];
+  v33 = *&transform->tx;
+  endCopy = end;
+  [(CRLStroke *)&v34 boundsForLineEnd:endCopy atPoint:&v31 atAngle:x withScale:y transform:angle, scale];
   v15 = v14;
   v17 = v16;
   width = v18;
   height = v20;
-  v22 = [v13 isFilled];
+  isFilled = [endCopy isFilled];
 
-  if ((v22 & 1) == 0)
+  if ((isFilled & 1) == 0)
   {
     [(CRLStroke *)self width];
     v24 = v23 * -0.5;

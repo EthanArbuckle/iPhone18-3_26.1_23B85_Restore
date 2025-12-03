@@ -1,20 +1,20 @@
 @interface MEMailAppExtensionObserverCriteria
-- (MEMailAppExtensionObserverCriteria)initWithCapabilities:(id)a3 includeDisabled:(BOOL)a4;
+- (MEMailAppExtensionObserverCriteria)initWithCapabilities:(id)capabilities includeDisabled:(BOOL)disabled;
 @end
 
 @implementation MEMailAppExtensionObserverCriteria
 
-- (MEMailAppExtensionObserverCriteria)initWithCapabilities:(id)a3 includeDisabled:(BOOL)a4
+- (MEMailAppExtensionObserverCriteria)initWithCapabilities:(id)capabilities includeDisabled:(BOOL)disabled
 {
-  v7 = a3;
+  capabilitiesCopy = capabilities;
   v11.receiver = self;
   v11.super_class = MEMailAppExtensionObserverCriteria;
   v8 = [(MEMailAppExtensionObserverCriteria *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_capabilities, a3);
-    v9->_includeDisabled = a4;
+    objc_storeStrong(&v8->_capabilities, capabilities);
+    v9->_includeDisabled = disabled;
   }
 
   return v9;

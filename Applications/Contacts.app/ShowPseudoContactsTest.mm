@@ -1,6 +1,6 @@
 @interface ShowPseudoContactsTest
-- (BOOL)prepareForTestWithOptions:(id)a3;
-- (void)didShow:(id)a3;
+- (BOOL)prepareForTestWithOptions:(id)options;
+- (void)didShow:(id)show;
 - (void)iterateContact;
 - (void)prepareForNextTest;
 - (void)resetDelegate;
@@ -11,19 +11,19 @@
 
 @implementation ShowPseudoContactsTest
 
-- (BOOL)prepareForTestWithOptions:(id)a3
+- (BOOL)prepareForTestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v25.receiver = self;
   v25.super_class = ShowPseudoContactsTest;
-  v5 = [(ContactsTest *)&v25 prepareForTestWithOptions:v4];
+  v5 = [(ContactsTest *)&v25 prepareForTestWithOptions:optionsCopy];
   if (v5)
   {
-    v6 = [(ContactsTest *)self contactSplitViewController];
-    v7 = [v6 navigationControllerForPPT];
+    contactSplitViewController = [(ContactsTest *)self contactSplitViewController];
+    navigationControllerForPPT = [contactSplitViewController navigationControllerForPPT];
 
     objc_opt_class();
-    v8 = v7;
+    v8 = navigationControllerForPPT;
     if (objc_opt_isKindOfClass())
     {
       v9 = v8;
@@ -39,17 +39,17 @@
     if (v10)
     {
       objc_initWeak(&location, self);
-      v11 = [v10 delegate];
+      delegate = [v10 delegate];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_10000D12C;
       v22[3] = &unk_100020558;
       objc_copyWeak(&v23, &location);
-      v12 = [CNTestNavigationControllerDelegate delegateWithDelegate:v11 willShowViewControllerHandler:0 didShowViewControllerHandler:v22];
+      v12 = [CNTestNavigationControllerDelegate delegateWithDelegate:delegate willShowViewControllerHandler:0 didShowViewControllerHandler:v22];
       [(ShowPseudoContactsTest *)self setNavControllerDelegate:v12];
 
-      v13 = [(ShowPseudoContactsTest *)self navControllerDelegate];
-      [v10 setDelegate:v13];
+      navControllerDelegate = [(ShowPseudoContactsTest *)self navControllerDelegate];
+      [v10 setDelegate:navControllerDelegate];
 
       objc_destroyWeak(&v23);
       objc_destroyWeak(&location);
@@ -63,15 +63,15 @@
     v14 = +[NSMutableDictionary dictionary];
     [(ShowPseudoContactsTest *)self setExtraResults:v14];
 
-    v15 = [v4 objectForKey:@"animate"];
+    v15 = [optionsCopy objectForKey:@"animate"];
     -[ShowPseudoContactsTest setAnimate:](self, "setAnimate:", [v15 BOOLValue]);
 
-    v16 = [v4 objectForKey:@"searchQueries"];
+    v16 = [optionsCopy objectForKey:@"searchQueries"];
     v17 = [v16 componentsSeparatedByString:@"%"];
     [(ShowPseudoContactsTest *)self setAllSearchQueries:v17];
     [(ShowPseudoContactsTest *)self setCurrentQueryIndex:0];
     [(ShowPseudoContactsTest *)self setNextContactIndex:0];
-    v18 = [v4 objectForKey:@"iterations"];
+    v18 = [optionsCopy objectForKey:@"iterations"];
     -[ShowPseudoContactsTest setMaxContactIndex:](self, "setMaxContactIndex:", [v18 intValue]);
 
     v21[0] = _NSConcreteStackBlock;
@@ -96,26 +96,26 @@
 
 - (void)resetDelegate
 {
-  v3 = [(ContactsTest *)self contactSplitViewController];
-  v9 = [v3 navigationControllerForPPT];
+  contactSplitViewController = [(ContactsTest *)self contactSplitViewController];
+  navigationControllerForPPT = [contactSplitViewController navigationControllerForPPT];
 
-  v4 = [(ContactsTest *)self contactNavigationController];
+  contactNavigationController = [(ContactsTest *)self contactNavigationController];
 
-  v5 = v9;
-  if (v9 == v4)
+  v5 = navigationControllerForPPT;
+  if (navigationControllerForPPT == contactNavigationController)
   {
-    v6 = [(ShowPseudoContactsTest *)self navControllerDelegate];
-    v7 = [v6 delegate];
-    v8 = [(ContactsTest *)self contactNavigationController];
-    [v8 setDelegate:v7];
+    navControllerDelegate = [(ShowPseudoContactsTest *)self navControllerDelegate];
+    delegate = [navControllerDelegate delegate];
+    contactNavigationController2 = [(ContactsTest *)self contactNavigationController];
+    [contactNavigationController2 setDelegate:delegate];
 
-    v5 = v9;
+    v5 = navigationControllerForPPT;
   }
 }
 
-- (void)didShow:(id)a3
+- (void)didShow:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -138,8 +138,8 @@
 
 - (void)iterateContact
 {
-  v3 = [(ContactsTest *)self contactNavigationController];
-  v4 = [v3 dataSource];
+  contactNavigationController = [(ContactsTest *)self contactNavigationController];
+  dataSource = [contactNavigationController dataSource];
 
   v5 = UIApp;
   v7[0] = _NSConcreteStackBlock;
@@ -147,24 +147,24 @@
   v7[2] = sub_10000D510;
   v7[3] = &unk_100020580;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataSource;
+  v6 = dataSource;
   [v5 installCACommitCompletionBlock:v7];
 }
 
 - (void)showNextContact
 {
-  v3 = [(ContactsTest *)self contactNavigationController];
-  v4 = [v3 dataSource];
+  contactNavigationController = [(ContactsTest *)self contactNavigationController];
+  dataSource = [contactNavigationController dataSource];
 
-  v5 = [v4 contacts];
-  v6 = [v5 objectAtIndexedSubscript:{-[ShowPseudoContactsTest nextContactIndex](self, "nextContactIndex")}];
+  contacts = [dataSource contacts];
+  v6 = [contacts objectAtIndexedSubscript:{-[ShowPseudoContactsTest nextContactIndex](self, "nextContactIndex")}];
 
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_10000D824;
   v12 = &unk_100020580;
-  v13 = self;
+  selfCopy = self;
   v14 = v6;
   v7 = v6;
   v8 = objc_retainBlock(&v9);
@@ -182,8 +182,8 @@
 - (void)showPseudoContactsListForIPhone
 {
   v3 = UIApp;
-  v4 = [(ContactsTest *)self testOptions];
-  v5 = [v4 objectForKeyedSubscript:@"testName"];
+  testOptions = [(ContactsTest *)self testOptions];
+  v5 = [testOptions objectForKeyedSubscript:@"testName"];
   v6 = [NSArray arrayWithObject:@"time"];
   [v3 startedSubTest:@"Close Contact" forTest:v5 withMetrics:v6];
 
@@ -193,23 +193,23 @@
   v8[3] = &unk_1000204D0;
   v8[4] = self;
   [UIApp installCACommitCompletionBlock:v8];
-  v7 = [(ContactsTest *)self contactSplitViewController];
-  [v7 showContactList];
+  contactSplitViewController = [(ContactsTest *)self contactSplitViewController];
+  [contactSplitViewController showContactList];
 }
 
 - (void)startSearchQuery
 {
-  v3 = [(ShowPseudoContactsTest *)self allSearchQueries];
-  v4 = [v3 objectAtIndex:{-[ShowPseudoContactsTest currentQueryIndex](self, "currentQueryIndex")}];
+  allSearchQueries = [(ShowPseudoContactsTest *)self allSearchQueries];
+  v4 = [allSearchQueries objectAtIndex:{-[ShowPseudoContactsTest currentQueryIndex](self, "currentQueryIndex")}];
 
-  v5 = [(ContactsTest *)self contactNavigationController];
-  v6 = [v5 contactListViewController];
+  contactNavigationController = [(ContactsTest *)self contactNavigationController];
+  contactListViewController = [contactNavigationController contactListViewController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000DCC4;
   v7[3] = &unk_1000204D0;
   v7[4] = self;
-  [v6 searchForString:v4 animated:-[ShowPseudoContactsTest animate](self completionBlock:{"animate"), v7}];
+  [contactListViewController searchForString:v4 animated:-[ShowPseudoContactsTest animate](self completionBlock:{"animate"), v7}];
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface TIUserDictionaryServerMock
 - (TIUserDictionaryServerMock)init;
-- (id)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (id)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation TIUserDictionaryServerMock
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  observers = v4->_observers;
-  v6 = MEMORY[0x26D6C0D70](v7);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = selfCopy->_observers;
+  v6 = MEMORY[0x26D6C0D70](observerCopy);
   [(NSMutableArray *)observers removeObject:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)addObserver:(id)a3
+- (id)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = self;
-  objc_sync_enter(v6);
-  observers = v6->_observers;
+  observerCopy = observer;
+  v5 = [observerCopy copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = selfCopy->_observers;
   v8 = MEMORY[0x26D6C0D70](v5);
   [(NSMutableArray *)observers addObject:v8];
 
-  (v5)[2](v5, v6->_pairs);
-  objc_sync_exit(v6);
+  (v5)[2](v5, selfCopy->_pairs);
+  objc_sync_exit(selfCopy);
 
   v9 = MEMORY[0x26D6C0D70](v5);
 

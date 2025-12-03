@@ -2,19 +2,19 @@
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRange;
 - (CGSize)targetSize;
 - (PXVideoRequestOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)photoKitRequestOptions;
-- (void)setRestrictToStreamable:(BOOL)a3;
-- (void)setTimeRange:(id *)a3;
+- (void)setRestrictToStreamable:(BOOL)streamable;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation PXVideoRequestOptions
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_timeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_timeRange.duration.timescale = *&range->var1.var1;
   *&self->_timeRange.start.epoch = v4;
   *&self->_timeRange.start.value = v3;
 }
@@ -37,10 +37,10 @@
   return result;
 }
 
-- (void)setRestrictToStreamable:(BOOL)a3
+- (void)setRestrictToStreamable:(BOOL)streamable
 {
-  self->_restrictToStreamable = a3;
-  if (a3)
+  self->_restrictToStreamable = streamable;
+  if (streamable)
   {
     [(PXVideoRequestOptions *)self setStreamingAllowed:1];
 
@@ -48,7 +48,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setAllowMediumHighQuality:self->_allowMediumHighQuality];
@@ -107,8 +107,8 @@
   [v3 setNetworkAccessAllowed:{-[PXVideoRequestOptions isNetworkAccessAllowed](self, "isNetworkAccessAllowed")}];
   [v3 setVersion:{-[PXVideoRequestOptions version](self, "version")}];
   [v3 setDeliveryMode:{-[PXVideoRequestOptions deliveryMode](self, "deliveryMode")}];
-  v4 = [(PXVideoRequestOptions *)self progressHandler];
-  [v3 setProgressHandler:v4];
+  progressHandler = [(PXVideoRequestOptions *)self progressHandler];
+  [v3 setProgressHandler:progressHandler];
 
   [v3 setVideoComplementAllowed:1];
   [(PXVideoRequestOptions *)self targetSize];
@@ -117,8 +117,8 @@
   [v3 setRestrictToStreamable:{-[PXVideoRequestOptions restrictToStreamable](self, "restrictToStreamable")}];
   [v3 setRestrictToEncryptedStream:{-[PXVideoRequestOptions restrictToEncryptedStream](self, "restrictToEncryptedStream")}];
   [v3 setStreamingAllowed:{-[PXVideoRequestOptions isStreamingAllowed](self, "isStreamingAllowed")}];
-  v5 = [(PXVideoRequestOptions *)self resultHandlerQueue];
-  [v3 setResultHandlerQueue:v5];
+  resultHandlerQueue = [(PXVideoRequestOptions *)self resultHandlerQueue];
+  [v3 setResultHandlerQueue:resultHandlerQueue];
 
   [v3 setStreamingVideoIntent:{-[PXVideoRequestOptions streamingVideoIntent](self, "streamingVideoIntent")}];
   [v3 setDownloadIntent:{-[PXVideoRequestOptions downloadIntent](self, "downloadIntent")}];

@@ -1,42 +1,42 @@
 @interface SFSharedWebCredentialsDatabaseEntry
-- (SFSharedWebCredentialsDatabaseEntry)initWithServiceDetails:(id)a3;
-- (id)_initWithDomain:(id)a3 appID:(id)a4 service:(int64_t)a5 isApproved:(BOOL)a6;
+- (SFSharedWebCredentialsDatabaseEntry)initWithServiceDetails:(id)details;
+- (id)_initWithDomain:(id)domain appID:(id)d service:(int64_t)service isApproved:(BOOL)approved;
 - (id)description;
 @end
 
 @implementation SFSharedWebCredentialsDatabaseEntry
 
-- (SFSharedWebCredentialsDatabaseEntry)initWithServiceDetails:(id)a3
+- (SFSharedWebCredentialsDatabaseEntry)initWithServiceDetails:(id)details
 {
-  v4 = a3;
+  detailsCopy = details;
   v22.receiver = self;
   v22.super_class = SFSharedWebCredentialsDatabaseEntry;
   v5 = [(SFSharedWebCredentialsDatabaseEntry *)&v22 init];
   if (v5)
   {
-    v6 = [v4 serviceSpecifier];
-    v7 = [v6 domain];
-    v8 = v7;
-    if (v7)
+    serviceSpecifier = [detailsCopy serviceSpecifier];
+    domain = [serviceSpecifier domain];
+    v8 = domain;
+    if (domain)
     {
-      v9 = [v7 copy];
+      v9 = [domain copy];
       v10 = [SFDomainAssociationUtilities domainByStrippingSubdomainWildcardPrefixIfNecessary:v9];
       domain = v5->_domain;
       v5->_domain = v10;
 
-      v12 = [v6 applicationIdentifier];
-      v13 = v12;
-      if (v12)
+      applicationIdentifier = [serviceSpecifier applicationIdentifier];
+      v13 = applicationIdentifier;
+      if (applicationIdentifier)
       {
-        v14 = [v12 copy];
+        v14 = [applicationIdentifier copy];
         appID = v5->_appID;
         v5->_appID = v14;
 
-        v16 = [v6 serviceType];
-        v17 = v16;
-        if (v16)
+        serviceType = [serviceSpecifier serviceType];
+        v17 = serviceType;
+        if (serviceType)
         {
-          v18 = v16;
+          v18 = serviceType;
           if ([v18 isEqualToString:*MEMORY[0x277D547B8]])
           {
             v19 = 4;
@@ -78,7 +78,7 @@
           }
 
           v5->_service = v19;
-          v5->_approved = [v4 isApproved];
+          v5->_approved = [detailsCopy isApproved];
           v20 = v5;
         }
 
@@ -108,26 +108,26 @@
   return v20;
 }
 
-- (id)_initWithDomain:(id)a3 appID:(id)a4 service:(int64_t)a5 isApproved:(BOOL)a6
+- (id)_initWithDomain:(id)domain appID:(id)d service:(int64_t)service isApproved:(BOOL)approved
 {
-  v10 = a3;
-  v11 = a4;
+  domainCopy = domain;
+  dCopy = d;
   v20.receiver = self;
   v20.super_class = SFSharedWebCredentialsDatabaseEntry;
   v12 = [(SFSharedWebCredentialsDatabaseEntry *)&v20 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [domainCopy copy];
     v14 = [SFDomainAssociationUtilities domainByStrippingSubdomainWildcardPrefixIfNecessary:v13];
     domain = v12->_domain;
     v12->_domain = v14;
 
-    v16 = [v11 copy];
+    v16 = [dCopy copy];
     appID = v12->_appID;
     v12->_appID = v16;
 
-    v12->_service = a5;
-    v12->_approved = a6;
+    v12->_service = service;
+    v12->_approved = approved;
     v18 = v12;
   }
 

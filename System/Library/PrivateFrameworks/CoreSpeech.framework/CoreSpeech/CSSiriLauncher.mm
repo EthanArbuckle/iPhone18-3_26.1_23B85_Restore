@@ -1,45 +1,45 @@
 @interface CSSiriLauncher
 + (id)sharedLauncher;
-- (void)_notifyBuiltInVoiceTriggerPrewarm:(id)a3 activationSource:(int64_t)a4 completion:(id)a5;
-- (void)deactivateSiriActivationConnectionWithReason:(int64_t)a3 withOptions:(unint64_t)a4 withContext:(id)a5;
-- (void)notifyBluetoothDeviceVoiceTrigger:(id)a3 deviceId:(id)a4 completion:(id)a5;
-- (void)notifyBluetoothDeviceVoiceTriggerPrewarm:(id)a3 deviceId:(id)a4 completion:(id)a5;
-- (void)notifyBuiltInVoiceTrigger:(id)a3 myriadPHash:(id)a4 completion:(id)a5;
-- (void)notifyCarPlayVoiceTrigger:(id)a3 deviceId:(id)a4 myriadPHash:(id)a5 completion:(id)a6;
-- (void)notifyCarPlayVoiceTriggerPrewarm:(id)a3 deviceId:(id)a4 completion:(id)a5;
-- (void)notifyContinuousConversationActivation:(id)a3 deviceId:(id)a4 completion:(id)a5;
-- (void)notifyDarwinVoiceTrigger:(id)a3 deviceId:(id)a4 myriadPHash:(id)a5 myriadLateActivationExpirationTime:(id)a6 completion:(id)a7;
-- (void)notifyDarwinVoiceTriggerPrewarmWithCompletion:(id)a3;
-- (void)notifyRemoraVoiceTrigger:(id)a3 myriadPHash:(id)a4 deviceId:(id)a5 completion:(id)a6;
-- (void)notifyRemoraVoiceTriggerPrewarm:(id)a3 deviceId:(id)a4 completion:(id)a5;
-- (void)notifyWakeKeywordSpokenBluetoothDevice:(id)a3 deviceId:(id)a4;
-- (void)notifyWakeKeywordSpokenCarPlay:(id)a3 deviceId:(id)a4;
-- (void)notifyWakeKeywordSpokenInBuiltInMic:(id)a3;
+- (void)_notifyBuiltInVoiceTriggerPrewarm:(id)prewarm activationSource:(int64_t)source completion:(id)completion;
+- (void)deactivateSiriActivationConnectionWithReason:(int64_t)reason withOptions:(unint64_t)options withContext:(id)context;
+- (void)notifyBluetoothDeviceVoiceTrigger:(id)trigger deviceId:(id)id completion:(id)completion;
+- (void)notifyBluetoothDeviceVoiceTriggerPrewarm:(id)prewarm deviceId:(id)id completion:(id)completion;
+- (void)notifyBuiltInVoiceTrigger:(id)trigger myriadPHash:(id)hash completion:(id)completion;
+- (void)notifyCarPlayVoiceTrigger:(id)trigger deviceId:(id)id myriadPHash:(id)hash completion:(id)completion;
+- (void)notifyCarPlayVoiceTriggerPrewarm:(id)prewarm deviceId:(id)id completion:(id)completion;
+- (void)notifyContinuousConversationActivation:(id)activation deviceId:(id)id completion:(id)completion;
+- (void)notifyDarwinVoiceTrigger:(id)trigger deviceId:(id)id myriadPHash:(id)hash myriadLateActivationExpirationTime:(id)time completion:(id)completion;
+- (void)notifyDarwinVoiceTriggerPrewarmWithCompletion:(id)completion;
+- (void)notifyRemoraVoiceTrigger:(id)trigger myriadPHash:(id)hash deviceId:(id)id completion:(id)completion;
+- (void)notifyRemoraVoiceTriggerPrewarm:(id)prewarm deviceId:(id)id completion:(id)completion;
+- (void)notifyWakeKeywordSpokenBluetoothDevice:(id)device deviceId:(id)id;
+- (void)notifyWakeKeywordSpokenCarPlay:(id)play deviceId:(id)id;
+- (void)notifyWakeKeywordSpokenInBuiltInMic:(id)mic;
 @end
 
 @implementation CSSiriLauncher
 
-- (void)notifyDarwinVoiceTrigger:(id)a3 deviceId:(id)a4 myriadPHash:(id)a5 myriadLateActivationExpirationTime:(id)a6 completion:(id)a7
+- (void)notifyDarwinVoiceTrigger:(id)trigger deviceId:(id)id myriadPHash:(id)hash myriadLateActivationExpirationTime:(id)time completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  triggerCopy = trigger;
+  hashCopy = hash;
+  timeCopy = time;
+  completionCopy = completion;
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_1000CDDE4;
   v26[3] = &unk_100250E00;
-  v15 = v12;
+  v15 = hashCopy;
   v27 = v15;
-  v16 = v13;
+  v16 = timeCopy;
   v28 = v16;
-  v17 = a4;
+  idCopy = id;
   v18 = [SCDAContext newWithBuilder:v26];
   v19 = +[NSMutableDictionary dictionary];
   v20 = v19;
-  if (v11)
+  if (triggerCopy)
   {
-    [v19 setObject:v11 forKey:AFSiriActivationUserInfoKey[1]];
+    [v19 setObject:triggerCopy forKey:AFSiriActivationUserInfoKey[1]];
   }
 
   if (v18)
@@ -47,46 +47,46 @@
     [v20 setObject:v18 forKey:AFSiriActivationUserInfoKey[10]];
   }
 
-  if (v11)
+  if (triggerCopy)
   {
     v21 = +[CSFVoiceTriggerEventInfoSelfLogger sharedLogger];
-    [v21 logSiriLaunchStartedWithVoiceTriggerEventInfo:v11];
+    [v21 logSiriLaunchStartedWithVoiceTriggerEventInfo:triggerCopy];
   }
 
   mach_absolute_time();
-  v24 = v11;
-  v25 = v14;
-  v22 = v14;
-  v23 = v11;
+  v24 = triggerCopy;
+  v25 = completionCopy;
+  v22 = completionCopy;
+  v23 = triggerCopy;
   AFSiriActivationHoneycombDeviceVoiceTrigger();
 }
 
-- (void)notifyDarwinVoiceTriggerPrewarmWithCompletion:(id)a3
+- (void)notifyDarwinVoiceTriggerPrewarmWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   mach_absolute_time();
-  v5 = v3;
-  v4 = v3;
+  v5 = completionCopy;
+  v4 = completionCopy;
   AFSiriActivationVoiceTriggerPrewarm();
 }
 
-- (void)deactivateSiriActivationConnectionWithReason:(int64_t)a3 withOptions:(unint64_t)a4 withContext:(id)a5
+- (void)deactivateSiriActivationConnectionWithReason:(int64_t)reason withOptions:(unint64_t)options withContext:(id)context
 {
-  v7 = a5;
+  contextCopy = context;
   v8 = [[AFSiriActivationConnection alloc] initWithServicePort:AFSiriActivationServiceGetPort()];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000CE238;
   v9[3] = &unk_100250DD8;
-  v9[4] = a3;
-  [v8 deactivateForReason:a3 options:a4 context:v7 completion:v9];
+  v9[4] = reason;
+  [v8 deactivateForReason:reason options:options context:contextCopy completion:v9];
 }
 
-- (void)notifyContinuousConversationActivation:(id)a3 deviceId:(id)a4 completion:(id)a5
+- (void)notifyContinuousConversationActivation:(id)activation deviceId:(id)id completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  activationCopy = activation;
+  idCopy = id;
+  completionCopy = completion;
   v10 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -96,95 +96,95 @@
   }
 
   mach_absolute_time();
-  v12 = v9;
-  v11 = v9;
+  v12 = completionCopy;
+  v11 = completionCopy;
   AFSiriActivationContinuousConversation();
 }
 
-- (void)notifyRemoraVoiceTrigger:(id)a3 myriadPHash:(id)a4 deviceId:(id)a5 completion:(id)a6
+- (void)notifyRemoraVoiceTrigger:(id)trigger myriadPHash:(id)hash deviceId:(id)id completion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
-    (*(a6 + 2))(a6);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)notifyRemoraVoiceTriggerPrewarm:(id)a3 deviceId:(id)a4 completion:(id)a5
+- (void)notifyRemoraVoiceTriggerPrewarm:(id)prewarm deviceId:(id)id completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
     v6 = CSErrorDomain;
-    v7 = a5;
+    completionCopy = completion;
     v8 = [NSError errorWithDomain:v6 code:1852 userInfo:0];
-    (*(a5 + 2))(v7, 0, v8);
+    (*(completion + 2))(completionCopy, 0, v8);
   }
 }
 
-- (void)notifyWakeKeywordSpokenBluetoothDevice:(id)a3 deviceId:(id)a4
+- (void)notifyWakeKeywordSpokenBluetoothDevice:(id)device deviceId:(id)id
 {
-  v4 = a4;
+  idCopy = id;
   mach_absolute_time();
   AFSiriActivationVoiceKeywordDetected();
 }
 
-- (void)notifyBluetoothDeviceVoiceTrigger:(id)a3 deviceId:(id)a4 completion:(id)a5
+- (void)notifyBluetoothDeviceVoiceTrigger:(id)trigger deviceId:(id)id completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  triggerCopy = trigger;
+  completionCopy = completion;
+  idCopy = id;
   v10 = +[NSMutableDictionary dictionary];
   v11 = v10;
-  if (v7)
+  if (triggerCopy)
   {
-    [v10 setObject:v7 forKey:AFSiriActivationUserInfoKey[1]];
+    [v10 setObject:triggerCopy forKey:AFSiriActivationUserInfoKey[1]];
     v12 = +[CSFVoiceTriggerEventInfoSelfLogger sharedLogger];
-    [v12 logSiriLaunchStartedWithVoiceTriggerEventInfo:v7];
+    [v12 logSiriLaunchStartedWithVoiceTriggerEventInfo:triggerCopy];
   }
 
   mach_absolute_time();
-  v15 = v7;
-  v16 = v8;
-  v13 = v8;
-  v14 = v7;
+  v15 = triggerCopy;
+  v16 = completionCopy;
+  v13 = completionCopy;
+  v14 = triggerCopy;
   AFSiriActivationVoiceTriggerActivate();
 }
 
-- (void)notifyBluetoothDeviceVoiceTriggerPrewarm:(id)a3 deviceId:(id)a4 completion:(id)a5
+- (void)notifyBluetoothDeviceVoiceTriggerPrewarm:(id)prewarm deviceId:(id)id completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  idCopy = id;
+  prewarmCopy = prewarm;
   mach_absolute_time();
-  v11 = v7;
-  v10 = v7;
+  v11 = completionCopy;
+  v10 = completionCopy;
   AFSiriActivationVoiceTriggerPrewarm();
 }
 
-- (void)notifyWakeKeywordSpokenCarPlay:(id)a3 deviceId:(id)a4
+- (void)notifyWakeKeywordSpokenCarPlay:(id)play deviceId:(id)id
 {
-  v4 = a4;
+  idCopy = id;
   mach_absolute_time();
   AFSiriActivationVoiceKeywordDetected();
 }
 
-- (void)notifyCarPlayVoiceTrigger:(id)a3 deviceId:(id)a4 myriadPHash:(id)a5 completion:(id)a6
+- (void)notifyCarPlayVoiceTrigger:(id)trigger deviceId:(id)id myriadPHash:(id)hash completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  triggerCopy = trigger;
+  hashCopy = hash;
+  completionCopy = completion;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1000CEEAC;
   v22[3] = &unk_100250CC0;
-  v12 = v10;
+  v12 = hashCopy;
   v23 = v12;
-  v13 = a4;
+  idCopy = id;
   v14 = [SCDAContext newWithBuilder:v22];
   v15 = +[NSMutableDictionary dictionary];
   v16 = v15;
-  if (v9)
+  if (triggerCopy)
   {
-    [v15 setObject:v9 forKey:AFSiriActivationUserInfoKey[1]];
+    [v15 setObject:triggerCopy forKey:AFSiriActivationUserInfoKey[1]];
   }
 
   if (v14)
@@ -192,56 +192,56 @@
     [v16 setObject:v14 forKey:AFSiriActivationUserInfoKey[10]];
   }
 
-  if (v9)
+  if (triggerCopy)
   {
     v17 = +[CSFVoiceTriggerEventInfoSelfLogger sharedLogger];
-    [v17 logSiriLaunchStartedWithVoiceTriggerEventInfo:v9];
+    [v17 logSiriLaunchStartedWithVoiceTriggerEventInfo:triggerCopy];
   }
 
   mach_absolute_time();
-  v20 = v9;
-  v21 = v11;
-  v18 = v11;
-  v19 = v9;
+  v20 = triggerCopy;
+  v21 = completionCopy;
+  v18 = completionCopy;
+  v19 = triggerCopy;
   AFSiriActivationVoiceTriggerActivate();
 }
 
-- (void)notifyCarPlayVoiceTriggerPrewarm:(id)a3 deviceId:(id)a4 completion:(id)a5
+- (void)notifyCarPlayVoiceTriggerPrewarm:(id)prewarm deviceId:(id)id completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  idCopy = id;
+  prewarmCopy = prewarm;
   mach_absolute_time();
-  v11 = v7;
-  v10 = v7;
+  v11 = completionCopy;
+  v10 = completionCopy;
   AFSiriActivationVoiceTriggerPrewarm();
 }
 
-- (void)notifyWakeKeywordSpokenInBuiltInMic:(id)a3
+- (void)notifyWakeKeywordSpokenInBuiltInMic:(id)mic
 {
   mach_absolute_time();
 
   AFSiriActivationVoiceKeywordDetected();
 }
 
-- (void)notifyBuiltInVoiceTrigger:(id)a3 myriadPHash:(id)a4 completion:(id)a5
+- (void)notifyBuiltInVoiceTrigger:(id)trigger myriadPHash:(id)hash completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  triggerCopy = trigger;
+  hashCopy = hash;
+  completionCopy = completion;
   v10 = +[NSMutableDictionary dictionary];
   v11 = v10;
-  if (v7)
+  if (triggerCopy)
   {
-    [v10 setObject:v7 forKey:AFSiriActivationUserInfoKey[1]];
-    [CSUtils isFirstPassSourceTypeRingtoneWithVTEI:v7];
+    [v10 setObject:triggerCopy forKey:AFSiriActivationUserInfoKey[1]];
+    [CSUtils isFirstPassSourceTypeRingtoneWithVTEI:triggerCopy];
   }
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000CF66C;
   v19[3] = &unk_100250CC0;
-  v12 = v8;
+  v12 = hashCopy;
   v20 = v12;
   v13 = [SCDAContext newWithBuilder:v19];
   if (v13)
@@ -249,28 +249,28 @@
     [v11 setObject:v13 forKey:AFSiriActivationUserInfoKey[10]];
   }
 
-  [CSUtils isVoiceTriggerFromExclaveWithVTEI:v7];
-  if (v7)
+  [CSUtils isVoiceTriggerFromExclaveWithVTEI:triggerCopy];
+  if (triggerCopy)
   {
     v14 = +[CSFVoiceTriggerEventInfoSelfLogger sharedLogger];
-    [v14 logSiriLaunchStartedWithVoiceTriggerEventInfo:v7];
+    [v14 logSiriLaunchStartedWithVoiceTriggerEventInfo:triggerCopy];
   }
 
   mach_absolute_time();
-  v18 = v9;
-  v17 = v7;
-  v15 = v9;
-  v16 = v7;
+  v18 = completionCopy;
+  v17 = triggerCopy;
+  v15 = completionCopy;
+  v16 = triggerCopy;
   AFSiriActivationVoiceTriggerActivate();
 }
 
-- (void)_notifyBuiltInVoiceTriggerPrewarm:(id)a3 activationSource:(int64_t)a4 completion:(id)a5
+- (void)_notifyBuiltInVoiceTriggerPrewarm:(id)prewarm activationSource:(int64_t)source completion:(id)completion
 {
-  v6 = a5;
-  v7 = a3;
+  completionCopy = completion;
+  prewarmCopy = prewarm;
   mach_absolute_time();
-  v9 = v6;
-  v8 = v6;
+  v9 = completionCopy;
+  v8 = completionCopy;
   AFSiriActivationVoiceTriggerPrewarm();
 }
 

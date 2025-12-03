@@ -7,14 +7,14 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(WeekAllDayLabelAccessibilityElement *)self allDayView];
-  v4 = [v3 safeValueForKey:@"_dayWidth"];
+  allDayView = [(WeekAllDayLabelAccessibilityElement *)self allDayView];
+  v4 = [allDayView safeValueForKey:@"_dayWidth"];
   [v4 doubleValue];
 
-  v5 = [v3 safeValueForKey:@"bounds"];
+  v5 = [allDayView safeValueForKey:@"bounds"];
   [v5 CGRectValue];
 
-  v6 = [v3 safeValueForKey:@"firstEventYOffset"];
+  v6 = [allDayView safeValueForKey:@"firstEventYOffset"];
   [v6 doubleValue];
 
   [(WeekAllDayLabelAccessibilityElement *)self dayIndex];

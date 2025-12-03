@@ -4,11 +4,11 @@
 - (id)_init;
 - (void)_cleanUpConnection;
 - (void)_connection;
-- (void)_donateDocumentInteraction:(id)a3 completion:(id)a4;
-- (void)_donateMenuItem:(id)a3 completion:(id)a4;
+- (void)_donateDocumentInteraction:(id)interaction completion:(id)completion;
+- (void)_donateMenuItem:(id)item completion:(id)completion;
 - (void)dealloc;
-- (void)donateDocumentInteraction:(id)a3 completion:(id)a4;
-- (void)donateMenuItem:(id)a3 completion:(id)a4;
+- (void)donateDocumentInteraction:(id)interaction completion:(id)completion;
+- (void)donateMenuItem:(id)item completion:(id)completion;
 @end
 
 @implementation ATXDonationManager
@@ -45,37 +45,37 @@ uint64_t __35__ATXDonationManager_sharedManager__block_invoke()
   [(ATXDonationManager *)&v4 dealloc];
 }
 
-- (void)donateMenuItem:(id)a3 completion:(id)a4
+- (void)donateMenuItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__ATXDonationManager_donateMenuItem_completion___block_invoke;
   block[3] = &unk_1E80C23F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = itemCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = itemCopy;
   dispatch_async(queue, block);
 }
 
-- (void)donateDocumentInteraction:(id)a3 completion:(id)a4
+- (void)donateDocumentInteraction:(id)interaction completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__ATXDonationManager_donateDocumentInteraction_completion___block_invoke;
   block[3] = &unk_1E80C23F8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = interactionCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = interactionCopy;
   dispatch_async(queue, block);
 }
 
@@ -181,20 +181,20 @@ void __33__ATXDonationManager__connection__block_invoke_14(uint64_t a1)
   _os_log_debug_impl(&dword_1BF549000, log, OS_LOG_TYPE_DEBUG, "%s: Invalidating and cleaning up connection", &v1, 0xCu);
 }
 
-- (void)_donateMenuItem:(id)a3 completion:(id)a4
+- (void)_donateMenuItem:(id)item completion:(id)completion
 {
   v4 = MEMORY[0x1E696ABC0];
-  v5 = a4;
+  completionCopy = completion;
   v6 = [v4 errorWithDomain:@"com.apple.ATXPredictionErrorDomain" code:1 userInfo:0];
-  v5[2](v5, v6);
+  completionCopy[2](completionCopy, v6);
 }
 
-- (void)_donateDocumentInteraction:(id)a3 completion:(id)a4
+- (void)_donateDocumentInteraction:(id)interaction completion:(id)completion
 {
   v4 = MEMORY[0x1E696ABC0];
-  v5 = a4;
+  completionCopy = completion;
   v6 = [v4 errorWithDomain:@"com.apple.ATXPredictionErrorDomain" code:1 userInfo:0];
-  v5[2](v5, v6);
+  completionCopy[2](completionCopy, v6);
 }
 
 - (void)_connection

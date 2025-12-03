@@ -1,15 +1,15 @@
 @interface CHUpdateTokenPropertyForUnitConversionStep
-- (id)process:(id)a3 options:(id)a4;
-- (id)unitConversionKeywordsFromOptions:(id)a3;
+- (id)process:(id)process options:(id)options;
+- (id)unitConversionKeywordsFromOptions:(id)options;
 @end
 
 @implementation CHUpdateTokenPropertyForUnitConversionStep
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
   v189 = *MEMORY[0x1E69E9840];
-  v165 = a3;
-  v159 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -23,7 +23,7 @@
   }
 
   v163 = objc_msgSend_array(MEMORY[0x1E695DF70], v7, v8, v9, v10, v11);
-  v17 = objc_msgSend_result(v165, v12, v13, v14, v15, v16);
+  v17 = objc_msgSend_result(processCopy, v12, v13, v14, v15, v16);
   v23 = objc_msgSend_topTranscription(v17, v18, v19, v20, v21, v22);
   v27 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v23, v24, @" ", &stru_1EF1C0318, v25, v26);
 
@@ -32,7 +32,7 @@
   v35 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v31, v32, @"\\,", @"\\"", v33, v34);
 
   v41 = objc_msgSend_length(v35, v36, v37, v38, v39, v40);
-  v46 = objc_msgSend_unitConversionKeywordsFromOptions_(self, v42, v159, v43, v44, v45);
+  v46 = objc_msgSend_unitConversionKeywordsFromOptions_(self, v42, optionsCopy, v43, v44, v45);
   v186 = 0u;
   v187 = 0u;
   v184 = 0u;
@@ -61,7 +61,7 @@ LABEL_7:
       v167 = 0x7FFFFFFFFFFFFFFFLL;
       do
       {
-        v54 = objc_msgSend_rangeOfString_options_range_(v35, v49, v53, 1, v52, v41, v159);
+        v54 = objc_msgSend_rangeOfString_options_range_(v35, v49, v53, 1, v52, v41, optionsCopy);
         v59 = v54;
         if (v54 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -166,7 +166,7 @@ LABEL_32:
   v171 = v86;
   while (1)
   {
-    v88 = objc_msgSend_result(v165, v80, v81, v82, v83, v84, v159);
+    v88 = objc_msgSend_result(processCopy, v80, v81, v82, v83, v84, optionsCopy);
     v94 = objc_msgSend_transcriptionPaths(v88, v89, v90, v91, v92, v93);
     v100 = v85 < objc_msgSend_count(v94, v95, v96, v97, v98, v99);
 
@@ -175,7 +175,7 @@ LABEL_32:
       break;
     }
 
-    v106 = objc_msgSend_result(v165, v101, v102, v103, v104, v105);
+    v106 = objc_msgSend_result(processCopy, v101, v102, v103, v104, v105);
     v112 = objc_msgSend_transcriptionPaths(v106, v107, v108, v109, v110, v111);
     v117 = objc_msgSend_objectAtIndexedSubscript_(v112, v113, v85, v114, v115, v116);
 
@@ -188,8 +188,8 @@ LABEL_32:
     v178[1] = v178;
     v178[2] = 0x2020000000;
     v179 = 0;
-    v129 = objc_msgSend_result(v165, v124, v125, v126, v127, v128);
-    v135 = objc_msgSend_result(v165, v130, v131, v132, v133, v134);
+    v129 = objc_msgSend_result(processCopy, v124, v125, v126, v127, v128);
+    v135 = objc_msgSend_result(processCopy, v130, v131, v132, v133, v134);
     v141 = objc_msgSend_tokenColumnCount(v135, v136, v137, v138, v139, v140);
     v172[0] = MEMORY[0x1E69E9820];
     v172[1] = 3221225472;
@@ -212,21 +212,21 @@ LABEL_32:
 
   v148 = [CHTokenizedMathResult alloc];
   v153 = objc_msgSend_initWithBestPathTokens_(v148, v149, v163, v150, v151, v152);
-  objc_msgSend_setResult_(v165, v154, v153, v155, v156, v157);
+  objc_msgSend_setResult_(processCopy, v154, v153, v155, v156, v157);
 
-  return v165;
+  return processCopy;
 }
 
-- (id)unitConversionKeywordsFromOptions:(id)a3
+- (id)unitConversionKeywordsFromOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_183678F80;
   block[3] = &unk_1E6DDBE10;
-  v10 = v3;
+  v10 = optionsCopy;
   v4 = qword_1EA84C978;
-  v5 = v3;
+  v5 = optionsCopy;
   if (v4 != -1)
   {
     dispatch_once(&qword_1EA84C978, block);

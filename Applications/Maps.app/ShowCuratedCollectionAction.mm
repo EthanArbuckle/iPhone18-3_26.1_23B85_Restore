@@ -1,18 +1,18 @@
 @interface ShowCuratedCollectionAction
-- (ShowCuratedCollectionAction)initWithCuratedCollectionID:(unint64_t)a3 resultProviderID:(int)a4;
+- (ShowCuratedCollectionAction)initWithCuratedCollectionID:(unint64_t)d resultProviderID:(int)iD;
 @end
 
 @implementation ShowCuratedCollectionAction
 
-- (ShowCuratedCollectionAction)initWithCuratedCollectionID:(unint64_t)a3 resultProviderID:(int)a4
+- (ShowCuratedCollectionAction)initWithCuratedCollectionID:(unint64_t)d resultProviderID:(int)iD
 {
   v7.receiver = self;
   v7.super_class = ShowCuratedCollectionAction;
   result = [(ShowCuratedCollectionAction *)&v7 init];
   if (result)
   {
-    result->_curatedCollectionMUID = a3;
-    result->_resultProviderID = a4;
+    result->_curatedCollectionMUID = d;
+    result->_resultProviderID = iD;
   }
 
   return result;

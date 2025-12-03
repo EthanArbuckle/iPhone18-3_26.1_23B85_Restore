@@ -22,25 +22,25 @@
 - (unsigned)fuelEfficiencyUnitRawValue;
 - (unsigned)speedUnitRawValue;
 - (unsigned)temperatureUnitRawValue;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFDisplayUnits
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFDisplayUnits;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -53,12 +53,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -74,13 +74,13 @@
 - (CAFUnitTypeCharacteristic)speedUnitRawValueCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000046000001"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000046000001"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000046000001"];
@@ -99,20 +99,20 @@
 
 - (unsigned)speedUnitRawValue
 {
-  v2 = [(CAFDisplayUnits *)self speedUnitRawValueCharacteristic];
-  v3 = [v2 unitTypeValue];
+  speedUnitRawValueCharacteristic = [(CAFDisplayUnits *)self speedUnitRawValueCharacteristic];
+  unitTypeValue = [speedUnitRawValueCharacteristic unitTypeValue];
 
-  return v3;
+  return unitTypeValue;
 }
 
 - (NSUnitSpeed)speedUnit
 {
   objc_opt_class();
-  v3 = [(CAFDisplayUnits *)self speedUnitRawValueCharacteristic];
-  v4 = [v3 unitValue];
-  if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
+  speedUnitRawValueCharacteristic = [(CAFDisplayUnits *)self speedUnitRawValueCharacteristic];
+  unitValue = [speedUnitRawValueCharacteristic unitValue];
+  if (unitValue && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v4;
+    v5 = unitValue;
   }
 
   else
@@ -126,13 +126,13 @@
 - (CAFUnitTypeCharacteristic)distanceUnitRawValueCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000046000004"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000046000004"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000046000004"];
@@ -151,20 +151,20 @@
 
 - (unsigned)distanceUnitRawValue
 {
-  v2 = [(CAFDisplayUnits *)self distanceUnitRawValueCharacteristic];
-  v3 = [v2 unitTypeValue];
+  distanceUnitRawValueCharacteristic = [(CAFDisplayUnits *)self distanceUnitRawValueCharacteristic];
+  unitTypeValue = [distanceUnitRawValueCharacteristic unitTypeValue];
 
-  return v3;
+  return unitTypeValue;
 }
 
 - (NSUnitLength)distanceUnit
 {
   objc_opt_class();
-  v3 = [(CAFDisplayUnits *)self distanceUnitRawValueCharacteristic];
-  v4 = [v3 unitValue];
-  if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
+  distanceUnitRawValueCharacteristic = [(CAFDisplayUnits *)self distanceUnitRawValueCharacteristic];
+  unitValue = [distanceUnitRawValueCharacteristic unitValue];
+  if (unitValue && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v4;
+    v5 = unitValue;
   }
 
   else
@@ -178,13 +178,13 @@
 - (CAFUnitTypeCharacteristic)temperatureUnitRawValueCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000046000005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000046000005"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000046000005"];
@@ -203,20 +203,20 @@
 
 - (unsigned)temperatureUnitRawValue
 {
-  v2 = [(CAFDisplayUnits *)self temperatureUnitRawValueCharacteristic];
-  v3 = [v2 unitTypeValue];
+  temperatureUnitRawValueCharacteristic = [(CAFDisplayUnits *)self temperatureUnitRawValueCharacteristic];
+  unitTypeValue = [temperatureUnitRawValueCharacteristic unitTypeValue];
 
-  return v3;
+  return unitTypeValue;
 }
 
 - (NSUnitTemperature)temperatureUnit
 {
   objc_opt_class();
-  v3 = [(CAFDisplayUnits *)self temperatureUnitRawValueCharacteristic];
-  v4 = [v3 unitValue];
-  if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
+  temperatureUnitRawValueCharacteristic = [(CAFDisplayUnits *)self temperatureUnitRawValueCharacteristic];
+  unitValue = [temperatureUnitRawValueCharacteristic unitValue];
+  if (unitValue && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v4;
+    v5 = unitValue;
   }
 
   else
@@ -230,13 +230,13 @@
 - (CAFUnitTypeCharacteristic)energyEfficiencyUnitRawValueCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000046000010"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000046000010"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000046000010"];
@@ -255,20 +255,20 @@
 
 - (unsigned)energyEfficiencyUnitRawValue
 {
-  v2 = [(CAFDisplayUnits *)self energyEfficiencyUnitRawValueCharacteristic];
-  v3 = [v2 unitTypeValue];
+  energyEfficiencyUnitRawValueCharacteristic = [(CAFDisplayUnits *)self energyEfficiencyUnitRawValueCharacteristic];
+  unitTypeValue = [energyEfficiencyUnitRawValueCharacteristic unitTypeValue];
 
-  return v3;
+  return unitTypeValue;
 }
 
 - (CAFUnitEnergyEfficiency)energyEfficiencyUnit
 {
   objc_opt_class();
-  v3 = [(CAFDisplayUnits *)self energyEfficiencyUnitRawValueCharacteristic];
-  v4 = [v3 unitValue];
-  if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
+  energyEfficiencyUnitRawValueCharacteristic = [(CAFDisplayUnits *)self energyEfficiencyUnitRawValueCharacteristic];
+  unitValue = [energyEfficiencyUnitRawValueCharacteristic unitValue];
+  if (unitValue && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v4;
+    v5 = unitValue;
   }
 
   else
@@ -281,8 +281,8 @@
 
 - (BOOL)hasEnergyEfficiencyUnitRawValue
 {
-  v2 = [(CAFDisplayUnits *)self energyEfficiencyUnitRawValueCharacteristic];
-  v3 = v2 != 0;
+  energyEfficiencyUnitRawValueCharacteristic = [(CAFDisplayUnits *)self energyEfficiencyUnitRawValueCharacteristic];
+  v3 = energyEfficiencyUnitRawValueCharacteristic != 0;
 
   return v3;
 }
@@ -290,13 +290,13 @@
 - (CAFUnitTypeCharacteristic)fuelEfficiencyUnitRawValueCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000046000011"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000046000011"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000046000011"];
@@ -315,20 +315,20 @@
 
 - (unsigned)fuelEfficiencyUnitRawValue
 {
-  v2 = [(CAFDisplayUnits *)self fuelEfficiencyUnitRawValueCharacteristic];
-  v3 = [v2 unitTypeValue];
+  fuelEfficiencyUnitRawValueCharacteristic = [(CAFDisplayUnits *)self fuelEfficiencyUnitRawValueCharacteristic];
+  unitTypeValue = [fuelEfficiencyUnitRawValueCharacteristic unitTypeValue];
 
-  return v3;
+  return unitTypeValue;
 }
 
 - (NSUnitFuelEfficiency)fuelEfficiencyUnit
 {
   objc_opt_class();
-  v3 = [(CAFDisplayUnits *)self fuelEfficiencyUnitRawValueCharacteristic];
-  v4 = [v3 unitValue];
-  if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
+  fuelEfficiencyUnitRawValueCharacteristic = [(CAFDisplayUnits *)self fuelEfficiencyUnitRawValueCharacteristic];
+  unitValue = [fuelEfficiencyUnitRawValueCharacteristic unitValue];
+  if (unitValue && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v4;
+    v5 = unitValue;
   }
 
   else
@@ -341,8 +341,8 @@
 
 - (BOOL)hasFuelEfficiencyUnitRawValue
 {
-  v2 = [(CAFDisplayUnits *)self fuelEfficiencyUnitRawValueCharacteristic];
-  v3 = v2 != 0;
+  fuelEfficiencyUnitRawValueCharacteristic = [(CAFDisplayUnits *)self fuelEfficiencyUnitRawValueCharacteristic];
+  v3 = fuelEfficiencyUnitRawValueCharacteristic != 0;
 
   return v3;
 }
@@ -350,13 +350,13 @@
 - (BOOL)registeredForSpeedUnit
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000046000001"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000046000001"];
 
   return v10;
 }
@@ -364,13 +364,13 @@
 - (BOOL)registeredForDistanceUnit
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000046000004"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000046000004"];
 
   return v10;
 }
@@ -378,13 +378,13 @@
 - (BOOL)registeredForTemperatureUnit
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000046000005"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000046000005"];
 
   return v10;
 }
@@ -392,13 +392,13 @@
 - (BOOL)registeredForEnergyEfficiencyUnit
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000046000010"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000046000010"];
 
   return v10;
 }
@@ -406,13 +406,13 @@
 - (BOOL)registeredForFuelEfficiencyUnit
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000046000011"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000046000011"];
 
   return v10;
 }

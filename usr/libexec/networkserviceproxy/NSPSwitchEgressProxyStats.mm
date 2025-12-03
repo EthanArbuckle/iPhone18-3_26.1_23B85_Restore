@@ -6,9 +6,9 @@
 
 - (id)analyticsDict
 {
-  v3 = [(NSPSwitchEgressProxyStats *)self tierType];
+  tierType = [(NSPSwitchEgressProxyStats *)self tierType];
 
-  if (!v3)
+  if (!tierType)
   {
     v11 = nplog_obj();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -24,16 +24,16 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v4 = [(NSPSwitchEgressProxyStats *)self vendor];
+  vendor = [(NSPSwitchEgressProxyStats *)self vendor];
 
-  if (v4)
+  if (vendor)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
-    v6 = [(NSPSwitchEgressProxyStats *)self tierType];
-    [v5 setObject:v6 forKeyedSubscript:@"TierType"];
+    tierType2 = [(NSPSwitchEgressProxyStats *)self tierType];
+    [v5 setObject:tierType2 forKeyedSubscript:@"TierType"];
 
-    v7 = [(NSPSwitchEgressProxyStats *)self vendor];
-    [v5 setObject:v7 forKeyedSubscript:@"Vendor"];
+    vendor2 = [(NSPSwitchEgressProxyStats *)self vendor];
+    [v5 setObject:vendor2 forKeyedSubscript:@"Vendor"];
 
     v8 = [NSNumber numberWithBool:[(NSPSwitchEgressProxyStats *)self primaryProxy]];
     [v5 setObject:v8 forKeyedSubscript:@"PrimaryProxy"];

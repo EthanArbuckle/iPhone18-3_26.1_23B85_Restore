@@ -1,18 +1,18 @@
 @interface TranslationResultItem
-- (TranslationResultItem)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (TranslationResultItem)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation TranslationResultItem
 
-- (TranslationResultItem)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (TranslationResultItem)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     sub_269424118();
   }
 
   sub_269424118();
-  if (a5)
+  if (hint)
   {
     sub_269424118();
   }

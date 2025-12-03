@@ -1,25 +1,25 @@
 @interface ISLivePhotoSettleBehavior
 - (void)_didFinish;
-- (void)settle:(BOOL)a3;
+- (void)settle:(BOOL)settle;
 @end
 
 @implementation ISLivePhotoSettleBehavior
 
 - (void)_didFinish
 {
-  v3 = [(ISBehavior *)self delegate];
+  delegate = [(ISBehavior *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 livePhotoSettleBehaviorDidFinish:self];
+    [delegate livePhotoSettleBehaviorDidFinish:self];
   }
 }
 
-- (void)settle:(BOOL)a3
+- (void)settle:(BOOL)settle
 {
-  v3 = a3;
+  settleCopy = settle;
   [(ISBehavior *)self setVideoPlayRate:0.0];
   v5 = [ISPlayerState outputInfoWithPhotoBlurRadius:@"SETTLE" videoAlpha:0.0 videoBlurRadius:0.0 label:0.0];
-  if (v3)
+  if (settleCopy)
   {
     v6 = objc_alloc_init(ISPlayerOutputTransitionOptions);
     [(ISPlayerOutputTransitionOptions *)v6 setTransitionDuration:0.3];

@@ -1,67 +1,67 @@
 @interface BKPreviewAudiobookProducer
-- (void)_previewAudiobookForIdentifier:(id)a3 completion:(id)a4;
-- (void)audiobookForIdentifier:(id)a3 completion:(id)a4;
+- (void)_previewAudiobookForIdentifier:(id)identifier completion:(id)completion;
+- (void)audiobookForIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation BKPreviewAudiobookProducer
 
-- (void)audiobookForIdentifier:(id)a3 completion:(id)a4
+- (void)audiobookForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   objc_opt_class();
   v9 = BUDynamicCast();
 
   if (v9)
   {
-    [(BKPreviewAudiobookProducer *)self _previewAudiobookForIdentifier:v9 completion:v6];
+    [(BKPreviewAudiobookProducer *)self _previewAudiobookForIdentifier:v9 completion:completionCopy];
   }
 
   else
   {
-    v8 = objc_retainBlock(v6);
+    v8 = objc_retainBlock(completionCopy);
 
     if (v8)
     {
       (*(v8 + 2))(v8, 0, 0);
     }
 
-    v6 = v8;
+    completionCopy = v8;
   }
 }
 
-- (void)_previewAudiobookForIdentifier:(id)a3 completion:(id)a4
+- (void)_previewAudiobookForIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v7 = [BKAVAudiobook alloc];
-  v8 = [v6 storeID];
-  v9 = [(BKAVAudiobook *)v7 initWithAssetID:v8];
+  storeID = [identifierCopy storeID];
+  v9 = [(BKAVAudiobook *)v7 initWithAssetID:storeID];
 
-  v10 = [v6 title];
-  [(BKAVAudiobook *)v9 setTitle:v10];
+  title = [identifierCopy title];
+  [(BKAVAudiobook *)v9 setTitle:title];
 
-  v11 = [v6 author];
-  [(BKAVAudiobook *)v9 setAuthor:v11];
+  author = [identifierCopy author];
+  [(BKAVAudiobook *)v9 setAuthor:author];
 
   [(BKAVAudiobook *)v9 setAudiobookPreview:1];
   v12 = [BKAVAudiobookTrack alloc];
-  v13 = [v6 previewURL];
-  v14 = [(BKAVAudiobookTrack *)v12 initWithAssetURL:v13];
+  previewURL = [identifierCopy previewURL];
+  v14 = [(BKAVAudiobookTrack *)v12 initWithAssetURL:previewURL];
 
-  v15 = [v6 title];
-  [(BKAVAudiobookTrack *)v14 setTitle:v15];
+  title2 = [identifierCopy title];
+  [(BKAVAudiobookTrack *)v14 setTitle:title2];
 
-  v16 = [v6 author];
-  [(BKAVAudiobookTrack *)v14 setAuthor:v16];
+  author2 = [identifierCopy author];
+  [(BKAVAudiobookTrack *)v14 setAuthor:author2];
 
-  [v6 duration];
+  [identifierCopy duration];
   [(BKAVAudiobookTrack *)v14 setDuration:?];
   [(BKAVAudiobookTrack *)v14 setAudiobook:v9];
   v17 = objc_opt_new();
-  [v6 duration];
+  [identifierCopy duration];
   [v17 setDuration:?];
-  [v6 duration];
+  [identifierCopy duration];
   v19 = v18;
 
   CMTimeMakeWithSeconds(&duration.start, v19, 1000000);
@@ -84,7 +84,7 @@
   [v17 setTrack:v14];
   [(BKAVAudiobookTrack *)v14 addChapter:v17];
   [(BKAVAudiobook *)v9 addTrack:v14];
-  v20 = objc_retainBlock(v5);
+  v20 = objc_retainBlock(completionCopy);
 
   if (v20)
   {

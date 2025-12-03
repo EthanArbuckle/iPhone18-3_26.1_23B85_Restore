@@ -1,14 +1,14 @@
 @interface SKGCurrency
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation SKGCurrency
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -18,13 +18,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SKGCurrency *)self amount];
-      v6 = [(SKGCurrency *)v4 amount];
-      if ([v5 isEqualToString:v6] && (-[SKGCurrency value](self, "value"), v8 = v7, -[SKGCurrency value](v4, "value"), v8 == v9) && (v10 = -[SKGCurrency code](self, "code"), v10 == -[SKGCurrency code](v4, "code")))
+      amount = [(SKGCurrency *)self amount];
+      amount2 = [(SKGCurrency *)equalCopy amount];
+      if ([amount isEqualToString:amount2] && (-[SKGCurrency value](self, "value"), v8 = v7, -[SKGCurrency value](equalCopy, "value"), v8 == v9) && (v10 = -[SKGCurrency code](self, "code"), v10 == -[SKGCurrency code](equalCopy, "code")))
       {
         [(SKGEntity *)self score];
         v12 = v11;
-        [(SKGEntity *)v4 score];
+        [(SKGEntity *)equalCopy score];
         v14 = v12 == v13;
       }
 
@@ -47,9 +47,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SKGCurrency *)self amount];
+  amount = [(SKGCurrency *)self amount];
   [(SKGEntity *)self score];
-  v7 = [v3 stringWithFormat:@"<%@: %@ %f", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"<%@: %@ %f", v4, amount, v6];
 
   return v7;
 }

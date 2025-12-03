@@ -1,20 +1,20 @@
 @interface PSBiometricPINController
 - (id)stringsBundle;
-- (void)setPane:(id)a3;
+- (void)setPane:(id)pane;
 @end
 
 @implementation PSBiometricPINController
 
-- (void)setPane:(id)a3
+- (void)setPane:(id)pane
 {
   v6.receiver = self;
   v6.super_class = PSBiometricPINController;
-  [(DevicePINController *)&v6 setPane:a3];
+  [(DevicePINController *)&v6 setPane:pane];
   if (![(DevicePINController *)self mode])
   {
-    v4 = [(PSBiometricPINController *)self navigationItem];
+    navigationItem = [(PSBiometricPINController *)self navigationItem];
     v5 = PABS_LocalizedStringForPasscodeLock(@"CREATE_PASSCODE");
-    [v4 setTitle:v5];
+    [navigationItem setTitle:v5];
   }
 }
 

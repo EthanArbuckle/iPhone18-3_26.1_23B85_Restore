@@ -1,12 +1,12 @@
 @interface NSConcreteData
-- (NSConcreteData)initWithBytes:(void *)a3 length:(unint64_t)a4 copy:(BOOL)a5 deallocator:(id)a6;
-- (NSConcreteData)initWithBytes:(void *)a3 length:(unint64_t)a4 copy:(BOOL)a5 freeWhenDone:(BOOL)a6 bytesAreVM:(BOOL)a7;
+- (NSConcreteData)initWithBytes:(void *)bytes length:(unint64_t)length copy:(BOOL)copy deallocator:(id)deallocator;
+- (NSConcreteData)initWithBytes:(void *)bytes length:(unint64_t)length copy:(BOOL)copy freeWhenDone:(BOOL)done bytesAreVM:(BOOL)m;
 - (id)_createDispatchData;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)getBytes:(void *)a3;
-- (void)getBytes:(void *)a3 length:(unint64_t)a4;
-- (void)getBytes:(void *)a3 range:(_NSRange)a4;
+- (void)getBytes:(void *)bytes;
+- (void)getBytes:(void *)bytes length:(unint64_t)length;
+- (void)getBytes:(void *)bytes range:(_NSRange)range;
 @end
 
 @implementation NSConcreteData
@@ -39,7 +39,7 @@
   return _NSDataCreateDispatchDataFromData(self, v3);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7 = *MEMORY[0x1E69E9840];
   if ([(NSConcreteData *)self _copyWillRetain])
@@ -52,13 +52,13 @@
   {
     v6.receiver = self;
     v6.super_class = NSConcreteData;
-    return [(NSData *)&v6 copyWithZone:a3];
+    return [(NSData *)&v6 copyWithZone:zone];
   }
 }
 
-- (void)getBytes:(void *)a3
+- (void)getBytes:(void *)bytes
 {
-  v3 = a3;
+  bytesCopy = bytes;
   bytes = self->_bytes;
   length = self->_length;
   if (length < 0x80000)
@@ -73,15 +73,15 @@ LABEL_5:
   }
 
   v6 = MEMORY[0x1E69E9AC8];
-  if (((*MEMORY[0x1E69E9AC8] - 1) & (bytes | a3)) == 0)
+  if (((*MEMORY[0x1E69E9AC8] - 1) & (bytes | bytes)) == 0)
   {
     malloc_default_zone();
     if (!malloc_zone_claimed_address())
     {
       v7 = length & -*v6;
-      NSCopyMemoryPages(bytes, v3, v7);
+      NSCopyMemoryPages(bytes, bytesCopy, v7);
       bytes += v7;
-      v3 += v7;
+      bytesCopy += v7;
       length -= v7;
       goto LABEL_5;
     }
@@ -89,15 +89,15 @@ LABEL_5:
 
 LABEL_6:
 
-  memmove(v3, bytes, length);
+  memmove(bytesCopy, bytes, length);
 }
 
-- (void)getBytes:(void *)a3 length:(unint64_t)a4
+- (void)getBytes:(void *)bytes length:(unint64_t)length
 {
-  v4 = a3;
-  if (self->_length >= a4)
+  bytesCopy = bytes;
+  if (self->_length >= length)
   {
-    length = a4;
+    length = length;
   }
 
   else
@@ -118,15 +118,15 @@ LABEL_8:
   }
 
   v7 = MEMORY[0x1E69E9AC8];
-  if (((*MEMORY[0x1E69E9AC8] - 1) & (bytes | a3)) == 0)
+  if (((*MEMORY[0x1E69E9AC8] - 1) & (bytes | bytes)) == 0)
   {
     malloc_default_zone();
     if (!malloc_zone_claimed_address())
     {
       v8 = length & -*v7;
-      NSCopyMemoryPages(bytes, v4, v8);
+      NSCopyMemoryPages(bytes, bytesCopy, v8);
       bytes += v8;
-      v4 += v8;
+      bytesCopy += v8;
       length -= v8;
       goto LABEL_8;
     }
@@ -134,18 +134,18 @@ LABEL_8:
 
 LABEL_9:
 
-  memmove(v4, bytes, length);
+  memmove(bytesCopy, bytes, length);
 }
 
-- (void)getBytes:(void *)a3 range:(_NSRange)a4
+- (void)getBytes:(void *)bytes range:(_NSRange)range
 {
-  if (!a4.length)
+  if (!range.length)
   {
     return;
   }
 
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = _CFExecutableLinkedOnOrAfter();
   v10 = self->_length;
   if (!v9)
@@ -202,15 +202,15 @@ LABEL_9:
   }
 
   v16 = MEMORY[0x1E69E9AC8];
-  if (((*MEMORY[0x1E69E9AC8] - 1) & (v15 | a3)) == 0)
+  if (((*MEMORY[0x1E69E9AC8] - 1) & (v15 | bytes)) == 0)
   {
     malloc_default_zone();
     if (!malloc_zone_claimed_address())
     {
       v17 = length & -*v16;
-      NSCopyMemoryPages(v15, a3, v17);
+      NSCopyMemoryPages(v15, bytes, v17);
       v15 += v17;
-      a3 = a3 + v17;
+      bytes = bytes + v17;
       length -= v17;
 LABEL_13:
       if (!length)
@@ -220,43 +220,43 @@ LABEL_13:
     }
   }
 
-  memmove(a3, v15, length);
+  memmove(bytes, v15, length);
 }
 
-- (NSConcreteData)initWithBytes:(void *)a3 length:(unint64_t)a4 copy:(BOOL)a5 deallocator:(id)a6
+- (NSConcreteData)initWithBytes:(void *)bytes length:(unint64_t)length copy:(BOOL)copy deallocator:(id)deallocator
 {
-  v7 = self;
-  if (a4 >= 0x8000000000000001)
+  selfCopy = self;
+  if (length >= 0x8000000000000001)
   {
-    v18 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(self, a2), "length", a4, 0x8000000000000000), 0}];
+    v18 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(self, a2), "length", length, 0x8000000000000000), 0}];
     objc_exception_throw(v18);
   }
 
-  if (!a4)
+  if (!length)
   {
     self->_bytes = 0;
-    if (a6)
+    if (deallocator)
     {
-      (*(a6 + 2))(a6, a3, self->_length);
+      (*(deallocator + 2))(deallocator, bytes, self->_length);
     }
 
     goto LABEL_17;
   }
 
-  if (!a5)
+  if (!copy)
   {
-    self->_bytes = a3;
-    if (a6)
+    self->_bytes = bytes;
+    if (deallocator)
     {
-      self->_deallocator = _Block_copy(a6);
+      self->_deallocator = _Block_copy(deallocator);
     }
 
     goto LABEL_17;
   }
 
   v10 = malloc_default_zone();
-  v11 = malloc_type_zone_malloc(v10, a4, 0xCEBFB2E4uLL);
-  v7->_bytes = v11;
+  v11 = malloc_type_zone_malloc(v10, length, 0xCEBFB2E4uLL);
+  selfCopy->_bytes = v11;
   if (!v11)
   {
 
@@ -264,43 +264,43 @@ LABEL_13:
   }
 
   v12 = v11;
-  if (a4 < 0x80000 || (v13 = MEMORY[0x1E69E9AC8], ((*MEMORY[0x1E69E9AC8] - 1) & (v11 | a3)) != 0) || (malloc_default_zone(), malloc_zone_claimed_address()))
+  if (length < 0x80000 || (v13 = MEMORY[0x1E69E9AC8], ((*MEMORY[0x1E69E9AC8] - 1) & (v11 | bytes)) != 0) || (malloc_default_zone(), malloc_zone_claimed_address()))
   {
-    v14 = a4;
-    v15 = a3;
+    lengthCopy = length;
+    bytesCopy = bytes;
 LABEL_9:
-    memmove(v12, v15, v14);
+    memmove(v12, bytesCopy, lengthCopy);
     goto LABEL_10;
   }
 
-  v17 = -*v13 & a4;
-  NSCopyMemoryPages(a3, v12, v17);
-  v14 = a4 - v17;
-  if (a4 != v17)
+  v17 = -*v13 & length;
+  NSCopyMemoryPages(bytes, v12, v17);
+  lengthCopy = length - v17;
+  if (length != v17)
   {
-    v15 = a3 + v17;
+    bytesCopy = bytes + v17;
     v12 += v17;
     goto LABEL_9;
   }
 
 LABEL_10:
-  v7->_deallocator = _Block_copy(&__block_literal_global_6);
-  if (a6)
+  selfCopy->_deallocator = _Block_copy(&__block_literal_global_6);
+  if (deallocator)
   {
-    (*(a6 + 2))(a6, a3, a4);
+    (*(deallocator + 2))(deallocator, bytes, length);
   }
 
 LABEL_17:
-  v7->_length = a4;
-  return v7;
+  selfCopy->_length = length;
+  return selfCopy;
 }
 
-- (NSConcreteData)initWithBytes:(void *)a3 length:(unint64_t)a4 copy:(BOOL)a5 freeWhenDone:(BOOL)a6 bytesAreVM:(BOOL)a7
+- (NSConcreteData)initWithBytes:(void *)bytes length:(unint64_t)length copy:(BOOL)copy freeWhenDone:(BOOL)done bytesAreVM:(BOOL)m
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = NSConcreteData;
-  return [(NSData *)&v8 initWithBytes:a3 length:a4 copy:a5 freeWhenDone:a6 bytesAreVM:a7];
+  return [(NSData *)&v8 initWithBytes:bytes length:length copy:copy freeWhenDone:done bytesAreVM:m];
 }
 
 @end

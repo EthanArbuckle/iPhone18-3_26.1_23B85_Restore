@@ -1,8 +1,8 @@
 @interface CNObservableContractEnforcement
 + (id)os_log;
 - (void)observerDidComplete;
-- (void)observerDidFailWithError:(id)a3;
-- (void)observerDidReceiveResult:(id)a3;
+- (void)observerDidFailWithError:(id)error;
+- (void)observerDidReceiveResult:(id)result;
 @end
 
 @implementation CNObservableContractEnforcement
@@ -10,40 +10,40 @@
 - (void)observerDidComplete
 {
   v7 = *MEMORY[0x1E69E9840];
-  *a1;
+  *self;
   OUTLINED_FUNCTION_3_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observerDidReceiveResult:(id)a3
+- (void)observerDidReceiveResult:(id)result
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   if (self->_state)
   {
-    v5 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [CNObservableContractEnforcement observerDidReceiveResult:?];
     }
 
-    v6 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
     {
       [CNObservableContractEnforcement observerDidReceiveResult:];
     }
 
-    v7 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    os_log3 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log3, OS_LOG_TYPE_ERROR))
     {
       [CNObservableContractEnforcement observerDidReceiveResult:?];
     }
 
     v8 = CNObserverProtocolExceptionNullMarker[0];
-    if (v4)
+    if (resultCopy)
     {
-      v8 = v4;
+      v8 = resultCopy;
     }
 
     v15[0] = v8;
@@ -55,16 +55,16 @@
     CNObserverThrowProtocolExceptionWithReason(@"Result after termination", v10);
   }
 
-  if (!v4)
+  if (!resultCopy)
   {
-    v11 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    os_log4 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log4, OS_LOG_TYPE_ERROR))
     {
       [CNObservableContractEnforcement observerDidReceiveResult:];
     }
 
-    v12 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    os_log5 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log5, OS_LOG_TYPE_ERROR))
     {
       [CNObservableContractEnforcement observerDidReceiveResult:];
     }
@@ -75,40 +75,40 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observerDidFailWithError:(id)a3
+- (void)observerDidFailWithError:(id)error
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self->_state)
   {
-    v5 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [CNObservableContractEnforcement observerDidFailWithError:?];
     }
 
-    v6 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
     {
       [CNObservableContractEnforcement observerDidFailWithError:];
     }
 
-    v7 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    os_log3 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log3, OS_LOG_TYPE_ERROR))
     {
       [CNObservableContractEnforcement observerDidReceiveResult:];
     }
 
-    v8 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    os_log4 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log4, OS_LOG_TYPE_ERROR))
     {
       [CNObservableContractEnforcement observerDidReceiveResult:?];
     }
 
     v9 = CNObserverProtocolExceptionNullMarker[0];
-    if (v4)
+    if (errorCopy)
     {
-      v9 = v4;
+      v9 = errorCopy;
     }
 
     v18[0] = v9;
@@ -125,16 +125,16 @@
   terminationContext = self->_terminationContext;
   self->_terminationContext = v12;
 
-  if (!v4)
+  if (!errorCopy)
   {
-    v14 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    os_log5 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log5, OS_LOG_TYPE_ERROR))
     {
       [CNObservableContractEnforcement observerDidFailWithError:];
     }
 
-    v15 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    os_log6 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log6, OS_LOG_TYPE_ERROR))
     {
       [CNObservableContractEnforcement observerDidReceiveResult:];
     }

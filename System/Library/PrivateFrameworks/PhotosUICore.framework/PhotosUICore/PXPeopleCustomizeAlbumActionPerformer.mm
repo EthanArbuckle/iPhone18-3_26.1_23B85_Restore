@@ -1,18 +1,18 @@
 @interface PXPeopleCustomizeAlbumActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)createActivityWithTitle:(id)a3 actionType:(id)a4 actionSystemImageName:(id)a5;
-+ (id)localizedTitleForPerson:(id)a3;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
-+ (id)makeCustomMenuElementForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInput:(id)a5 handler:(id)a6;
-+ (id)systemImageNameForAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)systemImageNameForPerson:(id)a3;
-- (PXPeopleCustomizeAlbumActionPerformer)initWithActionType:(id)a3 assetCollectionReference:(id)a4 parameters:(id)a5;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)createActivityWithTitle:(id)title actionType:(id)type actionSystemImageName:(id)name;
++ (id)localizedTitleForPerson:(id)person;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)makeCustomMenuElementForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInput:(id)input handler:(id)handler;
++ (id)systemImageNameForAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)systemImageNameForPerson:(id)person;
+- (PXPeopleCustomizeAlbumActionPerformer)initWithActionType:(id)type assetCollectionReference:(id)reference parameters:(id)parameters;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPeopleCustomizeAlbumActionPerformer
 
-+ (id)localizedTitleForPerson:(id)a3
++ (id)localizedTitleForPerson:(id)person
 {
   sub_1A3C38BD4();
   v3 = sub_1A524C634();
@@ -20,27 +20,27 @@
   return v3;
 }
 
-+ (id)systemImageNameForPerson:(id)a3
++ (id)systemImageNameForPerson:(id)person
 {
   v3 = sub_1A524C634();
 
   return v3;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  if (!a4)
+  if (!inputs)
   {
     return 0;
   }
 
-  if ([a4 respondsToSelector_])
+  if ([inputs respondsToSelector_])
   {
-    v4 = [swift_unknownObjectRetain() people];
-    if (v4)
+    people = [swift_unknownObjectRetain() people];
+    if (people)
     {
-      v5 = v4;
-      v6 = [v4 count];
+      v5 = people;
+      v6 = [people count];
 
       swift_unknownObjectRelease();
       return v6 == 1;
@@ -52,7 +52,7 @@
   return 0;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
   sub_1A3C38BD4();
   v5 = sub_1A524C634();
@@ -60,27 +60,27 @@
   return v5;
 }
 
-+ (id)systemImageNameForAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (id)systemImageNameForAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
   v4 = sub_1A524C634();
 
   return v4;
 }
 
-+ (id)makeCustomMenuElementForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInput:(id)a5 handler:(id)a6
++ (id)makeCustomMenuElementForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInput:(id)input handler:(id)handler
 {
-  v7 = _Block_copy(a6);
+  v7 = _Block_copy(handler);
   *(swift_allocObject() + 16) = v7;
-  v8 = a4;
+  referenceCopy = reference;
   swift_unknownObjectRetain();
   sub_1A4677A7C();
 }
 
-+ (id)createActivityWithTitle:(id)a3 actionType:(id)a4 actionSystemImageName:(id)a5
++ (id)createActivityWithTitle:(id)title actionType:(id)type actionSystemImageName:(id)name
 {
   sub_1A524C674();
   sub_1A524C674();
-  if (a5)
+  if (name)
   {
     sub_1A524C674();
     v6 = objc_allocWithZone(PXActivity);
@@ -102,23 +102,23 @@
 
 - (void)performUserInteractionTask
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A4677490();
 }
 
-- (PXPeopleCustomizeAlbumActionPerformer)initWithActionType:(id)a3 assetCollectionReference:(id)a4 parameters:(id)a5
+- (PXPeopleCustomizeAlbumActionPerformer)initWithActionType:(id)type assetCollectionReference:(id)reference parameters:(id)parameters
 {
   ObjectType = swift_getObjectType();
   type metadata accessor for PXActionParameterKey();
   sub_1A4678638(&unk_1EB1356B0, type metadata accessor for PXActionParameterKey);
   sub_1A524C3E4();
-  v9 = a3;
-  v10 = a4;
+  typeCopy = type;
+  referenceCopy = reference;
   v11 = sub_1A524C3D4();
 
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v12 = [(PXAssetCollectionActionPerformer *)&v14 initWithActionType:v9 assetCollectionReference:v10 parameters:v11];
+  v12 = [(PXAssetCollectionActionPerformer *)&v14 initWithActionType:typeCopy assetCollectionReference:referenceCopy parameters:v11];
 
   return v12;
 }

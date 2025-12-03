@@ -1,30 +1,30 @@
 @interface RAPLookAroundDetailsEditorViewController
-- (BOOL)_shouldShowPrivacyFooterForSection:(int64_t)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (RAPLookAroundDetailsEditorViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightforFooterInSection:(int64_t)a4;
+- (BOOL)_shouldShowPrivacyFooterForSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (RAPLookAroundDetailsEditorViewController)initWithReport:(id)report question:(id)question completion:(id)completion;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightforFooterInSection:(int64_t)section;
 - (id)_sendButtonItem;
 - (id)_userInfoCell;
 - (id)commentHeaderView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 resolveHomeImageryCellForIndexPath:(id)a4;
-- (id)tableView:(id)a3 resolveHomeImageryCellWithNoAccountForIndexPath:(id)a4;
-- (id)tableView:(id)a3 resolveSimpleFeedbackCellForIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view resolveHomeImageryCellForIndexPath:(id)path;
+- (id)tableView:(id)view resolveHomeImageryCellWithNoAccountForIndexPath:(id)path;
+- (id)tableView:(id)view resolveSimpleFeedbackCellForIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (void)_presentPrivacyView;
 - (void)_sendRAP;
 - (void)_setupTableView;
-- (void)addressTableViewCell:(id)a3 updatedAddress:(id)a4;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
-- (void)rapSearchAutocompleteViewController:(id)a3 finishedPickingAutocompleteResult:(id)a4 isAutocompleteResult:(BOOL)a5;
-- (void)userTappedOnAddressTableViewCell:(id)a3;
-- (void)valueForCorrectableItemKind:(int64_t)a3 changedTo:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)addressTableViewCell:(id)cell updatedAddress:(id)address;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
+- (void)rapSearchAutocompleteViewController:(id)controller finishedPickingAutocompleteResult:(id)result isAutocompleteResult:(BOOL)autocompleteResult;
+- (void)userTappedOnAddressTableViewCell:(id)cell;
+- (void)valueForCorrectableItemKind:(int64_t)kind changedTo:(id)to;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -57,27 +57,27 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 resolveSimpleFeedbackCellForIndexPath:(id)a4
+- (id)tableView:(id)view resolveSimpleFeedbackCellForIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (!self->_account)
   {
     commentCell = self->_commentCell;
     if (!commentCell)
     {
-      v9 = [v6 dequeueReusableCellWithIdentifier:@"RAPLookAroundCommentTableViewCell" forIndexPath:v7];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:@"RAPLookAroundCommentTableViewCell" forIndexPath:pathCopy];
       objc_storeStrong(&self->_commentCell, v9);
-      v14 = [(RAPLookAroundQuestion *)self->_question localizedDescription];
-      [(RAPReportComposerCommentTableViewCell *)self->_commentCell setPlaceholderText:v14];
+      localizedDescription = [(RAPLookAroundQuestion *)self->_question localizedDescription];
+      [(RAPReportComposerCommentTableViewCell *)self->_commentCell setPlaceholderText:localizedDescription];
 
-      v15 = [(RAPLookAroundQuestion *)self->_question commentQuestion];
+      commentQuestion = [(RAPLookAroundQuestion *)self->_question commentQuestion];
       objc_initWeak(&location, self);
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = sub_1009440C4;
       v19[3] = &unk_101636260;
-      v12 = v15;
+      v12 = commentQuestion;
       v20 = v12;
       objc_copyWeak(&v21, &location);
       [(RAPReportComposerCommentTableViewCell *)self->_commentCell setTextDidChange:v19];
@@ -87,27 +87,27 @@
     }
 
 LABEL_9:
-    v16 = commentCell;
+    _userInfoCell = commentCell;
     goto LABEL_10;
   }
 
-  if ((MapsFeature_IsEnabled_RAPCommunityID() & 1) != 0 || [v7 section])
+  if ((MapsFeature_IsEnabled_RAPCommunityID() & 1) != 0 || [pathCopy section])
   {
     commentCell = self->_commentCell;
     if (!commentCell)
     {
-      v9 = [v6 dequeueReusableCellWithIdentifier:@"RAPLookAroundCommentTableViewCell" forIndexPath:v7];
+      v9 = [viewCopy dequeueReusableCellWithIdentifier:@"RAPLookAroundCommentTableViewCell" forIndexPath:pathCopy];
       objc_storeStrong(&self->_commentCell, v9);
-      v10 = [(RAPLookAroundQuestion *)self->_question localizedDescription];
-      [(RAPReportComposerCommentTableViewCell *)self->_commentCell setPlaceholderText:v10];
+      localizedDescription2 = [(RAPLookAroundQuestion *)self->_question localizedDescription];
+      [(RAPReportComposerCommentTableViewCell *)self->_commentCell setPlaceholderText:localizedDescription2];
 
-      v11 = [(RAPLookAroundQuestion *)self->_question commentQuestion];
+      commentQuestion2 = [(RAPLookAroundQuestion *)self->_question commentQuestion];
       objc_initWeak(&location, self);
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_100944058;
       v22[3] = &unk_101636260;
-      v12 = v11;
+      v12 = commentQuestion2;
       v23 = v12;
       objc_copyWeak(&v24, &location);
       [(RAPReportComposerCommentTableViewCell *)self->_commentCell setTextDidChange:v22];
@@ -123,27 +123,27 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v16 = [(RAPLookAroundDetailsEditorViewController *)self _userInfoCell];
+  _userInfoCell = [(RAPLookAroundDetailsEditorViewController *)self _userInfoCell];
 LABEL_10:
-  v17 = v16;
+  v17 = _userInfoCell;
 
   return v17;
 }
 
-- (id)tableView:(id)a3 resolveHomeImageryCellWithNoAccountForIndexPath:(id)a4
+- (id)tableView:(id)view resolveHomeImageryCellWithNoAccountForIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"RAPLookAroundEmailTableViewCell" forIndexPath:v7];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"RAPLookAroundEmailTableViewCell" forIndexPath:pathCopy];
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"Email Address [Report a Problem]" value:@"localized string not found" table:0];
     [(RAPMultilineAddressLabelTableViewCell *)v8 setPlaceholder:v10];
 
-    v11 = [(RAPLookAroundQuestion *)self->_question emailAddressCorrectableString];
-    v12 = [v11 value];
-    [(RAPMultilineAddressLabelTableViewCell *)v8 setValue:v12];
+    emailAddressCorrectableString = [(RAPLookAroundQuestion *)self->_question emailAddressCorrectableString];
+    value = [emailAddressCorrectableString value];
+    [(RAPMultilineAddressLabelTableViewCell *)v8 setValue:value];
 
     [(RAPMultilineAddressLabelTableViewCell *)v8 setPreferredKeyboardType:7];
     [(RAPMultilineAddressLabelTableViewCell *)v8 setAccessibilityIdentifier:@"RAPLookAroundEmailCell"];
@@ -155,7 +155,7 @@ LABEL_10:
     addressCell = self->_addressCell;
     if (!addressCell)
     {
-      v14 = [v6 dequeueReusableCellWithIdentifier:@"RAPAddressTableViewCell" forIndexPath:v7];
+      v14 = [viewCopy dequeueReusableCellWithIdentifier:@"RAPAddressTableViewCell" forIndexPath:pathCopy];
       v15 = self->_addressCell;
       self->_addressCell = v14;
       v16 = v14;
@@ -166,8 +166,8 @@ LABEL_10:
 
       [(RAPMultilineAddressLabelTableViewCell *)self->_addressCell setEditableAndTappable:1];
       [(RAPMultilineAddressLabelTableViewCell *)self->_addressCell setAccessibilityIdentifier:@"RAPLookAroundAddressCell"];
-      v18 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-      [(RAPMultilineAddressLabelTableViewCell *)self->_addressCell setParentTableView:v18];
+      tableView = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+      [(RAPMultilineAddressLabelTableViewCell *)self->_addressCell setParentTableView:tableView];
 
       addressCell = self->_addressCell;
     }
@@ -178,22 +178,22 @@ LABEL_10:
   return v8;
 }
 
-- (id)tableView:(id)a3 resolveHomeImageryCellForIndexPath:(id)a4
+- (id)tableView:(id)view resolveHomeImageryCellForIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
   if (!self->_account)
   {
-    v15 = [(RAPLookAroundDetailsEditorViewController *)self tableView:v6 resolveHomeImageryCellWithNoAccountForIndexPath:v7];
+    _userInfoCell = [(RAPLookAroundDetailsEditorViewController *)self tableView:viewCopy resolveHomeImageryCellWithNoAccountForIndexPath:pathCopy];
 LABEL_9:
-    v16 = v15;
+    v16 = _userInfoCell;
     goto LABEL_10;
   }
 
-  if (![v7 section])
+  if (![pathCopy section])
   {
-    v15 = [(RAPLookAroundDetailsEditorViewController *)self _userInfoCell];
+    _userInfoCell = [(RAPLookAroundDetailsEditorViewController *)self _userInfoCell];
     goto LABEL_9;
   }
 
@@ -202,7 +202,7 @@ LABEL_9:
     addressCell = self->_addressCell;
     if (!addressCell)
     {
-      v10 = [v6 dequeueReusableCellWithIdentifier:@"RAPAddressTableViewCell" forIndexPath:v8];
+      v10 = [viewCopy dequeueReusableCellWithIdentifier:@"RAPAddressTableViewCell" forIndexPath:v8];
       v11 = self->_addressCell;
       self->_addressCell = v10;
       v12 = v10;
@@ -213,24 +213,24 @@ LABEL_9:
 
       [(RAPMultilineAddressLabelTableViewCell *)self->_addressCell setEditableAndTappable:1];
       [(RAPMultilineAddressLabelTableViewCell *)self->_addressCell setAccessibilityIdentifier:@"RAPLookAroundAddressCell"];
-      v14 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-      [(RAPMultilineAddressLabelTableViewCell *)self->_addressCell setParentTableView:v14];
+      tableView = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+      [(RAPMultilineAddressLabelTableViewCell *)self->_addressCell setParentTableView:tableView];
 
       addressCell = self->_addressCell;
     }
 
-    v15 = addressCell;
+    _userInfoCell = addressCell;
     goto LABEL_9;
   }
 
-  v16 = [v6 dequeueReusableCellWithIdentifier:@"RAPLookAroundEmailTableViewCell" forIndexPath:v8];
+  v16 = [viewCopy dequeueReusableCellWithIdentifier:@"RAPLookAroundEmailTableViewCell" forIndexPath:v8];
   v18 = +[NSBundle mainBundle];
   v19 = [v18 localizedStringForKey:@"Email Address [Report a Problem]" value:@"localized string not found" table:0];
   [v16 setPlaceholder:v19];
 
-  v20 = [(RAPLookAroundQuestion *)self->_question emailAddressCorrectableString];
-  v21 = [v20 value];
-  [v16 setValue:v21];
+  emailAddressCorrectableString = [(RAPLookAroundQuestion *)self->_question emailAddressCorrectableString];
+  value = [emailAddressCorrectableString value];
+  [v16 setValue:value];
 
   [v16 setPreferredKeyboardType:7];
   [v16 setAccessibilityIdentifier:@"RAPLookAroundEmailCell"];
@@ -240,41 +240,41 @@ LABEL_10:
   return v16;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   question = self->_question;
-  v7 = a4;
-  v8 = a3;
+  pathCopy = path;
+  viewCopy = view;
   if ([(RAPLookAroundQuestion *)question selectedQuestionType]== 5)
   {
-    [(RAPLookAroundDetailsEditorViewController *)self tableView:v8 resolveHomeImageryCellForIndexPath:v7];
+    [(RAPLookAroundDetailsEditorViewController *)self tableView:viewCopy resolveHomeImageryCellForIndexPath:pathCopy];
   }
 
   else
   {
-    [(RAPLookAroundDetailsEditorViewController *)self tableView:v8 resolveSimpleFeedbackCellForIndexPath:v7];
+    [(RAPLookAroundDetailsEditorViewController *)self tableView:viewCopy resolveSimpleFeedbackCellForIndexPath:pathCopy];
   }
   v9 = ;
 
   return v9;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = -[RAPLookAroundQuestion selectedQuestionType](self->_question, "selectedQuestionType") != 5 || !self->_account || [v5 section];
+  pathCopy = path;
+  v6 = -[RAPLookAroundQuestion selectedQuestionType](self->_question, "selectedQuestionType") != 5 || !self->_account || [pathCopy section];
 
   return v6;
 }
 
-- (double)tableView:(id)a3 heightforFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightforFooterInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 2.22507386e-308;
   }
 
-  v7 = [(RAPLookAroundQuestion *)self->_question selectedQuestionType:a3];
+  v7 = [(RAPLookAroundQuestion *)self->_question selectedQuestionType:view];
   result = UITableViewAutomaticDimension;
   if (v7 == 5)
   {
@@ -284,12 +284,12 @@ LABEL_10:
   return result;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v6 = +[TableViewFooterOptions defaultRAPUserContentOptions];
   v7 = [[TableViewSelectableFooterView alloc] initWithReuseIdentifier:@"RAPUserContentTableViewFooterView" options:v6];
   [(TableViewSelectableFooterView *)v7 setTarget:self action:"_presentPrivacyView"];
-  if ([(RAPLookAroundDetailsEditorViewController *)self _shouldShowPrivacyFooterForSection:a4])
+  if ([(RAPLookAroundDetailsEditorViewController *)self _shouldShowPrivacyFooterForSection:section])
   {
     v8 = v7;
   }
@@ -302,7 +302,7 @@ LABEL_10:
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
   account = self->_account;
   if ([(RAPLookAroundQuestion *)self->_question selectedQuestionType]!= 5)
@@ -316,7 +316,7 @@ LABEL_10:
     v6 = 2;
   }
 
-  if (v6 == a4)
+  if (v6 == section)
   {
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"Email Disclosure [Report a Problem]" value:@"localized string not found" table:0];
@@ -331,29 +331,29 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)_shouldShowPrivacyFooterForSection:(int64_t)a3
+- (BOOL)_shouldShowPrivacyFooterForSection:(int64_t)section
 {
   account = self->_account;
-  if (!a3 && account)
+  if (!section && account)
   {
     v6 = 1;
 LABEL_8:
-    v7 = [(RAPLookAroundDetailsEditorViewController *)self _requiresPrivacyElements];
-    if (a3)
+    _requiresPrivacyElements = [(RAPLookAroundDetailsEditorViewController *)self _requiresPrivacyElements];
+    if (section)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = v7;
+      v8 = _requiresPrivacyElements;
     }
 
     goto LABEL_11;
   }
 
   v6 = 0;
-  if (!a3 && !account)
+  if (!section && !account)
   {
     v6 = [(RAPLookAroundQuestion *)self->_question selectedQuestionType]!= 5;
     account = self->_account;
@@ -377,15 +377,15 @@ LABEL_11:
   }
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  if ([(RAPLookAroundDetailsEditorViewController *)self _requiresPrivacyElements:a3])
+  if ([(RAPLookAroundDetailsEditorViewController *)self _requiresPrivacyElements:view])
   {
     return UITableViewAutomaticDimension;
   }
 
-  v6 = [(RAPLookAroundDetailsEditorViewController *)self commentHeaderView];
-  [v6 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+  commentHeaderView = [(RAPLookAroundDetailsEditorViewController *)self commentHeaderView];
+  [commentHeaderView systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
   v5 = v7;
 
   return v5;
@@ -396,8 +396,8 @@ LABEL_11:
   if (!self->_commentHeaderView)
   {
     v3 = [RAPCommentPartHeaderView alloc];
-    v4 = [(RAPLookAroundQuestion *)self->_question commentQuestion];
-    v5 = [(RAPCommentPartHeaderView *)v3 initWithQuestion:v4 reuseIdentifier:@"CommentHeaderView"];
+    commentQuestion = [(RAPLookAroundQuestion *)self->_question commentQuestion];
+    v5 = [(RAPCommentPartHeaderView *)v3 initWithQuestion:commentQuestion reuseIdentifier:@"CommentHeaderView"];
     commentHeaderView = self->_commentHeaderView;
     self->_commentHeaderView = v5;
   }
@@ -411,14 +411,14 @@ LABEL_11:
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(RAPLookAroundQuestion *)self->_question selectedQuestionType]!= 5)
   {
-    if (MapsFeature_IsEnabled_RAPCommunityID() || (account = self->_account, a4) && account || !a4 && !account)
+    if (MapsFeature_IsEnabled_RAPCommunityID() || (account = self->_account, section) && account || !section && !account)
     {
-      v13 = [(RAPLookAroundDetailsEditorViewController *)self commentHeaderView];
+      commentHeaderView = [(RAPLookAroundDetailsEditorViewController *)self commentHeaderView];
       goto LABEL_19;
     }
   }
@@ -437,10 +437,10 @@ LABEL_11:
   if (self->_account)
   {
     v11 = v8;
-    if (a4 != 1)
+    if (section != 1)
     {
       v11 = v10;
-      if (a4 != 2)
+      if (section != 2)
       {
         goto LABEL_17;
       }
@@ -450,9 +450,9 @@ LABEL_11:
   else
   {
     v11 = v8;
-    if (a4)
+    if (section)
     {
-      if (a4 != 1)
+      if (section != 1)
       {
 LABEL_17:
         v14 = &stru_1016631F0;
@@ -465,14 +465,14 @@ LABEL_17:
 
   v14 = v11;
 LABEL_18:
-  v13 = [v6 _maps_groupedHeaderViewWithTitle:v14];
+  commentHeaderView = [viewCopy _maps_groupedHeaderViewWithTitle:v14];
 
 LABEL_19:
 
-  return v13;
+  return commentHeaderView;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_account)
   {
@@ -508,12 +508,12 @@ LABEL_19:
   return v4;
 }
 
-- (void)userTappedOnAddressTableViewCell:(id)a3
+- (void)userTappedOnAddressTableViewCell:(id)cell
 {
-  v4 = [(RAPLookAroundQuestion *)self->_question addressCorrectableString];
-  v5 = [v4 freeformAddress];
-  v6 = [v5 value];
-  v15 = [RAPSearchAutocompleteViewController addressAutocompleteViewControllerWithInitialSearchString:v6];
+  addressCorrectableString = [(RAPLookAroundQuestion *)self->_question addressCorrectableString];
+  freeformAddress = [addressCorrectableString freeformAddress];
+  value = [freeformAddress value];
+  v15 = [RAPSearchAutocompleteViewController addressAutocompleteViewControllerWithInitialSearchString:value];
 
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"Home Address [RAP]" value:@"localized string not found" table:0];
@@ -523,21 +523,21 @@ LABEL_19:
   v9 = [[UINavigationController alloc] initWithRootViewController:v15];
   [v9 setModalPresentationStyle:2];
   [v9 setModalInPresentation:1];
-  v10 = [(RAPLookAroundDetailsEditorViewController *)self navigationController];
-  [v9 setOverrideUserInterfaceStyle:{objc_msgSend(v10, "overrideUserInterfaceStyle")}];
+  navigationController = [(RAPLookAroundDetailsEditorViewController *)self navigationController];
+  [v9 setOverrideUserInterfaceStyle:{objc_msgSend(navigationController, "overrideUserInterfaceStyle")}];
 
   [v9 setAccessibilityIdentifier:@"RAPHomeAddressAutocompleteView"];
-  v11 = [(RAPLookAroundDetailsEditorViewController *)self navigationController];
-  [v15 setOverrideUserInterfaceStyle:{objc_msgSend(v11, "overrideUserInterfaceStyle")}];
+  navigationController2 = [(RAPLookAroundDetailsEditorViewController *)self navigationController];
+  [v15 setOverrideUserInterfaceStyle:{objc_msgSend(navigationController2, "overrideUserInterfaceStyle")}];
 
-  v12 = [(RAPLookAroundDetailsEditorViewController *)self traitCollection];
-  v13 = [v12 userInterfaceIdiom];
+  traitCollection = [(RAPLookAroundDetailsEditorViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v13 == 5)
+  if (userInterfaceIdiom == 5)
   {
     [v15 setOverrideUserInterfaceStyle:1];
-    v14 = [(RAPLookAroundDetailsEditorViewController *)self navigationController];
-    [v14 pushViewController:v15 animated:1];
+    navigationController3 = [(RAPLookAroundDetailsEditorViewController *)self navigationController];
+    [navigationController3 pushViewController:v15 animated:1];
   }
 
   else
@@ -546,57 +546,57 @@ LABEL_19:
   }
 }
 
-- (void)addressTableViewCell:(id)a3 updatedAddress:(id)a4
+- (void)addressTableViewCell:(id)cell updatedAddress:(id)address
 {
-  v7 = [a4 freeformAddress];
-  v5 = [(RAPLookAroundQuestion *)self->_question addressCorrectableString];
-  v6 = [v5 freeformAddress];
-  [v6 setValue:v7];
+  freeformAddress = [address freeformAddress];
+  addressCorrectableString = [(RAPLookAroundQuestion *)self->_question addressCorrectableString];
+  freeformAddress2 = [addressCorrectableString freeformAddress];
+  [freeformAddress2 setValue:freeformAddress];
 }
 
-- (void)rapSearchAutocompleteViewController:(id)a3 finishedPickingAutocompleteResult:(id)a4 isAutocompleteResult:(BOOL)a5
+- (void)rapSearchAutocompleteViewController:(id)controller finishedPickingAutocompleteResult:(id)result isAutocompleteResult:(BOOL)autocompleteResult
 {
-  if (a5)
+  if (autocompleteResult)
   {
     question = self->_question;
-    v7 = a4;
-    v8 = [(RAPLookAroundQuestion *)question addressCorrectableString];
-    v9 = [v7 selectedMapItem];
+    resultCopy = result;
+    addressCorrectableString = [(RAPLookAroundQuestion *)question addressCorrectableString];
+    selectedMapItem = [resultCopy selectedMapItem];
 
-    [v8 updateFreeformAddressFromMapItem:v9];
+    [addressCorrectableString updateFreeformAddressFromMapItem:selectedMapItem];
   }
 
   else
   {
-    v10 = a4;
-    v8 = [v10 searchBarText];
+    resultCopy2 = result;
+    addressCorrectableString = [resultCopy2 searchBarText];
 
-    v9 = [(RAPLookAroundQuestion *)self->_question addressCorrectableString];
-    v11 = [v9 freeformAddress];
-    [v11 setValue:v8];
+    selectedMapItem = [(RAPLookAroundQuestion *)self->_question addressCorrectableString];
+    freeformAddress = [selectedMapItem freeformAddress];
+    [freeformAddress setValue:addressCorrectableString];
   }
 
-  v12 = [(RAPLookAroundQuestion *)self->_question addressCorrectableString];
-  v13 = [v12 freeformAddress];
-  v14 = [v13 value];
-  [(RAPMultilineAddressLabelTableViewCell *)self->_addressCell setFreeformAddress:v14];
+  addressCorrectableString2 = [(RAPLookAroundQuestion *)self->_question addressCorrectableString];
+  freeformAddress2 = [addressCorrectableString2 freeformAddress];
+  value = [freeformAddress2 value];
+  [(RAPMultilineAddressLabelTableViewCell *)self->_addressCell setFreeformAddress:value];
 
-  v15 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v15 _maps_reloadCellHeights];
+  tableView = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView _maps_reloadCellHeights];
 }
 
-- (void)valueForCorrectableItemKind:(int64_t)a3 changedTo:(id)a4
+- (void)valueForCorrectableItemKind:(int64_t)kind changedTo:(id)to
 {
   question = self->_question;
-  v5 = a4;
-  v6 = [(RAPLookAroundQuestion *)question emailAddressCorrectableString];
-  [v6 setValue:v5];
+  toCopy = to;
+  emailAddressCorrectableString = [(RAPLookAroundQuestion *)question emailAddressCorrectableString];
+  [emailAddressCorrectableString setValue:toCopy];
 }
 
 - (void)_sendRAP
 {
-  v3 = [(RAPLookAroundDetailsEditorViewController *)self view];
-  [v3 endEditing:1];
+  view = [(RAPLookAroundDetailsEditorViewController *)self view];
+  [view endEditing:1];
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -606,9 +606,9 @@ LABEL_19:
   v4 = objc_retainBlock(v7);
   if ([(RAPLookAroundQuestion *)self->_question selectedQuestionType]== 5)
   {
-    v5 = [(RAPLookAroundQuestion *)self->_question emailAddressCorrectableString];
-    v6 = [v5 value];
-    [RAPPrivacy performPrivacyCheckWithAppearance:1 userEnteredEmailAddress:v6 completion:v4];
+    emailAddressCorrectableString = [(RAPLookAroundQuestion *)self->_question emailAddressCorrectableString];
+    value = [emailAddressCorrectableString value];
+    [RAPPrivacy performPrivacyCheckWithAppearance:1 userEnteredEmailAddress:value completion:v4];
   }
 
   else if (MapsFeature_IsEnabled_RAPCommunityID())
@@ -640,43 +640,43 @@ LABEL_19:
   return sendButtonItem;
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
   right = UIEdgeInsetsZero.right;
-  v7 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v7 setContentInset:{UIEdgeInsetsZero.top, left, bottom, right}];
+  tableView = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView setContentInset:{UIEdgeInsetsZero.top, left, bottom, right}];
 
-  v8 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v8 setScrollIndicatorInsets:{UIEdgeInsetsZero.top, left, bottom, right}];
+  tableView2 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView2 setScrollIndicatorInsets:{UIEdgeInsetsZero.top, left, bottom, right}];
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKeyedSubscript:UIKeyboardFrameEndUserInfoKey];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  tableView = [(RAPLookAroundDetailsEditorViewController *)self tableView];
   v15 = +[UIScreen mainScreen];
-  v16 = [v15 coordinateSpace];
-  [v14 convertRect:v16 fromCoordinateSpace:{v7, v9, v11, v13}];
+  coordinateSpace = [v15 coordinateSpace];
+  [tableView convertRect:coordinateSpace fromCoordinateSpace:{v7, v9, v11, v13}];
   v18 = v17;
 
-  v19 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v19 setContentInset:{0.0, 0.0, v18, 0.0}];
+  tableView2 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView2 setContentInset:{0.0, 0.0, v18, 0.0}];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = RAPLookAroundDetailsEditorViewController;
-  [(RAPLookAroundDetailsEditorViewController *)&v5 viewDidAppear:a3];
+  [(RAPLookAroundDetailsEditorViewController *)&v5 viewDidAppear:appear];
   commentCell = self->_commentCell;
   if (commentCell)
   {
@@ -686,36 +686,36 @@ LABEL_19:
 
 - (void)_setupTableView
 {
-  v3 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v3 setDataSource:self];
+  tableView = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView setDataSource:self];
 
-  v4 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"RAPAddressTableViewCell"];
+  tableView2 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"RAPAddressTableViewCell"];
 
-  v5 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"RAPLookAroundCommentTableViewCell"];
+  tableView3 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"RAPLookAroundCommentTableViewCell"];
 
-  v6 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v6 registerClass:objc_opt_class() forCellReuseIdentifier:@"RAPLookAroundEmailTableViewCell"];
+  tableView4 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView4 registerClass:objc_opt_class() forCellReuseIdentifier:@"RAPLookAroundEmailTableViewCell"];
 
-  v7 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v7 registerClass:objc_opt_class() forCellReuseIdentifier:@"RAPUserContentTableViewCell"];
+  tableView5 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView5 registerClass:objc_opt_class() forCellReuseIdentifier:@"RAPUserContentTableViewCell"];
 
-  v8 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v8 _maps_initializeRAPAppearance];
+  tableView6 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView6 _maps_initializeRAPAppearance];
 
-  v9 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v9 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"CommentHeaderView"];
+  tableView7 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView7 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"CommentHeaderView"];
 
-  v10 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v10 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"MacRAPTableViewFooterView"];
+  tableView8 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView8 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"MacRAPTableViewFooterView"];
 
-  v11 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v11 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"RAPUserContentTableViewFooterView"];
+  tableView9 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView9 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"RAPUserContentTableViewFooterView"];
 
   v13 = +[UIColor systemBackgroundColor];
-  v12 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v12 setBackgroundColor:v13];
+  tableView10 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView10 setBackgroundColor:v13];
 }
 
 - (void)viewDidLoad
@@ -728,53 +728,53 @@ LABEL_19:
   self->_account = v3;
 
   v39 = objc_alloc_init(NSMutableArray);
-  v5 = [(RAPLookAroundQuestion *)self->_question localizedDetailsNavigationTitle];
-  v6 = [(RAPLookAroundDetailsEditorViewController *)self navigationItem];
-  [v6 setTitle:v5];
+  localizedDetailsNavigationTitle = [(RAPLookAroundQuestion *)self->_question localizedDetailsNavigationTitle];
+  navigationItem = [(RAPLookAroundDetailsEditorViewController *)self navigationItem];
+  [navigationItem setTitle:localizedDetailsNavigationTitle];
 
-  v7 = [(RAPLookAroundDetailsEditorViewController *)self _sendButtonItem];
-  v8 = [(RAPLookAroundDetailsEditorViewController *)self navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  _sendButtonItem = [(RAPLookAroundDetailsEditorViewController *)self _sendButtonItem];
+  navigationItem2 = [(RAPLookAroundDetailsEditorViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:_sendButtonItem];
 
-  v9 = [(RAPLookAroundDetailsEditorViewController *)self view];
-  v10 = [(RAPLookAroundQuestion *)self->_question selectedQuestionType];
-  if (v10 - 1 > 5)
+  view = [(RAPLookAroundDetailsEditorViewController *)self view];
+  selectedQuestionType = [(RAPLookAroundQuestion *)self->_question selectedQuestionType];
+  if (selectedQuestionType - 1 > 5)
   {
     v11 = @"RAPLookAroundCategoryTypeImageQuality";
   }
 
   else
   {
-    v11 = *(&off_101651138 + v10 - 1);
+    v11 = *(&off_101651138 + selectedQuestionType - 1);
   }
 
   v12 = v11;
-  [v9 setAccessibilityIdentifier:v12];
+  [view setAccessibilityIdentifier:v12];
 
-  v13 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v14 = [(RAPLookAroundDetailsEditorViewController *)self view];
-  v15 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  [v14 addSubview:v15];
+  view2 = [(RAPLookAroundDetailsEditorViewController *)self view];
+  tableView2 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  [view2 addSubview:tableView2];
 
-  v38 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  v36 = [v38 leadingAnchor];
-  v37 = [(RAPLookAroundDetailsEditorViewController *)self view];
-  v35 = [v37 leadingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  tableView3 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  leadingAnchor = [tableView3 leadingAnchor];
+  view3 = [(RAPLookAroundDetailsEditorViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v41[0] = v34;
-  v33 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  v32 = [v33 trailingAnchor];
-  v16 = [(RAPLookAroundDetailsEditorViewController *)self view];
-  v17 = [v16 trailingAnchor];
-  v18 = [v32 constraintEqualToAnchor:v17];
+  tableView4 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  trailingAnchor = [tableView4 trailingAnchor];
+  view4 = [(RAPLookAroundDetailsEditorViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v41[1] = v18;
-  v19 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  v20 = [v19 topAnchor];
-  v21 = [(RAPLookAroundDetailsEditorViewController *)self view];
-  v22 = [v21 topAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  tableView5 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  topAnchor = [tableView5 topAnchor];
+  view5 = [(RAPLookAroundDetailsEditorViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v41[2] = v23;
   v24 = [NSArray arrayWithObjects:v41 count:3];
   [v39 addObjectsFromArray:v24];
@@ -786,21 +786,21 @@ LABEL_19:
   [v26 addObserver:self selector:"keyboardWillHide:" name:UIKeyboardDidHideNotification object:0];
 
   [(RAPLookAroundDetailsEditorViewController *)self _setupTableView];
-  v27 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
-  v28 = [v27 bottomAnchor];
-  v29 = [(RAPLookAroundDetailsEditorViewController *)self view];
-  v30 = [v29 bottomAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  tableView6 = [(RAPLookAroundDetailsEditorViewController *)self tableView];
+  bottomAnchor = [tableView6 bottomAnchor];
+  view6 = [(RAPLookAroundDetailsEditorViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v39 addObject:v31];
 
   [NSLayoutConstraint activateConstraints:v39];
 }
 
-- (RAPLookAroundDetailsEditorViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5
+- (RAPLookAroundDetailsEditorViewController)initWithReport:(id)report question:(id)question completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  reportCopy = report;
+  questionCopy = question;
+  completionCopy = completion;
   v18.receiver = self;
   v18.super_class = RAPLookAroundDetailsEditorViewController;
   v12 = [(RAPLookAroundDetailsEditorViewController *)&v18 initWithNibName:0 bundle:0];
@@ -813,9 +813,9 @@ LABEL_19:
     [(UITableView *)v12->_tableView setRowHeight:UITableViewAutomaticDimension];
     [(UITableView *)v12->_tableView setDelegate:v12];
     [(UITableView *)v12->_tableView setDataSource:v12];
-    objc_storeStrong(&v12->_report, a3);
-    objc_storeStrong(&v12->_question, a4);
-    v15 = [v11 copy];
+    objc_storeStrong(&v12->_report, report);
+    objc_storeStrong(&v12->_question, question);
+    v15 = [completionCopy copy];
     completion = v12->_completion;
     v12->_completion = v15;
 

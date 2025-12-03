@@ -3,7 +3,7 @@
 + (NSProgress)discreteProgressWithTotalUnitCount:(int64_t)unitCount;
 + (NSProgress)progressWithTotalUnitCount:(int64_t)unitCount;
 + (NSProgress)progressWithTotalUnitCount:(int64_t)unitCount parent:(NSProgress *)parent pendingUnitCount:(int64_t)portionOfParentTotalUnitCount;
-+ (id)_addSubscriberForCategory:(id)a3 usingPublishingHandler:(id)a4;
++ (id)_addSubscriberForCategory:(id)category usingPublishingHandler:(id)handler;
 + (id)_publisherInterface;
 + (id)_registrarInterface;
 + (id)_serverConnection;
@@ -28,33 +28,33 @@
 - (NSString)localizedDescription;
 - (NSURL)fileURL;
 - (double)fractionCompleted;
-- (id)_indentedDescription:(unint64_t)a3;
-- (id)_initWithValues:(id)a3;
-- (id)acknowledgementHandlerForAppBundleIdentifier:(id)a3;
+- (id)_indentedDescription:(unint64_t)description;
+- (id)_initWithValues:(id)values;
+- (id)acknowledgementHandlerForAppBundleIdentifier:(id)identifier;
 - (id)byteCompletedCount;
 - (id)byteTotalCount;
 - (id)ownedDictionaryKeyEnumerator;
-- (id)ownedDictionaryObjectForKey:(id)a3;
+- (id)ownedDictionaryObjectForKey:(id)key;
 - (id)prioritizationHandler;
 - (int64_t)completedUnitCount;
 - (int64_t)totalUnitCount;
 - (unint64_t)ownedDictionaryCount;
-- (void)_addCompletedUnitCount:(int64_t)a3;
-- (void)_addImplicitChild:(id)a3;
-- (void)_notifyRemoteObserversOfUserInfoValueForKey:(id)a3;
-- (void)_notifyRemoteObserversOfValueForKeys:(id)a3;
+- (void)_addCompletedUnitCount:(int64_t)count;
+- (void)_addImplicitChild:(id)child;
+- (void)_notifyRemoteObserversOfUserInfoValueForKey:(id)key;
+- (void)_notifyRemoteObserversOfValueForKeys:(id)keys;
 - (void)_receiveProgressMessage:(void *)result forSequence:(xpc_object_t)xdict;
-- (void)_setCancellable:(BOOL)a3 fromChild:(BOOL)a4;
-- (void)_setCompletedUnitCount:(int64_t)a3 totalUnitCount:(int64_t)a4;
-- (void)_setParent:(id)a3 portion:(int64_t)a4;
-- (void)_setPausable:(BOOL)a3 fromChild:(BOOL)a4;
-- (void)_setRemoteValues:(id)a3 forKeys:(id)a4;
-- (void)_setUserInfoValue:(id)a3 forKey:(id)a4 fromChild:(BOOL)a5;
-- (void)_setValueForKeys:(id)a3 settingBlock:(id)a4;
-- (void)_updateChild:(id)a3 fraction:(_NSProgressFractionTuple *)a4 portion:(int64_t)a5;
-- (void)_updateFractionCompleted:(_NSProgressFractionTuple *)a3;
+- (void)_setCancellable:(BOOL)cancellable fromChild:(BOOL)child;
+- (void)_setCompletedUnitCount:(int64_t)count totalUnitCount:(int64_t)unitCount;
+- (void)_setParent:(id)parent portion:(int64_t)portion;
+- (void)_setPausable:(BOOL)pausable fromChild:(BOOL)child;
+- (void)_setRemoteValues:(id)values forKeys:(id)keys;
+- (void)_setUserInfoValue:(id)value forKey:(id)key fromChild:(BOOL)child;
+- (void)_setValueForKeys:(id)keys settingBlock:(id)block;
+- (void)_updateChild:(id)child fraction:(_NSProgressFractionTuple *)fraction portion:(int64_t)portion;
+- (void)_updateFractionCompleted:(_NSProgressFractionTuple *)completed;
 - (void)addChild:(NSProgress *)child withPendingUnitCount:(int64_t)inUnitCount;
-- (void)appWithBundleID:(id)a3 didAcknowledgeWithSuccess:(BOOL)a4;
+- (void)appWithBundleID:(id)d didAcknowledgeWithSuccess:(BOOL)success;
 - (void)becomeCurrentWithPendingUnitCount:(int64_t)unitCount;
 - (void)cancel;
 - (void)cancellationHandler;
@@ -67,7 +67,7 @@
 - (void)resignCurrent;
 - (void)resume;
 - (void)resumingHandler;
-- (void)setAcknowledgementHandler:(id)a3 forAppBundleIdentifier:(id)a4;
+- (void)setAcknowledgementHandler:(id)handler forAppBundleIdentifier:(id)identifier;
 - (void)setCancellable:(BOOL)cancellable;
 - (void)setCancellationHandler:(void *)cancellationHandler;
 - (void)setCompletedUnitCount:(int64_t)completedUnitCount;
@@ -76,11 +76,11 @@
 - (void)setLocalizedDescription:(NSString *)localizedDescription;
 - (void)setPausable:(BOOL)pausable;
 - (void)setPausingHandler:(void *)pausingHandler;
-- (void)setPrioritizable:(BOOL)a3;
-- (void)setPrioritizationHandler:(id)a3;
+- (void)setPrioritizable:(BOOL)prioritizable;
+- (void)setPrioritizationHandler:(id)handler;
 - (void)setResumingHandler:(void *)resumingHandler;
 - (void)setTotalUnitCount:(int64_t)totalUnitCount;
-- (void)set_adoptChildUserInfo:(BOOL)a3;
+- (void)set_adoptChildUserInfo:(BOOL)info;
 - (void)unpublish;
 @end
 
@@ -223,7 +223,7 @@
     values->_userInfo = userInfo;
   }
 
-  v5 = [(NSMutableDictionary *)userInfo allKeys];
+  allKeys = [(NSMutableDictionary *)userInfo allKeys];
   v11 = 0;
   v12 = &v11;
   v13 = 0x3052000000;
@@ -234,22 +234,22 @@
   v10[1] = 3221225472;
   v10[2] = __42__NSProgress_ownedDictionaryKeyEnumerator__block_invoke;
   v10[3] = &unk_1E69F44F8;
-  v10[4] = v5;
+  v10[4] = allKeys;
   v10[5] = &v11;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [allKeys enumerateObjectsUsingBlock:v10];
   v6 = v12[5];
   if (v6)
   {
-    v7 = [v6 objectEnumerator];
+    objectEnumerator = [v6 objectEnumerator];
   }
 
   else
   {
-    v7 = [(NSMutableDictionary *)values->_userInfo keyEnumerator];
+    objectEnumerator = [(NSMutableDictionary *)values->_userInfo keyEnumerator];
   }
 
   [(NSLock *)self->_lock unlock];
-  v8 = v7;
+  v8 = objectEnumerator;
   _Block_object_dispose(&v11, 8);
   return v8;
 }
@@ -396,7 +396,7 @@ uint64_t __31__NSProgress__serverConnection__block_invoke()
   v3[1] = 3221225472;
   v3[2] = __33__NSProgress__registrarInterface__block_invoke;
   v3[3] = &unk_1E69F2C00;
-  v3[4] = a1;
+  v3[4] = self;
   if (qword_1ED43F0F0 != -1)
   {
     dispatch_once(&qword_1ED43F0F0, v3);
@@ -440,7 +440,7 @@ NSXPCInterface *__33__NSProgress__publisherInterface__block_invoke()
   v3[1] = 3221225472;
   v3[2] = __34__NSProgress__subscriberInterface__block_invoke;
   v3[3] = &unk_1E69F2C00;
-  v3[4] = a1;
+  v3[4] = self;
   if (qword_1ED43F0E0 != -1)
   {
     dispatch_once(&qword_1ED43F0E0, v3);
@@ -497,7 +497,7 @@ NSXPCInterface *__33__NSProgress__publisherInterface__block_invoke()
     {
       publisherID = self->_publisherID;
       *buf = 134218755;
-      v19 = self;
+      selfCopy = self;
       v20 = 2113;
       v21 = v5;
       v22 = 2114;
@@ -508,16 +508,16 @@ NSXPCInterface *__33__NSProgress__publisherInterface__block_invoke()
     }
   }
 
-  v11 = [+[NSProgress _serverConnection](NSProgress _serverConnection];
+  _serverConnection = [+[NSProgress _serverConnection](NSProgress _serverConnection];
   v12 = self->_publisherID;
-  v13 = [v4 lowercaseString];
+  lowercaseString = [v4 lowercaseString];
   values = self->_values;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __21__NSProgress_publish__block_invoke;
   v17[3] = &unk_1E69FA880;
   v17[4] = self;
-  [v11 addPublisher:self forID:v12 acknowledgementAppBundleIDs:v7 category:v13 fileURL:v5 initialValues:values completionHandler:v17];
+  [_serverConnection addPublisher:self forID:v12 acknowledgementAppBundleIDs:v7 category:lowercaseString fileURL:v5 initialValues:values completionHandler:v17];
   [(NSLock *)self->_lock unlock];
 }
 
@@ -559,7 +559,7 @@ uint64_t __21__NSProgress_publish__block_invoke(uint64_t a1, void *a2)
 
 + (NSProgress)progressWithTotalUnitCount:(int64_t)unitCount
 {
-  v4 = [[a1 alloc] initWithParent:objc_msgSend(a1 userInfo:{"currentProgress"), 0}];
+  v4 = [[self alloc] initWithParent:objc_msgSend(self userInfo:{"currentProgress"), 0}];
   [v4 setTotalUnitCount:unitCount];
 
   return v4;
@@ -567,7 +567,7 @@ uint64_t __21__NSProgress_publish__block_invoke(uint64_t a1, void *a2)
 
 + (NSProgress)discreteProgressWithTotalUnitCount:(int64_t)unitCount
 {
-  v4 = [[a1 alloc] initWithParent:0 userInfo:0];
+  v4 = [[self alloc] initWithParent:0 userInfo:0];
   [v4 setTotalUnitCount:unitCount];
 
   return v4;
@@ -622,12 +622,12 @@ uint64_t __21__NSProgress_publish__block_invoke(uint64_t a1, void *a2)
   _CFSetTSD();
 }
 
-- (void)_setParent:(id)a3 portion:(int64_t)a4
+- (void)_setParent:(id)parent portion:(int64_t)portion
 {
   v13 = *MEMORY[0x1E69E9840];
   [(NSLock *)self->_lock lock];
-  objc_storeWeak(&self->_parent, a3);
-  self->_values->_portionOfParent = a4;
+  objc_storeWeak(&self->_parent, parent);
+  self->_values->_portionOfParent = portion;
   v11 = 0uLL;
   *v12 = 0;
   values = self->_values;
@@ -648,15 +648,15 @@ uint64_t __21__NSProgress_publish__block_invoke(uint64_t a1, void *a2)
   v8 = v11;
   v9 = *v12;
   v10 = *&v12[16];
-  [a3 _updateChild:self fraction:&v8 portion:a4];
+  [parent _updateChild:self fraction:&v8 portion:portion];
 }
 
 - (void)addChild:(NSProgress *)child withPendingUnitCount:(int64_t)inUnitCount
 {
-  v8 = [(NSProgress *)child _parent];
-  if (v8)
+  _parent = [(NSProgress *)child _parent];
+  if (_parent)
   {
-    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: NSProgress %p was already the child of another progress %p", _NSMethodExceptionProem(self, a2), child, v8), 0}];
+    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: NSProgress %p was already the child of another progress %p", _NSMethodExceptionProem(self, a2), child, _parent), 0}];
     objc_exception_throw(v10);
   }
 
@@ -692,13 +692,13 @@ uint64_t __21__NSProgress_publish__block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (void)_addImplicitChild:(id)a3
+- (void)_addImplicitChild:(id)child
 {
   v5 = _CFGetTSD();
   if ((*(v5 + 24) & 1) == 0)
   {
     v6 = v5;
-    [(NSProgress *)self addChild:a3 withPendingUnitCount:*(v5 + 16)];
+    [(NSProgress *)self addChild:child withPendingUnitCount:*(v5 + 16)];
     *(v6 + 24) = 1;
   }
 }
@@ -711,9 +711,9 @@ uint64_t __21__NSProgress_publish__block_invoke(uint64_t a1, void *a2)
   [(NSProgress *)self resignCurrent];
 }
 
-- (void)set_adoptChildUserInfo:(BOOL)a3
+- (void)set_adoptChildUserInfo:(BOOL)info
 {
-  if (a3)
+  if (info)
   {
     v3 = self->_flags | 2;
   }
@@ -726,7 +726,7 @@ uint64_t __21__NSProgress_publish__block_invoke(uint64_t a1, void *a2)
   self->_flags = v3;
 }
 
-- (void)_notifyRemoteObserversOfUserInfoValueForKey:(id)a3
+- (void)_notifyRemoteObserversOfUserInfoValueForKey:(id)key
 {
   if (self->_publisherID)
   {
@@ -734,28 +734,28 @@ uint64_t __21__NSProgress_publish__block_invoke(uint64_t a1, void *a2)
     if (objc_lookUpClass("NSImage") && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v5 = [v5 performSelector:sel_TIFFRepresentation];
-      a3 = [a3 stringByAppendingString:@".data"];
+      key = [key stringByAppendingString:@".data"];
     }
 
-    v7 = [+[NSProgress _serverConnection](NSProgress _serverConnection];
+    _serverConnection = [+[NSProgress _serverConnection](NSProgress _serverConnection];
     publisherID = self->_publisherID;
 
-    [v7 observePublisherUserInfoForID:publisherID value:v5 forKey:a3];
+    [_serverConnection observePublisherUserInfoForID:publisherID value:v5 forKey:key];
   }
 }
 
-- (void)_notifyRemoteObserversOfValueForKeys:(id)a3
+- (void)_notifyRemoteObserversOfValueForKeys:(id)keys
 {
   v36 = *MEMORY[0x1E69E9840];
   if (self->_publisherID)
   {
-    v24 = [MEMORY[0x1E695DF70] array];
-    v23 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v4 = [a3 countByEnumeratingWithState:&v32 objects:v31 count:16];
+    v4 = [keys countByEnumeratingWithState:&v32 objects:v31 count:16];
     if (v4)
     {
       v6 = v4;
@@ -769,7 +769,7 @@ uint64_t __21__NSProgress_publish__block_invoke(uint64_t a1, void *a2)
         {
           if (*v33 != v26)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(keys);
           }
 
           v8 = *(*(&v32 + 1) + 8 * v7);
@@ -803,7 +803,7 @@ uint64_t __21__NSProgress_publish__block_invoke(uint64_t a1, void *a2)
             if (os_log_type_enabled(_MergedGlobals_25_0, OS_LOG_TYPE_DEBUG))
             {
               *buf = v22;
-              v28 = self;
+              selfCopy = self;
               v29 = 2114;
               v30 = v8;
               _os_log_debug_impl(&dword_18075C000, v21, OS_LOG_TYPE_DEBUG, "<NSProgress %p> Dropped remote update for key %{public}@ due to throttling", buf, 0x16u);
@@ -815,8 +815,8 @@ uint64_t __21__NSProgress_publish__block_invoke(uint64_t a1, void *a2)
             v19 = [(NSProgressValues *)values valueForKey:v8];
             if (v19)
             {
-              [v24 addObject:{v19, v20}];
-              [v23 addObject:v8];
+              [array addObject:{v19, v20}];
+              [array2 addObject:v8];
               [(NSMutableDictionary *)lastNotificationTimesByKey setObject:[NSNumber forKeyedSubscript:"numberWithDouble:" numberWithDouble:v13], v8];
             }
           }
@@ -825,13 +825,13 @@ uint64_t __21__NSProgress_publish__block_invoke(uint64_t a1, void *a2)
         }
 
         while (v6 != v7);
-        v6 = [a3 countByEnumeratingWithState:&v32 objects:v31 count:16];
+        v6 = [keys countByEnumeratingWithState:&v32 objects:v31 count:16];
       }
 
       while (v6);
     }
 
-    if ([v24 count])
+    if ([array count])
     {
       [objc_msgSend(+[NSProgress _serverConnection](NSProgress "_serverConnection")];
     }
@@ -845,11 +845,11 @@ id __51__NSProgress__notifyRemoteObserversOfValueForKeys___block_invoke()
   return result;
 }
 
-- (void)_setValueForKeys:(id)a3 settingBlock:(id)a4
+- (void)_setValueForKeys:(id)keys settingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
   [(NSLock *)self->_lock lock];
-  v7 = (*(a3 + 2))(a3, self->_values);
+  v7 = (*(keys + 2))(keys, self->_values);
   [(NSLock *)self->_lock unlock];
   if (v7)
   {
@@ -883,7 +883,7 @@ id __51__NSProgress__notifyRemoteObserversOfValueForKeys___block_invoke()
     }
 
     [(NSLock *)self->_lock lock];
-    (*(a4 + 2))(a4, self->_values);
+    (*(block + 2))(block, self->_values);
     [(NSProgress *)self _notifyRemoteObserversOfValueForKeys:v7];
     [(NSLock *)self->_lock unlock];
   }
@@ -896,18 +896,18 @@ id __51__NSProgress__notifyRemoteObserversOfValueForKeys___block_invoke()
   [v7 enumerateObjectsWithOptions:2 usingBlock:v12];
 }
 
-- (void)_updateFractionCompleted:(_NSProgressFractionTuple *)a3
+- (void)_updateFractionCompleted:(_NSProgressFractionTuple *)completed
 {
   v9 = *MEMORY[0x1E69E9840];
-  if ((_NSProgressFractionIsEqual(&a3->var0.completed, &a3->var1.completed) & 1) == 0)
+  if ((_NSProgressFractionIsEqual(&completed->var0.completed, &completed->var1.completed) & 1) == 0)
   {
-    v5 = [(NSProgress *)self _parent];
+    _parent = [(NSProgress *)self _parent];
     portionOfParent = self->_values->_portionOfParent;
-    v7 = *&a3->var0.overflowed;
-    v8[0] = *&a3->var0.completed;
+    v7 = *&completed->var0.overflowed;
+    v8[0] = *&completed->var0.completed;
     v8[1] = v7;
-    v8[2] = *&a3->var1.total;
-    [v5 _updateChild:self fraction:v8 portion:portionOfParent];
+    v8[2] = *&completed->var1.total;
+    [_parent _updateChild:self fraction:v8 portion:portionOfParent];
   }
 }
 
@@ -1037,7 +1037,7 @@ double __36__NSProgress_setCompletedUnitCount___block_invoke_2(void *a1, void *a
   return result;
 }
 
-- (void)_addCompletedUnitCount:(int64_t)a3
+- (void)_addCompletedUnitCount:(int64_t)count
 {
   v19 = *MEMORY[0x1E69E9840];
   v12 = 0;
@@ -1056,13 +1056,13 @@ double __36__NSProgress_setCompletedUnitCount___block_invoke_2(void *a1, void *a
   v7[2] = __37__NSProgress__addCompletedUnitCount___block_invoke;
   v7[3] = &unk_1E69FA6C8;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = count;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__NSProgress__addCompletedUnitCount___block_invoke_2;
   v6[3] = &unk_1E69FA6F0;
   v6[5] = &v8;
-  v6[6] = a3;
+  v6[6] = count;
   v6[4] = &v12;
   [(NSProgress *)self _setValueForKeys:v7 settingBlock:v6];
   if (*(v9 + 24) == 1)
@@ -1094,7 +1094,7 @@ double __37__NSProgress__addCompletedUnitCount___block_invoke_2(void *a1, void *
   return result;
 }
 
-- (void)_setCompletedUnitCount:(int64_t)a3 totalUnitCount:(int64_t)a4
+- (void)_setCompletedUnitCount:(int64_t)count totalUnitCount:(int64_t)unitCount
 {
   v20 = *MEMORY[0x1E69E9840];
   v13 = 0;
@@ -1113,14 +1113,14 @@ double __37__NSProgress__addCompletedUnitCount___block_invoke_2(void *a1, void *
   v8[2] = __52__NSProgress__setCompletedUnitCount_totalUnitCount___block_invoke;
   v8[3] = &unk_1E69FA718;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = count;
+  v8[6] = unitCount;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__NSProgress__setCompletedUnitCount_totalUnitCount___block_invoke_2;
   v7[3] = &unk_1E69FA740;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = count;
+  v7[7] = unitCount;
   v7[4] = &v13;
   v7[5] = &v9;
   [(NSProgress *)self _setValueForKeys:v8 settingBlock:v7];
@@ -1154,7 +1154,7 @@ double __52__NSProgress__setCompletedUnitCount_totalUnitCount___block_invoke_2(v
   return result;
 }
 
-- (void)_updateChild:(id)a3 fraction:(_NSProgressFractionTuple *)a4 portion:(int64_t)a5
+- (void)_updateChild:(id)child fraction:(_NSProgressFractionTuple *)fraction portion:(int64_t)portion
 {
   v31 = *MEMORY[0x1E69E9840];
   v24 = 0;
@@ -1172,10 +1172,10 @@ double __52__NSProgress__setCompletedUnitCount_totalUnitCount___block_invoke_2(v
   v16[1] = 3221225472;
   v16[2] = __44__NSProgress__updateChild_fraction_portion___block_invoke;
   v16[3] = &__block_descriptor_88_e35___NSArray_16__0__NSProgressValues_8l;
-  v16[4] = a5;
-  v6 = *&a4->var0.completed;
-  v7 = *&a4->var1.total;
-  v18 = *&a4->var0.overflowed;
+  v16[4] = portion;
+  v6 = *&fraction->var0.completed;
+  v7 = *&fraction->var1.total;
+  v18 = *&fraction->var0.overflowed;
   v19 = v7;
   v17 = v6;
   v12[0] = MEMORY[0x1E69E9820];
@@ -1183,14 +1183,14 @@ double __52__NSProgress__setCompletedUnitCount_totalUnitCount___block_invoke_2(v
   v12[2] = __44__NSProgress__updateChild_fraction_portion___block_invoke_2;
   v12[3] = &unk_1E69FA788;
   v12[7] = &v20;
-  v12[8] = a5;
-  v8 = *&a4->var0.completed;
-  v9 = *&a4->var0.overflowed;
-  v15 = *&a4->var1.total;
+  v12[8] = portion;
+  v8 = *&fraction->var0.completed;
+  v9 = *&fraction->var0.overflowed;
+  v15 = *&fraction->var1.total;
   v14 = v9;
   v13 = v8;
   v12[4] = self;
-  v12[5] = a3;
+  v12[5] = child;
   v12[6] = &v24;
   [(NSProgress *)self _setValueForKeys:v16 settingBlock:v12];
   if (*(v21 + 24) == 1)
@@ -1525,12 +1525,12 @@ LABEL_17:
     v10 = [(NSMutableDictionary *)values->_userInfo objectForKey:@"NSProgressUseItemDescriptionKey"];
     if (_NSIsNSNumber())
     {
-      v11 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
     }
 
     else
     {
-      v11 = 0;
+      bOOLValue = 0;
     }
 
     v16 = [(NSMutableDictionary *)values->_userInfo objectForKey:@"NSProgressFileOperationKindKey"];
@@ -1616,7 +1616,7 @@ LABEL_59:
     if (!v7)
     {
       v30 = _NSFoundationBundle();
-      if (v11)
+      if (bOOLValue)
       {
         v31 = @"%@ items\\U2026";
       }
@@ -1631,7 +1631,7 @@ LABEL_59:
     }
 
     v28 = _NSFoundationBundle();
-    if (v11)
+    if (bOOLValue)
     {
       v29 = @"%@ %lld items…";
     }
@@ -1716,35 +1716,35 @@ LABEL_3:
     v12 = [(NSMutableDictionary *)values->_userInfo objectForKey:@"NSProgressUseItemDescriptionKey"];
     if (_NSIsNSNumber())
     {
-      v13 = [v12 BOOLValue];
+      bOOLValue = [v12 BOOLValue];
     }
 
     else
     {
-      v13 = 0;
+      bOOLValue = 0;
     }
 
     v14 = [(NSMutableDictionary *)values->_userInfo objectForKey:@"NSProgressLocalizedDescriptionFileSizeFormatterOptionsKey"];
     if (v14 && (v15 = v14, _NSIsNSNumber()))
     {
-      v16 = [v15 unsignedLongLongValue];
+      unsignedLongLongValue = [v15 unsignedLongLongValue];
     }
 
     else
     {
-      v16 = 0x1000000;
+      unsignedLongLongValue = 0x1000000;
     }
 
     if ([(NSMutableDictionary *)values->_userInfo objectForKey:@"NSProgressThroughputKey"]&& (v17 = [(NSMutableDictionary *)values->_userInfo objectForKey:@"NSProgressThroughputKey"], _NSIsNSNumber()))
     {
-      v18 = [v17 unsignedLongLongValue];
+      unsignedLongLongValue2 = [v17 unsignedLongLongValue];
       v19 = locked;
       v20 = v11;
-      v21 = v13;
+      v21 = bOOLValue;
       v22 = [_NSFoundationBundle() localizedStringForKey:@"%@/s" value:&stru_1EEEFDF90 table:@"Progress"];
-      v23 = NSLocalizedFileSizeDescription(v18, 0, v16);
+      v23 = NSLocalizedFileSizeDescription(unsignedLongLongValue2, 0, unsignedLongLongValue);
       v24 = v22;
-      v13 = v21;
+      bOOLValue = v21;
       v11 = v20;
       locked = v19;
       v5 = [NSString stringWithFormat:v24, v23];
@@ -1772,8 +1772,8 @@ LABEL_25:
       v28 = 0;
       if (total && completed <= total)
       {
-        v28 = NSLocalizedFileSizeDescription(completed, 0, v16);
-        v27 = NSLocalizedFileSizeDescription(total, 0, v16);
+        v28 = NSLocalizedFileSizeDescription(completed, 0, unsignedLongLongValue);
+        v27 = NSLocalizedFileSizeDescription(total, 0, unsignedLongLongValue);
       }
 
       v29 = [(NSMutableDictionary *)values->_userInfo objectForKey:@"NSProgressFileOperationKindKey"];
@@ -1842,16 +1842,16 @@ LABEL_48:
           goto LABEL_48;
         }
 
-        v36 = [v32 longLongValue];
-        v37 = [v34 longLongValue];
-        if (v36 > v37)
+        longLongValue = [v32 longLongValue];
+        longLongValue2 = [v34 longLongValue];
+        if (longLongValue > longLongValue2)
         {
           goto LABEL_48;
         }
 
-        v48 = v37;
+        v48 = longLongValue2;
         v49 = _NSFoundationBundle();
-        if (v13)
+        if (bOOLValue)
         {
           v50 = @"%lld of %lld items";
         }
@@ -1861,7 +1861,7 @@ LABEL_48:
           v50 = @"%lld of %lld files";
         }
 
-        v31 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", [v49 localizedStringForKey:v50 value:&stru_1EEEFDF90 table:@"Progress"], v48, v36);
+        v31 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", [v49 localizedStringForKey:v50 value:&stru_1EEEFDF90 table:@"Progress"], v48, longLongValue);
         if (!v31)
         {
           goto LABEL_49;
@@ -1995,17 +1995,17 @@ void *__29__NSProgress_setCancellable___block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (void)_setCancellable:(BOOL)a3 fromChild:(BOOL)a4
+- (void)_setCancellable:(BOOL)cancellable fromChild:(BOOL)child
 {
-  v4 = a4;
-  v5 = a3;
+  childCopy = child;
+  cancellableCopy = cancellable;
   [(NSLock *)self->_lock lock];
-  if (!v4 || (self->_flags & 2) != 0)
+  if (!childCopy || (self->_flags & 2) != 0)
   {
     [(NSLock *)self->_lock unlock];
     Weak = objc_loadWeak(&self->_parent);
 
-    [Weak _setCancellable:v5 fromChild:1];
+    [Weak _setCancellable:cancellableCopy fromChild:1];
   }
 
   else
@@ -2047,17 +2047,17 @@ void *__26__NSProgress_setPausable___block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (void)_setPausable:(BOOL)a3 fromChild:(BOOL)a4
+- (void)_setPausable:(BOOL)pausable fromChild:(BOOL)child
 {
-  v4 = a4;
-  v5 = a3;
+  childCopy = child;
+  pausableCopy = pausable;
   [(NSLock *)self->_lock lock];
-  if (!v4 || (self->_flags & 2) != 0)
+  if (!childCopy || (self->_flags & 2) != 0)
   {
     [(NSLock *)self->_lock unlock];
     Weak = objc_loadWeak(&self->_parent);
 
-    [Weak _setPausable:v5 fromChild:1];
+    [Weak _setPausable:pausableCopy fromChild:1];
   }
 
   else
@@ -2156,11 +2156,11 @@ void *__26__NSProgress_setPausable___block_invoke(uint64_t a1, uint64_t a2)
   return v3;
 }
 
-- (void)_setUserInfoValue:(id)a3 forKey:(id)a4 fromChild:(BOOL)a5
+- (void)_setUserInfoValue:(id)value forKey:(id)key fromChild:(BOOL)child
 {
-  v5 = a5;
+  childCopy = child;
   [(NSLock *)self->_lock lock];
-  if (v5 && (self->_flags & 2) == 0)
+  if (childCopy && (self->_flags & 2) == 0)
   {
     lock = self->_lock;
 
@@ -2170,13 +2170,13 @@ void *__26__NSProgress_setPausable___block_invoke(uint64_t a1, uint64_t a2)
 
   v13 = self->_userInfoProxy;
   [(NSLock *)self->_lock unlock];
-  v10 = a4;
-  if ([a4 hasSuffix:@".data"])
+  keyCopy = key;
+  if ([key hasSuffix:@".data"])
   {
-    v10 = [a4 substringToIndex:{objc_msgSend(a4, "length") - 5}];
+    keyCopy = [key substringToIndex:{objc_msgSend(key, "length") - 5}];
   }
 
-  [(NSOwnedDictionaryProxy *)v13 willChangeValueForKey:v10];
+  [(NSOwnedDictionaryProxy *)v13 willChangeValueForKey:keyCopy];
   [(NSLock *)self->_lock lock];
   values = self->_values;
   userInfo = values->_userInfo;
@@ -2184,44 +2184,44 @@ void *__26__NSProgress_setPausable___block_invoke(uint64_t a1, uint64_t a2)
   {
     userInfo = objc_alloc_init(MEMORY[0x1E695DF90]);
     values->_userInfo = userInfo;
-    if (a3)
+    if (value)
     {
       goto LABEL_10;
     }
 
 LABEL_12:
-    [(NSMutableDictionary *)userInfo removeObjectForKey:a4];
+    [(NSMutableDictionary *)userInfo removeObjectForKey:key];
     goto LABEL_13;
   }
 
-  if (!a3)
+  if (!value)
   {
     goto LABEL_12;
   }
 
 LABEL_10:
-  [(NSMutableDictionary *)userInfo setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)userInfo setObject:value forKey:key];
 LABEL_13:
-  [(NSProgress *)self _notifyRemoteObserversOfUserInfoValueForKey:a4];
+  [(NSProgress *)self _notifyRemoteObserversOfUserInfoValueForKey:key];
   [(NSLock *)self->_lock unlock];
   [-[NSProgress _parent](self "_parent")];
-  [(NSOwnedDictionaryProxy *)v13 didChangeValueForKey:v10];
+  [(NSOwnedDictionaryProxy *)v13 didChangeValueForKey:keyCopy];
 }
 
-- (id)_indentedDescription:(unint64_t)a3
+- (id)_indentedDescription:(unint64_t)description
 {
   v27 = *MEMORY[0x1E69E9840];
   v5 = +[(NSString *)NSMutableString];
-  if (a3)
+  if (description)
   {
-    v6 = a3;
+    descriptionCopy = description;
     do
     {
       [(NSString *)v5 appendString:@"  "];
-      --v6;
+      --descriptionCopy;
     }
 
-    while (v6);
+    while (descriptionCopy);
   }
 
   values = self->_values;
@@ -2229,7 +2229,7 @@ LABEL_13:
   v21.receiver = self;
   v21.super_class = NSProgress;
   v9 = [(NSProgress *)&v21 description];
-  v10 = [(NSProgress *)self _parent];
+  _parent = [(NSProgress *)self _parent];
   portionOfParent = values->_portionOfParent;
   [(NSProgressValues *)values fractionCompleted];
   v13 = "";
@@ -2248,7 +2248,7 @@ LABEL_13:
     v13 = "PAUSED";
   }
 
-  [(NSString *)v8 appendFormat:@"%@%@ : Parent: %p (portion: %lld) / Fraction completed: %0.4f / Completed: %lld of %lld %s %s", v5, v9, v10, portionOfParent, v12, values->_selfFraction.completed, values->_selfFraction.total, v14, v13];
+  [(NSString *)v8 appendFormat:@"%@%@ : Parent: %p (portion: %lld) / Fraction completed: %0.4f / Completed: %lld of %lld %s %s", v5, v9, _parent, portionOfParent, v12, values->_selfFraction.completed, values->_selfFraction.total, v14, v13];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -2268,7 +2268,7 @@ LABEL_13:
           objc_enumerationMutation(children);
         }
 
-        -[NSString appendFormat:](v8, "appendFormat:", @"\n%@", [*(*(&v23 + 1) + 8 * i) _indentedDescription:a3 + 1]);
+        -[NSString appendFormat:](v8, "appendFormat:", @"\n%@", [*(*(&v23 + 1) + 8 * i) _indentedDescription:description + 1]);
       }
 
       v17 = [(NSMutableSet *)children countByEnumeratingWithState:&v23 objects:v22 count:16];
@@ -2434,14 +2434,14 @@ void *__42__NSProgress_ownedDictionaryKeyEnumerator__block_invoke(uint64_t a1, v
   return [result addObject:v4];
 }
 
-- (id)ownedDictionaryObjectForKey:(id)a3
+- (id)ownedDictionaryObjectForKey:(id)key
 {
   [(NSLock *)self->_lock lock];
   values = self->_values;
-  v6 = [(NSMutableDictionary *)values->_userInfo objectForKey:a3];
+  v6 = [(NSMutableDictionary *)values->_userInfo objectForKey:key];
   if (!v6)
   {
-    if ([a3 isEqualToString:@"NSProgressPhysicalFileURLKey"])
+    if ([key isEqualToString:@"NSProgressPhysicalFileURLKey"])
     {
       v7 = [(NSMutableDictionary *)values->_userInfo objectForKey:@"NSProgressFileURLKey"];
 LABEL_7:
@@ -2449,7 +2449,7 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v8 = -[NSMutableDictionary objectForKey:](values->_userInfo, "objectForKey:", [a3 stringByAppendingString:@".data"]);
+    v8 = -[NSMutableDictionary objectForKey:](values->_userInfo, "objectForKey:", [key stringByAppendingString:@".data"]);
     if (v8)
     {
       v9 = v8;
@@ -2471,58 +2471,58 @@ LABEL_9:
 
 - (NSNumber)estimatedTimeRemaining
 {
-  v2 = [(NSProgress *)self userInfo];
+  userInfo = [(NSProgress *)self userInfo];
 
-  return [(NSDictionary *)v2 objectForKey:@"NSProgressEstimatedTimeRemainingKey"];
+  return [(NSDictionary *)userInfo objectForKey:@"NSProgressEstimatedTimeRemainingKey"];
 }
 
 - (NSNumber)throughput
 {
-  v2 = [(NSProgress *)self userInfo];
+  userInfo = [(NSProgress *)self userInfo];
 
-  return [(NSDictionary *)v2 objectForKey:@"NSProgressThroughputKey"];
+  return [(NSDictionary *)userInfo objectForKey:@"NSProgressThroughputKey"];
 }
 
 - (NSProgressFileOperationKind)fileOperationKind
 {
-  v2 = [(NSProgress *)self userInfo];
+  userInfo = [(NSProgress *)self userInfo];
 
-  return [(NSDictionary *)v2 objectForKey:@"NSProgressFileOperationKindKey"];
+  return [(NSDictionary *)userInfo objectForKey:@"NSProgressFileOperationKindKey"];
 }
 
 - (NSURL)fileURL
 {
-  v2 = [(NSProgress *)self userInfo];
+  userInfo = [(NSProgress *)self userInfo];
 
-  return [(NSDictionary *)v2 objectForKey:@"NSProgressFileURLKey"];
+  return [(NSDictionary *)userInfo objectForKey:@"NSProgressFileURLKey"];
 }
 
 - (NSNumber)fileTotalCount
 {
-  v2 = [(NSProgress *)self userInfo];
+  userInfo = [(NSProgress *)self userInfo];
 
-  return [(NSDictionary *)v2 objectForKey:@"NSProgressFileTotalCountKey"];
+  return [(NSDictionary *)userInfo objectForKey:@"NSProgressFileTotalCountKey"];
 }
 
 - (NSNumber)fileCompletedCount
 {
-  v2 = [(NSProgress *)self userInfo];
+  userInfo = [(NSProgress *)self userInfo];
 
-  return [(NSDictionary *)v2 objectForKey:@"NSProgressFileCompletedCountKey"];
+  return [(NSDictionary *)userInfo objectForKey:@"NSProgressFileCompletedCountKey"];
 }
 
 - (id)byteTotalCount
 {
-  v2 = [(NSProgress *)self userInfo];
+  userInfo = [(NSProgress *)self userInfo];
 
-  return [(NSDictionary *)v2 objectForKey:@"NSProgressByteTotalCountKey"];
+  return [(NSDictionary *)userInfo objectForKey:@"NSProgressByteTotalCountKey"];
 }
 
 - (id)byteCompletedCount
 {
-  v2 = [(NSProgress *)self userInfo];
+  userInfo = [(NSProgress *)self userInfo];
 
-  return [(NSDictionary *)v2 objectForKey:@"NSProgressByteCompletedCountKey"];
+  return [(NSDictionary *)userInfo objectForKey:@"NSProgressByteCompletedCountKey"];
 }
 
 - (void)setKind:(NSProgressKind)kind
@@ -2577,7 +2577,7 @@ uint64_t __22__NSProgress_setKind___block_invoke_2(uint64_t a1, uint64_t a2)
     {
       publisherID = self->_publisherID;
       v5 = 134218242;
-      v6 = self;
+      selfCopy = self;
       v7 = 2114;
       v8 = publisherID;
       _os_log_debug_impl(&dword_18075C000, v3, OS_LOG_TYPE_DEBUG, "<NSProgress %p> Unpublishing %{public}@", &v5, 0x16u);
@@ -2589,7 +2589,7 @@ uint64_t __22__NSProgress_setKind___block_invoke_2(uint64_t a1, uint64_t a2)
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)setAcknowledgementHandler:(id)a3 forAppBundleIdentifier:(id)a4
+- (void)setAcknowledgementHandler:(id)handler forAppBundleIdentifier:(id)identifier
 {
   [(NSLock *)self->_lock lock];
   if (!self->_acknowledgementHandlersByLowercaseBundleID)
@@ -2597,29 +2597,29 @@ uint64_t __22__NSProgress_setKind___block_invoke_2(uint64_t a1, uint64_t a2)
     self->_acknowledgementHandlersByLowercaseBundleID = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v7 = [a3 copy];
-  -[NSMutableDictionary setObject:forKey:](self->_acknowledgementHandlersByLowercaseBundleID, "setObject:forKey:", v7, [a4 lowercaseString]);
+  v7 = [handler copy];
+  -[NSMutableDictionary setObject:forKey:](self->_acknowledgementHandlersByLowercaseBundleID, "setObject:forKey:", v7, [identifier lowercaseString]);
 
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (id)acknowledgementHandlerForAppBundleIdentifier:(id)a3
+- (id)acknowledgementHandlerForAppBundleIdentifier:(id)identifier
 {
   [(NSLock *)self->_lock lock];
-  v5 = -[NSMutableDictionary objectForKey:](self->_acknowledgementHandlersByLowercaseBundleID, "objectForKey:", [a3 lowercaseString]);
+  v5 = -[NSMutableDictionary objectForKey:](self->_acknowledgementHandlersByLowercaseBundleID, "objectForKey:", [identifier lowercaseString]);
   [(NSLock *)self->_lock unlock];
 
   return v5;
 }
 
-- (void)appWithBundleID:(id)a3 didAcknowledgeWithSuccess:(BOOL)a4
+- (void)appWithBundleID:(id)d didAcknowledgeWithSuccess:(BOOL)success
 {
   v14 = *MEMORY[0x1E69E9840];
   [(NSLock *)self->_lock lock];
-  v7 = [a3 lowercaseString];
-  v8 = [(NSMutableDictionary *)self->_acknowledgementHandlersByLowercaseBundleID objectForKey:v7];
+  lowercaseString = [d lowercaseString];
+  v8 = [(NSMutableDictionary *)self->_acknowledgementHandlersByLowercaseBundleID objectForKey:lowercaseString];
   if (v8)
   {
     v9 = v8;
@@ -2630,9 +2630,9 @@ uint64_t __22__NSProgress_setKind___block_invoke_2(uint64_t a1, uint64_t a2)
     block[2] = __56__NSProgress_appWithBundleID_didAcknowledgeWithSuccess___block_invoke;
     block[3] = &unk_1E69F9080;
     block[4] = v9;
-    v13 = a4;
+    successCopy = success;
     dispatch_async(global_queue, block);
-    [(NSMutableDictionary *)self->_acknowledgementHandlersByLowercaseBundleID removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_acknowledgementHandlersByLowercaseBundleID removeObjectForKey:lowercaseString];
   }
 
   [(NSLock *)self->_lock unlock];
@@ -2646,27 +2646,27 @@ uint64_t __22__NSProgress_setKind___block_invoke_2(uint64_t a1, uint64_t a2)
   return v5;
 }
 
-+ (id)_addSubscriberForCategory:(id)a3 usingPublishingHandler:(id)a4
++ (id)_addSubscriberForCategory:(id)category usingPublishingHandler:(id)handler
 {
-  v5 = [[_NSProgressSubscriber alloc] initWithPublishingHandler:a4];
-  [(_NSProgressSubscriber *)v5 startForCategory:a3];
+  v5 = [[_NSProgressSubscriber alloc] initWithPublishingHandler:handler];
+  [(_NSProgressSubscriber *)v5 startForCategory:category];
 
   return v5;
 }
 
-- (void)setPrioritizable:(BOOL)a3
+- (void)setPrioritizable:(BOOL)prioritizable
 {
   v7 = *MEMORY[0x1E69E9840];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __31__NSProgress_setPrioritizable___block_invoke;
   v5[3] = &__block_descriptor_33_e35___NSArray_16__0__NSProgressValues_8l;
-  v6 = a3;
+  prioritizableCopy = prioritizable;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __31__NSProgress_setPrioritizable___block_invoke_2;
   v3[3] = &__block_descriptor_33_e26_v16__0__NSProgressValues_8l;
-  v4 = a3;
+  prioritizableCopy2 = prioritizable;
   [(NSProgress *)self _setValueForKeys:v5 settingBlock:v3];
 }
 
@@ -2691,14 +2691,14 @@ void *__31__NSProgress_setPrioritizable___block_invoke(uint64_t a1, uint64_t a2)
   return isPrioritizable;
 }
 
-- (void)setPrioritizationHandler:(id)a3
+- (void)setPrioritizationHandler:(id)handler
 {
   [(NSLock *)self->_lock lock];
   prioritizationHandler = self->_prioritizationHandler;
-  if (prioritizationHandler != a3)
+  if (prioritizationHandler != handler)
   {
 
-    self->_prioritizationHandler = [a3 copy];
+    self->_prioritizationHandler = [handler copy];
   }
 
   lock = self->_lock;
@@ -2762,7 +2762,7 @@ void *__31__NSProgress_setPrioritizable___block_invoke(uint64_t a1, uint64_t a2)
   [(NSLock *)self->_lock unlock];
 }
 
-- (id)_initWithValues:(id)a3
+- (id)_initWithValues:(id)values
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -2770,7 +2770,7 @@ void *__31__NSProgress_setPrioritizable___block_invoke(uint64_t a1, uint64_t a2)
   v4 = [(NSProgress *)&v8 init];
   if (v4)
   {
-    v5 = [a3 copy];
+    v5 = [values copy];
     v4->_values = v5;
     [(NSProgressValues *)v5 fractionCompleted];
     v4->_values->_remoteFractionCompleted = v6;
@@ -2779,25 +2779,25 @@ void *__31__NSProgress_setPrioritizable___block_invoke(uint64_t a1, uint64_t a2)
   return v4;
 }
 
-- (void)_setRemoteValues:(id)a3 forKeys:(id)a4
+- (void)_setRemoteValues:(id)values forKeys:(id)keys
 {
   v12 = *MEMORY[0x1E69E9840];
-  v7 = [a3 count];
-  if ([a4 count] == v7)
+  v7 = [values count];
+  if ([keys count] == v7)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __39__NSProgress__setRemoteValues_forKeys___block_invoke;
     v10[3] = &unk_1E69FA8A8;
-    v10[5] = a4;
+    v10[5] = keys;
     v10[6] = v7;
-    v10[4] = a3;
+    v10[4] = values;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __39__NSProgress__setRemoteValues_forKeys___block_invoke_2;
     v9[3] = &unk_1E69FA8D0;
-    v9[4] = a3;
-    v9[5] = a4;
+    v9[4] = values;
+    v9[5] = keys;
     v9[6] = self;
     v9[7] = v7;
     [(NSProgress *)self _setValueForKeys:v10 settingBlock:v9];

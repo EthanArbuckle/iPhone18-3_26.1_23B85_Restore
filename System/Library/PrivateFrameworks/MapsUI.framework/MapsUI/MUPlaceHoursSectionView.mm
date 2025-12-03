@@ -1,12 +1,12 @@
 @interface MUPlaceHoursSectionView
-- (MUPlaceHoursSectionView)initWithSectionViewConfiguration:(id)a3;
+- (MUPlaceHoursSectionView)initWithSectionViewConfiguration:(id)configuration;
 - (MUPlaceHoursSectionViewDelegate)expandDelegate;
 - (void)_performExpansion;
 - (void)_recalculateStackingIfNeeded;
 - (void)_setupViews;
-- (void)expandableHoursViewDidExpand:(id)a3;
+- (void)expandableHoursViewDidExpand:(id)expand;
 - (void)layoutSubviews;
-- (void)verticalCardContainerView:(id)a3 didSelectRow:(id)a4 atIndex:(unint64_t)a5;
+- (void)verticalCardContainerView:(id)view didSelectRow:(id)row atIndex:(unint64_t)index;
 @end
 
 @implementation MUPlaceHoursSectionView
@@ -18,19 +18,19 @@
   return WeakRetained;
 }
 
-- (void)expandableHoursViewDidExpand:(id)a3
+- (void)expandableHoursViewDidExpand:(id)expand
 {
-  v4 = a3;
-  v7 = [v4 hoursConfiguration];
-  v5 = [(MUPlaceHoursSectionView *)self expandDelegate];
-  v6 = [v4 isExpanded];
+  expandCopy = expand;
+  hoursConfiguration = [expandCopy hoursConfiguration];
+  expandDelegate = [(MUPlaceHoursSectionView *)self expandDelegate];
+  isExpanded = [expandCopy isExpanded];
 
-  [v5 hoursSectionView:self didExpand:v6 forConfiguration:v7];
+  [expandDelegate hoursSectionView:self didExpand:isExpanded forConfiguration:hoursConfiguration];
 }
 
-- (void)verticalCardContainerView:(id)a3 didSelectRow:(id)a4 atIndex:(unint64_t)a5
+- (void)verticalCardContainerView:(id)view didSelectRow:(id)row atIndex:(unint64_t)index
 {
-  if (self->_moreRowView == a4)
+  if (self->_moreRowView == row)
   {
     [(MUPlaceHoursSectionView *)self _performExpansion];
   }
@@ -198,13 +198,13 @@ void __44__MUPlaceHoursSectionView__performExpansion__block_invoke_2(uint64_t a1
 {
   v76[4] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(MUPlaceHoursSectionViewConfiguration *)self->_sectionViewConfiguration placeHours];
+  placeHours = [(MUPlaceHoursSectionViewConfiguration *)self->_sectionViewConfiguration placeHours];
 
   v69 = v3;
-  if (v4)
+  if (placeHours)
   {
-    v5 = [(MUPlaceHoursSectionViewConfiguration *)self->_sectionViewConfiguration placeHours];
-    v66 = [MUHoursSummaryViewModel viewModelForBusinessConfiguration:v5 showHoursAndOpenState:1];
+    placeHours2 = [(MUPlaceHoursSectionViewConfiguration *)self->_sectionViewConfiguration placeHours];
+    v66 = [MUHoursSummaryViewModel viewModelForBusinessConfiguration:placeHours2 showHoursAndOpenState:1];
 
     v6 = [[MUHoursSummaryView alloc] initWithViewModel:v66];
     [(MUHoursSummaryView *)v6 setDirectionalLayoutMargins:15.0, 20.0, 15.0, 20.0];
@@ -213,21 +213,21 @@ void __44__MUPlaceHoursSectionView__performExpansion__block_invoke_2(uint64_t a1
     [(MUHoursSummaryView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(MUPlaceSectionRowView *)v8 addSubview:v6];
     v54 = MEMORY[0x1E696ACD8];
-    v64 = [(MUHoursSummaryView *)v6 leadingAnchor];
-    v62 = [(MUPlaceSectionRowView *)v8 leadingAnchor];
-    v60 = [v64 constraintEqualToAnchor:v62];
+    leadingAnchor = [(MUHoursSummaryView *)v6 leadingAnchor];
+    leadingAnchor2 = [(MUPlaceSectionRowView *)v8 leadingAnchor];
+    v60 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v76[0] = v60;
-    v58 = [(MUHoursSummaryView *)v6 trailingAnchor];
-    v56 = [(MUPlaceSectionRowView *)v8 trailingAnchor];
-    v53 = [v58 constraintEqualToAnchor:v56];
+    trailingAnchor = [(MUHoursSummaryView *)v6 trailingAnchor];
+    trailingAnchor2 = [(MUPlaceSectionRowView *)v8 trailingAnchor];
+    v53 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v76[1] = v53;
-    v52 = [(MUHoursSummaryView *)v6 topAnchor];
-    v9 = [(MUPlaceSectionRowView *)v8 topAnchor];
-    v10 = [v52 constraintEqualToAnchor:v9];
+    topAnchor = [(MUHoursSummaryView *)v6 topAnchor];
+    topAnchor2 = [(MUPlaceSectionRowView *)v8 topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v76[2] = v10;
-    v11 = [(MUHoursSummaryView *)v6 bottomAnchor];
-    v12 = [(MUPlaceSectionRowView *)v8 bottomAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    bottomAnchor = [(MUHoursSummaryView *)v6 bottomAnchor];
+    bottomAnchor2 = [(MUPlaceSectionRowView *)v8 bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v76[3] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:4];
     [v54 activateConstraints:v14];
@@ -236,8 +236,8 @@ void __44__MUPlaceHoursSectionView__performExpansion__block_invoke_2(uint64_t a1
     if (([v66 openingHoursOptions] & 0x181) == 0)
     {
       v15 = [MUExpandableHoursView alloc];
-      v16 = [(MUPlaceHoursSectionViewConfiguration *)self->_sectionViewConfiguration placeHours];
-      v17 = [(MUExpandableHoursView *)v15 initWithBusinessHoursConfiguration:v16];
+      placeHours3 = [(MUPlaceHoursSectionViewConfiguration *)self->_sectionViewConfiguration placeHours];
+      v17 = [(MUExpandableHoursView *)v15 initWithBusinessHoursConfiguration:placeHours3];
 
       [(MUExpandableHoursView *)v17 setExpanded:1];
       [(MUExpandableHoursView *)v17 setDirectionalLayoutMargins:15.0, 20.0, 15.0, 20.0];
@@ -250,8 +250,8 @@ void __44__MUPlaceHoursSectionView__performExpansion__block_invoke_2(uint64_t a1
   v73 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v18 = [(MUPlaceHoursSectionViewConfiguration *)self->_sectionViewConfiguration serviceHoursList];
-  v19 = [v18 countByEnumeratingWithState:&v70 objects:v75 count:16];
+  serviceHoursList = [(MUPlaceHoursSectionViewConfiguration *)self->_sectionViewConfiguration serviceHoursList];
+  v19 = [serviceHoursList countByEnumeratingWithState:&v70 objects:v75 count:16];
   if (v19)
   {
     v20 = v19;
@@ -266,7 +266,7 @@ void __44__MUPlaceHoursSectionView__performExpansion__block_invoke_2(uint64_t a1
       {
         if (*v71 != v23)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(serviceHoursList);
         }
 
         v25 = [[MUExpandableHoursView alloc] initWithBusinessHoursConfiguration:*(*(&v70 + 1) + 8 * v24)];
@@ -286,7 +286,7 @@ void __44__MUPlaceHoursSectionView__performExpansion__block_invoke_2(uint64_t a1
 
       while (v20 != v24);
       v22 = v67 + v20;
-      v20 = [v18 countByEnumeratingWithState:&v70 objects:v75 count:16];
+      v20 = [serviceHoursList countByEnumeratingWithState:&v70 objects:v75 count:16];
     }
 
     while (v20);
@@ -298,11 +298,11 @@ void __44__MUPlaceHoursSectionView__performExpansion__block_invoke_2(uint64_t a1
   }
 
   v26 = v69;
-  v27 = [v69 lastObject];
-  v28 = v27;
-  if (v27)
+  lastObject = [v69 lastObject];
+  v28 = lastObject;
+  if (lastObject)
   {
-    [v27 directionalLayoutMargins];
+    [lastObject directionalLayoutMargins];
     [v28 setDirectionalLayoutMargins:?];
   }
 
@@ -333,21 +333,21 @@ void __44__MUPlaceHoursSectionView__performExpansion__block_invoke_2(uint64_t a1
     [(MUPlaceSectionRowView *)v37 setHandlesHighlighting:1];
     [(MUPlaceSectionRowView *)v37 addSubview:self->_moreLabel];
     v59 = MEMORY[0x1E696ACD8];
-    v55 = [(MULabelViewProtocol *)self->_moreLabel leadingAnchor];
-    v65 = [(MUPlaceSectionRowView *)v37 leadingAnchor];
-    v63 = [v55 constraintEqualToAnchor:v65 constant:20.0];
+    leadingAnchor3 = [(MULabelViewProtocol *)self->_moreLabel leadingAnchor];
+    leadingAnchor4 = [(MUPlaceSectionRowView *)v37 leadingAnchor];
+    v63 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:20.0];
     v74[0] = v63;
-    v61 = [(MULabelViewProtocol *)self->_moreLabel trailingAnchor];
-    v57 = [(MUPlaceSectionRowView *)v37 trailingAnchor];
-    v38 = [v61 constraintEqualToAnchor:v57 constant:-20.0];
+    trailingAnchor3 = [(MULabelViewProtocol *)self->_moreLabel trailingAnchor];
+    trailingAnchor4 = [(MUPlaceSectionRowView *)v37 trailingAnchor];
+    v38 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-20.0];
     v74[1] = v38;
-    v39 = [(MULabelViewProtocol *)self->_moreLabel topAnchor];
-    v40 = [(MUPlaceSectionRowView *)v37 topAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40 constant:8.0];
+    topAnchor3 = [(MULabelViewProtocol *)self->_moreLabel topAnchor];
+    topAnchor4 = [(MUPlaceSectionRowView *)v37 topAnchor];
+    v41 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:8.0];
     v74[2] = v41;
-    v42 = [(MULabelViewProtocol *)self->_moreLabel bottomAnchor];
-    v43 = [(MUPlaceSectionRowView *)v37 bottomAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    bottomAnchor3 = [(MULabelViewProtocol *)self->_moreLabel bottomAnchor];
+    bottomAnchor4 = [(MUPlaceSectionRowView *)v37 bottomAnchor];
+    v44 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v74[3] = v44;
     v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:4];
     [v59 activateConstraints:v45];
@@ -374,16 +374,16 @@ void __44__MUPlaceHoursSectionView__performExpansion__block_invoke_2(uint64_t a1
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (MUPlaceHoursSectionView)initWithSectionViewConfiguration:(id)a3
+- (MUPlaceHoursSectionView)initWithSectionViewConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = MUPlaceHoursSectionView;
   v6 = [(MUPlaceVerticalCardContainerView *)&v9 initWithShowsSeparators:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sectionViewConfiguration, a3);
+    objc_storeStrong(&v6->_sectionViewConfiguration, configuration);
     [(MUPlaceHoursSectionView *)v7 _setupViews];
     [(MUPlaceVerticalCardContainerView *)v7 setDelegate:v7];
   }

@@ -1,7 +1,7 @@
 @interface BTSFitTestWelcomeController
 - (BTSFitTestWelcomeController)init;
 - (void)continueToFitTest;
-- (void)deviceDisconnectedHandler:(id)a3;
+- (void)deviceDisconnectedHandler:(id)handler;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
@@ -18,11 +18,11 @@
   v6.receiver = self;
   v6.super_class = BTSFitTestWelcomeController;
   v2 = [(BTSFitTestWelcomeController *)&v6 init];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:v2 selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x277CF31A0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v2 selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x277CF31A0] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:v2 selector:sel_powerChangedHandler_ name:*MEMORY[0x277CF3168] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:v2 selector:sel_powerChangedHandler_ name:*MEMORY[0x277CF3168] object:0];
 
   return v2;
 }
@@ -32,9 +32,9 @@
   v5.receiver = self;
   v5.super_class = BTSFitTestWelcomeController;
   [(BTSFitTestWelcomeController *)&v5 viewDidLoad];
-  v3 = [(BTSFitTestWelcomeController *)self view];
-  v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(BTSFitTestWelcomeController *)self view];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 }
 
 - (void)loadView
@@ -45,11 +45,11 @@
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"FIT_TEST_WELCOME_DETAIL" value:&stru_286339F58 table:@"DeviceConfig"];
 
-  v5 = [(BTSFitTestWelcomeController *)self currentDevice];
-  v6 = [v5 classicDevice];
-  v7 = [v6 productId];
+  currentDevice = [(BTSFitTestWelcomeController *)self currentDevice];
+  classicDevice = [currentDevice classicDevice];
+  productId = [classicDevice productId];
 
-  if (v7 == 8210)
+  if (productId == 8210)
   {
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"FIT_TEST_WELCOME_DETAIL" value:&stru_286339F58 table:@"DeviceConfig-B494"];
@@ -57,11 +57,11 @@
     v4 = v9;
   }
 
-  v10 = [(BTSFitTestWelcomeController *)self currentDevice];
-  v11 = [v10 classicDevice];
-  v12 = [v11 productId];
+  currentDevice2 = [(BTSFitTestWelcomeController *)self currentDevice];
+  classicDevice2 = [currentDevice2 classicDevice];
+  productId2 = [classicDevice2 productId];
 
-  if (v12 == 8239)
+  if (productId2 == 8239)
   {
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v14 = [v13 localizedStringForKey:@"FIT_TEST_WELCOME_DETAIL" value:&stru_286339F58 table:@"DeviceConfig-B494b"];
@@ -69,11 +69,11 @@
     v4 = v14;
   }
 
-  v15 = [(BTSFitTestWelcomeController *)self currentDevice];
-  v16 = [v15 classicDevice];
-  v17 = [v16 productId];
+  currentDevice3 = [(BTSFitTestWelcomeController *)self currentDevice];
+  classicDevice3 = [currentDevice3 classicDevice];
+  productId3 = [classicDevice3 productId];
 
-  if (v17 == 8221)
+  if (productId3 == 8221)
   {
     v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v19 = [v18 localizedStringForKey:@"FIT_TEST_WELCOME_DETAIL" value:&stru_286339F58 table:@"DeviceConfig-B498-v2"];
@@ -87,22 +87,22 @@
   v22 = [v21 localizedStringForKey:@"FIT_TEST_WELCOME_HEADER" value:? table:?];
   v23 = [v20 initWithTitle:v22 detailText:v4 icon:0];
 
-  v24 = [(BTSFitTestWelcomeController *)self view];
-  [v24 bounds];
+  view = [(BTSFitTestWelcomeController *)self view];
+  [view bounds];
   v26 = v25;
   v28 = v27;
   v30 = v29;
   v32 = v31;
-  v33 = [v23 view];
-  [v33 setFrame:{v26, v28, v30, v32}];
+  view2 = [v23 view];
+  [view2 setFrame:{v26, v28, v30, v32}];
 
-  v34 = [v23 view];
-  [v34 setAutoresizingMask:18];
+  view3 = [v23 view];
+  [view3 setAutoresizingMask:18];
 
-  v35 = [(BTSFitTestWelcomeController *)self traitCollection];
-  v36 = [v35 userInterfaceStyle];
+  traitCollection = [(BTSFitTestWelcomeController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v36 == 2)
+  if (userInterfaceStyle == 2)
   {
     v37 = "dark";
   }
@@ -134,48 +134,48 @@
   v51 = [v50 localizedStringForKey:@"FIT_TEST_WELCOME_BULLET2_DETAIL" value:&stru_286339F58 table:@"DeviceConfig"];
   [v23 addBulletedListItemWithTitle:v49 description:v51 image:v47];
 
-  v52 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v53 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v54 = [v53 localizedStringForKey:@"CONTINUE" value:&stru_286339F58 table:@"DeviceConfig"];
-  [v52 setTitle:v54 forState:0];
+  [boldButton setTitle:v54 forState:0];
 
-  [v52 addTarget:self action:sel_continueToFitTest forControlEvents:64];
-  v55 = [v23 buttonTray];
-  [v55 addButton:v52];
+  [boldButton addTarget:self action:sel_continueToFitTest forControlEvents:64];
+  buttonTray = [v23 buttonTray];
+  [buttonTray addButton:boldButton];
 
   [(BTSFitTestWelcomeController *)self addChildViewController:v23];
-  v56 = [(BTSFitTestWelcomeController *)self view];
-  v57 = [v23 view];
-  [v56 addSubview:v57];
+  view4 = [(BTSFitTestWelcomeController *)self view];
+  view5 = [v23 view];
+  [view4 addSubview:view5];
 }
 
 - (void)continueToFitTest
 {
   v11 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelFitTest];
   v3 = [BTSFitTestController alloc];
-  v4 = [(BTSFitTestWelcomeController *)self currentDevice];
-  v5 = [v4 classicDevice];
-  v6 = [(BTSFitTestController *)v3 initWithDevice:v5];
+  currentDevice = [(BTSFitTestWelcomeController *)self currentDevice];
+  classicDevice = [currentDevice classicDevice];
+  v6 = [(BTSFitTestController *)v3 initWithDevice:classicDevice];
 
-  v7 = [(BTSFitTestController *)v6 navigationItem];
-  [v7 setLeftBarButtonItem:v11];
+  navigationItem = [(BTSFitTestController *)v6 navigationItem];
+  [navigationItem setLeftBarButtonItem:v11];
 
-  v8 = [(BTSFitTestController *)v6 navigationController];
-  v9 = [v8 navigationItem];
-  [v9 setHidesBackButton:1];
+  navigationController = [(BTSFitTestController *)v6 navigationController];
+  navigationItem2 = [navigationController navigationItem];
+  [navigationItem2 setHidesBackButton:1];
 
-  v10 = [(BTSFitTestWelcomeController *)self navigationController];
-  [v10 pushViewController:v6 animated:1];
+  navigationController2 = [(BTSFitTestWelcomeController *)self navigationController];
+  [navigationController2 pushViewController:v6 animated:1];
 }
 
-- (void)deviceDisconnectedHandler:(id)a3
+- (void)deviceDisconnectedHandler:(id)handler
 {
-  v7 = [a3 object];
-  v4 = [v7 address];
-  v5 = [(BTSFitTestWelcomeController *)self currentDevice];
-  v6 = [v5 identifier];
+  object = [handler object];
+  address = [object address];
+  currentDevice = [(BTSFitTestWelcomeController *)self currentDevice];
+  identifier = [currentDevice identifier];
 
-  if (v4 == v6)
+  if (address == identifier)
   {
     [(BTSFitTestWelcomeController *)self cancelFitTest];
   }

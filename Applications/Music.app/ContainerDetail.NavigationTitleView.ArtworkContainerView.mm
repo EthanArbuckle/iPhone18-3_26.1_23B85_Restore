@@ -1,7 +1,7 @@
 @interface ContainerDetail.NavigationTitleView.ArtworkContainerView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtCCV5Music15ContainerDetail19NavigationTitleViewP33_43996391452D1F881F8D9F2EF57B4A6820ArtworkContainerView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtCCV5Music15ContainerDetail19NavigationTitleViewP33_43996391452D1F881F8D9F2EF57B4A6820ArtworkContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -31,15 +31,15 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(ContainerDetail.NavigationTitleView.ArtworkContainerView *)self intrinsicContentSize:a3.width];
+  [(ContainerDetail.NavigationTitleView.ArtworkContainerView *)self intrinsicContentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (_TtCCV5Music15ContainerDetail19NavigationTitleViewP33_43996391452D1F881F8D9F2EF57B4A6820ArtworkContainerView)initWithFrame:(CGRect)a3
+- (_TtCCV5Music15ContainerDetail19NavigationTitleViewP33_43996391452D1F881F8D9F2EF57B4A6820ArtworkContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,6 +1,6 @@
 @interface CountDown
 - (CountDown)init;
-- (void)goOffNext:(unint64_t)a3 fromTime:(id)a4 forEpoch:(id)a5 timesTotal:(unint64_t)a6 onQueue:(id)a7 withIterationBlock:(id)a8 completionBlock:(id)a9;
+- (void)goOffNext:(unint64_t)next fromTime:(id)time forEpoch:(id)epoch timesTotal:(unint64_t)total onQueue:(id)queue withIterationBlock:(id)block completionBlock:(id)completionBlock;
 - (void)stop;
 @end
 
@@ -24,31 +24,31 @@
   return v5;
 }
 
-- (void)goOffNext:(unint64_t)a3 fromTime:(id)a4 forEpoch:(id)a5 timesTotal:(unint64_t)a6 onQueue:(id)a7 withIterationBlock:(id)a8 completionBlock:(id)a9
+- (void)goOffNext:(unint64_t)next fromTime:(id)time forEpoch:(id)epoch timesTotal:(unint64_t)total onQueue:(id)queue withIterationBlock:(id)block completionBlock:(id)completionBlock
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  objc_storeStrong(&self->_startTime, a4);
+  timeCopy = time;
+  epochCopy = epoch;
+  queueCopy = queue;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  objc_storeStrong(&self->_startTime, time);
   timer = self->timer;
-  if (v19)
+  if (blockCopy)
   {
-    v22 = dispatch_time(0, a3);
-    dispatch_source_set_timer(timer, v22, a3, 0);
+    v22 = dispatch_time(0, next);
+    dispatch_source_set_timer(timer, v22, next, 0);
     v23 = self->timer;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __95__CountDown_goOffNext_fromTime_forEpoch_timesTotal_onQueue_withIterationBlock_completionBlock___block_invoke;
     handler[3] = &unk_27898FD88;
     v24 = v33;
-    v33[0] = v18;
+    v33[0] = queueCopy;
     v33[1] = self;
-    v34 = v17;
-    v37 = a6;
-    v35 = v19;
-    v36 = v20;
+    v34 = epochCopy;
+    totalCopy = total;
+    v35 = blockCopy;
+    v36 = completionBlockCopy;
     dispatch_source_set_event_handler(v23, handler);
 
     v25 = v34;
@@ -56,7 +56,7 @@
 
   else
   {
-    v26 = dispatch_time(0, a6 * a3);
+    v26 = dispatch_time(0, total * next);
     dispatch_source_set_timer(timer, v26, 0xFFFFFFFFFFFFFFFFLL, 0);
     v27 = self->timer;
     v28[0] = MEMORY[0x277D85DD0];
@@ -64,9 +64,9 @@
     v28[2] = __95__CountDown_goOffNext_fromTime_forEpoch_timesTotal_onQueue_withIterationBlock_completionBlock___block_invoke_65;
     v28[3] = &unk_27898C710;
     v24 = &v29;
-    v29 = v18;
-    v30 = v17;
-    v31 = v20;
+    v29 = queueCopy;
+    v30 = epochCopy;
+    v31 = completionBlockCopy;
     dispatch_source_set_event_handler(v27, v28);
 
     v25 = v30;

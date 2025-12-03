@@ -1,56 +1,56 @@
 @interface VCPVideoFullFaceDetector
-- (BOOL)compareFace:(id)a3 withFace:(id)a4;
-- (VCPVideoFullFaceDetector)initWithTransform:(CGAffineTransform *)a3;
-- (VCPVideoFullFaceDetector)initWithTransform:(CGAffineTransform *)a3 withExistingFaceprints:(id)a4;
+- (BOOL)compareFace:(id)face withFace:(id)withFace;
+- (VCPVideoFullFaceDetector)initWithTransform:(CGAffineTransform *)transform;
+- (VCPVideoFullFaceDetector)initWithTransform:(CGAffineTransform *)transform withExistingFaceprints:(id)faceprints;
 - (id)frameFaceResults;
-- (int)analyzeFrame:(__CVBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5 frameStats:(id)a6 flags:(unint64_t *)a7;
+- (int)analyzeFrame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration frameStats:(id)stats flags:(unint64_t *)flags;
 - (int)clusterFaces;
-- (int)detectFaces:(__CVBuffer *)a3 faces:(id)a4 torsos:(id)a5 frameStats:(id)a6;
-- (int)detectTrackFacesInFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 faces:(id)a5 torsos:(id)a6 frameStats:(id)a7;
-- (int)finishAnalysisPass:(id *)a3;
+- (int)detectFaces:(__CVBuffer *)faces faces:(id)a4 torsos:(id)torsos frameStats:(id)stats;
+- (int)detectTrackFacesInFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp faces:(id)faces torsos:(id)torsos frameStats:(id)stats;
+- (int)finishAnalysisPass:(id *)pass;
 - (int)updateWithExistingFaces;
 - (void)removeSmallestKeyFace;
 @end
 
 @implementation VCPVideoFullFaceDetector
 
-- (VCPVideoFullFaceDetector)initWithTransform:(CGAffineTransform *)a3
+- (VCPVideoFullFaceDetector)initWithTransform:(CGAffineTransform *)transform
 {
   v11.receiver = self;
   v11.super_class = VCPVideoFullFaceDetector;
   v4 = [(VCPVideoFullFaceDetector *)&v11 init];
-  v5 = *&a3->c;
-  v10[0] = *&a3->a;
+  v5 = *&transform->c;
+  v10[0] = *&transform->a;
   v10[1] = v5;
-  v10[2] = *&a3->tx;
+  v10[2] = *&transform->tx;
   v6 = [(VCPVideoFullFaceDetector *)v4 initWithTransform:v10 withExistingFaceprints:0];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     frameFaceResults = v6->_frameFaceResults;
-    v6->_frameFaceResults = v7;
+    v6->_frameFaceResults = array;
   }
 
   return v6;
 }
 
-- (VCPVideoFullFaceDetector)initWithTransform:(CGAffineTransform *)a3 withExistingFaceprints:(id)a4
+- (VCPVideoFullFaceDetector)initWithTransform:(CGAffineTransform *)transform withExistingFaceprints:(id)faceprints
 {
   v59 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  faceprintsCopy = faceprints;
   v51.receiver = self;
   v51.super_class = VCPVideoFullFaceDetector;
   v8 = [(VCPVideoFullFaceDetector *)&v51 init];
   if (v8)
   {
-    v9 = *&a3->c;
-    *buf = *&a3->a;
+    v9 = *&transform->c;
+    *buf = *&transform->a;
     v57 = v9;
-    v58 = *&a3->tx;
+    v58 = *&transform->tx;
     *(v8 + 2) = angleForTransform(buf);
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v11 = *(v8 + 5);
-    *(v8 + 5) = v10;
+    *(v8 + 5) = dictionary;
 
     v12 = MEMORY[0x1E6960C80];
     v13 = *(MEMORY[0x1E6960C80] + 16);
@@ -63,38 +63,38 @@
     *(v8 + 6) = 0;
 
     *(v8 + 14) = 31;
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v17 = *(v8 + 15);
-    *(v8 + 15) = v16;
+    *(v8 + 15) = dictionary2;
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     v19 = *(v8 + 16);
-    *(v8 + 16) = v18;
+    *(v8 + 16) = dictionary3;
 
-    v20 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = *(v8 + 18);
-    *(v8 + 18) = v20;
+    *(v8 + 18) = array;
 
-    v22 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     v23 = *(v8 + 19);
-    *(v8 + 19) = v22;
+    *(v8 + 19) = dictionary4;
 
-    v24 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary5 = [MEMORY[0x1E695DF90] dictionary];
     v25 = *(v8 + 20);
-    *(v8 + 20) = v24;
+    *(v8 + 20) = dictionary5;
 
-    v26 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v27 = *(v8 + 21);
-    *(v8 + 21) = v26;
+    *(v8 + 21) = array2;
 
-    v28 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v29 = *(v8 + 17);
-    *(v8 + 17) = v28;
+    *(v8 + 17) = array3;
 
-    objc_storeStrong(v8 + 10, a4);
-    v30 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(v8 + 10, faceprints);
+    dictionary6 = [MEMORY[0x1E695DF90] dictionary];
     v31 = *(v8 + 22);
-    *(v8 + 22) = v30;
+    *(v8 + 22) = dictionary6;
 
     *(v8 + 22) = 0;
     v32 = *(v8 + 23);
@@ -137,9 +137,9 @@
 
     v37 = v36;
     _Block_object_dispose(&v52, 8);
-    v38 = [v36 photos];
+    photos = [v36 photos];
     v50 = 0;
-    v39 = [v35 initWithClient:v38 error:&v50];
+    v39 = [v35 initWithClient:photos error:&v50];
     v40 = v50;
     v41 = *(v8 + 24);
     *(v8 + 24) = v39;
@@ -193,19 +193,19 @@
   return v47;
 }
 
-- (int)detectFaces:(__CVBuffer *)a3 faces:(id)a4 torsos:(id)a5 frameStats:(id)a6
+- (int)detectFaces:(__CVBuffer *)faces faces:(id)a4 torsos:(id)torsos frameStats:(id)stats
 {
   v121 = *MEMORY[0x1E69E9840];
   v91 = a4;
-  v96 = a5;
-  v94 = a6;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  torsosCopy = torsos;
+  statsCopy = stats;
+  Width = CVPixelBufferGetWidth(faces);
+  Height = CVPixelBufferGetHeight(faces);
   context = objc_autoreleasePoolPush();
-  v90 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = objc_alloc(MEMORY[0x1E69845B8]);
-  v93 = [v10 initWithCVPixelBuffer:a3 options:MEMORY[0x1E695E0F8]];
-  v95 = [MEMORY[0x1E695DF70] array];
+  v93 = [v10 initWithCVPixelBuffer:faces options:MEMORY[0x1E695E0F8]];
+  array2 = [MEMORY[0x1E695DF70] array];
   v11 = VCPSignPostLog();
   v12 = os_signpost_id_generate(v11);
 
@@ -230,7 +230,7 @@
 
   if (v16)
   {
-    [v95 addObject:v16];
+    [array2 addObject:v16];
   }
 
   v115 = 0;
@@ -246,11 +246,11 @@
   {
     if (v19)
     {
-      [v95 addObject:v19];
+      [array2 addObject:v19];
     }
 
     v114 = 0;
-    v20 = [v93 performRequests:v95 error:&v114];
+    v20 = [v93 performRequests:array2 error:&v114];
     v17 = v114;
     if (v20)
     {
@@ -262,7 +262,7 @@
         _os_signpost_emit_with_name_impl(&dword_1C9B70000, v22, OS_SIGNPOST_INTERVAL_END, v12, "VCPVideoFullFaceDetectorFaceHumanDetection", "", &buf, 2u);
       }
 
-      [v95 removeAllObjects];
+      [array2 removeAllObjects];
       v23 = VCPSignPostLog();
       spid = os_signpost_id_generate(v23);
 
@@ -284,12 +284,12 @@
 
       else
       {
-        v27 = [v92 results];
-        [v82 setInputFaceObservations:v27];
+        results = [v92 results];
+        [v82 setInputFaceObservations:results];
 
         if (v82)
         {
-          [v95 addObject:v82];
+          [array2 addObject:v82];
         }
 
         v112 = 0;
@@ -302,17 +302,17 @@
 
         else
         {
-          v29 = [v83 results];
+          results2 = [v83 results];
           v81 = v28;
-          [v28 setInputDetectedObjectObservations:v29];
+          [v28 setInputDetectedObjectObservations:results2];
 
           if (v28)
           {
-            [v95 addObject:v28];
+            [array2 addObject:v28];
           }
 
           v111 = v17;
-          v30 = [v93 performRequests:v95 error:&v111];
+          v30 = [v93 performRequests:array2 error:&v111];
           v79 = v111;
 
           if (v30)
@@ -325,13 +325,13 @@
               _os_signpost_emit_with_name_impl(&dword_1C9B70000, v32, OS_SIGNPOST_INTERVAL_END, spid, "VCPVideoFullFaceDetectorFaceTorsoprint", "", &buf, 2u);
             }
 
-            v33 = [v82 results];
-            v34 = v33 == 0;
+            results3 = [v82 results];
+            v34 = results3 == 0;
 
             if (!v34)
             {
-              v35 = [v82 results];
-              [v90 addObjectsFromArray:v35];
+              results4 = [v82 results];
+              [array addObjectsFromArray:results4];
             }
 
             spida = [MEMORY[0x1E695DF90] dictionary];
@@ -339,8 +339,8 @@
             v110 = 0u;
             v107 = 0u;
             v108 = 0u;
-            v36 = [v28 results];
-            v37 = [v36 countByEnumeratingWithState:&v107 objects:v120 count:16];
+            results5 = [v28 results];
+            v37 = [results5 countByEnumeratingWithState:&v107 objects:v120 count:16];
             if (v37)
             {
               v38 = *v108;
@@ -350,24 +350,24 @@
                 {
                   if (*v108 != v38)
                   {
-                    objc_enumerationMutation(v36);
+                    objc_enumerationMutation(results5);
                   }
 
                   v40 = *(*(&v107 + 1) + 8 * i);
                   v41 = objc_autoreleasePoolPush();
-                  v42 = [v40 groupId];
-                  v43 = v42 == 0;
+                  groupId = [v40 groupId];
+                  v43 = groupId == 0;
 
                   if (!v43)
                   {
-                    v44 = [v40 groupId];
-                    [spida setObject:v40 forKeyedSubscript:v44];
+                    groupId2 = [v40 groupId];
+                    [spida setObject:v40 forKeyedSubscript:groupId2];
                   }
 
                   objc_autoreleasePoolPop(v41);
                 }
 
-                v37 = [v36 countByEnumeratingWithState:&v107 objects:v120 count:16];
+                v37 = [results5 countByEnumeratingWithState:&v107 objects:v120 count:16];
               }
 
               while (v37);
@@ -378,7 +378,7 @@
             v103 = 0u;
             v104 = 0u;
             v105 = 0u;
-            v45 = v90;
+            v45 = array;
             v15 = 0;
             v46 = [v45 countByEnumeratingWithState:&v102 objects:v119 count:16];
             if (v46)
@@ -419,7 +419,7 @@ LABEL_54:
                 v56 = v123.size.width;
                 v57 = v123.size.height;
                 v101 = 0;
-                v58 = [(VCPCNNSmileDetector *)self->_smileDetector detectSmileForFace:a3 inBuffer:&v101 smile:?];
+                v58 = [(VCPCNNSmileDetector *)self->_smileDetector detectSmileForFace:faces inBuffer:&v101 smile:?];
                 if (v58)
                 {
                   LODWORD(v18) = 4;
@@ -429,7 +429,7 @@ LABEL_54:
                 else
                 {
                   buf.a = 0.0;
-                  v59 = [(VCPCNNPoseEstimator *)self->_poseEstimator detectPoseForFace:a3 inBuffer:&buf yaw:x, y, v56, v57];
+                  v59 = [(VCPCNNPoseEstimator *)self->_poseEstimator detectPoseForFace:faces inBuffer:&buf yaw:x, y, v56, v57];
                   if (v59)
                   {
                     v15 = v59;
@@ -446,27 +446,27 @@ LABEL_54:
                     [(VCPFace *)v80 setConfidence:v60];
                     [(VCPFace *)v80 setObservation:v52];
                     [v91 addObject:v80];
-                    v61 = [v52 groupId];
-                    if (v61)
+                    groupId3 = [v52 groupId];
+                    if (groupId3)
                     {
-                      v62 = [v52 groupId];
-                      v63 = [spida objectForKeyedSubscript:v62];
+                      groupId4 = [v52 groupId];
+                      v63 = [spida objectForKeyedSubscript:groupId4];
                       v64 = v63 == 0;
 
                       if (!v64)
                       {
-                        v65 = [v52 groupId];
-                        v66 = [spida objectForKeyedSubscript:v65];
-                        v67 = [v66 torsoprint];
-                        [v52 setTorsoprint:v67];
+                        groupId5 = [v52 groupId];
+                        v66 = [spida objectForKeyedSubscript:groupId5];
+                        torsoprint = [v66 torsoprint];
+                        [v52 setTorsoprint:torsoprint];
 
-                        v68 = [v52 groupId];
-                        v69 = [spida objectForKeyedSubscript:v68];
+                        groupId6 = [v52 groupId];
+                        v69 = [spida objectForKeyedSubscript:groupId6];
                         [v69 boundingBox];
                         [(VCPFace *)v80 setTorsoBounds:?];
 
-                        v70 = [v52 groupId];
-                        [spida removeObjectForKey:v70];
+                        groupId7 = [v52 groupId];
+                        [spida removeObjectForKey:groupId7];
                       }
                     }
 
@@ -519,12 +519,12 @@ LABEL_71:
                     v74 = objc_autoreleasePoolPush();
                     v75 = [v45 objectForKeyedSubscript:v73];
                     v76 = objc_alloc_init(VCPHuman);
-                    v77 = [v75 torsoprint];
-                    [(VCPHuman *)v76 setTorsoprint:v77];
+                    torsoprint2 = [v75 torsoprint];
+                    [(VCPHuman *)v76 setTorsoprint:torsoprint2];
 
                     [v75 boundingBox];
                     [(VCPHuman *)v76 setBounds:?];
-                    [v96 addObject:v76];
+                    [torsosCopy addObject:v76];
 
                     objc_autoreleasePoolPop(v74);
                   }
@@ -561,7 +561,7 @@ LABEL_24:
   objc_autoreleasePoolPop(context);
   if (v18 != 4)
   {
-    [v94 setFrameProcessedByFaceDetector:1];
+    [statsCopy setFrameProcessedByFaceDetector:1];
   }
 
   if (v15 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -618,20 +618,20 @@ void __49__VCPVideoFullFaceDetector_removeSmallestKeyFace__block_invoke(uint64_t
   }
 }
 
-- (BOOL)compareFace:(id)a3 withFace:(id)a4
+- (BOOL)compareFace:(id)face withFace:(id)withFace
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  faceCopy = face;
+  withFaceCopy = withFace;
+  v7 = withFaceCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (faceCopy && withFaceCopy)
   {
-    v9 = [v5 yaw];
+    v9 = [faceCopy yaw];
     if (v9 == [v7 yaw])
     {
-      [v5 bounds];
+      [faceCopy bounds];
       v11 = v10;
-      [v5 bounds];
+      [faceCopy bounds];
       v13 = v12;
       [v7 bounds];
       v15 = v14;
@@ -641,72 +641,72 @@ void __49__VCPVideoFullFaceDetector_removeSmallestKeyFace__block_invoke(uint64_t
 
     else
     {
-      v8 = fabs(([v5 yaw] - 2)) > fabs((objc_msgSend(v7, "yaw") - 2));
+      v8 = fabs(([faceCopy yaw] - 2)) > fabs((objc_msgSend(v7, "yaw") - 2));
     }
   }
 
   return v8;
 }
 
-- (int)detectTrackFacesInFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 faces:(id)a5 torsos:(id)a6 frameStats:(id)a7
+- (int)detectTrackFacesInFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp faces:(id)faces torsos:(id)torsos frameStats:(id)stats
 {
   v127 = *MEMORY[0x1E69E9840];
-  v93 = a5;
-  v11 = a6;
-  v100 = a7;
-  v89 = v11;
-  v91 = [MEMORY[0x1E695DF70] array];
-  v12 = [MEMORY[0x1E695DF70] array];
+  facesCopy = faces;
+  torsosCopy = torsos;
+  statsCopy = stats;
+  v89 = torsosCopy;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   faceTrackers = self->_faceTrackers;
   v117[0] = MEMORY[0x1E69E9820];
   v117[1] = 3221225472;
   v117[2] = __90__VCPVideoFullFaceDetector_detectTrackFacesInFrame_withTimestamp_faces_torsos_frameStats___block_invoke;
   v117[3] = &unk_1E834C280;
-  v121 = *&a4->var0;
-  var3 = a4->var3;
-  v120 = a3;
+  v121 = *&timestamp->var0;
+  var3 = timestamp->var3;
+  frameCopy = frame;
   v122 = var3;
-  v15 = self;
-  v16 = v12;
+  selfCopy = self;
+  v16 = array2;
   v118 = v16;
-  v95 = v91;
+  v95 = array;
   v119 = v95;
   v90 = v16;
   [(NSMutableDictionary *)faceTrackers enumerateKeysAndObjectsUsingBlock:v117];
-  [(NSMutableDictionary *)v15->_faceTrackers removeObjectsForKeys:v16];
-  p_isa = &v15->super.super.super.isa;
-  v18 = a4->var3;
-  *(&v15->_latestFrameArea + 1) = *&a4->var0;
-  *&v15->_timeLastTracking.flags = v18;
-  lhs = *a4;
-  *&rhs.value = *(&v15->super._angle + 1);
-  v88 = &v15->super._angle + 1;
-  rhs.epoch = *&v15->super._timeLastDetection.flags;
+  [(NSMutableDictionary *)selfCopy->_faceTrackers removeObjectsForKeys:v16];
+  p_isa = &selfCopy->super.super.super.isa;
+  v18 = timestamp->var3;
+  *(&selfCopy->_latestFrameArea + 1) = *&timestamp->var0;
+  *&selfCopy->_timeLastTracking.flags = v18;
+  lhs = *timestamp;
+  *&rhs.value = *(&selfCopy->super._angle + 1);
+  v88 = &selfCopy->super._angle + 1;
+  rhs.epoch = *&selfCopy->super._timeLastDetection.flags;
   CMTimeSubtract(&time, &lhs, &rhs);
   Seconds = CMTimeGetSeconds(&time);
-  [(VCPVideoFullFaceDetector *)v15 minProcessTimeIntervalInSecs];
+  [(VCPVideoFullFaceDetector *)selfCopy minProcessTimeIntervalInSecs];
   if (Seconds < v20)
   {
-    [v93 addObjectsFromArray:v95];
+    [facesCopy addObjectsFromArray:v95];
     v21 = 0;
     goto LABEL_45;
   }
 
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
-  v21 = [p_isa detectFaces:a3 faces:v93 torsos:v11 frameStats:v100];
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(frame, 0);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(frame, 0);
+  v21 = [p_isa detectFaces:frame faces:facesCopy torsos:torsosCopy frameStats:statsCopy];
   if (v21)
   {
     goto LABEL_45;
   }
 
   v96 = p_isa;
-  v92 = a3;
+  frameCopy2 = frame;
   v114 = 0u;
   v115 = 0u;
   v112 = 0u;
   v113 = 0u;
-  obj = v93;
+  obj = facesCopy;
   v24 = [obj countByEnumeratingWithState:&v112 objects:v126 count:16];
   if (v24)
   {
@@ -730,8 +730,8 @@ void __49__VCPVideoFullFaceDetector_removeSmallestKeyFace__block_invoke(uint64_t
         v111 = 0x3FF0000000000000;
         [v27 faceBoundsWithTransform:WidthOfPlane height:HeightOfPlane transform:&lhs];
         [(VCPFace *)v29 setBounds:?];
-        v30 = [v100 detectedFaces];
-        [v30 addObject:v29];
+        detectedFaces = [statsCopy detectedFaces];
+        [detectedFaces addObject:v29];
 
         objc_autoreleasePoolPop(v28);
       }
@@ -749,9 +749,9 @@ void __49__VCPVideoFullFaceDetector_removeSmallestKeyFace__block_invoke(uint64_t
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v32 = [obj reverseObjectEnumerator];
-  v99 = v32;
-  v33 = [v32 countByEnumeratingWithState:&v105 objects:v125 count:16];
+  reverseObjectEnumerator = [obj reverseObjectEnumerator];
+  v99 = reverseObjectEnumerator;
+  v33 = [reverseObjectEnumerator countByEnumeratingWithState:&v105 objects:v125 count:16];
   if (v33)
   {
     obja = *v106;
@@ -761,7 +761,7 @@ LABEL_13:
     {
       if (*v106 != obja)
       {
-        objc_enumerationMutation(v32);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v35 = *(*(&v105 + 1) + 8 * v34);
@@ -870,8 +870,8 @@ LABEL_36:
       {
         v81 = [VCPVideoObjectTracker alloc];
         [v35 bounds];
-        lhs = *a4;
-        v82 = [(VCPVideoObjectTracker *)v81 initWithObjectBounds:v92 inFrame:&lhs timestamp:?];
+        lhs = *timestamp;
+        v82 = [(VCPVideoObjectTracker *)v81 initWithObjectBounds:frameCopy2 inFrame:&lhs timestamp:?];
         if (!v82)
         {
 
@@ -885,7 +885,7 @@ LABEL_36:
       }
 
       ++v34;
-      v32 = v99;
+      reverseObjectEnumerator = v99;
       if (v34 == v33)
       {
         v33 = [v99 countByEnumeratingWithState:&v105 objects:v125 count:16];
@@ -928,8 +928,8 @@ LABEL_32:
 LABEL_42:
 
   v21 = 0;
-  v86 = *&a4->var0;
-  *(v88 + 2) = a4->var3;
+  v86 = *&timestamp->var0;
+  *(v88 + 2) = timestamp->var3;
   *v88 = v86;
 LABEL_44:
 
@@ -1003,34 +1003,34 @@ uint64_t __90__VCPVideoFullFaceDetector_detectTrackFacesInFrame_withTimestamp_fa
   return v15;
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 timestamp:(id *)a4 duration:(id *)a5 frameStats:(id)a6 flags:(unint64_t *)a7
+- (int)analyzeFrame:(__CVBuffer *)frame timestamp:(id *)timestamp duration:(id *)duration frameStats:(id)stats flags:(unint64_t *)flags
 {
   v101 = *MEMORY[0x1E69E9840];
-  v69 = a6;
+  statsCopy = stats;
   if (!self->super._results)
   {
-    v78 = a4;
-    v70 = a5;
-    v72 = a7;
-    if (CVPixelBufferGetPixelFormatType(a3) != 875704438 && CVPixelBufferGetPixelFormatType(a3) != 875704422)
+    timestampCopy = timestamp;
+    durationCopy = duration;
+    flagsCopy = flags;
+    if (CVPixelBufferGetPixelFormatType(frame) != 875704438 && CVPixelBufferGetPixelFormatType(frame) != 875704422)
     {
       v12 = -50;
       goto LABEL_3;
     }
 
-    v13 = [v69 detectedFaces];
-    [v13 removeAllObjects];
+    detectedFaces = [statsCopy detectedFaces];
+    [detectedFaces removeAllObjects];
 
-    [v69 setFrameProcessedByFaceDetector:0];
-    *&lhs.start.value = *&a4->var0;
-    lhs.start.epoch = a4->var3;
+    [statsCopy setFrameProcessedByFaceDetector:0];
+    *&lhs.start.value = *&timestamp->var0;
+    lhs.start.epoch = timestamp->var3;
     rhs.origin = *(&self->_latestFrameArea + 1);
     rhs.size.width = *&self->_timeLastTracking.flags;
     CMTimeSubtract(&time, &lhs.start, &rhs);
     if (CMTimeGetSeconds(&time) < 0.0599999987)
     {
-      *&lhs.start.value = *&a4->var0;
-      lhs.start.epoch = a4->var3;
+      *&lhs.start.value = *&timestamp->var0;
+      lhs.start.epoch = timestamp->var3;
       rhs.origin = *(&self->super._angle + 1);
       rhs.size.width = *&self->super._timeLastDetection.flags;
       CMTimeSubtract(&time, &lhs.start, &rhs);
@@ -1040,7 +1040,7 @@ uint64_t __90__VCPVideoFullFaceDetector_detectTrackFacesInFrame_withTimestamp_fa
       if (Seconds < v16)
       {
         *&v16 = self->_latestFrameArea;
-        [v69 setFaceArea:v16];
+        [statsCopy setFaceArea:v16];
         v68 = 0;
         goto LABEL_66;
       }
@@ -1053,12 +1053,12 @@ uint64_t __90__VCPVideoFullFaceDetector_detectTrackFacesInFrame_withTimestamp_fa
     }
 
     context = objc_autoreleasePoolPush();
-    v67 = [MEMORY[0x1E695DF70] array];
-    v18 = [MEMORY[0x1E695DF70] array];
-    *&lhs.start.value = *&a4->var0;
-    lhs.start.epoch = a4->var3;
-    v66 = v18;
-    v68 = [VCPVideoFullFaceDetector detectTrackFacesInFrame:"detectTrackFacesInFrame:withTimestamp:faces:torsos:frameStats:" withTimestamp:a3 faces:&lhs torsos:v67 frameStats:?];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    *&lhs.start.value = *&timestamp->var0;
+    lhs.start.epoch = timestamp->var3;
+    v66 = array2;
+    v68 = [VCPVideoFullFaceDetector detectTrackFacesInFrame:"detectTrackFacesInFrame:withTimestamp:faces:torsos:frameStats:" withTimestamp:frame faces:&lhs torsos:array frameStats:?];
     if (!v68)
     {
       v92 = 0u;
@@ -1080,8 +1080,8 @@ uint64_t __90__VCPVideoFullFaceDetector_detectTrackFacesInFrame_withTimestamp_fa
             }
 
             v23 = *(*(&v90 + 1) + 8 * i);
-            *&lhs.start.value = *&v78->var0;
-            lhs.start.epoch = v78->var3;
+            *&lhs.start.value = *&timestampCopy->var0;
+            lhs.start.epoch = timestampCopy->var3;
             [(VCPVideoFullFaceDetector *)self minProcessTimeIntervalInSecs];
             CMTimeMake(&rhs, (v24 * 1000.0), 1000);
             CMTimeRangeMake(&v89, &lhs.start, &rhs);
@@ -1097,10 +1097,10 @@ uint64_t __90__VCPVideoFullFaceDetector_detectTrackFacesInFrame_withTimestamp_fa
       }
 
       v26 = 0.0;
-      if (v67 && [v67 count])
+      if (array && [array count])
       {
-        WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-        HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+        WidthOfPlane = CVPixelBufferGetWidthOfPlane(frame, 0);
+        HeightOfPlane = CVPixelBufferGetHeightOfPlane(frame, 0);
         angle = self->super._angle;
         if (angle)
         {
@@ -1114,12 +1114,12 @@ uint64_t __90__VCPVideoFullFaceDetector_detectTrackFacesInFrame_withTimestamp_fa
 
         v31 = v30;
         v76 = v31;
-        *v72 |= 0x20uLL;
+        *flagsCopy |= 0x20uLL;
         v84 = 0u;
         v85 = 0u;
         v86 = 0u;
         v87 = 0u;
-        obj = v67;
+        obj = array;
         v32 = [obj countByEnumeratingWithState:&v84 objects:v99 count:16];
         if (v32)
         {
@@ -1168,8 +1168,8 @@ uint64_t __90__VCPVideoFullFaceDetector_detectTrackFacesInFrame_withTimestamp_fa
                 }
 
                 [v49 start];
-                *&lhs.start.value = *&v78->var0;
-                lhs.start.epoch = v78->var3;
+                *&lhs.start.value = *&timestampCopy->var0;
+                lhs.start.epoch = timestampCopy->var3;
                 time = v81;
                 CMTimeSubtract(&v82, &lhs.start, &time);
                 if (CMTimeGetSeconds(&v82) >= 1.0)
@@ -1180,8 +1180,8 @@ uint64_t __90__VCPVideoFullFaceDetector_detectTrackFacesInFrame_withTimestamp_fa
 
               if (v45 && ([v45 last], objc_msgSend(v45, "start"), lhs.start = v81, time = v80, CMTimeSubtract(&v82, &lhs.start, &time), CMTimeGetSeconds(&v82) <= 1.0))
               {
-                *&lhs.start.value = *&v78->var0;
-                lhs.start.epoch = v78->var3;
+                *&lhs.start.value = *&timestampCopy->var0;
+                lhs.start.epoch = timestampCopy->var3;
                 [v45 setLast:&lhs];
                 [v45 setFlags:{objc_msgSend(v45, "flags") | v35}];
                 [v45 setPosition:{objc_msgSend(v45, "position") | v40}];
@@ -1190,12 +1190,12 @@ uint64_t __90__VCPVideoFullFaceDetector_detectTrackFacesInFrame_withTimestamp_fa
               else
               {
                 v50 = objc_alloc_init(VCPFaceDetectionRange);
-                *&lhs.start.value = *&v78->var0;
-                lhs.start.epoch = v78->var3;
+                *&lhs.start.value = *&timestampCopy->var0;
+                lhs.start.epoch = timestampCopy->var3;
                 [(VCPFaceDetectionRange *)v50 setStart:&lhs];
-                *&lhs.start.value = *&v78->var0;
-                lhs.start.epoch = v78->var3;
-                time = *v70;
+                *&lhs.start.value = *&timestampCopy->var0;
+                lhs.start.epoch = timestampCopy->var3;
+                time = *durationCopy;
                 CMTimeAdd(&v79, &lhs.start, &time);
                 lhs.start = v79;
                 [(VCPFaceDetectionRange *)v50 setLast:&lhs];
@@ -1212,7 +1212,7 @@ uint64_t __90__VCPVideoFullFaceDetector_detectTrackFacesInFrame_withTimestamp_fa
                 [(NSMutableArray *)self->_allFaces addObject:v50];
               }
 
-              *v72 |= v35;
+              *flagsCopy |= v35;
               if (self->_frameFaceResults)
               {
                 v97[0] = @"facePosition";
@@ -1302,7 +1302,7 @@ LABEL_60:
       }
 
       *&v25 = v26;
-      [v69 setFaceArea:v25];
+      [statsCopy setFaceArea:v25];
       self->_latestFrameArea = v26;
     }
 
@@ -1341,7 +1341,7 @@ LABEL_66:
   v176 = 0x3032000000;
   v177 = __Block_byref_object_copy__2;
   v178 = __Block_byref_object_dispose__2;
-  v179 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v170 = 0;
   v171 = &v170;
   v172 = 0x2020000000;
@@ -1359,7 +1359,7 @@ LABEL_66:
   v168 = 0u;
   v165 = 0u;
   v166 = 0u;
-  v120 = self;
+  selfCopy = self;
   v4 = self->_existingFaceprints;
   v5 = [(NSArray *)v4 countByEnumeratingWithState:&v165 objects:v194 count:16];
   if (v5)
@@ -1378,10 +1378,10 @@ LABEL_66:
         v9 = [*(*(&v165 + 1) + 8 * i) objectForKeyedSubscript:@"attributes"];
         v10 = [v9 objectForKeyedSubscript:@"faceId"];
 
-        v11 = [v10 intValue];
-        if (v11 > v6)
+        intValue = [v10 intValue];
+        if (intValue > v6)
         {
-          v6 = v11;
+          v6 = intValue;
         }
       }
 
@@ -1432,12 +1432,12 @@ LABEL_66:
       v39 = v38;
       if (v38)
       {
-        v40 = [v38 faceprint];
-        v41 = v40 == 0;
+        faceprint = [v38 faceprint];
+        v41 = faceprint == 0;
 
         if (!v41)
         {
-          facePrints = v120->_facePrints;
+          facePrints = selfCopy->_facePrints;
           v43 = [MEMORY[0x1E696AD98] numberWithInt:v12];
           [(NSMutableDictionary *)facePrints setObject:v39 forKey:v43];
         }
@@ -1459,7 +1459,7 @@ LABEL_66:
     v162 = 0u;
     v163 = 0u;
     v164 = 0u;
-    v14 = v120->_allTorsos;
+    v14 = selfCopy->_allTorsos;
     v15 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v161 objects:v193 count:16];
     if (v15)
     {
@@ -1475,14 +1475,14 @@ LABEL_66:
           }
 
           v19 = *(*(&v161 + 1) + 8 * k);
-          v20 = [v19 torsoprint];
-          v21 = v20 == 0;
+          torsoprint = [v19 torsoprint];
+          v21 = torsoprint == 0;
 
           if (!v21)
           {
             v22 = objc_alloc_init(MEMORY[0x1E6984518]);
-            v23 = [v19 torsoprint];
-            [v22 setTorsoprint:v23];
+            torsoprint2 = [v19 torsoprint];
+            [v22 setTorsoprint:torsoprint2];
 
             [v22 setFaceId:v16];
             [v19 setHumanID:{objc_msgSend(v22, "faceId")}];
@@ -1520,7 +1520,7 @@ LABEL_66:
     v26 = objc_alloc_init(MEMORY[0x1E696AFB0]);
     [v114 setMoment:v26];
 
-    gallery = v120->_gallery;
+    gallery = selfCopy->_gallery;
     v28 = v175[5];
     v160 = 0;
     v29 = [(GDVUStreamingGallery *)gallery addWithObservations:v28 observationIdentifiers:0 trackIdentifiers:0 context:v114 error:&v160];
@@ -1529,18 +1529,18 @@ LABEL_66:
     v30 = [v29 count];
     if (v30 == [v175[5] count])
     {
-      v121 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       for (m = 0; m < [v175[5] count]; ++m)
       {
         v32 = [v175[5] objectAtIndexedSubscript:m];
         v33 = [v119 objectAtIndexedSubscript:m];
-        [v121 setObject:v32 forKeyedSubscript:v33];
+        [dictionary setObject:v32 forKeyedSubscript:v33];
       }
 
-      v126 = [MEMORY[0x1E695DF90] dictionary];
-      v125 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
 
-      v48 = v120->_gallery;
+      v48 = selfCopy->_gallery;
       v159 = 0;
       v49 = [(GDVUStreamingGallery *)v48 updateWithMaxKeyFacesPerCluster:1 sortBy:&unk_1F49BE818 error:&v159];
       v113 = v159;
@@ -1552,9 +1552,9 @@ LABEL_66:
         {
           v102 = [v113 description];
           v103 = v102;
-          v104 = [v102 UTF8String];
+          uTF8String = [v102 UTF8String];
           LODWORD(buf) = 136315138;
-          *(&buf + 4) = v104;
+          *(&buf + 4) = uTF8String;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Gallery failed to cluster %s", &buf, 0xCu);
         }
 
@@ -1582,9 +1582,9 @@ LABEL_66:
                 objc_enumerationMutation(obj);
               }
 
-              v54 = [*(*(&v155 + 1) + 8 * n) entityIdentifier];
-              v55 = [v54 stringValue];
-              [v124 addObject:v55];
+              entityIdentifier = [*(*(&v155 + 1) + 8 * n) entityIdentifier];
+              stringValue = [entityIdentifier stringValue];
+              [v124 addObject:stringValue];
             }
 
             v51 = [obj countByEnumeratingWithState:&v155 objects:v192 count:16];
@@ -1631,14 +1631,14 @@ LABEL_66:
                     }
 
                     v56 = *(*(&v147 + 1) + 8 * jj);
-                    v57 = [v56 entityIdentifier];
-                    v58 = [v57 stringValue];
-                    v59 = [v117 isEqualToString:v58];
+                    entityIdentifier2 = [v56 entityIdentifier];
+                    stringValue2 = [entityIdentifier2 stringValue];
+                    v59 = [v117 isEqualToString:stringValue2];
 
                     if (v59)
                     {
                       v60 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v56, "observationIdentifier")}];
-                      v61 = [v121 objectForKeyedSubscript:v60];
+                      v61 = [dictionary objectForKeyedSubscript:v60];
 
                       if (!v61)
                       {
@@ -1648,15 +1648,15 @@ LABEL_66:
                         goto LABEL_129;
                       }
 
-                      v62 = v120;
+                      v62 = selfCopy;
                       if ([v56 isKeyFace])
                       {
-                        v63 = [v61 faceprint];
-                        v64 = v63 == 0;
+                        faceprint2 = [v61 faceprint];
+                        v64 = faceprint2 == 0;
 
                         if (v64)
                         {
-                          v62 = v120;
+                          v62 = selfCopy;
                           if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                           {
                             LOWORD(buf) = 0;
@@ -1666,11 +1666,11 @@ LABEL_66:
 
                         else
                         {
-                          v65 = v120->_facePrints;
+                          v65 = selfCopy->_facePrints;
                           v66 = [MEMORY[0x1E696AD98] numberWithInt:v12];
                           [(NSMutableDictionary *)v65 setObject:v61 forKey:v66];
 
-                          v62 = v120;
+                          v62 = selfCopy;
                         }
                       }
 
@@ -1693,12 +1693,12 @@ LABEL_66:
                             }
 
                             v71 = *(*(&v143 + 1) + 8 * kk);
-                            v72 = [v71 faceID];
-                            if (v72 == [v61 faceId])
+                            faceID = [v71 faceID];
+                            if (faceID == [v61 faceId])
                             {
                               v73 = [MEMORY[0x1E696AD98] numberWithInt:v12];
                               v74 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v71, "faceID")}];
-                              [v126 setObject:v73 forKeyedSubscript:v74];
+                              [dictionary2 setObject:v73 forKeyedSubscript:v74];
                             }
                           }
 
@@ -1712,7 +1712,7 @@ LABEL_66:
                       v142 = 0u;
                       v139 = 0u;
                       v140 = 0u;
-                      v75 = v120->_allTorsos;
+                      v75 = selfCopy->_allTorsos;
                       v76 = [(NSMutableArray *)v75 countByEnumeratingWithState:&v139 objects:v188 count:16];
                       if (v76)
                       {
@@ -1727,12 +1727,12 @@ LABEL_66:
                             }
 
                             v79 = *(*(&v139 + 1) + 8 * mm);
-                            v80 = [v79 humanID];
-                            if ([v61 faceId] == v80)
+                            humanID = [v79 humanID];
+                            if ([v61 faceId] == humanID)
                             {
                               v81 = [MEMORY[0x1E696AD98] numberWithInt:v12];
                               v82 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v79, "humanID")}];
-                              [v125 setObject:v81 forKeyedSubscript:v82];
+                              [dictionary3 setObject:v81 forKeyedSubscript:v82];
                             }
                           }
 
@@ -1767,7 +1767,7 @@ LABEL_66:
         v138 = 0u;
         v135 = 0u;
         v136 = 0u;
-        v83 = v120->_allFaces;
+        v83 = selfCopy->_allFaces;
         v84 = [(NSMutableArray *)v83 countByEnumeratingWithState:&v135 objects:v187 count:16];
         if (v84)
         {
@@ -1783,27 +1783,27 @@ LABEL_66:
 
               v87 = *(*(&v135 + 1) + 8 * nn);
               v88 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v87, "faceID", v107)}];
-              v89 = [v126 objectForKeyedSubscript:v88];
+              v89 = [dictionary2 objectForKeyedSubscript:v88];
 
               if (v89)
               {
-                v90 = [v89 intValue];
+                intValue2 = [v89 intValue];
               }
 
               else
               {
                 if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                 {
-                  v91 = [v87 faceID];
+                  faceID2 = [v87 faceID];
                   LODWORD(buf) = 134217984;
-                  *(&buf + 4) = v91;
+                  *(&buf + 4) = faceID2;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "FullFaceDetector: no cluster ID found for face %lu - set to 0", &buf, 0xCu);
                 }
 
-                v90 = 0;
+                intValue2 = 0;
               }
 
-              [v87 setFaceID:v90];
+              [v87 setFaceID:intValue2];
             }
 
             v84 = [(NSMutableArray *)v83 countByEnumeratingWithState:&v135 objects:v187 count:16];
@@ -1816,7 +1816,7 @@ LABEL_66:
         v134 = 0u;
         v131 = 0u;
         v132 = 0u;
-        v92 = v120->_allTorsos;
+        v92 = selfCopy->_allTorsos;
         v93 = [(NSMutableArray *)v92 countByEnumeratingWithState:&v131 objects:v186 count:16];
         if (v93)
         {
@@ -1833,27 +1833,27 @@ LABEL_66:
 
               v97 = *(*(&v131 + 1) + 8 * i1);
               v98 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v97, "humanID", v107)}];
-              v99 = [v125 objectForKeyedSubscript:v98];
+              v99 = [dictionary3 objectForKeyedSubscript:v98];
 
               if (v99)
               {
-                v100 = [v99 intValue];
+                intValue3 = [v99 intValue];
               }
 
               else
               {
                 if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(v95, OS_LOG_TYPE_DEFAULT))
                 {
-                  v101 = [v97 humanID];
+                  humanID2 = [v97 humanID];
                   LODWORD(buf) = 134217984;
-                  *(&buf + 4) = v101;
+                  *(&buf + 4) = humanID2;
                   _os_log_impl(&dword_1C9B70000, v95, OS_LOG_TYPE_DEFAULT, "FullFaceDetector: no cluster ID found for human %lu - set to 0", &buf, 0xCu);
                 }
 
-                v100 = 0;
+                intValue3 = 0;
               }
 
-              [v97 setHumanID:v100];
+              [v97 setHumanID:intValue3];
             }
 
             v93 = [(NSMutableArray *)v92 countByEnumeratingWithState:&v131 objects:v186 count:16];
@@ -1873,9 +1873,9 @@ LABEL_129:
       {
         v44 = [v113 description];
         v45 = v44;
-        v46 = [v44 UTF8String];
+        uTF8String2 = [v44 UTF8String];
         LODWORD(buf) = 136315138;
-        *(&buf + 4) = v46;
+        *(&buf + 4) = uTF8String2;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Gallery failed to add observation %s", &buf, 0xCu);
       }
 
@@ -1939,8 +1939,8 @@ void __40__VCPVideoFullFaceDetector_clusterFaces__block_invoke(void *a1, void *a
 - (int)updateWithExistingFaces
 {
   v35 = *MEMORY[0x1E69E9840];
-  v20 = [MEMORY[0x1E695DF90] dictionary];
-  v17 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -1960,7 +1960,7 @@ void __40__VCPVideoFullFaceDetector_clusterFaces__block_invoke(void *a1, void *a
         }
 
         v5 = *(*(&v30 + 1) + 8 * i);
-        v6 = [v5 objectForKeyedSubscript:{@"attributes", v17}];
+        v6 = [v5 objectForKeyedSubscript:{@"attributes", dictionary2}];
         v7 = [v6 objectForKeyedSubscript:@"faceId"];
 
         v8 = [v5 objectForKeyedSubscript:@"attributes"];
@@ -1991,7 +1991,7 @@ LABEL_17:
           goto LABEL_18;
         }
 
-        [v20 setObject:v12 forKeyedSubscript:v7];
+        [dictionary setObject:v12 forKeyedSubscript:v7];
       }
 
       v2 = [(NSArray *)obj countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -2013,9 +2013,9 @@ LABEL_17:
   v22[1] = 3221225472;
   v22[2] = __51__VCPVideoFullFaceDetector_updateWithExistingFaces__block_invoke;
   v22[3] = &unk_1E834C318;
-  v23 = v20;
+  v23 = dictionary;
   v25 = &v26;
-  v14 = v17;
+  v14 = dictionary2;
   v24 = v14;
   [(NSMutableDictionary *)facePrints enumerateKeysAndObjectsUsingBlock:v22];
   v15 = *(v27 + 6);
@@ -2138,7 +2138,7 @@ void __51__VCPVideoFullFaceDetector_updateWithExistingFaces__block_invoke_3(uint
   }
 }
 
-- (int)finishAnalysisPass:(id *)a3
+- (int)finishAnalysisPass:(id *)pass
 {
   v108 = *MEMORY[0x1E69E9840];
   if (self->super._results)
@@ -2146,26 +2146,26 @@ void __51__VCPVideoFullFaceDetector_updateWithExistingFaces__block_invoke_3(uint
     return -18;
   }
 
-  v5 = [(VCPVideoFullFaceDetector *)self clusterFaces];
-  if (v5)
+  clusterFaces = [(VCPVideoFullFaceDetector *)self clusterFaces];
+  if (clusterFaces)
   {
-    return v5;
+    return clusterFaces;
   }
 
   if ([(NSArray *)self->_existingFaceprints count])
   {
     if ([(NSMutableDictionary *)self->_facePrints count])
     {
-      v5 = [(VCPVideoFullFaceDetector *)self updateWithExistingFaces];
-      if (v5)
+      clusterFaces = [(VCPVideoFullFaceDetector *)self updateWithExistingFaces];
+      if (clusterFaces)
       {
-        return v5;
+        return clusterFaces;
       }
     }
   }
 
-  v82 = self;
-  v81 = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  array = [MEMORY[0x1E695DF70] array];
   v98 = 0u;
   v99 = 0u;
   v96 = 0u;
@@ -2200,9 +2200,9 @@ void __51__VCPVideoFullFaceDetector_updateWithExistingFaces__block_invoke_3(uint
           v95 = 0;
         }
 
-        v10 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "position")}];
-        [v10 setObject:v11 forKey:@"facePosition"];
+        [dictionary setObject:v11 forKey:@"facePosition"];
 
         [v9 bounds];
         if (v12 < 1.0)
@@ -2270,10 +2270,10 @@ void __51__VCPVideoFullFaceDetector_updateWithExistingFaces__block_invoke_3(uint
         v22 = v16;
         v23 = v17;
         v24 = NSStringFromRect(*(&v19 - 2));
-        [v10 setObject:v24 forKey:@"faceBounds"];
+        [dictionary setObject:v24 forKey:@"faceBounds"];
 
         v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "faceID")}];
-        [v10 setObject:v25 forKey:@"faceId"];
+        [dictionary setObject:v25 forKey:@"faceId"];
 
         [v9 torsoBounds];
         if (!CGRectIsEmpty(v109))
@@ -2344,7 +2344,7 @@ void __51__VCPVideoFullFaceDetector_updateWithExistingFaces__block_invoke_3(uint
           v36 = v30;
           v37 = v31;
           v38 = NSStringFromRect(*(&v33 - 2));
-          [v10 setObject:v38 forKey:@"humanBounds"];
+          [dictionary setObject:v38 forKey:@"humanBounds"];
         }
 
         v105[0] = @"start";
@@ -2365,23 +2365,23 @@ void __51__VCPVideoFullFaceDetector_updateWithExistingFaces__block_invoke_3(uint
         v41 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "flags")}];
         v105[3] = @"attributes";
         v106[2] = v41;
-        v106[3] = v10;
+        v106[3] = dictionary;
         v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v106 forKeys:v105 count:4];
-        [v81 addObject:v42];
+        [array addObject:v42];
 
-        faceRanges = v82->_faceRanges;
+        faceRanges = selfCopy->_faceRanges;
         v44 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "faceID")}];
-        v45 = [(NSMutableDictionary *)faceRanges objectForKeyedSubscript:v44];
+        array2 = [(NSMutableDictionary *)faceRanges objectForKeyedSubscript:v44];
 
-        if (!v45)
+        if (!array2)
         {
-          v45 = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
         }
 
-        [v45 addObject:v9];
-        v46 = v82->_faceRanges;
+        [array2 addObject:v9];
+        v46 = selfCopy->_faceRanges;
         v47 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "faceID")}];
-        [(NSMutableDictionary *)v46 setObject:v45 forKey:v47];
+        [(NSMutableDictionary *)v46 setObject:array2 forKey:v47];
       }
 
       v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v96 objects:v107 count:16];
@@ -2390,12 +2390,12 @@ void __51__VCPVideoFullFaceDetector_updateWithExistingFaces__block_invoke_3(uint
     while (v7);
   }
 
-  v79 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v91 = 0u;
   v92 = 0u;
   v89 = 0u;
   v90 = 0u;
-  obj = v82->_allTorsos;
+  obj = selfCopy->_allTorsos;
   v48 = [(NSMutableArray *)obj countByEnumeratingWithState:&v89 objects:v104 count:16];
   if (v48)
   {
@@ -2421,12 +2421,12 @@ void __51__VCPVideoFullFaceDetector_updateWithExistingFaces__block_invoke_3(uint
           memset(&rhs, 0, sizeof(rhs));
         }
 
-        v51 = *&a3->var0.var3;
-        *&otherRange.start.value = *&a3->var0.var0;
+        v51 = *&pass->var0.var3;
+        *&otherRange.start.value = *&pass->var0.var0;
         *&otherRange.start.epoch = v51;
-        *&otherRange.duration.timescale = *&a3->var1.var1;
+        *&otherRange.duration.timescale = *&pass->var1.var1;
         CMTimeRangeGetIntersection(&time, &rhs, &otherRange);
-        v52 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         [v50 bounds];
         if (v53 < 1.0)
         {
@@ -2493,10 +2493,10 @@ void __51__VCPVideoFullFaceDetector_updateWithExistingFaces__block_invoke_3(uint
         v63 = v57;
         v64 = v58;
         v65 = NSStringFromRect(*(&v60 - 2));
-        [v52 setObject:v65 forKeyedSubscript:@"humanBounds"];
+        [dictionary2 setObject:v65 forKeyedSubscript:@"humanBounds"];
 
         v66 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v50, "humanID")}];
-        [v52 setObject:v66 forKeyedSubscript:@"faceId"];
+        [dictionary2 setObject:v66 forKeyedSubscript:@"faceId"];
 
         v102[0] = @"start";
         *&rhs.start.value = *&time.start.value;
@@ -2508,9 +2508,9 @@ void __51__VCPVideoFullFaceDetector_updateWithExistingFaces__block_invoke_3(uint
         v68 = CMTimeCopyAsDictionary(&rhs.start, 0);
         v102[2] = @"attributes";
         v103[1] = v68;
-        v103[2] = v52;
+        v103[2] = dictionary2;
         v69 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v103 forKeys:v102 count:3];
-        [v79 addObject:v69];
+        [array3 addObject:v69];
       }
 
       v48 = [(NSMutableArray *)obj countByEnumeratingWithState:&v89 objects:v104 count:16];
@@ -2523,14 +2523,14 @@ void __51__VCPVideoFullFaceDetector_updateWithExistingFaces__block_invoke_3(uint
   *&time.start.timescale = &time;
   time.start.epoch = 0x2020000000;
   LODWORD(time.duration.value) = 0;
-  v70 = [MEMORY[0x1E695DF70] array];
-  facePrints = v82->_facePrints;
+  array4 = [MEMORY[0x1E695DF70] array];
+  facePrints = selfCopy->_facePrints;
   v83[0] = MEMORY[0x1E69E9820];
   v83[1] = 3221225472;
   v83[2] = __47__VCPVideoFullFaceDetector_finishAnalysisPass___block_invoke;
   v83[3] = &unk_1E834C368;
   p_time = &time;
-  v72 = v70;
+  v72 = array4;
   v84 = v72;
   [(NSMutableDictionary *)facePrints enumerateKeysAndObjectsUsingBlock:v83];
   v3 = *(*&time.start.timescale + 24);
@@ -2538,13 +2538,13 @@ void __51__VCPVideoFullFaceDetector_updateWithExistingFaces__block_invoke_3(uint
   {
     v100[0] = @"FaceResults";
     v100[1] = @"FacePrintResults";
-    v101[0] = v81;
+    v101[0] = array;
     v101[1] = v72;
     v100[2] = @"TorsoResults";
-    v101[2] = v79;
+    v101[2] = array3;
     v73 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v101 forKeys:v100 count:3];
-    results = v82->super._results;
-    v82->super._results = v73;
+    results = selfCopy->super._results;
+    selfCopy->super._results = v73;
 
     v3 = *(*&time.start.timescale + 24);
   }

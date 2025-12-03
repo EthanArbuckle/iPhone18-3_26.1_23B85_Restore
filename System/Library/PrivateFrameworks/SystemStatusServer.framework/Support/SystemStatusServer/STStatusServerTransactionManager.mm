@@ -1,21 +1,21 @@
 @interface STStatusServerTransactionManager
-- (STStatusServerTransactionManager)initWithServer:(id)a3;
-- (void)systemStatusServer:(id)a3 publishedDomainsDidChange:(id)a4;
+- (STStatusServerTransactionManager)initWithServer:(id)server;
+- (void)systemStatusServer:(id)server publishedDomainsDidChange:(id)change;
 @end
 
 @implementation STStatusServerTransactionManager
 
-- (STStatusServerTransactionManager)initWithServer:(id)a3
+- (STStatusServerTransactionManager)initWithServer:(id)server
 {
-  v5 = a3;
+  serverCopy = server;
   v11.receiver = self;
   v11.super_class = STStatusServerTransactionManager;
   v6 = [(STStatusServerTransactionManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_server, a3);
-    [v5 setDelegate:v7];
+    objc_storeStrong(&v6->_server, server);
+    [serverCopy setDelegate:v7];
     v8 = objc_alloc_init(BSMutableIntegerMap);
     transactionsByDomain = v7->_transactionsByDomain;
     v7->_transactionsByDomain = v8;
@@ -24,9 +24,9 @@
   return v7;
 }
 
-- (void)systemStatusServer:(id)a3 publishedDomainsDidChange:(id)a4
+- (void)systemStatusServer:(id)server publishedDomainsDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   if (self)
   {
     transactionsByDomain = self->_transactionsByDomain;
@@ -38,11 +38,11 @@
   }
 
   v7 = transactionsByDomain;
-  v8 = [(BSMutableIntegerMap *)v7 allKeys];
-  v9 = sub_100000D00(v8);
+  allKeys = [(BSMutableIntegerMap *)v7 allKeys];
+  v9 = sub_100000D00(allKeys);
 
-  v29 = v5;
-  v10 = sub_100000D00(v5);
+  v29 = changeCopy;
+  v10 = sub_100000D00(changeCopy);
   v11 = [v9 mutableCopy];
   [v11 minusSet:v10];
   v27 = v10;
@@ -96,13 +96,13 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v30 + 1) + 8 * j) integerValue];
+        integerValue = [*(*(&v30 + 1) + 8 * j) integerValue];
         v24 = STSystemStatusDescriptionForDomain();
         v25 = [NSString stringWithFormat:@"publishing %@ data", v24];
 
         [v25 UTF8String];
         v26 = os_transaction_create();
-        [(BSMutableIntegerMap *)v7 setObject:v26 forKey:v23];
+        [(BSMutableIntegerMap *)v7 setObject:v26 forKey:integerValue];
       }
 
       v20 = [v18 countByEnumeratingWithState:&v30 objects:v38 count:16];

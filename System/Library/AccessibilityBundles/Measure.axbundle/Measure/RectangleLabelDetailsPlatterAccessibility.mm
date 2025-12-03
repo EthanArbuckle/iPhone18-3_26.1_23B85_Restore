@@ -1,23 +1,23 @@
 @interface RectangleLabelDetailsPlatterAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)accessibilityViewIsModal;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateCloseButton;
 - (void)didMoveToWindow;
-- (void)setAlpha:(double)a3;
+- (void)setAlpha:(double)alpha;
 @end
 
 @implementation RectangleLabelDetailsPlatterAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Measure.RectangleLabelDetailsPlatter" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"Measure.RectangleLabelDetailsPlatter" isKindOfClass:@"Measure.GenericPlatter"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"setAlpha:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"didMoveToWindow" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"Measure.GenericPlatter" hasInstanceMethod:@"close" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Measure.RectangleLabelDetailsPlatter" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"Measure.RectangleLabelDetailsPlatter" isKindOfClass:@"Measure.GenericPlatter"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"setAlpha:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"didMoveToWindow" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"Measure.GenericPlatter" hasInstanceMethod:@"close" withFullSignature:{"v", 0}];
 }
 
 - (void)_axAnnotateCloseButton
@@ -112,7 +112,7 @@ LABEL_13:
     v6 = 3221225472;
     v7 = __71__RectangleLabelDetailsPlatterAccessibility_accessibilityPerformEscape__block_invoke;
     v8 = &unk_29F2CE5F0;
-    v9 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
     return 1;
   }
@@ -133,7 +133,7 @@ LABEL_13:
   [(RectangleLabelDetailsPlatterAccessibility *)self _axAnnotateCloseButton];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v10 = 0;
   objc_opt_class();
@@ -142,7 +142,7 @@ LABEL_13:
   v7 = v6;
   v9.receiver = self;
   v9.super_class = RectangleLabelDetailsPlatterAccessibility;
-  [(RectangleLabelDetailsPlatterAccessibility *)&v9 setAlpha:a3];
+  [(RectangleLabelDetailsPlatterAccessibility *)&v9 setAlpha:alpha];
   [v5 alpha];
   if (vabdd_f64(v7, v8) >= 2.22044605e-16)
   {

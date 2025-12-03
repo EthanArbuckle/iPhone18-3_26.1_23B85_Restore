@@ -1,6 +1,6 @@
 @interface IMDBroadcastController
 + (IMDBroadcasterProviding)sharedProvider;
-+ (void)registerSharedProvider:(id)a3;
++ (void)registerSharedProvider:(id)provider;
 @end
 
 @implementation IMDBroadcastController
@@ -14,9 +14,9 @@
   return v2;
 }
 
-+ (void)registerSharedProvider:(id)a3
++ (void)registerSharedProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   os_unfair_lock_lock(&unk_2814212B0);
   if (qword_281421238)
   {
@@ -24,7 +24,7 @@
   }
 
   v4 = qword_281421238;
-  qword_281421238 = v3;
+  qword_281421238 = providerCopy;
 
   os_unfair_lock_unlock(&unk_2814212B0);
 }

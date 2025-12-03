@@ -17,16 +17,16 @@
 {
   v22 = *MEMORY[0x1E69E9840];
   v1 = MEMORY[0x1E695DF90];
-  v2 = [a1 dictionaryRepresentation];
-  v3 = [v1 dictionaryWithDictionary:v2];
+  dictionaryRepresentation = [self dictionaryRepresentation];
+  v3 = [v1 dictionaryWithDictionary:dictionaryRepresentation];
 
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allKeys = [v3 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -37,7 +37,7 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
@@ -50,29 +50,29 @@
           if (v13)
           {
             v14 = [v3 objectForKeyedSubscript:v10];
-            [v4 setObject:v14 forKey:v13];
+            [dictionary setObject:v14 forKey:v13];
           }
 
           v15 = [v3 objectForKeyedSubscript:v10];
-          [v4 setObject:v15 forKey:v10];
+          [dictionary setObject:v15 forKey:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
   }
 
-  return v4;
+  return dictionary;
 }
 
 - (id)webServiceDictionaryRepresentation
 {
   v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v3 = [a1 street];
-  v4 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-  v5 = [v3 componentsSeparatedByCharactersInSet:v4];
+  street = [self street];
+  newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+  v5 = [street componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
   if ([v5 count])
   {
@@ -92,25 +92,25 @@
     }
   }
 
-  v8 = [a1 city];
-  [v2 setObject:v8 forKeyedSubscript:@"city"];
-  v9 = [a1 state];
-  [v2 setObject:v9 forKeyedSubscript:@"state"];
-  v10 = [a1 postalCode];
-  [v2 setObject:v10 forKeyedSubscript:@"postalCode"];
-  v11 = [a1 country];
-  [v2 setObject:v11 forKeyedSubscript:@"country"];
-  v12 = [a1 ISOCountryCode];
-  v13 = [v12 uppercaseString];
+  city = [self city];
+  [v2 setObject:city forKeyedSubscript:@"city"];
+  state = [self state];
+  [v2 setObject:state forKeyedSubscript:@"state"];
+  postalCode = [self postalCode];
+  [v2 setObject:postalCode forKeyedSubscript:@"postalCode"];
+  country = [self country];
+  [v2 setObject:country forKeyedSubscript:@"country"];
+  iSOCountryCode = [self ISOCountryCode];
+  uppercaseString = [iSOCountryCode uppercaseString];
 
-  [v2 setObject:v13 forKeyedSubscript:@"countryCode"];
+  [v2 setObject:uppercaseString forKeyedSubscript:@"countryCode"];
 
   return v2;
 }
 
 - (id)redactedStreetAddress
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 setStreet:&stru_1F227FD28];
   v2 = [v1 copy];
 
@@ -119,40 +119,40 @@
 
 - (id)redactedPostalAddress
 {
-  v2 = [a1 redactedStreetAddress];
-  v3 = [v2 mutableCopy];
+  redactedStreetAddress = [self redactedStreetAddress];
+  v3 = [redactedStreetAddress mutableCopy];
 
-  v4 = [v3 ISOCountryCode];
-  if (![v4 length])
+  iSOCountryCode = [v3 ISOCountryCode];
+  if (![iSOCountryCode length])
   {
-    v10 = [a1 suggestedCountryCode];
+    suggestedCountryCode = [self suggestedCountryCode];
 
-    v4 = v10;
-    if (v10)
+    iSOCountryCode = suggestedCountryCode;
+    if (suggestedCountryCode)
     {
       goto LABEL_3;
     }
 
 LABEL_15:
-    v4 = PKCurrentRegion();
+    iSOCountryCode = PKCurrentRegion();
     goto LABEL_3;
   }
 
-  if (!v4)
+  if (!iSOCountryCode)
   {
     goto LABEL_15;
   }
 
 LABEL_3:
-  v5 = [v3 postalCode];
-  if ([v4 caseInsensitiveCompare:@"US"] || objc_msgSend(v5, "length") <= 5)
+  postalCode = [v3 postalCode];
+  if ([iSOCountryCode caseInsensitiveCompare:@"US"] || objc_msgSend(postalCode, "length") <= 5)
   {
-    if ([v4 caseInsensitiveCompare:@"GB"] && objc_msgSend(v4, "caseInsensitiveCompare:", @"CA") || objc_msgSend(v5, "length") < 5)
+    if ([iSOCountryCode caseInsensitiveCompare:@"GB"] && objc_msgSend(iSOCountryCode, "caseInsensitiveCompare:", @"CA") || objc_msgSend(postalCode, "length") < 5)
     {
       goto LABEL_11;
     }
 
-    v6 = [v5 length] - 3;
+    v6 = [postalCode length] - 3;
   }
 
   else
@@ -160,7 +160,7 @@ LABEL_3:
     v6 = 5;
   }
 
-  v7 = [v5 substringToIndex:v6];
+  v7 = [postalCode substringToIndex:v6];
   [v3 setPostalCode:v7];
 
 LABEL_11:
@@ -171,8 +171,8 @@ LABEL_11:
 
 - (id)suggestedCountryCode
 {
-  v2 = [a1 country];
-  v3 = [a1 _countryCodeForCountryName:v2];
+  country = [self country];
+  v3 = [self _countryCodeForCountryName:country];
 
   return v3;
 }
@@ -181,7 +181,7 @@ LABEL_11:
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [MEMORY[0x1E695DF58] currentLocale];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   [MEMORY[0x1E695DF58] ISOCountryCodes];
   v15 = 0u;
   v16 = 0u;
@@ -203,7 +203,7 @@ LABEL_11:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v4 displayNameForKey:v9 value:{v11, v15}];
+        v12 = [currentLocale displayNameForKey:v9 value:{v11, v15}];
         if (![v3 compare:v12 options:129])
         {
           v13 = v11;
@@ -237,8 +237,8 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [v3 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -249,7 +249,7 @@ LABEL_11:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -275,7 +275,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -328,8 +328,8 @@ LABEL_11:
 
     if (v11)
     {
-      v16 = [v11 uppercaseString];
-      [v5 setISOCountryCode:v16];
+      uppercaseString = [v11 uppercaseString];
+      [v5 setISOCountryCode:uppercaseString];
     }
 
     if (v12)

@@ -1,33 +1,33 @@
 @interface _ANEInMemoryModelCacheManager
-+ (BOOL)removeFilesFromDirectory:(id)a3 notAccessedInSeconds:(double)a4;
-+ (BOOL)removeStaleModelsAtPath:(id)a3;
-- (BOOL)removeAllModelsForBundleID:(id)a3;
++ (BOOL)removeFilesFromDirectory:(id)directory notAccessedInSeconds:(double)seconds;
++ (BOOL)removeStaleModelsAtPath:(id)path;
+- (BOOL)removeAllModelsForBundleID:(id)d;
 - (BOOL)removeStaleModels;
-- (_ANEInMemoryModelCacheManager)initWithURL:(id)a3 createDirectory:(BOOL)a4;
-- (id)URLForBundleID:(id)a3;
-- (id)URLForModelHash:(id)a3 bundleID:(id)a4;
-- (id)cachedModelPathMatchingHash:(id)a3 csIdentity:(id)a4;
-- (id)getDiskSpaceForBundleID:(id)a3;
-- (void)scheduleMaintenanceWithName:(id)a3 directoryPaths:(id)a4;
+- (_ANEInMemoryModelCacheManager)initWithURL:(id)l createDirectory:(BOOL)directory;
+- (id)URLForBundleID:(id)d;
+- (id)URLForModelHash:(id)hash bundleID:(id)d;
+- (id)cachedModelPathMatchingHash:(id)hash csIdentity:(id)identity;
+- (id)getDiskSpaceForBundleID:(id)d;
+- (void)scheduleMaintenanceWithName:(id)name directoryPaths:(id)paths;
 @end
 
 @implementation _ANEInMemoryModelCacheManager
 
-- (_ANEInMemoryModelCacheManager)initWithURL:(id)a3 createDirectory:(BOOL)a4
+- (_ANEInMemoryModelCacheManager)initWithURL:(id)l createDirectory:(BOOL)directory
 {
-  v4 = a4;
-  v8 = a3;
+  directoryCopy = directory;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = _ANEInMemoryModelCacheManager;
   v9 = [(_ANEInMemoryModelCacheManager *)&v18 init];
   if (v9)
   {
-    if (v4)
+    if (directoryCopy)
     {
       v10 = +[NSFileManager defaultManager];
-      v11 = [v8 path];
+      path = [lCopy path];
       v17 = 0;
-      v12 = [v10 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v17];
+      v12 = [v10 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v17];
       v13 = v17;
 
       if ((v12 & 1) == 0)
@@ -39,7 +39,7 @@
           *buf = 138412802;
           v20 = v16;
           v21 = 2112;
-          v22 = v8;
+          v22 = lCopy;
           v23 = 2112;
           v24 = v13;
           _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%@: FAILED creating cacheDir=%@ : err=%@", buf, 0x20u);
@@ -47,82 +47,82 @@
       }
     }
 
-    objc_storeStrong(&v9->_cacheDir, a3);
+    objc_storeStrong(&v9->_cacheDir, l);
   }
 
   return v9;
 }
 
-- (id)URLForBundleID:(id)a3
+- (id)URLForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(_ANEInMemoryModelCacheManager *)self cacheDir];
-  v6 = [v5 URLByAppendingPathComponent:v4 isDirectory:1];
+  dCopy = d;
+  cacheDir = [(_ANEInMemoryModelCacheManager *)self cacheDir];
+  v6 = [cacheDir URLByAppendingPathComponent:dCopy isDirectory:1];
 
   return v6;
 }
 
-- (id)URLForModelHash:(id)a3 bundleID:(id)a4
+- (id)URLForModelHash:(id)hash bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  hashCopy = hash;
+  dCopy = d;
   v8 = objc_autoreleasePoolPush();
-  v9 = [(_ANEInMemoryModelCacheManager *)self URLForBundleID:v7];
-  v10 = [v9 URLByAppendingPathComponent:v6 isDirectory:1];
+  v9 = [(_ANEInMemoryModelCacheManager *)self URLForBundleID:dCopy];
+  v10 = [v9 URLByAppendingPathComponent:hashCopy isDirectory:1];
 
   objc_autoreleasePoolPop(v8);
 
   return v10;
 }
 
-- (id)cachedModelPathMatchingHash:(id)a3 csIdentity:(id)a4
+- (id)cachedModelPathMatchingHash:(id)hash csIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  hashCopy = hash;
+  identityCopy = identity;
   v8 = objc_autoreleasePoolPush();
-  v9 = [(_ANEInMemoryModelCacheManager *)self URLForModelHash:v6 bundleID:v7];
+  v9 = [(_ANEInMemoryModelCacheManager *)self URLForModelHash:hashCopy bundleID:identityCopy];
   v10 = +[_ANEStrings modelBinaryName];
   v11 = [v9 URLByAppendingPathComponent:v10 isDirectory:0];
 
-  v12 = [v11 path];
+  path = [v11 path];
 
   objc_autoreleasePoolPop(v8);
 
-  return v12;
+  return path;
 }
 
-- (BOOL)removeAllModelsForBundleID:(id)a3
+- (BOOL)removeAllModelsForBundleID:(id)d
 {
-  v3 = [(_ANEInMemoryModelCacheManager *)self URLForBundleID:a3];
-  v4 = [v3 path];
-  v5 = [_ANEStorageHelper removeDirectoryAtPath:v4];
+  v3 = [(_ANEInMemoryModelCacheManager *)self URLForBundleID:d];
+  path = [v3 path];
+  v5 = [_ANEStorageHelper removeDirectoryAtPath:path];
 
   return v5;
 }
 
-- (id)getDiskSpaceForBundleID:(id)a3
+- (id)getDiskSpaceForBundleID:(id)d
 {
-  v3 = [(_ANEInMemoryModelCacheManager *)self URLForBundleID:a3];
-  v4 = [v3 path];
-  v5 = [_ANEStorageHelper sizeOfModelCacheAtPath:v4 purgeSubdirectories:0];
+  v3 = [(_ANEInMemoryModelCacheManager *)self URLForBundleID:d];
+  path = [v3 path];
+  v5 = [_ANEStorageHelper sizeOfModelCacheAtPath:path purgeSubdirectories:0];
 
   return v5;
 }
 
-+ (BOOL)removeFilesFromDirectory:(id)a3 notAccessedInSeconds:(double)a4
++ (BOOL)removeFilesFromDirectory:(id)directory notAccessedInSeconds:(double)seconds
 {
-  v5 = a3;
-  v6 = [NSDate dateWithTimeIntervalSinceNow:-a4];
+  directoryCopy = directory;
+  v6 = [NSDate dateWithTimeIntervalSinceNow:-seconds];
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 enumeratorAtPath:v5];
-  v9 = [v8 nextObject];
-  if (v9)
+  v8 = [v7 enumeratorAtPath:directoryCopy];
+  nextObject = [v8 nextObject];
+  if (nextObject)
   {
-    v10 = v9;
+    v10 = nextObject;
     do
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = [v5 stringByAppendingPathComponent:v10];
+      v12 = [directoryCopy stringByAppendingPathComponent:v10];
       v20 = 0;
       if ([v7 fileExistsAtPath:v12 isDirectory:&v20])
       {
@@ -151,22 +151,22 @@
       }
 
       objc_autoreleasePoolPop(v11);
-      v16 = [v8 nextObject];
+      nextObject2 = [v8 nextObject];
 
-      v10 = v16;
+      v10 = nextObject2;
     }
 
-    while (v16);
+    while (nextObject2);
   }
 
   return 1;
 }
 
-+ (BOOL)removeStaleModelsAtPath:(id)a3
++ (BOOL)removeStaleModelsAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_autoreleasePoolPush();
-  [objc_opt_class() removeFilesFromDirectory:v4 notAccessedInSeconds:{objc_msgSend(a1, "notRecentlyUsedSecondsThreshold")}];
+  [objc_opt_class() removeFilesFromDirectory:pathCopy notAccessedInSeconds:{objc_msgSend(self, "notRecentlyUsedSecondsThreshold")}];
   objc_autoreleasePoolPop(v5);
 
   return 1;
@@ -174,22 +174,22 @@
 
 - (BOOL)removeStaleModels
 {
-  v2 = [(_ANEInMemoryModelCacheManager *)self cacheDir];
-  v3 = [v2 path];
+  cacheDir = [(_ANEInMemoryModelCacheManager *)self cacheDir];
+  path = [cacheDir path];
 
-  v4 = [objc_opt_class() removeStaleModelsAtPath:v3];
+  v4 = [objc_opt_class() removeStaleModelsAtPath:path];
   return v4;
 }
 
-- (void)scheduleMaintenanceWithName:(id)a3 directoryPaths:(id)a4
+- (void)scheduleMaintenanceWithName:(id)name directoryPaths:(id)paths
 {
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_10000A0D0;
   v11 = &unk_10001C5A0;
-  v12 = a3;
-  v13 = self;
-  v5 = v12;
+  nameCopy = name;
+  selfCopy = self;
+  v5 = nameCopy;
   v6 = objc_retainBlock(&v8);
   v7 = [_ANETask taskWithName:v5 period:86400 handler:v6, v8, v9, v10, v11];
   [_ANETaskManager registerTask:v7];

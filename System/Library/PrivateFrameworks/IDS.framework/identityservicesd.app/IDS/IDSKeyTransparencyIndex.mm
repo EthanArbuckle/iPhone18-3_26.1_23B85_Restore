@@ -1,57 +1,57 @@
 @interface IDSKeyTransparencyIndex
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToKeyTransparencyIndex:(id)a3;
-- (IDSKeyTransparencyIndex)initWithServiceIdentifier:(id)a3 accountKey:(id)a4 URI:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToKeyTransparencyIndex:(id)index;
+- (IDSKeyTransparencyIndex)initWithServiceIdentifier:(id)identifier accountKey:(id)key URI:(id)i;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation IDSKeyTransparencyIndex
 
-- (IDSKeyTransparencyIndex)initWithServiceIdentifier:(id)a3 accountKey:(id)a4 URI:(id)a5
+- (IDSKeyTransparencyIndex)initWithServiceIdentifier:(id)identifier accountKey:(id)key URI:(id)i
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  keyCopy = key;
+  iCopy = i;
   v17.receiver = self;
   v17.super_class = IDSKeyTransparencyIndex;
   v11 = [(IDSKeyTransparencyIndex *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     serviceIdentifier = v11->_serviceIdentifier;
     v11->_serviceIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [keyCopy copy];
     accountKey = v11->_accountKey;
     v11->_accountKey = v14;
 
-    objc_storeStrong(&v11->_URI, a5);
+    objc_storeStrong(&v11->_URI, i);
   }
 
   return v11;
 }
 
-- (BOOL)isEqualToKeyTransparencyIndex:(id)a3
+- (BOOL)isEqualToKeyTransparencyIndex:(id)index
 {
-  v6 = a3;
-  v7 = v6;
-  if (self == v6)
+  indexCopy = index;
+  v7 = indexCopy;
+  if (self == indexCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if (v6)
+    if (indexCopy)
     {
-      v8 = [(IDSKeyTransparencyIndex *)self serviceIdentifier];
-      v9 = [(IDSKeyTransparencyIndex *)v7 serviceIdentifier];
-      if (v8 == v9 || (-[IDSKeyTransparencyIndex serviceIdentifier](self, "serviceIdentifier"), v3 = objc_claimAutoreleasedReturnValue(), -[IDSKeyTransparencyIndex serviceIdentifier](v7, "serviceIdentifier"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+      serviceIdentifier = [(IDSKeyTransparencyIndex *)self serviceIdentifier];
+      serviceIdentifier2 = [(IDSKeyTransparencyIndex *)v7 serviceIdentifier];
+      if (serviceIdentifier == serviceIdentifier2 || (-[IDSKeyTransparencyIndex serviceIdentifier](self, "serviceIdentifier"), v3 = objc_claimAutoreleasedReturnValue(), -[IDSKeyTransparencyIndex serviceIdentifier](v7, "serviceIdentifier"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
       {
-        v11 = [(IDSKeyTransparencyIndex *)self accountKey];
-        v12 = [(IDSKeyTransparencyIndex *)v7 accountKey];
-        if ([v11 isEqualToData:v12])
+        accountKey = [(IDSKeyTransparencyIndex *)self accountKey];
+        accountKey2 = [(IDSKeyTransparencyIndex *)v7 accountKey];
+        if ([accountKey isEqualToData:accountKey2])
         {
           v13 = [(IDSKeyTransparencyIndex *)self URI];
           v14 = [(IDSKeyTransparencyIndex *)v7 URI];
@@ -79,7 +79,7 @@
           v10 = 0;
         }
 
-        if (v8 == v9)
+        if (serviceIdentifier == serviceIdentifier2)
         {
           goto LABEL_16;
         }
@@ -102,13 +102,13 @@ LABEL_17:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(IDSKeyTransparencyIndex *)self isEqualToKeyTransparencyIndex:v4];
+    v5 = [(IDSKeyTransparencyIndex *)self isEqualToKeyTransparencyIndex:equalCopy];
   }
 
   else
@@ -121,10 +121,10 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [(IDSKeyTransparencyIndex *)self serviceIdentifier];
-  v4 = [v3 hash];
-  v5 = [(IDSKeyTransparencyIndex *)self accountKey];
-  v6 = [v5 hash] ^ v4;
+  serviceIdentifier = [(IDSKeyTransparencyIndex *)self serviceIdentifier];
+  v4 = [serviceIdentifier hash];
+  accountKey = [(IDSKeyTransparencyIndex *)self accountKey];
+  v6 = [accountKey hash] ^ v4;
   v7 = [(IDSKeyTransparencyIndex *)self URI];
   v8 = [v7 hash];
 
@@ -134,10 +134,10 @@ LABEL_17:
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(IDSKeyTransparencyIndex *)self serviceIdentifier];
-  v5 = [(IDSKeyTransparencyIndex *)self accountKey];
+  serviceIdentifier = [(IDSKeyTransparencyIndex *)self serviceIdentifier];
+  accountKey = [(IDSKeyTransparencyIndex *)self accountKey];
   v6 = [(IDSKeyTransparencyIndex *)self URI];
-  v7 = [NSString stringWithFormat:@"<%@: %p serviceIdentifier: %@, accountKey: %@, URI: %@>", v3, self, v4, v5, v6];
+  v7 = [NSString stringWithFormat:@"<%@: %p serviceIdentifier: %@, accountKey: %@, URI: %@>", v3, self, serviceIdentifier, accountKey, v6];
 
   return v7;
 }

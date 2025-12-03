@@ -5,22 +5,22 @@
 - (NSDate)_lastPLCUpdateProcessedAt;
 - (NSString)uniqueName;
 - (_TtC15MapsSuggestions25MapsSuggestionsDOoMEngine)init;
-- (_TtC15MapsSuggestions25MapsSuggestionsDOoMEngine)initWithResourceDepot:(id)a3 conditions:(id)a4;
+- (_TtC15MapsSuggestions25MapsSuggestionsDOoMEngine)initWithResourceDepot:(id)depot conditions:(id)conditions;
 - (id)_routineHandler;
-- (id)currentSessionFor:(id)a3;
+- (id)currentSessionFor:(id)for;
 - (void)_setupAdditionalConditions;
 - (void)_setupRoutineHandler;
 - (void)checkForCurrentPredictions;
 - (void)dealloc;
-- (void)setUniqueName:(id)a3;
-- (void)set_canKicker:(id)a3;
-- (void)set_conditions:(id)a3;
-- (void)set_currentContextResult:(id)a3;
-- (void)set_deduplicationInfo:(id)a3;
-- (void)set_doomDestination:(id)a3;
-- (void)set_lastPLCUpdateProcessedAt:(id)a3;
-- (void)set_routineHandler:(id)a3;
-- (void)set_sessionManager:(id)a3;
+- (void)setUniqueName:(id)name;
+- (void)set_canKicker:(id)kicker;
+- (void)set_conditions:(id)set_conditions;
+- (void)set_currentContextResult:(id)result;
+- (void)set_deduplicationInfo:(id)info;
+- (void)set_doomDestination:(id)destination;
+- (void)set_lastPLCUpdateProcessedAt:(id)at;
+- (void)set_routineHandler:(id)handler;
+- (void)set_sessionManager:(id)manager;
 - (void)spendBudget;
 @end
 
@@ -44,9 +44,9 @@
   return v3;
 }
 
-- (void)setUniqueName:(id)a3
+- (void)setUniqueName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_1C529D72C();
     v6 = v5;
@@ -93,9 +93,9 @@
   return v3;
 }
 
-- (void)set_routineHandler:(id)a3
+- (void)set_routineHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -113,7 +113,7 @@
   v8 = *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__routineHandler);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_1C513EDF0(v8);
 }
 
@@ -127,7 +127,7 @@
   return v2;
 }
 
-- (void)set_conditions:(id)a3
+- (void)set_conditions:(id)set_conditions
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC1563D0);
   v4 = sub_1C529D7DC();
@@ -136,25 +136,25 @@
   *(self + v5) = v4;
 }
 
-- (void)set_doomDestination:(id)a3
+- (void)set_doomDestination:(id)destination
 {
   v4 = *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__doomDestination);
-  *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__doomDestination) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__doomDestination) = destination;
+  destinationCopy = destination;
 }
 
-- (void)set_canKicker:(id)a3
+- (void)set_canKicker:(id)kicker
 {
   v4 = *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__canKicker);
-  *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__canKicker) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__canKicker) = kicker;
+  kickerCopy = kicker;
 }
 
-- (void)set_currentContextResult:(id)a3
+- (void)set_currentContextResult:(id)result
 {
   v4 = *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__currentContextResult);
-  *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__currentContextResult) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__currentContextResult) = result;
+  resultCopy = result;
 }
 
 - (NSDate)_lastPLCUpdateProcessedAt
@@ -179,12 +179,12 @@
   return v10;
 }
 
-- (void)set_lastPLCUpdateProcessedAt:(id)a3
+- (void)set_lastPLCUpdateProcessedAt:(id)at
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC156760);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (at)
   {
     sub_1C529D37C();
     v8 = sub_1C529D3AC();
@@ -199,26 +199,26 @@
 
   v10 = OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__lastPLCUpdateProcessedAt;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_1C525F304(v7, self + v10);
   swift_endAccess();
 }
 
-- (void)set_sessionManager:(id)a3
+- (void)set_sessionManager:(id)manager
 {
   v4 = *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__sessionManager);
-  *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__sessionManager) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__sessionManager) = manager;
+  managerCopy = manager;
 }
 
-- (void)set_deduplicationInfo:(id)a3
+- (void)set_deduplicationInfo:(id)info
 {
   v4 = *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__deduplicationInfo);
-  *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__deduplicationInfo) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC15MapsSuggestions25MapsSuggestionsDOoMEngine__deduplicationInfo) = info;
+  infoCopy = info;
 }
 
-- (_TtC15MapsSuggestions25MapsSuggestionsDOoMEngine)initWithResourceDepot:(id)a3 conditions:(id)a4
+- (_TtC15MapsSuggestions25MapsSuggestionsDOoMEngine)initWithResourceDepot:(id)depot conditions:(id)conditions
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC1563D0);
   v4 = sub_1C529D7DC();
@@ -228,13 +228,13 @@
 
 - (void)_setupAdditionalConditions
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C527D0BC();
 }
 
 - (BOOL)_allConditionsPassed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C527D958();
 
   return v3 & 1;
@@ -242,28 +242,28 @@
 
 - (void)_setupRoutineHandler
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C527DC04();
 }
 
-- (id)currentSessionFor:(id)a3
+- (id)currentSessionFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1C528283C(v4);
+  forCopy = for;
+  selfCopy = self;
+  v6 = sub_1C528283C(forCopy);
 
   return v6;
 }
 
 - (void)spendBudget
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C52845E0();
 }
 
 - (void)checkForCurrentPredictions
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5284BAC();
 }
 
@@ -277,12 +277,12 @@
   aBlock[2] = sub_1C5285168;
   aBlock[3] = &block_descriptor_76_0;
   v4 = _Block_copy(aBlock);
-  v5 = self;
+  selfCopy = self;
   v6 = v3;
   [v6 stopMonitoringPredictedContextWithHandler_];
   _Block_release(v4);
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for MapsSuggestionsDOoMEngine();
   [(MapsSuggestionsDOoMEngine *)&v7 dealloc];
 }

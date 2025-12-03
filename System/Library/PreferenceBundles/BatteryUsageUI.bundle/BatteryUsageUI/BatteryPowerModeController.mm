@@ -1,15 +1,15 @@
 @interface BatteryPowerModeController
 - (BOOL)isBatterySaverModeEnabled;
 - (BatteryPowerModeController)init;
-- (id)getBatterySaverMode:(id)a3;
-- (id)getIBLMNotificationsState:(id)a3;
-- (id)getIBLMState:(id)a3;
+- (id)getBatterySaverMode:(id)mode;
+- (id)getIBLMNotificationsState:(id)state;
+- (id)getIBLMState:(id)state;
 - (id)specifiers;
-- (void)_lowPowerModeChangedNotification:(id)a3;
+- (void)_lowPowerModeChangedNotification:(id)notification;
 - (void)dealloc;
-- (void)setBatterySaverMode:(id)a3 withSpecifier:(id)a4;
-- (void)setIBLMNotificationsState:(id)a3 withSpecifier:(id)a4;
-- (void)setIBLMState:(id)a3 withSpecifier:(id)a4;
+- (void)setBatterySaverMode:(id)mode withSpecifier:(id)specifier;
+- (void)setIBLMNotificationsState:(id)state withSpecifier:(id)specifier;
+- (void)setIBLMState:(id)state withSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -74,7 +74,7 @@
     v6 = +[NSMutableArray array];
     v7 = [PSSpecifier groupSpecifierWithID:0];
     v8 = +[UIDevice currentDevice];
-    v9 = [v8 sf_inRetailKioskMode];
+    sf_inRetailKioskMode = [v8 sf_inRetailKioskMode];
 
     v10 = BUILogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -87,7 +87,7 @@
       v27 = [PSSpecifier groupSpecifierWithID:0];
       v29 = v7;
       BatteryUILocalization(@"IBLM_TITLE");
-      v11 = v28 = v9;
+      v11 = v28 = sf_inRetailKioskMode;
       v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:"setIBLMState:withSpecifier:" get:"getIBLMState:" detail:0 cell:6 edit:0];
 
       [v12 setIdentifier:@"IBLM_CELL_IDENTIFIER"];
@@ -109,7 +109,7 @@
       v20 = [NSNumber numberWithDouble:UITableViewAutomaticDimension];
       [v19 setObject:v20 forKeyedSubscript:v16];
 
-      v9 = v28;
+      sf_inRetailKioskMode = v28;
       [v6 addObject:v27];
       [v6 addObject:v12];
       [v6 addObject:v19];
@@ -117,7 +117,7 @@
       v7 = v29;
     }
 
-    if (!(v9 & 1 | ((+[PLModelingUtilities isLowPowerModeSupported]& 1) == 0)))
+    if (!(sf_inRetailKioskMode & 1 | ((+[PLModelingUtilities isLowPowerModeSupported]& 1) == 0)))
     {
       v21 = BatteryUILocalization(@"BATTERY_SAVER_MODE");
       v22 = [PSSpecifier preferenceSpecifierNamed:v21 target:self set:"setBatterySaverMode:withSpecifier:" get:"getBatterySaverMode:" detail:0 cell:6 edit:0];
@@ -142,56 +142,56 @@
   return v5;
 }
 
-- (id)getBatterySaverMode:(id)a3
+- (id)getBatterySaverMode:(id)mode
 {
-  v3 = [(BatteryPowerModeController *)self isBatterySaverModeEnabled];
+  isBatterySaverModeEnabled = [(BatteryPowerModeController *)self isBatterySaverModeEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:isBatterySaverModeEnabled];
 }
 
-- (void)setBatterySaverMode:(id)a3 withSpecifier:(id)a4
+- (void)setBatterySaverMode:(id)mode withSpecifier:(id)specifier
 {
-  v4 = a3;
+  modeCopy = mode;
   v6 = +[_PMLowPowerMode sharedInstance];
-  v5 = [v4 intValue];
+  intValue = [modeCopy intValue];
 
-  [v6 setPowerMode:v5 != 0 fromSource:kPMLPMSourceSettings withCompletion:&stru_164FA8];
+  [v6 setPowerMode:intValue != 0 fromSource:kPMLPMSourceSettings withCompletion:&stru_164FA8];
 }
 
 - (BOOL)isBatterySaverModeEnabled
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [v2 isLowPowerModeEnabled];
 
-  return v3;
+  return isLowPowerModeEnabled;
 }
 
-- (void)_lowPowerModeChangedNotification:(id)a3
+- (void)_lowPowerModeChangedNotification:(id)notification
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_3BBD8;
   v5[3] = &unk_163EB8;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  notificationCopy = notification;
+  selfCopy = self;
+  v4 = notificationCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (id)getIBLMState:(id)a3
+- (id)getIBLMState:(id)state
 {
   v3 = +[_OSIBLMState sharedInstance];
-  v4 = [v3 isIBLMCurrentlyEnabled];
+  isIBLMCurrentlyEnabled = [v3 isIBLMCurrentlyEnabled];
 
-  return [NSNumber numberWithBool:v4];
+  return [NSNumber numberWithBool:isIBLMCurrentlyEnabled];
 }
 
-- (void)setIBLMState:(id)a3 withSpecifier:(id)a4
+- (void)setIBLMState:(id)state withSpecifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [state BOOLValue];
   AnalyticsSendEventLazy();
   v6 = +[_OSIBLMState sharedInstance];
-  [v6 client:@"BatteryUI" setIBLMState:v5];
+  [v6 client:@"BatteryUI" setIBLMState:bOOLValue];
 
   v7 = +[NSNotificationCenter defaultCenter];
   [v7 postNotificationName:@"POWER_MODE_CHANGE_NOTIFICATION_NAME" object:0];
@@ -199,28 +199,28 @@
   [(BatteryPowerModeController *)self reloadSpecifierID:@"IBLM_NOTIFICATIONS_IDENTIFIER" animated:1];
 }
 
-- (id)getIBLMNotificationsState:(id)a3
+- (id)getIBLMNotificationsState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = +[_OSIBLMState sharedInstance];
-  v6 = [v5 isIBLMCurrentlyEnabled];
+  isIBLMCurrentlyEnabled = [v5 isIBLMCurrentlyEnabled];
 
-  v7 = [NSNumber numberWithBool:v6];
-  [v4 setProperty:v7 forKey:PSEnabledKey];
+  v7 = [NSNumber numberWithBool:isIBLMCurrentlyEnabled];
+  [stateCopy setProperty:v7 forKey:PSEnabledKey];
 
   v8 = +[_OSIBLMState sharedInstance];
-  v9 = [v8 isIBLMNotificationsCurrentlyEnabled];
+  isIBLMNotificationsCurrentlyEnabled = [v8 isIBLMNotificationsCurrentlyEnabled];
 
-  [(BatteryPowerModeController *)self animateSwitchSpecifier:v4 toState:v6 & v9];
+  [(BatteryPowerModeController *)self animateSwitchSpecifier:stateCopy toState:isIBLMCurrentlyEnabled & isIBLMNotificationsCurrentlyEnabled];
 
-  return [NSNumber numberWithBool:v6 & v9];
+  return [NSNumber numberWithBool:isIBLMCurrentlyEnabled & isIBLMNotificationsCurrentlyEnabled];
 }
 
-- (void)setIBLMNotificationsState:(id)a3 withSpecifier:(id)a4
+- (void)setIBLMNotificationsState:(id)state withSpecifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [state BOOLValue];
   v5 = +[_OSIBLMState sharedInstance];
-  [v5 client:@"BatteryUI" setIBLMNotificationsState:v4];
+  [v5 client:@"BatteryUI" setIBLMNotificationsState:bOOLValue];
 }
 
 @end

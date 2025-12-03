@@ -1,20 +1,20 @@
 @interface DYEAGLDebugFunctionPlayer
-+ (void)_resolveDepthWithWidth:(int)a3 height:(int)a4 numSamples:(int)a5 buffer:(float *)a6;
-+ (void)_resolveStencilWithWidth:(int)a3 height:(int)a4 numSamples:(int)a5 buffer:(char *)a6;
++ (void)_resolveDepthWithWidth:(int)width height:(int)height numSamples:(int)samples buffer:(float *)buffer;
++ (void)_resolveStencilWithWidth:(int)width height:(int)height numSamples:(int)samples buffer:(char *)buffer;
 - (BOOL)_isContextModifiable;
 - (BOOL)_switchToWireframeFramebuffer;
 - (BOOL)isFunctionEnabled;
 - (BOOL)shouldExecuteGraphicsFunction;
-- (DYEAGLDebugFunctionPlayer)initWithCaptureStore:(id)a3;
+- (DYEAGLDebugFunctionPlayer)initWithCaptureStore:(id)store;
 - (DYLayerManager)strongLayerManager;
 - (id).cxx_construct;
-- (void)_imageInfoForAttachment:(unsigned int)a3 outImageInfo:(ImageInfo *)a4;
-- (void)_presentFramebufferWithWireframe:(BOOL)a3 wireframeLineColor:(unsigned int)a4;
-- (void)_renderPresentTextureWithColor:(unsigned int)a3 enableBlend:(BOOL)a4 texBlitProgram:(unsigned int)a5;
+- (void)_imageInfoForAttachment:(unsigned int)attachment outImageInfo:(ImageInfo *)info;
+- (void)_presentFramebufferWithWireframe:(BOOL)wireframe wireframeLineColor:(unsigned int)color;
+- (void)_renderPresentTextureWithColor:(unsigned int)color enableBlend:(BOOL)blend texBlitProgram:(unsigned int)program;
 - (void)dealloc;
 - (void)executePlatformFunction;
 - (void)prepareForCaptureExecution;
-- (void)setEngine:(id)a3;
+- (void)setEngine:(id)engine;
 @end
 
 @implementation DYEAGLDebugFunctionPlayer
@@ -26,76 +26,76 @@
   return WeakRetained;
 }
 
-+ (void)_resolveDepthWithWidth:(int)a3 height:(int)a4 numSamples:(int)a5 buffer:(float *)a6
++ (void)_resolveDepthWithWidth:(int)width height:(int)height numSamples:(int)samples buffer:(float *)buffer
 {
-  if (a5 >= 2 && a4 >= 1)
+  if (samples >= 2 && height >= 1)
   {
     v6 = 0;
-    v7 = a6;
+    bufferCopy = buffer;
     do
     {
-      if (a3 >= 1)
+      if (width >= 1)
       {
-        for (i = 0; i != a3; ++i)
+        for (i = 0; i != width; ++i)
         {
           v9 = 0;
           v10 = 0.0;
           do
           {
-            v10 = v10 + v7[v9++];
+            v10 = v10 + bufferCopy[v9++];
           }
 
-          while (a5 != v9);
-          v7 += (a5 - 1) + 1;
-          *a6++ = (1.0 / a5) * v10;
+          while (samples != v9);
+          bufferCopy += (samples - 1) + 1;
+          *buffer++ = (1.0 / samples) * v10;
         }
       }
 
       ++v6;
     }
 
-    while (v6 != a4);
+    while (v6 != height);
   }
 }
 
-+ (void)_resolveStencilWithWidth:(int)a3 height:(int)a4 numSamples:(int)a5 buffer:(char *)a6
++ (void)_resolveStencilWithWidth:(int)width height:(int)height numSamples:(int)samples buffer:(char *)buffer
 {
-  if (a5 >= 2 && a4 >= 1)
+  if (samples >= 2 && height >= 1)
   {
     v6 = 0;
-    v7 = a6;
+    bufferCopy = buffer;
     do
     {
-      if (a3 >= 1)
+      if (width >= 1)
       {
-        for (i = 0; i != a3; ++i)
+        for (i = 0; i != width; ++i)
         {
           v9 = 0;
           v10 = 0;
           do
           {
-            v10 += v7[v9++];
+            v10 += bufferCopy[v9++];
           }
 
-          while (a5 != v9);
-          v7 += a5;
-          *a6++ = v10 / a5;
+          while (samples != v9);
+          bufferCopy += samples;
+          *buffer++ = v10 / samples;
         }
       }
 
       ++v6;
     }
 
-    while (v6 != a4);
+    while (v6 != height);
   }
 }
 
-- (DYEAGLDebugFunctionPlayer)initWithCaptureStore:(id)a3
+- (DYEAGLDebugFunctionPlayer)initWithCaptureStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = DYEAGLDebugFunctionPlayer;
-  v5 = [(DYEAGLDebugFunctionPlayer *)&v13 initWithCaptureStore:v4];
+  v5 = [(DYEAGLDebugFunctionPlayer *)&v13 initWithCaptureStore:storeCopy];
   if (v5)
   {
     v6 = objc_opt_new();
@@ -131,15 +131,15 @@
   [(DYEAGLDebugFunctionPlayer *)&v3 dealloc];
 }
 
-- (void)setEngine:(id)a3
+- (void)setEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v7.receiver = self;
   v7.super_class = DYEAGLDebugFunctionPlayer;
-  [(DYEAGLDebugFunctionPlayer *)&v7 setEngine:v4];
-  v5 = [*&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYFunctionPlayer__engine] disabledFunctions];
+  [(DYEAGLDebugFunctionPlayer *)&v7 setEngine:engineCopy];
+  disabledFunctions = [*&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYFunctionPlayer__engine] disabledFunctions];
   disabledFunctions = self->_disabledFunctions;
-  self->_disabledFunctions = v5;
+  self->_disabledFunctions = disabledFunctions;
 }
 
 - (BOOL)isFunctionEnabled
@@ -158,7 +158,7 @@
 - (BOOL)shouldExecuteGraphicsFunction
 {
   v3 = OBJC_IVAR___DYFunctionPlayer__engine;
-  v4 = [*&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYFunctionPlayer__engine] delegate];
+  delegate = [*&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYFunctionPlayer__engine] delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -166,25 +166,25 @@
     goto LABEL_28;
   }
 
-  v6 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
-  v7 = [v6 shouldExecuteGraphicsFunction];
+  delegate2 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
+  shouldExecuteGraphicsFunction = [delegate2 shouldExecuteGraphicsFunction];
 
-  v8 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
-  v9 = [v8 shouldCallSuper];
+  delegate3 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
+  shouldCallSuper = [delegate3 shouldCallSuper];
 
-  if (v9)
+  if (shouldCallSuper)
   {
-    v22 = self;
-    v10 = &v22;
+    selfCopy = self;
+    v10 = &selfCopy;
 LABEL_23:
     v10[1] = DYEAGLDebugFunctionPlayer;
-    return objc_msgSendSuper2(v10, "shouldExecuteGraphicsFunction", v21);
+    return objc_msgSendSuper2(v10, "shouldExecuteGraphicsFunction", selfCopy2);
   }
 
-  v11 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
-  v12 = [v11 shouldReturn];
+  delegate4 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
+  shouldReturn = [delegate4 shouldReturn];
 
-  if ((v12 & 1) == 0)
+  if ((shouldReturn & 1) == 0)
   {
 LABEL_28:
     if ([(DYEAGLDebugFunctionPlayer *)self isFunctionEnabled])
@@ -219,8 +219,8 @@ LABEL_28:
       if (v19 < [*&self->super.DYGLFunctionPlayer_opaque[v3] targetFunctionIndex])
       {
 LABEL_22:
-        v21 = self;
-        v10 = &v21;
+        selfCopy2 = self;
+        v10 = &selfCopy2;
         goto LABEL_23;
       }
     }
@@ -228,13 +228,13 @@ LABEL_22:
     return 0;
   }
 
-  return v7;
+  return shouldExecuteGraphicsFunction;
 }
 
 - (void)executePlatformFunction
 {
   v3 = OBJC_IVAR___DYFunctionPlayer__engine;
-  v4 = [*&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYFunctionPlayer__engine] delegate];
+  delegate = [*&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYFunctionPlayer__engine] delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -242,23 +242,23 @@ LABEL_22:
     goto LABEL_20;
   }
 
-  v6 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
-  [v6 executePlatformFunction];
+  delegate2 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
+  [delegate2 executePlatformFunction];
 
-  v7 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
-  v8 = [v7 shouldCallSuper];
+  delegate3 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
+  shouldCallSuper = [delegate3 shouldCallSuper];
 
-  if (v8)
+  if (shouldCallSuper)
   {
     v29.receiver = self;
     v29.super_class = DYEAGLDebugFunctionPlayer;
     [(DYEAGLFunctionPlayer *)&v29 executePlatformFunction];
   }
 
-  v9 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
-  v10 = [v9 shouldReturn];
+  delegate4 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
+  shouldReturn = [delegate4 shouldReturn];
 
-  if ((v10 & 1) == 0)
+  if ((shouldReturn & 1) == 0)
   {
 LABEL_20:
     v11 = *&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYFunctionPlayer__function];
@@ -282,11 +282,11 @@ LABEL_20:
             v27.super_class = DYEAGLDebugFunctionPlayer;
             [(DYEAGLFunctionPlayer *)&v27 executePlatformFunction];
             v20 = **(v11 + 96);
-            v21 = [(DYEAGLDebugFunctionPlayer *)self strongLayerManager];
-            v22 = [v21 layerForID:v20];
+            strongLayerManager = [(DYEAGLDebugFunctionPlayer *)self strongLayerManager];
+            v22 = [strongLayerManager layerForID:v20];
 
-            v23 = [v22 drawableProperties];
-            v24 = [v23 mutableCopy];
+            drawableProperties = [v22 drawableProperties];
+            v24 = [drawableProperties mutableCopy];
 
             v25 = [NSNumber numberWithBool:1];
             [v24 setObject:v25 forKey:kEAGLDrawablePropertyRetainedBacking];
@@ -408,9 +408,9 @@ LABEL_17:
   return 0;
 }
 
-- (void)_presentFramebufferWithWireframe:(BOOL)a3 wireframeLineColor:(unsigned int)a4
+- (void)_presentFramebufferWithWireframe:(BOOL)wireframe wireframeLineColor:(unsigned int)color
 {
-  v58 = a3;
+  wireframeCopy = wireframe;
   v84 = 0;
   v83 = 0uLL;
   v5 = OBJC_IVAR___DYGLFunctionPlayer__disp;
@@ -444,16 +444,16 @@ LABEL_17:
       v59 = v8;
       if (DWORD2(v83) == 36161)
       {
-        v9 = [(DYEAGLFunctionPlayer *)self currentRenderbufferDrawableMap];
+        currentRenderbufferDrawableMap = [(DYEAGLFunctionPlayer *)self currentRenderbufferDrawableMap];
         v10 = [NSNumber numberWithUnsignedInt:HIDWORD(v83)];
-        v11 = [v9 objectForKey:v10];
+        v11 = [currentRenderbufferDrawableMap objectForKey:v10];
 
         if (v11)
         {
-          v12 = [(DYEAGLDebugFunctionPlayer *)self strongLayerManager];
-          v13 = [v12 layerForID:{objc_msgSend(v11, "unsignedLongLongValue")}];
+          strongLayerManager = [(DYEAGLDebugFunctionPlayer *)self strongLayerManager];
+          currentTopLayer = [strongLayerManager layerForID:{objc_msgSend(v11, "unsignedLongLongValue")}];
 
-          if (v13)
+          if (currentTopLayer)
           {
             goto LABEL_14;
           }
@@ -470,10 +470,10 @@ LABEL_17:
       v59 = 0;
     }
 
-    v14 = [(DYEAGLDebugFunctionPlayer *)self strongLayerManager];
-    v13 = [v14 currentTopLayer];
+    strongLayerManager2 = [(DYEAGLDebugFunctionPlayer *)self strongLayerManager];
+    currentTopLayer = [strongLayerManager2 currentTopLayer];
 
-    if (!v13)
+    if (!currentTopLayer)
     {
 LABEL_39:
 
@@ -496,15 +496,15 @@ LABEL_14:
     v59 = v16;
 
     v56 = OBJC_IVAR___DYGLFunctionPlayer__ctx;
-    v17 = [*&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__ctx] sharegroup];
+    sharegroup = [*&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__ctx] sharegroup];
 
-    v18 = [(DYEAGLDebugFunctionPlayer *)self strongLayerManager];
-    v19 = [v18 layerForID:v17];
+    strongLayerManager3 = [(DYEAGLDebugFunctionPlayer *)self strongLayerManager];
+    v19 = [strongLayerManager3 layerForID:sharegroup];
 
-    v20 = [v19 drawableProperties];
-    v21 = [v20 objectForKeyedSubscript:kEAGLDrawablePropertyColorFormat];
+    drawableProperties = [v19 drawableProperties];
+    v21 = [drawableProperties objectForKeyedSubscript:kEAGLDrawablePropertyColorFormat];
 
-    if (v19 != v13)
+    if (v19 != currentTopLayer)
     {
       goto LABEL_21;
     }
@@ -514,7 +514,7 @@ LABEL_14:
     v25 = v24;
     v27 = v26;
     v29 = v28;
-    [v13 bounds];
+    [currentTopLayer bounds];
     v89.origin.x = v30;
     v89.origin.y = v31;
     v89.size.width = v32;
@@ -523,7 +523,7 @@ LABEL_14:
     v88.origin.y = v25;
     v88.size.width = v27;
     v88.size.height = v29;
-    if (!CGRectEqualToRect(v88, v89) || ([v19 contentsScale], v35 = v34, objc_msgSend(v13, "contentsScale"), v35 != v36) || (objc_msgSend(v21, "isEqualToString:", v59) & 1) == 0)
+    if (!CGRectEqualToRect(v88, v89) || ([v19 contentsScale], v35 = v34, objc_msgSend(currentTopLayer, "contentsScale"), v35 != v36) || (objc_msgSend(v21, "isEqualToString:", v59) & 1) == 0)
     {
 LABEL_21:
       v86 = kEAGLDrawablePropertyColorFormat;
@@ -532,7 +532,7 @@ LABEL_21:
       if (v19)
       {
         sub_A3F4(v85, 1, 1);
-        [v13 transform];
+        [currentTopLayer transform];
         v71 = v65;
         v72 = v66;
         v73 = v67;
@@ -542,28 +542,28 @@ LABEL_21:
         *&v70[16] = v63;
         *&v70[32] = v64;
         [v19 setTransform:&v69];
-        [v13 anchorPoint];
+        [currentTopLayer anchorPoint];
         [v19 setAnchorPoint:?];
-        [v13 bounds];
+        [currentTopLayer bounds];
         [v19 setBounds:?];
-        [v13 contentsScale];
+        [currentTopLayer contentsScale];
         [v19 setContentsScale:?];
         [v19 setDrawableProperties:v37];
       }
 
       else
       {
-        v38 = [(DYEAGLDebugFunctionPlayer *)self strongLayerManager];
-        [v13 bounds];
+        strongLayerManager4 = [(DYEAGLDebugFunctionPlayer *)self strongLayerManager];
+        [currentTopLayer bounds];
         v40 = v39;
         v42 = v41;
         v44 = v43;
         v46 = v45;
-        [v13 contentsScale];
-        v19 = [v38 createLayerWithID:v17 contentRect:v37 contentsScale:0 properties:v40 isCoreAnimationSurface:{v42, v44, v46, v47}];
+        [currentTopLayer contentsScale];
+        v19 = [strongLayerManager4 createLayerWithID:sharegroup contentRect:v37 contentsScale:0 properties:v40 isCoreAnimationSurface:{v42, v44, v46, v47}];
 
         sub_A3F4(v85, 1, 1);
-        [v13 transform];
+        [currentTopLayer transform];
         v71 = v79;
         v72 = v80;
         v73 = v81;
@@ -573,7 +573,7 @@ LABEL_21:
         *&v70[16] = v77;
         *&v70[32] = v78;
         [v19 setTransform:&v69];
-        [v13 anchorPoint];
+        [currentTopLayer anchorPoint];
         [v19 setAnchorPoint:?];
       }
 
@@ -636,16 +636,16 @@ LABEL_21:
 
       if (v54)
       {
-        if (v58)
+        if (wireframeCopy)
         {
           (*(*&self->super.DYGLFunctionPlayer_opaque[v5] + 5376))(*&self->super.DYGLFunctionPlayer_opaque[v6], 36009, self->_wireframeFramebuffer);
-          [(DYEAGLDebugFunctionPlayer *)self _copyRenderbufferColorAttachmentToPresent:36064 color:a4 isWireframe:1];
+          [(DYEAGLDebugFunctionPlayer *)self _copyRenderbufferColorAttachmentToPresent:36064 color:color isWireframe:1];
         }
       }
 
       (*(*&self->super.DYGLFunctionPlayer_opaque[v5] + 5328))(*&self->super.DYGLFunctionPlayer_opaque[v6], 36161, self->_presentRenderbuffer);
-      v55 = [(DYEAGLDebugFunctionPlayer *)self strongLayerManager];
-      [v55 prepareLayerForPresent:v19];
+      strongLayerManager5 = [(DYEAGLDebugFunctionPlayer *)self strongLayerManager];
+      [strongLayerManager5 prepareLayerForPresent:v19];
 
       [*&self->super.DYGLFunctionPlayer_opaque[v56] presentRenderbuffer:36161];
     }
@@ -657,13 +657,13 @@ LABEL_21:
   }
 }
 
-- (void)_renderPresentTextureWithColor:(unsigned int)a3 enableBlend:(BOOL)a4 texBlitProgram:(unsigned int)a5
+- (void)_renderPresentTextureWithColor:(unsigned int)color enableBlend:(BOOL)blend texBlitProgram:(unsigned int)program
 {
-  v6 = a4;
-  v9 = [*&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__ctx] sharegroup];
+  blendCopy = blend;
+  sharegroup = [*&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYGLFunctionPlayer__ctx] sharegroup];
 
-  v10 = [(DYEAGLDebugFunctionPlayer *)self strongLayerManager];
-  v11 = [v10 layerForID:v9];
+  strongLayerManager = [(DYEAGLDebugFunctionPlayer *)self strongLayerManager];
+  v11 = [strongLayerManager layerForID:sharegroup];
 
   v35 = 0;
   v34 = 0;
@@ -691,7 +691,7 @@ LABEL_21:
   (*(*&self->super.DYGLFunctionPlayer_opaque[v12] + 720))(*&self->super.DYGLFunctionPlayer_opaque[v13]);
   LODWORD(v29) = vcvtpd_s64_f64(v26);
   LODWORD(v30) = vcvtpd_s64_f64(v28);
-  if (v6)
+  if (blendCopy)
   {
     v31 = 0;
   }
@@ -701,21 +701,21 @@ LABEL_21:
     v31 = 0x4000;
   }
 
-  LODWORD(v33) = a5;
+  LODWORD(v33) = program;
   BYTE5(v32) = 0;
-  BYTE4(v32) = v6;
-  LODWORD(v32) = a3;
+  BYTE4(v32) = blendCopy;
+  LODWORD(v32) = color;
   [(DYEAGLFunctionPlayer *)self drawTexture:self->_presentTexture target:3553 framebuffer:self->_presentFramebuffer bounds:((v22 - v29) / 2) | (((v24 - v30) / 2) << 32) clearBits:v29 | (v30 << 32) modulateColor:v31 enableBlend:v32 rotated:v33 texBlitProgram:?];
 }
 
-- (void)_imageInfoForAttachment:(unsigned int)a3 outImageInfo:(ImageInfo *)a4
+- (void)_imageInfoForAttachment:(unsigned int)attachment outImageInfo:(ImageInfo *)info
 {
-  v5 = [(DYEAGLDebugFunctionPlayer *)self context];
-  sub_4528(v8, v5);
+  context = [(DYEAGLDebugFunctionPlayer *)self context];
+  sub_4528(v8, context);
 
   [(DYEAGLDebugFunctionPlayer *)self gliDispatch];
-  v6 = [(DYEAGLDebugFunctionPlayer *)self captureSessionInfo];
-  v7 = [v6 contextInfoForContext:{-[DYEAGLDebugFunctionPlayer ctxID](self, "ctxID")}];
+  captureSessionInfo = [(DYEAGLDebugFunctionPlayer *)self captureSessionInfo];
+  v7 = [captureSessionInfo contextInfoForContext:{-[DYEAGLDebugFunctionPlayer ctxID](self, "ctxID")}];
   [v7 api];
 
   GPUTools::GL::GetFramebufferAttachmentInfo();
@@ -734,12 +734,12 @@ LABEL_21:
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 1;
-  v4 = [(DYEAGLDebugFunctionPlayer *)self context];
-  sub_4528(v10, v4);
+  context = [(DYEAGLDebugFunctionPlayer *)self context];
+  sub_4528(v10, context);
 
   [(DYEAGLDebugFunctionPlayer *)self gliDispatch];
-  v5 = [(DYEAGLDebugFunctionPlayer *)self captureSessionInfo];
-  v6 = [v5 contextInfoForContext:{-[DYEAGLDebugFunctionPlayer ctxID](self, "ctxID")}];
+  captureSessionInfo = [(DYEAGLDebugFunctionPlayer *)self captureSessionInfo];
+  v6 = [captureSessionInfo contextInfoForContext:{-[DYEAGLDebugFunctionPlayer ctxID](self, "ctxID")}];
   [v6 api];
 
   GPUTools::GL::EnumerateTextureTargets();
@@ -760,7 +760,7 @@ LABEL_21:
 - (void)prepareForCaptureExecution
 {
   v3 = OBJC_IVAR___DYFunctionPlayer__engine;
-  v4 = [*&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYFunctionPlayer__engine] delegate];
+  delegate = [*&self->super.DYGLFunctionPlayer_opaque[OBJC_IVAR___DYFunctionPlayer__engine] delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -768,23 +768,23 @@ LABEL_21:
     goto LABEL_5;
   }
 
-  v6 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
-  [v6 prepareForCaptureExecution];
+  delegate2 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
+  [delegate2 prepareForCaptureExecution];
 
-  v7 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
-  v8 = [v7 shouldCallSuper];
+  delegate3 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
+  shouldCallSuper = [delegate3 shouldCallSuper];
 
-  if (v8)
+  if (shouldCallSuper)
   {
     v12.receiver = self;
     v12.super_class = DYEAGLDebugFunctionPlayer;
     [(DYEAGLDebugFunctionPlayer *)&v12 prepareForCaptureExecution];
   }
 
-  v9 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
-  v10 = [v9 shouldReturn];
+  delegate4 = [*&self->super.DYGLFunctionPlayer_opaque[v3] delegate];
+  shouldReturn = [delegate4 shouldReturn];
 
-  if ((v10 & 1) == 0)
+  if ((shouldReturn & 1) == 0)
   {
 LABEL_5:
     v11.receiver = self;

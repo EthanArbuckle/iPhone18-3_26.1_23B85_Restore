@@ -1,6 +1,6 @@
 @interface IDSCTSIM
 - (BOOL)isDefaultVoiceSIM;
-- (IDSCTSIM)initWithContext:(id)a3 optionsNeeded:(unsigned __int8)a4;
+- (IDSCTSIM)initWithContext:(id)context optionsNeeded:(unsigned __int8)needed;
 - (NSString)SIMIdentifier;
 - (NSString)description;
 - (NSString)label;
@@ -14,22 +14,22 @@
 
 - (NSString)phoneNumber
 {
-  v2 = [(IDSCTSIM *)self context];
-  v3 = [v2 phoneNumber];
+  context = [(IDSCTSIM *)self context];
+  phoneNumber = [context phoneNumber];
 
-  return v3;
+  return phoneNumber;
 }
 
-- (IDSCTSIM)initWithContext:(id)a3 optionsNeeded:(unsigned __int8)a4
+- (IDSCTSIM)initWithContext:(id)context optionsNeeded:(unsigned __int8)needed
 {
-  v7 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = IDSCTSIM;
   v8 = [(IDSCTSIM *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_context, a3);
+    objc_storeStrong(&v8->_context, context);
     mobileCountryCode = v9->_mobileCountryCode;
     v9->_mobileCountryCode = 0;
 
@@ -39,13 +39,13 @@
     hardwareType = v9->_hardwareType;
     v9->_hardwareType = 0;
 
-    v13 = [(CTXPCServiceSubscriptionContext *)v9->_context slotID];
-    if (v13 <= 2)
+    slotID = [(CTXPCServiceSubscriptionContext *)v9->_context slotID];
+    if (slotID <= 2)
     {
-      v9->_slot = qword_1A7E40F38[v13];
+      v9->_slot = qword_1A7E40F38[slotID];
     }
 
-    v9->_optionsNeeded = a4;
+    v9->_optionsNeeded = needed;
   }
 
   return v9;
@@ -53,25 +53,25 @@
 
 - (NSString)label
 {
-  v2 = [(IDSCTSIM *)self context];
-  v3 = [v2 label];
+  context = [(IDSCTSIM *)self context];
+  label = [context label];
 
-  return v3;
+  return label;
 }
 
 - (NSString)SIMIdentifier
 {
-  v2 = [(IDSCTSIM *)self context];
-  v3 = [v2 labelID];
+  context = [(IDSCTSIM *)self context];
+  labelID = [context labelID];
 
-  return v3;
+  return labelID;
 }
 
 - (BOOL)isDefaultVoiceSIM
 {
-  v2 = [(IDSCTSIM *)self context];
-  v3 = [v2 userDefaultVoice];
-  v4 = v3 != 0;
+  context = [(IDSCTSIM *)self context];
+  userDefaultVoice = [context userDefaultVoice];
+  v4 = userDefaultVoice != 0;
 
   return v4;
 }
@@ -82,9 +82,9 @@
   if (!mobileCountryCode)
   {
     v4 = [objc_alloc(MEMORY[0x1E69650A0]) initWithQueue:0];
-    v5 = [(IDSCTSIM *)self context];
+    context = [(IDSCTSIM *)self context];
     v12 = 0;
-    v6 = [v4 copyMobileSubscriberCountryCode:v5 error:&v12];
+    v6 = [v4 copyMobileSubscriberCountryCode:context error:&v12];
     v7 = v12;
 
     if (v6)
@@ -121,9 +121,9 @@
   if (!mobileNetworkCode)
   {
     v4 = [objc_alloc(MEMORY[0x1E69650A0]) initWithQueue:0];
-    v5 = [(IDSCTSIM *)self context];
+    context = [(IDSCTSIM *)self context];
     v12 = 0;
-    v6 = [v4 copyMobileSubscriberNetworkCode:v5 error:&v12];
+    v6 = [v4 copyMobileSubscriberNetworkCode:context error:&v12];
     v7 = v12;
 
     if (v6)
@@ -160,16 +160,16 @@
   if (!hardwareType)
   {
     v4 = [objc_alloc(MEMORY[0x1E69650A0]) initWithQueue:0];
-    v5 = [(IDSCTSIM *)self context];
+    context = [(IDSCTSIM *)self context];
     v11 = 0;
-    v6 = [v4 getSimHardwareInfo:v5 error:&v11];
+    v6 = [v4 getSimHardwareInfo:context error:&v11];
     v7 = v11;
 
-    v8 = [v6 hardwareType];
-    if (v8 <= 2)
+    hardwareType = [v6 hardwareType];
+    if (hardwareType <= 2)
     {
       v9 = self->_hardwareType;
-      self->_hardwareType = qword_1E77E26C8[v8];
+      self->_hardwareType = qword_1E77E26C8[hardwareType];
     }
 
     hardwareType = self->_hardwareType;
@@ -185,8 +185,8 @@
   mobileCountryCode = self->_mobileCountryCode;
   mobileNetworkCode = self->_mobileNetworkCode;
   v7 = _IDSBinaryStringForValue(self->_optionsNeeded, 8u);
-  v8 = [(IDSCTSIM *)self context];
-  v9 = [v3 stringWithFormat:@"<%@:%p mcc: %@, mnc: %@, opts: %@, context: %@", v4, self, mobileCountryCode, mobileNetworkCode, v7, v8];
+  context = [(IDSCTSIM *)self context];
+  v9 = [v3 stringWithFormat:@"<%@:%p mcc: %@, mnc: %@, opts: %@, context: %@", v4, self, mobileCountryCode, mobileNetworkCode, v7, context];
 
   return v9;
 }

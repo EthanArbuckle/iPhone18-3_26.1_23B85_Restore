@@ -1,13 +1,13 @@
 @interface HFResidentDeviceStatusItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFResidentDeviceStatusItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v71[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   if (+[HFUtilities shouldSuppressAllErrorsForDemo])
   {
     v5 = MEMORY[0x277D2C900];
@@ -19,20 +19,20 @@
     goto LABEL_38;
   }
 
-  v6 = [v4 objectForKeyedSubscript:HFItemUpdateOptionLogger];
-  v9 = [(HFStatusItem *)self home];
-  v10 = [v9 hf_remoteAccessState];
+  v6 = [optionsCopy objectForKeyedSubscript:HFItemUpdateOptionLogger];
+  home = [(HFStatusItem *)self home];
+  hf_remoteAccessState = [home hf_remoteAccessState];
 
   v11 = +[HFHomeKitDispatcher sharedDispatcher];
-  v12 = [v11 homeManager];
-  v13 = [v12 residentProvisioningStatus];
+  homeManager = [v11 homeManager];
+  residentProvisioningStatus = [homeManager residentProvisioningStatus];
 
   if (v6)
   {
     state.opaque[0] = 0;
     state.opaque[1] = 0;
-    v14 = [v6 loggerActivity];
-    os_activity_scope_enter(v14, &state);
+    loggerActivity = [v6 loggerActivity];
+    os_activity_scope_enter(loggerActivity, &state);
 
     v15 = HFLogForCategory(0x2CuLL);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -40,7 +40,7 @@
       *buf = 138412546;
       *&buf[4] = self;
       *&buf[12] = 1024;
-      *&buf[14] = v13;
+      *&buf[14] = residentProvisioningStatus;
       _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "%@: residentProvisioningStatus = %d", buf, 0x12u);
     }
 
@@ -55,15 +55,15 @@
       *buf = 138412546;
       *&buf[4] = self;
       *&buf[12] = 1024;
-      *&buf[14] = v13;
+      *&buf[14] = residentProvisioningStatus;
       _os_log_impl(&dword_20D9BF000, v62, OS_LOG_TYPE_DEFAULT, "%@: residentProvisioningStatus = %d", buf, 0x12u);
     }
   }
 
   v16 = MEMORY[0x277CBEB98];
-  v17 = [(HFStatusItem *)self home];
-  v18 = [v17 residentDevices];
-  v19 = [v16 setWithArray:v18];
+  home2 = [(HFStatusItem *)self home];
+  residentDevices = [home2 residentDevices];
+  v19 = [v16 setWithArray:residentDevices];
   v7 = [v19 na_filter:&__block_literal_global_164];
 
   v67[0] = MEMORY[0x277D85DD0];
@@ -73,21 +73,21 @@
   v67[4] = self;
   v20 = [v7 na_filter:v67];
   v21 = [v20 na_filter:&__block_literal_global_7_7];
-  v22 = [MEMORY[0x277CBEB38] dictionary];
-  if ((v13 & 1) == 0)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ((residentProvisioningStatus & 1) == 0)
   {
-    if ((v13 & 2) == 0 || v10 != 1)
+    if ((residentProvisioningStatus & 2) == 0 || hf_remoteAccessState != 1)
     {
       if (![v7 count])
       {
-        v42 = [(HFStatusItem *)self home];
-        v43 = [v42 accessories];
-        if ([v43 count])
+        home3 = [(HFStatusItem *)self home];
+        accessories = [home3 accessories];
+        if ([accessories count])
         {
-          v44 = [(HFStatusItem *)self home];
-          v66 = [v44 hf_isCurrentLocationHome];
+          home4 = [(HFStatusItem *)self home];
+          hf_isCurrentLocationHome = [home4 hf_isCurrentLocationHome];
 
-          if ((v66 & 1) == 0)
+          if ((hf_isCurrentLocationHome & 1) == 0)
           {
             goto LABEL_19;
           }
@@ -102,8 +102,8 @@
       {
         if ([v21 count] == 1)
         {
-          v28 = [v21 anyObject];
-          v29 = [(HFStatusItem *)self displayNameForHomeKitObject:v28];
+          anyObject = [v21 anyObject];
+          v29 = [(HFStatusItem *)self displayNameForHomeKitObject:anyObject];
 
           v36 = HFLocalizedStringWithFormat(@"HFStatusTitleResidentDevice_OneLowBattery", @"%@", v30, v31, v32, v33, v34, v35, v29);
         }
@@ -114,9 +114,9 @@
           v36 = HFLocalizedStringWithFormat(@"HFStatusTitleResidentDevice_MultipleLowBattery", @"%lu", v46, v47, v48, v49, v50, v51, v45);
         }
 
-        [v22 setObject:v21 forKeyedSubscript:@"representedHomeKitObjects"];
+        [dictionary setObject:v21 forKeyedSubscript:@"representedHomeKitObjects"];
         v52 = _HFLocalizedStringWithDefaultValue(@"HFStatusShortTitleResidentDevice_LowBattery", @"HFStatusShortTitleResidentDevice_LowBattery", 1);
-        [v22 setObject:v52 forKeyedSubscript:@"shortTitle"];
+        [dictionary setObject:v52 forKeyedSubscript:@"shortTitle"];
 
         if (v36)
         {
@@ -125,7 +125,7 @@
       }
 
 LABEL_36:
-      [v22 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hidden"];
+      [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hidden"];
       goto LABEL_37;
     }
 
@@ -133,8 +133,8 @@ LABEL_36:
     {
       *buf = 0;
       *&buf[8] = 0;
-      v23 = [v6 loggerActivity];
-      os_activity_scope_enter(v23, buf);
+      loggerActivity2 = [v6 loggerActivity];
+      os_activity_scope_enter(loggerActivity2, buf);
 
       v24 = HFLogForCategory(0x2CuLL);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -162,14 +162,14 @@ LABEL_17:
     goto LABEL_53;
   }
 
-  if (v10 == 1)
+  if (hf_remoteAccessState == 1)
   {
     if (v6)
     {
       *buf = 0;
       *&buf[8] = 0;
-      v26 = [v6 loggerActivity];
-      os_activity_scope_enter(v26, buf);
+      loggerActivity3 = [v6 loggerActivity];
+      os_activity_scope_enter(loggerActivity3, buf);
 
       v24 = HFLogForCategory(0x2CuLL);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -207,8 +207,8 @@ LABEL_53:
   {
     *buf = 0;
     *&buf[8] = 0;
-    v37 = [v6 loggerActivity];
-    os_activity_scope_enter(v37, buf);
+    loggerActivity4 = [v6 loggerActivity];
+    os_activity_scope_enter(loggerActivity4, buf);
 
     v38 = HFLogForCategory(0x2CuLL);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -243,28 +243,28 @@ LABEL_29:
 LABEL_30:
   v39 = [MEMORY[0x277D755D0] configurationWithPointSize:24.0];
   v40 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:@"exclamationmark.circle.fill" configuration:v39];
-  [v22 setObject:v40 forKeyedSubscript:@"icon"];
+  [dictionary setObject:v40 forKeyedSubscript:@"icon"];
 
-  [v22 setObject:&unk_282524870 forKeyedSubscript:@"priority"];
-  [v22 setObject:&unk_282524888 forKeyedSubscript:@"statusItemCategory"];
-  [v22 setObject:v36 forKeyedSubscript:@"title"];
+  [dictionary setObject:&unk_282524870 forKeyedSubscript:@"priority"];
+  [dictionary setObject:&unk_282524888 forKeyedSubscript:@"statusItemCategory"];
+  [dictionary setObject:v36 forKeyedSubscript:@"title"];
   v41 = _HFLocalizedStringWithDefaultValue(@"HFStatusSortKeyResidentDevice", @"HFStatusSortKeyResidentDevice", 1);
-  [v22 setObject:v41 forKeyedSubscript:@"sortKey"];
+  [dictionary setObject:v41 forKeyedSubscript:@"sortKey"];
 
 LABEL_37:
   v53 = [v20 na_flatMap:&__block_literal_global_43_1];
-  v54 = [(HFStatusItem *)self home];
-  v55 = [v53 setByAddingObject:v54];
+  home5 = [(HFStatusItem *)self home];
+  v55 = [v53 setByAddingObject:home5];
 
   v56 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
-  [v22 setObject:v56 forKeyedSubscript:@"dependentHomeKitClasses"];
+  [dictionary setObject:v56 forKeyedSubscript:@"dependentHomeKitClasses"];
 
-  [v22 setObject:v55 forKeyedSubscript:@"dependentHomeKitObjects"];
+  [dictionary setObject:v55 forKeyedSubscript:@"dependentHomeKitObjects"];
   v57 = MEMORY[0x277CBEC38];
-  [v22 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"remoteAccessDependency"];
-  [v22 setObject:v57 forKeyedSubscript:@"currentHomeDependency"];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"remoteAccessDependency"];
+  [dictionary setObject:v57 forKeyedSubscript:@"currentHomeDependency"];
   v58 = MEMORY[0x277D2C900];
-  v59 = [HFItemUpdateOutcome outcomeWithResults:v22];
+  v59 = [HFItemUpdateOutcome outcomeWithResults:dictionary];
   v8 = [v58 futureWithResult:v59];
 
 LABEL_38:

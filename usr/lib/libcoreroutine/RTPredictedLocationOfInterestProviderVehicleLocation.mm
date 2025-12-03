@@ -1,20 +1,20 @@
 @interface RTPredictedLocationOfInterestProviderVehicleLocation
-- (BOOL)parkingEventIsUsualAndNearHome:(id)a3;
-- (RTPredictedLocationOfInterestProviderVehicleLocation)initWithVehicleLocationProvider:(id)a3 distanceCalculator:(id)a4;
-- (id)locationOfInterestFromVehicleEvent:(id)a3;
-- (id)predictedLocationOfInterestFromVehicleEvent:(id)a3;
-- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)a3 handler:(id)a4;
+- (BOOL)parkingEventIsUsualAndNearHome:(id)home;
+- (RTPredictedLocationOfInterestProviderVehicleLocation)initWithVehicleLocationProvider:(id)provider distanceCalculator:(id)calculator;
+- (id)locationOfInterestFromVehicleEvent:(id)event;
+- (id)predictedLocationOfInterestFromVehicleEvent:(id)event;
+- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)criteria handler:(id)handler;
 @end
 
 @implementation RTPredictedLocationOfInterestProviderVehicleLocation
 
-- (RTPredictedLocationOfInterestProviderVehicleLocation)initWithVehicleLocationProvider:(id)a3 distanceCalculator:(id)a4
+- (RTPredictedLocationOfInterestProviderVehicleLocation)initWithVehicleLocationProvider:(id)provider distanceCalculator:(id)calculator
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  providerCopy = provider;
+  calculatorCopy = calculator;
+  v9 = calculatorCopy;
+  if (!providerCopy)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -34,7 +34,7 @@
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!calculatorCopy)
   {
 LABEL_9:
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -48,7 +48,7 @@ LABEL_9:
     }
 
 LABEL_12:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -58,29 +58,29 @@ LABEL_12:
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_vehicleLocationProvider, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v10->_vehicleLocationProvider, provider);
+    objc_storeStrong(p_isa + 2, calculator);
   }
 
   self = p_isa;
-  v12 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)locationOfInterestFromVehicleEvent:(id)a3
+- (id)locationOfInterestFromVehicleEvent:(id)event
 {
-  if (a3)
+  if (event)
   {
     v3 = MEMORY[0x277D01170];
-    v4 = a3;
+    eventCopy = event;
     v5 = [v3 alloc];
-    v6 = [v4 location];
-    v7 = [v4 identifier];
-    v8 = [v4 mapItem];
+    location = [eventCopy location];
+    identifier = [eventCopy identifier];
+    mapItem = [eventCopy mapItem];
 
-    v9 = [v5 initWithLocation:v6 confidence:v7 identifier:-1 type:0 typeSource:0 visits:0 customLabel:1.0 mapItem:v8];
+    v9 = [v5 initWithLocation:location confidence:identifier identifier:-1 type:0 typeSource:0 visits:0 customLabel:1.0 mapItem:mapItem];
   }
 
   else
@@ -91,14 +91,14 @@ LABEL_13:
   return v9;
 }
 
-- (id)predictedLocationOfInterestFromVehicleEvent:(id)a3
+- (id)predictedLocationOfInterestFromVehicleEvent:(id)event
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (event)
   {
-    v4 = a3;
-    v5 = [v4 date];
-    [v5 timeIntervalSinceNow];
+    eventCopy = event;
+    date = [eventCopy date];
+    [date timeIntervalSinceNow];
     v7 = v6;
 
     if (v7 <= 432000.0)
@@ -111,8 +111,8 @@ LABEL_13:
       v8 = 0.0;
     }
 
-    v9 = [(RTPredictedLocationOfInterestProviderVehicleLocation *)self locationOfInterestFromVehicleEvent:v4];
-    v10 = [objc_alloc(MEMORY[0x277D012B0]) initWithVehicleEvent:v4];
+    v9 = [(RTPredictedLocationOfInterestProviderVehicleLocation *)self locationOfInterestFromVehicleEvent:eventCopy];
+    v10 = [objc_alloc(MEMORY[0x277D012B0]) initWithVehicleEvent:eventCopy];
 
     v11 = objc_alloc(MEMORY[0x277D01270]);
     v15[0] = v10;
@@ -128,35 +128,35 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)parkingEventIsUsualAndNearHome:(id)a3
+- (BOOL)parkingEventIsUsualAndNearHome:(id)home
 {
-  v3 = a3;
-  v4 = [v3 nearbyLocationOfInterest];
-  v5 = [v3 usualLocation];
+  homeCopy = home;
+  nearbyLocationOfInterest = [homeCopy nearbyLocationOfInterest];
+  usualLocation = [homeCopy usualLocation];
 
   v6 = 0;
-  if (v5 && v4)
+  if (usualLocation && nearbyLocationOfInterest)
   {
-    v6 = [v4 type] == 0;
+    v6 = [nearbyLocationOfInterest type] == 0;
   }
 
   return v6;
 }
 
-- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)a3 handler:(id)a4
+- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)criteria handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  criteriaCopy = criteria;
+  handlerCopy = handler;
   vehicleLocationProvider = self->_vehicleLocationProvider;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __114__RTPredictedLocationOfInterestProviderVehicleLocation_fetchNextPredictedLocationsOfInterestWithCriteria_handler___block_invoke;
   v11[3] = &unk_2788C6468;
-  v12 = v6;
-  v13 = v7;
+  v12 = criteriaCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = criteriaCopy;
+  v10 = handlerCopy;
   [(RTVehicleLocationProvider *)vehicleLocationProvider fetchLastVehicleEventsWithHandler:v11];
 }
 

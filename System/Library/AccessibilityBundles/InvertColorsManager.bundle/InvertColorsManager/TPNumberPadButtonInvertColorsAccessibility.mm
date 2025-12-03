@@ -1,7 +1,7 @@
 @interface TPNumberPadButtonInvertColorsAccessibility
-- (id)initForCharacter:(int64_t)a3;
+- (id)initForCharacter:(int64_t)character;
 - (void)_accessibilityLoadInvertColors;
-- (void)setColor:(id)a3;
+- (void)setColor:(id)color;
 @end
 
 @implementation TPNumberPadButtonInvertColorsAccessibility
@@ -28,7 +28,7 @@
     if (v5)
     {
       v6 = v5;
-      v27 = self;
+      selfCopy = self;
       v28 = v4;
       v7 = 0;
       v30 = *v36;
@@ -46,10 +46,10 @@
           v32 = 0u;
           v33 = 0u;
           v34 = 0u;
-          v10 = [v9 layer];
-          v11 = [v10 sublayers];
+          layer = [v9 layer];
+          sublayers = [layer sublayers];
 
-          v12 = [v11 countByEnumeratingWithState:&v31 objects:v40 count:16];
+          v12 = [sublayers countByEnumeratingWithState:&v31 objects:v40 count:16];
           if (v12)
           {
             v13 = v12;
@@ -60,7 +60,7 @@
               {
                 if (*v32 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(sublayers);
                 }
 
                 v16 = *(*(&v31 + 1) + 8 * j);
@@ -74,7 +74,7 @@
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v31 objects:v40 count:16];
+              v13 = [sublayers countByEnumeratingWithState:&v31 objects:v40 count:16];
               if (v13)
               {
                 continue;
@@ -94,15 +94,15 @@ LABEL_19:
 
       if (!v7)
       {
-        self = v27;
+        self = selfCopy;
         v4 = v28;
         v3 = &CGContextFillRect_ptr;
         goto LABEL_26;
       }
 
-      v18 = [v7 layer];
-      [AXInvertColorsAppHelper toggleInvertColors:v18];
-      self = v27;
+      layer2 = [v7 layer];
+      [AXInvertColorsAppHelper toggleInvertColors:layer2];
+      self = selfCopy;
       v4 = v28;
       v3 = &CGContextFillRect_ptr;
     }
@@ -110,7 +110,7 @@ LABEL_19:
     else
     {
       v7 = 0;
-      v18 = obj;
+      layer2 = obj;
     }
 
 LABEL_26:
@@ -127,19 +127,19 @@ LABEL_26:
       abort();
     }
 
-    v22 = [(TPNumberPadButtonInvertColorsAccessibility *)self _accessibilityBackgroundColor];
-    v23 = v22;
-    if (v22)
+    _accessibilityBackgroundColor = [(TPNumberPadButtonInvertColorsAccessibility *)self _accessibilityBackgroundColor];
+    v23 = _accessibilityBackgroundColor;
+    if (_accessibilityBackgroundColor)
     {
-      v24 = v22;
+      backgroundColor = _accessibilityBackgroundColor;
     }
 
     else
     {
-      v24 = [v21 backgroundColor];
+      backgroundColor = [v21 backgroundColor];
     }
 
-    v25 = v24;
+    v25 = backgroundColor;
 
     if (_AXSInvertColorsEnabled())
     {
@@ -152,22 +152,22 @@ LABEL_26:
   }
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = TPNumberPadButtonInvertColorsAccessibility;
-  v4 = a3;
-  [(TPNumberPadButtonInvertColorsAccessibility *)&v5 setColor:v4];
-  [(TPNumberPadButtonInvertColorsAccessibility *)self _setAccessibilityBackgroundColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(TPNumberPadButtonInvertColorsAccessibility *)&v5 setColor:colorCopy];
+  [(TPNumberPadButtonInvertColorsAccessibility *)self _setAccessibilityBackgroundColor:colorCopy, v5.receiver, v5.super_class];
 
   [(TPNumberPadButtonInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 
-- (id)initForCharacter:(int64_t)a3
+- (id)initForCharacter:(int64_t)character
 {
   v5.receiver = self;
   v5.super_class = TPNumberPadButtonInvertColorsAccessibility;
-  v3 = [(TPNumberPadButtonInvertColorsAccessibility *)&v5 initForCharacter:a3];
+  v3 = [(TPNumberPadButtonInvertColorsAccessibility *)&v5 initForCharacter:character];
   [v3 _accessibilityLoadInvertColors];
   return v3;
 }

@@ -1,114 +1,114 @@
 @interface PKMetalRendererController
-- (__n128)_updateRendererStrokeTransformWithTransform:(__n128)result offset:(double)a4;
-- (__n128)setPaperTransform:(uint64_t)a1;
-- (__n128)setStrokeTransform:(uint64_t)a1;
+- (__n128)_updateRendererStrokeTransformWithTransform:(__n128)result offset:(double)offset;
+- (__n128)setPaperTransform:(uint64_t)transform;
+- (__n128)setStrokeTransform:(uint64_t)transform;
 - (double)_latestLatency;
 - (id).cxx_construct;
-- (uint64_t)_drawStrokesAfterClear:(_OWORD *)a3 clippedToStrokeSpaceRect:(CGFloat)a4 strokeTransform:(CGFloat)a5 useLayerContext:(CGFloat)a6 progress:(CGFloat)a7;
-- (uint64_t)_renderAheadWithTransform:(uint64_t)a1 at:(_OWORD *)a2;
-- (uint64_t)drawStrokes:(void *)a3 intoTile:(uint64_t)a4 renderCount:(char)a5 offscreen:;
-- (uint64_t)prerenderWithTransform:(double)a3 inputScale:(double)a4 at:;
-- (uint64_t)renderStrokesSync:(_OWORD *)a3 clippedToStrokeSpaceRect:(CGFloat)a4 strokeTransform:(CGFloat)a5 imageClipRect:(CGFloat)a6;
-- (void)_drawStrokesAfterClear:(__int128 *)a3 clippedToStrokeSpaceRect:(char)a4 strokeTransform:(void *)a5 useLayerContext:(double)a6 renderCompletion:(double)a7;
+- (uint64_t)_drawStrokesAfterClear:(_OWORD *)clear clippedToStrokeSpaceRect:(CGFloat)rect strokeTransform:(CGFloat)transform useLayerContext:(CGFloat)context progress:(CGFloat)progress;
+- (uint64_t)_renderAheadWithTransform:(uint64_t)transform at:(_OWORD *)at;
+- (uint64_t)drawStrokes:(void *)strokes intoTile:(uint64_t)tile renderCount:(char)count offscreen:;
+- (uint64_t)prerenderWithTransform:(double)transform inputScale:(double)scale at:;
+- (uint64_t)renderStrokesSync:(_OWORD *)sync clippedToStrokeSpaceRect:(CGFloat)rect strokeTransform:(CGFloat)transform imageClipRect:(CGFloat)clipRect;
+- (void)_drawStrokesAfterClear:(__int128 *)clear clippedToStrokeSpaceRect:(char)rect strokeTransform:(void *)transform useLayerContext:(double)context renderCompletion:(double)completion;
 - (void)_logStrokeDuration;
 - (void)_recordStrokeStatistics;
 - (void)_recreateMetalRenderer;
-- (void)_renderLiveStrokeAndPresentWithTransform:(uint64_t)a1 at:(_OWORD *)a2 setDirtyRect:(int)a3;
-- (void)addBlockToCallAfterPresenting:(uint64_t)a1;
-- (void)addInputPoint:(uint64_t)a1;
-- (void)buildRenderCacheForStrokes:(uint64_t)a1;
-- (void)callBlockAfterPresenting:(uint64_t)a1;
-- (void)callBlockOnRenderQueue:(uint64_t)a1;
+- (void)_renderLiveStrokeAndPresentWithTransform:(uint64_t)transform at:(_OWORD *)at setDirtyRect:(int)rect;
+- (void)addBlockToCallAfterPresenting:(uint64_t)presenting;
+- (void)addInputPoint:(uint64_t)point;
+- (void)buildRenderCacheForStrokes:(uint64_t)strokes;
+- (void)callBlockAfterPresenting:(uint64_t)presenting;
+- (void)callBlockOnRenderQueue:(uint64_t)queue;
 - (void)cancelAllRendering;
 - (void)cancelLongRunningRenders;
 - (void)changeRenderSize;
 - (void)commandQueue;
 - (void)dealloc;
 - (void)device;
-- (void)didFinishRendering:(uint64_t)a1;
-- (void)drawStrokesAfterClear:(__int128 *)a3 clippedToStrokeSpaceRect:(char)a4 strokeTransform:(void *)a5 useLayerContext:(double)a6 completion:(double)a7;
-- (void)drawTexture:(uint64_t)a1;
-- (void)drawingBeganWithStroke:(char)a3 forPreview:;
-- (void)drawingCancelledForPreview:(uint64_t)a1;
-- (void)drawingEnded:(void *)a3 finishStrokeBlock:;
+- (void)didFinishRendering:(uint64_t)rendering;
+- (void)drawStrokesAfterClear:(__int128 *)clear clippedToStrokeSpaceRect:(char)rect strokeTransform:(void *)transform useLayerContext:(double)context completion:(double)completion;
+- (void)drawTexture:(uint64_t)texture;
+- (void)drawingBeganWithStroke:(char)stroke forPreview:;
+- (void)drawingCancelledForPreview:(uint64_t)preview;
+- (void)drawingEnded:(void *)ended finishStrokeBlock:;
 - (void)flushMemoryIfPossible;
-- (void)initWithPixelSize:(uint64_t)a3 actualSize:(int)a4 pixelFormat:(void *)a5 sixChannelBlendingMode:(double)a6 wantsExtendedDynamicRangeContent:(double)a7 metalConfig:(double)a8;
-- (void)liveStrokeParticlesToFrame:(double)a3 strokes:(double)a4 startTime:(double)a5 duration:(double)a6;
+- (void)initWithPixelSize:(uint64_t)size actualSize:(int)actualSize pixelFormat:(void *)format sixChannelBlendingMode:(double)mode wantsExtendedDynamicRangeContent:(double)content metalConfig:(double)config;
+- (void)liveStrokeParticlesToFrame:(double)frame strokes:(double)strokes startTime:(double)time duration:(double)duration;
 - (void)pokeEventDispatcher;
 - (void)purgeOriginalBackFramebuffer;
-- (void)purgeRenderCachesForStrokes:(uint64_t)a1;
-- (void)renderImageTexture:(__int128 *)a3 imageTextureTransform:(void *)a4 withTiles:(__int128 *)a5 tileTransform:;
-- (void)renderStrokes:(__int128 *)a3 clippedToStrokeSpaceRect:(void *)a4 strokeTransform:(double)a5 imageClipRect:(double)a6 completion:(double)a7;
-- (void)renderTilesIntoTiles:(uint64_t)a1;
-- (void)renderWithTransform:(double)a3 inputScale:(double)a4 at:;
-- (void)replaceInkTexture:(uint64_t)a3 image:;
+- (void)purgeRenderCachesForStrokes:(uint64_t)strokes;
+- (void)renderImageTexture:(__int128 *)texture imageTextureTransform:(void *)transform withTiles:(__int128 *)tiles tileTransform:;
+- (void)renderStrokes:(__int128 *)strokes clippedToStrokeSpaceRect:(void *)rect strokeTransform:(double)transform imageClipRect:(double)clipRect completion:(double)completion;
+- (void)renderTilesIntoTiles:(uint64_t)tiles;
+- (void)renderWithTransform:(double)transform inputScale:(double)scale at:;
+- (void)replaceInkTexture:(uint64_t)texture image:;
 - (void)resumeLongRunningRenders;
 - (void)resumeLongRunningRendersAfterAllWorkIsDone;
-- (void)setAlternativeStrokes:(double)a3 alpha:(double)a4 originalStrokeAlpha:;
-- (void)setBackboardPaperMultiply:(uint64_t)a1;
-- (void)setBackgroundColor:(uint64_t)a1;
-- (void)setCanvasOffset:(double)a3;
-- (void)setCanvasOffsetPresentationOffsetBlock:(uint64_t)a1;
-- (void)setCombineStrokesAllowed:(uint64_t)a1;
-- (void)setContentZoomScale:(uint64_t)a1;
-- (void)setDrawBitmapEraserMask:(uint64_t)a1;
-- (void)setFadeOutStrokesMode:(uint64_t)a1;
-- (void)setInvertColors:(uint64_t)a1;
-- (void)setIsPDFCanvasForAnalytics:(uint64_t)a1;
-- (void)setLinedPaper:(uint64_t)a1;
-- (void)setLiveRenderingOverrideColor:(uint64_t)a1;
-- (void)setLiveStrokeElapsedTime:(uint64_t)a1;
-- (void)setLiveStrokeMaxSize:(double)a3;
-- (void)setLiveStrokeMode:(uint64_t)a1;
-- (void)setLiveStrokeStrokes:(double)a3 animationBounds:(double)a4;
-- (void)setMultiplyPresentationLayer:(uint64_t)a1;
-- (void)setPaperTextureImage:(uint64_t)a1;
-- (void)setPixelSize:(double)a3 actualSize:(double)a4;
-- (void)setPresentationLayer:(uint64_t)a1;
-- (void)setPreviewStrokeAlpha:(uint64_t)a1;
-- (void)setPreviewStrokeMaxPoints:(uint64_t)a1;
-- (void)setResourceCacheSize:(uint64_t)a1;
-- (void)setSixChannelBlendingMode:(uint64_t)a1;
-- (void)setViewScissor:(double)a3;
-- (void)setWantsExtendedDynamicRangeContent:(uint64_t)a1;
+- (void)setAlternativeStrokes:(double)strokes alpha:(double)alpha originalStrokeAlpha:;
+- (void)setBackboardPaperMultiply:(uint64_t)multiply;
+- (void)setBackgroundColor:(uint64_t)color;
+- (void)setCanvasOffset:(double)offset;
+- (void)setCanvasOffsetPresentationOffsetBlock:(uint64_t)block;
+- (void)setCombineStrokesAllowed:(uint64_t)allowed;
+- (void)setContentZoomScale:(uint64_t)scale;
+- (void)setDrawBitmapEraserMask:(uint64_t)mask;
+- (void)setFadeOutStrokesMode:(uint64_t)mode;
+- (void)setInvertColors:(uint64_t)colors;
+- (void)setIsPDFCanvasForAnalytics:(uint64_t)analytics;
+- (void)setLinedPaper:(uint64_t)paper;
+- (void)setLiveRenderingOverrideColor:(uint64_t)color;
+- (void)setLiveStrokeElapsedTime:(uint64_t)time;
+- (void)setLiveStrokeMaxSize:(double)size;
+- (void)setLiveStrokeMode:(uint64_t)mode;
+- (void)setLiveStrokeStrokes:(double)strokes animationBounds:(double)bounds;
+- (void)setMultiplyPresentationLayer:(uint64_t)layer;
+- (void)setPaperTextureImage:(uint64_t)image;
+- (void)setPixelSize:(double)size actualSize:(double)actualSize;
+- (void)setPresentationLayer:(uint64_t)layer;
+- (void)setPreviewStrokeAlpha:(uint64_t)alpha;
+- (void)setPreviewStrokeMaxPoints:(uint64_t)points;
+- (void)setResourceCacheSize:(uint64_t)size;
+- (void)setSixChannelBlendingMode:(uint64_t)mode;
+- (void)setViewScissor:(double)scissor;
+- (void)setWantsExtendedDynamicRangeContent:(uint64_t)content;
 - (void)setup;
-- (void)signalVSyncSemaphore:(double)a3 presentationTime:(unint64_t)a4;
+- (void)signalVSyncSemaphore:(double)semaphore presentationTime:(unint64_t)time;
 - (void)teardown;
-- (void)updateCyclePreCACommit:(uint64_t)a1 isDrawing:(char)a2;
-- (void)updateTiles:(void *)a3 withNewStrokes:(void *)a4 completionBlock:;
+- (void)updateCyclePreCACommit:(uint64_t)commit isDrawing:(char)drawing;
+- (void)updateTiles:(void *)tiles withNewStrokes:(void *)strokes completionBlock:;
 @end
 
 @implementation PKMetalRendererController
 
-- (void)initWithPixelSize:(uint64_t)a3 actualSize:(int)a4 pixelFormat:(void *)a5 sixChannelBlendingMode:(double)a6 wantsExtendedDynamicRangeContent:(double)a7 metalConfig:(double)a8
+- (void)initWithPixelSize:(uint64_t)size actualSize:(int)actualSize pixelFormat:(void *)format sixChannelBlendingMode:(double)mode wantsExtendedDynamicRangeContent:(double)content metalConfig:(double)config
 {
-  v17 = a5;
-  if (a1)
+  formatCopy = format;
+  if (self)
   {
-    v53.receiver = a1;
+    v53.receiver = self;
     v53.super_class = PKMetalRendererController;
     v18 = objc_msgSendSuper2(&v53, sel_init);
-    a1 = v18;
+    self = v18;
     if (+[PKMetalUtility isMetalAvailable])
     {
       if (v18)
       {
-        [PKMetalUtility clampedPixelSize:a6, a7];
+        [PKMetalUtility clampedPixelSize:mode, content];
         v20 = v19;
         v22 = v21;
         *(v18 + 69) = 0x3FF0000000000000;
-        v18[524] = a4;
-        *(v18 + 77) = a3;
+        v18[524] = actualSize;
+        *(v18 + 77) = size;
         v18[525] = 0;
-        if (!v17)
+        if (!formatCopy)
         {
-          v17 = objc_alloc_init(PKMetalConfig);
+          formatCopy = objc_alloc_init(PKMetalConfig);
         }
 
-        objc_storeStrong(v18 + 1, v17);
-        v23 = [(PKMetalConfig *)v17 renderQueue];
+        objc_storeStrong(v18 + 1, formatCopy);
+        renderQueue = [(PKMetalConfig *)formatCopy renderQueue];
         v24 = *(v18 + 3);
-        *(v18 + 3) = v23;
+        *(v18 + 3) = renderQueue;
 
         atomic_exchange(v18 + 48, 1u);
         v25 = dispatch_semaphore_create(0);
@@ -133,10 +133,10 @@
 
         if (a2 == 80)
         {
-          v30 = [(PKMetalConfig *)v17 resourceHandler];
-          if (v30)
+          resourceHandler = [(PKMetalConfig *)formatCopy resourceHandler];
+          if (resourceHandler)
           {
-            v31 = v30[56];
+            v31 = resourceHandler[56];
           }
 
           else
@@ -153,15 +153,15 @@
         }
 
         v32 = a2;
-        if (a4)
+        if (actualSize)
         {
           v32 = *(v18 + 64);
         }
 
         v33 = [PKMetalRenderer alloc];
-        v34 = [(PKMetalConfig *)v17 device];
-        v35 = [(PKMetalConfig *)v17 resourceHandler];
-        v36 = [PKMetalRenderer initWithDrawingPixelSize:v34 actualSize:v35 device:*(v18 + 77) resourceHandler:v32 sixChannelBlendingMode:v18[524] pixelFormat:? wantsExtendedDynamicRangeContent:?];
+        device = [(PKMetalConfig *)formatCopy device];
+        resourceHandler2 = [(PKMetalConfig *)formatCopy resourceHandler];
+        v36 = [PKMetalRenderer initWithDrawingPixelSize:device actualSize:resourceHandler2 device:*(v18 + 77) resourceHandler:v32 sixChannelBlendingMode:v18[524] pixelFormat:? wantsExtendedDynamicRangeContent:?];
         v37 = *(v18 + 80);
         *(v18 + 80) = v36;
 
@@ -171,7 +171,7 @@
           *(v38 + 1006) = v18[525];
           v39 = *(v18 + 80);
           *(v18 + 67) = a2;
-          if (a4)
+          if (actualSize)
           {
             if (v39)
             {
@@ -195,7 +195,7 @@ LABEL_26:
                 {
                   v44 = v43[421];
 LABEL_29:
-                  v18[520] = v44 & (a4 ^ 1);
+                  v18[520] = v44 & (actualSize ^ 1);
 
                   v45 = objc_alloc_init(PKStrokeGenerator);
                   v46 = *(v18 + 70);
@@ -206,13 +206,13 @@ LABEL_29:
                   *(v18 + 44) = *MEMORY[0x1E695EFD0];
                   *(v18 + 45) = v48;
                   *(v18 + 46) = *(v47 + 32);
-                  v49 = [MEMORY[0x1E695DF70] array];
+                  array = [MEMORY[0x1E695DF70] array];
                   v50 = *(v18 + 11);
-                  *(v18 + 11) = v49;
+                  *(v18 + 11) = array;
 
                   *(v18 + 13) = v20;
                   *(v18 + 14) = v22;
-                  *(v18 + 15) = a8;
+                  *(v18 + 15) = config;
                   *(v18 + 16) = a9;
                   v51 = *(MEMORY[0x1E695F050] + 16);
                   *(v18 + 440) = *MEMORY[0x1E695F050];
@@ -259,13 +259,13 @@ LABEL_29:
     {
       v18[96] = 1;
 
-      a1 = 0;
+      self = 0;
     }
   }
 
 LABEL_30:
 
-  return a1;
+  return self;
 }
 
 void __138__PKMetalRendererController_initWithPixelSize_actualSize_pixelFormat_sixChannelBlendingMode_wantsExtendedDynamicRangeContent_metalConfig___block_invoke()
@@ -355,43 +355,43 @@ void __138__PKMetalRendererController_initWithPixelSize_actualSize_pixelFormat_s
 
 - (void)device
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[80];
+    v2 = self[80];
     if (v2)
     {
       v2 = v2[3];
     }
 
-    a1 = v2;
+    self = v2;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)commandQueue
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[80];
+    v2 = self[80];
     if (v2)
     {
       v2 = v2[4];
     }
 
-    a1 = v2;
+    self = v2;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_recreateMetalRenderer
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 640);
+    v2 = *(self + 640);
     v22 = v2;
     if (v2)
     {
@@ -406,9 +406,9 @@ void __138__PKMetalRendererController_initWithPixelSize_actualSize_pixelFormat_s
     }
 
     v5 = CGColorRetain(v4);
-    v6 = (a1 + 640);
+    v6 = (self + 640);
 
-    v7 = *(a1 + 640);
+    v7 = *(self + 640);
     if (v7)
     {
       v7 = v7[24];
@@ -416,12 +416,12 @@ void __138__PKMetalRendererController_initWithPixelSize_actualSize_pixelFormat_s
 
     v23 = v7;
     v8 = 536;
-    if (*(a1 + 524))
+    if (*(self + 524))
     {
       v8 = 512;
     }
 
-    v9 = *(a1 + v8);
+    v9 = *(self + v8);
     v10 = [PKMetalRenderer alloc];
     if (v23)
     {
@@ -434,8 +434,8 @@ void __138__PKMetalRendererController_initWithPixelSize_actualSize_pixelFormat_s
     }
 
     v12 = v11;
-    v13 = [PKMetalRenderer initWithDrawingPixelSize:v12 actualSize:v23 device:*(a1 + 616) resourceHandler:v9 sixChannelBlendingMode:*(a1 + 524) pixelFormat:? wantsExtendedDynamicRangeContent:?];
-    objc_storeStrong((a1 + 640), v13);
+    v13 = [PKMetalRenderer initWithDrawingPixelSize:v12 actualSize:v23 device:*(self + 616) resourceHandler:v9 sixChannelBlendingMode:*(self + 524) pixelFormat:? wantsExtendedDynamicRangeContent:?];
+    objc_storeStrong((self + 640), v13);
 
     if (*v6)
     {
@@ -449,11 +449,11 @@ void __138__PKMetalRendererController_initWithPixelSize_actualSize_pixelFormat_s
     }
 
     [(PKMetalRenderer *)v14 setBackgroundColor:v5];
-    [(PKMetalRenderer *)*(a1 + 640) setLinedPaper:?];
-    v15 = *(a1 + 640);
-    if (v15 && ((v16 = *(a1 + 521), *(v15 + 1003) == v16) || (*(v15 + 1003) = v16, (v15 = *v6) != 0)) && (*(v15 + 1088) = *(a1 + 656), (v17 = *(a1 + 640)) != 0) && (*(v17 + 1002) = *(a1 + 522), (v18 = *(a1 + 640)) != 0) && (*(v18 + 1005) = *(a1 + 523), (v19 = *(a1 + 640)) != 0))
+    [(PKMetalRenderer *)*(self + 640) setLinedPaper:?];
+    v15 = *(self + 640);
+    if (v15 && ((v16 = *(self + 521), *(v15 + 1003) == v16) || (*(v15 + 1003) = v16, (v15 = *v6) != 0)) && (*(v15 + 1088) = *(self + 656), (v17 = *(self + 640)) != 0) && (*(v17 + 1002) = *(self + 522), (v18 = *(self + 640)) != 0) && (*(v18 + 1005) = *(self + 523), (v19 = *(self + 640)) != 0))
     {
-      *(v19 + 1006) = *(a1 + 525);
+      *(v19 + 1006) = *(self + 525);
       v20 = *v6;
     }
 
@@ -462,7 +462,7 @@ void __138__PKMetalRendererController_initWithPixelSize_actualSize_pixelFormat_s
       v20 = 0;
     }
 
-    v21 = *(a1 + 352);
+    v21 = *(self + 352);
     if (v21)
     {
       [(PKMetalRenderer *)v20 setPaperTextureImage:v21];
@@ -472,20 +472,20 @@ void __138__PKMetalRendererController_initWithPixelSize_actualSize_pixelFormat_s
   }
 }
 
-- (void)setPixelSize:(double)a3 actualSize:(double)a4
+- (void)setPixelSize:(double)size actualSize:(double)actualSize
 {
-  if (a1)
+  if (self)
   {
-    [(PKMetalRendererController *)a1 cancelLongRunningRenders];
-    v10 = *(a1 + 24);
+    [(PKMetalRendererController *)self cancelLongRunningRenders];
+    v10 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53__PKMetalRendererController_setPixelSize_actualSize___block_invoke;
     block[3] = &unk_1E82D8330;
-    block[4] = a1;
+    block[4] = self;
     *&block[5] = a2;
-    *&block[6] = a3;
-    *&block[7] = a4;
+    *&block[6] = size;
+    *&block[7] = actualSize;
     *&block[8] = a5;
     dispatch_async(v10, block);
   }
@@ -493,7 +493,7 @@ void __138__PKMetalRendererController_initWithPixelSize_actualSize_pixelFormat_s
 
 - (void)cancelLongRunningRenders
 {
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "Sketching");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -502,7 +502,7 @@ void __138__PKMetalRendererController_initWithPixelSize_actualSize_pixelFormat_s
       _os_log_debug_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEBUG, "Cancel long-running render.", v3, 2u);
     }
 
-    atomic_fetch_add((a1 + 32), 1u);
+    atomic_fetch_add((self + 32), 1u);
   }
 }
 
@@ -548,7 +548,7 @@ void __53__PKMetalRendererController_setPixelSize_actualSize___block_invoke(uint
 
 - (void)resumeLongRunningRenders
 {
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "Sketching");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -557,15 +557,15 @@ void __53__PKMetalRendererController_setPixelSize_actualSize___block_invoke(uint
       _os_log_debug_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEBUG, "Resume long-running render.", v3, 2u);
     }
 
-    atomic_fetch_add((a1 + 32), 0xFFFFFFFF);
+    atomic_fetch_add((self + 32), 0xFFFFFFFF);
   }
 }
 
 - (void)teardown
 {
-  if (a1)
+  if (self)
   {
-    [(PKMetalRendererController *)a1 cancelAllRendering];
+    [(PKMetalRendererController *)self cancelAllRendering];
     v2 = dispatch_semaphore_create(0);
     v3 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
@@ -574,14 +574,14 @@ void __53__PKMetalRendererController_setPixelSize_actualSize___block_invoke(uint
     block[3] = &unk_1E82D6890;
     v4 = v2;
     v9 = v4;
-    v10 = a1;
+    selfCopy = self;
     dispatch_async(v3, block);
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __37__PKMetalRendererController_teardown__block_invoke_2;
     v6[3] = &unk_1E82D6890;
-    v6[4] = a1;
+    v6[4] = self;
     v7 = v4;
     v5 = v4;
     dispatch_async(v3, v6);
@@ -590,7 +590,7 @@ void __53__PKMetalRendererController_setPixelSize_actualSize___block_invoke(uint
 
 - (void)cancelAllRendering
 {
-  if (a1)
+  if (self)
   {
     v2 = os_log_create("com.apple.pencilkit", "Sketching");
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -599,7 +599,7 @@ void __53__PKMetalRendererController_setPixelSize_actualSize___block_invoke(uint
       _os_log_debug_impl(&dword_1C7CCA000, v2, OS_LOG_TYPE_DEBUG, "Cancel all rendering.", v3, 2u);
     }
 
-    atomic_store(1u, (a1 + 36));
+    atomic_store(1u, (self + 36));
   }
 }
 
@@ -670,14 +670,14 @@ void __37__PKMetalRendererController_teardown__block_invoke_3(uint64_t a1)
 
 - (void)setup
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __34__PKMetalRendererController_setup__block_invoke;
     block[3] = &unk_1E82D6388;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
@@ -693,12 +693,12 @@ uint64_t __34__PKMetalRendererController_setup__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)signalVSyncSemaphore:(double)a3 presentationTime:(unint64_t)a4
+- (void)signalVSyncSemaphore:(double)semaphore presentationTime:(unint64_t)time
 {
-  atomic_store(a4, &self->_lastPresentationTime);
+  atomic_store(time, &self->_lastPresentationTime);
   atomic_store(0, &self->_skipRendersUntilTime);
   kdebug_trace();
-  atomic_store(*&a3, &self->_lastFrameDuration);
+  atomic_store(*&semaphore, &self->_lastFrameDuration);
   if ((_UIUpdateCycleEnabled() & 1) == 0 && (atomic_exchange_explicit(&self->_readyToBeginRender._Value, 1u, memory_order_acquire) & 1) == 0)
   {
     canBeginRenderSemaphore = self->_canBeginRenderSemaphore;
@@ -709,30 +709,30 @@ uint64_t __34__PKMetalRendererController_setup__block_invoke(uint64_t result)
 
 - (void)resumeLongRunningRendersAfterAllWorkIsDone
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __71__PKMetalRendererController_resumeLongRunningRendersAfterAllWorkIsDone__block_invoke;
     block[3] = &unk_1E82D6388;
-    block[4] = a1;
+    block[4] = self;
     dispatch_sync(v1, block);
   }
 }
 
-- (void)setPresentationLayer:(uint64_t)a1
+- (void)setPresentationLayer:(uint64_t)layer
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (layer)
   {
-    v5 = *(a1 + 24);
+    v5 = *(layer + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __50__PKMetalRendererController_setPresentationLayer___block_invoke;
     v6[3] = &unk_1E82D6890;
-    v6[4] = a1;
+    v6[4] = layer;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -763,18 +763,18 @@ void __50__PKMetalRendererController_setPresentationLayer___block_invoke(uint64_
   }
 }
 
-- (void)setMultiplyPresentationLayer:(uint64_t)a1
+- (void)setMultiplyPresentationLayer:(uint64_t)layer
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (layer)
   {
-    v5 = *(a1 + 24);
+    v5 = *(layer + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __58__PKMetalRendererController_setMultiplyPresentationLayer___block_invoke;
     v6[3] = &unk_1E82D6890;
-    v6[4] = a1;
+    v6[4] = layer;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -802,18 +802,18 @@ void __58__PKMetalRendererController_setMultiplyPresentationLayer___block_invoke
   }
 }
 
-- (uint64_t)renderStrokesSync:(_OWORD *)a3 clippedToStrokeSpaceRect:(CGFloat)a4 strokeTransform:(CGFloat)a5 imageClipRect:(CGFloat)a6
+- (uint64_t)renderStrokesSync:(_OWORD *)sync clippedToStrokeSpaceRect:(CGFloat)rect strokeTransform:(CGFloat)transform imageClipRect:(CGFloat)clipRect
 {
   v21 = a2;
-  if (a1)
+  if (self)
   {
-    v22 = a3[1];
-    v25[0] = *a3;
+    v22 = sync[1];
+    v25[0] = *sync;
     v25[1] = v22;
-    v25[2] = a3[2];
-    [(PKMetalRendererController *)a1 _drawStrokesAfterClear:v21 clippedToStrokeSpaceRect:v25 strokeTransform:a4 useLayerContext:a5 progress:a6, a7, 0, 0];
-    v23 = [(PKMetalRenderer *)*(a1 + 640) newCGImageWithClipRect:a8, a9, a10, a11];
-    [(PKMetalRenderer *)*(a1 + 640) teardownOriginalBackFramebuffer];
+    v25[2] = sync[2];
+    [(PKMetalRendererController *)self _drawStrokesAfterClear:v21 clippedToStrokeSpaceRect:v25 strokeTransform:rect useLayerContext:transform progress:clipRect, a7, 0, 0];
+    v23 = [(PKMetalRenderer *)*(self + 640) newCGImageWithClipRect:a8, a9, a10, a11];
+    [(PKMetalRenderer *)*(self + 640) teardownOriginalBackFramebuffer];
   }
 
   else
@@ -824,16 +824,16 @@ void __58__PKMetalRendererController_setMultiplyPresentationLayer___block_invoke
   return v23;
 }
 
-- (uint64_t)_drawStrokesAfterClear:(_OWORD *)a3 clippedToStrokeSpaceRect:(CGFloat)a4 strokeTransform:(CGFloat)a5 useLayerContext:(CGFloat)a6 progress:(CGFloat)a7
+- (uint64_t)_drawStrokesAfterClear:(_OWORD *)clear clippedToStrokeSpaceRect:(CGFloat)rect strokeTransform:(CGFloat)transform useLayerContext:(CGFloat)context progress:(CGFloat)progress
 {
   v29 = *MEMORY[0x1E69E9840];
   v16 = a2;
   v17 = a9;
-  if (a1)
+  if (self)
   {
-    if (atomic_load((a1 + 36)))
+    if (atomic_load((self + 36)))
     {
-      a1 = 0;
+      self = 0;
     }
 
     else
@@ -846,46 +846,46 @@ void __58__PKMetalRendererController_setMultiplyPresentationLayer___block_invoke
         _os_log_debug_impl(&dword_1C7CCA000, v19, OS_LOG_TYPE_DEBUG, "Draw clear and clipped commands %ld.", buf, 0xCu);
       }
 
-      v20 = *(a1 + 640);
-      v21 = a3[1];
-      *buf = *a3;
+      v20 = *(self + 640);
+      v21 = clear[1];
+      *buf = *clear;
       v27 = v21;
-      v28 = a3[2];
+      v28 = clear[2];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __118__PKMetalRendererController__drawStrokesAfterClear_clippedToStrokeSpaceRect_strokeTransform_useLayerContext_progress___block_invoke;
       v23[3] = &unk_1E82D83A8;
       v24 = v17;
-      v25 = a1;
-      a1 = [(PKMetalRenderer *)v20 clearAndRenderStrokes:v16 clippedToStrokeSpaceRect:buf strokeTransform:v23 stopBlock:a4, a5, a6, a7];
+      selfCopy = self;
+      self = [(PKMetalRenderer *)v20 clearAndRenderStrokes:v16 clippedToStrokeSpaceRect:buf strokeTransform:v23 stopBlock:rect, transform, context, progress];
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)renderStrokes:(__int128 *)a3 clippedToStrokeSpaceRect:(void *)a4 strokeTransform:(double)a5 imageClipRect:(double)a6 completion:(double)a7
+- (void)renderStrokes:(__int128 *)strokes clippedToStrokeSpaceRect:(void *)rect strokeTransform:(double)transform imageClipRect:(double)clipRect completion:(double)completion
 {
   v23 = a2;
-  v24 = a4;
-  v25 = v24;
-  if (a1)
+  rectCopy = rect;
+  v25 = rectCopy;
+  if (self)
   {
-    v26 = a3[1];
-    v33[0] = *a3;
+    v26 = strokes[1];
+    v33[0] = *strokes;
     v33[1] = v26;
-    v33[2] = a3[2];
+    v33[2] = strokes[2];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __109__PKMetalRendererController_renderStrokes_clippedToStrokeSpaceRect_strokeTransform_imageClipRect_completion___block_invoke;
     v27[3] = &unk_1E82D8358;
-    v27[4] = a1;
+    v27[4] = self;
     v29 = a9;
     v30 = a10;
     v31 = a11;
     v32 = a12;
-    v28 = v24;
-    [(PKMetalRendererController *)a1 _drawStrokesAfterClear:v23 clippedToStrokeSpaceRect:v33 strokeTransform:0 useLayerContext:v27 renderCompletion:a5, a6, a7, a8];
+    v28 = rectCopy;
+    [(PKMetalRendererController *)self _drawStrokesAfterClear:v23 clippedToStrokeSpaceRect:v33 strokeTransform:0 useLayerContext:v27 renderCompletion:transform, clipRect, completion, a8];
   }
 }
 
@@ -943,43 +943,43 @@ LABEL_13:
   [(PKMetalRenderer *)v10 teardownOriginalBackFramebuffer];
 }
 
-- (void)_drawStrokesAfterClear:(__int128 *)a3 clippedToStrokeSpaceRect:(char)a4 strokeTransform:(void *)a5 useLayerContext:(double)a6 renderCompletion:(double)a7
+- (void)_drawStrokesAfterClear:(__int128 *)clear clippedToStrokeSpaceRect:(char)rect strokeTransform:(void *)transform useLayerContext:(double)context renderCompletion:(double)completion
 {
   v17 = a2;
-  v18 = a5;
-  if (a1)
+  transformCopy = transform;
+  if (self)
   {
     v19 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:{objc_msgSend(v17, "count")}];
-    v20 = *(a1 + 24);
+    v20 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __126__PKMetalRendererController__drawStrokesAfterClear_clippedToStrokeSpaceRect_strokeTransform_useLayerContext_renderCompletion___block_invoke;
     block[3] = &unk_1E82D8380;
-    block[4] = a1;
+    block[4] = self;
     v21 = v17;
-    v28 = a6;
-    v29 = a7;
+    contextCopy = context;
+    completionCopy = completion;
     v30 = a8;
     v31 = a9;
-    v22 = a3[1];
-    v32 = *a3;
+    v22 = clear[1];
+    v32 = *clear;
     v33 = v22;
-    v34 = a3[2];
-    v35 = a4;
+    v34 = clear[2];
+    rectCopy = rect;
     v25 = v21;
     v26 = v19;
-    v27 = v18;
+    v27 = transformCopy;
     v23 = v19;
     dispatch_async(v20, block);
   }
 }
 
-- (void)buildRenderCacheForStrokes:(uint64_t)a1
+- (void)buildRenderCacheForStrokes:(uint64_t)strokes
 {
   v3 = a2;
-  if (a1)
+  if (strokes)
   {
-    [(PKMetalRenderer *)*(a1 + 640) buildRenderCacheForStrokes:v3];
+    [(PKMetalRenderer *)*(strokes + 640) buildRenderCacheForStrokes:v3];
   }
 }
 
@@ -1016,61 +1016,61 @@ BOOL __118__PKMetalRendererController__drawStrokesAfterClear_clippedToStrokeSpac
   return v3 > 0;
 }
 
-- (void)setSixChannelBlendingMode:(uint64_t)a1
+- (void)setSixChannelBlendingMode:(uint64_t)mode
 {
-  if (a1)
+  if (mode)
   {
-    if (*(a1 + 616) != a2)
+    if (*(mode + 616) != a2)
     {
       block[5] = v2;
       block[6] = v3;
-      *(a1 + 616) = a2;
-      v4 = *(a1 + 24);
+      *(mode + 616) = a2;
+      v4 = *(mode + 24);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __55__PKMetalRendererController_setSixChannelBlendingMode___block_invoke;
       block[3] = &unk_1E82D6388;
-      block[4] = a1;
+      block[4] = mode;
       dispatch_async(v4, block);
     }
   }
 }
 
-- (void)setWantsExtendedDynamicRangeContent:(uint64_t)a1
+- (void)setWantsExtendedDynamicRangeContent:(uint64_t)content
 {
-  if (a1)
+  if (content)
   {
-    if (*(a1 + 524) != a2)
+    if (*(content + 524) != a2)
     {
       block[5] = v2;
       block[6] = v3;
-      *(a1 + 524) = a2;
-      v4 = *(a1 + 24);
+      *(content + 524) = a2;
+      v4 = *(content + 24);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __65__PKMetalRendererController_setWantsExtendedDynamicRangeContent___block_invoke;
       block[3] = &unk_1E82D6388;
-      block[4] = a1;
+      block[4] = content;
       dispatch_async(v4, block);
     }
   }
 }
 
-- (void)setDrawBitmapEraserMask:(uint64_t)a1
+- (void)setDrawBitmapEraserMask:(uint64_t)mask
 {
-  if (a1)
+  if (mask)
   {
-    if (*(a1 + 525) != a2)
+    if (*(mask + 525) != a2)
     {
       v7 = v2;
       v8 = v3;
-      *(a1 + 525) = a2;
-      v4 = *(a1 + 24);
+      *(mask + 525) = a2;
+      v4 = *(mask + 24);
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __53__PKMetalRendererController_setDrawBitmapEraserMask___block_invoke;
       v5[3] = &unk_1E82D75A0;
-      v5[4] = a1;
+      v5[4] = mask;
       v6 = a2;
       dispatch_async(v4, v5);
     }
@@ -1092,21 +1092,21 @@ uint64_t __53__PKMetalRendererController_setDrawBitmapEraserMask___block_invoke(
   return result;
 }
 
-- (void)setPreviewStrokeAlpha:(uint64_t)a1
+- (void)setPreviewStrokeAlpha:(uint64_t)alpha
 {
-  if (a1)
+  if (alpha)
   {
-    if (vabdd_f64(*(a1 + 632), a2) >= 0.00999999978)
+    if (vabdd_f64(*(alpha + 632), a2) >= 0.00999999978)
     {
       v5[6] = v2;
       v5[7] = v3;
-      *(a1 + 632) = a2;
-      v4 = *(a1 + 24);
+      *(alpha + 632) = a2;
+      v4 = *(alpha + 24);
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __51__PKMetalRendererController_setPreviewStrokeAlpha___block_invoke;
       v5[3] = &unk_1E82D83D0;
-      v5[4] = a1;
+      v5[4] = alpha;
       *&v5[5] = a2;
       dispatch_async(v4, v5);
     }
@@ -1129,21 +1129,21 @@ double __51__PKMetalRendererController_setPreviewStrokeAlpha___block_invoke(uint
   return result;
 }
 
-- (void)setPreviewStrokeMaxPoints:(uint64_t)a1
+- (void)setPreviewStrokeMaxPoints:(uint64_t)points
 {
-  if (a1)
+  if (points)
   {
-    if (*(a1 + 624) != a2)
+    if (*(points + 624) != a2)
     {
       v5[6] = v2;
       v5[7] = v3;
-      *(a1 + 624) = a2;
-      v4 = *(a1 + 24);
+      *(points + 624) = a2;
+      v4 = *(points + 24);
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __55__PKMetalRendererController_setPreviewStrokeMaxPoints___block_invoke;
       v5[3] = &unk_1E82D83D0;
-      v5[4] = a1;
+      v5[4] = points;
       v5[5] = a2;
       dispatch_async(v4, v5);
     }
@@ -1166,21 +1166,21 @@ double __55__PKMetalRendererController_setPreviewStrokeMaxPoints___block_invoke(
   return result;
 }
 
-- (void)setLiveStrokeMode:(uint64_t)a1
+- (void)setLiveStrokeMode:(uint64_t)mode
 {
-  if (a1)
+  if (mode)
   {
-    if (*(a1 + 521) != a2)
+    if (*(mode + 521) != a2)
     {
       v7 = v2;
       v8 = v3;
-      *(a1 + 521) = a2;
-      v4 = *(a1 + 24);
+      *(mode + 521) = a2;
+      v4 = *(mode + 24);
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __47__PKMetalRendererController_setLiveStrokeMode___block_invoke;
       v5[3] = &unk_1E82D75A0;
-      v5[4] = a1;
+      v5[4] = mode;
       v6 = a2;
       dispatch_async(v4, v5);
     }
@@ -1206,24 +1206,24 @@ uint64_t __47__PKMetalRendererController_setLiveStrokeMode___block_invoke(uint64
   return result;
 }
 
-- (void)setLiveStrokeMaxSize:(double)a3
+- (void)setLiveStrokeMaxSize:(double)size
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 656) != a2 || *(a1 + 664) != a3)
+    if (*(self + 656) != a2 || *(self + 664) != size)
     {
       block[7] = v3;
       block[8] = v4;
-      *(a1 + 656) = a2;
-      *(a1 + 664) = a3;
-      v6 = *(a1 + 24);
+      *(self + 656) = a2;
+      *(self + 664) = size;
+      v6 = *(self + 24);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __50__PKMetalRendererController_setLiveStrokeMaxSize___block_invoke;
       block[3] = &unk_1E82D6610;
-      block[4] = a1;
+      block[4] = self;
       *&block[5] = a2;
-      *&block[6] = a3;
+      *&block[6] = size;
       dispatch_async(v6, block);
     }
   }
@@ -1245,21 +1245,21 @@ __n128 __50__PKMetalRendererController_setLiveStrokeMaxSize___block_invoke(uint6
   return result;
 }
 
-- (void)setFadeOutStrokesMode:(uint64_t)a1
+- (void)setFadeOutStrokesMode:(uint64_t)mode
 {
-  if (a1)
+  if (mode)
   {
-    if (*(a1 + 522) != a2)
+    if (*(mode + 522) != a2)
     {
       v7 = v2;
       v8 = v3;
-      *(a1 + 522) = a2;
-      v4 = *(a1 + 24);
+      *(mode + 522) = a2;
+      v4 = *(mode + 24);
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __51__PKMetalRendererController_setFadeOutStrokesMode___block_invoke;
       v5[3] = &unk_1E82D75A0;
-      v5[4] = a1;
+      v5[4] = mode;
       v6 = a2;
       dispatch_async(v4, v5);
     }
@@ -1281,21 +1281,21 @@ uint64_t __51__PKMetalRendererController_setFadeOutStrokesMode___block_invoke(ui
   return result;
 }
 
-- (void)setLiveStrokeStrokes:(double)a3 animationBounds:(double)a4
+- (void)setLiveStrokeStrokes:(double)strokes animationBounds:(double)bounds
 {
   v11 = a2;
   v12 = v11;
-  if (a1)
+  if (self)
   {
-    v13 = *(a1 + 24);
+    v13 = *(self + 24);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __66__PKMetalRendererController_setLiveStrokeStrokes_animationBounds___block_invoke;
     v14[3] = &unk_1E82D83F8;
-    v14[4] = a1;
+    v14[4] = self;
     v15 = v11;
-    v16 = a3;
-    v17 = a4;
+    strokesCopy = strokes;
+    boundsCopy = bounds;
     v18 = a5;
     v19 = a6;
     dispatch_async(v13, v14);
@@ -1317,23 +1317,23 @@ __n128 __66__PKMetalRendererController_setLiveStrokeStrokes_animationBounds___bl
   return result;
 }
 
-- (void)liveStrokeParticlesToFrame:(double)a3 strokes:(double)a4 startTime:(double)a5 duration:(double)a6
+- (void)liveStrokeParticlesToFrame:(double)frame strokes:(double)strokes startTime:(double)time duration:(double)duration
 {
   v15 = a2;
   v16 = v15;
-  if (a1)
+  if (self)
   {
-    v17 = *(a1 + 24);
+    v17 = *(self + 24);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __83__PKMetalRendererController_liveStrokeParticlesToFrame_strokes_startTime_duration___block_invoke;
     v18[3] = &unk_1E82D8420;
-    v21 = a3;
-    v22 = a4;
-    v23 = a5;
-    v24 = a6;
+    frameCopy = frame;
+    strokesCopy = strokes;
+    timeCopy = time;
+    durationCopy = duration;
     v19 = v15;
-    v20 = a1;
+    selfCopy = self;
     v25 = a7;
     v26 = a8;
     dispatch_async(v17, v18);
@@ -1560,21 +1560,21 @@ LABEL_39:
   }
 }
 
-- (void)setLiveStrokeElapsedTime:(uint64_t)a1
+- (void)setLiveStrokeElapsedTime:(uint64_t)time
 {
-  if (a1)
+  if (time)
   {
-    if (*(a1 + 576) != a2)
+    if (*(time + 576) != a2)
     {
       v5[6] = v2;
       v5[7] = v3;
-      *(a1 + 576) = a2;
-      v4 = *(a1 + 24);
+      *(time + 576) = a2;
+      v4 = *(time + 24);
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __54__PKMetalRendererController_setLiveStrokeElapsedTime___block_invoke;
       v5[3] = &unk_1E82D83D0;
-      v5[4] = a1;
+      v5[4] = time;
       *&v5[5] = a2;
       dispatch_async(v4, v5);
     }
@@ -1597,16 +1597,16 @@ double __54__PKMetalRendererController_setLiveStrokeElapsedTime___block_invoke(u
   return result;
 }
 
-- (void)setResourceCacheSize:(uint64_t)a1
+- (void)setResourceCacheSize:(uint64_t)size
 {
-  if (a1)
+  if (size)
   {
-    v2 = *(a1 + 24);
+    v2 = *(size + 24);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __50__PKMetalRendererController_setResourceCacheSize___block_invoke;
     v3[3] = &unk_1E82D83D0;
-    v3[4] = a1;
+    v3[4] = size;
     v3[5] = a2;
     dispatch_async(v2, v3);
   }
@@ -1634,36 +1634,36 @@ void __50__PKMetalRendererController_setResourceCacheSize___block_invoke(uint64_
   }
 }
 
-- (void)purgeRenderCachesForStrokes:(uint64_t)a1
+- (void)purgeRenderCachesForStrokes:(uint64_t)strokes
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (strokes)
   {
     v5 = [v3 copy];
-    v6 = *(a1 + 24);
+    v6 = *(strokes + 24);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __57__PKMetalRendererController_purgeRenderCachesForStrokes___block_invoke;
     v8[3] = &unk_1E82D6890;
-    v8[4] = a1;
+    v8[4] = strokes;
     v9 = v5;
     v7 = v5;
     dispatch_async(v6, v8);
   }
 }
 
-- (void)setPaperTextureImage:(uint64_t)a1
+- (void)setPaperTextureImage:(uint64_t)image
 {
-  if (a1)
+  if (image)
   {
     v3 = CGImageRetain(image);
-    v4 = *(a1 + 24);
+    v4 = *(image + 24);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __50__PKMetalRendererController_setPaperTextureImage___block_invoke;
     v5[3] = &unk_1E82D83D0;
-    v5[4] = a1;
+    v5[4] = image;
     v5[5] = v3;
     dispatch_async(v4, v5);
   }
@@ -1700,17 +1700,17 @@ void __50__PKMetalRendererController_setPaperTextureImage___block_invoke(uint64_
   CGImageRelease(*(a1 + 40));
 }
 
-- (void)setBackgroundColor:(uint64_t)a1
+- (void)setBackgroundColor:(uint64_t)color
 {
-  if (a1)
+  if (color)
   {
     v3 = CGColorRetain(color);
-    v4 = *(a1 + 24);
+    v4 = *(color + 24);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __48__PKMetalRendererController_setBackgroundColor___block_invoke;
     v5[3] = &unk_1E82D83D0;
-    v5[4] = a1;
+    v5[4] = color;
     v5[5] = v3;
     dispatch_async(v4, v5);
   }
@@ -1745,17 +1745,17 @@ void __48__PKMetalRendererController_setBackgroundColor___block_invoke(uint64_t 
   CGColorRelease(*(a1 + 40));
 }
 
-- (void)setLiveRenderingOverrideColor:(uint64_t)a1
+- (void)setLiveRenderingOverrideColor:(uint64_t)color
 {
-  if (a1)
+  if (color)
   {
     v3 = CGColorRetain(color);
-    v4 = *(a1 + 24);
+    v4 = *(color + 24);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __59__PKMetalRendererController_setLiveRenderingOverrideColor___block_invoke;
     v5[3] = &unk_1E82D83D0;
-    v5[4] = a1;
+    v5[4] = color;
     v5[5] = v3;
     dispatch_async(v4, v5);
   }
@@ -1790,21 +1790,21 @@ void __59__PKMetalRendererController_setLiveRenderingOverrideColor___block_invok
   CGColorRelease(*(a1 + 40));
 }
 
-- (__n128)setStrokeTransform:(uint64_t)a1
+- (__n128)setStrokeTransform:(uint64_t)transform
 {
-  if (a1)
+  if (transform)
   {
     v2 = *a2;
     v3 = a2[2];
-    *(a1 + 720) = a2[1];
-    *(a1 + 736) = v3;
-    *(a1 + 704) = v2;
-    v4 = *(a1 + 24);
+    *(transform + 720) = a2[1];
+    *(transform + 736) = v3;
+    *(transform + 704) = v2;
+    v4 = *(transform + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48__PKMetalRendererController_setStrokeTransform___block_invoke;
     block[3] = &unk_1E82D6520;
-    block[4] = a1;
+    block[4] = transform;
     v5 = a2[1];
     v8 = *a2;
     v9 = v5;
@@ -1847,11 +1847,11 @@ LABEL_4:
   return *&v4;
 }
 
-- (__n128)_updateRendererStrokeTransformWithTransform:(__n128)result offset:(double)a4
+- (__n128)_updateRendererStrokeTransformWithTransform:(__n128)result offset:(double)offset
 {
-  if (a1)
+  if (self)
   {
-    CGAffineTransformMakeTranslation(&t1, -result.n128_f64[0], -a4);
+    CGAffineTransformMakeTranslation(&t1, -result.n128_f64[0], -offset);
     v6 = a2[1];
     *&v10.a = *a2;
     *&v10.c = v6;
@@ -1862,7 +1862,7 @@ LABEL_4:
     a2[1] = v7;
     result.n128_u64[0] = *&v12.tx;
     a2[2] = *&v12.tx;
-    v8 = *(a1 + 640);
+    v8 = *(self + 640);
     if (v8)
     {
       result = *a2;
@@ -1876,17 +1876,17 @@ LABEL_4:
   return result;
 }
 
-- (void)setContentZoomScale:(uint64_t)a1
+- (void)setContentZoomScale:(uint64_t)scale
 {
-  if (a1)
+  if (scale)
   {
-    *(a1 + 552) = a2;
-    v2 = *(a1 + 24);
+    *(scale + 552) = a2;
+    v2 = *(scale + 24);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __49__PKMetalRendererController_setContentZoomScale___block_invoke;
     v3[3] = &unk_1E82D83D0;
-    v3[4] = a1;
+    v3[4] = scale;
     *&v3[5] = a2;
     dispatch_async(v2, v3);
   }
@@ -1904,22 +1904,22 @@ double __49__PKMetalRendererController_setContentZoomScale___block_invoke(uint64
   return result;
 }
 
-- (void)setLinedPaper:(uint64_t)a1
+- (void)setLinedPaper:(uint64_t)paper
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (paper)
   {
     v5 = [v3 copy];
-    v6 = *(a1 + 568);
-    *(a1 + 568) = v5;
+    v6 = *(paper + 568);
+    *(paper + 568) = v5;
 
-    v7 = *(a1 + 24);
+    v7 = *(paper + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43__PKMetalRendererController_setLinedPaper___block_invoke;
     block[3] = &unk_1E82D6388;
-    block[4] = a1;
+    block[4] = paper;
     dispatch_async(v7, block);
   }
 }
@@ -1940,21 +1940,21 @@ void __43__PKMetalRendererController_setLinedPaper___block_invoke(uint64_t a1)
   [(PKMetalRenderer *)v2 setLinedPaper:?];
 }
 
-- (__n128)setPaperTransform:(uint64_t)a1
+- (__n128)setPaperTransform:(uint64_t)transform
 {
-  if (a1)
+  if (transform)
   {
     v2 = *a2;
     v3 = a2[2];
-    *(a1 + 768) = a2[1];
-    *(a1 + 784) = v3;
-    *(a1 + 752) = v2;
-    v4 = *(a1 + 24);
+    *(transform + 768) = a2[1];
+    *(transform + 784) = v3;
+    *(transform + 752) = v2;
+    v4 = *(transform + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __47__PKMetalRendererController_setPaperTransform___block_invoke;
     block[3] = &unk_1E82D6520;
-    block[4] = a1;
+    block[4] = transform;
     v5 = a2[1];
     v8 = *a2;
     v9 = v5;
@@ -1991,22 +1991,22 @@ __n128 __47__PKMetalRendererController_setPaperTransform___block_invoke(uint64_t
   return result;
 }
 
-- (void)setViewScissor:(double)a3
+- (void)setViewScissor:(double)scissor
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 672) = a2;
-    *(a1 + 680) = a3;
-    *(a1 + 688) = a4;
-    *(a1 + 696) = a5;
-    v5 = *(a1 + 24);
+    *(self + 672) = a2;
+    *(self + 680) = scissor;
+    *(self + 688) = a4;
+    *(self + 696) = a5;
+    v5 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __44__PKMetalRendererController_setViewScissor___block_invoke;
     block[3] = &unk_1E82D8330;
-    block[4] = a1;
+    block[4] = self;
     *&block[5] = a2;
-    *&block[6] = a3;
+    *&block[6] = scissor;
     *&block[7] = a4;
     *&block[8] = a5;
     dispatch_async(v5, block);
@@ -2044,16 +2044,16 @@ BOOL __44__PKMetalRendererController_setViewScissor___block_invoke(_BOOL8 result
   return result;
 }
 
-- (void)setBackboardPaperMultiply:(uint64_t)a1
+- (void)setBackboardPaperMultiply:(uint64_t)multiply
 {
-  if (a1)
+  if (multiply)
   {
-    v2 = *(a1 + 24);
+    v2 = *(multiply + 24);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __55__PKMetalRendererController_setBackboardPaperMultiply___block_invoke;
     v3[3] = &unk_1E82D83D0;
-    v3[4] = a1;
+    v3[4] = multiply;
     *&v3[5] = a2;
     dispatch_async(v2, v3);
   }
@@ -2082,17 +2082,17 @@ double __55__PKMetalRendererController_setBackboardPaperMultiply___block_invoke(
   return result;
 }
 
-- (void)setCombineStrokesAllowed:(uint64_t)a1
+- (void)setCombineStrokesAllowed:(uint64_t)allowed
 {
-  if (a1)
+  if (allowed)
   {
-    *(a1 + 526) = a2;
-    v2 = *(a1 + 24);
+    *(allowed + 526) = a2;
+    v2 = *(allowed + 24);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __54__PKMetalRendererController_setCombineStrokesAllowed___block_invoke;
     v3[3] = &unk_1E82D75A0;
-    v3[4] = a1;
+    v3[4] = allowed;
     v4 = a2;
     dispatch_async(v2, v3);
   }
@@ -2116,43 +2116,43 @@ double __54__PKMetalRendererController_setCombineStrokesAllowed___block_invoke(u
   return result;
 }
 
-- (void)setIsPDFCanvasForAnalytics:(uint64_t)a1
+- (void)setIsPDFCanvasForAnalytics:(uint64_t)analytics
 {
-  if (a1)
+  if (analytics)
   {
-    v2 = *(a1 + 24);
+    v2 = *(analytics + 24);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __56__PKMetalRendererController_setIsPDFCanvasForAnalytics___block_invoke;
     v3[3] = &unk_1E82D75A0;
-    v3[4] = a1;
+    v3[4] = analytics;
     v4 = a2;
     dispatch_async(v2, v3);
   }
 }
 
-- (uint64_t)drawStrokes:(void *)a3 intoTile:(uint64_t)a4 renderCount:(char)a5 offscreen:
+- (uint64_t)drawStrokes:(void *)strokes intoTile:(uint64_t)tile renderCount:(char)count offscreen:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = v10;
-  if (a1)
+  strokesCopy = strokes;
+  v11 = strokesCopy;
+  if (self)
   {
     v21 = 0;
     v22 = &v21;
     v23 = 0x2020000000;
     v24 = 0;
-    v12 = *(a1 + 24);
+    v12 = *(self + 24);
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __72__PKMetalRendererController_drawStrokes_intoTile_renderCount_offscreen___block_invoke;
     v15[3] = &unk_1E82D8470;
-    v15[4] = a1;
-    v16 = v10;
-    v19 = a4;
+    v15[4] = self;
+    v16 = strokesCopy;
+    tileCopy = tile;
     v17 = v9;
     v18 = &v21;
-    v20 = a5;
+    countCopy = count;
     dispatch_sync(v12, v15);
     v13 = *(v22 + 24);
 
@@ -2304,22 +2304,22 @@ BOOL __72__PKMetalRendererController_drawStrokes_intoTile_renderCount_offscreen_
   return v3 != a1[6];
 }
 
-- (void)updateTiles:(void *)a3 withNewStrokes:(void *)a4 completionBlock:
+- (void)updateTiles:(void *)tiles withNewStrokes:(void *)strokes completionBlock:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  tilesCopy = tiles;
+  strokesCopy = strokes;
+  if (self)
   {
-    v10 = *(a1 + 24);
+    v10 = *(self + 24);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __72__PKMetalRendererController_updateTiles_withNewStrokes_completionBlock___block_invoke;
     v11[3] = &unk_1E82D67F0;
     v12 = v7;
-    v13 = a1;
-    v14 = v8;
-    v15 = v9;
+    selfCopy = self;
+    v14 = tilesCopy;
+    v15 = strokesCopy;
     dispatch_async(v10, v11);
   }
 }
@@ -2367,28 +2367,28 @@ void __72__PKMetalRendererController_updateTiles_withNewStrokes_completionBlock_
   }
 }
 
-- (void)renderImageTexture:(__int128 *)a3 imageTextureTransform:(void *)a4 withTiles:(__int128 *)a5 tileTransform:
+- (void)renderImageTexture:(__int128 *)texture imageTextureTransform:(void *)transform withTiles:(__int128 *)tiles tileTransform:
 {
   v9 = a2;
-  v10 = a4;
-  if (a1)
+  transformCopy = transform;
+  if (self)
   {
-    v11 = *(a1 + 24);
+    v11 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __94__PKMetalRendererController_renderImageTexture_imageTextureTransform_withTiles_tileTransform___block_invoke;
     block[3] = &unk_1E82D8498;
-    block[4] = a1;
+    block[4] = self;
     v15 = v9;
-    v12 = a3[1];
-    v17 = *a3;
+    v12 = texture[1];
+    v17 = *texture;
     v18 = v12;
-    v19 = a3[2];
-    v16 = v10;
-    v13 = a5[1];
-    v20 = *a5;
+    v19 = texture[2];
+    v16 = transformCopy;
+    v13 = tiles[1];
+    v20 = *tiles;
     v21 = v13;
-    v22 = a5[2];
+    v22 = tiles[2];
     dispatch_sync(v11, block);
   }
 }
@@ -2430,18 +2430,18 @@ void __94__PKMetalRendererController_renderImageTexture_imageTextureTransform_wi
   }
 }
 
-- (void)renderTilesIntoTiles:(uint64_t)a1
+- (void)renderTilesIntoTiles:(uint64_t)tiles
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (tiles)
   {
-    v5 = *(a1 + 24);
+    v5 = *(tiles + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __50__PKMetalRendererController_renderTilesIntoTiles___block_invoke;
     v6[3] = &unk_1E82D6890;
-    v6[4] = a1;
+    v6[4] = tiles;
     v7 = v3;
     dispatch_sync(v5, v6);
   }
@@ -2484,18 +2484,18 @@ void __50__PKMetalRendererController_renderTilesIntoTiles___block_invoke(uint64_
   }
 }
 
-- (void)drawTexture:(uint64_t)a1
+- (void)drawTexture:(uint64_t)texture
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (texture)
   {
-    v5 = *(a1 + 24);
+    v5 = *(texture + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __41__PKMetalRendererController_drawTexture___block_invoke;
     v6[3] = &unk_1E82D6890;
-    v6[4] = a1;
+    v6[4] = texture;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -2530,14 +2530,14 @@ void __41__PKMetalRendererController_drawTexture___block_invoke(uint64_t a1)
 
 - (void)flushMemoryIfPossible
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50__PKMetalRendererController_flushMemoryIfPossible__block_invoke;
     block[3] = &unk_1E82D6388;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
@@ -2570,14 +2570,14 @@ LABEL_5:
 
 - (void)purgeOriginalBackFramebuffer
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __57__PKMetalRendererController_purgeOriginalBackFramebuffer__block_invoke;
     block[3] = &unk_1E82D6388;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
@@ -2608,23 +2608,23 @@ LABEL_5:
   }
 }
 
-- (void)drawStrokesAfterClear:(__int128 *)a3 clippedToStrokeSpaceRect:(char)a4 strokeTransform:(void *)a5 useLayerContext:(double)a6 completion:(double)a7
+- (void)drawStrokesAfterClear:(__int128 *)clear clippedToStrokeSpaceRect:(char)rect strokeTransform:(void *)transform useLayerContext:(double)context completion:(double)completion
 {
   v17 = a2;
-  v18 = a5;
-  v19 = v18;
-  if (a1)
+  transformCopy = transform;
+  v19 = transformCopy;
+  if (self)
   {
-    v20 = a3[1];
-    v23[0] = *a3;
+    v20 = clear[1];
+    v23[0] = *clear;
     v23[1] = v20;
-    v23[2] = a3[2];
+    v23[2] = clear[2];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __119__PKMetalRendererController_drawStrokesAfterClear_clippedToStrokeSpaceRect_strokeTransform_useLayerContext_completion___block_invoke;
     v21[3] = &unk_1E82D6818;
-    v22 = v18;
-    [(PKMetalRendererController *)a1 _drawStrokesAfterClear:v17 clippedToStrokeSpaceRect:v23 strokeTransform:a4 useLayerContext:v21 renderCompletion:a6, a7, a8, a9];
+    v22 = transformCopy;
+    [(PKMetalRendererController *)self _drawStrokesAfterClear:v17 clippedToStrokeSpaceRect:v23 strokeTransform:rect useLayerContext:v21 renderCompletion:context, completion, a8, a9];
   }
 }
 
@@ -2642,7 +2642,7 @@ void __119__PKMetalRendererController_drawStrokesAfterClear_clippedToStrokeSpace
 
 - (double)_latestLatency
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -2651,14 +2651,14 @@ void __119__PKMetalRendererController_drawStrokesAfterClear_clippedToStrokeSpace
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v1 = *(a1 + 24);
+  v1 = *(self + 24);
   if (v1)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __43__PKMetalRendererController__latestLatency__block_invoke;
     v4[3] = &unk_1E82D6868;
-    v4[4] = a1;
+    v4[4] = self;
     v4[5] = &v5;
     dispatch_sync(v1, v4);
     v2 = v6[3];
@@ -2680,19 +2680,19 @@ double __43__PKMetalRendererController__latestLatency__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)drawingBeganWithStroke:(char)a3 forPreview:
+- (void)drawingBeganWithStroke:(char)stroke forPreview:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    v7 = *(a1 + 24);
+    v7 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __63__PKMetalRendererController_drawingBeganWithStroke_forPreview___block_invoke;
     block[3] = &unk_1E82D75C8;
-    block[4] = a1;
-    v10 = a3;
+    block[4] = self;
+    strokeCopy = stroke;
     v9 = v5;
     dispatch_sync(v7, block);
   }
@@ -2753,23 +2753,23 @@ LABEL_8:
 - (void)_recordStrokeStatistics
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 224));
-    v2 = *(a1 + 152);
-    os_unfair_lock_unlock((a1 + 224));
+    os_unfair_lock_lock((self + 224));
+    v2 = *(self + 152);
+    os_unfair_lock_unlock((self + 224));
     if (v2)
     {
-      v3 = PKRunningStat::min((a1 + 144));
-      v4 = PKRunningStat::mean((a1 + 144)) * 1000.0;
-      v5 = PKRunningStat::max((a1 + 144)) * 1000.0;
-      v6 = PKRunningStat::variance((a1 + 144));
-      os_unfair_lock_lock((a1 + 224));
-      v7 = *(a1 + 160);
-      os_unfair_lock_unlock((a1 + 224));
-      os_unfair_lock_lock((a1 + 224));
-      v8 = *(a1 + 152);
-      os_unfair_lock_unlock((a1 + 224));
+      v3 = PKRunningStat::min((self + 144));
+      v4 = PKRunningStat::mean((self + 144)) * 1000.0;
+      v5 = PKRunningStat::max((self + 144)) * 1000.0;
+      v6 = PKRunningStat::variance((self + 144));
+      os_unfair_lock_lock((self + 224));
+      v7 = *(self + 160);
+      os_unfair_lock_unlock((self + 224));
+      os_unfair_lock_lock((self + 224));
+      v8 = *(self + 152);
+      os_unfair_lock_unlock((self + 224));
       v9 = v7 / v8;
       v10 = os_log_create("com.apple.pencilkit", "Latency");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2787,8 +2787,8 @@ LABEL_8:
         _os_log_impl(&dword_1C7CCA000, v10, OS_LOG_TYPE_DEFAULT, "Stroke latency min: %g, mean: %g, std deviation: %g, max: %g, percentage high: %g", &v23, 0x34u);
       }
 
-      *(a1 + 592) = v4;
-      v11 = *(a1 + 473);
+      *(self + 592) = v4;
+      v11 = *(self + 473);
       v12 = +[PKStatisticsManager sharedStatisticsManager];
       v13 = v12;
       if (v11)
@@ -2802,21 +2802,21 @@ LABEL_8:
       }
     }
 
-    os_unfair_lock_lock((a1 + 312));
-    v14 = *(a1 + 240);
-    os_unfair_lock_unlock((a1 + 312));
+    os_unfair_lock_lock((self + 312));
+    v14 = *(self + 240);
+    os_unfair_lock_unlock((self + 312));
     if (v14)
     {
-      v15 = PKRunningStat::min((a1 + 232));
-      v16 = PKRunningStat::mean((a1 + 232)) * 1000.0;
-      v17 = PKRunningStat::max((a1 + 232)) * 1000.0;
-      v18 = PKRunningStat::variance((a1 + 232));
-      os_unfair_lock_lock((a1 + 312));
-      v19 = *(a1 + 248);
-      os_unfair_lock_unlock((a1 + 312));
-      os_unfair_lock_lock((a1 + 312));
-      v20 = *(a1 + 240);
-      os_unfair_lock_unlock((a1 + 312));
+      v15 = PKRunningStat::min((self + 232));
+      v16 = PKRunningStat::mean((self + 232)) * 1000.0;
+      v17 = PKRunningStat::max((self + 232)) * 1000.0;
+      v18 = PKRunningStat::variance((self + 232));
+      os_unfair_lock_lock((self + 312));
+      v19 = *(self + 248);
+      os_unfair_lock_unlock((self + 312));
+      os_unfair_lock_lock((self + 312));
+      v20 = *(self + 240);
+      os_unfair_lock_unlock((self + 312));
       v21 = os_log_create("com.apple.pencilkit", "Latency");
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
@@ -2833,7 +2833,7 @@ LABEL_8:
         _os_log_impl(&dword_1C7CCA000, v21, OS_LOG_TYPE_DEFAULT, "Stroke latency with prediction min: %g, mean: %g, std deviation: %g, max: %g, percentage high: %g", &v23, 0x34u);
       }
 
-      if ((*(a1 + 473) & 1) == 0)
+      if ((*(self + 473) & 1) == 0)
       {
         v22 = +[PKStatisticsManager sharedStatisticsManager];
         [PKStatisticsManager recordPerceivedLatency:v22 mean:? max:? isInPDF:?];
@@ -2842,20 +2842,20 @@ LABEL_8:
   }
 }
 
-- (void)drawingEnded:(void *)a3 finishStrokeBlock:
+- (void)drawingEnded:(void *)ended finishStrokeBlock:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  endedCopy = ended;
+  if (self)
   {
-    v7 = *(a1 + 24);
+    v7 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__PKMetalRendererController_drawingEnded_finishStrokeBlock___block_invoke;
     block[3] = &unk_1E82D6840;
-    block[4] = a1;
+    block[4] = self;
     v9 = v5;
-    v10 = v6;
+    v10 = endedCopy;
     dispatch_sync(v7, block);
   }
 }
@@ -2899,16 +2899,16 @@ void __60__PKMetalRendererController_drawingEnded_finishStrokeBlock___block_invo
 - (void)_logStrokeDuration
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = CACurrentMediaTime();
     v3 = os_log_create("com.apple.pencilkit", "Stroke Drawing");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = v2 - *(a1 + 488);
-      v5 = *(a1 + 480);
+      v4 = v2 - *(self + 488);
+      v5 = *(self + 480);
       v6 = @"NO";
-      if (*(a1 + 473))
+      if (*(self + 473))
       {
         v6 = @"YES";
       }
@@ -2935,16 +2935,16 @@ uint64_t __60__PKMetalRendererController_drawingEnded_finishStrokeBlock___block_
   return result;
 }
 
-- (void)drawingCancelledForPreview:(uint64_t)a1
+- (void)drawingCancelledForPreview:(uint64_t)preview
 {
-  if (a1)
+  if (preview)
   {
-    v2 = *(a1 + 24);
+    v2 = *(preview + 24);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __56__PKMetalRendererController_drawingCancelledForPreview___block_invoke;
     v3[3] = &unk_1E82D75A0;
-    v3[4] = a1;
+    v3[4] = preview;
     v4 = a2;
     dispatch_sync(v2, v3);
   }
@@ -2967,35 +2967,35 @@ void __56__PKMetalRendererController_drawingCancelledForPreview___block_invoke(u
   }
 }
 
-- (void)setAlternativeStrokes:(double)a3 alpha:(double)a4 originalStrokeAlpha:
+- (void)setAlternativeStrokes:(double)strokes alpha:(double)alpha originalStrokeAlpha:
 {
   v7 = a2;
   v8 = v7;
-  if (a1)
+  if (self)
   {
-    v9 = *(a1 + 24);
+    v9 = *(self + 24);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __77__PKMetalRendererController_setAlternativeStrokes_alpha_originalStrokeAlpha___block_invoke;
     v10[3] = &unk_1E82D84E8;
-    v10[4] = a1;
+    v10[4] = self;
     v11 = v7;
-    v12 = a3;
-    v13 = a4;
+    strokesCopy = strokes;
+    alphaCopy = alpha;
     dispatch_async(v9, v10);
   }
 }
 
 - (void)changeRenderSize
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 24);
+    v1 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __45__PKMetalRendererController_changeRenderSize__block_invoke;
     block[3] = &unk_1E82D6388;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
@@ -3090,50 +3090,50 @@ uint64_t __51__PKMetalRendererController__present_setDirtyRect___block_invoke_2(
   return [MEMORY[0x1E6979518] commit];
 }
 
-- (void)_renderLiveStrokeAndPresentWithTransform:(uint64_t)a1 at:(_OWORD *)a2 setDirtyRect:(int)a3
+- (void)_renderLiveStrokeAndPresentWithTransform:(uint64_t)transform at:(_OWORD *)at setDirtyRect:(int)rect
 {
-  if (a1)
+  if (transform)
   {
     kdebug_trace();
-    WeakRetained = objc_loadWeakRetained((a1 + 600));
+    WeakRetained = objc_loadWeakRetained((transform + 600));
     [WeakRetained contentsScale];
     v8 = v7;
 
-    v9 = objc_loadWeakRetained((a1 + 600));
+    v9 = objc_loadWeakRetained((transform + 600));
     [v9 drawableSize];
     v11 = v10;
     v13 = v12;
 
-    v14 = *(a1 + 640);
-    v15 = a2[1];
-    *&t1.a = *a2;
+    v14 = *(transform + 640);
+    v15 = at[1];
+    *&t1.a = *at;
     *&t1.c = v15;
-    *&t1.tx = a2[2];
+    *&t1.tx = at[2];
     v16 = v14;
     CGAffineTransformMakeScale(&t2, v8, v8);
     CGAffineTransformConcat(&aBlock, &t1, &t2);
     [(PKMetalRenderer *)v16 renderLiveStrokeWithTransform:v11 renderBufferSize:v13];
 
     kdebug_trace();
-    v17 = *(a1 + 328);
-    v18 = *(a1 + 344);
-    v19 = *(a1 + 320);
-    v20 = *(a1 + 328);
-    *(a1 + 328) = 0;
+    v17 = *(transform + 328);
+    v18 = *(transform + 344);
+    v19 = *(transform + 320);
+    v20 = *(transform + 328);
+    *(transform + 328) = 0;
 
-    v21 = *(a1 + 320);
-    *(a1 + 320) = 0;
+    v21 = *(transform + 320);
+    *(transform + 320) = 0;
 
-    v22 = *(a1 + 344);
-    *(a1 + 344) = 0;
+    v22 = *(transform + 344);
+    *(transform + 344) = 0;
 
-    v23 = *(a1 + 336);
-    *(a1 + 336) = 0;
+    v23 = *(transform + 336);
+    *(transform + 336) = 0;
 
     v47 = v19;
     if (v19)
     {
-      v24 = objc_loadWeakRetained((a1 + 528));
+      v24 = objc_loadWeakRetained((transform + 528));
       v25 = objc_opt_respondsToSelector();
     }
 
@@ -3142,15 +3142,15 @@ uint64_t __51__PKMetalRendererController__present_setDirtyRect___block_invoke_2(
       v25 = 0;
     }
 
-    v26 = [*(a1 + 88) copy];
-    [*(a1 + 88) removeAllObjects];
-    v48 = *(a1 + 640);
+    v26 = [*(transform + 88) copy];
+    [*(transform + 88) removeAllObjects];
+    v48 = *(transform + 640);
     kdebug_trace();
-    [*(a1 + 560) latestTimestamp];
+    [*(transform + 560) latestTimestamp];
     v28 = v27;
-    [*(a1 + 560) latestNonPredictedTimestamp];
+    [*(transform + 560) latestNonPredictedTimestamp];
     v30 = v29;
-    v31 = objc_loadWeakRetained((a1 + 600));
+    v31 = objc_loadWeakRetained((transform + 600));
     [v31 setInputTime:v30];
 
     if (v17 && v30 > 0.0)
@@ -3161,7 +3161,7 @@ uint64_t __51__PKMetalRendererController__present_setDirtyRect___block_invoke_2(
         v32 = 8;
       }
 
-      if (*(a1 + 136) > v32)
+      if (*(transform + 136) > v32)
       {
         *&t1.a = MEMORY[0x1E69E9820];
         *&t1.b = 3221225472;
@@ -3169,16 +3169,16 @@ uint64_t __51__PKMetalRendererController__present_setDirtyRect___block_invoke_2(
         *&t1.d = &unk_1E82D8510;
         t1.ty = v30;
         v54 = v28;
-        *&t1.tx = a1;
+        *&t1.tx = transform;
         [v17 addPresentedHandler:&t1];
       }
     }
 
-    v33 = _Block_copy(*(a1 + 424));
-    *&t2.a = *(a1 + 360);
-    if (v17 && a3 && (objc_opt_respondsToSelector() & 1) != 0)
+    v33 = _Block_copy(*(transform + 424));
+    *&t2.a = *(transform + 360);
+    if (v17 && rect && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v34 = *(a1 + 640);
+      v34 = *(transform + 640);
       if (v34)
       {
         v35 = v34[92];
@@ -3245,8 +3245,8 @@ uint64_t __51__PKMetalRendererController__present_setDirtyRect___block_invoke_2(
 
     if (v25)
     {
-      v46 = objc_loadWeakRetained((a1 + 528));
-      [v46 metalRendererController:a1 didCommitRenderingIntoTexture:v47];
+      v46 = objc_loadWeakRetained((transform + 528));
+      [v46 metalRendererController:transform didCommitRenderingIntoTexture:v47];
     }
 
     kdebug_trace();
@@ -3255,7 +3255,7 @@ uint64_t __51__PKMetalRendererController__present_setDirtyRect___block_invoke_2(
 
 - (void)pokeEventDispatcher
 {
-  if (a1 && (_UIUpdateCycleEnabled() & 1) == 0)
+  if (self && (_UIUpdateCycleEnabled() & 1) == 0)
   {
     v1 = MEMORY[0x1E69E96A0];
 
@@ -3269,11 +3269,11 @@ void __48__PKMetalRendererController_pokeEventDispatcher__block_invoke()
   [v0 eventFetcherDidReceiveEvents:0];
 }
 
-- (void)renderWithTransform:(double)a3 inputScale:(double)a4 at:
+- (void)renderWithTransform:(double)transform inputScale:(double)scale at:
 {
-  if (a1)
+  if (self)
   {
-    v4 = *(a1 + 24);
+    v4 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     v5 = a2[1];
@@ -3281,10 +3281,10 @@ void __48__PKMetalRendererController_pokeEventDispatcher__block_invoke()
     v8 = v5;
     block[2] = __63__PKMetalRendererController_renderWithTransform_inputScale_at___block_invoke;
     block[3] = &unk_1E82D8560;
-    block[4] = a1;
+    block[4] = self;
     v9 = a2[2];
-    v10 = a3;
-    v11 = a4;
+    transformCopy = transform;
+    scaleCopy = scale;
     dispatch_async(v4, block);
   }
 }
@@ -3364,21 +3364,21 @@ LABEL_6:
   }
 }
 
-- (uint64_t)_renderAheadWithTransform:(uint64_t)a1 at:(_OWORD *)a2
+- (uint64_t)_renderAheadWithTransform:(uint64_t)transform at:(_OWORD *)at
 {
   v78 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!transform)
   {
     return 0;
   }
 
   kdebug_trace();
-  WeakRetained = objc_loadWeakRetained((a1 + 528));
+  WeakRetained = objc_loadWeakRetained((transform + 528));
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    if (*(a1 + 320))
+    if (*(transform + 320))
     {
       v6 = os_log_create("com.apple.pencilkit", "");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -3393,12 +3393,12 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v31 = objc_loadWeakRetained((a1 + 528));
-    v32 = [v31 nextTextureTargetForMetalRendererController:a1];
-    v33 = *(a1 + 320);
-    *(a1 + 320) = v32;
+    v31 = objc_loadWeakRetained((transform + 528));
+    v32 = [v31 nextTextureTargetForMetalRendererController:transform];
+    v33 = *(transform + 320);
+    *(transform + 320) = v32;
 
-    if (*(a1 + 320))
+    if (*(transform + 320))
     {
       goto LABEL_11;
     }
@@ -3408,12 +3408,12 @@ LABEL_61:
     goto LABEL_23;
   }
 
-  if (!*(a1 + 328))
+  if (!*(transform + 328))
   {
-    v34 = objc_loadWeakRetained((a1 + 600));
-    v35 = [v34 isDrawableAvailable];
+    v34 = objc_loadWeakRetained((transform + 600));
+    isDrawableAvailable = [v34 isDrawableAvailable];
 
-    if ((v35 & 1) == 0)
+    if ((isDrawableAvailable & 1) == 0)
     {
       v22 = os_log_create("com.apple.pencilkit", "");
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -3426,12 +3426,12 @@ LABEL_61:
       goto LABEL_22;
     }
 
-    v36 = objc_loadWeakRetained((a1 + 600));
-    v37 = [v36 nextDrawable];
-    v38 = *(a1 + 328);
-    *(a1 + 328) = v37;
+    v36 = objc_loadWeakRetained((transform + 600));
+    nextDrawable = [v36 nextDrawable];
+    v38 = *(transform + 328);
+    *(transform + 328) = nextDrawable;
 
-    if (!*(a1 + 328))
+    if (!*(transform + 328))
     {
       v39 = os_log_create("com.apple.pencilkit", "");
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -3440,15 +3440,15 @@ LABEL_61:
         _os_log_impl(&dword_1C7CCA000, v39, OS_LOG_TYPE_DEFAULT, "No drawable available, trying discardContents", &buf, 2u);
       }
 
-      v40 = objc_loadWeakRetained((a1 + 600));
+      v40 = objc_loadWeakRetained((transform + 600));
       [v40 discardContents];
 
-      v41 = objc_loadWeakRetained((a1 + 600));
-      v42 = [v41 nextDrawable];
-      v43 = *(a1 + 328);
-      *(a1 + 328) = v42;
+      v41 = objc_loadWeakRetained((transform + 600));
+      nextDrawable2 = [v41 nextDrawable];
+      v43 = *(transform + 328);
+      *(transform + 328) = nextDrawable2;
 
-      if (!*(a1 + 328))
+      if (!*(transform + 328))
       {
         v44 = os_log_create("com.apple.pencilkit", "");
         if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -3459,17 +3459,17 @@ LABEL_61:
       }
     }
 
-    v45 = objc_loadWeakRetained((a1 + 608));
+    v45 = objc_loadWeakRetained((transform + 608));
     v46 = v45 == 0;
 
     if (!v46)
     {
-      v47 = objc_loadWeakRetained((a1 + 608));
-      v48 = [v47 nextDrawable];
-      v49 = *(a1 + 344);
-      *(a1 + 344) = v48;
+      v47 = objc_loadWeakRetained((transform + 608));
+      nextDrawable3 = [v47 nextDrawable];
+      v49 = *(transform + 344);
+      *(transform + 344) = nextDrawable3;
 
-      v50 = objc_loadWeakRetained((a1 + 608));
+      v50 = objc_loadWeakRetained((transform + 608));
       LODWORD(v47) = v50 == 0;
 
       if (v47)
@@ -3481,16 +3481,16 @@ LABEL_61:
           _os_log_impl(&dword_1C7CCA000, v51, OS_LOG_TYPE_DEFAULT, "No multiply drawable available, trying discardContents", &buf, 2u);
         }
 
-        v52 = objc_loadWeakRetained((a1 + 608));
+        v52 = objc_loadWeakRetained((transform + 608));
         [v52 discardContents];
 
-        v53 = objc_loadWeakRetained((a1 + 608));
-        v54 = [v53 nextDrawable];
-        v55 = *(a1 + 344);
-        *(a1 + 344) = v54;
+        v53 = objc_loadWeakRetained((transform + 608));
+        nextDrawable4 = [v53 nextDrawable];
+        v55 = *(transform + 344);
+        *(transform + 344) = nextDrawable4;
       }
 
-      if (!*(a1 + 344))
+      if (!*(transform + 344))
       {
         v56 = os_log_create("com.apple.pencilkit", "");
         if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
@@ -3501,23 +3501,23 @@ LABEL_61:
       }
     }
 
-    v57 = *(a1 + 328);
+    v57 = *(transform + 328);
     if (v57)
     {
-      v58 = [v57 texture];
-      v59 = [v58 width];
-      v60 = [v58 height];
-      if (*(a1 + 104) != v59 || *(a1 + 112) != v60)
+      texture = [v57 texture];
+      width = [texture width];
+      height = [texture height];
+      if (*(transform + 104) != width || *(transform + 112) != height)
       {
         v61 = os_log_create("com.apple.pencilkit", "");
         if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
         {
-          v71 = *(a1 + 104);
-          v72 = *(a1 + 112);
+          v71 = *(transform + 104);
+          v72 = *(transform + 112);
           LODWORD(buf.a) = 134218752;
-          *(&buf.a + 4) = v59;
+          *(&buf.a + 4) = width;
           WORD2(buf.b) = 2048;
-          *(&buf.b + 6) = v60;
+          *(&buf.b + 6) = height;
           HIWORD(buf.c) = 2048;
           buf.d = v71;
           LOWORD(buf.tx) = 2048;
@@ -3525,28 +3525,28 @@ LABEL_61:
           _os_log_error_impl(&dword_1C7CCA000, v61, OS_LOG_TYPE_ERROR, "Drawable has incorrect size: %g %g vs %g %g", &buf, 0x2Au);
         }
 
-        v62 = *(a1 + 328);
-        *(a1 + 328) = 0;
+        v62 = *(transform + 328);
+        *(transform + 328) = 0;
       }
     }
 
-    v63 = *(a1 + 344);
+    v63 = *(transform + 344);
     if (v63)
     {
-      v64 = [v63 texture];
-      v65 = [v64 width];
-      v66 = [v64 height];
-      if (*(a1 + 104) != v65 || *(a1 + 112) != v66)
+      texture2 = [v63 texture];
+      width2 = [texture2 width];
+      height2 = [texture2 height];
+      if (*(transform + 104) != width2 || *(transform + 112) != height2)
       {
         v67 = os_log_create("com.apple.pencilkit", "");
         if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
         {
-          v73 = *(a1 + 104);
-          v74 = *(a1 + 112);
+          v73 = *(transform + 104);
+          v74 = *(transform + 112);
           LODWORD(buf.a) = 134218752;
-          *(&buf.a + 4) = v65;
+          *(&buf.a + 4) = width2;
           WORD2(buf.b) = 2048;
-          *(&buf.b + 6) = v66;
+          *(&buf.b + 6) = height2;
           HIWORD(buf.c) = 2048;
           buf.d = v73;
           LOWORD(buf.tx) = 2048;
@@ -3554,21 +3554,21 @@ LABEL_61:
           _os_log_error_impl(&dword_1C7CCA000, v67, OS_LOG_TYPE_ERROR, "Multiply drawable has incorrect size: %g %g vs %g %g", &buf, 0x2Au);
         }
 
-        v68 = *(a1 + 344);
-        *(a1 + 344) = 0;
+        v68 = *(transform + 344);
+        *(transform + 344) = 0;
       }
     }
 
-    if (*(a1 + 328))
+    if (*(transform + 328))
     {
-      v69 = objc_loadWeakRetained((a1 + 608));
+      v69 = objc_loadWeakRetained((transform + 608));
       if (!v69)
       {
         v6 = 0;
         goto LABEL_10;
       }
 
-      v70 = *(a1 + 344) == 0;
+      v70 = *(transform + 344) == 0;
 
       if (!v70)
       {
@@ -3590,58 +3590,58 @@ LABEL_61:
 LABEL_10:
 
 LABEL_11:
-  v8 = *(a1 + 640);
+  v8 = *(transform + 640);
   if (v8)
   {
-    *(v8 + 1048) = *(a1 + 648);
+    *(v8 + 1048) = *(transform + 648);
   }
 
-  v9 = *(a1 + 560);
+  v9 = *(transform + 560);
   [v9 eraserIndicatorAlpha];
-  v11 = *(a1 + 640);
+  v11 = *(transform + 640);
   if (v11)
   {
     *(v11 + 1056) = v10;
   }
 
-  v12 = objc_loadWeakRetained((a1 + 600));
+  v12 = objc_loadWeakRetained((transform + 600));
   [v12 contentsScale];
   v14 = v13;
 
-  v15 = objc_loadWeakRetained((a1 + 600));
+  v15 = objc_loadWeakRetained((transform + 600));
   [v15 drawableSize];
   v17 = v16;
   v19 = v18;
 
-  v20 = *(a1 + 328);
+  v20 = *(transform + 328);
   if (v20)
   {
-    v21 = [v20 texture];
+    texture3 = [v20 texture];
   }
 
   else
   {
-    v21 = *(a1 + 320);
+    texture3 = *(transform + 320);
   }
 
-  v22 = v21;
-  v23 = *(a1 + 344);
+  v22 = texture3;
+  v23 = *(transform + 344);
   if (v23)
   {
-    v24 = [v23 texture];
+    texture4 = [v23 texture];
   }
 
   else
   {
-    v24 = *(a1 + 336);
+    texture4 = *(transform + 336);
   }
 
-  v25 = v24;
-  v26 = *(a1 + 640);
-  v27 = a2[1];
-  *&t1.a = *a2;
+  v25 = texture4;
+  v26 = *(transform + 640);
+  v27 = at[1];
+  *&t1.a = *at;
   *&t1.c = v27;
-  *&t1.tx = a2[2];
+  *&t1.tx = at[2];
   v28 = v26;
   CGAffineTransformMakeScale(&v75, v14, v14);
   CGAffineTransformConcat(&buf, &t1, &v75);
@@ -3655,21 +3655,21 @@ LABEL_23:
   return v29;
 }
 
-- (uint64_t)prerenderWithTransform:(double)a3 inputScale:(double)a4 at:
+- (uint64_t)prerenderWithTransform:(double)transform inputScale:(double)scale at:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 600));
+  WeakRetained = objc_loadWeakRetained((self + 600));
   if (WeakRetained)
   {
   }
 
   else
   {
-    v9 = objc_loadWeakRetained((a1 + 528));
+    v9 = objc_loadWeakRetained((self + 528));
 
     if (!v9)
     {
@@ -3677,13 +3677,13 @@ LABEL_23:
     }
   }
 
-  v10 = [MEMORY[0x1E696AE30] processInfo];
-  [v10 systemUptime];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo systemUptime];
   v12 = v11;
 
-  if (a4 - v12 > *&_MergedGlobals_115)
+  if (scale - v12 > *&_MergedGlobals_115)
   {
-    a4 = v12 + *&_MergedGlobals_115;
+    scale = v12 + *&_MergedGlobals_115;
   }
 
   v13 = a2[1];
@@ -3691,16 +3691,16 @@ LABEL_23:
   src[1] = v13;
   src[2] = a2[2];
   v9 = 1;
-  objc_copyStruct((a1 + 800), src, 48, 1, 0);
-  *(a1 + 648) = a3;
-  add = atomic_fetch_add((a1 + 84), 1u);
-  v15 = *(a1 + 24);
+  objc_copyStruct((self + 800), src, 48, 1, 0);
+  *(self + 648) = transform;
+  add = atomic_fetch_add((self + 84), 1u);
+  v15 = *(self + 24);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__PKMetalRendererController_prerenderWithTransform_inputScale_at___block_invoke;
   block[3] = &unk_1E82D8588;
-  block[4] = a1;
-  *&block[5] = a4;
+  block[4] = self;
+  *&block[5] = scale;
   v22 = add;
   v16 = a2[1];
   v19 = *a2;
@@ -4013,22 +4013,22 @@ LABEL_78:
   return kdebug_trace();
 }
 
-- (void)updateCyclePreCACommit:(uint64_t)a1 isDrawing:(char)a2
+- (void)updateCyclePreCACommit:(uint64_t)commit isDrawing:(char)drawing
 {
-  if (a1 && *(a1 + 496))
+  if (commit && *(commit + 496))
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __62__PKMetalRendererController_updateCyclePreCACommit_isDrawing___block_invoke;
     aBlock[3] = &unk_1E82D6388;
-    aBlock[4] = a1;
+    aBlock[4] = commit;
     v4 = _Block_copy(aBlock);
     v5 = v4;
-    if (a2)
+    if (drawing)
     {
-      if (*(a1 + 521) == 1)
+      if (*(commit + 521) == 1)
       {
-        v6 = *(a1 + 560);
+        v6 = *(commit + 560);
         v18[0] = MEMORY[0x1E69E9820];
         v18[1] = 3221225472;
         v18[2] = __62__PKMetalRendererController_updateCyclePreCACommit_isDrawing___block_invoke_2;
@@ -4048,7 +4048,7 @@ LABEL_78:
         v7 = v8;
         v17 = v7;
         v9 = _Block_copy(v16);
-        v10 = *(a1 + 560);
+        v10 = *(commit + 560);
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __62__PKMetalRendererController_updateCyclePreCACommit_isDrawing___block_invoke_4;
@@ -4105,18 +4105,18 @@ uint64_t __62__PKMetalRendererController_updateCyclePreCACommit_isDrawing___bloc
   return v2();
 }
 
-- (void)didFinishRendering:(uint64_t)a1
+- (void)didFinishRendering:(uint64_t)rendering
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (rendering)
   {
-    v5 = *(a1 + 24);
+    v5 = *(rendering + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __48__PKMetalRendererController_didFinishRendering___block_invoke;
     v6[3] = &unk_1E82D6D58;
-    v6[4] = a1;
+    v6[4] = rendering;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -4148,45 +4148,45 @@ void __48__PKMetalRendererController_didFinishRendering___block_invoke(uint64_t 
   }
 }
 
-- (void)addBlockToCallAfterPresenting:(uint64_t)a1
+- (void)addBlockToCallAfterPresenting:(uint64_t)presenting
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (presenting)
   {
-    v5 = *(a1 + 24);
+    v5 = *(presenting + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __59__PKMetalRendererController_addBlockToCallAfterPresenting___block_invoke;
     v6[3] = &unk_1E82D6D58;
-    v6[4] = a1;
+    v6[4] = presenting;
     v7 = v3;
     dispatch_async(v5, v6);
   }
 }
 
-- (void)callBlockAfterPresenting:(uint64_t)a1
+- (void)callBlockAfterPresenting:(uint64_t)presenting
 {
-  if (a1)
+  if (presenting)
   {
-    v2 = *(a1 + 88);
+    v2 = *(presenting + 88);
     v3 = _Block_copy(aBlock);
     [v2 addObject:?];
   }
 }
 
-- (void)setCanvasOffset:(double)a3
+- (void)setCanvasOffset:(double)offset
 {
-  if (a1)
+  if (self)
   {
-    v3 = *(a1 + 24);
+    v3 = *(self + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __45__PKMetalRendererController_setCanvasOffset___block_invoke;
     block[3] = &unk_1E82D6610;
-    block[4] = a1;
+    block[4] = self;
     *&block[5] = a2;
-    *&block[6] = a3;
+    *&block[6] = offset;
     dispatch_async(v3, block);
   }
 }
@@ -4205,12 +4205,12 @@ double __45__PKMetalRendererController_setCanvasOffset___block_invoke(uint64_t a
   return result;
 }
 
-- (void)replaceInkTexture:(uint64_t)a3 image:
+- (void)replaceInkTexture:(uint64_t)texture image:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = *(a1 + 640);
+    v6 = *(self + 640);
     v8 = v5;
     if (v6)
     {
@@ -4218,24 +4218,24 @@ double __45__PKMetalRendererController_setCanvasOffset___block_invoke(uint64_t a
     }
 
     v7 = v6;
-    [(PKMetalResourceHandler *)v7 replaceInkTexture:v8 image:a3];
+    [(PKMetalResourceHandler *)v7 replaceInkTexture:v8 image:texture];
 
     v5 = v8;
   }
 }
 
-- (void)setCanvasOffsetPresentationOffsetBlock:(uint64_t)a1
+- (void)setCanvasOffsetPresentationOffsetBlock:(uint64_t)block
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (block)
   {
-    v5 = *(a1 + 24);
+    v5 = *(block + 24);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __68__PKMetalRendererController_setCanvasOffsetPresentationOffsetBlock___block_invoke;
     v6[3] = &unk_1E82D6D58;
-    v6[4] = a1;
+    v6[4] = block;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -4255,14 +4255,14 @@ void __68__PKMetalRendererController_setCanvasOffsetPresentationOffsetBlock___bl
   }
 }
 
-- (void)setInvertColors:(uint64_t)a1
+- (void)setInvertColors:(uint64_t)colors
 {
-  if (a1 && *(a1 + 523) != a2)
+  if (colors && *(colors + 523) != a2)
   {
-    *(a1 + 523) = a2;
-    if (*(a1 + 16) == 1)
+    *(colors + 523) = a2;
+    if (*(colors + 16) == 1)
     {
-      v4 = *(a1 + 640);
+      v4 = *(colors + 640);
       if (v4)
       {
         *(v4 + 1005) = a2;
@@ -4273,12 +4273,12 @@ void __68__PKMetalRendererController_setCanvasOffsetPresentationOffsetBlock___bl
     {
       v8 = v2;
       v9 = v3;
-      v5 = *(a1 + 24);
+      v5 = *(colors + 24);
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
       v6[2] = __45__PKMetalRendererController_setInvertColors___block_invoke;
       v6[3] = &unk_1E82D75A0;
-      v6[4] = a1;
+      v6[4] = colors;
       v7 = a2;
       dispatch_async(v5, v6);
     }
@@ -4300,13 +4300,13 @@ uint64_t __45__PKMetalRendererController_setInvertColors___block_invoke(uint64_t
   return result;
 }
 
-- (void)callBlockOnRenderQueue:(uint64_t)a1
+- (void)callBlockOnRenderQueue:(uint64_t)queue
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (queue)
   {
-    v5 = *(a1 + 24);
+    v5 = *(queue + 24);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __52__PKMetalRendererController_callBlockOnRenderQueue___block_invoke;
@@ -4316,11 +4316,11 @@ uint64_t __45__PKMetalRendererController_setInvertColors___block_invoke(uint64_t
   }
 }
 
-- (void)addInputPoint:(uint64_t)a1
+- (void)addInputPoint:(uint64_t)point
 {
-  if (a1)
+  if (point)
   {
-    v2 = *(a1 + 24);
+    v2 = *(point + 24);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v3 = a2[4];
@@ -4336,7 +4336,7 @@ uint64_t __45__PKMetalRendererController_setInvertColors___block_invoke(uint64_t
     v12 = v3;
     v7[2] = __43__PKMetalRendererController_addInputPoint___block_invoke;
     v7[3] = &unk_1E82D85D8;
-    v7[4] = a1;
+    v7[4] = point;
     v16 = *(a2 + 16);
     v8 = v5;
     dispatch_async(v2, v7);

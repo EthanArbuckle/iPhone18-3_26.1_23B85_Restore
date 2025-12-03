@@ -1,24 +1,24 @@
 @interface SUNetworkObserver
 + (id)sharedInstance;
-+ (void)setSharedInstance:(id)a3;
++ (void)setSharedInstance:(id)instance;
 - (NSString)partnerIdentifier;
 - (SUNetworkObserver)init;
 - (void)_cancelStartupTimer;
-- (void)_handleNetworkTypeChange:(id)a3;
-- (void)_handleUsingNetworkChange:(id)a3;
-- (void)_mainThreadHandleNetworkTypeChange:(id)a3;
+- (void)_handleNetworkTypeChange:(id)change;
+- (void)_handleUsingNetworkChange:(id)change;
+- (void)_mainThreadHandleNetworkTypeChange:(id)change;
 - (void)_mainThreadScheduleNetworkActivityUpdate;
-- (void)_mainThreadSetPartnerIdentifier:(id)a3;
-- (void)_networkTypeChanged:(id)a3;
-- (void)_networkUsageStateChanged:(id)a3;
-- (void)_partnerHeaderChanged:(id)a3;
-- (void)_storeServicesNetworkStartNotification:(id)a3;
-- (void)_storeServicesNetworkStopNotification:(id)a3;
+- (void)_mainThreadSetPartnerIdentifier:(id)identifier;
+- (void)_networkTypeChanged:(id)changed;
+- (void)_networkUsageStateChanged:(id)changed;
+- (void)_partnerHeaderChanged:(id)changed;
+- (void)_storeServicesNetworkStartNotification:(id)notification;
+- (void)_storeServicesNetworkStopNotification:(id)notification;
 - (void)_updateNetworkActivityIndicator;
 - (void)checkPartnerAvailability;
 - (void)dealloc;
-- (void)setPartnerIdentifier:(id)a3;
-- (void)setPartnersEnabled:(BOOL)a3;
+- (void)setPartnerIdentifier:(id)identifier;
+- (void)setPartnersEnabled:(BOOL)enabled;
 - (void)startNetworkAvailabilityTimer;
 @end
 
@@ -32,13 +32,13 @@
   if (v2)
   {
     v2->_partnerIdentifier = @"origin";
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__partnerHeaderChanged_ name:*MEMORY[0x1E69E46B0] object:0];
-    [v3 addObserver:v2 selector:sel__storeServicesNetworkStartNotification_ name:*MEMORY[0x1E69D4D60] object:0];
-    [v3 addObserver:v2 selector:sel__storeServicesNetworkStopNotification_ name:*MEMORY[0x1E69D4D68] object:0];
-    v4 = [MEMORY[0x1E69E4778] sharedInstance];
-    [v3 addObserver:v2 selector:sel__networkTypeChanged_ name:*MEMORY[0x1E69E46E0] object:v4];
-    [v3 addObserver:v2 selector:sel__networkUsageStateChanged_ name:*MEMORY[0x1E69E46E8] object:v4];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__partnerHeaderChanged_ name:*MEMORY[0x1E69E46B0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__storeServicesNetworkStartNotification_ name:*MEMORY[0x1E69D4D60] object:0];
+    [defaultCenter addObserver:v2 selector:sel__storeServicesNetworkStopNotification_ name:*MEMORY[0x1E69D4D68] object:0];
+    mEMORY[0x1E69E4778] = [MEMORY[0x1E69E4778] sharedInstance];
+    [defaultCenter addObserver:v2 selector:sel__networkTypeChanged_ name:*MEMORY[0x1E69E46E0] object:mEMORY[0x1E69E4778]];
+    [defaultCenter addObserver:v2 selector:sel__networkUsageStateChanged_ name:*MEMORY[0x1E69E46E8] object:mEMORY[0x1E69E4778]];
   }
 
   return v2;
@@ -46,13 +46,13 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69E46B0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69D4D60] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69D4D68] object:0];
-  v4 = [MEMORY[0x1E69E4778] sharedInstance];
-  [v3 removeObserver:self name:*MEMORY[0x1E69E46E0] object:v4];
-  [v3 removeObserver:self name:*MEMORY[0x1E69E46E8] object:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69E46B0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69D4D60] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69D4D68] object:0];
+  mEMORY[0x1E69E4778] = [MEMORY[0x1E69E4778] sharedInstance];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69E46E0] object:mEMORY[0x1E69E4778]];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69E46E8] object:mEMORY[0x1E69E4778]];
   [(SUNetworkObserver *)self _cancelStartupTimer];
 
   self->_partnerIdentifier = 0;
@@ -61,12 +61,12 @@
   [(SUNetworkObserver *)&v5 dealloc];
 }
 
-+ (void)setSharedInstance:(id)a3
++ (void)setSharedInstance:(id)instance
 {
-  if (__SharedInstance_0 != a3)
+  if (__SharedInstance_0 != instance)
   {
 
-    __SharedInstance_0 = a3;
+    __SharedInstance_0 = instance;
   }
 }
 
@@ -102,24 +102,24 @@
   }
 }
 
-- (void)setPartnerIdentifier:(id)a3
+- (void)setPartnerIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
   if (![(NSString *)self->_partnerIdentifier isEqualToString:?])
   {
-    v5 = [MEMORY[0x1E69D4938] sharedConfig];
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v7 &= 2u;
     }
@@ -129,7 +129,7 @@
       v11 = 138412546;
       v12 = objc_opt_class();
       v13 = 2112;
-      v14 = a3;
+      identifierCopy = identifier;
       LODWORD(v10) = 22;
       v8 = _os_log_send_and_compose_impl();
       if (v8)
@@ -141,7 +141,7 @@
       }
     }
 
-    self->_partnerIdentifier = a3;
+    self->_partnerIdentifier = identifier;
     if (self->_partnersEnabled)
     {
       [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
@@ -149,25 +149,25 @@
   }
 }
 
-- (void)setPartnersEnabled:(BOOL)a3
+- (void)setPartnersEnabled:(BOOL)enabled
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_partnersEnabled != a3)
+  if (self->_partnersEnabled != enabled)
   {
-    v3 = a3;
-    v5 = [MEMORY[0x1E69D4938] sharedConfig];
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    enabledCopy = enabled;
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v7 &= 2u;
     }
@@ -177,7 +177,7 @@
       v12 = 138412546;
       v13 = objc_opt_class();
       v14 = 1024;
-      v15 = v3;
+      v15 = enabledCopy;
       LODWORD(v11) = 18;
       v8 = _os_log_send_and_compose_impl();
       if (v8)
@@ -189,7 +189,7 @@
       }
     }
 
-    self->_partnersEnabled = v3;
+    self->_partnersEnabled = enabledCopy;
     partnerIdentifier = self->_partnerIdentifier;
     if (partnerIdentifier)
     {
@@ -209,30 +209,30 @@
   }
 }
 
-- (void)_networkTypeChanged:(id)a3
+- (void)_networkTypeChanged:(id)changed
 {
-  v4 = [a3 userInfo];
+  userInfo = [changed userInfo];
 
-  [(SUNetworkObserver *)self _handleNetworkTypeChange:v4];
+  [(SUNetworkObserver *)self _handleNetworkTypeChange:userInfo];
 }
 
-- (void)_networkUsageStateChanged:(id)a3
+- (void)_networkUsageStateChanged:(id)changed
 {
-  v4 = [a3 userInfo];
+  userInfo = [changed userInfo];
 
-  [(SUNetworkObserver *)self _handleUsingNetworkChange:v4];
+  [(SUNetworkObserver *)self _handleUsingNetworkChange:userInfo];
 }
 
-- (void)_partnerHeaderChanged:(id)a3
+- (void)_partnerHeaderChanged:(id)changed
 {
-  v4 = [(SUNetworkObserver *)self mainThreadProxy];
-  v5 = [a3 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69E46B8]];
+  mainThreadProxy = [(SUNetworkObserver *)self mainThreadProxy];
+  userInfo = [changed userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E69E46B8]];
 
-  [v4 _mainThreadSetPartnerIdentifier:v6];
+  [mainThreadProxy _mainThreadSetPartnerIdentifier:v6];
 }
 
-- (void)_storeServicesNetworkStartNotification:(id)a3
+- (void)_storeServicesNetworkStartNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -254,7 +254,7 @@ void *__60__SUNetworkObserver__storeServicesNetworkStartNotification___block_inv
   return result;
 }
 
-- (void)_storeServicesNetworkStopNotification:(id)a3
+- (void)_storeServicesNetworkStopNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -290,26 +290,26 @@ void *__59__SUNetworkObserver__storeServicesNetworkStopNotification___block_invo
   self->_startupTimer = 0;
 }
 
-- (void)_handleNetworkTypeChange:(id)a3
+- (void)_handleNetworkTypeChange:(id)change
 {
-  v4 = [(SUNetworkObserver *)self mainThreadProxy];
+  mainThreadProxy = [(SUNetworkObserver *)self mainThreadProxy];
 
-  [v4 _mainThreadHandleNetworkTypeChange:a3];
+  [mainThreadProxy _mainThreadHandleNetworkTypeChange:change];
 }
 
-- (void)_handleUsingNetworkChange:(id)a3
+- (void)_handleUsingNetworkChange:(id)change
 {
-  v3 = [(SUNetworkObserver *)self mainThreadProxy];
+  mainThreadProxy = [(SUNetworkObserver *)self mainThreadProxy];
 
-  [v3 _mainThreadScheduleNetworkActivityUpdate];
+  [mainThreadProxy _mainThreadScheduleNetworkActivityUpdate];
 }
 
-- (void)_mainThreadHandleNetworkTypeChange:(id)a3
+- (void)_mainThreadHandleNetworkTypeChange:(id)change
 {
   [(SUNetworkObserver *)self _cancelStartupTimer];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v4 postNotificationName:@"SUNetworkTypeChangedNotification" object:self];
+  [defaultCenter postNotificationName:@"SUNetworkTypeChangedNotification" object:self];
 }
 
 - (void)_mainThreadScheduleNetworkActivityUpdate
@@ -319,25 +319,25 @@ void *__59__SUNetworkObserver__storeServicesNetworkStopNotification___block_invo
   [(SUNetworkObserver *)self performSelector:sel__updateNetworkActivityIndicator withObject:0 afterDelay:0.25];
 }
 
-- (void)_mainThreadSetPartnerIdentifier:(id)a3
+- (void)_mainThreadSetPartnerIdentifier:(id)identifier
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a3 rangeOfString:@"."];
+    v5 = [identifier rangeOfString:@"."];
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      a3 = [a3 substringToIndex:v5];
+      identifier = [identifier substringToIndex:v5];
     }
 
-    [(SUNetworkObserver *)self setPartnerIdentifier:a3];
+    [(SUNetworkObserver *)self setPartnerIdentifier:identifier];
   }
 }
 
 - (void)_updateNetworkActivityIndicator
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:a2 object:0];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   if (self->_storeServicesNetworkUsageCount <= 0)
   {
     v4 = [objc_msgSend(MEMORY[0x1E69E4778] "sharedInstance")];
@@ -348,7 +348,7 @@ void *__59__SUNetworkObserver__storeServicesNetworkStopNotification___block_invo
     v4 = 1;
   }
 
-  [v3 setNetworkActivityIndicatorVisible:v4];
+  [mEMORY[0x1E69DC668] setNetworkActivityIndicatorVisible:v4];
 }
 
 @end

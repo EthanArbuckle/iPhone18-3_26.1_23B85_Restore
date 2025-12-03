@@ -1,51 +1,51 @@
 @interface WFWalletTransactionProvider
 + (id)sharedProvider;
-- (BOOL)transactionIsValid:(id)a3;
+- (BOOL)transactionIsValid:(id)valid;
 - (NPKCompanionAgentConnection)remotePaymentServiceConnection;
 - (PKPaymentService)paymentService;
 - (WFWalletTransactionProvider)init;
-- (void)fetchLocalTransactionWithIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchRemoteTransactionWithIdentifier:(id)a3 passUniqueID:(id)a4 completion:(id)a5;
-- (void)observeForUpdatesWithInitialTransactionIfNeeded:(id)a3 transactionIdentifier:(id)a4 completion:(id)a5;
+- (void)fetchLocalTransactionWithIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchRemoteTransactionWithIdentifier:(id)identifier passUniqueID:(id)d completion:(id)completion;
+- (void)observeForUpdatesWithInitialTransactionIfNeeded:(id)needed transactionIdentifier:(id)identifier completion:(id)completion;
 - (void)queue_endTransactionIfNeeded;
-- (void)queue_finishWithPaymentTransaction:(id)a3;
+- (void)queue_finishWithPaymentTransaction:(id)transaction;
 - (void)queue_takeTransactionIfNeeded;
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4;
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction;
 @end
 
 @implementation WFWalletTransactionProvider
 
-- (BOOL)transactionIsValid:(id)a3
+- (BOOL)transactionIsValid:(id)valid
 {
-  v3 = a3;
-  v4 = [v3 merchant];
-  v5 = [v4 displayName];
-  if (v5)
+  validCopy = valid;
+  merchant = [validCopy merchant];
+  displayName = [merchant displayName];
+  if (displayName)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v3 merchantProvidedTitle];
-    v6 = [v7 length] != 0;
+    merchantProvidedTitle = [validCopy merchantProvidedTitle];
+    v6 = [merchantProvidedTitle length] != 0;
   }
 
   return v6;
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction
 {
-  v5 = a4;
-  v6 = [(WFWalletTransactionProvider *)self queue];
+  transactionCopy = transaction;
+  queue = [(WFWalletTransactionProvider *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __81__WFWalletTransactionProvider_transactionSourceIdentifier_didReceiveTransaction___block_invoke;
   v8[3] = &unk_2788FFFC0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = transactionCopy;
+  v7 = transactionCopy;
+  dispatch_async(queue, v8);
 }
 
 void __81__WFWalletTransactionProvider_transactionSourceIdentifier_didReceiveTransaction___block_invoke(uint64_t a1)
@@ -89,84 +89,84 @@ void __81__WFWalletTransactionProvider_transactionSourceIdentifier_didReceiveTra
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queue_finishWithPaymentTransaction:(id)a3
+- (void)queue_finishWithPaymentTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(WFWalletTransactionProvider *)self queue];
-  dispatch_assert_queue_V2(v5);
+  transactionCopy = transaction;
+  queue = [(WFWalletTransactionProvider *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(WFWalletTransactionProvider *)self timers];
-  v7 = [v4 identifier];
-  v15 = [v6 objectForKey:v7];
+  timers = [(WFWalletTransactionProvider *)self timers];
+  identifier = [transactionCopy identifier];
+  v15 = [timers objectForKey:identifier];
 
   [v15 cancel];
-  v8 = [(WFWalletTransactionProvider *)self timers];
-  v9 = [v4 identifier];
-  [v8 removeObjectForKey:v9];
+  timers2 = [(WFWalletTransactionProvider *)self timers];
+  identifier2 = [transactionCopy identifier];
+  [timers2 removeObjectForKey:identifier2];
 
-  v10 = [(WFWalletTransactionProvider *)self requests];
-  v11 = [v4 identifier];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  requests = [(WFWalletTransactionProvider *)self requests];
+  identifier3 = [transactionCopy identifier];
+  v12 = [requests objectForKeyedSubscript:identifier3];
 
-  v13 = [(WFWalletTransactionProvider *)self requests];
-  v14 = [v4 identifier];
-  [v13 removeObjectForKey:v14];
+  requests2 = [(WFWalletTransactionProvider *)self requests];
+  identifier4 = [transactionCopy identifier];
+  [requests2 removeObjectForKey:identifier4];
 
-  (v12)[2](v12, v4, 0);
+  (v12)[2](v12, transactionCopy, 0);
   [(WFWalletTransactionProvider *)self queue_endTransactionIfNeeded];
 }
 
 - (void)queue_endTransactionIfNeeded
 {
-  v3 = [(WFWalletTransactionProvider *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WFWalletTransactionProvider *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(WFWalletTransactionProvider *)self transaction];
-  if (v4)
+  transaction = [(WFWalletTransactionProvider *)self transaction];
+  if (transaction)
   {
-    v5 = v4;
-    v6 = [(WFWalletTransactionProvider *)self requests];
-    v7 = [v6 count];
+    v5 = transaction;
+    requests = [(WFWalletTransactionProvider *)self requests];
+    v7 = [requests count];
 
     if (!v7)
     {
-      v8 = [(WFWalletTransactionProvider *)self transaction];
+      transaction2 = [(WFWalletTransactionProvider *)self transaction];
     }
   }
 }
 
 - (void)queue_takeTransactionIfNeeded
 {
-  v3 = [(WFWalletTransactionProvider *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(WFWalletTransactionProvider *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(WFWalletTransactionProvider *)self transaction];
+  transaction = [(WFWalletTransactionProvider *)self transaction];
 
-  if (!v4)
+  if (!transaction)
   {
     v5 = os_transaction_create();
     [(WFWalletTransactionProvider *)self setTransaction:v5];
   }
 }
 
-- (void)observeForUpdatesWithInitialTransactionIfNeeded:(id)a3 transactionIdentifier:(id)a4 completion:(id)a5
+- (void)observeForUpdatesWithInitialTransactionIfNeeded:(id)needed transactionIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFWalletTransactionProvider *)self queue];
+  neededCopy = needed;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  queue = [(WFWalletTransactionProvider *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __112__WFWalletTransactionProvider_observeForUpdatesWithInitialTransactionIfNeeded_transactionIdentifier_completion___block_invoke;
   v15[3] = &unk_2788FF468;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = neededCopy;
+  v17 = identifierCopy;
+  v18 = completionCopy;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v14 = neededCopy;
+  dispatch_async(queue, v15);
 }
 
 void __112__WFWalletTransactionProvider_observeForUpdatesWithInitialTransactionIfNeeded_transactionIdentifier_completion___block_invoke(uint64_t a1)
@@ -246,24 +246,24 @@ uint64_t __112__WFWalletTransactionProvider_observeForUpdatesWithInitialTransact
   return result;
 }
 
-- (void)fetchRemoteTransactionWithIdentifier:(id)a3 passUniqueID:(id)a4 completion:(id)a5
+- (void)fetchRemoteTransactionWithIdentifier:(id)identifier passUniqueID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFWalletTransactionProvider *)self queue];
+  identifierCopy = identifier;
+  dCopy = d;
+  completionCopy = completion;
+  queue = [(WFWalletTransactionProvider *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __92__WFWalletTransactionProvider_fetchRemoteTransactionWithIdentifier_passUniqueID_completion___block_invoke;
   v15[3] = &unk_2788FF468;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = identifierCopy;
+  v18 = completionCopy;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v14 = dCopy;
+  dispatch_async(queue, v15);
 }
 
 void __92__WFWalletTransactionProvider_fetchRemoteTransactionWithIdentifier_passUniqueID_completion___block_invoke(id *a1)
@@ -394,21 +394,21 @@ uint64_t __92__WFWalletTransactionProvider_fetchRemoteTransactionWithIdentifier_
   return v8;
 }
 
-- (void)fetchLocalTransactionWithIdentifier:(id)a3 completion:(id)a4
+- (void)fetchLocalTransactionWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFWalletTransactionProvider *)self queue];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  queue = [(WFWalletTransactionProvider *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__WFWalletTransactionProvider_fetchLocalTransactionWithIdentifier_completion___block_invoke;
   block[3] = &unk_2788FFF98;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
 void __78__WFWalletTransactionProvider_fetchLocalTransactionWithIdentifier_completion___block_invoke(id *a1)

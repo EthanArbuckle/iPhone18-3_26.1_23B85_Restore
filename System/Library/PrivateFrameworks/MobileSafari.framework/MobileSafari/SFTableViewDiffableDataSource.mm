@@ -1,21 +1,21 @@
 @interface SFTableViewDiffableDataSource
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (SFTableViewDiffableDataSourceDelegate)delegate;
-- (id)sectionIndexTitlesForTableView:(id)a3;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (id)sectionIndexTitlesForTableView:(id)view;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 @end
 
 @implementation SFTableViewDiffableDataSource
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [WeakRetained dataSource:self headerTextForSection:a4];
+    v7 = [WeakRetained dataSource:self headerTextForSection:section];
   }
 
   else
@@ -26,12 +26,12 @@
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [WeakRetained dataSource:self footerTextForSection:a4];
+    v7 = [WeakRetained dataSource:self footerTextForSection:section];
   }
 
   else
@@ -42,7 +42,7 @@
   return v7;
 }
 
-- (id)sectionIndexTitlesForTableView:(id)a3
+- (id)sectionIndexTitlesForTableView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -58,13 +58,13 @@
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index
 {
-  v7 = a4;
+  titleCopy = title;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v9 = [WeakRetained dataSource:self sectionForSectionIndexTitle:v7 atIndex:a5];
+    v9 = [WeakRetained dataSource:self sectionForSectionIndexTitle:titleCopy atIndex:index];
   }
 
   else
@@ -75,24 +75,24 @@
   return v9;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v9 = a5;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(UITableViewDiffableDataSource *)self itemIdentifierForIndexPath:v9];
-    [WeakRetained dataSource:self commitEditingStyle:a4 forItemIdentifier:v8];
+    v8 = [(UITableViewDiffableDataSource *)self itemIdentifierForIndexPath:pathCopy];
+    [WeakRetained dataSource:self commitEditingStyle:style forItemIdentifier:v8];
   }
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v7 = [WeakRetained dataSource:self canEditRowAtIndexPath:v5];
+    v7 = [WeakRetained dataSource:self canEditRowAtIndexPath:pathCopy];
   }
 
   else

@@ -1,20 +1,20 @@
 @interface AVRoutingScheduledAudioParameters
 - (AVRoutingScheduledAudioParameters)init;
-- (AVRoutingScheduledAudioParameters)initWithPropertyList:(id)a3;
-- (BOOL)getVolumeRampForTime:(id *)a3 startVolume:(float *)a4 endVolume:(float *)a5 timeRange:(id *)a6 rampMode:(int64_t *)a7;
-- (BOOL)isEqual:(id)a3;
-- (id)_audioCurveOfClass:(Class)a3;
+- (AVRoutingScheduledAudioParameters)initWithPropertyList:(id)list;
+- (BOOL)getVolumeRampForTime:(id *)time startVolume:(float *)volume endVolume:(float *)endVolume timeRange:(id *)range rampMode:(int64_t *)mode;
+- (BOOL)isEqual:(id)equal;
+- (id)_audioCurveOfClass:(Class)class;
 - (id)_audioVolumeCurve;
 - (id)_figAudioCurves;
-- (id)_getRampOfClass:(Class)a3 forTime:(id *)a4 timeRange:(id *)a5;
-- (id)_rampsOfClass:(Class)a3;
+- (id)_getRampOfClass:(Class)class forTime:(id *)time timeRange:(id *)range;
+- (id)_rampsOfClass:(Class)class;
 - (id)_volumeCurveAsString;
 - (id)_volumeCurveKeysForScheduledRampClassNames;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)propertyList;
-- (void)_setRamp:(id)a3;
-- (void)_setRamps:(id)a3;
+- (void)_setRamp:(id)ramp;
+- (void)_setRamps:(id)ramps;
 - (void)dealloc;
 @end
 
@@ -65,14 +65,14 @@
   return [v3 stringWithFormat:@"<%@: %p, volume mix: %@>", NSStringFromClass(v4), self, -[AVRoutingScheduledAudioParameters _volumeCurveAsString](self, "_volumeCurveAsString")];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(AVRoutingScheduledAudioParameters *)[AVRoutingMutableScheduledAudioParameters allocWithZone:?]];
   [(AVRoutingScheduledAudioParameters *)v4 _setRamps:self->_scheduledParametersInternal->parameterRamps];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -81,7 +81,7 @@
   }
 
   parameterRamps = self->_scheduledParametersInternal->parameterRamps;
-  v6 = *(*(a3 + 1) + 8);
+  v6 = *(*(equal + 1) + 8);
 
   return [(NSMutableDictionary *)parameterRamps isEqual:v6];
 }
@@ -129,7 +129,7 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
   return result;
 }
 
-- (void)_setRamps:(id)a3
+- (void)_setRamps:(id)ramps
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:0];
@@ -137,7 +137,7 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [ramps countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -148,13 +148,13 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ramps);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if ([(AVRoutingScheduledAudioParameters *)self _isScheduledRampClass:v10])
         {
-          v11 = [a3 objectForKey:v10];
+          v11 = [ramps objectForKey:v10];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -164,7 +164,7 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [ramps countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -174,50 +174,50 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_rampsOfClass:(Class)a3
+- (id)_rampsOfClass:(Class)class
 {
   parameterRamps = self->_scheduledParametersInternal->parameterRamps;
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(class);
 
   return [(NSMutableDictionary *)parameterRamps objectForKey:v4];
 }
 
-- (BOOL)getVolumeRampForTime:(id *)a3 startVolume:(float *)a4 endVolume:(float *)a5 timeRange:(id *)a6 rampMode:(int64_t *)a7
+- (BOOL)getVolumeRampForTime:(id *)time startVolume:(float *)volume endVolume:(float *)endVolume timeRange:(id *)range rampMode:(int64_t *)mode
 {
   v13 = objc_opt_class();
-  v19 = *a3;
-  v14 = [(AVRoutingScheduledAudioParameters *)self _getRampOfClass:v13 forTime:&v19 timeRange:a6];
+  v19 = *time;
+  v14 = [(AVRoutingScheduledAudioParameters *)self _getRampOfClass:v13 forTime:&v19 timeRange:range];
   v15 = v14;
   if (v14)
   {
-    if (a4)
+    if (volume)
     {
       [v14 startVolume];
-      *a4 = v16;
+      *volume = v16;
     }
 
-    if (a5)
+    if (endVolume)
     {
       [v15 endVolume];
-      *a5 = v17;
+      *endVolume = v17;
     }
 
-    if (a7)
+    if (mode)
     {
-      *a7 = [v15 rampMode];
+      *mode = [v15 rampMode];
     }
   }
 
   return v15 != 0;
 }
 
-- (AVRoutingScheduledAudioParameters)initWithPropertyList:(id)a3
+- (AVRoutingScheduledAudioParameters)initWithPropertyList:(id)list
 {
   v35 = *MEMORY[0x1E69E9840];
   v4 = [(AVRoutingScheduledAudioParameters *)self init];
   if (v4)
   {
-    v20 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -225,12 +225,12 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v24 = [a3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v24 = [list countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v24)
       {
         v5 = *v30;
         v6 = 0x1E695D000uLL;
-        v22 = a3;
+        listCopy = list;
         v23 = v4;
         v21 = *v30;
         do
@@ -239,18 +239,18 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
           {
             if (*v30 != v5)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(list);
             }
 
             v8 = *(*(&v29 + 1) + 8 * i);
             if ([(AVRoutingScheduledAudioParameters *)v4 _isScheduledRampClass:v8])
             {
-              v9 = [a3 objectForKey:v8];
+              v9 = [list objectForKey:v8];
               v10 = *(v6 + 3784);
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v11 = [MEMORY[0x1E695DF70] array];
+                array = [MEMORY[0x1E695DF70] array];
                 v25 = 0u;
                 v26 = 0u;
                 v27 = 0u;
@@ -276,7 +276,7 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
                         v17 = [objc_alloc(NSClassFromString(v8)) initWithPropertyList:v16];
                         if (v16)
                         {
-                          [v11 addObject:v17];
+                          [array addObject:v17];
                         }
                       }
                     }
@@ -287,26 +287,26 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
                   while (v13);
                 }
 
-                a3 = v22;
+                list = listCopy;
                 v4 = v23;
                 v5 = v21;
                 v6 = 0x1E695D000;
-                if ([v11 count])
+                if ([array count])
                 {
-                  [v20 setObject:v11 forKey:v8];
+                  [dictionary setObject:array forKey:v8];
                 }
               }
             }
           }
 
-          v24 = [a3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+          v24 = [list countByEnumeratingWithState:&v29 objects:v34 count:16];
         }
 
         while (v24);
       }
     }
 
-    [(AVRoutingScheduledAudioParameters *)v4 _setRamps:v20];
+    [(AVRoutingScheduledAudioParameters *)v4 _setRamps:dictionary];
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -316,12 +316,12 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
 - (id)propertyList
 {
   v29 = *MEMORY[0x1E69E9840];
-  v18 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = self;
+  selfCopy = self;
   obj = self->_scheduledParametersInternal->parameterRamps;
   v4 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v4)
@@ -339,12 +339,12 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
         }
 
         v8 = *(*(&v23 + 1) + 8 * v7);
-        v9 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v10 = [(NSMutableDictionary *)v3->_scheduledParametersInternal->parameterRamps objectForKey:v8];
+        v10 = [(NSMutableDictionary *)selfCopy->_scheduledParametersInternal->parameterRamps objectForKey:v8];
         v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v11)
         {
@@ -360,7 +360,7 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
                 objc_enumerationMutation(v10);
               }
 
-              [v9 addObject:{objc_msgSend(*(*(&v19 + 1) + 8 * v14++), "propertyList")}];
+              [array addObject:{objc_msgSend(*(*(&v19 + 1) + 8 * v14++), "propertyList")}];
             }
 
             while (v12 != v14);
@@ -370,7 +370,7 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
           while (v12);
         }
 
-        [v18 setObject:v9 forKey:v8];
+        [dictionary setObject:array forKey:v8];
         ++v7;
       }
 
@@ -382,17 +382,17 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
   }
 
   v15 = *MEMORY[0x1E69E9840];
-  return v18;
+  return dictionary;
 }
 
-- (id)_getRampOfClass:(Class)a3 forTime:(id *)a4 timeRange:(id *)a5
+- (id)_getRampOfClass:(Class)class forTime:(id *)time timeRange:(id *)range
 {
-  if ((a4->var2 & 0x1D) != 1)
+  if ((time->var2 & 0x1D) != 1)
   {
     return 0;
   }
 
-  v7 = [(AVRoutingScheduledAudioParameters *)self _rampsOfClass:a3];
+  v7 = [(AVRoutingScheduledAudioParameters *)self _rampsOfClass:class];
   if (!v7)
   {
     return 0;
@@ -407,8 +407,8 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
   v25[1] = 3221225472;
   v25[2] = __115__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_Internal___getRampOfClass_forTime_timeRange___block_invoke;
   v25[3] = &unk_1E794E7A8;
-  v26 = *&a4->var0;
-  var3 = a4->var3;
+  v26 = *&time->var0;
+  var3 = time->var3;
   v25[4] = &v28;
   v9 = [v7 indexOfObjectPassingTest:v25];
   if (v29[3] == 0x7FFFFFFFFFFFFFFFLL)
@@ -430,7 +430,7 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
   {
     v12 = [v8 objectAtIndex:?];
     v11 = v12;
-    if (a5)
+    if (range)
     {
       memset(v24, 0, sizeof(v24));
       v23 = 0u;
@@ -469,9 +469,9 @@ id __79__AVRoutingScheduledAudioParameters__volumeCurveKeysForScheduledRampClass
       }
 
       v15 = v24[0];
-      *&a5->var0.var0 = v23;
-      *&a5->var0.var3 = v15;
-      *&a5->var1.var1 = v24[1];
+      *&range->var0.var0 = v23;
+      *&range->var0.var3 = v15;
+      *&range->var1.var1 = v24[1];
     }
   }
 
@@ -515,30 +515,30 @@ BOOL __115__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_
   return v7 > 0;
 }
 
-- (void)_setRamp:(id)a3
+- (void)_setRamp:(id)ramp
 {
-  if (a3)
+  if (ramp)
   {
     v6 = objc_opt_class();
     if ([(AVRoutingScheduledAudioParameters *)self _isScheduledRampClass:NSStringFromClass(v6)])
     {
-      v7 = [(AVRoutingScheduledAudioParameters *)self _rampsOfClass:objc_opt_class()];
+      array = [(AVRoutingScheduledAudioParameters *)self _rampsOfClass:objc_opt_class()];
       v29 = 0u;
       v30 = 0u;
       v28 = 0u;
-      [a3 timeRange];
+      [ramp timeRange];
       v25 = v28;
       v26 = v29;
       v27 = v30;
-      if (AVRoutingScheduledParameterRampsIncludesRampThatOverlapsTimeRange(v7, &v25))
+      if (AVRoutingScheduledParameterRampsIncludesRampThatOverlapsTimeRange(array, &v25))
       {
         v18 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"The timeRange of a ramp must not overlap the timeRange of an existing ramp.", v8, v9, v10, v11, v12, v19.value), 0}];
         objc_exception_throw(v18);
       }
 
-      if (!v7)
+      if (!array)
       {
-        v7 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         parameterRamps = self->_scheduledParametersInternal->parameterRamps;
         if (!parameterRamps)
         {
@@ -547,7 +547,7 @@ BOOL __115__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_
         }
 
         v14 = objc_opt_class();
-        [(NSMutableDictionary *)parameterRamps setObject:v7 forKey:NSStringFromClass(v14)];
+        [(NSMutableDictionary *)parameterRamps setObject:array forKey:NSStringFromClass(v14)];
       }
 
       v21[0] = MEMORY[0x1E69E9820];
@@ -557,10 +557,10 @@ BOOL __115__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_
       v22 = v28;
       v23 = v29;
       v24 = v30;
-      v15 = [v7 indexOfObjectPassingTest:v21];
+      v15 = [array indexOfObjectPassingTest:v21];
       if (v15 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v7 addObject:a3];
+        [array addObject:ramp];
       }
 
       else
@@ -569,7 +569,7 @@ BOOL __115__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_
         v26 = 0u;
         v27 = 0u;
         v25 = 0u;
-        v17 = [v7 objectAtIndex:v15];
+        v17 = [array objectAtIndex:v15];
         if (v17)
         {
           [v17 timeRange];
@@ -588,12 +588,12 @@ BOOL __115__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_
         v19.epoch = v29;
         if (CMTimeCompare(&time1, &v19))
         {
-          [v7 insertObject:a3 atIndex:v16];
+          [array insertObject:ramp atIndex:v16];
         }
 
         else
         {
-          [v7 replaceObjectAtIndex:v16 withObject:a3];
+          [array replaceObjectAtIndex:v16 withObject:ramp];
         }
       }
     }
@@ -626,7 +626,7 @@ BOOL __90__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_I
   return v6 >= 0;
 }
 
-- (id)_audioCurveOfClass:(Class)a3
+- (id)_audioCurveOfClass:(Class)class
 {
   v4 = [(AVRoutingScheduledAudioParameters *)self _rampsOfClass:?];
   v5 = [v4 count];
@@ -636,7 +636,7 @@ BOOL __90__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_I
   }
 
   v6 = v5;
-  v7 = [-[objc_class _defaultAdditionalFigRepresentationObjects](a3 "_defaultAdditionalFigRepresentationObjects")];
+  v7 = [-[objc_class _defaultAdditionalFigRepresentationObjects](class "_defaultAdditionalFigRepresentationObjects")];
   v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:(v7 + 2) * v6];
   v9 = [v4 objectAtIndex:0];
   if (v9)
@@ -661,18 +661,18 @@ BOOL __90__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_I
   time2.start.epoch = v10;
   if (CMTimeCompare(&time1.start, &time2.start) >= 1)
   {
-    v11 = [(objc_class *)a3 defaultValue];
-    v12 = [(objc_class *)a3 _defaultAdditionalFigRepresentationObjects];
+    defaultValue = [(objc_class *)class defaultValue];
+    _defaultAdditionalFigRepresentationObjects = [(objc_class *)class _defaultAdditionalFigRepresentationObjects];
     *&time1.start.value = v21;
     time1.start.epoch = v10;
     [v8 addObject:AVDictionaryWithTime(&time1.start)];
-    [v8 addObject:v11];
-    [v8 addObjectsFromArray:v12];
+    [v8 addObject:defaultValue];
+    [v8 addObjectsFromArray:_defaultAdditionalFigRepresentationObjects];
     *&time1.start.value = v31;
     time1.start.epoch = v32;
     [v8 addObject:AVDictionaryWithTime(&time1.start)];
-    [v8 addObject:v11];
-    [v8 addObjectsFromArray:v12];
+    [v8 addObject:defaultValue];
+    [v8 addObjectsFromArray:_defaultAdditionalFigRepresentationObjects];
   }
 
   if (v6 >= 1)
@@ -750,7 +750,7 @@ BOOL __90__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_I
           v24.start.epoch = time2.start.epoch;
           [v8 addObject:AVDictionaryWithTime(&v24.start)];
           [v8 addObject:{objc_msgSend(v15, "endValue")}];
-          [v8 addObjectsFromArray:{-[objc_class _defaultAdditionalFigRepresentationObjects](a3, "_defaultAdditionalFigRepresentationObjects")}];
+          [v8 addObjectsFromArray:{-[objc_class _defaultAdditionalFigRepresentationObjects](class, "_defaultAdditionalFigRepresentationObjects")}];
         }
       }
     }
@@ -774,8 +774,8 @@ BOOL __90__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_I
   result = [(NSMutableDictionary *)self->_scheduledParametersInternal->parameterRamps count];
   if (result)
   {
-    v4 = [(AVRoutingScheduledAudioParameters *)self _volumeCurveKeysForScheduledRampClassNames];
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    _volumeCurveKeysForScheduledRampClassNames = [(AVRoutingScheduledAudioParameters *)self _volumeCurveKeysForScheduledRampClassNames];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -796,14 +796,14 @@ BOOL __90__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_I
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v4 objectForKey:v11];
+          v12 = [_volumeCurveKeysForScheduledRampClassNames objectForKey:v11];
           if (v12)
           {
             v13 = v12;
             v14 = [(AVRoutingScheduledAudioParameters *)self _audioCurveOfClass:NSClassFromString(v11)];
             if (v14)
             {
-              [v5 setObject:v14 forKey:v13];
+              [dictionary setObject:v14 forKey:v13];
             }
           }
         }
@@ -814,9 +814,9 @@ BOOL __90__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_I
       while (v8);
     }
 
-    if ([v5 count])
+    if ([dictionary count])
     {
-      result = v5;
+      result = dictionary;
     }
 
     else
@@ -831,9 +831,9 @@ BOOL __90__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_I
 
 - (id)_volumeCurveAsString
 {
-  v22 = [MEMORY[0x1E696AD60] string];
-  v3 = [(AVRoutingScheduledAudioParameters *)self _audioVolumeCurve];
-  v4 = [v3 count];
+  string = [MEMORY[0x1E696AD60] string];
+  _audioVolumeCurve = [(AVRoutingScheduledAudioParameters *)self _audioVolumeCurve];
+  v4 = [_audioVolumeCurve count];
   if (v4 >= 3)
   {
     v5 = 0;
@@ -843,18 +843,18 @@ BOOL __90__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_I
     v9 = 2;
     for (i = 4; ; i += 3)
     {
-      CMTimeMakeFromDictionary(&time, [v3 objectAtIndex:i - 4]);
+      CMTimeMakeFromDictionary(&time, [_audioVolumeCurve objectAtIndex:i - 4]);
       Seconds = CMTimeGetSeconds(&time);
-      [objc_msgSend(v3 objectAtIndex:{i - 3), "floatValue"}];
+      [objc_msgSend(_audioVolumeCurve objectAtIndex:{i - 3), "floatValue"}];
       v13 = v12;
-      v14 = [v3 objectAtIndex:i - 2];
+      v14 = [_audioVolumeCurve objectAtIndex:i - 2];
       v15 = 0.0;
       v16 = 0.0;
       if (v7 != v5)
       {
-        CMTimeMakeFromDictionary(&time, [v3 objectAtIndex:{i - 1, 0.0}]);
+        CMTimeMakeFromDictionary(&time, [_audioVolumeCurve objectAtIndex:{i - 1, 0.0}]);
         v15 = CMTimeGetSeconds(&time);
-        [objc_msgSend(v3 objectAtIndex:{i), "floatValue"}];
+        [objc_msgSend(_audioVolumeCurve objectAtIndex:{i), "floatValue"}];
       }
 
       v17 = Seconds;
@@ -886,7 +886,7 @@ BOOL __90__AVRoutingScheduledAudioParameters_AVRoutingScheduledAudioParameters_I
         v19 = &stru_1F2027C00;
         v20 = @", changes instantaneously to ";
 LABEL_16:
-        [v22 appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"volume %1.3f %@ time %1.3f%@%@", v13, v18, v17, v8, v20)}];
+        [string appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"volume %1.3f %@ time %1.3f%@%@", v13, v18, v17, v8, v20)}];
         goto LABEL_17;
       }
 
@@ -897,7 +897,7 @@ LABEL_17:
       v8 = v19;
       if (v6 == v5)
       {
-        return v22;
+        return string;
       }
     }
 
@@ -918,7 +918,7 @@ LABEL_17:
     goto LABEL_16;
   }
 
-  return v22;
+  return string;
 }
 
 @end

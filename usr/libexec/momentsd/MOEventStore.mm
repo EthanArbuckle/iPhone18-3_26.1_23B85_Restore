@@ -1,47 +1,47 @@
 @interface MOEventStore
-- (BOOL)_persistEWAMetricsPrivate:(id)a3 withData:(id)a4;
-- (BOOL)_removeEntriesInPlist:(id)a3 forCategory:(id)a4 forURL:(id)a5;
-- (BOOL)_shouldEventBeDeleted:(id)a3 patternDict:(id)a4 forkey:(id)a5;
-- (BOOL)persistEWAMetrics:(id)a3 withData:(id)a4;
-- (MOEventStore)initWithUniverse:(id)a3;
-- (id)_readEWAPlistFilePrivate:(id)a3;
+- (BOOL)_persistEWAMetricsPrivate:(id)private withData:(id)data;
+- (BOOL)_removeEntriesInPlist:(id)plist forCategory:(id)category forURL:(id)l;
+- (BOOL)_shouldEventBeDeleted:(id)deleted patternDict:(id)dict forkey:(id)forkey;
+- (BOOL)persistEWAMetrics:(id)metrics withData:(id)data;
+- (MOEventStore)initWithUniverse:(id)universe;
+- (id)_readEWAPlistFilePrivate:(id)private;
 - (id)getEWAPlistFileURL;
-- (id)readEWAPlistFile:(id)a3;
-- (void)_checkWorkoutExistsInHealthDB:(id)a3 handler:(id)a4;
-- (void)_deleteEWAForExpiredEvents:(id)a3;
-- (void)_deleteEWAOnRehydrationFailure:(id)a3;
-- (void)_deletePatternEvents:(id)a3 forContext:(id)a4 handler:(id)a5;
-- (void)_deleteSensedEvents:(id)a3 forContext:(id)a4 handler:(id)a5;
+- (id)readEWAPlistFile:(id)file;
+- (void)_checkWorkoutExistsInHealthDB:(id)b handler:(id)handler;
+- (void)_deleteEWAForExpiredEvents:(id)events;
+- (void)_deleteEWAOnRehydrationFailure:(id)failure;
+- (void)_deletePatternEvents:(id)events forContext:(id)context handler:(id)handler;
+- (void)_deleteSensedEvents:(id)events forContext:(id)context handler:(id)handler;
 - (void)_deleteStaleEWAEvents;
-- (void)fetchAllEventsWithCompletionHandler:(id)a3;
-- (void)fetchAnalyticsEventsWithOptions:(id)a3 CompletionHandler:(id)a4;
-- (void)fetchEventsWithOptions:(id)a3 CompletionHandler:(id)a4;
-- (void)fetchEventsWithStartDateAfter:(id)a3 Category:(unint64_t)a4 CompletionHandler:(id)a5;
-- (void)fetchLastEventOfCategories:(id)a3 isHighConfidenceOnly:(BOOL)a4 CompletionHandler:(id)a5;
-- (void)fetchLastEventOfCategory:(unint64_t)a3 CompletionHandler:(id)a4;
+- (void)fetchAllEventsWithCompletionHandler:(id)handler;
+- (void)fetchAnalyticsEventsWithOptions:(id)options CompletionHandler:(id)handler;
+- (void)fetchEventsWithOptions:(id)options CompletionHandler:(id)handler;
+- (void)fetchEventsWithStartDateAfter:(id)after Category:(unint64_t)category CompletionHandler:(id)handler;
+- (void)fetchLastEventOfCategories:(id)categories isHighConfidenceOnly:(BOOL)only CompletionHandler:(id)handler;
+- (void)fetchLastEventOfCategory:(unint64_t)category CompletionHandler:(id)handler;
 - (void)getEWAPlistFileURL;
-- (void)purgeExpiredEventsWithCompletionHandler:(id)a3;
-- (void)purgeRehydrationFailedEventsForType:(id)a3 rehydrationFailCount:(int)a4 CompletionHandler:(id)a5;
-- (void)purgeUnknownEventsWithCompletionHandler:(id)a3;
-- (void)purgeVisitEventsBeforeDate:(id)a3 WithCompletionHandler:(id)a4;
-- (void)removeAllEventsWithCompletionHandler:(id)a3;
-- (void)removeEvents:(id)a3 CompletionHandler:(id)a4;
-- (void)storeEvent:(id)a3 CompletionHandler:(id)a4;
-- (void)storeEvents:(id)a3 CompletionHandler:(id)a4;
+- (void)purgeExpiredEventsWithCompletionHandler:(id)handler;
+- (void)purgeRehydrationFailedEventsForType:(id)type rehydrationFailCount:(int)count CompletionHandler:(id)handler;
+- (void)purgeUnknownEventsWithCompletionHandler:(id)handler;
+- (void)purgeVisitEventsBeforeDate:(id)date WithCompletionHandler:(id)handler;
+- (void)removeAllEventsWithCompletionHandler:(id)handler;
+- (void)removeEvents:(id)events CompletionHandler:(id)handler;
+- (void)storeEvent:(id)event CompletionHandler:(id)handler;
+- (void)storeEvents:(id)events CompletionHandler:(id)handler;
 @end
 
 @implementation MOEventStore
 
-- (MOEventStore)initWithUniverse:(id)a3
+- (MOEventStore)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v5 getService:v7];
+  v8 = [universeCopy getService:v7];
 
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [v5 getService:v10];
+  v11 = [universeCopy getService:v10];
 
   v12 = objc_alloc_init(HKHealthStore);
   if (!v8)
@@ -56,7 +56,7 @@
     v20 = v19;
     v21 = @"Invalid parameter not satisfying: persistenceManager";
     v22 = a2;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 38;
     goto LABEL_12;
   }
@@ -73,12 +73,12 @@
     v20 = v19;
     v21 = @"Invalid parameter not satisfying: configurationManager";
     v22 = a2;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 39;
 LABEL_12:
-    [v19 handleFailureInMethod:v22 object:v23 file:@"MOEventStore.m" lineNumber:v24 description:v21];
+    [v19 handleFailureInMethod:v22 object:selfCopy2 file:@"MOEventStore.m" lineNumber:v24 description:v21];
 
-    v17 = 0;
+    selfCopy3 = 0;
     goto LABEL_13;
   }
 
@@ -98,26 +98,26 @@ LABEL_12:
   }
 
   self = v13;
-  v17 = self;
+  selfCopy3 = self;
 LABEL_13:
 
-  return v17;
+  return selfCopy3;
 }
 
-- (void)storeEvent:(id)a3 CompletionHandler:(id)a4
+- (void)storeEvent:(id)event CompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOEventStore *)self persistenceManager];
+  eventCopy = event;
+  handlerCopy = handler;
+  persistenceManager = [(MOEventStore *)self persistenceManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __45__MOEventStore_storeEvent_CompletionHandler___block_invoke;
   v11[3] = &unk_100338338;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 performBlockAndWait:v11];
+  v12 = eventCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = eventCopy;
+  [persistenceManager performBlockAndWait:v11];
 }
 
 void __45__MOEventStore_storeEvent_CompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -180,20 +180,20 @@ LABEL_13:
   }
 }
 
-- (void)storeEvents:(id)a3 CompletionHandler:(id)a4
+- (void)storeEvents:(id)events CompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOEventStore *)self persistenceManager];
+  eventsCopy = events;
+  handlerCopy = handler;
+  persistenceManager = [(MOEventStore *)self persistenceManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __46__MOEventStore_storeEvents_CompletionHandler___block_invoke;
   v11[3] = &unk_100338338;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 performBlockAndWait:v11];
+  v12 = eventsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = eventsCopy;
+  [persistenceManager performBlockAndWait:v11];
 }
 
 void __46__MOEventStore_storeEvents_CompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -321,21 +321,21 @@ void __46__MOEventStore_storeEvents_CompletionHandler___block_invoke(uint64_t a1
   }
 }
 
-- (void)removeEvents:(id)a3 CompletionHandler:(id)a4
+- (void)removeEvents:(id)events CompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  eventsCopy = events;
+  handlerCopy = handler;
+  if ([eventsCopy count])
   {
-    v9 = [(MOEventStore *)self persistenceManager];
+    persistenceManager = [(MOEventStore *)self persistenceManager];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = __47__MOEventStore_removeEvents_CompletionHandler___block_invoke;
     v11[3] = &unk_100338360;
-    v12 = v7;
+    v12 = eventsCopy;
     v14 = a2;
-    v13 = v8;
-    [v9 performBlockAndWait:v11];
+    v13 = handlerCopy;
+    [persistenceManager performBlockAndWait:v11];
 
     v10 = v12;
 LABEL_5:
@@ -343,12 +343,12 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v8)
+  if (handlerCopy)
   {
     v15 = @"resultNumberOfEvents";
     v16 = &off_1003696E8;
     v10 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-    (*(v8 + 2))(v8, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
     goto LABEL_5;
   }
 
@@ -537,18 +537,18 @@ void __47__MOEventStore_removeEvents_CompletionHandler___block_invoke(uint64_t a
   }
 }
 
-- (void)removeAllEventsWithCompletionHandler:(id)a3
+- (void)removeAllEventsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(MOEventStore *)self persistenceManager];
+  handlerCopy = handler;
+  persistenceManager = [(MOEventStore *)self persistenceManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __53__MOEventStore_removeAllEventsWithCompletionHandler___block_invoke;
   v8[3] = &unk_100338388;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
-  v7 = v5;
-  [v6 performBlockAndWait:v8];
+  v7 = handlerCopy;
+  [persistenceManager performBlockAndWait:v8];
 }
 
 void __53__MOEventStore_removeAllEventsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -664,19 +664,19 @@ void __53__MOEventStore_removeAllEventsWithCompletionHandler___block_invoke(uint
   }
 }
 
-- (void)purgeExpiredEventsWithCompletionHandler:(id)a3
+- (void)purgeExpiredEventsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(MOEventStore *)self persistenceManager];
+  handlerCopy = handler;
+  persistenceManager = [(MOEventStore *)self persistenceManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __56__MOEventStore_purgeExpiredEventsWithCompletionHandler___block_invoke;
   v8[3] = &unk_100338360;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
   v8[4] = self;
-  v7 = v5;
-  [v6 performBlockAndWait:v8];
+  v7 = handlerCopy;
+  [persistenceManager performBlockAndWait:v8];
 }
 
 void __56__MOEventStore_purgeExpiredEventsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -809,18 +809,18 @@ void __56__MOEventStore_purgeExpiredEventsWithCompletionHandler___block_invoke(u
   }
 }
 
-- (void)purgeUnknownEventsWithCompletionHandler:(id)a3
+- (void)purgeUnknownEventsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(MOEventStore *)self persistenceManager];
+  handlerCopy = handler;
+  persistenceManager = [(MOEventStore *)self persistenceManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __56__MOEventStore_purgeUnknownEventsWithCompletionHandler___block_invoke;
   v8[3] = &unk_100338388;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
-  v7 = v5;
-  [v6 performBlockAndWait:v8];
+  v7 = handlerCopy;
+  [persistenceManager performBlockAndWait:v8];
 }
 
 void __56__MOEventStore_purgeUnknownEventsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -948,23 +948,23 @@ void __56__MOEventStore_purgeUnknownEventsWithCompletionHandler___block_invoke(u
   }
 }
 
-- (void)purgeRehydrationFailedEventsForType:(id)a3 rehydrationFailCount:(int)a4 CompletionHandler:(id)a5
+- (void)purgeRehydrationFailedEventsForType:(id)type rehydrationFailCount:(int)count CompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  if (a4 > 0)
+  typeCopy = type;
+  handlerCopy = handler;
+  if (count > 0)
   {
-    v11 = [(MOEventStore *)self persistenceManager];
+    persistenceManager = [(MOEventStore *)self persistenceManager];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = __91__MOEventStore_purgeRehydrationFailedEventsForType_rehydrationFailCount_CompletionHandler___block_invoke;
     v14[3] = &unk_1003383D8;
-    v19 = a4;
+    countCopy = count;
     v18 = a2;
-    v15 = v9;
-    v16 = self;
-    v17 = v10;
-    [v11 performBlockAndWait:v14];
+    v15 = typeCopy;
+    selfCopy = self;
+    v17 = handlerCopy;
+    [persistenceManager performBlockAndWait:v14];
 
     v12 = v15;
 LABEL_7:
@@ -978,12 +978,12 @@ LABEL_7:
     [MOEventStore purgeRehydrationFailedEventsForType:rehydrationFailCount:CompletionHandler:];
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     v20 = @"resultNumberOfEvents";
     v21 = &off_1003696E8;
     v12 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    (*(v10 + 2))(v10, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
     goto LABEL_7;
   }
 
@@ -1123,15 +1123,15 @@ void __91__MOEventStore_purgeRehydrationFailedEventsForType_rehydrationFailCount
   *(*(*(a1 + 40) + 8) + 24) = a3;
 }
 
-- (void)_deleteSensedEvents:(id)a3 forContext:(id)a4 handler:(id)a5
+- (void)_deleteSensedEvents:(id)events forContext:(id)context handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v7 count])
+  eventsCopy = events;
+  contextCopy = context;
+  handlerCopy = handler;
+  if (![eventsCopy count])
   {
     v18 = 0;
-    if (!v9)
+    if (!handlerCopy)
     {
       goto LABEL_20;
     }
@@ -1143,7 +1143,7 @@ void __91__MOEventStore_purgeRehydrationFailedEventsForType_rehydrationFailCount
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v7;
+  v10 = eventsCopy;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v11)
   {
@@ -1159,7 +1159,7 @@ void __91__MOEventStore_purgeRehydrationFailedEventsForType_rehydrationFailCount
           objc_enumerationMutation(v10);
         }
 
-        [v8 deleteObject:*(*(&v22 + 1) + 8 * v14)];
+        [contextCopy deleteObject:*(*(&v22 + 1) + 8 * v14)];
         v14 = v14 + 1;
       }
 
@@ -1180,7 +1180,7 @@ void __91__MOEventStore_purgeRehydrationFailedEventsForType_rehydrationFailCount
   }
 
   v21 = 0;
-  v17 = [v8 save:&v21];
+  v17 = [contextCopy save:&v21];
   v18 = v21;
   v19 = _mo_log_facility_get_os_log(&MOLogFacilityEventStore);
   v20 = v19;
@@ -1198,21 +1198,21 @@ void __91__MOEventStore_purgeRehydrationFailedEventsForType_rehydrationFailCount
     [MOEventStore _deleteSensedEvents:forContext:handler:];
   }
 
-  if (v9)
+  if (handlerCopy)
   {
 LABEL_19:
-    v9[2](v9, v18, [v7 count]);
+    handlerCopy[2](handlerCopy, v18, [eventsCopy count]);
   }
 
 LABEL_20:
 }
 
-- (void)_deletePatternEvents:(id)a3 forContext:(id)a4 handler:(id)a5
+- (void)_deletePatternEvents:(id)events forContext:(id)context handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  eventsCopy = events;
+  contextCopy = context;
+  handlerCopy = handler;
+  if ([eventsCopy count])
   {
     v11 = +[MOEventMO fetchRequest];
     v12 = [NSPredicate predicateWithFormat:@"provider == %d", 5];
@@ -1220,19 +1220,19 @@ LABEL_20:
 
     [v11 setReturnsObjectsAsFaults:0];
     v70 = 0;
-    v44 = [v9 executeFetchRequest:v11 error:&v70];
+    v44 = [contextCopy executeFetchRequest:v11 error:&v70];
     v13 = v70;
     if (v13)
     {
-      v10[2](v10, v13, 0);
+      handlerCopy[2](handlerCopy, v13, 0);
       v14 = 0;
     }
 
     else
     {
       v38 = v11;
-      v39 = v10;
-      v40 = v9;
+      v39 = handlerCopy;
+      v40 = contextCopy;
       v52 = objc_opt_new();
       v77[0] = @"kEventPatternAnomalousEventIdentifier";
       v77[1] = @"kEventPatternTrendEventIdentifierList";
@@ -1242,8 +1242,8 @@ LABEL_20:
       v67 = 0u;
       v68 = 0u;
       v69 = 0u;
-      v41 = v8;
-      obj = v8;
+      v41 = eventsCopy;
+      obj = eventsCopy;
       v45 = [obj countByEnumeratingWithState:&v66 objects:v76 count:16];
       if (v45)
       {
@@ -1301,9 +1301,9 @@ LABEL_20:
                         }
 
                         v25 = *(*(&v58 + 1) + 8 * i);
-                        v26 = [v17 eventIdentifier];
-                        v27 = [v19 patterns];
-                        LODWORD(v25) = [(MOEventStore *)self _shouldEventBeDeleted:v26 patternDict:v27 forkey:v25];
+                        eventIdentifier = [v17 eventIdentifier];
+                        patterns = [v19 patterns];
+                        LODWORD(v25) = [(MOEventStore *)self _shouldEventBeDeleted:eventIdentifier patternDict:patterns forkey:v25];
 
                         if (v25)
                         {
@@ -1345,8 +1345,8 @@ LABEL_20:
         v55 = 0u;
         v28 = v52;
         v29 = [v28 countByEnumeratingWithState:&v54 objects:v73 count:16];
-        v9 = v40;
-        v8 = v41;
+        contextCopy = v40;
+        eventsCopy = v41;
         v13 = 0;
         v11 = v38;
         if (v29)
@@ -1392,15 +1392,15 @@ LABEL_20:
           [MOEventStore _deletePatternEvents:v14 forContext:v28 handler:v35];
         }
 
-        v10 = v39;
+        handlerCopy = v39;
         v39[2](v39, v14, [v28 count]);
       }
 
       else
       {
         v37 = _mo_log_facility_get_os_log(&MOLogFacilityEventStore);
-        v9 = v40;
-        v8 = v41;
+        contextCopy = v40;
+        eventsCopy = v41;
         v13 = 0;
         v11 = v38;
         if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
@@ -1409,7 +1409,7 @@ LABEL_20:
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "No pattern events deleted as count is 0", buf, 2u);
         }
 
-        v10 = v39;
+        handlerCopy = v39;
         v39[2](v39, 0, 0);
         v14 = 0;
       }
@@ -1425,22 +1425,22 @@ LABEL_20:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "No source redhydration failure, pattern events unaffected", buf, 2u);
     }
 
-    v10[2](v10, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
-- (BOOL)_shouldEventBeDeleted:(id)a3 patternDict:(id)a4 forkey:(id)a5
+- (BOOL)_shouldEventBeDeleted:(id)deleted patternDict:(id)dict forkey:(id)forkey
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  deletedCopy = deleted;
+  dictCopy = dict;
+  forkeyCopy = forkey;
+  if (dictCopy)
   {
-    v10 = [v8 objectForKey:v9];
+    v10 = [dictCopy objectForKey:forkeyCopy];
 
     if (v10)
     {
-      v11 = [v8 objectForKeyedSubscript:v9];
+      v11 = [dictCopy objectForKeyedSubscript:forkeyCopy];
       if (v11)
       {
         objc_opt_class();
@@ -1448,7 +1448,7 @@ LABEL_20:
         {
           +[NSUUID UUID];
           v12 = [objc_claimAutoreleasedReturnValue() initWithUUIDString:v11];
-          if ([v12 isEqual:v7])
+          if ([v12 isEqual:deletedCopy])
           {
             v13 = _mo_log_facility_get_os_log(&MOLogFacilityEventStore);
             if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -1456,7 +1456,7 @@ LABEL_20:
               *buf = 138412546;
               v30 = v11;
               v31 = 2112;
-              v32 = v9;
+              v32 = forkeyCopy;
               _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Pattern to be deleted has UUID %@ for pattern type %@", buf, 0x16u);
             }
 
@@ -1493,7 +1493,7 @@ LABEL_27:
                   v19 = *(*(&v24 + 1) + 8 * i);
                   +[NSUUID UUID];
                   v20 = [objc_claimAutoreleasedReturnValue() initWithUUIDString:v19];
-                  if ([v20 isEqual:v7])
+                  if ([v20 isEqual:deletedCopy])
                   {
                     v21 = _mo_log_facility_get_os_log(&MOLogFacilityEventStore);
                     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -1501,7 +1501,7 @@ LABEL_27:
                       *buf = 138412546;
                       v30 = v19;
                       v31 = 2112;
-                      v32 = v9;
+                      v32 = forkeyCopy;
                       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Pattern to be deleted has UUID %@ for pattern type %@", buf, 0x16u);
                     }
 
@@ -1544,15 +1544,15 @@ LABEL_29:
   return v14;
 }
 
-- (void)_deleteEWAOnRehydrationFailure:(id)a3
+- (void)_deleteEWAOnRehydrationFailure:(id)failure
 {
-  v3 = a3;
+  failureCopy = failure;
   v4 = objc_opt_new();
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v5 = v3;
+  v5 = failureCopy;
   v6 = [v5 countByEnumeratingWithState:&v58 objects:v64 count:16];
   if (v6)
   {
@@ -1569,29 +1569,29 @@ LABEL_29:
         }
 
         v10 = *(*(&v58 + 1) + 8 * v9);
-        v11 = [v10 category];
-        if ([v11 integerValue] == 16)
+        category = [v10 category];
+        if ([category integerValue] == 16)
         {
           goto LABEL_9;
         }
 
-        v12 = [v10 category];
-        if ([v12 integerValue] == 10)
+        category2 = [v10 category];
+        if ([category2 integerValue] == 10)
         {
 
 LABEL_9:
 LABEL_10:
-          v13 = [v10 eventIdentifier];
-          v14 = [v13 UUIDString];
-          [v4 addObject:v14];
+          eventIdentifier = [v10 eventIdentifier];
+          uUIDString = [eventIdentifier UUIDString];
+          [v4 addObject:uUIDString];
 
           goto LABEL_11;
         }
 
-        v15 = [v10 category];
-        v16 = [v15 integerValue];
+        category3 = [v10 category];
+        integerValue = [category3 integerValue];
 
-        if (v16 == 2)
+        if (integerValue == 2)
         {
           goto LABEL_10;
         }
@@ -1608,10 +1608,10 @@ LABEL_11:
     while (v17);
   }
 
-  v18 = [(MOEventStore *)self getEWAPlistFileURL];
-  if (v18)
+  getEWAPlistFileURL = [(MOEventStore *)self getEWAPlistFileURL];
+  if (getEWAPlistFileURL)
   {
-    v19 = [(MOEventStore *)self readEWAPlistFile:v18];
+    v19 = [(MOEventStore *)self readEWAPlistFile:getEWAPlistFileURL];
     v20 = v19;
     if (!v19)
     {
@@ -1629,7 +1629,7 @@ LABEL_44:
     v44 = [v21 countByEnumeratingWithState:&v54 objects:v63 count:16];
     if (v44)
     {
-      v38 = v18;
+      v38 = getEWAPlistFileURL;
       v39 = v5;
       v40 = v4;
       v46 = 0;
@@ -1651,8 +1651,8 @@ LABEL_44:
           v51 = 0u;
           v52 = 0u;
           v53 = 0u;
-          v48 = [v20 allKeys];
-          v24 = [v48 countByEnumeratingWithState:&v50 objects:v62 count:16];
+          allKeys = [v20 allKeys];
+          v24 = [allKeys countByEnumeratingWithState:&v50 objects:v62 count:16];
           if (v24)
           {
             v25 = v24;
@@ -1663,7 +1663,7 @@ LABEL_44:
               {
                 if (*v51 != v26)
                 {
-                  objc_enumerationMutation(v48);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v28 = *(*(&v50 + 1) + 8 * i);
@@ -1686,7 +1686,7 @@ LABEL_44:
                 v20 = v29;
               }
 
-              v25 = [v48 countByEnumeratingWithState:&v50 objects:v62 count:16];
+              v25 = [allKeys countByEnumeratingWithState:&v50 objects:v62 count:16];
             }
 
             while (v25);
@@ -1703,7 +1703,7 @@ LABEL_44:
 
       v5 = v39;
       v4 = v40;
-      v18 = v38;
+      getEWAPlistFileURL = v38;
       if (v46)
       {
         v34 = [(MOEventStore *)self persistEWAMetrics:v38 withData:v47];
@@ -1754,16 +1754,16 @@ LABEL_43:
 LABEL_45:
 }
 
-- (void)_checkWorkoutExistsInHealthDB:(id)a3 handler:(id)a4
+- (void)_checkWorkoutExistsInHealthDB:(id)b handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  bCopy = b;
+  handlerCopy = handler;
   v8 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v6;
+  v9 = bCopy;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
@@ -1806,8 +1806,8 @@ LABEL_45:
   v24[1] = 3221225472;
   v24[2] = __54__MOEventStore__checkWorkoutExistsInHealthDB_handler___block_invoke;
   v24[3] = &unk_100338400;
-  v25 = v7;
-  v22 = v7;
+  v25 = handlerCopy;
+  v22 = handlerCopy;
   v23 = [v21 initWithQueryDescriptors:v17 limit:0 resultsHandler:v24];
   [(HKHealthStore *)self->_healthStore executeQuery:v23];
 }
@@ -1836,18 +1836,18 @@ void __54__MOEventStore__checkWorkoutExistsInHealthDB_handler___block_invoke(uin
   v8();
 }
 
-- (BOOL)_removeEntriesInPlist:(id)a3 forCategory:(id)a4 forURL:(id)a5
+- (BOOL)_removeEntriesInPlist:(id)plist forCategory:(id)category forURL:(id)l
 {
-  v33 = self;
-  v38 = a3;
-  v7 = a4;
-  v34 = a5;
+  selfCopy = self;
+  plistCopy = plist;
+  categoryCopy = category;
+  lCopy = l;
   v8 = objc_opt_new();
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v7;
+  obj = categoryCopy;
   v9 = [obj countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v9)
   {
@@ -1894,7 +1894,7 @@ void __54__MOEventStore__checkWorkoutExistsInHealthDB_handler___block_invoke(uin
     while (v10);
   }
 
-  v14 = [v38 mutableCopy];
+  v14 = [plistCopy mutableCopy];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -1921,8 +1921,8 @@ void __54__MOEventStore__checkWorkoutExistsInHealthDB_handler___block_invoke(uin
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v21 = [v38 allKeys];
-        v22 = [v21 countByEnumeratingWithState:&v40 objects:v52 count:16];
+        allKeys = [plistCopy allKeys];
+        v22 = [allKeys countByEnumeratingWithState:&v40 objects:v52 count:16];
         if (v22)
         {
           v23 = v22;
@@ -1933,7 +1933,7 @@ void __54__MOEventStore__checkWorkoutExistsInHealthDB_handler___block_invoke(uin
             {
               if (*v41 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(allKeys);
               }
 
               v26 = *(*(&v40 + 1) + 8 * k);
@@ -1944,7 +1944,7 @@ void __54__MOEventStore__checkWorkoutExistsInHealthDB_handler___block_invoke(uin
               }
             }
 
-            v23 = [v21 countByEnumeratingWithState:&v40 objects:v52 count:16];
+            v23 = [allKeys countByEnumeratingWithState:&v40 objects:v52 count:16];
           }
 
           while (v23);
@@ -1959,8 +1959,8 @@ void __54__MOEventStore__checkWorkoutExistsInHealthDB_handler___block_invoke(uin
 
     if (v18)
     {
-      v27 = v34;
-      v28 = [(MOEventStore *)v33 persistEWAMetrics:v34 withData:v14];
+      v27 = lCopy;
+      v28 = [(MOEventStore *)selfCopy persistEWAMetrics:lCopy withData:v14];
       v29 = _mo_log_facility_get_os_log(&MOLogFacilityEventStore);
       v30 = os_log_type_enabled(v29, OS_LOG_TYPE_INFO);
       if (v28)
@@ -2005,7 +2005,7 @@ void __54__MOEventStore__checkWorkoutExistsInHealthDB_handler___block_invoke(uin
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "No change in EWA on settings change", buf, 2u);
   }
 
-  v27 = v34;
+  v27 = lCopy;
 LABEL_43:
 
   return v31;
@@ -2013,10 +2013,10 @@ LABEL_43:
 
 - (void)_deleteStaleEWAEvents
 {
-  v3 = [(MOEventStore *)self getEWAPlistFileURL];
-  if (v3)
+  getEWAPlistFileURL = [(MOEventStore *)self getEWAPlistFileURL];
+  if (getEWAPlistFileURL)
   {
-    v4 = [(MOEventStore *)self readEWAPlistFile:v3];
+    v4 = [(MOEventStore *)self readEWAPlistFile:getEWAPlistFileURL];
     v5 = v4;
     if (!v4)
     {
@@ -2038,8 +2038,8 @@ LABEL_23:
     }
 
     v7 = v6;
-    v23 = self;
-    v24 = v3;
+    selfCopy = self;
+    v24 = getEWAPlistFileURL;
     v8 = 0;
     v9 = *v28;
     do
@@ -2052,7 +2052,7 @@ LABEL_23:
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v5 objectForKeyedSubscript:{v11, v23}];
+        v12 = [v5 objectForKeyedSubscript:{v11, selfCopy}];
         v13 = [v12 objectForKeyedSubscript:@"EWAForAnomalyLastUpdateTime"];
         [v13 doubleValue];
         v15 = v14;
@@ -2081,13 +2081,13 @@ LABEL_23:
 
     while (v7);
 
-    v3 = v24;
+    getEWAPlistFileURL = v24;
     if ((v8 & 1) == 0)
     {
       goto LABEL_22;
     }
 
-    v20 = [(MOEventStore *)v23 persistEWAMetrics:v24 withData:v25];
+    v20 = [(MOEventStore *)selfCopy persistEWAMetrics:v24 withData:v25];
     obj = _mo_log_facility_get_os_log(&MOLogFacilityEventStore);
     v21 = os_log_type_enabled(obj, OS_LOG_TYPE_INFO);
     if (v20)
@@ -2117,13 +2117,13 @@ LABEL_22:
 LABEL_24:
 }
 
-- (void)_deleteEWAForExpiredEvents:(id)a3
+- (void)_deleteEWAForExpiredEvents:(id)events
 {
-  v39 = a3;
-  v41 = self;
-  v40 = [(MOEventStore *)self getEWAPlistFileURL];
-  v4 = v40;
-  if (!v40)
+  eventsCopy = events;
+  selfCopy = self;
+  getEWAPlistFileURL = [(MOEventStore *)self getEWAPlistFileURL];
+  v4 = getEWAPlistFileURL;
+  if (!getEWAPlistFileURL)
   {
     goto LABEL_51;
   }
@@ -2144,7 +2144,7 @@ LABEL_24:
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = v39;
+  obj = eventsCopy;
   v44 = [obj countByEnumeratingWithState:&v64 objects:v75 count:16];
   if (!v44)
   {
@@ -2166,12 +2166,12 @@ LABEL_24:
       v61 = 0u;
       v62 = 0u;
       v63 = 0u;
-      v7 = [v47 allKeys];
-      v8 = [v7 countByEnumeratingWithState:&v60 objects:v74 count:16];
+      allKeys = [v47 allKeys];
+      v8 = [allKeys countByEnumeratingWithState:&v60 objects:v74 count:16];
       if (v8)
       {
         v9 = *v61;
-        v48 = v7;
+        v48 = allKeys;
         do
         {
           for (j = 0; j != v8; j = j + 1)
@@ -2184,15 +2184,15 @@ LABEL_24:
             v11 = *(*(&v60 + 1) + 8 * j);
             if (([v11 hasPrefix:@"MOEventCategoryWorkout"] & 1) == 0)
             {
-              v12 = [v6 category];
-              if ([v12 integerValue] == 16)
+              category = [v6 category];
+              if ([category integerValue] == 16)
               {
               }
 
               else
               {
-                v13 = [v6 category];
-                v14 = [v13 integerValue] == 10;
+                category2 = [v6 category];
+                v14 = [category2 integerValue] == 10;
 
                 if (!v14)
                 {
@@ -2205,10 +2205,10 @@ LABEL_24:
 
               if (v16)
               {
-                v17 = [v6 eventIdentifier];
-                v18 = [v17 UUIDString];
+                eventIdentifier = [v6 eventIdentifier];
+                uUIDString = [eventIdentifier UUIDString];
                 v19 = [v15 objectForKeyedSubscript:@"EWAEventUUID"];
-                v20 = [v18 isEqualToString:v19];
+                v20 = [uUIDString isEqualToString:v19];
 
                 if (v20)
                 {
@@ -2219,7 +2219,7 @@ LABEL_24:
             }
           }
 
-          v7 = v48;
+          allKeys = v48;
           v8 = [v48 countByEnumeratingWithState:&v60 objects:v74 count:16];
         }
 
@@ -2238,8 +2238,8 @@ LABEL_25:
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v21 = [v47 allKeys];
-  v22 = [v21 countByEnumeratingWithState:&v56 objects:v73 count:16];
+  allKeys2 = [v47 allKeys];
+  v22 = [allKeys2 countByEnumeratingWithState:&v56 objects:v73 count:16];
   if (v22)
   {
     v23 = *v57;
@@ -2249,7 +2249,7 @@ LABEL_25:
       {
         if (*v57 != v23)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(allKeys2);
         }
 
         v25 = *(*(&v56 + 1) + 8 * k);
@@ -2282,13 +2282,13 @@ LABEL_25:
               v53 = v25;
               v55 = &v68;
               v54 = v49;
-              [(MOEventStore *)v41 _checkWorkoutExistsInHealthDB:v35 handler:v51];
+              [(MOEventStore *)selfCopy _checkWorkoutExistsInHealthDB:v35 handler:v51];
             }
           }
         }
       }
 
-      v22 = [v21 countByEnumeratingWithState:&v56 objects:v73 count:16];
+      v22 = [allKeys2 countByEnumeratingWithState:&v56 objects:v73 count:16];
     }
 
     while (v22);
@@ -2305,7 +2305,7 @@ LABEL_25:
 
   if (*(v69 + 24) == 1)
   {
-    if ([(MOEventStore *)v41 persistEWAMetrics:v40 withData:v46])
+    if ([(MOEventStore *)selfCopy persistEWAMetrics:getEWAPlistFileURL withData:v46])
     {
       v37 = _mo_log_facility_get_os_log(&MOLogFacilityEventStore);
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
@@ -2333,7 +2333,7 @@ LABEL_47:
   v5 = v47;
 LABEL_50:
 
-  v4 = v40;
+  v4 = getEWAPlistFileURL;
 LABEL_51:
 }
 
@@ -2355,22 +2355,22 @@ void __43__MOEventStore__deleteEWAForExpiredEvents___block_invoke(uint64_t a1, c
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (void)purgeVisitEventsBeforeDate:(id)a3 WithCompletionHandler:(id)a4
+- (void)purgeVisitEventsBeforeDate:(id)date WithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MOEventStore *)self persistenceManager];
+  dateCopy = date;
+  handlerCopy = handler;
+  persistenceManager = [(MOEventStore *)self persistenceManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __65__MOEventStore_purgeVisitEventsBeforeDate_WithCompletionHandler___block_invoke;
   v12[3] = &unk_100338450;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
+  v13 = dateCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
   v16 = a2;
-  v10 = v8;
-  v11 = v7;
-  [v9 performBlockAndWait:v12];
+  v10 = handlerCopy;
+  v11 = dateCopy;
+  [persistenceManager performBlockAndWait:v12];
 }
 
 void __65__MOEventStore_purgeVisitEventsBeforeDate_WithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2550,18 +2550,18 @@ LABEL_17:
   }
 }
 
-- (void)fetchAllEventsWithCompletionHandler:(id)a3
+- (void)fetchAllEventsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(MOEventStore *)self persistenceManager];
+  handlerCopy = handler;
+  persistenceManager = [(MOEventStore *)self persistenceManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __52__MOEventStore_fetchAllEventsWithCompletionHandler___block_invoke;
   v8[3] = &unk_100338388;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
-  v7 = v5;
-  [v6 performBlockAndWait:v8];
+  v7 = handlerCopy;
+  [persistenceManager performBlockAndWait:v8];
 }
 
 void __52__MOEventStore_fetchAllEventsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2641,32 +2641,32 @@ void __52__MOEventStore_fetchAllEventsWithCompletionHandler___block_invoke(uint6
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchLastEventOfCategory:(unint64_t)a3 CompletionHandler:(id)a4
+- (void)fetchLastEventOfCategory:(unint64_t)category CompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [NSSet alloc];
-  v8 = [NSNumber numberWithUnsignedInteger:a3];
+  v8 = [NSNumber numberWithUnsignedInteger:category];
   v9 = [v7 initWithObjects:{v8, 0}];
 
-  [(MOEventStore *)self fetchLastEventOfCategories:v9 CompletionHandler:v6];
+  [(MOEventStore *)self fetchLastEventOfCategories:v9 CompletionHandler:handlerCopy];
 }
 
-- (void)fetchLastEventOfCategories:(id)a3 isHighConfidenceOnly:(BOOL)a4 CompletionHandler:(id)a5
+- (void)fetchLastEventOfCategories:(id)categories isHighConfidenceOnly:(BOOL)only CompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(MOEventStore *)self persistenceManager];
+  categoriesCopy = categories;
+  handlerCopy = handler;
+  persistenceManager = [(MOEventStore *)self persistenceManager];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __82__MOEventStore_fetchLastEventOfCategories_isHighConfidenceOnly_CompletionHandler___block_invoke;
   v14[3] = &unk_100338478;
-  v18 = a4;
-  v16 = v10;
+  onlyCopy = only;
+  v16 = handlerCopy;
   v17 = a2;
-  v15 = v9;
-  v12 = v10;
-  v13 = v9;
-  [v11 performBlockAndWait:v14];
+  v15 = categoriesCopy;
+  v12 = handlerCopy;
+  v13 = categoriesCopy;
+  [persistenceManager performBlockAndWait:v14];
 }
 
 void __82__MOEventStore_fetchLastEventOfCategories_isHighConfidenceOnly_CompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2723,22 +2723,22 @@ void __82__MOEventStore_fetchLastEventOfCategories_isHighConfidenceOnly_Completi
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchEventsWithStartDateAfter:(id)a3 Category:(unint64_t)a4 CompletionHandler:(id)a5
+- (void)fetchEventsWithStartDateAfter:(id)after Category:(unint64_t)category CompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(MOEventStore *)self persistenceManager];
+  afterCopy = after;
+  handlerCopy = handler;
+  persistenceManager = [(MOEventStore *)self persistenceManager];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __73__MOEventStore_fetchEventsWithStartDateAfter_Category_CompletionHandler___block_invoke;
   v14[3] = &unk_1003384A0;
-  v17 = a4;
+  categoryCopy = category;
   v18 = a2;
-  v15 = v9;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
-  [v11 performBlockAndWait:v14];
+  v15 = afterCopy;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = afterCopy;
+  [persistenceManager performBlockAndWait:v14];
 }
 
 void __73__MOEventStore_fetchEventsWithStartDateAfter_Category_CompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2822,21 +2822,21 @@ void __73__MOEventStore_fetchEventsWithStartDateAfter_Category_CompletionHandler
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchEventsWithOptions:(id)a3 CompletionHandler:(id)a4
+- (void)fetchEventsWithOptions:(id)options CompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MOEventStore *)self persistenceManager];
+  optionsCopy = options;
+  handlerCopy = handler;
+  persistenceManager = [(MOEventStore *)self persistenceManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __57__MOEventStore_fetchEventsWithOptions_CompletionHandler___block_invoke;
   v12[3] = &unk_100338360;
-  v14 = v8;
+  v14 = handlerCopy;
   v15 = a2;
-  v13 = v7;
-  v10 = v8;
-  v11 = v7;
-  [v9 performBlockAndWait:v12];
+  v13 = optionsCopy;
+  v10 = handlerCopy;
+  v11 = optionsCopy;
+  [persistenceManager performBlockAndWait:v12];
 }
 
 void __57__MOEventStore_fetchEventsWithOptions_CompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2982,21 +2982,21 @@ void __57__MOEventStore_fetchEventsWithOptions_CompletionHandler___block_invoke(
   }
 }
 
-- (void)fetchAnalyticsEventsWithOptions:(id)a3 CompletionHandler:(id)a4
+- (void)fetchAnalyticsEventsWithOptions:(id)options CompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MOEventStore *)self persistenceManager];
+  optionsCopy = options;
+  handlerCopy = handler;
+  persistenceManager = [(MOEventStore *)self persistenceManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __66__MOEventStore_fetchAnalyticsEventsWithOptions_CompletionHandler___block_invoke;
   v12[3] = &unk_100338360;
-  v14 = v8;
+  v14 = handlerCopy;
   v15 = a2;
-  v13 = v7;
-  v10 = v8;
-  v11 = v7;
-  [v9 performBlockAndWait:v12];
+  v13 = optionsCopy;
+  v10 = handlerCopy;
+  v11 = optionsCopy;
+  [persistenceManager performBlockAndWait:v12];
 }
 
 void __66__MOEventStore_fetchAnalyticsEventsWithOptions_CompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3163,12 +3163,12 @@ void __66__MOEventStore_fetchAnalyticsEventsWithOptions_CompletionHandler___bloc
   return v4;
 }
 
-- (id)_readEWAPlistFilePrivate:(id)a3
+- (id)_readEWAPlistFilePrivate:(id)private
 {
-  v3 = a3;
+  privateCopy = private;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  path = [privateCopy path];
+  v6 = [v4 fileExistsAtPath:path];
 
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityStreamingPatternDetection);
   v8 = v7;
@@ -3180,7 +3180,7 @@ void __66__MOEventStore_fetchAnalyticsEventsWithOptions_CompletionHandler___bloc
     }
 
     v15 = 0;
-    v9 = [[NSDictionary alloc] initWithContentsOfURL:v3 error:&v15];
+    v9 = [[NSDictionary alloc] initWithContentsOfURL:privateCopy error:&v15];
     v10 = v15;
     if (v10)
     {
@@ -3213,25 +3213,25 @@ void __66__MOEventStore_fetchAnalyticsEventsWithOptions_CompletionHandler___bloc
   return v12;
 }
 
-- (id)readEWAPlistFile:(id)a3
+- (id)readEWAPlistFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__15;
   v16 = __Block_byref_object_dispose__15;
   v17 = 0;
-  v5 = [(MOEventStore *)self queue];
+  queue = [(MOEventStore *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __33__MOEventStore_readEWAPlistFile___block_invoke;
   block[3] = &unk_1003384C8;
-  v10 = v4;
+  v10 = fileCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = fileCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -3249,13 +3249,13 @@ uint64_t __33__MOEventStore_readEWAPlistFile___block_invoke(uint64_t a1)
   return _objc_release_x1();
 }
 
-- (BOOL)_persistEWAMetricsPrivate:(id)a3 withData:(id)a4
+- (BOOL)_persistEWAMetricsPrivate:(id)private withData:(id)data
 {
-  v5 = a3;
-  if (v5)
+  privateCopy = private;
+  if (privateCopy)
   {
     v17 = 0;
-    v6 = [NSPropertyListSerialization dataWithPropertyList:a4 format:100 options:0 error:&v17];
+    v6 = [NSPropertyListSerialization dataWithPropertyList:data format:100 options:0 error:&v17];
     v7 = v17;
     if (v6)
     {
@@ -3270,7 +3270,7 @@ uint64_t __33__MOEventStore_readEWAPlistFile___block_invoke(uint64_t a1)
     if (v8)
     {
       v16 = 0;
-      v12 = [v6 writeToURL:v5 options:805306369 error:&v16];
+      v12 = [v6 writeToURL:privateCopy options:805306369 error:&v16];
       v9 = v16;
       v13 = _mo_log_facility_get_os_log(&MOLogFacilityStreamingPatternDetection);
       v10 = v13;
@@ -3321,30 +3321,30 @@ LABEL_20:
   return v11;
 }
 
-- (BOOL)persistEWAMetrics:(id)a3 withData:(id)a4
+- (BOOL)persistEWAMetrics:(id)metrics withData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  metricsCopy = metrics;
+  dataCopy = data;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(MOEventStore *)self queue];
+  queue = [(MOEventStore *)self queue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __43__MOEventStore_persistEWAMetrics_withData___block_invoke;
   v12[3] = &unk_1003384F0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = metricsCopy;
+  v14 = dataCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v12);
+  v9 = dataCopy;
+  v10 = metricsCopy;
+  dispatch_sync(queue, v12);
 
-  LOBYTE(v7) = *(v17 + 24);
+  LOBYTE(dataCopy) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
-  return v7;
+  return dataCopy;
 }
 
 id __43__MOEventStore_persistEWAMetrics_withData___block_invoke(uint64_t a1)

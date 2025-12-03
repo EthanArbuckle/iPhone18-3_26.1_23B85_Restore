@@ -1,24 +1,24 @@
 @interface NTKImagesPlistScrubbingOperation
-- (BOOL)scrubAssetAtURL:(id)a3 toDestinationURL:(id)a4 error:(id *)a5;
+- (BOOL)scrubAssetAtURL:(id)l toDestinationURL:(id)rL error:(id *)error;
 @end
 
 @implementation NTKImagesPlistScrubbingOperation
 
-- (BOOL)scrubAssetAtURL:(id)a3 toDestinationURL:(id)a4 error:(id *)a5
+- (BOOL)scrubAssetAtURL:(id)l toDestinationURL:(id)rL error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 URLByDeletingLastPathComponent];
-  v10 = [v9 path];
-  v11 = [(NTKBasePhotoResourcesManifest *)NTKPhotosFaceResourcesManifest manifestForResourceDirectory:v10];
+  lCopy = l;
+  rLCopy = rL;
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  path = [uRLByDeletingLastPathComponent path];
+  v11 = [(NTKBasePhotoResourcesManifest *)NTKPhotosFaceResourcesManifest manifestForResourceDirectory:path];
 
   if (!v11)
   {
-    if (a5)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.nanotimekit.resourceDirectory" code:2003 userInfo:0];
-      *a5 = v28 = 0;
+      *error = v28 = 0;
     }
 
     else
@@ -30,13 +30,13 @@
   }
 
   v32 = v11;
-  v12 = [v11 imageList];
-  v33 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v12, "count")}];
+  imageList = [v11 imageList];
+  v33 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(imageList, "count")}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v13 = v12;
+  v13 = imageList;
   v14 = [v13 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (!v14)
   {
@@ -45,7 +45,7 @@
   }
 
   v15 = v14;
-  v31 = a5;
+  errorCopy = error;
   v16 = 0;
   v17 = *v35;
   do
@@ -92,22 +92,22 @@ LABEL_11:
 
   while (v23);
 
-  a5 = v31;
+  error = errorCopy;
   if (v16)
   {
     v24 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v39 = v7;
+      v39 = lCopy;
       _os_log_impl(&dword_22D9C5000, v24, OS_LOG_TYPE_INFO, "[Resource Scrubber]: Extra analysis data found in plist: '%@'. Will scrub.", buf, 0xCu);
     }
 
     v11 = v32;
-    v25 = [v32 assetCollectionIdentifier];
-    v26 = [v8 URLByDeletingLastPathComponent];
-    v27 = [v26 path];
-    v28 = NTKPhotosWriteImageListForAssetCollection(v33, v25, v27);
+    assetCollectionIdentifier = [v32 assetCollectionIdentifier];
+    uRLByDeletingLastPathComponent2 = [rLCopy URLByDeletingLastPathComponent];
+    path2 = [uRLByDeletingLastPathComponent2 path];
+    v28 = NTKPhotosWriteImageListForAssetCollection(v33, assetCollectionIdentifier, path2);
 
     goto LABEL_25;
   }
@@ -117,12 +117,12 @@ LABEL_22:
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v39 = v7;
+    v39 = lCopy;
     _os_log_impl(&dword_22D9C5000, v29, OS_LOG_TYPE_INFO, "[Resource Scrubber]: Extra analysis data not found in plist: '%@'. Passing through", buf, 0xCu);
   }
 
-  v25 = [MEMORY[0x277CCAA00] defaultManager];
-  v28 = [v25 copyItemAtURL:v7 toURL:v8 error:a5];
+  assetCollectionIdentifier = [MEMORY[0x277CCAA00] defaultManager];
+  v28 = [assetCollectionIdentifier copyItemAtURL:lCopy toURL:rLCopy error:error];
   v11 = v32;
 LABEL_25:
 

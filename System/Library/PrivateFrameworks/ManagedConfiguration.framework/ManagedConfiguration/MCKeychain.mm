@@ -1,51 +1,51 @@
 @interface MCKeychain
-+ (BOOL)itemExistsInKeychain:(void *)a3 useSystemKeychain:(BOOL)a4 enforcePersonalPersona:(BOOL)a5;
-+ (BOOL)setData:(id)a3 forService:(id)a4 account:(id)a5 label:(id)a6 description:(id)a7 access:(void *)a8 group:(id)a9 useSystemKeychain:(BOOL)a10 sysBound:(BOOL)a11 enforcePersonalPersona:(BOOL)a12 outError:(id *)a13;
-+ (BOOL)setData:(id)a3 forService:(id)a4 account:(id)a5 label:(id)a6 description:(id)a7 access:(void *)a8 group:(id)a9 useSystemKeychain:(BOOL)a10 sysBound:(BOOL)a11 outError:(id *)a12;
-+ (BOOL)setString:(id)a3 forService:(id)a4 account:(id)a5 label:(id)a6 description:(id)a7 access:(void *)a8 group:(id)a9 useSystemKeychain:(BOOL)a10 sysBound:(BOOL)a11 outError:(id *)a12;
-+ (__CFDictionary)_newQueryWithService:(id)a3 account:(id)a4 label:(id)a5 description:(id)a6 group:(id)a7 useSystemKeychain:(BOOL)a8 outError:(id *)a9;
-+ (id)canonicalPersistentReferenceForItemWithPersistentReference:(id)a3 inSystemKeychain:(BOOL)a4;
-+ (id)saveItem:(void *)a3 withLabel:(id)a4 group:(id)a5 useSystemKeychain:(BOOL)a6 enforcePersonalPersona:(BOOL)a7 accessibility:(__CFString *)a8;
-+ (void)copyItemWithPersistentID:(id)a3 useSystemKeychain:(BOOL)a4 enforcePersonalPersona:(BOOL)a5;
-+ (void)removeItemWithPersistentID:(id)a3 useSystemKeychain:(BOOL)a4 enforcePersonalPersona:(BOOL)a5;
++ (BOOL)itemExistsInKeychain:(void *)keychain useSystemKeychain:(BOOL)systemKeychain enforcePersonalPersona:(BOOL)persona;
++ (BOOL)setData:(id)data forService:(id)service account:(id)account label:(id)label description:(id)description access:(void *)access group:(id)group useSystemKeychain:(BOOL)self0 sysBound:(BOOL)self1 enforcePersonalPersona:(BOOL)self2 outError:(id *)self3;
++ (BOOL)setData:(id)data forService:(id)service account:(id)account label:(id)label description:(id)description access:(void *)access group:(id)group useSystemKeychain:(BOOL)self0 sysBound:(BOOL)self1 outError:(id *)self2;
++ (BOOL)setString:(id)string forService:(id)service account:(id)account label:(id)label description:(id)description access:(void *)access group:(id)group useSystemKeychain:(BOOL)self0 sysBound:(BOOL)self1 outError:(id *)self2;
++ (__CFDictionary)_newQueryWithService:(id)service account:(id)account label:(id)label description:(id)description group:(id)group useSystemKeychain:(BOOL)keychain outError:(id *)error;
++ (id)canonicalPersistentReferenceForItemWithPersistentReference:(id)reference inSystemKeychain:(BOOL)keychain;
++ (id)saveItem:(void *)item withLabel:(id)label group:(id)group useSystemKeychain:(BOOL)keychain enforcePersonalPersona:(BOOL)persona accessibility:(__CFString *)accessibility;
++ (void)copyItemWithPersistentID:(id)d useSystemKeychain:(BOOL)keychain enforcePersonalPersona:(BOOL)persona;
++ (void)removeItemWithPersistentID:(id)d useSystemKeychain:(BOOL)keychain enforcePersonalPersona:(BOOL)persona;
 @end
 
 @implementation MCKeychain
 
-+ (__CFDictionary)_newQueryWithService:(id)a3 account:(id)a4 label:(id)a5 description:(id)a6 group:(id)a7 useSystemKeychain:(BOOL)a8 outError:(id *)a9
++ (__CFDictionary)_newQueryWithService:(id)service account:(id)account label:(id)label description:(id)description group:(id)group useSystemKeychain:(BOOL)keychain outError:(id *)error
 {
-  v9 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if ([v14 length])
+  keychainCopy = keychain;
+  serviceCopy = service;
+  accountCopy = account;
+  labelCopy = label;
+  descriptionCopy = description;
+  groupCopy = group;
+  if ([serviceCopy length])
   {
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, 0);
     CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AFF8], *MEMORY[0x1E697B008]);
-    CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AE88], v14);
-    if ([v15 length])
+    CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AE88], serviceCopy);
+    if ([accountCopy length])
     {
-      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC30], v15);
+      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC30], accountCopy);
     }
 
-    if ([v16 length])
+    if ([labelCopy length])
     {
-      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ADC8], v16);
+      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ADC8], labelCopy);
     }
 
-    if ([v17 length])
+    if ([descriptionCopy length])
     {
-      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ACE0], v17);
+      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ACE0], descriptionCopy);
     }
 
-    if ([v18 length])
+    if ([groupCopy length])
     {
-      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ABD0], v18);
+      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ABD0], groupCopy);
     }
 
-    if (v9)
+    if (keychainCopy)
     {
       CFDictionaryAddValue(Mutable, *MEMORY[0x1E697B3A8], MEMORY[0x1E695E118]);
     }
@@ -53,11 +53,11 @@
 
   else
   {
-    if (a9)
+    if (error)
     {
       v27 = MEMORY[0x1E696ABC0];
       v28 = MCErrorArray(@"KEYCHAIN_ERROR_CANNOT_CREATE_QUERY", v19, v20, v21, v22, v23, v24, v25, 0);
-      *a9 = [v27 MCErrorWithDomain:@"MCKeychainErrorDomain" code:6002 descriptionArray:v28 errorType:@"MCFatalError"];
+      *error = [v27 MCErrorWithDomain:@"MCKeychainErrorDomain" code:6002 descriptionArray:v28 errorType:@"MCFatalError"];
     }
 
     Mutable = 0;
@@ -66,52 +66,52 @@
   return Mutable;
 }
 
-+ (BOOL)setString:(id)a3 forService:(id)a4 account:(id)a5 label:(id)a6 description:(id)a7 access:(void *)a8 group:(id)a9 useSystemKeychain:(BOOL)a10 sysBound:(BOOL)a11 outError:(id *)a12
++ (BOOL)setString:(id)string forService:(id)service account:(id)account label:(id)label description:(id)description access:(void *)access group:(id)group useSystemKeychain:(BOOL)self0 sysBound:(BOOL)self1 outError:(id *)self2
 {
-  v17 = a9;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = [a3 dataUsingEncoding:4];
-  LOWORD(v25) = __PAIR16__(a11, a10);
-  v23 = [MCKeychain setData:v22 forService:v21 account:v20 label:v19 description:v18 access:a8 group:v17 useSystemKeychain:v25 sysBound:a12 outError:?];
+  groupCopy = group;
+  descriptionCopy = description;
+  labelCopy = label;
+  accountCopy = account;
+  serviceCopy = service;
+  v22 = [string dataUsingEncoding:4];
+  LOWORD(v25) = __PAIR16__(bound, keychain);
+  v23 = [MCKeychain setData:v22 forService:serviceCopy account:accountCopy label:labelCopy description:descriptionCopy access:access group:groupCopy useSystemKeychain:v25 sysBound:error outError:?];
 
   return v23;
 }
 
-+ (BOOL)setData:(id)a3 forService:(id)a4 account:(id)a5 label:(id)a6 description:(id)a7 access:(void *)a8 group:(id)a9 useSystemKeychain:(BOOL)a10 sysBound:(BOOL)a11 outError:(id *)a12
++ (BOOL)setData:(id)data forService:(id)service account:(id)account label:(id)label description:(id)description access:(void *)access group:(id)group useSystemKeychain:(BOOL)self0 sysBound:(BOOL)self1 outError:(id *)self2
 {
   v17 = MEMORY[0x1E69AD428];
-  v18 = a9;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
-  v24 = [v17 sharedConfiguration];
-  v25 = [v24 personaID];
-  BYTE2(v28) = v25 != 0;
-  LOWORD(v28) = __PAIR16__(a11, a10);
-  v26 = [MCKeychain setData:"setData:forService:account:label:description:access:group:useSystemKeychain:sysBound:enforcePersonalPersona:outError:" forService:v23 account:v22 label:v21 description:v20 access:v19 group:a8 useSystemKeychain:v18 sysBound:v28 enforcePersonalPersona:a12 outError:?];
+  groupCopy = group;
+  descriptionCopy = description;
+  labelCopy = label;
+  accountCopy = account;
+  serviceCopy = service;
+  dataCopy = data;
+  sharedConfiguration = [v17 sharedConfiguration];
+  personaID = [sharedConfiguration personaID];
+  BYTE2(v28) = personaID != 0;
+  LOWORD(v28) = __PAIR16__(bound, keychain);
+  v26 = [MCKeychain setData:"setData:forService:account:label:description:access:group:useSystemKeychain:sysBound:enforcePersonalPersona:outError:" forService:dataCopy account:serviceCopy label:accountCopy description:labelCopy access:descriptionCopy group:access useSystemKeychain:groupCopy sysBound:v28 enforcePersonalPersona:error outError:?];
 
   return v26;
 }
 
-+ (BOOL)setData:(id)a3 forService:(id)a4 account:(id)a5 label:(id)a6 description:(id)a7 access:(void *)a8 group:(id)a9 useSystemKeychain:(BOOL)a10 sysBound:(BOOL)a11 enforcePersonalPersona:(BOOL)a12 outError:(id *)a13
++ (BOOL)setData:(id)data forService:(id)service account:(id)account label:(id)label description:(id)description access:(void *)access group:(id)group useSystemKeychain:(BOOL)self0 sysBound:(BOOL)self1 enforcePersonalPersona:(BOOL)self2 outError:(id *)self3
 {
   v74 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a9;
-  v59 = v19;
-  if ([v18 length])
+  dataCopy = data;
+  serviceCopy = service;
+  accountCopy = account;
+  labelCopy = label;
+  descriptionCopy = description;
+  groupCopy = group;
+  v59 = serviceCopy;
+  if ([dataCopy length])
   {
     v66 = 0;
-    v31 = [MCKeychain _newQueryWithService:v19 account:v20 label:v21 description:v22 group:v23 useSystemKeychain:a10 outError:&v66];
+    v31 = [MCKeychain _newQueryWithService:serviceCopy account:accountCopy label:labelCopy description:descriptionCopy group:groupCopy useSystemKeychain:keychain outError:&v66];
     v32 = v66;
     if (v32)
     {
@@ -124,8 +124,8 @@
       goto LABEL_17;
     }
 
-    LOBYTE(v58) = a12;
-    v36 = [MCKeychain dataFromService:v19 account:v20 label:v21 description:v22 group:v23 useSystemKeychain:a10 enforcePersonalPersona:v58 outError:0];
+    LOBYTE(v58) = persona;
+    v36 = [MCKeychain dataFromService:serviceCopy account:accountCopy label:labelCopy description:descriptionCopy group:groupCopy useSystemKeychain:keychain enforcePersonalPersona:v58 outError:0];
     *&v71 = 0;
     *(&v71 + 1) = &v71;
     v72 = 0x2020000000;
@@ -136,13 +136,13 @@
     v60[3] = &unk_1E77CFEF8;
     v37 = v36;
     v61 = v37;
-    v62 = v18;
+    v62 = dataCopy;
     v63 = &v71;
-    v64 = a8;
+    accessCopy = access;
     v65 = v31;
     v38 = MEMORY[0x1AC55F990](v60);
     v39 = v38;
-    if (a12)
+    if (persona)
     {
       v33 = [MEMORY[0x1E6999808] performBlockUnderPersonalPersona:v38];
     }
@@ -197,19 +197,19 @@
   }
 
 LABEL_17:
-  if (a13)
+  if (error)
   {
     v51 = v33;
-    *a13 = v33;
+    *error = v33;
   }
 
   v52 = _MCLogObjects;
   if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
   {
     v53 = v52;
-    v54 = [v33 MCVerboseDescription];
+    mCVerboseDescription = [v33 MCVerboseDescription];
     LODWORD(v71) = 138543362;
-    *(&v71 + 4) = v54;
+    *(&v71 + 4) = mCVerboseDescription;
     _os_log_impl(&dword_1A795B000, v53, OS_LOG_TYPE_ERROR, "Failed to set data in keychain. Error: %{public}@", &v71, 0xCu);
   }
 
@@ -258,21 +258,21 @@ uint64_t __112__MCKeychain_dataFromService_account_label_description_group_useSy
   return result;
 }
 
-+ (void)copyItemWithPersistentID:(id)a3 useSystemKeychain:(BOOL)a4 enforcePersonalPersona:(BOOL)a5
++ (void)copyItemWithPersistentID:(id)d useSystemKeychain:(BOOL)keychain enforcePersonalPersona:(BOOL)persona
 {
-  v5 = a5;
-  v6 = a4;
+  personaCopy = persona;
+  keychainCopy = keychain;
   v37[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  dCopy = d;
   v8 = *MEMORY[0x1E697B328];
   v36[0] = *MEMORY[0x1E697B3C8];
   v36[1] = v8;
-  v37[0] = v7;
+  v37[0] = dCopy;
   v37[1] = MEMORY[0x1E695E118];
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
   v10 = [v9 mutableCopy];
 
-  if (v6)
+  if (keychainCopy)
   {
     [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
   }
@@ -285,7 +285,7 @@ uint64_t __112__MCKeychain_dataFromService_account_label_description_group_useSy
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  if (!v5)
+  if (!personaCopy)
   {
     v14 = SecItemCopyMatching(v10, &v31);
     *(v25 + 6) = v14;
@@ -312,9 +312,9 @@ LABEL_10:
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138543618;
-        v33 = v7;
+        v33 = dCopy;
         v34 = 1024;
-        LODWORD(v35) = v6;
+        LODWORD(v35) = keychainCopy;
         _os_log_impl(&dword_1A795B000, v17, OS_LOG_TYPE_DEBUG, "Couldn't get item with ID: %{public}@ system keychain: %d", buf, 0x12u);
       }
     }
@@ -325,7 +325,7 @@ LABEL_10:
       if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v33 = v7;
+        v33 = dCopy;
         _os_log_impl(&dword_1A795B000, v15, OS_LOG_TYPE_ERROR, "Cannot retrieve item with persistent ID %{public}@", buf, 0xCu);
       }
 
@@ -363,34 +363,34 @@ uint64_t __80__MCKeychain_copyItemWithPersistentID_useSystemKeychain_enforcePers
   return result;
 }
 
-+ (id)saveItem:(void *)a3 withLabel:(id)a4 group:(id)a5 useSystemKeychain:(BOOL)a6 enforcePersonalPersona:(BOOL)a7 accessibility:(__CFString *)a8
++ (id)saveItem:(void *)item withLabel:(id)label group:(id)group useSystemKeychain:(BOOL)keychain enforcePersonalPersona:(BOOL)persona accessibility:(__CFString *)accessibility
 {
-  v9 = a7;
-  v10 = a6;
+  personaCopy = persona;
+  keychainCopy = keychain;
   v52[4] = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
+  labelCopy = label;
+  groupCopy = group;
   v15 = *MEMORY[0x1E697ABD0];
   v51[0] = *MEMORY[0x1E697B3D0];
   v51[1] = v15;
-  v52[0] = a3;
-  v52[1] = v14;
+  v52[0] = item;
+  v52[1] = groupCopy;
   v16 = *MEMORY[0x1E697ABD8];
   v51[2] = *MEMORY[0x1E697B320];
   v51[3] = v16;
   v52[2] = MEMORY[0x1E695E118];
-  v52[3] = a8;
+  v52[3] = accessibility;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v52 forKeys:v51 count:4];
   v18 = [v17 mutableCopy];
 
-  if (v10)
+  if (keychainCopy)
   {
     [v18 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
   }
 
-  if (v13)
+  if (labelCopy)
   {
-    [v18 setObject:v13 forKeyedSubscript:*MEMORY[0x1E697ADC8]];
+    [v18 setObject:labelCopy forKeyedSubscript:*MEMORY[0x1E697ADC8]];
   }
 
   v43 = 0;
@@ -414,7 +414,7 @@ uint64_t __80__MCKeychain_copyItemWithPersistentID_useSystemKeychain_enforcePers
   v33 = v19;
   v20 = MEMORY[0x1AC55F990](&v29);
   v21 = v20;
-  if (v9)
+  if (personaCopy)
   {
     v22 = [MEMORY[0x1E6999808] performBlockUnderPersonalPersona:{v20, v29, v30, v31, v32}];
     if (v22)
@@ -492,21 +492,21 @@ void __94__MCKeychain_saveItem_withLabel_group_useSystemKeychain_enforcePersonal
   }
 }
 
-+ (void)removeItemWithPersistentID:(id)a3 useSystemKeychain:(BOOL)a4 enforcePersonalPersona:(BOOL)a5
++ (void)removeItemWithPersistentID:(id)d useSystemKeychain:(BOOL)keychain enforcePersonalPersona:(BOOL)persona
 {
-  v5 = a5;
-  v6 = a4;
+  personaCopy = persona;
+  keychainCopy = keychain;
   v38[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  dCopy = d;
   v8 = *MEMORY[0x1E697B310];
   v37[0] = *MEMORY[0x1E697B3C8];
   v37[1] = v8;
-  v38[0] = v7;
+  v38[0] = dCopy;
   v38[1] = MEMORY[0x1E695E118];
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:2];
   v10 = [v9 mutableCopy];
 
-  if (v6)
+  if (keychainCopy)
   {
     [v10 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
   }
@@ -527,11 +527,11 @@ void __94__MCKeychain_saveItem_withLabel_group_useSystemKeychain_enforcePersonal
   v24 = v11;
   v26 = v32;
   v27 = &v28;
-  v12 = v7;
+  v12 = dCopy;
   v25 = v12;
   v13 = MEMORY[0x1AC55F990](&v20);
   v14 = v13;
-  if (v5)
+  if (personaCopy)
   {
     v15 = [MEMORY[0x1E6999808] performBlockUnderPersonalPersona:{v13, v20, v21, v22, v23, v24}];
     if (v15)
@@ -604,20 +604,20 @@ void __82__MCKeychain_removeItemWithPersistentID_useSystemKeychain_enforcePerson
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)itemExistsInKeychain:(void *)a3 useSystemKeychain:(BOOL)a4 enforcePersonalPersona:(BOOL)a5
++ (BOOL)itemExistsInKeychain:(void *)keychain useSystemKeychain:(BOOL)systemKeychain enforcePersonalPersona:(BOOL)persona
 {
-  v5 = a5;
-  v6 = a4;
+  personaCopy = persona;
+  systemKeychainCopy = systemKeychain;
   v31[2] = *MEMORY[0x1E69E9840];
   v7 = *MEMORY[0x1E697B320];
   v30[0] = *MEMORY[0x1E697B3D0];
   v30[1] = v7;
-  v31[0] = a3;
+  v31[0] = keychain;
   v31[1] = MEMORY[0x1E695E118];
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
   v9 = [v8 mutableCopy];
 
-  if (v6)
+  if (systemKeychainCopy)
   {
     [v9 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
   }
@@ -627,7 +627,7 @@ void __82__MCKeychain_removeItemWithPersistentID_useSystemKeychain_enforcePerson
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  if (!v5)
+  if (!personaCopy)
   {
     v14 = SecItemCopyMatching(v9, &result);
     *(v22 + 6) = v14;
@@ -681,20 +681,20 @@ uint64_t __76__MCKeychain_itemExistsInKeychain_useSystemKeychain_enforcePersonal
   return result;
 }
 
-+ (id)canonicalPersistentReferenceForItemWithPersistentReference:(id)a3 inSystemKeychain:(BOOL)a4
++ (id)canonicalPersistentReferenceForItemWithPersistentReference:(id)reference inSystemKeychain:(BOOL)keychain
 {
-  v4 = a4;
+  keychainCopy = keychain;
   v28[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  referenceCopy = reference;
   v6 = *MEMORY[0x1E697B320];
   v27[0] = *MEMORY[0x1E697B3C8];
   v27[1] = v6;
-  v28[0] = v5;
+  v28[0] = referenceCopy;
   v28[1] = MEMORY[0x1E695E118];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
   v8 = [v7 mutableCopy];
 
-  if (v4)
+  if (keychainCopy)
   {
     [v8 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B3A8]];
   }
@@ -704,7 +704,7 @@ uint64_t __76__MCKeychain_itemExistsInKeychain_useSystemKeychain_enforcePersonal
   v10 = result;
   if (!v9)
   {
-    v14 = [result isEqualToData:v5];
+    v14 = [result isEqualToData:referenceCopy];
     v15 = _MCLogObjects;
     v16 = os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEFAULT);
     if (v14)
@@ -712,7 +712,7 @@ uint64_t __76__MCKeychain_itemExistsInKeychain_useSystemKeychain_enforcePersonal
       if (v16)
       {
         *buf = 138543362;
-        v24 = v5;
+        v24 = referenceCopy;
         v17 = "Persistent reference %{public}@ is canonical!";
         v18 = v15;
         v19 = 12;
@@ -724,7 +724,7 @@ LABEL_12:
     else if (v16)
     {
       *buf = 138543618;
-      v24 = v5;
+      v24 = referenceCopy;
       v25 = 2114;
       v26 = v10;
       v17 = "Persistent reference %{public}@ has canonical reference %{public}@";
@@ -742,7 +742,7 @@ LABEL_12:
   if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v24 = v5;
+    v24 = referenceCopy;
     v25 = 1024;
     LODWORD(v26) = v11;
     _os_log_impl(&dword_1A795B000, v12, OS_LOG_TYPE_ERROR, "Unable to lookup item with persistent reference: %{public}@. Error: %d", buf, 0x12u);

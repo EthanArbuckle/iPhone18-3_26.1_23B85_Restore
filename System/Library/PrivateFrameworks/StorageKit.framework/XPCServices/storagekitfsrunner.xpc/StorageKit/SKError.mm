@@ -1,18 +1,18 @@
 @interface SKError
-+ (BOOL)failWithError:(id)a3 error:(id *)a4;
-+ (BOOL)failWithSKErrorCode:(int64_t)a3 debugDescription:(id)a4 error:(id *)a5;
-+ (BOOL)failWithSKErrorCode:(int64_t)a3 error:(id *)a4;
++ (BOOL)failWithError:(id)error error:(id *)a4;
++ (BOOL)failWithSKErrorCode:(int64_t)code debugDescription:(id)description error:(id *)error;
++ (BOOL)failWithSKErrorCode:(int64_t)code error:(id *)error;
 + (NSBundle)frameworkBundle;
-+ (id)errorWithCode:(int64_t)a3 debugDescription:(id)a4;
-+ (id)errorWithCode:(int64_t)a3 debugDescription:(id)a4 error:(id *)a5;
-+ (id)errorWithCode:(int64_t)a3 disks:(id)a4 userInfo:(id)a5;
-+ (id)errorWithCode:(int64_t)a3 underlyingError:(id)a4;
-+ (id)errorWithOSStatus:(int)a3 debugDescription:(id)a4 error:(id *)a5;
-+ (id)errorWithPOSIXCode:(int)a3 debugDescription:(id)a4 error:(id *)a5;
-+ (id)localizedDescriptionForCode:(int64_t)a3;
-+ (id)nilWithError:(id)a3 error:(id *)a4;
-+ (id)nilWithSKErrorCode:(int64_t)a3 debugDescription:(id)a4 error:(id *)a5;
-+ (id)nilWithSKErrorCode:(int64_t)a3 error:(id *)a4;
++ (id)errorWithCode:(int64_t)code debugDescription:(id)description;
++ (id)errorWithCode:(int64_t)code debugDescription:(id)description error:(id *)error;
++ (id)errorWithCode:(int64_t)code disks:(id)disks userInfo:(id)info;
++ (id)errorWithCode:(int64_t)code underlyingError:(id)error;
++ (id)errorWithOSStatus:(int)status debugDescription:(id)description error:(id *)error;
++ (id)errorWithPOSIXCode:(int)code debugDescription:(id)description error:(id *)error;
++ (id)localizedDescriptionForCode:(int64_t)code;
++ (id)nilWithError:(id)error error:(id *)a4;
++ (id)nilWithSKErrorCode:(int64_t)code debugDescription:(id)description error:(id *)error;
++ (id)nilWithSKErrorCode:(int64_t)code error:(id *)error;
 @end
 
 @implementation SKError
@@ -29,14 +29,14 @@
   return v3;
 }
 
-+ (id)localizedDescriptionForCode:(int64_t)a3
++ (id)localizedDescriptionForCode:(int64_t)code
 {
-  v4 = [NSString stringWithFormat:@"%ld", a3];
-  v5 = [NSBundle bundleForClass:a1];
-  v6 = [v5 localizedStringForKey:v4 value:0 table:@"SKError"];
+  code = [NSString stringWithFormat:@"%ld", code];
+  v5 = [NSBundle bundleForClass:self];
+  v6 = [v5 localizedStringForKey:code value:0 table:@"SKError"];
 
   v7 = 0;
-  if (([v6 isEqualToString:v4] & 1) == 0)
+  if (([v6 isEqualToString:code] & 1) == 0)
   {
     v7 = v6;
   }
@@ -44,53 +44,53 @@
   return v7;
 }
 
-+ (id)errorWithCode:(int64_t)a3 debugDescription:(id)a4
++ (id)errorWithCode:(int64_t)code debugDescription:(id)description
 {
   v9 = NSDebugDescriptionErrorKey;
-  v10 = a4;
-  v5 = a4;
-  v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  v7 = [SKError errorWithCode:a3 disks:0 userInfo:v6];
+  descriptionCopy = description;
+  descriptionCopy2 = description;
+  v6 = [NSDictionary dictionaryWithObjects:&descriptionCopy forKeys:&v9 count:1];
+  v7 = [SKError errorWithCode:code disks:0 userInfo:v6];
 
   return v7;
 }
 
-+ (id)errorWithCode:(int64_t)a3 debugDescription:(id)a4 error:(id *)a5
++ (id)errorWithCode:(int64_t)code debugDescription:(id)description error:(id *)error
 {
   v12 = NSDebugDescriptionErrorKey;
-  v13 = a4;
-  v7 = a4;
-  v8 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-  v9 = [SKError errorWithCode:a3 disks:0 userInfo:v8];
+  descriptionCopy = description;
+  descriptionCopy2 = description;
+  v8 = [NSDictionary dictionaryWithObjects:&descriptionCopy forKeys:&v12 count:1];
+  v9 = [SKError errorWithCode:code disks:0 userInfo:v8];
 
-  if (a5)
+  if (error)
   {
     v10 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return v9;
 }
 
-+ (id)errorWithCode:(int64_t)a3 underlyingError:(id)a4
++ (id)errorWithCode:(int64_t)code underlyingError:(id)error
 {
   v9 = NSUnderlyingErrorKey;
-  v10 = a4;
-  v5 = a4;
-  v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  v7 = [SKError errorWithCode:a3 userInfo:v6];
+  errorCopy = error;
+  errorCopy2 = error;
+  v6 = [NSDictionary dictionaryWithObjects:&errorCopy forKeys:&v9 count:1];
+  v7 = [SKError errorWithCode:code userInfo:v6];
 
   return v7;
 }
 
-+ (id)errorWithCode:(int64_t)a3 disks:(id)a4 userInfo:(id)a5
++ (id)errorWithCode:(int64_t)code disks:(id)disks userInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  disksCopy = disks;
+  infoCopy = info;
+  if (infoCopy)
   {
-    v10 = v9;
-    v11 = [v9 mutableCopy];
+    v10 = infoCopy;
+    v11 = [infoCopy mutableCopy];
   }
 
   else
@@ -102,29 +102,29 @@
 
   if (!v12)
   {
-    if (v8)
+    if (disksCopy)
     {
       v13 = SKGetOSLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v14 = [a1 localizedDescriptionForCode:a3];
+        v14 = [self localizedDescriptionForCode:code];
         *buf = 136315650;
         v24 = "+[SKError errorWithCode:disks:userInfo:]";
         v25 = 2112;
         v26 = v14;
         v27 = 2112;
-        v28 = v8;
+        v28 = disksCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s: %@ : %@", buf, 0x20u);
       }
 
-      v15 = [a1 localizedDescriptionForCode:a3];
-      v16 = commaSeparatedDiskListFromArray(v8);
+      v15 = [self localizedDescriptionForCode:code];
+      v16 = commaSeparatedDiskListFromArray(disksCopy);
       v17 = [NSString stringWithFormat:@"%@ : %@", v15, v16];
     }
 
     else
     {
-      v17 = [a1 localizedDescriptionForCode:a3];
+      v17 = [self localizedDescriptionForCode:code];
       v20 = [v11 objectForKeyedSubscript:NSDebugDescriptionErrorKey];
 
       v15 = SKGetOSLog();
@@ -160,56 +160,56 @@
     }
   }
 
-  v18 = [NSError errorWithDomain:@"com.apple.StorageKit" code:a3 userInfo:v11];
+  v18 = [NSError errorWithDomain:@"com.apple.StorageKit" code:code userInfo:v11];
 
   return v18;
 }
 
-+ (id)nilWithError:(id)a3 error:(id *)a4
++ (id)nilWithError:(id)error error:(id *)a4
 {
-  v5 = a3;
+  errorCopy = error;
   v6 = SKGetOSLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%@", &v9, 0xCu);
   }
 
   if (a4)
   {
-    v7 = v5;
-    *a4 = v5;
+    v7 = errorCopy;
+    *a4 = errorCopy;
   }
 
   return 0;
 }
 
-+ (BOOL)failWithError:(id)a3 error:(id *)a4
++ (BOOL)failWithError:(id)error error:(id *)a4
 {
-  v5 = a3;
+  errorCopy = error;
   v6 = SKGetOSLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%@", &v9, 0xCu);
   }
 
   if (a4)
   {
-    v7 = v5;
-    *a4 = v5;
+    v7 = errorCopy;
+    *a4 = errorCopy;
   }
 
   return 0;
 }
 
-+ (id)errorWithPOSIXCode:(int)a3 debugDescription:(id)a4 error:(id *)a5
++ (id)errorWithPOSIXCode:(int)code debugDescription:(id)description error:(id *)error
 {
-  v6 = a3;
-  v7 = sub_100002590(a4);
-  v8 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v6 userInfo:v7];
+  codeCopy = code;
+  v7 = sub_100002590(description);
+  v8 = [NSError errorWithDomain:NSPOSIXErrorDomain code:codeCopy userInfo:v7];
 
   v9 = SKGetOSLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -219,33 +219,33 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%@", &v12, 0xCu);
   }
 
-  if (a5)
+  if (error)
   {
     v10 = v8;
-    *a5 = v8;
+    *error = v8;
   }
 
   return v8;
 }
 
-+ (id)errorWithOSStatus:(int)a3 debugDescription:(id)a4 error:(id *)a5
++ (id)errorWithOSStatus:(int)status debugDescription:(id)description error:(id *)error
 {
-  v7 = a4;
-  v8 = v7;
-  if ((a3 - 49152) > 0x6B)
+  descriptionCopy = description;
+  v8 = descriptionCopy;
+  if ((status - 49152) > 0x6B)
   {
     v9 = NSOSStatusErrorDomain;
-    v10 = a3;
+    statusCopy = status;
   }
 
   else
   {
     v9 = NSPOSIXErrorDomain;
-    v10 = a3 & 0x7F;
+    statusCopy = status & 0x7F;
   }
 
-  v11 = sub_100002590(v7);
-  v12 = [NSError errorWithDomain:v9 code:v10 userInfo:v11];
+  v11 = sub_100002590(descriptionCopy);
+  v12 = [NSError errorWithDomain:v9 code:statusCopy userInfo:v11];
 
   v13 = SKGetOSLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -255,47 +255,47 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%@", &v16, 0xCu);
   }
 
-  if (a5)
+  if (error)
   {
     v14 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v12;
 }
 
-+ (id)nilWithSKErrorCode:(int64_t)a3 debugDescription:(id)a4 error:(id *)a5
++ (id)nilWithSKErrorCode:(int64_t)code debugDescription:(id)description error:(id *)error
 {
-  v7 = sub_100002590(a4);
-  v8 = [SKError errorWithCode:a3 userInfo:v7];
-  v9 = [SKError nilWithError:v8 error:a5];
+  v7 = sub_100002590(description);
+  v8 = [SKError errorWithCode:code userInfo:v7];
+  v9 = [SKError nilWithError:v8 error:error];
 
   return v9;
 }
 
-+ (id)nilWithSKErrorCode:(int64_t)a3 error:(id *)a4
++ (id)nilWithSKErrorCode:(int64_t)code error:(id *)error
 {
-  v5 = [SKError errorWithCode:a3 userInfo:0];
-  v6 = [SKError nilWithError:v5 error:a4];
+  v5 = [SKError errorWithCode:code userInfo:0];
+  v6 = [SKError nilWithError:v5 error:error];
 
   return v6;
 }
 
-+ (BOOL)failWithSKErrorCode:(int64_t)a3 debugDescription:(id)a4 error:(id *)a5
++ (BOOL)failWithSKErrorCode:(int64_t)code debugDescription:(id)description error:(id *)error
 {
-  v7 = sub_100002590(a4);
-  v8 = [SKError errorWithCode:a3 userInfo:v7];
-  LOBYTE(a5) = [SKError failWithError:v8 error:a5];
+  v7 = sub_100002590(description);
+  v8 = [SKError errorWithCode:code userInfo:v7];
+  LOBYTE(error) = [SKError failWithError:v8 error:error];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)failWithSKErrorCode:(int64_t)a3 error:(id *)a4
++ (BOOL)failWithSKErrorCode:(int64_t)code error:(id *)error
 {
-  v5 = [SKError errorWithCode:a3 userInfo:0];
-  LOBYTE(a4) = [SKError failWithError:v5 error:a4];
+  v5 = [SKError errorWithCode:code userInfo:0];
+  LOBYTE(error) = [SKError failWithError:v5 error:error];
 
-  return a4;
+  return error;
 }
 
 @end

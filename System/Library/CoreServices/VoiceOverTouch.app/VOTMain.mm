@@ -1,26 +1,26 @@
 @interface VOTMain
-- (VOTMain)initWithArgc:(int)a3 argv:(const char *)a4;
-- (id)_setCommandHelpEnabled:(id)a3;
-- (id)_setHintsEnabled:(id)a3;
-- (id)_setLogMask:(id)a3;
-- (id)_setMuteSound:(id)a3;
-- (id)_setMuteSpeech:(id)a3;
+- (VOTMain)initWithArgc:(int)argc argv:(const char *)argv;
+- (id)_setCommandHelpEnabled:(id)enabled;
+- (id)_setHintsEnabled:(id)enabled;
+- (id)_setLogMask:(id)mask;
+- (id)_setMuteSound:(id)sound;
+- (id)_setMuteSpeech:(id)speech;
 - (int)run;
 - (void)_registerMachServer;
 - (void)dealloc;
-- (void)setKeepAlive:(BOOL)a3;
+- (void)setKeepAlive:(BOOL)alive;
 - (void)stop;
 @end
 
 @implementation VOTMain
 
-- (VOTMain)initWithArgc:(int)a3 argv:(const char *)a4
+- (VOTMain)initWithArgc:(int)argc argv:(const char *)argv
 {
-  v5 = *&a3;
+  v5 = *&argc;
   NSSetUncaughtExceptionHandler(sub_100050604);
   v9.receiver = self;
   v9.super_class = VOTMain;
-  v7 = [(VOTMain *)&v9 initWithArgc:v5 argv:a4];
+  v7 = [(VOTMain *)&v9 initWithArgc:v5 argv:argv];
   signal(15, sub_100003BF0);
   if (v7)
   {
@@ -49,11 +49,11 @@
 - (void)_registerMachServer
 {
   v2 = +[VOTMain processIdentifier];
-  v3 = [v2 UTF8String];
+  uTF8String = [v2 UTF8String];
 
   sp = 0;
-  bootstrap_look_up(bootstrap_port, v3, &sp);
-  if (bootstrap_check_in(bootstrap_port, v3, &sp))
+  bootstrap_look_up(bootstrap_port, uTF8String, &sp);
+  if (bootstrap_check_in(bootstrap_port, uTF8String, &sp))
   {
     _AXLogWithFacility();
   }
@@ -67,7 +67,7 @@
   dispatch_async(v4, block);
 }
 
-- (void)setKeepAlive:(BOOL)a3
+- (void)setKeepAlive:(BOOL)alive
 {
   if (vproc_swap_integer())
   {
@@ -78,7 +78,7 @@
     }
   }
 
-  self->_keepAlive = a3;
+  self->_keepAlive = alive;
 }
 
 - (int)run
@@ -91,9 +91,9 @@
     v4 = VOTLogLifeCycle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(VOTMain *)self appName];
+      appName = [(VOTMain *)self appName];
       *buf = 138543362;
-      v19 = v5;
+      v19 = appName;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "=== Starting %{public}@ ===", buf, 0xCu);
     }
 
@@ -137,9 +137,9 @@
       v13 = VOTLogLifeCycle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [(VOTMain *)self appName];
+        appName2 = [(VOTMain *)self appName];
         *buf = 138543362;
-        v19 = v14;
+        v19 = appName2;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "=== Stopping %{public}@ ===", buf, 0xCu);
       }
     }
@@ -168,43 +168,43 @@
   [VOTSharedWorkspace stop:0];
 }
 
-- (id)_setHintsEnabled:(id)a3
+- (id)_setHintsEnabled:(id)enabled
 {
-  NSLog(@"******** HINTS ENABLED ************", a2, a3);
+  NSLog(@"******** HINTS ENABLED ************", a2, enabled);
   self->_hintsEnabled = 1;
 
   return [NSNumber numberWithBool:1];
 }
 
-- (id)_setMuteSound:(id)a3
+- (id)_setMuteSound:(id)sound
 {
-  NSLog(@"******** SOUND MUTED ************", a2, a3);
+  NSLog(@"******** SOUND MUTED ************", a2, sound);
   self->_muteSound = 1;
 
   return [NSNumber numberWithBool:1];
 }
 
-- (id)_setMuteSpeech:(id)a3
+- (id)_setMuteSpeech:(id)speech
 {
-  NSLog(@"******** SPEECH MUTED ************", a2, a3);
+  NSLog(@"******** SPEECH MUTED ************", a2, speech);
   self->_muteSpeech = 1;
 
   return [NSNumber numberWithBool:1];
 }
 
-- (id)_setLogMask:(id)a3
+- (id)_setLogMask:(id)mask
 {
   self->_logMaskSet = 1;
-  v3 = [a3 componentsSeparatedByString:{@", "}];
+  v3 = [mask componentsSeparatedByString:{@", "}];
   SCRCLogInitializeWithKeys();
   v4 = [NSNumber numberWithBool:1];
 
   return v4;
 }
 
-- (id)_setCommandHelpEnabled:(id)a3
+- (id)_setCommandHelpEnabled:(id)enabled
 {
-  NSLog(@"******** Entering command help only ************", a2, a3);
+  NSLog(@"******** Entering command help only ************", a2, enabled);
   self->_commandHelpEnabled = 1;
 
   return [NSNumber numberWithBool:1];

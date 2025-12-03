@@ -1,12 +1,12 @@
 @interface SSMediaNowPlaying
 + (id)sharedInstance;
-- (BOOL)filterEvent:(id)a3;
+- (BOOL)filterEvent:(id)event;
 - (SSMediaNowPlaying)init;
-- (id)_attributesUpdatesForEvent:(id)a3;
-- (id)_identifierForItemUpdate:(id)a3;
-- (id)_itemUpdateForEvent:(id)a3 itemIdentifier:(id)a4 bundleToUpdate:(id)a5;
+- (id)_attributesUpdatesForEvent:(id)event;
+- (id)_identifierForItemUpdate:(id)update;
+- (id)_itemUpdateForEvent:(id)event itemIdentifier:(id)identifier bundleToUpdate:(id)update;
 - (id)stream;
-- (void)handleEvent:(id)a3;
+- (void)handleEvent:(id)event;
 @end
 
 @implementation SSMediaNowPlaying
@@ -14,10 +14,10 @@
 - (id)stream
 {
   v2 = BiomeLibrary();
-  v3 = [v2 Media];
-  v4 = [v3 NowPlaying];
+  media = [v2 Media];
+  nowPlaying = [media NowPlaying];
 
-  return v4;
+  return nowPlaying;
 }
 
 + (id)sharedInstance
@@ -53,30 +53,30 @@ uint64_t __35__SSMediaNowPlaying_sharedInstance__block_invoke()
   return v3;
 }
 
-- (BOOL)filterEvent:(id)a3
+- (BOOL)filterEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 bundleID];
-  if (!v4)
+  eventCopy = event;
+  bundleID = [eventCopy bundleID];
+  if (!bundleID)
   {
     goto LABEL_5;
   }
 
-  v5 = v4;
-  v6 = [v3 bundleID];
-  v7 = [v6 isEqualToString:@"com.apple.Music"];
+  v5 = bundleID;
+  bundleID2 = [eventCopy bundleID];
+  v7 = [bundleID2 isEqualToString:@"com.apple.Music"];
 
   if (!v7)
   {
     goto LABEL_5;
   }
 
-  v8 = [v3 iTunesStoreIdentifier];
-  v9 = [v8 length];
+  iTunesStoreIdentifier = [eventCopy iTunesStoreIdentifier];
+  v9 = [iTunesStoreIdentifier length];
 
   if (v9)
   {
-    v10 = [v3 playbackState] != 1;
+    v10 = [eventCopy playbackState] != 1;
   }
 
   else
@@ -88,27 +88,27 @@ LABEL_5:
   return v10;
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = eventCopy;
     if (![(SSMediaNowPlaying *)self filterEvent:v5])
     {
-      v6 = [v5 iTunesStoreIdentifier];
-      v7 = SSRedactString(v6, 1);
+      iTunesStoreIdentifier = [v5 iTunesStoreIdentifier];
+      v7 = SSRedactString(iTunesStoreIdentifier, 1);
 
       if (v7)
       {
         v8 = SSGeneralLog();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [(SSBaseConsumer *)self identifier];
+          identifier = [(SSBaseConsumer *)self identifier];
           *buf = 138412546;
-          v19 = v9;
+          v19 = identifier;
           v20 = 2112;
           v21 = v7;
           _os_log_impl(&dword_1D9F69000, v8, OS_LOG_TYPE_DEFAULT, "%@: processing event media nowplaying: %@", buf, 0x16u);
@@ -135,53 +135,53 @@ LABEL_5:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_identifierForItemUpdate:(id)a3
+- (id)_identifierForItemUpdate:(id)update
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 iTunesStoreIdentifier];
+  updateCopy = update;
+  iTunesStoreIdentifier = [updateCopy iTunesStoreIdentifier];
 
-  if (v5)
+  if (iTunesStoreIdentifier)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = *MEMORY[0x1E6963BC8];
-    v8 = [v4 iTunesStoreIdentifier];
-    v9 = [v6 stringWithFormat:@"%@=%@", v7, v8];
+    iTunesStoreIdentifier2 = [updateCopy iTunesStoreIdentifier];
+    v9 = [v6 stringWithFormat:@"%@=%@", v7, iTunesStoreIdentifier2];
     v15[0] = @"com.apple.Music";
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     v11 = [(SSBaseConsumer *)self queryWithString:v9 bundleIDs:v10 fetchAttributes:MEMORY[0x1E695E0F0]];
 
     if ([v11 count] == 1)
     {
-      v12 = [v11 firstObject];
-      v5 = [v12 uniqueIdentifier];
+      firstObject = [v11 firstObject];
+      iTunesStoreIdentifier = [firstObject uniqueIdentifier];
     }
 
     else
     {
-      v5 = 0;
+      iTunesStoreIdentifier = 0;
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return iTunesStoreIdentifier;
 }
 
-- (id)_attributesUpdatesForEvent:(id)a3
+- (id)_attributesUpdatesForEvent:(id)event
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 absoluteTimestamp];
+  eventCopy = event;
+  absoluteTimestamp = [eventCopy absoluteTimestamp];
 
-  if (v4)
+  if (absoluteTimestamp)
   {
     v10[0] = @"_kMDItemLastOutOfSpotlightEngagementDate";
-    v5 = [v3 absoluteTimestamp];
-    v11[0] = v5;
+    absoluteTimestamp2 = [eventCopy absoluteTimestamp];
+    v11[0] = absoluteTimestamp2;
     v10[1] = *MEMORY[0x1E6964548];
-    v6 = [v3 absoluteTimestamp];
-    v11[1] = v6;
+    absoluteTimestamp3 = [eventCopy absoluteTimestamp];
+    v11[1] = absoluteTimestamp3;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   }
 
@@ -195,17 +195,17 @@ LABEL_5:
   return v7;
 }
 
-- (id)_itemUpdateForEvent:(id)a3 itemIdentifier:(id)a4 bundleToUpdate:(id)a5
+- (id)_itemUpdateForEvent:(id)event itemIdentifier:(id)identifier bundleToUpdate:(id)update
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SSMediaNowPlaying *)self _attributesUpdatesForEvent:a3];
+  identifierCopy = identifier;
+  updateCopy = update;
+  v10 = [(SSMediaNowPlaying *)self _attributesUpdatesForEvent:event];
   v11 = v10;
   if (v10 && [v10 count])
   {
     v12 = objc_alloc_init(MEMORY[0x1E6964E80]);
-    [v12 setUniqueIdentifier:v8];
-    [v12 setBundleID:v9];
+    [v12 setUniqueIdentifier:identifierCopy];
+    [v12 setBundleID:updateCopy];
     [v12 setIsUpdate:1];
     v13 = [objc_alloc(MEMORY[0x1E6964E90]) initWithAttributes:v11];
     [v12 setAttributeSet:v13];

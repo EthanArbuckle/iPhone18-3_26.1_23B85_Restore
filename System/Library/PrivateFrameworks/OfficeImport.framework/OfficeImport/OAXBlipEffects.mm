@@ -1,53 +1,53 @@
 @interface OAXBlipEffects
 + (id)duotoneTransferModeEnumMap;
-+ (id)readAlphaModFixEffect:(_xmlNode *)a3;
-+ (id)readBiLevelEffect:(_xmlNode *)a3;
-+ (id)readColorChangeEffect:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readDuotoneEffect:(_xmlNode *)a3;
-+ (id)readGrayscaleEffect:(_xmlNode *)a3;
-+ (id)readLuminanceEffect:(_xmlNode *)a3;
-+ (void)readBlipEffectsFromBlipRef:(_xmlNode *)a3 toBlipRef:(id)a4 drawingState:(id)a5;
-+ (void)writeAlphaModFixEffect:(id)a3 to:(id)a4;
-+ (void)writeBiLevelEffect:(id)a3 to:(id)a4;
-+ (void)writeBlipEffects:(id)a3 to:(id)a4;
-+ (void)writeColorChangeEffect:(id)a3 to:(id)a4;
-+ (void)writeDuotoneEffect:(id)a3 to:(id)a4;
-+ (void)writeGrayscaleEffect:(id)a3 to:(id)a4;
-+ (void)writeLuminanceEffect:(id)a3 to:(id)a4;
++ (id)readAlphaModFixEffect:(_xmlNode *)effect;
++ (id)readBiLevelEffect:(_xmlNode *)effect;
++ (id)readColorChangeEffect:(_xmlNode *)effect drawingState:(id)state;
++ (id)readDuotoneEffect:(_xmlNode *)effect;
++ (id)readGrayscaleEffect:(_xmlNode *)effect;
++ (id)readLuminanceEffect:(_xmlNode *)effect;
++ (void)readBlipEffectsFromBlipRef:(_xmlNode *)ref toBlipRef:(id)blipRef drawingState:(id)state;
++ (void)writeAlphaModFixEffect:(id)effect to:(id)to;
++ (void)writeBiLevelEffect:(id)effect to:(id)to;
++ (void)writeBlipEffects:(id)effects to:(id)to;
++ (void)writeColorChangeEffect:(id)effect to:(id)to;
++ (void)writeDuotoneEffect:(id)effect to:(id)to;
++ (void)writeGrayscaleEffect:(id)effect to:(id)to;
++ (void)writeLuminanceEffect:(id)effect to:(id)to;
 @end
 
 @implementation OAXBlipEffects
 
-+ (void)readBlipEffectsFromBlipRef:(_xmlNode *)a3 toBlipRef:(id)a4 drawingState:(id)a5
++ (void)readBlipEffectsFromBlipRef:(_xmlNode *)ref toBlipRef:(id)blipRef drawingState:(id)state
 {
-  v13 = a4;
-  v8 = a5;
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  blipRefCopy = blipRef;
+  stateCopy = state;
+  for (i = OCXFirstChild(ref); i; i = OCXNextSibling(i))
   {
     name = i->name;
     if (xmlStrEqual(name, "lum"))
     {
-      v11 = [a1 readLuminanceEffect:i];
+      v11 = [self readLuminanceEffect:i];
     }
 
     else if (xmlStrEqual(name, "grayscl"))
     {
-      v11 = [a1 readGrayscaleEffect:i];
+      v11 = [self readGrayscaleEffect:i];
     }
 
     else if (xmlStrEqual(name, "biLevel"))
     {
-      v11 = [a1 readBiLevelEffect:i];
+      v11 = [self readBiLevelEffect:i];
     }
 
     else if (xmlStrEqual(name, "clrChange"))
     {
-      v11 = [a1 readColorChangeEffect:i drawingState:v8];
+      v11 = [self readColorChangeEffect:i drawingState:stateCopy];
     }
 
     else if (xmlStrEqual(name, "alphaModFix"))
     {
-      v11 = [a1 readAlphaModFixEffect:i];
+      v11 = [self readAlphaModFixEffect:i];
     }
 
     else
@@ -58,30 +58,30 @@
         goto LABEL_17;
       }
 
-      v11 = [a1 readDuotoneEffect:i];
+      v11 = [self readDuotoneEffect:i];
     }
 
     v12 = v11;
     if (v11)
     {
-      [v13 addEffect:v11];
+      [blipRefCopy addEffect:v11];
     }
 
 LABEL_17:
   }
 }
 
-+ (void)writeBlipEffects:(id)a3 to:(id)a4
++ (void)writeBlipEffects:(id)effects to:(id)to
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 effectCount];
-  if (v7)
+  effectsCopy = effects;
+  toCopy = to;
+  effectCount = [effectsCopy effectCount];
+  if (effectCount)
   {
     v8 = 0;
     while (1)
     {
-      v9 = [v10 effectAtIndex:v8];
+      v9 = [effectsCopy effectAtIndex:v8];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -91,47 +91,47 @@ LABEL_17:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a1 writeBiLevelEffect:v9 to:v6];
+        [self writeBiLevelEffect:v9 to:toCopy];
         goto LABEL_15;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a1 writeColorChangeEffect:v9 to:v6];
+        [self writeColorChangeEffect:v9 to:toCopy];
         goto LABEL_15;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a1 writeDuotoneEffect:v9 to:v6];
+        [self writeDuotoneEffect:v9 to:toCopy];
         goto LABEL_15;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a1 writeGrayscaleEffect:v9 to:v6];
+        [self writeGrayscaleEffect:v9 to:toCopy];
         goto LABEL_15;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [a1 writeLuminanceEffect:v9 to:v6];
+        [self writeLuminanceEffect:v9 to:toCopy];
         goto LABEL_15;
       }
 
 LABEL_16:
 
-      if (v7 == ++v8)
+      if (effectCount == ++v8)
       {
         goto LABEL_17;
       }
     }
 
-    [a1 writeAlphaModFixEffect:v9 to:v6];
+    [self writeAlphaModFixEffect:v9 to:toCopy];
 LABEL_15:
 
     goto LABEL_16;
@@ -140,88 +140,88 @@ LABEL_15:
 LABEL_17:
 }
 
-+ (id)readLuminanceEffect:(_xmlNode *)a3
++ (id)readLuminanceEffect:(_xmlNode *)effect
 {
   v4 = objc_alloc_init(OADLuminanceEffect);
-  [OAXBaseTypes readOptionalFractionFromXmlNode:a3 name:"bright"];
+  [OAXBaseTypes readOptionalFractionFromXmlNode:effect name:"bright"];
   [(OADLuminanceEffect *)v4 setBrightness:?];
-  [OAXBaseTypes readOptionalFractionFromXmlNode:a3 name:"contrast"];
+  [OAXBaseTypes readOptionalFractionFromXmlNode:effect name:"contrast"];
   [(OADLuminanceEffect *)v4 setContrast:?];
 
   return v4;
 }
 
-+ (void)writeLuminanceEffect:(id)a3 to:(id)a4
++ (void)writeLuminanceEffect:(id)effect to:(id)to
 {
-  v18 = a3;
-  v5 = a4;
+  effectCopy = effect;
+  toCopy = to;
   v6 = MEMORY[0x277CCABB0];
-  [v18 brightness];
+  [effectCopy brightness];
   *&v8 = v7 * 100000.0;
   v9 = [v6 numberWithFloat:v8];
-  v10 = [v9 longValue];
+  longValue = [v9 longValue];
 
   v11 = MEMORY[0x277CCABB0];
-  [v18 contrast];
+  [effectCopy contrast];
   *&v13 = v12 * 100000.0;
   v14 = [v11 numberWithFloat:v13];
-  v15 = [v14 longValue];
+  longValue2 = [v14 longValue];
 
-  [v5 startOAElement:@"lum"];
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v10];
-  [v5 writeOAAttribute:@"bright" content:v16];
+  [toCopy startOAElement:@"lum"];
+  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue];
+  [toCopy writeOAAttribute:@"bright" content:v16];
 
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v15];
-  [v5 writeOAAttribute:@"contrast" content:v17];
+  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue2];
+  [toCopy writeOAAttribute:@"contrast" content:v17];
 
-  [v5 endElement];
+  [toCopy endElement];
 }
 
-+ (id)readGrayscaleEffect:(_xmlNode *)a3
++ (id)readGrayscaleEffect:(_xmlNode *)effect
 {
   v3 = objc_alloc_init(OADGrayscaleEffect);
 
   return v3;
 }
 
-+ (void)writeGrayscaleEffect:(id)a3 to:(id)a4
++ (void)writeGrayscaleEffect:(id)effect to:(id)to
 {
-  v4 = a4;
-  [v4 startOAElement:@"grayscl"];
-  [v4 endElement];
+  toCopy = to;
+  [toCopy startOAElement:@"grayscl"];
+  [toCopy endElement];
 }
 
-+ (id)readBiLevelEffect:(_xmlNode *)a3
++ (id)readBiLevelEffect:(_xmlNode *)effect
 {
   v4 = objc_alloc_init(OADBiLevelEffect);
-  [OAXBaseTypes readRequiredFractionFromXmlNode:a3 name:"thresh"];
+  [OAXBaseTypes readRequiredFractionFromXmlNode:effect name:"thresh"];
   [(OADBiLevelEffect *)v4 setThreshold:?];
 
   return v4;
 }
 
-+ (void)writeBiLevelEffect:(id)a3 to:(id)a4
++ (void)writeBiLevelEffect:(id)effect to:(id)to
 {
-  v12 = a3;
-  v5 = a4;
+  effectCopy = effect;
+  toCopy = to;
   v6 = MEMORY[0x277CCABB0];
-  [v12 threshold];
+  [effectCopy threshold];
   *&v8 = v7 * 100000.0;
   v9 = [v6 numberWithFloat:v8];
-  v10 = [v9 longValue];
+  longValue = [v9 longValue];
 
-  [v5 startOAElement:@"biLevel"];
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v10];
-  [v5 writeOAAttribute:@"thresh" content:v11];
+  [toCopy startOAElement:@"biLevel"];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue];
+  [toCopy writeOAAttribute:@"thresh" content:v11];
 
-  [v5 endElement];
+  [toCopy endElement];
 }
 
-+ (id)readColorChangeEffect:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readColorChangeEffect:(_xmlNode *)effect drawingState:(id)state
 {
-  v5 = a4;
-  v6 = [v5 OAXMainNamespace];
-  v7 = OCXFindChild(a3, v6, "clrFrom");
+  stateCopy = state;
+  oAXMainNamespace = [stateCopy OAXMainNamespace];
+  v7 = OCXFindChild(effect, oAXMainNamespace, "clrFrom");
 
   if (v7 && (v8 = OCXFirstChild(v7)) != 0)
   {
@@ -233,8 +233,8 @@ LABEL_17:
     v9 = 0;
   }
 
-  v10 = [v5 OAXMainNamespace];
-  v11 = OCXFindChild(a3, v10, "clrTo");
+  oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+  v11 = OCXFindChild(effect, oAXMainNamespace2, "clrTo");
 
   if (v11)
   {
@@ -257,29 +257,29 @@ LABEL_17:
   return v13;
 }
 
-+ (void)writeColorChangeEffect:(id)a3 to:(id)a4
++ (void)writeColorChangeEffect:(id)effect to:(id)to
 {
-  v8 = a3;
-  v5 = a4;
-  [v5 startOAElement:@"clrChange"];
-  [v5 startOAElement:@"clrFrom"];
-  v6 = [v8 fromColor];
-  [OAXColor writeColor:v6 to:v5];
+  effectCopy = effect;
+  toCopy = to;
+  [toCopy startOAElement:@"clrChange"];
+  [toCopy startOAElement:@"clrFrom"];
+  fromColor = [effectCopy fromColor];
+  [OAXColor writeColor:fromColor to:toCopy];
 
-  [v5 endElement];
-  [v5 startOAElement:@"clrTo"];
-  v7 = [v8 toColor];
-  [OAXColor writeColor:v7 to:v5];
+  [toCopy endElement];
+  [toCopy startOAElement:@"clrTo"];
+  toColor = [effectCopy toColor];
+  [OAXColor writeColor:toColor to:toCopy];
 
-  [v5 endElement];
-  [v5 endElement];
+  [toCopy endElement];
+  [toCopy endElement];
 }
 
-+ (id)readAlphaModFixEffect:(_xmlNode *)a3
++ (id)readAlphaModFixEffect:(_xmlNode *)effect
 {
   v4 = objc_alloc_init(OADAlphaModFixEffect);
   v7 = 0.0;
-  if (CXOptionalFractionAttribute(a3, CXNoNamespace, "amt", &v7))
+  if (CXOptionalFractionAttribute(effect, CXNoNamespace, "amt", &v7))
   {
     HIDWORD(v5) = HIDWORD(v7);
     *&v5 = v7;
@@ -289,26 +289,26 @@ LABEL_17:
   return v4;
 }
 
-+ (void)writeAlphaModFixEffect:(id)a3 to:(id)a4
++ (void)writeAlphaModFixEffect:(id)effect to:(id)to
 {
-  v12 = a3;
-  v5 = a4;
+  effectCopy = effect;
+  toCopy = to;
   v6 = MEMORY[0x277CCABB0];
-  [v12 alpha];
+  [effectCopy alpha];
   *&v8 = v7 * 100000.0;
   v9 = [v6 numberWithFloat:v8];
-  v10 = [v9 longValue];
+  longValue = [v9 longValue];
 
-  [v5 startOAElement:@"alphaModFix"];
-  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v10];
-  [v5 writeOAAttribute:@"amt" content:v11];
+  [toCopy startOAElement:@"alphaModFix"];
+  v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue];
+  [toCopy writeOAAttribute:@"amt" content:v11];
 
-  [v5 endElement];
+  [toCopy endElement];
 }
 
-+ (id)readDuotoneEffect:(_xmlNode *)a3
++ (id)readDuotoneEffect:(_xmlNode *)effect
 {
-  v5 = OCXFirstChild(a3);
+  v5 = OCXFirstChild(effect);
   if (v5)
   {
     v6 = [OAXColor readColorFromNode:v5];
@@ -330,21 +330,21 @@ LABEL_17:
       v10 = objc_alloc_init(OADDuotoneEffect);
       [(OADDuotoneEffect *)v10 setColor1:v6];
       [(OADDuotoneEffect *)v10 setColor2:v9];
-      v11 = CXDefaultStringAttribute(a3, CXNoNamespace, "xfr1", 0);
+      v11 = CXDefaultStringAttribute(effect, CXNoNamespace, "xfr1", 0);
       if (v11)
       {
-        v12 = [a1 duotoneTransferModeEnumMap];
-        v13 = [v12 valueForString:v11];
+        duotoneTransferModeEnumMap = [self duotoneTransferModeEnumMap];
+        v13 = [duotoneTransferModeEnumMap valueForString:v11];
 
         [(OADDuotoneEffect *)v10 setTransferMode1:v13];
       }
 
-      v14 = CXDefaultStringAttribute(a3, CXNoNamespace, "xfr2", 0);
+      v14 = CXDefaultStringAttribute(effect, CXNoNamespace, "xfr2", 0);
 
       if (v14)
       {
-        v15 = [a1 duotoneTransferModeEnumMap];
-        v16 = [v15 valueForString:v14];
+        duotoneTransferModeEnumMap2 = [self duotoneTransferModeEnumMap];
+        v16 = [duotoneTransferModeEnumMap2 valueForString:v14];
 
         [(OADDuotoneEffect *)v10 setTransferMode2:v16];
       }
@@ -360,18 +360,18 @@ LABEL_17:
   return v10;
 }
 
-+ (void)writeDuotoneEffect:(id)a3 to:(id)a4
++ (void)writeDuotoneEffect:(id)effect to:(id)to
 {
-  v8 = a3;
-  v5 = a4;
-  [v5 startOAElement:@"duotone"];
-  v6 = [v8 color1];
-  [OAXColor writeColor:v6 to:v5];
+  effectCopy = effect;
+  toCopy = to;
+  [toCopy startOAElement:@"duotone"];
+  color1 = [effectCopy color1];
+  [OAXColor writeColor:color1 to:toCopy];
 
-  v7 = [v8 color2];
-  [OAXColor writeColor:v7 to:v5];
+  color2 = [effectCopy color2];
+  [OAXColor writeColor:color2 to:toCopy];
 
-  [v5 endElement];
+  [toCopy endElement];
 }
 
 + (id)duotoneTransferModeEnumMap

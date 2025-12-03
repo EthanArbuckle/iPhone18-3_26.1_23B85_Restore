@@ -1,17 +1,17 @@
 @interface AWDNetworkUsage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCellOut:(BOOL)a3;
-- (void)setHasNumConnections:(BOOL)a3;
-- (void)setHasWifiIn:(BOOL)a3;
-- (void)setHasWifiOut:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasCellOut:(BOOL)out;
+- (void)setHasNumConnections:(BOOL)connections;
+- (void)setHasWifiIn:(BOOL)in;
+- (void)setHasWifiOut:(BOOL)out;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDNetworkUsage
@@ -24,9 +24,9 @@
   [(AWDNetworkUsage *)&v3 dealloc];
 }
 
-- (void)setHasWifiIn:(BOOL)a3
+- (void)setHasWifiIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 4;
   }
@@ -39,9 +39,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasWifiOut:(BOOL)a3
+- (void)setHasWifiOut:(BOOL)out
 {
-  if (a3)
+  if (out)
   {
     v3 = 8;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasCellOut:(BOOL)a3
+- (void)setHasCellOut:(BOOL)out
 {
-  if (a3)
+  if (out)
   {
     v3 = 2;
   }
@@ -69,9 +69,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasNumConnections:(BOOL)a3
+- (void)setHasNumConnections:(BOOL)connections
 {
-  if (a3)
+  if (connections)
   {
     v3 = 16;
   }
@@ -93,12 +93,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   bundleName = self->_bundleName;
   if (bundleName)
   {
-    [v3 setObject:bundleName forKey:@"bundleName"];
+    [dictionary setObject:bundleName forKey:@"bundleName"];
   }
 
   has = self->_has;
@@ -161,7 +161,7 @@ LABEL_8:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_bundleName)
   {
@@ -234,18 +234,18 @@ LABEL_13:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_bundleName)
   {
-    [a3 setBundleName:?];
+    [to setBundleName:?];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 3) = self->_wifiIn;
-    *(a3 + 52) |= 4u;
+    *(to + 3) = self->_wifiIn;
+    *(to + 52) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -264,8 +264,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(a3 + 4) = self->_wifiOut;
-  *(a3 + 52) |= 8u;
+  *(to + 4) = self->_wifiOut;
+  *(to + 52) |= 8u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -279,8 +279,8 @@ LABEL_6:
   }
 
 LABEL_12:
-  *(a3 + 1) = self->_cellIn;
-  *(a3 + 52) |= 1u;
+  *(to + 1) = self->_cellIn;
+  *(to + 52) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -294,23 +294,23 @@ LABEL_7:
   }
 
 LABEL_13:
-  *(a3 + 2) = self->_cellOut;
-  *(a3 + 52) |= 2u;
+  *(to + 2) = self->_cellOut;
+  *(to + 52) |= 2u;
   if ((*&self->_has & 0x10) == 0)
   {
     return;
   }
 
 LABEL_8:
-  *(a3 + 12) = self->_numConnections;
-  *(a3 + 52) |= 0x10u;
+  *(to + 12) = self->_numConnections;
+  *(to + 52) |= 0x10u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 40) = [(NSString *)self->_bundleName copyWithZone:a3];
+  *(v5 + 40) = [(NSString *)self->_bundleName copyWithZone:zone];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -376,23 +376,23 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     bundleName = self->_bundleName;
-    if (!(bundleName | *(a3 + 5)) || (v5 = [(NSString *)bundleName isEqual:?]) != 0)
+    if (!(bundleName | *(equal + 5)) || (v5 = [(NSString *)bundleName isEqual:?]) != 0)
     {
       if ((*&self->_has & 4) != 0)
       {
-        if ((*(a3 + 52) & 4) == 0 || self->_wifiIn != *(a3 + 3))
+        if ((*(equal + 52) & 4) == 0 || self->_wifiIn != *(equal + 3))
         {
           goto LABEL_28;
         }
       }
 
-      else if ((*(a3 + 52) & 4) != 0)
+      else if ((*(equal + 52) & 4) != 0)
       {
 LABEL_28:
         LOBYTE(v5) = 0;
@@ -401,47 +401,47 @@ LABEL_28:
 
       if ((*&self->_has & 8) != 0)
       {
-        if ((*(a3 + 52) & 8) == 0 || self->_wifiOut != *(a3 + 4))
+        if ((*(equal + 52) & 8) == 0 || self->_wifiOut != *(equal + 4))
         {
           goto LABEL_28;
         }
       }
 
-      else if ((*(a3 + 52) & 8) != 0)
+      else if ((*(equal + 52) & 8) != 0)
       {
         goto LABEL_28;
       }
 
       if (*&self->_has)
       {
-        if ((*(a3 + 52) & 1) == 0 || self->_cellIn != *(a3 + 1))
+        if ((*(equal + 52) & 1) == 0 || self->_cellIn != *(equal + 1))
         {
           goto LABEL_28;
         }
       }
 
-      else if (*(a3 + 52))
+      else if (*(equal + 52))
       {
         goto LABEL_28;
       }
 
       if ((*&self->_has & 2) != 0)
       {
-        if ((*(a3 + 52) & 2) == 0 || self->_cellOut != *(a3 + 2))
+        if ((*(equal + 52) & 2) == 0 || self->_cellOut != *(equal + 2))
         {
           goto LABEL_28;
         }
       }
 
-      else if ((*(a3 + 52) & 2) != 0)
+      else if ((*(equal + 52) & 2) != 0)
       {
         goto LABEL_28;
       }
 
-      LOBYTE(v5) = (*(a3 + 52) & 0x10) == 0;
+      LOBYTE(v5) = (*(equal + 52) & 0x10) == 0;
       if ((*&self->_has & 0x10) != 0)
       {
-        if ((*(a3 + 52) & 0x10) == 0 || self->_numConnections != *(a3 + 12))
+        if ((*(equal + 52) & 0x10) == 0 || self->_numConnections != *(equal + 12))
         {
           goto LABEL_28;
         }
@@ -523,19 +523,19 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDNetworkUsage *)self setBundleName:?];
   }
 
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 4) != 0)
   {
-    self->_wifiIn = *(a3 + 3);
+    self->_wifiIn = *(from + 3);
     *&self->_has |= 4u;
-    v5 = *(a3 + 52);
+    v5 = *(from + 52);
     if ((v5 & 8) == 0)
     {
 LABEL_5:
@@ -548,14 +548,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(a3 + 52) & 8) == 0)
+  else if ((*(from + 52) & 8) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_wifiOut = *(a3 + 4);
+  self->_wifiOut = *(from + 4);
   *&self->_has |= 8u;
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 1) == 0)
   {
 LABEL_6:
@@ -568,9 +568,9 @@ LABEL_6:
   }
 
 LABEL_12:
-  self->_cellIn = *(a3 + 1);
+  self->_cellIn = *(from + 1);
   *&self->_has |= 1u;
-  v5 = *(a3 + 52);
+  v5 = *(from + 52);
   if ((v5 & 2) == 0)
   {
 LABEL_7:
@@ -583,15 +583,15 @@ LABEL_7:
   }
 
 LABEL_13:
-  self->_cellOut = *(a3 + 2);
+  self->_cellOut = *(from + 2);
   *&self->_has |= 2u;
-  if ((*(a3 + 52) & 0x10) == 0)
+  if ((*(from + 52) & 0x10) == 0)
   {
     return;
   }
 
 LABEL_8:
-  self->_numConnections = *(a3 + 12);
+  self->_numConnections = *(from + 12);
   *&self->_has |= 0x10u;
 }
 

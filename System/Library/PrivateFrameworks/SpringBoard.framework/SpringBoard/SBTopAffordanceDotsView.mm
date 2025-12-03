@@ -1,43 +1,43 @@
 @interface SBTopAffordanceDotsView
 - (BOOL)isHighlighted;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
-- (SBTopAffordanceDotsView)initWithFrame:(CGRect)a3 delegate:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
+- (SBTopAffordanceDotsView)initWithFrame:(CGRect)frame delegate:(id)delegate;
 - (SBTopAffordanceDotsViewDelegate)delegate;
 - (UIEdgeInsets)hitTestEdgeInsets;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
 - (id)_dotViews;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)_updateBackgroundColor;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setHitTestEdgeInsets:(UIEdgeInsets)a3;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setHitTestEdgeInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation SBTopAffordanceDotsView
 
-- (SBTopAffordanceDotsView)initWithFrame:(CGRect)a3 delegate:(id)a4
+- (SBTopAffordanceDotsView)initWithFrame:(CGRect)frame delegate:(id)delegate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v66[12] = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  delegateCopy = delegate;
   v65.receiver = self;
   v65.super_class = SBTopAffordanceDotsView;
-  v10 = [(SBTopAffordanceDotsView *)&v65 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(SBTopAffordanceDotsView *)&v65 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(SBTopAffordanceDotsView *)v10 setAccessibilityTraits:*MEMORY[0x277D76548]];
+    [(SBTopAffordanceDotsView *)height setAccessibilityTraits:*MEMORY[0x277D76548]];
     [(SBTopAffordanceDotsView *)v11 setIsAccessibilityElement:1];
     [(SBTopAffordanceDotsView *)v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SBTopAffordanceDotsView *)v11 setUserInteractionEnabled:1];
-    v12 = [(SBTopAffordanceDotsView *)v11 layer];
-    [v12 setCornerRadius:7.0];
+    layer = [(SBTopAffordanceDotsView *)v11 layer];
+    [layer setCornerRadius:7.0];
 
     v13 = objc_alloc_init(MEMORY[0x277D75D18]);
     hitTestBlocker = v11->_hitTestBlocker;
@@ -45,14 +45,14 @@
 
     v15 = v11->_hitTestBlocker;
     [MEMORY[0x277D75348] clearColor];
-    v16 = v64 = v9;
+    v16 = v64 = delegateCopy;
     [(UIView *)v15 setBackgroundColor:v16];
 
-    v17 = [(UIView *)v11->_hitTestBlocker layer];
-    [v17 setHitTestsAsOpaque:1];
+    layer2 = [(UIView *)v11->_hitTestBlocker layer];
+    [layer2 setHitTestsAsOpaque:1];
 
-    v18 = [(UIView *)v11->_hitTestBlocker layer];
-    [v18 setAllowsHitTesting:1];
+    layer3 = [(UIView *)v11->_hitTestBlocker layer];
+    [layer3 setAllowsHitTesting:1];
 
     [(UIView *)v11->_hitTestBlocker setTranslatesAutoresizingMaskIntoConstraints:0];
     v19 = objc_alloc_init(SBTopAffordanceDotView);
@@ -71,55 +71,55 @@
     [(SBTopAffordanceDotsView *)v11 addSubview:v11->_leadingDotView];
     [(SBTopAffordanceDotsView *)v11 addSubview:v11->_centerDotView];
     [(SBTopAffordanceDotsView *)v11 addSubview:v11->_trailingDotView];
-    v25 = [(UIView *)v11->_hitTestBlocker widthAnchor];
-    v26 = [v25 constraintEqualToConstant:0.0];
+    widthAnchor = [(UIView *)v11->_hitTestBlocker widthAnchor];
+    v26 = [widthAnchor constraintEqualToConstant:0.0];
     hitTestBlockerWidthConstraint = v11->_hitTestBlockerWidthConstraint;
     v11->_hitTestBlockerWidthConstraint = v26;
 
-    v28 = [(UIView *)v11->_hitTestBlocker heightAnchor];
-    v29 = [v28 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIView *)v11->_hitTestBlocker heightAnchor];
+    v29 = [heightAnchor constraintEqualToConstant:0.0];
     hitTestBlockerHeightConstraint = v11->_hitTestBlockerHeightConstraint;
     v11->_hitTestBlockerHeightConstraint = v29;
 
-    v31 = [(UIView *)v11->_hitTestBlocker leftAnchor];
-    v32 = [(SBTopAffordanceDotsView *)v11 leftAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32 constant:0.0];
+    leftAnchor = [(UIView *)v11->_hitTestBlocker leftAnchor];
+    leftAnchor2 = [(SBTopAffordanceDotsView *)v11 leftAnchor];
+    v33 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:0.0];
     hitTestBlockerLeftConstraint = v11->_hitTestBlockerLeftConstraint;
     v11->_hitTestBlockerLeftConstraint = v33;
 
-    v63 = [(SBTopAffordanceDotsView *)v11 widthAnchor];
-    v62 = [v63 constraintEqualToConstant:32.0];
+    widthAnchor2 = [(SBTopAffordanceDotsView *)v11 widthAnchor];
+    v62 = [widthAnchor2 constraintEqualToConstant:32.0];
     v66[0] = v62;
-    v61 = [(SBTopAffordanceDotsView *)v11 heightAnchor];
-    v60 = [v61 constraintEqualToConstant:14.0];
+    heightAnchor2 = [(SBTopAffordanceDotsView *)v11 heightAnchor];
+    v60 = [heightAnchor2 constraintEqualToConstant:14.0];
     v66[1] = v60;
-    v59 = [(SBTopAffordanceDotView *)v11->_leadingDotView trailingAnchor];
-    v58 = [(SBTopAffordanceDotView *)v11->_centerDotView leadingAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58 constant:-3.0];
+    trailingAnchor = [(SBTopAffordanceDotView *)v11->_leadingDotView trailingAnchor];
+    leadingAnchor = [(SBTopAffordanceDotView *)v11->_centerDotView leadingAnchor];
+    v57 = [trailingAnchor constraintEqualToAnchor:leadingAnchor constant:-3.0];
     v66[2] = v57;
-    v56 = [(SBTopAffordanceDotView *)v11->_trailingDotView leadingAnchor];
-    v55 = [(SBTopAffordanceDotView *)v11->_centerDotView trailingAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55 constant:3.0];
+    leadingAnchor2 = [(SBTopAffordanceDotView *)v11->_trailingDotView leadingAnchor];
+    trailingAnchor2 = [(SBTopAffordanceDotView *)v11->_centerDotView trailingAnchor];
+    v54 = [leadingAnchor2 constraintEqualToAnchor:trailingAnchor2 constant:3.0];
     v66[3] = v54;
-    v53 = [(SBTopAffordanceDotView *)v11->_leadingDotView centerYAnchor];
-    v52 = [(SBTopAffordanceDotView *)v11->_centerDotView centerYAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    centerYAnchor = [(SBTopAffordanceDotView *)v11->_leadingDotView centerYAnchor];
+    centerYAnchor2 = [(SBTopAffordanceDotView *)v11->_centerDotView centerYAnchor];
+    v51 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v66[4] = v51;
-    v50 = [(SBTopAffordanceDotView *)v11->_centerDotView centerXAnchor];
-    v49 = [(SBTopAffordanceDotsView *)v11 centerXAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49];
+    centerXAnchor = [(SBTopAffordanceDotView *)v11->_centerDotView centerXAnchor];
+    centerXAnchor2 = [(SBTopAffordanceDotsView *)v11 centerXAnchor];
+    v48 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v66[5] = v48;
-    v47 = [(SBTopAffordanceDotView *)v11->_centerDotView centerYAnchor];
-    v35 = [(SBTopAffordanceDotsView *)v11 centerYAnchor];
-    v36 = [v47 constraintEqualToAnchor:v35];
+    centerYAnchor3 = [(SBTopAffordanceDotView *)v11->_centerDotView centerYAnchor];
+    centerYAnchor4 = [(SBTopAffordanceDotsView *)v11 centerYAnchor];
+    v36 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v66[6] = v36;
-    v37 = [(SBTopAffordanceDotView *)v11->_trailingDotView centerYAnchor];
-    v38 = [(SBTopAffordanceDotView *)v11->_centerDotView centerYAnchor];
-    v39 = [v37 constraintEqualToAnchor:v38];
+    centerYAnchor5 = [(SBTopAffordanceDotView *)v11->_trailingDotView centerYAnchor];
+    centerYAnchor6 = [(SBTopAffordanceDotView *)v11->_centerDotView centerYAnchor];
+    v39 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v66[7] = v39;
-    v40 = [(UIView *)v11->_hitTestBlocker topAnchor];
-    v41 = [(SBTopAffordanceDotsView *)v11 topAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    topAnchor = [(UIView *)v11->_hitTestBlocker topAnchor];
+    topAnchor2 = [(SBTopAffordanceDotsView *)v11 topAnchor];
+    v42 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v66[8] = v42;
     v66[9] = v11->_hitTestBlockerWidthConstraint;
     v66[10] = v11->_hitTestBlockerHeightConstraint;
@@ -127,7 +127,7 @@
     v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v66 count:12];
     [(SBTopAffordanceDotsView *)v11 addConstraints:v43];
 
-    v9 = v64;
+    delegateCopy = v64;
     v44 = [objc_alloc(MEMORY[0x277D75870]) initWithDelegate:v11];
     pointerInteraction = v11->_pointerInteraction;
     v11->_pointerInteraction = v44;
@@ -139,16 +139,16 @@
   return v11;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(SBTopAffordanceDotsView *)self _dotViews];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  _dotViews = [(SBTopAffordanceDotsView *)self _dotViews];
+  v6 = [_dotViews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -160,14 +160,14 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_dotViews);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setHighlighted:v3];
+        [*(*(&v10 + 1) + 8 * v9++) setHighlighted:highlightedCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [_dotViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -179,17 +179,17 @@
 
 - (BOOL)isHighlighted
 {
-  v2 = [(SBTopAffordanceDotsView *)self _dotViews];
-  v3 = [v2 firstObject];
-  v4 = [v3 isHighlighted];
+  _dotViews = [(SBTopAffordanceDotsView *)self _dotViews];
+  firstObject = [_dotViews firstObject];
+  isHighlighted = [firstObject isHighlighted];
 
-  return v4;
+  return isHighlighted;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SBTopAffordanceDotsView *)self bounds];
   v8 = v7;
   v10 = v9;
@@ -208,23 +208,23 @@
   return CGRectContainsPoint(*&v22, *&v25);
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   v6 = MEMORY[0x277D75880];
-  v7 = a5;
+  regionCopy = region;
   [(SBTopAffordanceDotsView *)self bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 identifier];
+  identifier = [regionCopy identifier];
 
-  v17 = [v6 regionWithRect:v16 identifier:{v9, v11, v13, v15}];
+  v17 = [v6 regionWithRect:identifier identifier:{v9, v11, v13, v15}];
 
   return v17;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = objc_alloc_init(MEMORY[0x277D758D8]);
   v6 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:self parameters:v5];
@@ -251,9 +251,9 @@
   return v14;
 }
 
-- (void)setHitTestEdgeInsets:(UIEdgeInsets)a3
+- (void)setHitTestEdgeInsets:(UIEdgeInsets)insets
 {
-  self->_hitTestEdgeInsets = a3;
+  self->_hitTestEdgeInsets = insets;
   hitTestBlockerWidthConstraint = self->_hitTestBlockerWidthConstraint;
   [(SBTopAffordanceDotsView *)self hitTestEdgeInsets];
   v6 = 32.0 - v5;
@@ -268,13 +268,13 @@
   [(NSLayoutConstraint *)hitTestBlockerLeftConstraint setConstant:v11];
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
   v8.receiver = self;
   v8.super_class = SBTopAffordanceDotsView;
-  v5 = [(SBTopAffordanceDotsView *)&v8 _contextMenuInteraction:a3 styleForMenuWithConfiguration:a4];
-  v6 = [(SBTopAffordanceDotsView *)self superview];
-  [v5 setContainerView:v6];
+  v5 = [(SBTopAffordanceDotsView *)&v8 _contextMenuInteraction:interaction styleForMenuWithConfiguration:configuration];
+  superview = [(SBTopAffordanceDotsView *)self superview];
+  [v5 setContainerView:superview];
 
   if (objc_opt_respondsToSelector())
   {
@@ -289,7 +289,7 @@
   return v5;
 }
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
   [(SBTopAffordanceDotsView *)self bounds];
   MidX = CGRectGetMidX(v6);
@@ -299,31 +299,31 @@
   return result;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v7.receiver = self;
   v7.super_class = SBTopAffordanceDotsView;
-  [(SBTopAffordanceDotsView *)&v7 contextMenuInteraction:a3 willDisplayMenuForConfiguration:a4 animator:a5];
+  [(SBTopAffordanceDotsView *)&v7 contextMenuInteraction:interaction willDisplayMenuForConfiguration:configuration animator:animator];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained topAffordanceDotsViewWillPresentMenu:self];
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v7.receiver = self;
   v7.super_class = SBTopAffordanceDotsView;
-  [(SBTopAffordanceDotsView *)&v7 contextMenuInteraction:a3 willEndForConfiguration:a4 animator:a5];
+  [(SBTopAffordanceDotsView *)&v7 contextMenuInteraction:interaction willEndForConfiguration:configuration animator:animator];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained topAffordanceDotsViewWillDismissMenu:self];
 }
 
 - (void)_updateBackgroundColor
 {
-  v8 = [MEMORY[0x277D75348] clearColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
   if ([(SBTopAffordanceDotsView *)self isHighlighted])
   {
-    v3 = [(SBTopAffordanceDotsView *)self traitCollection];
-    if ([v3 userInterfaceStyle] == 2)
+    traitCollection = [(SBTopAffordanceDotsView *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       v4 = 0.16;
       v5 = 1.0;
@@ -342,7 +342,7 @@
 
   else
   {
-    v6 = v8;
+    v6 = clearColor;
   }
 
   v9 = v6;
@@ -357,8 +357,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(SBTopAffordanceDotsView *)self subviews];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subviews = [(SBTopAffordanceDotsView *)self subviews];
+  v5 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -369,7 +369,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -380,7 +380,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

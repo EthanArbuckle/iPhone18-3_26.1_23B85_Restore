@@ -1,15 +1,15 @@
 @interface DOCFrecencyBasedEvent
-- (double)frecencyScoreAtDate:(id)a3;
-- (void)updateFrecencyAtDate:(id)a3;
+- (double)frecencyScoreAtDate:(id)date;
+- (void)updateFrecencyAtDate:(id)date;
 @end
 
 @implementation DOCFrecencyBasedEvent
 
-- (double)frecencyScoreAtDate:(id)a3
+- (double)frecencyScoreAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [(DOCFrecencyBasedEvent *)self lastUsedDate];
-  [v4 timeIntervalSinceDate:v5];
+  dateCopy = date;
+  lastUsedDate = [(DOCFrecencyBasedEvent *)self lastUsedDate];
+  [dateCopy timeIntervalSinceDate:lastUsedDate];
   v7 = v6;
 
   [(DOCFrecencyBasedEvent *)self frecency];
@@ -17,12 +17,12 @@
   return exp(v7 / -5184000.0) * v9;
 }
 
-- (void)updateFrecencyAtDate:(id)a3
+- (void)updateFrecencyAtDate:(id)date
 {
-  v5 = a3;
-  [(DOCFrecencyBasedEvent *)self frecencyScoreAtDate:v5];
+  dateCopy = date;
+  [(DOCFrecencyBasedEvent *)self frecencyScoreAtDate:dateCopy];
   [(DOCFrecencyBasedEvent *)self setFrecency:v4 + 1.0];
-  [(DOCFrecencyBasedEvent *)self setLastUsedDate:v5];
+  [(DOCFrecencyBasedEvent *)self setLastUsedDate:dateCopy];
 }
 
 @end

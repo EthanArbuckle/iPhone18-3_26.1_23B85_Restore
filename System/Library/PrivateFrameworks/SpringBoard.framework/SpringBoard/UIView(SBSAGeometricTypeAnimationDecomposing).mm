@@ -27,7 +27,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = UIView_0;
   v6 = objc_msgSendSuper2(&v9, sel__independentlyAnimatableMemberKeyPathsForProperty_, v4);
 LABEL_9:
@@ -43,8 +43,8 @@ LABEL_9:
   v10 = a5;
   v11 = [v10 componentsSeparatedByString:@"."];
   v12 = [v11 count];
-  v13 = [v11 firstObject];
-  v14 = [a1 valueForKey:v13];
+  firstObject = [v11 firstObject];
+  v14 = [self valueForKey:firstObject];
   if (v12 >= 2)
   {
     v15 = objc_opt_self();
@@ -53,16 +53,16 @@ LABEL_9:
     if (isKindOfClass)
     {
       v17 = [v11 subarrayWithRange:{1, v12 - 1}];
-      v18 = [v17 componentsJoinedByString:@"."];
+      currentHandler = [v17 componentsJoinedByString:@"."];
 
-      [v14 _setValue:v53 byUpdatingMemberKeypaths:v9 forKeyPath:v18];
+      [v14 _setValue:v53 byUpdatingMemberKeypaths:v9 forKeyPath:currentHandler];
       goto LABEL_24;
     }
   }
 
   if (BSEqualObjects())
   {
-    v19 = [a1 valueForKeyPath:v10];
+    v19 = [self valueForKeyPath:v10];
     v20 = v53;
     v21 = v9;
     [v19 bs_CGPointValue];
@@ -91,15 +91,15 @@ LABEL_9:
 
     v32 = [MEMORY[0x277CCAE60] bs_valueWithCGPoint:{v23, v31}];
 LABEL_22:
-    v18 = v32;
+    currentHandler = v32;
 
-    [a1 setValue:v18 forKeyPath:v10];
+    [self setValue:currentHandler forKeyPath:v10];
     goto LABEL_24;
   }
 
   if (BSEqualObjects())
   {
-    v19 = [a1 valueForKeyPath:v10];
+    v19 = [self valueForKeyPath:v10];
     v33 = v53;
     v34 = v9;
     [v19 bs_CGRectValue];
@@ -144,8 +144,8 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:a1 file:@"NSObject+SBSAGeometricTypeAnimationDecomposing.m" lineNumber:93 description:@"Attempting to update members of unsupported keypath"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NSObject+SBSAGeometricTypeAnimationDecomposing.m" lineNumber:93 description:@"Attempting to update members of unsupported keypath"];
 LABEL_24:
 }
 

@@ -1,23 +1,23 @@
 @interface PXStoryMemoryAutoCurationProducer
-+ (id)_optionsForAssets:(id)a3;
++ (id)_optionsForAssets:(id)assets;
 - (PXStoryMemoryAutoCurationProducer)init;
-- (PXStoryMemoryAutoCurationProducer)initWithMemory:(id)a3;
-- (id)requestCuratedAssetsWithOptions:(unint64_t)a3 targetOverallDurationInfo:(id *)a4 resultHandler:(id)a5;
-- (id)requestCurationLengthsWithOptions:(unint64_t)a3 allAssets:(id)a4 curatedAssets:(id)a5 resultHandler:(id)a6;
+- (PXStoryMemoryAutoCurationProducer)initWithMemory:(id)memory;
+- (id)requestCuratedAssetsWithOptions:(unint64_t)options targetOverallDurationInfo:(id *)info resultHandler:(id)handler;
+- (id)requestCurationLengthsWithOptions:(unint64_t)options allAssets:(id)assets curatedAssets:(id)curatedAssets resultHandler:(id)handler;
 @end
 
 @implementation PXStoryMemoryAutoCurationProducer
 
-- (id)requestCuratedAssetsWithOptions:(unint64_t)a3 targetOverallDurationInfo:(id *)a4 resultHandler:(id)a5
+- (id)requestCuratedAssetsWithOptions:(unint64_t)options targetOverallDurationInfo:(id *)info resultHandler:(id)handler
 {
-  v7 = a5;
-  v8 = [(PXStoryMemoryAutoCurationProducer *)self memory];
-  v9 = [MEMORY[0x1E696B098] valueWithBytes:a4 objCType:"{?=q{?={?=qiIq}{?=qiIq}{?=qiIq}}}"];
+  handlerCopy = handler;
+  memory = [(PXStoryMemoryAutoCurationProducer *)self memory];
+  v9 = [MEMORY[0x1E696B098] valueWithBytes:info objCType:"{?=q{?={?=qiIq}{?=qiIq}{?=qiIq}}}"];
   v10 = [(NSCache *)self->_curationCache objectForKey:v9];
   if (v10)
   {
     v11 = [[PXStoryProducerResult alloc] initWithObject:v10];
-    v7[2](v7, v11);
+    handlerCopy[2](handlerCopy, v11);
 
     v12 = 0;
   }
@@ -29,17 +29,17 @@
     v17[1] = 3221225472;
     v17[2] = __109__PXStoryMemoryAutoCurationProducer_requestCuratedAssetsWithOptions_targetOverallDurationInfo_resultHandler___block_invoke;
     v17[3] = &unk_1E7736C30;
-    v13 = *&a4->var1.var1.var3;
-    v24 = *&a4->var1.var1.var0;
+    v13 = *&info->var1.var1.var3;
+    v24 = *&info->var1.var1.var0;
     v25 = v13;
-    v26 = *&a4->var1.var2.var1;
-    v14 = *&a4->var1.var0.var1;
-    v22 = *&a4->var0;
+    v26 = *&info->var1.var2.var1;
+    v14 = *&info->var1.var0.var1;
+    v22 = *&info->var0;
     v23 = v14;
-    v18 = v8;
-    v19 = self;
+    v18 = memory;
+    selfCopy = self;
     v20 = v9;
-    v21 = v7;
+    v21 = handlerCopy;
     v15 = _Block_copy(v17);
     dispatch_async(self->_workQueue, v15);
   }
@@ -158,27 +158,27 @@ LABEL_25:
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)requestCurationLengthsWithOptions:(unint64_t)a3 allAssets:(id)a4 curatedAssets:(id)a5 resultHandler:(id)a6
+- (id)requestCurationLengthsWithOptions:(unint64_t)options allAssets:(id)assets curatedAssets:(id)curatedAssets resultHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(PXStoryMemoryAutoCurationProducer *)self memory];
+  assetsCopy = assets;
+  curatedAssetsCopy = curatedAssets;
+  handlerCopy = handler;
+  memory = [(PXStoryMemoryAutoCurationProducer *)self memory];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __109__PXStoryMemoryAutoCurationProducer_requestCurationLengthsWithOptions_allAssets_curatedAssets_resultHandler___block_invoke;
   aBlock[3] = &unk_1E774BDB0;
-  v29 = v12;
-  v30 = v9;
-  v31 = v10;
-  v32 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  v16 = v12;
+  v29 = memory;
+  v30 = assetsCopy;
+  v31 = curatedAssetsCopy;
+  v32 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = curatedAssetsCopy;
+  v15 = assetsCopy;
+  v16 = memory;
   v17 = _Block_copy(aBlock);
   v18 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:0];
-  v19 = [(PXStoryMemoryAutoCurationProducer *)self workQueue];
+  workQueue = [(PXStoryMemoryAutoCurationProducer *)self workQueue];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __109__PXStoryMemoryAutoCurationProducer_requestCurationLengthsWithOptions_allAssets_curatedAssets_resultHandler___block_invoke_2;
@@ -187,7 +187,7 @@ LABEL_25:
   v26 = v20;
   v27 = v17;
   v21 = v17;
-  dispatch_async(v19, v25);
+  dispatch_async(workQueue, v25);
 
   v22 = v27;
   v23 = v20;
@@ -230,22 +230,22 @@ uint64_t __109__PXStoryMemoryAutoCurationProducer_requestCurationLengthsWithOpti
   return result;
 }
 
-- (PXStoryMemoryAutoCurationProducer)initWithMemory:(id)a3
+- (PXStoryMemoryAutoCurationProducer)initWithMemory:(id)memory
 {
-  v5 = a3;
+  memoryCopy = memory;
   v18.receiver = self;
   v18.super_class = PXStoryMemoryAutoCurationProducer;
   v6 = [(PXStoryMemoryAutoCurationProducer *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_memory, a3);
+    objc_storeStrong(&v6->_memory, memory);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_attr_make_with_qos_class(v11, QOS_CLASS_USER_INTERACTIVE, 0);
-    v13 = dispatch_queue_create(v10, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     workQueue = v7->_workQueue;
     v7->_workQueue = v13;
 
@@ -259,18 +259,18 @@ uint64_t __109__PXStoryMemoryAutoCurationProducer_requestCurationLengthsWithOpti
 
 - (PXStoryMemoryAutoCurationProducer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryAutoCurationProducer.m" lineNumber:31 description:{@"%s is not available as initializer", "-[PXStoryMemoryAutoCurationProducer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryAutoCurationProducer.m" lineNumber:31 description:{@"%s is not available as initializer", "-[PXStoryMemoryAutoCurationProducer init]"}];
 
   abort();
 }
 
-+ (id)_optionsForAssets:(id)a3
++ (id)_optionsForAssets:(id)assets
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 countOfAssetsWithMediaType:1];
-  v5 = [v3 countOfAssetsWithMediaType:2];
+  assetsCopy = assets;
+  v4 = [assetsCopy countOfAssetsWithMediaType:1];
+  v5 = [assetsCopy countOfAssetsWithMediaType:2];
 
   v10[0] = *MEMORY[0x1E6978EF0];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:v4];

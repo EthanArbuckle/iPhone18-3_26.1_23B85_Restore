@@ -1,88 +1,88 @@
 @interface WFPBAddAutomationEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRequiresRuntimeConfirmation:(BOOL)a3;
-- (void)setHasShowsNotification:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRequiresRuntimeConfirmation:(BOOL)confirmation;
+- (void)setHasShowsNotification:(BOOL)notification;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFPBAddAutomationEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 6))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(WFPBAddAutomationEvent *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(WFPBAddAutomationEvent *)self setTriggerType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(WFPBAddAutomationEvent *)self setIntentType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(WFPBAddAutomationEvent *)self setSource:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 84))
+  if (*(fromCopy + 84))
   {
-    self->_actionCount = *(v4 + 2);
+    self->_actionCount = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(WFPBAddAutomationEvent *)self setShortcutIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(WFPBAddAutomationEvent *)self setAppBundleIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(WFPBAddAutomationEvent *)self setActivityType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(WFPBAddAutomationEvent *)self setAutomationSuggestionsTrialIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 84);
+  v5 = *(fromCopy + 84);
   if ((v5 & 4) != 0)
   {
-    self->_showsNotification = *(v4 + 81);
+    self->_showsNotification = *(fromCopy + 81);
     *&self->_has |= 4u;
-    v5 = *(v4 + 84);
+    v5 = *(fromCopy + 84);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_requiresRuntimeConfirmation = *(v4 + 80);
+    self->_requiresRuntimeConfirmation = *(fromCopy + 80);
     *&self->_has |= 2u;
   }
 }
@@ -131,16 +131,16 @@ LABEL_6:
   return v3 ^ v14 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   key = self->_key;
-  if (key | *(v4 + 6))
+  if (key | *(equalCopy + 6))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -149,7 +149,7 @@ LABEL_6:
   }
 
   triggerType = self->_triggerType;
-  if (triggerType | *(v4 + 9))
+  if (triggerType | *(equalCopy + 9))
   {
     if (![(NSString *)triggerType isEqual:?])
     {
@@ -158,7 +158,7 @@ LABEL_6:
   }
 
   intentType = self->_intentType;
-  if (intentType | *(v4 + 5))
+  if (intentType | *(equalCopy + 5))
   {
     if (![(NSString *)intentType isEqual:?])
     {
@@ -167,7 +167,7 @@ LABEL_6:
   }
 
   source = self->_source;
-  if (source | *(v4 + 8))
+  if (source | *(equalCopy + 8))
   {
     if (![(NSString *)source isEqual:?])
     {
@@ -175,28 +175,28 @@ LABEL_6:
     }
   }
 
-  v9 = *(v4 + 84);
+  v9 = *(equalCopy + 84);
   if (*&self->_has)
   {
-    if ((*(v4 + 84) & 1) == 0 || self->_actionCount != *(v4 + 2))
+    if ((*(equalCopy + 84) & 1) == 0 || self->_actionCount != *(equalCopy + 2))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 84))
+  else if (*(equalCopy + 84))
   {
     goto LABEL_31;
   }
 
   shortcutIdentifier = self->_shortcutIdentifier;
-  if (shortcutIdentifier | *(v4 + 7) && ![(NSString *)shortcutIdentifier isEqual:?])
+  if (shortcutIdentifier | *(equalCopy + 7) && ![(NSString *)shortcutIdentifier isEqual:?])
   {
     goto LABEL_31;
   }
 
   appBundleIdentifier = self->_appBundleIdentifier;
-  if (appBundleIdentifier | *(v4 + 3))
+  if (appBundleIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)appBundleIdentifier isEqual:?])
     {
@@ -205,7 +205,7 @@ LABEL_6:
   }
 
   activityType = self->_activityType;
-  if (activityType | *(v4 + 2))
+  if (activityType | *(equalCopy + 2))
   {
     if (![(NSString *)activityType isEqual:?])
     {
@@ -214,7 +214,7 @@ LABEL_6:
   }
 
   automationSuggestionsTrialIdentifier = self->_automationSuggestionsTrialIdentifier;
-  if (automationSuggestionsTrialIdentifier | *(v4 + 4))
+  if (automationSuggestionsTrialIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)automationSuggestionsTrialIdentifier isEqual:?])
     {
@@ -224,45 +224,45 @@ LABEL_6:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 84) & 4) == 0)
+    if ((*(equalCopy + 84) & 4) == 0)
     {
       goto LABEL_31;
     }
 
-    v16 = *(v4 + 81);
+    v16 = *(equalCopy + 81);
     if (self->_showsNotification)
     {
-      if ((*(v4 + 81) & 1) == 0)
+      if ((*(equalCopy + 81) & 1) == 0)
       {
         goto LABEL_31;
       }
     }
 
-    else if (*(v4 + 81))
+    else if (*(equalCopy + 81))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 84) & 4) != 0)
+  else if ((*(equalCopy + 84) & 4) != 0)
   {
     goto LABEL_31;
   }
 
-  v14 = (*(v4 + 84) & 2) == 0;
+  v14 = (*(equalCopy + 84) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 84) & 2) != 0)
+    if ((*(equalCopy + 84) & 2) != 0)
     {
       if (self->_requiresRuntimeConfirmation)
       {
-        if (*(v4 + 80))
+        if (*(equalCopy + 80))
         {
           goto LABEL_39;
         }
       }
 
-      else if (!*(v4 + 80))
+      else if (!*(equalCopy + 80))
       {
 LABEL_39:
         v14 = 1;
@@ -279,22 +279,22 @@ LABEL_32:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSString *)self->_triggerType copyWithZone:a3];
+  v8 = [(NSString *)self->_triggerType copyWithZone:zone];
   v9 = *(v5 + 72);
   *(v5 + 72) = v8;
 
-  v10 = [(NSString *)self->_intentType copyWithZone:a3];
+  v10 = [(NSString *)self->_intentType copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
-  v12 = [(NSString *)self->_source copyWithZone:a3];
+  v12 = [(NSString *)self->_source copyWithZone:zone];
   v13 = *(v5 + 64);
   *(v5 + 64) = v12;
 
@@ -304,19 +304,19 @@ LABEL_32:
     *(v5 + 84) |= 1u;
   }
 
-  v14 = [(NSString *)self->_shortcutIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_shortcutIdentifier copyWithZone:zone];
   v15 = *(v5 + 56);
   *(v5 + 56) = v14;
 
-  v16 = [(NSString *)self->_appBundleIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_appBundleIdentifier copyWithZone:zone];
   v17 = *(v5 + 24);
   *(v5 + 24) = v16;
 
-  v18 = [(NSString *)self->_activityType copyWithZone:a3];
+  v18 = [(NSString *)self->_activityType copyWithZone:zone];
   v19 = *(v5 + 16);
   *(v5 + 16) = v18;
 
-  v20 = [(NSString *)self->_automationSuggestionsTrialIdentifier copyWithZone:a3];
+  v20 = [(NSString *)self->_automationSuggestionsTrialIdentifier copyWithZone:zone];
   v21 = *(v5 + 32);
   *(v5 + 32) = v20;
 
@@ -337,136 +337,136 @@ LABEL_32:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v6;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   if (self->_triggerType)
   {
     [v6 setTriggerType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_intentType)
   {
     [v6 setIntentType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_source)
   {
     [v6 setSource:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_actionCount;
-    *(v4 + 84) |= 1u;
+    *(toCopy + 2) = self->_actionCount;
+    *(toCopy + 84) |= 1u;
   }
 
   if (self->_shortcutIdentifier)
   {
     [v6 setShortcutIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_appBundleIdentifier)
   {
     [v6 setAppBundleIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_activityType)
   {
     [v6 setActivityType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_automationSuggestionsTrialIdentifier)
   {
     [v6 setAutomationSuggestionsTrialIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 81) = self->_showsNotification;
-    *(v4 + 84) |= 4u;
+    *(toCopy + 81) = self->_showsNotification;
+    *(toCopy + 84) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 80) = self->_requiresRuntimeConfirmation;
-    *(v4 + 84) |= 2u;
+    *(toCopy + 80) = self->_requiresRuntimeConfirmation;
+    *(toCopy + 84) |= 2u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_triggerType)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_intentType)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_source)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
     actionCount = self->_actionCount;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_shortcutIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_appBundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_activityType)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_automationSuggestionsTrialIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -474,7 +474,7 @@ LABEL_32:
   {
     showsNotification = self->_showsNotification;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -482,18 +482,18 @@ LABEL_32:
   {
     requiresRuntimeConfirmation = self->_requiresRuntimeConfirmation;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   triggerType = self->_triggerType;
@@ -568,15 +568,15 @@ LABEL_32:
   v8.receiver = self;
   v8.super_class = WFPBAddAutomationEvent;
   v4 = [(WFPBAddAutomationEvent *)&v8 description];
-  v5 = [(WFPBAddAutomationEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFPBAddAutomationEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasRequiresRuntimeConfirmation:(BOOL)a3
+- (void)setHasRequiresRuntimeConfirmation:(BOOL)confirmation
 {
-  if (a3)
+  if (confirmation)
   {
     v3 = 2;
   }
@@ -589,9 +589,9 @@ LABEL_32:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasShowsNotification:(BOOL)a3
+- (void)setHasShowsNotification:(BOOL)notification
 {
-  if (a3)
+  if (notification)
   {
     v3 = 4;
   }

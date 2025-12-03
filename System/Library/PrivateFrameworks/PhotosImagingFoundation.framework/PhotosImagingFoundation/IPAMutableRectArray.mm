@@ -1,17 +1,17 @@
 @interface IPAMutableRectArray
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addRect:(CGRect)a3;
-- (void)insertRect:(CGRect)a3 atIndex:(unint64_t)a4;
-- (void)removeRectAtIndex:(unint64_t)a3;
-- (void)setRectArray:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addRect:(CGRect)rect;
+- (void)insertRect:(CGRect)rect atIndex:(unint64_t)index;
+- (void)removeRectAtIndex:(unint64_t)index;
+- (void)setRectArray:(id)array;
 @end
 
 @implementation IPAMutableRectArray
 
-- (void)removeRectAtIndex:(unint64_t)a3
+- (void)removeRectAtIndex:(unint64_t)index
 {
   imp = self->super._imp;
-  v4 = 32 * a3;
+  v4 = 32 * index;
   v5 = imp[1];
   v6 = *imp + v4;
   v7 = v5 - (v6 + 32);
@@ -23,14 +23,14 @@
   imp[1] = v6 + v7;
 }
 
-- (void)insertRect:(CGRect)a3 atIndex:(unint64_t)a4
+- (void)insertRect:(CGRect)rect atIndex:(unint64_t)index
 {
   imp = self->super._imp;
-  *&v29 = a3.origin.x;
-  *(&v29 + 1) = *&a3.origin.y;
-  *&v30 = a3.size.width;
-  *(&v30 + 1) = *&a3.size.height;
-  v5 = 32 * a4;
+  *&v29 = rect.origin.x;
+  *(&v29 + 1) = *&rect.origin.y;
+  *&v30 = rect.size.width;
+  *(&v30 + 1) = *&rect.size.height;
+  v5 = 32 * index;
   v7 = *imp;
   v6 = imp[1];
   v8 = (v5 + *imp);
@@ -64,21 +64,21 @@
       std::__allocate_at_least[abi:ne200100]<std::allocator<PA::Rect>>(v15);
     }
 
-    v17 = (32 * a4);
+    v17 = (32 * index);
     v18 = v17;
-    if (!a4)
+    if (!index)
     {
       if (!v5)
       {
         std::__allocate_at_least[abi:ne200100]<std::allocator<PA::Rect>>(1uLL);
       }
 
-      v18 = 32 * a4;
+      v18 = 32 * index;
     }
 
     v22 = v30;
     *v17 = v29;
-    *(32 * a4 + 0x10) = v22;
+    *(32 * index + 0x10) = v22;
     v23 = v18 + 32;
     memcpy((v18 + 32), v8, imp[1] - v8);
     v24 = *imp;
@@ -141,23 +141,23 @@
   }
 }
 
-- (void)addRect:(CGRect)a3
+- (void)addRect:(CGRect)rect
 {
   imp = self->super._imp;
-  *&v4 = a3.origin.x;
-  *(&v4 + 1) = *&a3.origin.y;
-  width = a3.size.width;
-  height = a3.size.height;
+  *&v4 = rect.origin.x;
+  *(&v4 + 1) = *&rect.origin.y;
+  width = rect.size.width;
+  height = rect.size.height;
   std::vector<PA::Rect>::push_back[abi:ne200100](imp, &v4);
 }
 
-- (void)setRectArray:(id)a3
+- (void)setRectArray:(id)array
 {
-  v4 = a3;
-  v19 = v4;
-  if (v4)
+  arrayCopy = array;
+  v19 = arrayCopy;
+  if (arrayCopy)
   {
-    v5 = v4[1];
+    v5 = arrayCopy[1];
     imp = self->super._imp;
     if (imp != v5)
     {
@@ -243,9 +243,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [IPARectArray allocWithZone:a3];
+  v4 = [IPARectArray allocWithZone:zone];
 
   return [(IPARectArray *)v4 initWithRectArray:self];
 }

@@ -1,34 +1,34 @@
 @interface PHCarPlayInCallButtonRing
 - (CGSize)intrinsicContentSize;
-- (PHCarPlayInCallButtonRing)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setDimmed:(BOOL)a3;
-- (void)setFillColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setToggledOn:(BOOL)a3;
+- (PHCarPlayInCallButtonRing)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setDimmed:(BOOL)dimmed;
+- (void)setFillColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setToggledOn:(BOOL)on;
 @end
 
 @implementation PHCarPlayInCallButtonRing
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  objc_storeStrong(&self->_fillColor, a3);
+  objc_storeStrong(&self->_fillColor, color);
 
   [(PHCarPlayInCallButtonRing *)self setNeedsDisplay];
 }
 
-- (void)setDimmed:(BOOL)a3
+- (void)setDimmed:(BOOL)dimmed
 {
-  if (self->_dimmed != a3)
+  if (self->_dimmed != dimmed)
   {
     v13 = v7;
     v14 = v4;
     v15 = v3;
-    v9 = a3;
-    self->_dimmed = a3;
+    dimmedCopy = dimmed;
+    self->_dimmed = dimmed;
     if (_UISolariumEnabled())
     {
-      if (v9)
+      if (dimmedCopy)
       {
         v11 = 1.0;
       }
@@ -44,7 +44,7 @@
 
     else
     {
-      if (v9)
+      if (dimmedCopy)
       {
         +[UIColor dynamicCarQuaternaryColor];
       }
@@ -61,13 +61,13 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  self->_highlighted = a3;
+  highlightedCopy = highlighted;
+  self->_highlighted = highlighted;
   if (_UISolariumEnabled())
   {
-    if (v3)
+    if (highlightedCopy)
     {
       v5 = 1.0;
     }
@@ -77,19 +77,19 @@
       v5 = 0.0;
     }
 
-    v6 = [(PHCarPlayInCallButtonRing *)self dimmingView];
-    [v6 setAlpha:v5];
+    dimmingView = [(PHCarPlayInCallButtonRing *)self dimmingView];
+    [dimmingView setAlpha:v5];
   }
 
   [(PHCarPlayInCallButtonRing *)self setNeedsDisplay];
 }
 
-- (void)setToggledOn:(BOOL)a3
+- (void)setToggledOn:(BOOL)on
 {
-  self->_toggledOn = a3;
+  self->_toggledOn = on;
   if (_UISolariumEnabled())
   {
-    if (a3)
+    if (on)
     {
       +[UIColor whiteColor];
     }
@@ -100,7 +100,7 @@
     }
   }
 
-  else if (a3)
+  else if (on)
   {
     +[UIColor dynamicCarPrimaryColor];
   }
@@ -116,21 +116,21 @@
   [(PHCarPlayInCallButtonRing *)self setNeedsDisplay];
 }
 
-- (PHCarPlayInCallButtonRing)initWithFrame:(CGRect)a3
+- (PHCarPlayInCallButtonRing)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v17.receiver = self;
   v17.super_class = PHCarPlayInCallButtonRing;
-  v5 = [(PHCarPlayInCallButtonRing *)&v17 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(PHCarPlayInCallButtonRing *)&v17 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5 && _UISolariumEnabled())
   {
     v6 = [[UIView alloc] initWithFrame:{0.0, 0.0, width, height}];
     glassView = v5->_glassView;
     v5->_glassView = v6;
 
-    v8 = [(UIView *)v5->_glassView layer];
-    [v8 setCornerRadius:width * 0.5];
+    layer = [(UIView *)v5->_glassView layer];
+    [layer setCornerRadius:width * 0.5];
 
     [(UIView *)v5->_glassView applyRegularGlassBackground];
     [(PHCarPlayInCallButtonRing *)v5 addSubview:v5->_glassView];
@@ -138,16 +138,16 @@
     dimmingView = v5->_dimmingView;
     v5->_dimmingView = v9;
 
-    v11 = [(UIView *)v5->_dimmingView layer];
-    [v11 setCornerRadius:width * 0.5];
+    layer2 = [(UIView *)v5->_dimmingView layer];
+    [layer2 setCornerRadius:width * 0.5];
 
     v12 = +[UIColor blackColor];
     v13 = [v12 colorWithAlphaComponent:0.3];
     [(UIView *)v5->_dimmingView setBackgroundColor:v13];
 
     v14 = [CAFilter filterWithType:kCAFilterPlusD];
-    v15 = [(UIView *)v5->_dimmingView layer];
-    [v15 setCompositingFilter:v14];
+    layer3 = [(UIView *)v5->_dimmingView layer];
+    [layer3 setCompositingFilter:v14];
 
     [(UIView *)v5->_dimmingView setAlpha:0.0];
     [(PHCarPlayInCallButtonRing *)v5 addSubview:v5->_dimmingView];
@@ -156,23 +156,23 @@
   return v5;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetLineWidth(CurrentContext, 1.0);
   v7 = +[UIColor whiteColor];
   [v7 setStroke];
 
-  v8 = [(PHCarPlayInCallButtonRing *)self dimmingView];
-  [v8 setBounds:{0.0, 0.0, width, height}];
+  dimmingView = [(PHCarPlayInCallButtonRing *)self dimmingView];
+  [dimmingView setBounds:{0.0, 0.0, width, height}];
 
-  v9 = [(PHCarPlayInCallButtonRing *)self fillColor];
+  fillColor = [(PHCarPlayInCallButtonRing *)self fillColor];
 
-  v10 = [(PHCarPlayInCallButtonRing *)self highlighted];
-  v11 = v10;
-  if (v9)
+  highlighted = [(PHCarPlayInCallButtonRing *)self highlighted];
+  v11 = highlighted;
+  if (fillColor)
   {
     v12 = _UISolariumEnabled();
     if (v11)
@@ -180,8 +180,8 @@
       if (v12)
       {
         glassView = self->_glassView;
-        v14 = [(PHCarPlayInCallButtonRing *)self fillColor];
-        [(UIView *)glassView applyDiscreetRegularGlassBackgroundWithTintColor:v14];
+        fillColor2 = [(PHCarPlayInCallButtonRing *)self fillColor];
+        [(UIView *)glassView applyDiscreetRegularGlassBackgroundWithTintColor:fillColor2];
 LABEL_17:
 
         if ([(PHCarPlayInCallButtonRing *)self selected])
@@ -197,10 +197,10 @@ LABEL_17:
 
           if (_UISolariumEnabled())
           {
-            v23 = [(PHCarPlayInCallButtonRing *)self traitCollection];
-            v24 = [v23 userInterfaceStyle];
+            traitCollection = [(PHCarPlayInCallButtonRing *)self traitCollection];
+            userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-            if (v24 == 2)
+            if (userInterfaceStyle == 2)
             {
               v25 = +[UIColor whiteColor];
               v26 = v25;
@@ -231,8 +231,8 @@ LABEL_17:
           v51.size.height = 49.0;
           CGContextStrokeEllipseInRect(CurrentContext, v51);
           [(UIView *)self->_glassView setFrame:4.0, 4.0, 46.0, 46.0];
-          v28 = [(UIView *)self->_glassView layer];
-          v47 = v28;
+          layer = [(UIView *)self->_glassView layer];
+          v47 = layer;
           v29 = 23.0;
         }
 
@@ -248,17 +248,17 @@ LABEL_17:
           }
 
           [(UIView *)self->_glassView setFrame:1.0, 1.0, 52.0, 52.0];
-          v28 = [(UIView *)self->_glassView layer];
-          v47 = v28;
+          layer = [(UIView *)self->_glassView layer];
+          v47 = layer;
           v29 = 26.0;
         }
 
-        [v28 setCornerRadius:v29];
+        [layer setCornerRadius:v29];
         goto LABEL_33;
       }
 
-      v19 = [(PHCarPlayInCallButtonRing *)self fillColor];
-      v14 = v19;
+      fillColor3 = [(PHCarPlayInCallButtonRing *)self fillColor];
+      fillColor2 = fillColor3;
       v20 = 0.5;
     }
 
@@ -266,27 +266,27 @@ LABEL_17:
     {
       if (!v12)
       {
-        v14 = [(PHCarPlayInCallButtonRing *)self fillColor];
-        [v14 set];
+        fillColor2 = [(PHCarPlayInCallButtonRing *)self fillColor];
+        [fillColor2 set];
         goto LABEL_17;
       }
 
       v17 = self->_glassView;
-      v18 = [(PHCarPlayInCallButtonRing *)self fillColor];
-      [(UIView *)v17 applyDiscreetRegularGlassBackgroundWithTintColor:v18];
+      fillColor4 = [(PHCarPlayInCallButtonRing *)self fillColor];
+      [(UIView *)v17 applyDiscreetRegularGlassBackgroundWithTintColor:fillColor4];
 
-      v19 = +[UIColor blackColor];
-      v14 = v19;
+      fillColor3 = +[UIColor blackColor];
+      fillColor2 = fillColor3;
       v20 = 0.0;
     }
 
-    v21 = [v19 colorWithAlphaComponent:v20];
+    v21 = [fillColor3 colorWithAlphaComponent:v20];
     [v21 set];
 
     goto LABEL_17;
   }
 
-  if (v10)
+  if (highlighted)
   {
     if (_UISolariumEnabled())
     {
@@ -327,9 +327,9 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  v31 = [(PHCarPlayInCallButtonRing *)self dimmed];
+  dimmed = [(PHCarPlayInCallButtonRing *)self dimmed];
   v32 = _UISolariumEnabled();
-  if (v31)
+  if (dimmed)
   {
     if (v32)
     {

@@ -1,25 +1,25 @@
 @interface ParkedCarWaypointComplicationDataSource
-- (ParkedCarWaypointComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (id)_newTemplateWithAlwaysOn:(BOOL)a3;
+- (ParkedCarWaypointComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (id)_newTemplateWithAlwaysOn:(BOOL)on;
 - (id)alwaysOnTemplate;
 - (id)sampleTemplate;
 - (void)_monitorParkedCarEvents;
 - (void)_startMonitoringVehicleEvents;
 - (void)_stopMonitoringVehicleEvents;
-- (void)_updateParkedCarWaypointWith:(id)a3 withError:(id)a4;
+- (void)_updateParkedCarWaypointWith:(id)with withError:(id)error;
 - (void)becomeActive;
 - (void)becomeInactive;
 - (void)dealloc;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
 @end
 
 @implementation ParkedCarWaypointComplicationDataSource
 
-- (ParkedCarWaypointComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (ParkedCarWaypointComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v25.receiver = self;
   v25.super_class = ParkedCarWaypointComplicationDataSource;
-  v5 = [(SmartWaypointComplicationDataSource *)&v25 initWithComplication:a3 family:a4 forDevice:a5];
+  v5 = [(SmartWaypointComplicationDataSource *)&v25 initWithComplication:complication family:family forDevice:device];
   v6 = objc_alloc_init(MEMORY[0x277D01280]);
   routineManager = v5->_routineManager;
   v5->_routineManager = v6;
@@ -60,10 +60,10 @@
   [(SmartWaypointComplicationDataSource *)&v5 becomeInactive];
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  handlerCopy = handler;
   v10 = objc_msgSend_sharedComplicationManager(NCWaypointManager, v7, v8, v9);
   v14 = objc_msgSend_parkedCarWaypoint(v10, v11, v12, v13);
   if (v14)
@@ -101,7 +101,7 @@ LABEL_6:
     _os_log_impl(&dword_23BD26000, v39, OS_LOG_TYPE_DEFAULT, "%s: launch url is %@", buf, 0x16u);
   }
 
-  v6[2](v6, v38);
+  handlerCopy[2](handlerCopy, v38);
 }
 
 - (void)_monitorParkedCarEvents
@@ -144,16 +144,16 @@ LABEL_6:
   }
 }
 
-- (void)_updateParkedCarWaypointWith:(id)a3 withError:(id)a4
+- (void)_updateParkedCarWaypointWith:(id)with withError:(id)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v11 = v7;
-  if (v6 && !v7 && objc_msgSend_count(v6, v8, v9, v10))
+  withCopy = with;
+  errorCopy = error;
+  v11 = errorCopy;
+  if (withCopy && !errorCopy && objc_msgSend_count(withCopy, v8, v9, v10))
   {
     self->_hasVehicleEvents = 1;
-    v15 = objc_msgSend_firstObject(v6, v12, v13, v14);
+    v15 = objc_msgSend_firstObject(withCopy, v12, v13, v14);
     v16 = objc_alloc(MEMORY[0x277CE41F8]);
     v20 = objc_msgSend_location(v15, v17, v18, v19);
     objc_msgSend_latitude(v20, v21, v22, v23);
@@ -206,9 +206,9 @@ LABEL_6:
   return v3;
 }
 
-- (id)_newTemplateWithAlwaysOn:(BOOL)a3
+- (id)_newTemplateWithAlwaysOn:(BOOL)on
 {
-  if ((objc_msgSend__complicationTargetingIsActive(self, a2, a3, v3) & 1) == 0)
+  if ((objc_msgSend__complicationTargetingIsActive(self, a2, on, v3) & 1) == 0)
   {
     v9 = 1;
     if (!self->_hasVehicleEvents)
@@ -244,7 +244,7 @@ LABEL_6:
   v48 = objc_msgSend_copy(v44, v45, v46, v47);
   v52 = objc_msgSend_calibrated(self, v49, v50, v51);
   BYTE2(v56) = 0;
-  BYTE1(v56) = a3;
+  BYTE1(v56) = on;
   LOBYTE(v56) = v9;
   v54 = objc_msgSend__templateWithWaypoint_location_heading_altitude_deviceCalibrated_showNoData_showInactiveState_showAlwaysOnState_showPrivacyOnState_(self, v53, v24, v32, v40, v48, v52, 0, v56);
 

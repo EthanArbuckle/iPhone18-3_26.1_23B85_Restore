@@ -1,11 +1,11 @@
 @interface ICCalculateHighlightAttribute
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ICCalculateHighlightAttribute)init;
 - (NSArray)suggestions;
 - (NSString)tooltip;
 - (UIColor)color;
 - (UIColor)underlineColor;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)underlineStyle;
 - (unint64_t)hash;
@@ -22,9 +22,9 @@
   if (v2)
   {
     v2->_type = 0;
-    v4 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     errors = v3->_errors;
-    v3->_errors = v4;
+    v3->_errors = array;
   }
 
   return v3;
@@ -35,42 +35,42 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICCalculateHighlightAttribute *)self type];
+  type = [(ICCalculateHighlightAttribute *)self type];
   v7 = @"None";
-  if (v6 == 1)
+  if (type == 1)
   {
     v7 = @"Variable";
   }
 
-  if (v6 == 2)
+  if (type == 2)
   {
     v7 = @"Result";
   }
 
   v8 = v7;
-  v9 = [(ICCalculateHighlightAttribute *)self errors];
-  v10 = [v3 stringWithFormat:@"<%@: %p, type: %@, errors: %@>", v5, self, v8, v9];
+  errors = [(ICCalculateHighlightAttribute *)self errors];
+  v10 = [v3 stringWithFormat:@"<%@: %p, type: %@, errors: %@>", v5, self, v8, errors];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = ICDynamicCast();
 
-  v6 = [v5 type];
-  if (v6 == [(ICCalculateHighlightAttribute *)self type])
+  type = [v5 type];
+  if (type == [(ICCalculateHighlightAttribute *)self type])
   {
-    v7 = [v5 errors];
-    v8 = [(ICCalculateHighlightAttribute *)self errors];
-    v9 = [v7 isEqual:v8];
+    errors = [v5 errors];
+    errors2 = [(ICCalculateHighlightAttribute *)self errors];
+    v9 = [errors isEqual:errors2];
   }
 
   else
@@ -86,7 +86,7 @@
   v28 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[ICCalculateHighlightAttribute type](self, "type")}];
   v4 = [v3 hash];
-  v5 = [(ICCalculateHighlightAttribute *)self errors];
+  errors = [(ICCalculateHighlightAttribute *)self errors];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v7 hash];
@@ -95,7 +95,7 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v5;
+  v9 = errors;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -123,12 +123,12 @@
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ICCalculateHighlightAttribute allocWithZone:?]];
   [(ICCalculateHighlightAttribute *)v4 setType:[(ICCalculateHighlightAttribute *)self type]];
-  v5 = [(ICCalculateHighlightAttribute *)self errors];
-  v6 = [v5 copy];
+  errors = [(ICCalculateHighlightAttribute *)self errors];
+  v6 = [errors copy];
   [(ICCalculateHighlightAttribute *)v4 setErrors:v6];
 
   return v4;
@@ -138,15 +138,15 @@
 {
   if ([(ICCalculateHighlightAttribute *)self type]== 1)
   {
-    v2 = [MEMORY[0x1E69DC888] ICControlAccentColor];
+    iCControlAccentColor = [MEMORY[0x1E69DC888] ICControlAccentColor];
   }
 
   else
   {
-    v2 = 0;
+    iCControlAccentColor = 0;
   }
 
-  return v2;
+  return iCControlAccentColor;
 }
 
 - (int64_t)underlineStyle
@@ -166,8 +166,8 @@
 {
   if (ICInternalSettingsIsMathDebugHighlightingEnabled())
   {
-    v3 = [(ICCalculateHighlightAttribute *)self errors];
-    if ([v3 count])
+    errors = [(ICCalculateHighlightAttribute *)self errors];
+    if ([errors count])
     {
       [MEMORY[0x1E69DC888] systemRedColor];
     }
@@ -189,13 +189,13 @@
 
 - (NSString)tooltip
 {
-  v3 = [(ICCalculateHighlightAttribute *)self errors];
-  v4 = [v3 count];
+  errors = [(ICCalculateHighlightAttribute *)self errors];
+  v4 = [errors count];
 
   if (v4)
   {
-    v5 = [(ICCalculateHighlightAttribute *)self errors];
-    v6 = [v5 ic_map:&__block_literal_global_69];
+    errors2 = [(ICCalculateHighlightAttribute *)self errors];
+    v6 = [errors2 ic_map:&__block_literal_global_69];
     v7 = [v6 componentsJoinedByString:{@", "}];
   }
 
@@ -209,8 +209,8 @@
 
 - (NSArray)suggestions
 {
-  v2 = [(ICCalculateHighlightAttribute *)self errors];
-  v3 = [v2 ic_flatMap:&__block_literal_global_29_0];
+  errors = [(ICCalculateHighlightAttribute *)self errors];
+  v3 = [errors ic_flatMap:&__block_literal_global_29_0];
 
   return v3;
 }

@@ -1,14 +1,14 @@
 @interface CSDPTTServiceUpdatePushBudgetTUDefaultsDataSource
-- (id)serviceUpdatePushBudgetForApplication:(id)a3;
-- (void)removeApplicationFromPTTServiceUpdateBudget:(id)a3;
-- (void)saveServiceUpdatePushBudget:(id)a3;
+- (id)serviceUpdatePushBudgetForApplication:(id)application;
+- (void)removeApplicationFromPTTServiceUpdateBudget:(id)budget;
+- (void)saveServiceUpdatePushBudget:(id)budget;
 @end
 
 @implementation CSDPTTServiceUpdatePushBudgetTUDefaultsDataSource
 
-- (id)serviceUpdatePushBudgetForApplication:(id)a3
+- (id)serviceUpdatePushBudgetForApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = +[NSUserDefaults tu_defaults];
   v5 = [v4 objectForKey:@"CSDPTTServiceUpdateMessageBudgetKey"];
 
@@ -23,8 +23,8 @@
   }
 
   v7 = v6;
-  v8 = [v3 bundleIdentifier];
-  v9 = [v7 objectForKey:v8];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  v9 = [v7 objectForKey:bundleIdentifier];
 
   if (v9 && [v9 length])
   {
@@ -52,18 +52,18 @@
   }
 
   v14 = [CSDPTTServiceUpdatePushBudget alloc];
-  v15 = [v3 bundleIdentifier];
+  bundleIdentifier2 = [applicationCopy bundleIdentifier];
   v16 = +[NSDate date];
-  v10 = [(CSDPTTServiceUpdatePushBudget *)v14 initWithApplicationBundleIdentifier:v15 budgetStartTime:v16 serviceUpdatesDelivered:0];
+  v10 = [(CSDPTTServiceUpdatePushBudget *)v14 initWithApplicationBundleIdentifier:bundleIdentifier2 budgetStartTime:v16 serviceUpdatesDelivered:0];
 
 LABEL_13:
 
   return v10;
 }
 
-- (void)saveServiceUpdatePushBudget:(id)a3
+- (void)saveServiceUpdatePushBudget:(id)budget
 {
-  v3 = a3;
+  budgetCopy = budget;
   v4 = +[NSUserDefaults tu_defaults];
   v5 = [v4 objectForKey:@"CSDPTTServiceUpdateMessageBudgetKey"];
 
@@ -79,13 +79,13 @@ LABEL_13:
 
   v7 = v6;
   v13 = 0;
-  v8 = [v3 archivedDataWithError:&v13];
+  v8 = [budgetCopy archivedDataWithError:&v13];
   v9 = v13;
   v10 = v9;
   if (v8)
   {
-    v11 = [v3 applicationBundleIdentifier];
-    [v7 setObject:v8 forKey:v11];
+    applicationBundleIdentifier = [budgetCopy applicationBundleIdentifier];
+    [v7 setObject:v8 forKey:applicationBundleIdentifier];
 
     v12 = +[NSUserDefaults tu_defaults];
     [v12 setObject:v7 forKey:@"CSDPTTServiceUpdateMessageBudgetKey"];
@@ -108,20 +108,20 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)removeApplicationFromPTTServiceUpdateBudget:(id)a3
+- (void)removeApplicationFromPTTServiceUpdateBudget:(id)budget
 {
-  v10 = a3;
+  budgetCopy = budget;
   v3 = +[NSUserDefaults tu_defaults];
   v4 = [v3 objectForKey:@"CSDPTTServiceUpdateMessageBudgetKey"];
 
-  v5 = [v10 bundleIdentifier];
-  v6 = [v4 objectForKey:v5];
+  bundleIdentifier = [budgetCopy bundleIdentifier];
+  v6 = [v4 objectForKey:bundleIdentifier];
 
   if (v6)
   {
     v7 = [v4 mutableCopy];
-    v8 = [v10 bundleIdentifier];
-    [v7 removeObjectForKey:v8];
+    bundleIdentifier2 = [budgetCopy bundleIdentifier];
+    [v7 removeObjectForKey:bundleIdentifier2];
 
     v9 = +[NSUserDefaults tu_defaults];
     [v9 setObject:v7 forKey:@"CSDPTTServiceUpdateMessageBudgetKey"];

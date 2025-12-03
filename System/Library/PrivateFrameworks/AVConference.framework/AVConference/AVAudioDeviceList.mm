@@ -1,6 +1,6 @@
 @interface AVAudioDeviceList
-+ (id)deviceForDeviceID:(unsigned int)a3;
-+ (id)deviceForUID:(id)a3;
++ (id)deviceForDeviceID:(unsigned int)d;
++ (id)deviceForUID:(id)d;
 - (AVAudioDeviceList)init;
 - (id)devices;
 - (id)inputDevices;
@@ -10,7 +10,7 @@
 
 @implementation AVAudioDeviceList
 
-+ (id)deviceForUID:(id)a3
++ (id)deviceForUID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(AVAudioDeviceList);
@@ -18,8 +18,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(AVAudioDeviceList *)v4 devices];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  devices = [(AVAudioDeviceList *)v4 devices];
+  v6 = [devices countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v6)
   {
     v7 = v6;
@@ -30,7 +30,7 @@ LABEL_3:
     {
       if (*v15 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(devices);
       }
 
       v10 = *(*(&v14 + 1) + 8 * v9);
@@ -41,7 +41,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+        v7 = [devices countByEnumeratingWithState:&v14 objects:v13 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -63,7 +63,7 @@ LABEL_9:
   return v10;
 }
 
-+ (id)deviceForDeviceID:(unsigned int)a3
++ (id)deviceForDeviceID:(unsigned int)d
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(AVAudioDeviceList);
@@ -71,8 +71,8 @@ LABEL_9:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(AVAudioDeviceList *)v4 devices];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  devices = [(AVAudioDeviceList *)v4 devices];
+  v6 = [devices countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v6)
   {
     v7 = v6;
@@ -83,18 +83,18 @@ LABEL_3:
     {
       if (*v15 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(devices);
       }
 
       v10 = *(*(&v14 + 1) + 8 * v9);
-      if ([objc_msgSend(v10 "deviceID")] == a3)
+      if ([objc_msgSend(v10 "deviceID")] == d)
       {
         break;
       }
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v13 count:16];
+        v7 = [devices countByEnumeratingWithState:&v14 objects:v13 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -143,12 +143,12 @@ LABEL_9:
 - (id)devices
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(AVInternalDeviceList *)self->_internalList deviceList];
+  deviceList = [(AVInternalDeviceList *)self->_internalList deviceList];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     __str = 0;
     v4 = [-[AVAudioDeviceList description](self "description")];
-    v5 = v3 ? [objc_msgSend(v3 "description")] : "<nil>";
+    v5 = deviceList ? [objc_msgSend(deviceList "description")] : "<nil>";
     asprintf(&__str, "self=%s devices=%s", v4, v5);
     if (__str)
     {
@@ -185,14 +185,14 @@ LABEL_9:
     }
   }
 
-  return v3;
+  return deviceList;
 }
 
 - (id)inputDevices
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(AVInternalDeviceList *)self->_internalList deviceList];
-  v4 = [v3 objectsAtIndexes:{objc_msgSend(v3, "indexesOfObjectsPassingTest:", &__block_literal_global_62)}];
+  deviceList = [(AVInternalDeviceList *)self->_internalList deviceList];
+  v4 = [deviceList objectsAtIndexes:{objc_msgSend(deviceList, "indexesOfObjectsPassingTest:", &__block_literal_global_62)}];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     __str = 0;
@@ -279,8 +279,8 @@ uint64_t __33__AVAudioDeviceList_inputDevices__block_invoke(uint64_t a1, void *a
 - (id)outputDevices
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(AVInternalDeviceList *)self->_internalList deviceList];
-  v4 = [v3 objectsAtIndexes:{objc_msgSend(v3, "indexesOfObjectsPassingTest:", &__block_literal_global_110)}];
+  deviceList = [(AVInternalDeviceList *)self->_internalList deviceList];
+  v4 = [deviceList objectsAtIndexes:{objc_msgSend(deviceList, "indexesOfObjectsPassingTest:", &__block_literal_global_110)}];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     __str = 0;

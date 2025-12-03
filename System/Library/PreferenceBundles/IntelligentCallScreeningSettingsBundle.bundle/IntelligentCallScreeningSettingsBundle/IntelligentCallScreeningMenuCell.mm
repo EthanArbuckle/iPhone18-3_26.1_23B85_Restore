@@ -1,18 +1,18 @@
 @interface IntelligentCallScreeningMenuCell
-- (IntelligentCallScreeningMenuCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (IntelligentCallScreeningMenuCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)visibleTrailingViewForState;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)setUpViews;
 - (void)updateViews;
 @end
 
 @implementation IntelligentCallScreeningMenuCell
 
-- (IntelligentCallScreeningMenuCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (IntelligentCallScreeningMenuCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = IntelligentCallScreeningMenuCell;
-  v4 = [(IntelligentCallScreeningMenuCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(IntelligentCallScreeningMenuCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -97,35 +97,35 @@
     [(UIStackView *)self->_mainStackView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)self->_mainStackView setSpacing:1.17549435e-38];
     [(UIStackView *)self->_mainStackView setCustomSpacing:self->_labelsStackView afterView:16.0];
-    v33 = [(IntelligentCallScreeningMenuCell *)self contentView];
-    [v33 addSubview:self->_mainStackView];
+    contentView = [(IntelligentCallScreeningMenuCell *)self contentView];
+    [contentView addSubview:self->_mainStackView];
 
-    v55 = [(UIStackView *)self->_mainStackView leadingAnchor];
-    v56 = [(IntelligentCallScreeningMenuCell *)self contentView];
-    v54 = [v56 layoutMarginsGuide];
-    v53 = [v54 leadingAnchor];
-    v52 = [v55 constraintEqualToAnchor:v53];
+    leadingAnchor = [(UIStackView *)self->_mainStackView leadingAnchor];
+    contentView2 = [(IntelligentCallScreeningMenuCell *)self contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v52 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v58[0] = v52;
-    v50 = [(UIStackView *)self->_mainStackView trailingAnchor];
-    v51 = [(IntelligentCallScreeningMenuCell *)self contentView];
-    v49 = [v51 layoutMarginsGuide];
-    v48 = [v49 trailingAnchor];
-    v47 = [v50 constraintEqualToAnchor:v48];
+    trailingAnchor = [(UIStackView *)self->_mainStackView trailingAnchor];
+    contentView3 = [(IntelligentCallScreeningMenuCell *)self contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v47 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v58[1] = v47;
-    v45 = [(UIStackView *)self->_mainStackView topAnchor];
-    v46 = [(IntelligentCallScreeningMenuCell *)self contentView];
-    v44 = [v46 layoutMarginsGuide];
-    v34 = [v44 topAnchor];
-    v35 = [v45 constraintEqualToAnchor:v34];
+    topAnchor = [(UIStackView *)self->_mainStackView topAnchor];
+    contentView4 = [(IntelligentCallScreeningMenuCell *)self contentView];
+    layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide3 topAnchor];
+    v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v58[2] = v35;
-    v36 = [(UIStackView *)self->_mainStackView bottomAnchor];
-    v37 = [(IntelligentCallScreeningMenuCell *)self contentView];
-    v38 = [v37 layoutMarginsGuide];
-    v39 = [v38 bottomAnchor];
-    v40 = [v36 constraintEqualToAnchor:v39];
+    bottomAnchor = [(UIStackView *)self->_mainStackView bottomAnchor];
+    contentView5 = [(IntelligentCallScreeningMenuCell *)self contentView];
+    layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+    v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v58[3] = v40;
-    v41 = [(UIView *)self->_trailingContainerView widthAnchor];
-    v42 = [v41 constraintEqualToConstant:20.0];
+    widthAnchor = [(UIView *)self->_trailingContainerView widthAnchor];
+    v42 = [widthAnchor constraintEqualToConstant:20.0];
     v58[4] = v42;
     v43 = [NSArray arrayWithObjects:v58 count:5];
     [NSLayoutConstraint activateConstraints:v43];
@@ -136,8 +136,8 @@
 {
   [(UILabel *)self->_primaryLabel setText:self->_primaryText];
   [(UILabel *)self->_secondaryLabel setText:self->_secondaryText];
-  v3 = [(UILabel *)self->_secondaryLabel text];
-  v4 = [v3 length];
+  text = [(UILabel *)self->_secondaryLabel text];
+  v4 = [text length];
 
   if (v4)
   {
@@ -149,18 +149,18 @@
     [(UILabel *)self->_secondaryLabel removeFromSuperview];
   }
 
-  v5 = [(IntelligentCallScreeningMenuCell *)self visibleTrailingViewForState];
-  v6 = [(UIView *)self->_trailingContainerView subviews];
-  v7 = [v6 firstObject];
+  visibleTrailingViewForState = [(IntelligentCallScreeningMenuCell *)self visibleTrailingViewForState];
+  subviews = [(UIView *)self->_trailingContainerView subviews];
+  firstObject = [subviews firstObject];
 
-  if (v5 != v7)
+  if (visibleTrailingViewForState != firstObject)
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v8 = [(UIView *)self->_trailingContainerView subviews];
-    v9 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    subviews2 = [(UIView *)self->_trailingContainerView subviews];
+    v9 = [subviews2 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v9)
     {
       v10 = v9;
@@ -172,7 +172,7 @@
         {
           if (*v32 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subviews2);
           }
 
           [*(*(&v31 + 1) + 8 * v12) removeFromSuperview];
@@ -180,39 +180,39 @@
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v10 = [subviews2 countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v10);
     }
 
-    if (v5)
+    if (visibleTrailingViewForState)
     {
-      [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [visibleTrailingViewForState setTranslatesAutoresizingMaskIntoConstraints:0];
       LODWORD(v13) = 1148846080;
-      [v5 setContentCompressionResistancePriority:1 forAxis:v13];
+      [visibleTrailingViewForState setContentCompressionResistancePriority:1 forAxis:v13];
       LODWORD(v14) = 1148846080;
-      [v5 setContentCompressionResistancePriority:0 forAxis:v14];
-      [(UIView *)self->_trailingContainerView addSubview:v5];
-      v30 = [v5 leadingAnchor];
-      v29 = [(UIView *)self->_trailingContainerView leadingAnchor];
-      v28 = [v30 constraintGreaterThanOrEqualToAnchor:v29];
+      [visibleTrailingViewForState setContentCompressionResistancePriority:0 forAxis:v14];
+      [(UIView *)self->_trailingContainerView addSubview:visibleTrailingViewForState];
+      leadingAnchor = [visibleTrailingViewForState leadingAnchor];
+      leadingAnchor2 = [(UIView *)self->_trailingContainerView leadingAnchor];
+      v28 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
       v35[0] = v28;
-      v27 = [v5 trailingAnchor];
-      v26 = [(UIView *)self->_trailingContainerView trailingAnchor];
-      v25 = [v27 constraintLessThanOrEqualToAnchor:v26];
+      trailingAnchor = [visibleTrailingViewForState trailingAnchor];
+      trailingAnchor2 = [(UIView *)self->_trailingContainerView trailingAnchor];
+      v25 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
       v35[1] = v25;
-      v24 = [v5 centerXAnchor];
-      v15 = [(UIView *)self->_trailingContainerView centerXAnchor];
-      v16 = [v24 constraintEqualToAnchor:v15];
+      centerXAnchor = [visibleTrailingViewForState centerXAnchor];
+      centerXAnchor2 = [(UIView *)self->_trailingContainerView centerXAnchor];
+      v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v35[2] = v16;
-      v17 = [v5 topAnchor];
-      v18 = [(UIView *)self->_trailingContainerView topAnchor];
-      v19 = [v17 constraintEqualToAnchor:v18];
+      topAnchor = [visibleTrailingViewForState topAnchor];
+      topAnchor2 = [(UIView *)self->_trailingContainerView topAnchor];
+      v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v35[3] = v19;
-      v20 = [v5 bottomAnchor];
-      v21 = [(UIView *)self->_trailingContainerView bottomAnchor];
-      v22 = [v20 constraintEqualToAnchor:v21];
+      bottomAnchor = [visibleTrailingViewForState bottomAnchor];
+      bottomAnchor2 = [(UIView *)self->_trailingContainerView bottomAnchor];
+      v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v35[4] = v22;
       v23 = [NSArray arrayWithObjects:v35 count:5];
       [NSLayoutConstraint activateConstraints:v23];
@@ -235,27 +235,27 @@
   return v3;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v14.receiver = self;
   v14.super_class = IntelligentCallScreeningMenuCell;
-  v4 = a3;
-  [(IntelligentCallScreeningMenuCell *)&v14 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 objectForKeyedSubscript:{@"specifier-checked", v14.receiver, v14.super_class}];
+  specifierCopy = specifier;
+  [(IntelligentCallScreeningMenuCell *)&v14 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy objectForKeyedSubscript:{@"specifier-checked", v14.receiver, v14.super_class}];
   self->_hasCheckmark = [v5 BOOLValue];
 
-  v6 = [v4 objectForKeyedSubscript:PSTitleKey];
-  v7 = [v6 stringValue];
+  v6 = [specifierCopy objectForKeyedSubscript:PSTitleKey];
+  stringValue = [v6 stringValue];
 
-  v8 = [v4 objectForKeyedSubscript:PSTableCellSubtitleTextKey];
+  v8 = [specifierCopy objectForKeyedSubscript:PSTableCellSubtitleTextKey];
 
-  v9 = [v8 stringValue];
+  stringValue2 = [v8 stringValue];
 
-  v10 = [IntelligentCallScreeningMenuCellOption localizedStringForKey:v7];
+  v10 = [IntelligentCallScreeningMenuCellOption localizedStringForKey:stringValue];
   primaryText = self->_primaryText;
   self->_primaryText = v10;
 
-  v12 = [IntelligentCallScreeningMenuCellOption localizedStringForKey:v9];
+  v12 = [IntelligentCallScreeningMenuCellOption localizedStringForKey:stringValue2];
   secondaryText = self->_secondaryText;
   self->_secondaryText = v12;
 

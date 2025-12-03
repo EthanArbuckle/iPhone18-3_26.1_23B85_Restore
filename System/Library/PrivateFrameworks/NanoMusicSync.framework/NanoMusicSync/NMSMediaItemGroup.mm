@@ -1,13 +1,13 @@
 @interface NMSMediaItemGroup
-+ (NMSMediaItemGroup)itemGroupWithQuotaRefObj:(id)a3;
-+ (id)_itemsForContainerClass:(Class)a3 containerIDs:(id)a4 includingNonLibraryContent:(BOOL)a5 includingDownloadedContentOnly:(BOOL)a6 manuallyAdded:(BOOL)a7;
++ (NMSMediaItemGroup)itemGroupWithQuotaRefObj:(id)obj;
++ (id)_itemsForContainerClass:(Class)class containerIDs:(id)ds includingNonLibraryContent:(BOOL)content includingDownloadedContentOnly:(BOOL)only manuallyAdded:(BOOL)added;
 + (id)sharedLibraryRequestQueue;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContainer:(id)a3;
-- (NMSMediaItemGroup)initWithType:(unint64_t)a3 refObj:(id)a4 manuallyAdded:(BOOL)a5 quotaRefObj:(id)a6 downloadedItemsOnly:(BOOL)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContainer:(id)container;
+- (NMSMediaItemGroup)initWithType:(unint64_t)type refObj:(id)obj manuallyAdded:(BOOL)added quotaRefObj:(id)refObj downloadedItemsOnly:(BOOL)only;
 - (id)description;
 - (id)identifiers;
-- (id)identifiersForContainerType:(unint64_t)a3;
+- (id)identifiersForContainerType:(unint64_t)type;
 - (id)itemList;
 - (unint64_t)hash;
 - (void)itemList;
@@ -40,20 +40,20 @@ uint64_t __46__NMSMediaItemGroup_sharedLibraryRequestQueue__block_invoke()
   return [v2 setQualityOfService:-1];
 }
 
-- (NMSMediaItemGroup)initWithType:(unint64_t)a3 refObj:(id)a4 manuallyAdded:(BOOL)a5 quotaRefObj:(id)a6 downloadedItemsOnly:(BOOL)a7
+- (NMSMediaItemGroup)initWithType:(unint64_t)type refObj:(id)obj manuallyAdded:(BOOL)added quotaRefObj:(id)refObj downloadedItemsOnly:(BOOL)only
 {
-  v13 = a4;
-  v14 = a6;
+  objCopy = obj;
+  refObjCopy = refObj;
   v21.receiver = self;
   v21.super_class = NMSMediaItemGroup;
   v15 = [(NMSMediaItemGroup *)&v21 init];
   v16 = v15;
   if (v15)
   {
-    v15->_type = a3;
-    objc_storeStrong(&v15->_referenceObj, a4);
-    v16->_manuallyAdded = a5;
-    if (!v14)
+    v15->_type = type;
+    objc_storeStrong(&v15->_referenceObj, obj);
+    v16->_manuallyAdded = added;
+    if (!refObjCopy)
     {
       v17 = NMLogForCategory(5);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -66,22 +66,22 @@ uint64_t __46__NMSMediaItemGroup_sharedLibraryRequestQueue__block_invoke()
     quotaData = v16->_quotaData;
     v16->_quotaData = v18;
 
-    [(NMSMediaContainerQuotaData *)v16->_quotaData setQuotaRefObj:v14];
-    v16->_downloadedItemsOnly = a7;
+    [(NMSMediaContainerQuotaData *)v16->_quotaData setQuotaRefObj:refObjCopy];
+    v16->_downloadedItemsOnly = only;
   }
 
   return v16;
 }
 
-- (BOOL)isEqualToContainer:(id)a3
+- (BOOL)isEqualToContainer:(id)container
 {
-  v4 = a3;
-  v5 = [(NMSMediaItemGroup *)self type];
-  if (v5 == [v4 type])
+  containerCopy = container;
+  type = [(NMSMediaItemGroup *)self type];
+  if (type == [containerCopy type])
   {
-    v6 = [(NMSMediaItemGroup *)self referenceObj];
-    v7 = [v4 referenceObj];
-    v8 = [v6 isEqual:v7];
+    referenceObj = [(NMSMediaItemGroup *)self referenceObj];
+    referenceObj2 = [containerCopy referenceObj];
+    v8 = [referenceObj isEqual:referenceObj2];
   }
 
   else
@@ -92,18 +92,18 @@ uint64_t __46__NMSMediaItemGroup_sharedLibraryRequestQueue__block_invoke()
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(NMSMediaItemGroup *)self isEqualToContainer:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(NMSMediaItemGroup *)self isEqualToContainer:v5];
   }
 
   return v6;
@@ -111,8 +111,8 @@ uint64_t __46__NMSMediaItemGroup_sharedLibraryRequestQueue__block_invoke()
 
 - (unint64_t)hash
 {
-  v2 = [(NMSMediaItemGroup *)self referenceObj];
-  v3 = [v2 hash];
+  referenceObj = [(NMSMediaItemGroup *)self referenceObj];
+  v3 = [referenceObj hash];
 
   return v3;
 }
@@ -123,21 +123,21 @@ uint64_t __46__NMSMediaItemGroup_sharedLibraryRequestQueue__block_invoke()
   v9.receiver = self;
   v9.super_class = NMSMediaItemGroup;
   v4 = [(NMSMediaItemGroup *)&v9 description];
-  v5 = [(NMSMediaItemGroup *)self type];
-  v6 = [(NMSMediaItemGroup *)self referenceObj];
-  v7 = [v3 stringWithFormat:@"<%@ type:%tu, refObj:%@>", v4, v5, v6];
+  type = [(NMSMediaItemGroup *)self type];
+  referenceObj = [(NMSMediaItemGroup *)self referenceObj];
+  v7 = [v3 stringWithFormat:@"<%@ type:%tu, refObj:%@>", v4, type, referenceObj];
 
   return v7;
 }
 
 - (id)identifiers
 {
-  v3 = [(NMSMediaItemGroup *)self type];
+  type = [(NMSMediaItemGroup *)self type];
 
-  return [(NMSMediaItemGroup *)self identifiersForContainerType:v3];
+  return [(NMSMediaItemGroup *)self identifiersForContainerType:type];
 }
 
-- (id)identifiersForContainerType:(unint64_t)a3
+- (id)identifiersForContainerType:(unint64_t)type
 {
   v3 = NMLogForCategory(5);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -150,42 +150,42 @@ uint64_t __46__NMSMediaItemGroup_sharedLibraryRequestQueue__block_invoke()
 
 - (id)itemList
 {
-  v3 = [(NMSMediaItemGroup *)self type];
-  if (v3 - 2 >= 6)
+  type = [(NMSMediaItemGroup *)self type];
+  if (type - 2 >= 6)
   {
-    if (v3 == 1)
+    if (type == 1)
     {
       v15 = objc_opt_class();
       v16 = objc_opt_class();
-      v8 = [(NMSMediaItemGroup *)self identifiers];
-      v9 = [(NMSMediaItemGroup *)self downloadedItemsOnly];
-      v10 = [(NMSMediaItemGroup *)self manuallyAdded];
+      identifiers = [(NMSMediaItemGroup *)self identifiers];
+      downloadedItemsOnly = [(NMSMediaItemGroup *)self downloadedItemsOnly];
+      manuallyAdded = [(NMSMediaItemGroup *)self manuallyAdded];
       v11 = v15;
       v12 = v16;
-      v13 = v8;
+      v13 = identifiers;
       v14 = 0;
     }
 
     else
     {
-      if (v3)
+      if (type)
       {
-        v5 = 0;
+        array = 0;
         goto LABEL_11;
       }
 
       v6 = objc_opt_class();
       v7 = objc_opt_class();
-      v8 = [(NMSMediaItemGroup *)self identifiers];
-      v9 = [(NMSMediaItemGroup *)self downloadedItemsOnly];
-      v10 = [(NMSMediaItemGroup *)self manuallyAdded];
+      identifiers = [(NMSMediaItemGroup *)self identifiers];
+      downloadedItemsOnly = [(NMSMediaItemGroup *)self downloadedItemsOnly];
+      manuallyAdded = [(NMSMediaItemGroup *)self manuallyAdded];
       v11 = v6;
       v12 = v7;
-      v13 = v8;
+      v13 = identifiers;
       v14 = 1;
     }
 
-    v5 = [v11 _itemsForContainerClass:v12 containerIDs:v13 includingNonLibraryContent:v14 includingDownloadedContentOnly:v9 manuallyAdded:v10];
+    array = [v11 _itemsForContainerClass:v12 containerIDs:v13 includingNonLibraryContent:v14 includingDownloadedContentOnly:downloadedItemsOnly manuallyAdded:manuallyAdded];
 
     goto LABEL_11;
   }
@@ -196,23 +196,23 @@ uint64_t __46__NMSMediaItemGroup_sharedLibraryRequestQueue__block_invoke()
     [NMSMediaItemGroup itemList];
   }
 
-  v5 = [MEMORY[0x277CBEA60] array];
+  array = [MEMORY[0x277CBEA60] array];
 LABEL_11:
 
-  return v5;
+  return array;
 }
 
-+ (id)_itemsForContainerClass:(Class)a3 containerIDs:(id)a4 includingNonLibraryContent:(BOOL)a5 includingDownloadedContentOnly:(BOOL)a6 manuallyAdded:(BOOL)a7
++ (id)_itemsForContainerClass:(Class)class containerIDs:(id)ds includingNonLibraryContent:(BOOL)content includingDownloadedContentOnly:(BOOL)only manuallyAdded:(BOOL)added
 {
-  v69 = a7;
+  addedCopy = added;
   v94 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v70 = [MEMORY[0x277CBEB40] orderedSet];
+  dsCopy = ds;
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v9 = v8;
+  v9 = dsCopy;
   v78 = [v9 countByEnumeratingWithState:&v87 objects:v93 count:16];
   if (v78)
   {
@@ -229,7 +229,7 @@ LABEL_11:
     v72 = *MEMORY[0x277D2B520];
     v79 = *MEMORY[0x277D2B588];
     v67 = v9;
-    v80 = a3;
+    classCopy = class;
     do
     {
       for (i = 0; i != v78; ++i)
@@ -240,29 +240,29 @@ LABEL_11:
         }
 
         v12 = *(*(&v87 + 1) + 8 * i);
-        v13 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v14 = [*(v10 + 1472) predicateWithProperty:v76 value:MEMORY[0x277CBEC28] comparison:1];
-        [v13 addObject:v14];
+        [array addObject:v14];
 
         v15 = MEMORY[0x277D2B608];
         v16 = [MEMORY[0x277D2B5D8] predicateWithProperty:v75 values:&unk_286C8D400];
         v17 = [v15 predicateWithPredicate:v16];
-        [v13 addObject:v17];
+        [array addObject:v17];
 
-        v18 = [MEMORY[0x277D7FA28] defaultManager];
-        v19 = [v18 ageVerificationState];
-        v20 = [v19 status];
+        defaultManager = [MEMORY[0x277D7FA28] defaultManager];
+        ageVerificationState = [defaultManager ageVerificationState];
+        status = [ageVerificationState status];
 
-        if (v20 == 2)
+        if (status == 2)
         {
           v21 = [*(v10 + 1472) predicateWithProperty:v68 value:MEMORY[0x277CBEC28] comparison:1];
-          [v13 addObject:v21];
+          [array addObject:v21];
         }
 
         v22 = v74;
         v23 = objc_opt_class();
         v24 = v73;
-        if (v23 == a3 || (v25 = objc_opt_class(), v24 = v71, v25 == a3) || (v26 = objc_opt_class(), v24 = v66, v26 == a3))
+        if (v23 == class || (v25 = objc_opt_class(), v24 = v71, v25 == class) || (v26 = objc_opt_class(), v24 = v66, v26 == class))
         {
           v27 = v24;
 
@@ -275,30 +275,30 @@ LABEL_11:
         }
 
         v28 = *(v10 + 1472);
-        v29 = [v12 library];
-        v30 = [v28 predicateWithProperty:v22 equalToInt64:{objc_msgSend(v29, "persistentID")}];
-        [v13 addObject:v30];
+        library = [v12 library];
+        v30 = [v28 predicateWithProperty:v22 equalToInt64:{objc_msgSend(library, "persistentID")}];
+        [array addObject:v30];
 
         v31 = MEMORY[0x277D2B5A8];
-        v32 = [v13 copy];
+        v32 = [array copy];
         v33 = [v31 predicateMatchingPredicates:v32];
 
         v34 = MEMORY[0x277D2B620];
-        v35 = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
-        if (a5)
+        autoupdatingSharedLibrary = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
+        if (content)
         {
-          [v34 allItemsQueryWithLibrary:v35 predicate:v33 orderingTerms:0 usingSections:0];
+          [v34 allItemsQueryWithLibrary:autoupdatingSharedLibrary predicate:v33 orderingTerms:0 usingSections:0];
         }
 
         else
         {
-          [v34 queryWithLibrary:v35 predicate:v33];
+          [v34 queryWithLibrary:autoupdatingSharedLibrary predicate:v33];
         }
         v36 = ;
 
         v82 = v36;
         v37 = [v36 valueForAggregateFunction:v72 onEntitiesForProperty:v79];
-        v38 = [v37 unsignedLongLongValue];
+        unsignedLongLongValue = [v37 unsignedLongLongValue];
 
         v39 = MEMORY[0x277D2B5A8];
         v92[0] = v33;
@@ -308,39 +308,39 @@ LABEL_11:
         v42 = [v39 predicateMatchingPredicates:v41];
 
         v43 = MEMORY[0x277D2B620];
-        v44 = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
-        if (a5)
+        autoupdatingSharedLibrary2 = [MEMORY[0x277D2B5F8] autoupdatingSharedLibrary];
+        if (content)
         {
-          [v43 allItemsQueryWithLibrary:v44 predicate:v42 orderingTerms:0 usingSections:0];
+          [v43 allItemsQueryWithLibrary:autoupdatingSharedLibrary2 predicate:v42 orderingTerms:0 usingSections:0];
         }
 
         else
         {
-          [v43 queryWithLibrary:v44 predicate:v42];
+          [v43 queryWithLibrary:autoupdatingSharedLibrary2 predicate:v42];
         }
         v45 = ;
 
-        v46 = v38 + 7000000 * [v45 countOfEntities];
+        v46 = unsignedLongLongValue + 7000000 * [v45 countOfEntities];
         if (v46)
         {
-          if (objc_opt_class() == v80)
+          if (objc_opt_class() == classCopy)
           {
             v49 = [NMSDownloadableItem alloc];
             v50 = MEMORY[0x277CCABB0];
-            v48 = [v12 library];
-            v51 = [v50 numberWithLongLong:{objc_msgSend(v48, "persistentID")}];
+            library2 = [v12 library];
+            v51 = [v50 numberWithLongLong:{objc_msgSend(library2, "persistentID")}];
             v52 = v49;
             v53 = v51;
             v54 = v46;
             v55 = 3;
           }
 
-          else if (objc_opt_class() == v80)
+          else if (objc_opt_class() == classCopy)
           {
             v56 = [NMSDownloadableItem alloc];
             v57 = MEMORY[0x277CCABB0];
-            v48 = [v12 library];
-            v51 = [v57 numberWithLongLong:{objc_msgSend(v48, "persistentID")}];
+            library2 = [v12 library];
+            v51 = [v57 numberWithLongLong:{objc_msgSend(library2, "persistentID")}];
             v52 = v56;
             v53 = v51;
             v54 = v46;
@@ -349,9 +349,9 @@ LABEL_11:
 
           else
           {
-            if (objc_opt_class() != v80)
+            if (objc_opt_class() != classCopy)
             {
-              if (objc_opt_class() != v80)
+              if (objc_opt_class() != classCopy)
               {
                 goto LABEL_30;
               }
@@ -362,26 +362,26 @@ LABEL_11:
               v83[1] = 3221225472;
               v84[0] = __130__NMSMediaItemGroup__itemsForContainerClass_containerIDs_includingNonLibraryContent_includingDownloadedContentOnly_manuallyAdded___block_invoke;
               v84[1] = &unk_27993EBE0;
-              v85 = v70;
-              v86 = v69;
+              v85 = orderedSet;
+              v86 = addedCopy;
               [v82 enumeratePersistentIDsAndProperties:v47 usingBlock:v83];
 
-              v48 = v85;
+              library2 = v85;
               goto LABEL_29;
             }
 
             v58 = [NMSDownloadableItem alloc];
             v59 = MEMORY[0x277CCABB0];
-            v48 = [v12 library];
-            v51 = [v59 numberWithLongLong:{objc_msgSend(v48, "persistentID")}];
+            library2 = [v12 library];
+            v51 = [v59 numberWithLongLong:{objc_msgSend(library2, "persistentID")}];
             v52 = v58;
             v53 = v51;
             v54 = v46;
             v55 = 0;
           }
 
-          v60 = [(NMSDownloadableItem *)v52 initWithMediaLibraryIdentifier:v53 externalLibraryIdentifier:0 size:v54 itemType:v55 manuallyAdded:v69];
-          [v70 addObject:v60];
+          v60 = [(NMSDownloadableItem *)v52 initWithMediaLibraryIdentifier:v53 externalLibraryIdentifier:0 size:v54 itemType:v55 manuallyAdded:addedCopy];
+          [orderedSet addObject:v60];
 
           v9 = v67;
 LABEL_29:
@@ -389,7 +389,7 @@ LABEL_29:
 
 LABEL_30:
 
-        a3 = v80;
+        class = classCopy;
         v10 = 0x277D2B000;
       }
 
@@ -402,14 +402,14 @@ LABEL_30:
   v61 = NMLogForCategory(5);
   if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
   {
-    [NMSMediaItemGroup _itemsForContainerClass:v70 containerIDs:v9 includingNonLibraryContent:v61 includingDownloadedContentOnly:? manuallyAdded:?];
+    [NMSMediaItemGroup _itemsForContainerClass:orderedSet containerIDs:v9 includingNonLibraryContent:v61 includingDownloadedContentOnly:? manuallyAdded:?];
   }
 
-  v62 = [v70 array];
+  array2 = [orderedSet array];
 
   v63 = *MEMORY[0x277D85DE8];
 
-  return v62;
+  return array2;
 }
 
 void __130__NMSMediaItemGroup__itemsForContainerClass_containerIDs_includingNonLibraryContent_includingDownloadedContentOnly_manuallyAdded___block_invoke(uint64_t a1, uint64_t a2, id *a3)
@@ -422,10 +422,10 @@ void __130__NMSMediaItemGroup__itemsForContainerClass_containerIDs_includingNonL
   [v6 addObject:v8];
 }
 
-+ (NMSMediaItemGroup)itemGroupWithQuotaRefObj:(id)a3
++ (NMSMediaItemGroup)itemGroupWithQuotaRefObj:(id)obj
 {
-  v3 = a3;
-  v4 = [(NMSMediaItemGroup *)[NMSRecommendationMediaItemGroup alloc] initWithType:6 refObj:v3 manuallyAdded:0 quotaRefObj:v3 downloadedItemsOnly:0];
+  objCopy = obj;
+  v4 = [(NMSMediaItemGroup *)[NMSRecommendationMediaItemGroup alloc] initWithType:6 refObj:objCopy manuallyAdded:0 quotaRefObj:objCopy downloadedItemsOnly:0];
 
   return v4;
 }

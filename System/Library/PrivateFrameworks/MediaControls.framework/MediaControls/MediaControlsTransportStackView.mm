@@ -1,56 +1,56 @@
 @interface MediaControlsTransportStackView
 - (CGSize)sizeThatFits:(CGSize)result;
 - (MediaControlsActionsDelegate)actionsDelegate;
-- (MediaControlsTransportStackView)initWithFrame:(CGRect)a3;
+- (MediaControlsTransportStackView)initWithFrame:(CGRect)frame;
 - (id)_createTransportButton;
-- (void)_resetTransportButton:(id)a3;
+- (void)_resetTransportButton:(id)button;
 - (void)_updateButtonConfiguration;
 - (void)_updateButtonLayout;
-- (void)_updateButtonVisualStyling:(id)a3;
+- (void)_updateButtonVisualStyling:(id)styling;
 - (void)_updateVisualStylingForButtons;
-- (void)buttonHoldBegan:(id)a3;
-- (void)buttonHoldReleased:(id)a3;
+- (void)buttonHoldBegan:(id)began;
+- (void)buttonHoldReleased:(id)released;
 - (void)layoutSubviews;
-- (void)setResponse:(id)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setVisualStylingProvider:(id)a3;
-- (void)touchUpInsideCaptionsButton:(id)a3;
-- (void)touchUpInsideHangdogButton:(id)a3;
-- (void)touchUpInsideLeftButton:(id)a3;
-- (void)touchUpInsideMiddleButton:(id)a3;
-- (void)touchUpInsideRightButton:(id)a3;
+- (void)setResponse:(id)response;
+- (void)setStyle:(int64_t)style;
+- (void)setVisualStylingProvider:(id)provider;
+- (void)touchUpInsideCaptionsButton:(id)button;
+- (void)touchUpInsideHangdogButton:(id)button;
+- (void)touchUpInsideLeftButton:(id)button;
+- (void)touchUpInsideMiddleButton:(id)button;
+- (void)touchUpInsideRightButton:(id)button;
 - (void)updateOnRouteChange;
 @end
 
 @implementation MediaControlsTransportStackView
 
-- (MediaControlsTransportStackView)initWithFrame:(CGRect)a3
+- (MediaControlsTransportStackView)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = MediaControlsTransportStackView;
-  v3 = [(MediaControlsTransportStackView *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MediaControlsTransportStackView *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MediaControlsTransportStackView *)v3 _createTransportButton];
+    _createTransportButton = [(MediaControlsTransportStackView *)v3 _createTransportButton];
     tvRemoteButton = v4->_tvRemoteButton;
-    v4->_tvRemoteButton = v5;
+    v4->_tvRemoteButton = _createTransportButton;
 
-    v7 = [(MediaControlsTransportStackView *)v4 _createTransportButton];
+    _createTransportButton2 = [(MediaControlsTransportStackView *)v4 _createTransportButton];
     leftButton = v4->_leftButton;
-    v4->_leftButton = v7;
+    v4->_leftButton = _createTransportButton2;
 
-    v9 = [(MediaControlsTransportStackView *)v4 _createTransportButton];
+    _createTransportButton3 = [(MediaControlsTransportStackView *)v4 _createTransportButton];
     middleButton = v4->_middleButton;
-    v4->_middleButton = v9;
+    v4->_middleButton = _createTransportButton3;
 
-    v11 = [(MediaControlsTransportStackView *)v4 _createTransportButton];
+    _createTransportButton4 = [(MediaControlsTransportStackView *)v4 _createTransportButton];
     rightButton = v4->_rightButton;
-    v4->_rightButton = v11;
+    v4->_rightButton = _createTransportButton4;
 
-    v13 = [(MediaControlsTransportStackView *)v4 _createTransportButton];
+    _createTransportButton5 = [(MediaControlsTransportStackView *)v4 _createTransportButton];
     languageOptionsButton = v4->_languageOptionsButton;
-    v4->_languageOptionsButton = v13;
+    v4->_languageOptionsButton = _createTransportButton5;
 
     [(MediaControlsTransportStackView *)v4 _updateButtonConfiguration];
     v15 = v4->_tvRemoteButton;
@@ -230,11 +230,11 @@
   CGRectGetMinY(v72);
   UIRectCenteredYInRect();
   [(MediaControlsTransportButton *)self->_languageOptionsButton setFrame:?];
-  v37 = [(MediaControlsTransportStackView *)self leftButton];
-  [v37 frame];
+  leftButton = [(MediaControlsTransportStackView *)self leftButton];
+  [leftButton frame];
   CGRectGetMaxX(v73);
-  v38 = [(MediaControlsTransportStackView *)self middleButton];
-  [v38 frame];
+  middleButton = [(MediaControlsTransportStackView *)self middleButton];
+  [middleButton frame];
   CGRectGetMinX(v74);
 
   UIEdgeInsetsMakeWithEdges();
@@ -242,152 +242,152 @@
   v42 = v41;
   v44 = v43;
   v46 = v45;
-  v47 = [(MediaControlsTransportStackView *)self tvRemoteButton];
-  [v47 setHitRectInsets:{v40, v42, v44, v46}];
+  tvRemoteButton = [(MediaControlsTransportStackView *)self tvRemoteButton];
+  [tvRemoteButton setHitRectInsets:{v40, v42, v44, v46}];
 
-  v48 = [(MediaControlsTransportStackView *)self leftButton];
-  [v48 setHitRectInsets:{v40, v42, v44, v46}];
+  leftButton2 = [(MediaControlsTransportStackView *)self leftButton];
+  [leftButton2 setHitRectInsets:{v40, v42, v44, v46}];
 
-  v49 = [(MediaControlsTransportStackView *)self middleButton];
-  [v49 setHitRectInsets:{v40, v42, v44, v46}];
+  middleButton2 = [(MediaControlsTransportStackView *)self middleButton];
+  [middleButton2 setHitRectInsets:{v40, v42, v44, v46}];
 
-  v50 = [(MediaControlsTransportStackView *)self rightButton];
-  [v50 setHitRectInsets:{v40, v42, v44, v46}];
+  rightButton = [(MediaControlsTransportStackView *)self rightButton];
+  [rightButton setHitRectInsets:{v40, v42, v44, v46}];
 
-  v51 = [(MediaControlsTransportStackView *)self languageOptionsButton];
-  [v51 setHitRectInsets:{v40, v42, v44, v46}];
+  languageOptionsButton = [(MediaControlsTransportStackView *)self languageOptionsButton];
+  [languageOptionsButton setHitRectInsets:{v40, v42, v44, v46}];
 
   [(MediaControlsTransportStackView *)self _updateVisualStylingForButtons];
 }
 
-- (void)touchUpInsideHangdogButton:(id)a3
+- (void)touchUpInsideHangdogButton:(id)button
 {
-  v3 = [(MediaControlsTransportStackView *)self actionsDelegate];
-  [v3 presentTVRemote];
+  actionsDelegate = [(MediaControlsTransportStackView *)self actionsDelegate];
+  [actionsDelegate presentTVRemote];
 }
 
-- (void)touchUpInsideLeftButton:(id)a3
+- (void)touchUpInsideLeftButton:(id)button
 {
-  v15 = a3;
-  v4 = [(MediaControlsTransportStackView *)self leftButton];
-  v5 = [v4 shouldPresentActionSheet];
+  buttonCopy = button;
+  leftButton = [(MediaControlsTransportStackView *)self leftButton];
+  shouldPresentActionSheet = [leftButton shouldPresentActionSheet];
 
-  if (v5)
+  if (shouldPresentActionSheet)
   {
-    v6 = [(MediaControlsTransportStackView *)self actionsDelegate];
-    if (v6)
+    actionsDelegate = [(MediaControlsTransportStackView *)self actionsDelegate];
+    if (actionsDelegate)
     {
-      v7 = [(MPCPlayerResponse *)self->_response tracklist];
-      v8 = [v7 playingItemIndexPath];
+      tracklist = [(MPCPlayerResponse *)self->_response tracklist];
+      playingItemIndexPath = [tracklist playingItemIndexPath];
 
-      if (v8)
+      if (playingItemIndexPath)
       {
-        v9 = [(MPCPlayerResponse *)self->_response tracklist];
-        v10 = [v9 items];
-        v11 = [v10 itemAtIndexPath:v8];
+        tracklist2 = [(MPCPlayerResponse *)self->_response tracklist];
+        items = [tracklist2 items];
+        v11 = [items itemAtIndexPath:playingItemIndexPath];
 
-        [v6 presentRatingActionSheet:v11 sourceView:v15];
+        [actionsDelegate presentRatingActionSheet:v11 sourceView:buttonCopy];
       }
     }
   }
 
   else
   {
-    v12 = [(MediaControlsTransportStackView *)self leftButton];
-    v13 = [v12 isHolding];
+    leftButton2 = [(MediaControlsTransportStackView *)self leftButton];
+    isHolding = [leftButton2 isHolding];
 
-    if (v13)
+    if (isHolding)
     {
       goto LABEL_9;
     }
 
     v14 = MEMORY[0x1E69B0848];
-    v6 = [v15 touchUpInsideCommandRequest];
-    [v14 performRequest:v6 completion:0];
+    actionsDelegate = [buttonCopy touchUpInsideCommandRequest];
+    [v14 performRequest:actionsDelegate completion:0];
   }
 
 LABEL_9:
 }
 
-- (void)touchUpInsideMiddleButton:(id)a3
+- (void)touchUpInsideMiddleButton:(id)button
 {
   v3 = MEMORY[0x1E69B0848];
-  v4 = [a3 touchUpInsideCommandRequest];
-  [v3 performRequest:v4 completion:0];
+  touchUpInsideCommandRequest = [button touchUpInsideCommandRequest];
+  [v3 performRequest:touchUpInsideCommandRequest completion:0];
 }
 
-- (void)touchUpInsideRightButton:(id)a3
+- (void)touchUpInsideRightButton:(id)button
 {
-  v8 = a3;
-  v4 = [(MediaControlsTransportStackView *)self rightButton];
-  v5 = [v4 isHolding];
+  buttonCopy = button;
+  rightButton = [(MediaControlsTransportStackView *)self rightButton];
+  isHolding = [rightButton isHolding];
 
-  if ((v5 & 1) == 0)
+  if ((isHolding & 1) == 0)
   {
     v6 = MEMORY[0x1E69B0848];
-    v7 = [v8 touchUpInsideCommandRequest];
-    [v6 performRequest:v7 completion:0];
+    touchUpInsideCommandRequest = [buttonCopy touchUpInsideCommandRequest];
+    [v6 performRequest:touchUpInsideCommandRequest completion:0];
   }
 }
 
-- (void)touchUpInsideCaptionsButton:(id)a3
+- (void)touchUpInsideCaptionsButton:(id)button
 {
-  v3 = [(MediaControlsTransportStackView *)self actionsDelegate];
-  [v3 presentLanguageOptions];
+  actionsDelegate = [(MediaControlsTransportStackView *)self actionsDelegate];
+  [actionsDelegate presentLanguageOptions];
 }
 
-- (void)buttonHoldBegan:(id)a3
+- (void)buttonHoldBegan:(id)began
 {
   v3 = MEMORY[0x1E69B0848];
-  v4 = [a3 holdBeginCommandRequest];
-  [v3 performRequest:v4 completion:0];
+  holdBeginCommandRequest = [began holdBeginCommandRequest];
+  [v3 performRequest:holdBeginCommandRequest completion:0];
 }
 
-- (void)buttonHoldReleased:(id)a3
+- (void)buttonHoldReleased:(id)released
 {
   v3 = MEMORY[0x1E69B0848];
-  v4 = [a3 holdEndCommandRequest];
-  [v3 performRequest:v4 completion:0];
+  holdEndCommandRequest = [released holdEndCommandRequest];
+  [v3 performRequest:holdEndCommandRequest completion:0];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(MediaControlsTransportStackView *)self _updateButtonLayout];
   }
 }
 
-- (void)setResponse:(id)a3
+- (void)setResponse:(id)response
 {
-  v5 = a3;
-  if (self->_response != v5)
+  responseCopy = response;
+  if (self->_response != responseCopy)
   {
-    objc_storeStrong(&self->_response, a3);
-    v6 = [(MediaControlsTransportStackView *)self tvRemoteButton];
-    [(MediaControlsTransportStackView *)self _resetTransportButton:v6];
+    objc_storeStrong(&self->_response, response);
+    tvRemoteButton = [(MediaControlsTransportStackView *)self tvRemoteButton];
+    [(MediaControlsTransportStackView *)self _resetTransportButton:tvRemoteButton];
 
-    v7 = [(MediaControlsTransportStackView *)self leftButton];
-    [(MediaControlsTransportStackView *)self _resetTransportButton:v7];
+    leftButton = [(MediaControlsTransportStackView *)self leftButton];
+    [(MediaControlsTransportStackView *)self _resetTransportButton:leftButton];
 
-    v8 = [(MediaControlsTransportStackView *)self middleButton];
-    [(MediaControlsTransportStackView *)self _resetTransportButton:v8];
+    middleButton = [(MediaControlsTransportStackView *)self middleButton];
+    [(MediaControlsTransportStackView *)self _resetTransportButton:middleButton];
 
-    v9 = [(MediaControlsTransportStackView *)self rightButton];
-    [(MediaControlsTransportStackView *)self _resetTransportButton:v9];
+    rightButton = [(MediaControlsTransportStackView *)self rightButton];
+    [(MediaControlsTransportStackView *)self _resetTransportButton:rightButton];
 
-    v10 = [(MediaControlsTransportStackView *)self languageOptionsButton];
-    [(MediaControlsTransportStackView *)self _resetTransportButton:v10];
+    languageOptionsButton = [(MediaControlsTransportStackView *)self languageOptionsButton];
+    [(MediaControlsTransportStackView *)self _resetTransportButton:languageOptionsButton];
 
-    v11 = [(MPCPlayerResponse *)v5 tracklist];
-    v12 = [v11 playingItemIndexPath];
+    tracklist = [(MPCPlayerResponse *)responseCopy tracklist];
+    playingItemIndexPath = [tracklist playingItemIndexPath];
 
-    if (v12)
+    if (playingItemIndexPath)
     {
-      v13 = [(MPCPlayerResponse *)v5 tracklist];
-      v14 = [v13 items];
-      v15 = [v14 itemAtIndexPath:v12];
+      tracklist2 = [(MPCPlayerResponse *)responseCopy tracklist];
+      items = [tracklist2 items];
+      v15 = [items itemAtIndexPath:playingItemIndexPath];
     }
 
     else
@@ -395,52 +395,52 @@ LABEL_9:
       v15 = 0;
     }
 
-    v16 = [(MPCPlayerResponse *)self->_response play];
-    v17 = [(MPCPlayerResponse *)self->_response pause];
-    v18 = [(MPCPlayerResponse *)self->_response stop];
-    v19 = [(MediaControlsTransportStackView *)self middleButton];
-    [v19 setUserInteractionEnabled:1];
+    play = [(MPCPlayerResponse *)self->_response play];
+    pause = [(MPCPlayerResponse *)self->_response pause];
+    stop = [(MPCPlayerResponse *)self->_response stop];
+    middleButton2 = [(MediaControlsTransportStackView *)self middleButton];
+    [middleButton2 setUserInteractionEnabled:1];
 
-    v87 = v18;
-    v85 = v16;
-    if (v18 && v15 && ([v15 duration], (v88 & 1) != 0))
+    v87 = stop;
+    v85 = play;
+    if (stop && v15 && ([v15 duration], (v88 & 1) != 0))
     {
-      v20 = [(MediaControlsTransportStackView *)self middleButton];
+      middleButton3 = [(MediaControlsTransportStackView *)self middleButton];
       v21 = +[MediaControlsTheme stopImage];
-      [v20 setImage:v21 forState:0];
-      v16 = v87;
+      [middleButton3 setImage:v21 forState:0];
+      play = v87;
     }
 
-    else if (v17)
+    else if (pause)
     {
-      v20 = [(MediaControlsTransportStackView *)self middleButton];
+      middleButton3 = [(MediaControlsTransportStackView *)self middleButton];
       v21 = +[MediaControlsTheme pauseImage];
-      [v20 setImage:v21 forState:0];
-      v16 = v17;
+      [middleButton3 setImage:v21 forState:0];
+      play = pause;
     }
 
     else
     {
-      if (!v16)
+      if (!play)
       {
         v84 = 0;
 LABEL_14:
-        v23 = [(MPCPlayerResponse *)self->_response tracklist];
-        v24 = [v23 changeItemCommand];
-        v86 = [v24 previousItem];
+        tracklist3 = [(MPCPlayerResponse *)self->_response tracklist];
+        changeItemCommand = [tracklist3 changeItemCommand];
+        previousItem = [changeItemCommand previousItem];
 
-        v25 = [v15 likeCommand];
-        if ([v25 presentationStyle] == 3)
+        likeCommand = [v15 likeCommand];
+        if ([likeCommand presentationStyle] == 3)
         {
 LABEL_17:
 
 LABEL_18:
-          v27 = [(MediaControlsTransportStackView *)self leftButton];
+          leftButton2 = [(MediaControlsTransportStackView *)self leftButton];
           v28 = +[MediaControlsTheme hamburgerImage];
-          [v27 setImage:v28 forState:0];
+          [leftButton2 setImage:v28 forState:0];
 
-          v29 = [(MediaControlsTransportStackView *)self leftButton];
-          [v29 setTouchUpInsideCommandRequest:0];
+          leftButton3 = [(MediaControlsTransportStackView *)self leftButton];
+          [leftButton3 setTouchUpInsideCommandRequest:0];
 LABEL_19:
           v30 = 1;
 LABEL_20:
@@ -449,136 +449,136 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v26 = [v15 dislikeCommand];
-        if ([v26 presentationStyle] == 3)
+        dislikeCommand = [v15 dislikeCommand];
+        if ([dislikeCommand presentationStyle] == 3)
         {
 
           goto LABEL_17;
         }
 
-        v59 = [v15 wishlistCommand];
-        v60 = [v59 presentationStyle];
+        wishlistCommand = [v15 wishlistCommand];
+        presentationStyle = [wishlistCommand presentationStyle];
 
-        if (v60 == 3)
+        if (presentationStyle == 3)
         {
           goto LABEL_18;
         }
 
-        v61 = [v15 seekCommand];
-        v62 = [v61 preferredBackwardJumpIntervals];
-        v63 = [v62 count];
+        seekCommand = [v15 seekCommand];
+        preferredBackwardJumpIntervals = [seekCommand preferredBackwardJumpIntervals];
+        v63 = [preferredBackwardJumpIntervals count];
 
         if (v63)
         {
-          v64 = [v15 seekCommand];
-          v65 = [v64 preferredBackwardJumpIntervals];
-          v66 = [v65 firstObject];
-          [v66 doubleValue];
+          seekCommand2 = [v15 seekCommand];
+          preferredBackwardJumpIntervals2 = [seekCommand2 preferredBackwardJumpIntervals];
+          firstObject = [preferredBackwardJumpIntervals2 firstObject];
+          [firstObject doubleValue];
           v68 = v67;
 
-          v69 = [v15 seekCommand];
-          v29 = [v69 jumpByInterval:v68];
+          seekCommand3 = [v15 seekCommand];
+          leftButton3 = [seekCommand3 jumpByInterval:v68];
 
-          v70 = [MediaControlsTheme goBackwardImageForTimeInterval:v68];
-          v71 = [(MediaControlsTransportStackView *)self leftButton];
-          [v71 setImage:v70 forState:0];
+          endSeek2 = [MediaControlsTheme goBackwardImageForTimeInterval:v68];
+          leftButton4 = [(MediaControlsTransportStackView *)self leftButton];
+          [leftButton4 setImage:endSeek2 forState:0];
 
-          v72 = [(MediaControlsTransportStackView *)self leftButton];
-          [v72 setTouchUpInsideCommandRequest:v29];
+          leftButton5 = [(MediaControlsTransportStackView *)self leftButton];
+          [leftButton5 setTouchUpInsideCommandRequest:leftButton3];
           goto LABEL_35;
         }
 
-        v73 = [v15 likeCommand];
-        if (v73)
+        likeCommand2 = [v15 likeCommand];
+        if (likeCommand2)
         {
         }
 
         else
         {
-          v74 = [v15 dislikeCommand];
+          dislikeCommand2 = [v15 dislikeCommand];
 
-          if (!v74)
+          if (!dislikeCommand2)
           {
-            v78 = [(MediaControlsTransportStackView *)self leftButton];
+            leftButton6 = [(MediaControlsTransportStackView *)self leftButton];
             v79 = +[MediaControlsTheme backwardImage];
-            [v78 setImage:v79 forState:0];
+            [leftButton6 setImage:v79 forState:0];
 
-            if (!v86)
+            if (!previousItem)
             {
               v30 = 0;
               v31 = 0;
 LABEL_21:
-              v32 = [(MediaControlsTransportStackView *)self leftButton];
-              [v32 setShouldPresentActionSheet:v30];
+              leftButton7 = [(MediaControlsTransportStackView *)self leftButton];
+              [leftButton7 setShouldPresentActionSheet:v30];
 
-              v33 = [(MPCPlayerResponse *)self->_response tracklist];
-              v34 = [v33 changeItemCommand];
-              v35 = [v34 nextItem];
+              tracklist4 = [(MPCPlayerResponse *)self->_response tracklist];
+              changeItemCommand2 = [tracklist4 changeItemCommand];
+              nextItem = [changeItemCommand2 nextItem];
 
-              v36 = [v15 seekCommand];
-              v37 = [v36 preferredForwardJumpIntervals];
-              v38 = [v37 count];
+              seekCommand4 = [v15 seekCommand];
+              preferredForwardJumpIntervals = [seekCommand4 preferredForwardJumpIntervals];
+              v38 = [preferredForwardJumpIntervals count];
 
               if (v38)
               {
-                v39 = [v15 seekCommand];
-                v40 = [v39 preferredForwardJumpIntervals];
-                v41 = [v40 firstObject];
-                [v41 doubleValue];
+                seekCommand5 = [v15 seekCommand];
+                preferredForwardJumpIntervals2 = [seekCommand5 preferredForwardJumpIntervals];
+                firstObject2 = [preferredForwardJumpIntervals2 firstObject];
+                [firstObject2 doubleValue];
                 v43 = v42;
 
-                v44 = [v15 seekCommand];
-                v45 = [v44 jumpByInterval:v43];
+                seekCommand6 = [v15 seekCommand];
+                v45 = [seekCommand6 jumpByInterval:v43];
 
-                v46 = [MediaControlsTheme goForwardImageForTimeInterval:v43];
-                v47 = [(MediaControlsTransportStackView *)self rightButton];
-                [v47 setImage:v46 forState:0];
+                endSeek = [MediaControlsTheme goForwardImageForTimeInterval:v43];
+                rightButton2 = [(MediaControlsTransportStackView *)self rightButton];
+                [rightButton2 setImage:endSeek forState:0];
 
-                v48 = [(MediaControlsTransportStackView *)self rightButton];
-                [v48 setTouchUpInsideCommandRequest:v45];
+                rightButton3 = [(MediaControlsTransportStackView *)self rightButton];
+                [rightButton3 setTouchUpInsideCommandRequest:v45];
               }
 
               else
               {
-                v53 = [(MediaControlsTransportStackView *)self rightButton];
+                rightButton4 = [(MediaControlsTransportStackView *)self rightButton];
                 v54 = +[MediaControlsTheme forwardImage];
-                [v53 setImage:v54 forState:0];
+                [rightButton4 setImage:v54 forState:0];
 
-                if (!v35)
+                if (!nextItem)
                 {
                   v49 = 0;
                   goto LABEL_25;
                 }
 
-                v55 = [(MediaControlsTransportStackView *)self rightButton];
-                [v55 setTouchUpInsideCommandRequest:v35];
+                rightButton5 = [(MediaControlsTransportStackView *)self rightButton];
+                [rightButton5 setTouchUpInsideCommandRequest:nextItem];
 
-                v56 = [v15 seekCommand];
-                v45 = [v56 beginSeekWithDirection:1];
+                seekCommand7 = [v15 seekCommand];
+                v45 = [seekCommand7 beginSeekWithDirection:1];
 
-                v57 = [v15 seekCommand];
-                v46 = [v57 endSeek];
+                seekCommand8 = [v15 seekCommand];
+                endSeek = [seekCommand8 endSeek];
 
                 if (v45)
                 {
-                  v58 = [(MediaControlsTransportStackView *)self rightButton];
-                  [v58 setHoldBeginCommandRequest:v45];
+                  rightButton6 = [(MediaControlsTransportStackView *)self rightButton];
+                  [rightButton6 setHoldBeginCommandRequest:v45];
                 }
 
-                if (!v46)
+                if (!endSeek)
                 {
 LABEL_24:
 
                   v49 = 1;
 LABEL_25:
-                  v50 = [(MediaControlsTransportStackView *)self leftButton];
-                  [v50 setUserInteractionEnabled:v31];
+                  leftButton8 = [(MediaControlsTransportStackView *)self leftButton];
+                  [leftButton8 setUserInteractionEnabled:v31];
 
-                  v51 = [(MediaControlsTransportStackView *)self middleButton];
-                  [v51 setUserInteractionEnabled:v84];
+                  middleButton4 = [(MediaControlsTransportStackView *)self middleButton];
+                  [middleButton4 setUserInteractionEnabled:v84];
 
-                  v52 = [(MediaControlsTransportStackView *)self rightButton];
-                  [v52 setUserInteractionEnabled:v49];
+                  rightButton7 = [(MediaControlsTransportStackView *)self rightButton];
+                  [rightButton7 setUserInteractionEnabled:v49];
 
                   [(MediaControlsTransportStackView *)self _updateButtonLayout];
                   [(MediaControlsTransportStackView *)self _updateVisualStylingForButtons];
@@ -587,35 +587,35 @@ LABEL_25:
                   goto LABEL_26;
                 }
 
-                v48 = [(MediaControlsTransportStackView *)self rightButton];
-                [v48 setHoldEndCommandRequest:v46];
+                rightButton3 = [(MediaControlsTransportStackView *)self rightButton];
+                [rightButton3 setHoldEndCommandRequest:endSeek];
               }
 
               goto LABEL_24;
             }
 
-            v80 = [(MediaControlsTransportStackView *)self leftButton];
-            [v80 setTouchUpInsideCommandRequest:v86];
+            leftButton9 = [(MediaControlsTransportStackView *)self leftButton];
+            [leftButton9 setTouchUpInsideCommandRequest:previousItem];
 
-            v81 = [v15 seekCommand];
-            v29 = [v81 beginSeekWithDirection:-1];
+            seekCommand9 = [v15 seekCommand];
+            leftButton3 = [seekCommand9 beginSeekWithDirection:-1];
 
-            v82 = [v15 seekCommand];
-            v70 = [v82 endSeek];
+            seekCommand10 = [v15 seekCommand];
+            endSeek2 = [seekCommand10 endSeek];
 
-            if (v29)
+            if (leftButton3)
             {
-              v83 = [(MediaControlsTransportStackView *)self leftButton];
-              [v83 setHoldBeginCommandRequest:v29];
+              leftButton10 = [(MediaControlsTransportStackView *)self leftButton];
+              [leftButton10 setHoldBeginCommandRequest:leftButton3];
             }
 
-            if (!v70)
+            if (!endSeek2)
             {
               goto LABEL_36;
             }
 
-            v72 = [(MediaControlsTransportStackView *)self leftButton];
-            [v72 setHoldEndCommandRequest:v70];
+            leftButton5 = [(MediaControlsTransportStackView *)self leftButton];
+            [leftButton5 setHoldEndCommandRequest:endSeek2];
 LABEL_35:
 
 LABEL_36:
@@ -624,8 +624,8 @@ LABEL_36:
           }
         }
 
-        v75 = [v15 likeCommand];
-        if ([v75 value])
+        likeCommand3 = [v15 likeCommand];
+        if ([likeCommand3 value])
         {
           +[MediaControlsTheme starFillImage];
         }
@@ -634,24 +634,24 @@ LABEL_36:
         {
           +[MediaControlsTheme starImage];
         }
-        v29 = ;
+        leftButton3 = ;
 
-        v76 = [(MediaControlsTransportStackView *)self leftButton];
-        [v76 setImage:v29 forState:0];
+        leftButton11 = [(MediaControlsTransportStackView *)self leftButton];
+        [leftButton11 setImage:leftButton3 forState:0];
 
-        v77 = [(MediaControlsTransportStackView *)self leftButton];
-        [v77 setTouchUpInsideCommandRequest:0];
+        leftButton12 = [(MediaControlsTransportStackView *)self leftButton];
+        [leftButton12 setTouchUpInsideCommandRequest:0];
 
         goto LABEL_19;
       }
 
-      v20 = [(MediaControlsTransportStackView *)self middleButton];
+      middleButton3 = [(MediaControlsTransportStackView *)self middleButton];
       v21 = +[MediaControlsTheme playImage];
-      [v20 setImage:v21 forState:0];
+      [middleButton3 setImage:v21 forState:0];
     }
 
-    v22 = [(MediaControlsTransportStackView *)self middleButton];
-    [v22 setTouchUpInsideCommandRequest:v16];
+    middleButton5 = [(MediaControlsTransportStackView *)self middleButton];
+    [middleButton5 setTouchUpInsideCommandRequest:play];
 
     v84 = 1;
     goto LABEL_14;
@@ -674,79 +674,79 @@ LABEL_26:
   return result;
 }
 
-- (void)setVisualStylingProvider:(id)a3
+- (void)setVisualStylingProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   visualStylingProvider = self->_visualStylingProvider;
-  if (visualStylingProvider != v5)
+  if (visualStylingProvider != providerCopy)
   {
-    v7 = v5;
+    v7 = providerCopy;
     [(MTVisualStylingProvider *)visualStylingProvider _removeObserver:self];
-    objc_storeStrong(&self->_visualStylingProvider, a3);
+    objc_storeStrong(&self->_visualStylingProvider, provider);
     [(MTVisualStylingProvider *)self->_visualStylingProvider _addObserver:self];
     visualStylingProvider = [(MediaControlsTransportStackView *)self _updateVisualStylingForButtons];
-    v5 = v7;
+    providerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](visualStylingProvider, v5);
+  MEMORY[0x1EEE66BB8](visualStylingProvider, providerCopy);
 }
 
 - (void)_updateVisualStylingForButtons
 {
-  v3 = [(MediaControlsTransportStackView *)self tvRemoteButton];
-  [(MediaControlsTransportStackView *)self _updateButtonVisualStyling:v3];
+  tvRemoteButton = [(MediaControlsTransportStackView *)self tvRemoteButton];
+  [(MediaControlsTransportStackView *)self _updateButtonVisualStyling:tvRemoteButton];
 
-  v4 = [(MediaControlsTransportStackView *)self leftButton];
-  [(MediaControlsTransportStackView *)self _updateButtonVisualStyling:v4];
+  leftButton = [(MediaControlsTransportStackView *)self leftButton];
+  [(MediaControlsTransportStackView *)self _updateButtonVisualStyling:leftButton];
 
-  v5 = [(MediaControlsTransportStackView *)self middleButton];
-  [(MediaControlsTransportStackView *)self _updateButtonVisualStyling:v5];
+  middleButton = [(MediaControlsTransportStackView *)self middleButton];
+  [(MediaControlsTransportStackView *)self _updateButtonVisualStyling:middleButton];
 
-  v6 = [(MediaControlsTransportStackView *)self rightButton];
-  [(MediaControlsTransportStackView *)self _updateButtonVisualStyling:v6];
+  rightButton = [(MediaControlsTransportStackView *)self rightButton];
+  [(MediaControlsTransportStackView *)self _updateButtonVisualStyling:rightButton];
 
-  v7 = [(MediaControlsTransportStackView *)self languageOptionsButton];
-  [(MediaControlsTransportStackView *)self _updateButtonVisualStyling:v7];
+  languageOptionsButton = [(MediaControlsTransportStackView *)self languageOptionsButton];
+  [(MediaControlsTransportStackView *)self _updateButtonVisualStyling:languageOptionsButton];
 }
 
-- (void)_updateButtonVisualStyling:(id)a3
+- (void)_updateButtonVisualStyling:(id)styling
 {
-  v12 = a3;
-  v4 = [v12 isUserInteractionEnabled];
+  stylingCopy = styling;
+  isUserInteractionEnabled = [stylingCopy isUserInteractionEnabled];
   visualStylingProvider = self->_visualStylingProvider;
-  if (v4)
+  if (isUserInteractionEnabled)
   {
     if (visualStylingProvider)
     {
-      v6 = [v12 imageView];
+      imageView = [stylingCopy imageView];
       v7 = self->_visualStylingProvider;
       v8 = 0;
 LABEL_6:
-      v9 = [(MTVisualStylingProvider *)v7 _visualStylingForStyle:v8];
-      [v6 mt_replaceVisualStyling:v9];
+      traitCollection = [(MTVisualStylingProvider *)v7 _visualStylingForStyle:v8];
+      [imageView mt_replaceVisualStyling:traitCollection];
       goto LABEL_10;
     }
   }
 
   else if (visualStylingProvider)
   {
-    v6 = [v12 imageView];
+    imageView = [stylingCopy imageView];
     v7 = self->_visualStylingProvider;
     v8 = 2;
     goto LABEL_6;
   }
 
-  v10 = [v12 isUserInteractionEnabled];
-  v6 = [(MediaControlsTransportStackView *)self tintColor];
-  if (v10)
+  isUserInteractionEnabled2 = [stylingCopy isUserInteractionEnabled];
+  imageView = [(MediaControlsTransportStackView *)self tintColor];
+  if (isUserInteractionEnabled2)
   {
-    [v12 setTintColor:v6];
+    [stylingCopy setTintColor:imageView];
     goto LABEL_11;
   }
 
-  v9 = [(MediaControlsTransportStackView *)self traitCollection];
-  v11 = [v6 tertiaryColorForInterfaceStyle:{objc_msgSend(v9, "userInterfaceStyle")}];
-  [v12 setTintColor:v11];
+  traitCollection = [(MediaControlsTransportStackView *)self traitCollection];
+  v11 = [imageView tertiaryColorForInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
+  [stylingCopy setTintColor:v11];
 
 LABEL_10:
 LABEL_11:
@@ -756,41 +756,41 @@ LABEL_11:
 {
   v3 = [(MPButton *)MediaControlsTransportButton easyTouchButtonWithType:0];
   [v3 setUserInteractionEnabled:0];
-  v4 = [v3 imageView];
-  [v4 setContentMode:1];
+  imageView = [v3 imageView];
+  [imageView setContentMode:1];
 
   [(MediaControlsTransportStackView *)self addSubview:v3];
 
   return v3;
 }
 
-- (void)_resetTransportButton:(id)a3
+- (void)_resetTransportButton:(id)button
 {
-  v3 = a3;
-  [v3 setTouchUpInsideCommandRequest:0];
-  [v3 setHoldBeginCommandRequest:0];
-  [v3 setHoldEndCommandRequest:0];
-  [v3 setShouldPresentActionSheet:0];
+  buttonCopy = button;
+  [buttonCopy setTouchUpInsideCommandRequest:0];
+  [buttonCopy setHoldBeginCommandRequest:0];
+  [buttonCopy setHoldEndCommandRequest:0];
+  [buttonCopy setShouldPresentActionSheet:0];
 }
 
 - (void)_updateButtonLayout
 {
   WeakRetained = objc_loadWeakRetained(&self->_actionsDelegate);
-  v4 = [WeakRetained shouldShowTVRemoteButton];
+  shouldShowTVRemoteButton = [WeakRetained shouldShowTVRemoteButton];
 
-  v5 = [(MediaControlsTransportStackView *)self tvRemoteButton];
-  [v5 setHidden:v4 ^ 1];
+  tvRemoteButton = [(MediaControlsTransportStackView *)self tvRemoteButton];
+  [tvRemoteButton setHidden:shouldShowTVRemoteButton ^ 1];
 
-  v6 = [(MediaControlsTransportStackView *)self tvRemoteButton];
-  [v6 setUserInteractionEnabled:v4];
+  tvRemoteButton2 = [(MediaControlsTransportStackView *)self tvRemoteButton];
+  [tvRemoteButton2 setUserInteractionEnabled:shouldShowTVRemoteButton];
 
-  v7 = [(MPCPlayerResponse *)self->_response tracklist];
-  v8 = [v7 playingItem];
-  v12 = [v8 languageOptionGroups];
+  tracklist = [(MPCPlayerResponse *)self->_response tracklist];
+  playingItem = [tracklist playingItem];
+  languageOptionGroups = [playingItem languageOptionGroups];
 
-  if ([v12 count])
+  if ([languageOptionGroups count])
   {
-    v9 = [v12 indexOfObjectPassingTest:&__block_literal_global_31] != 0x7FFFFFFFFFFFFFFFLL;
+    v9 = [languageOptionGroups indexOfObjectPassingTest:&__block_literal_global_31] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -798,14 +798,14 @@ LABEL_11:
     v9 = 0;
   }
 
-  v10 = [(MediaControlsTransportStackView *)self languageOptionsButton];
-  [v10 setHidden:v4 ^ 1];
+  languageOptionsButton = [(MediaControlsTransportStackView *)self languageOptionsButton];
+  [languageOptionsButton setHidden:shouldShowTVRemoteButton ^ 1];
 
-  v11 = [(MediaControlsTransportStackView *)self languageOptionsButton];
-  [v11 setUserInteractionEnabled:v9];
+  languageOptionsButton2 = [(MediaControlsTransportStackView *)self languageOptionsButton];
+  [languageOptionsButton2 setUserInteractionEnabled:v9];
 
   [(MediaControlsTransportStackView *)self _updateButtonConfiguration];
-  self->_shouldShowTVRemoteButton = v4;
+  self->_shouldShowTVRemoteButton = shouldShowTVRemoteButton;
   [(MediaControlsTransportStackView *)self setNeedsLayout];
 }
 

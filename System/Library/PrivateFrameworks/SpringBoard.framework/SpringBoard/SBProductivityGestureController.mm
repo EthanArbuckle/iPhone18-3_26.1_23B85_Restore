@@ -1,39 +1,39 @@
 @interface SBProductivityGestureController
 - (BOOL)_enabledForCurrentAppScenes;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (SBProductivityGestureController)initWithSystemGestureManager:(id)a3 focusController:(id)a4 gestureDefaults:(id)a5 gestureEducationController:(id)a6;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (SBProductivityGestureController)initWithSystemGestureManager:(id)manager focusController:(id)controller gestureDefaults:(id)defaults gestureEducationController:(id)educationController;
 - (id)_focusedSceneForAction;
-- (int64_t)_educationTypeForGesture:(id)a3 direction:(int64_t)a4;
-- (int64_t)_orientationOfFocusedSceneForGesture:(id)a3;
-- (int64_t)slideDirectionWithGesture:(id)a3;
+- (int64_t)_educationTypeForGesture:(id)gesture direction:(int64_t)direction;
+- (int64_t)_orientationOfFocusedSceneForGesture:(id)gesture;
+- (int64_t)slideDirectionWithGesture:(id)gesture;
 - (void)_evaluateEnablement;
 - (void)_setupGestureRecognizers;
 - (void)_tearDownGestureRecognizers;
-- (void)handleProductivityGesture:(id)a3;
+- (void)handleProductivityGesture:(id)gesture;
 @end
 
 @implementation SBProductivityGestureController
 
-- (SBProductivityGestureController)initWithSystemGestureManager:(id)a3 focusController:(id)a4 gestureDefaults:(id)a5 gestureEducationController:(id)a6
+- (SBProductivityGestureController)initWithSystemGestureManager:(id)manager focusController:(id)controller gestureDefaults:(id)defaults gestureEducationController:(id)educationController
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  controllerCopy = controller;
+  defaultsCopy = defaults;
+  educationControllerCopy = educationController;
   v31.receiver = self;
   v31.super_class = SBProductivityGestureController;
   v15 = [(SBProductivityGestureController *)&v31 init];
   if (v15)
   {
-    v16 = [MEMORY[0x277D0AAD8] sharedInstance];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
     sceneManager = v15->_sceneManager;
-    v15->_sceneManager = v16;
+    v15->_sceneManager = mEMORY[0x277D0AAD8];
 
-    objc_storeStrong(&v15->_systemGestureManager, a3);
-    objc_storeStrong(&v15->_focusController, a4);
-    objc_storeStrong(&v15->_gestureDefaults, a5);
-    objc_storeStrong(&v15->_educationController, a6);
+    objc_storeStrong(&v15->_systemGestureManager, manager);
+    objc_storeStrong(&v15->_focusController, controller);
+    objc_storeStrong(&v15->_gestureDefaults, defaults);
+    objc_storeStrong(&v15->_educationController, educationController);
     if (_os_feature_enabled_impl())
     {
       objc_initWeak(&location, v15);
@@ -220,15 +220,15 @@ LABEL_16:
   }
 }
 
-- (int64_t)slideDirectionWithGesture:(id)a3
+- (int64_t)slideDirectionWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v4 translationInView:v5];
+  gestureCopy = gesture;
+  view = [gestureCopy view];
+  [gestureCopy translationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(SBProductivityGestureController *)self _orientationOfFocusedSceneForGesture:v4];
+  v10 = [(SBProductivityGestureController *)self _orientationOfFocusedSceneForGesture:gestureCopy];
   v11 = -v7;
   v12 = -v9;
   if (v10 == 3)
@@ -282,12 +282,12 @@ LABEL_16:
   }
 }
 
-- (void)handleProductivityGesture:(id)a3
+- (void)handleProductivityGesture:(id)gesture
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (self->_threeFingerSingleTap == v4)
+  gestureCopy = gesture;
+  v5 = gestureCopy;
+  if (self->_threeFingerSingleTap == gestureCopy)
   {
     if (_os_feature_enabled_impl() && ([(_UIKBProductivitySingleTapGesture *)v5 state]== 1 || [(_UIKBProductivitySingleTapGesture *)v5 state]== 2))
     {
@@ -312,14 +312,14 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (self->_threeFingerLongPress == v4)
+  if (self->_threeFingerLongPress == gestureCopy)
   {
     goto LABEL_14;
   }
 
-  if (self->_threeFingerDoubleTap == v4)
+  if (self->_threeFingerDoubleTap == gestureCopy)
   {
-    if ([(_UIKBProductivitySingleTapGesture *)v4 state]!= 3)
+    if ([(_UIKBProductivitySingleTapGesture *)gestureCopy state]!= 3)
     {
       goto LABEL_63;
     }
@@ -327,9 +327,9 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  if (self->_threeFingerSlide == v4)
+  if (self->_threeFingerSlide == gestureCopy)
   {
-    if ([(_UIKBProductivitySingleTapGesture *)v4 state]!= 3)
+    if ([(_UIKBProductivitySingleTapGesture *)gestureCopy state]!= 3)
     {
       goto LABEL_63;
     }
@@ -339,12 +339,12 @@ LABEL_14:
 
   else
   {
-    if (self->_threeFingerPinch != v4)
+    if (self->_threeFingerPinch != gestureCopy)
     {
       goto LABEL_63;
     }
 
-    v6 = v4;
+    v6 = gestureCopy;
     if ([(_UIKBProductivitySingleTapGesture *)v6 state]== 1)
     {
       [(_UIKBProductivitySingleTapGesture *)v6 avgTouchesToCentroidDistance];
@@ -380,8 +380,8 @@ LABEL_14:
 LABEL_27:
   if ([(SBProductivityGestureController *)self _enabledForCurrentAppScenes])
   {
-    v10 = [(SBProductivityGestureController *)self _focusedSceneForAction];
-    if (v10)
+    _focusedSceneForAction = [(SBProductivityGestureController *)self _focusedSceneForAction];
+    if (_focusedSceneForAction)
     {
       if (self->_threeFingerLongPress == v5 || self->_threeFingerSingleTap == v5 || ![(SBGestureDefaults *)self->_gestureDefaults productivityGesturesRequireEducation])
       {
@@ -390,14 +390,14 @@ LABEL_27:
         v32[2] = __61__SBProductivityGestureController_handleProductivityGesture___block_invoke;
         v32[3] = &unk_2783C5068;
         v34 = v7;
-        v10 = v10;
-        v33 = v10;
+        _focusedSceneForAction = _focusedSceneForAction;
+        v33 = _focusedSceneForAction;
         v13 = MEMORY[0x223D6F7F0](v32);
         v14 = v13;
         if (v7 == 10)
         {
           v15 = objc_opt_class();
-          v16 = v10;
+          v16 = _focusedSceneForAction;
           if (v15)
           {
             if (objc_opt_isKindOfClass())
@@ -448,13 +448,13 @@ LABEL_27:
 
             v24 = v23;
 
-            v25 = [v24 clientHandle];
+            clientHandle = [v24 clientHandle];
 
-            v26 = [v25 processHandle];
-            v27 = v26;
-            if (v26)
+            processHandle = [clientHandle processHandle];
+            v27 = processHandle;
+            if (processHandle)
             {
-              [v26 auditToken];
+              [processHandle auditToken];
             }
 
             else
@@ -513,11 +513,11 @@ LABEL_27:
 
   else
   {
-    v10 = SBLogProductivityGestures();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    _focusedSceneForAction = SBLogProductivityGestures();
+    if (os_log_type_enabled(_focusedSceneForAction, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_INFO, "Recognized gesture but one or more scenes don't want gestures enabled", buf, 2u);
+      _os_log_impl(&dword_21ED4E000, _focusedSceneForAction, OS_LOG_TYPE_INFO, "Recognized gesture but one or more scenes don't want gestures enabled", buf, 2u);
     }
   }
 
@@ -614,21 +614,21 @@ void __61__SBProductivityGestureController_handleProductivityGesture___block_inv
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 displayIdentity];
-        if ([v10 isMainDisplay])
+        displayIdentity = [v9 displayIdentity];
+        if ([displayIdentity isMainDisplay])
         {
-          v11 = [v9 sceneIfExists];
-          v12 = [v11 uiClientSettings];
-          v13 = [v12 editingInteractionConfiguration];
+          sceneIfExists = [v9 sceneIfExists];
+          uiClientSettings = [sceneIfExists uiClientSettings];
+          editingInteractionConfiguration = [uiClientSettings editingInteractionConfiguration];
 
-          if (!v13)
+          if (!editingInteractionConfiguration)
           {
             v14 = SBLogProductivityGestures();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
             {
-              v16 = [v9 sceneIfExists];
+              sceneIfExists2 = [v9 sceneIfExists];
               *buf = 138543362;
-              v23 = v16;
+              v23 = sceneIfExists2;
               _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_INFO, "Gestures disabled for scene: %{public}@", buf, 0xCu);
             }
 
@@ -659,13 +659,13 @@ LABEL_16:
 
 - (id)_focusedSceneForAction
 {
-  v2 = [(SBKeyboardFocusControlling *)self->_focusController sceneWithFocusIncludingSpringBoard];
-  v3 = [v2 displayIdentity];
-  v4 = [v3 isMainDisplay];
+  sceneWithFocusIncludingSpringBoard = [(SBKeyboardFocusControlling *)self->_focusController sceneWithFocusIncludingSpringBoard];
+  displayIdentity = [sceneWithFocusIncludingSpringBoard displayIdentity];
+  isMainDisplay = [displayIdentity isMainDisplay];
 
-  if (v4)
+  if (isMainDisplay)
   {
-    v5 = v2;
+    v5 = sceneWithFocusIncludingSpringBoard;
   }
 
   else
@@ -676,17 +676,17 @@ LABEL_16:
   return v5;
 }
 
-- (int64_t)_orientationOfFocusedSceneForGesture:(id)a3
+- (int64_t)_orientationOfFocusedSceneForGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SBKeyboardFocusControlling *)self->_focusController sceneWithFocusIncludingSpringBoard];
-  v6 = [v5 displayIdentity];
-  v7 = [v6 isMainDisplay];
+  gestureCopy = gesture;
+  sceneWithFocusIncludingSpringBoard = [(SBKeyboardFocusControlling *)self->_focusController sceneWithFocusIncludingSpringBoard];
+  displayIdentity = [sceneWithFocusIncludingSpringBoard displayIdentity];
+  isMainDisplay = [displayIdentity isMainDisplay];
 
-  if (v7)
+  if (isMainDisplay)
   {
     v8 = objc_opt_class();
-    v9 = v5;
+    v9 = sceneWithFocusIncludingSpringBoard;
     if (v8)
     {
       if (objc_opt_isKindOfClass())
@@ -705,14 +705,14 @@ LABEL_16:
       v10 = 0;
     }
 
-    v11 = v10;
+    view = v10;
 
-    if (v11)
+    if (view)
     {
-      v13 = [v11 _FBSScene];
-      v14 = [v13 clientSettings];
+      _FBSScene = [view _FBSScene];
+      clientSettings = [_FBSScene clientSettings];
       v15 = objc_opt_class();
-      v16 = v14;
+      v16 = clientSettings;
       if (v15)
       {
         if (objc_opt_isKindOfClass())
@@ -731,7 +731,7 @@ LABEL_16:
         v17 = 0;
       }
 
-      v12 = v17;
+      uiClientSettings = v17;
     }
 
     else
@@ -758,26 +758,26 @@ LABEL_16:
 
       v21 = v20;
 
-      v12 = [v21 uiClientSettings];
+      uiClientSettings = [v21 uiClientSettings];
     }
   }
 
   else
   {
-    v11 = [v4 view];
-    v12 = [v11 window];
+    view = [gestureCopy view];
+    uiClientSettings = [view window];
   }
 
-  v22 = [v12 interfaceOrientation];
+  interfaceOrientation = [uiClientSettings interfaceOrientation];
 
-  return v22;
+  return interfaceOrientation;
 }
 
-- (int64_t)_educationTypeForGesture:(id)a3 direction:(int64_t)a4
+- (int64_t)_educationTypeForGesture:(id)gesture direction:(int64_t)direction
 {
-  v6 = a3;
-  v7 = v6;
-  if (self->_threeFingerSingleTap == v6)
+  gestureCopy = gesture;
+  v7 = gestureCopy;
+  if (self->_threeFingerSingleTap == gestureCopy)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0 || [(_UIKBProductivitySingleTapGesture *)v7 tapCount]<= 1)
     {
@@ -801,24 +801,24 @@ LABEL_11:
     goto LABEL_24;
   }
 
-  if (self->_threeFingerDoubleTap == v6)
+  if (self->_threeFingerDoubleTap == gestureCopy)
   {
     goto LABEL_11;
   }
 
-  if (self->_threeFingerSlide != v6)
+  if (self->_threeFingerSlide != gestureCopy)
   {
-    if (self->_threeFingerLongPress != v6)
+    if (self->_threeFingerLongPress != gestureCopy)
     {
-      if (self->_threeFingerPinch == v6)
+      if (self->_threeFingerPinch == gestureCopy)
       {
-        if (a4 == 10)
+        if (direction == 10)
         {
           v8 = 3;
           goto LABEL_24;
         }
 
-        if (a4 == 8)
+        if (direction == 8)
         {
           v8 = 2;
           goto LABEL_24;
@@ -827,7 +827,7 @@ LABEL_11:
         v13 = SBLogProductivityGestures();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          [SBProductivityGestureController _educationTypeForGesture:a4 direction:v13];
+          [SBProductivityGestureController _educationTypeForGesture:direction direction:v13];
         }
 
         goto LABEL_33;
@@ -850,7 +850,7 @@ LABEL_23:
     goto LABEL_22;
   }
 
-  if (a4 == 3)
+  if (direction == 3)
   {
     if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
     {
@@ -865,12 +865,12 @@ LABEL_23:
 
   else
   {
-    if (a4 != 2)
+    if (direction != 2)
     {
       v13 = SBLogProductivityGestures();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [SBProductivityGestureController _educationTypeForGesture:a4 direction:v13];
+        [SBProductivityGestureController _educationTypeForGesture:direction direction:v13];
       }
 
 LABEL_33:
@@ -894,28 +894,28 @@ LABEL_24:
   return v8;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   if (![(SBProductivityGestureController *)self _enabledForCurrentAppScenes])
   {
     return 0;
   }
 
-  v4 = [(SBProductivityGestureController *)self _focusedSceneForAction];
-  v5 = v4 != 0;
+  _focusedSceneForAction = [(SBProductivityGestureController *)self _focusedSceneForAction];
+  v5 = _focusedSceneForAction != 0;
 
   return v5;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v8 = gestureRecognizerCopy;
   threeFingerSlide = self->_threeFingerSlide;
   threeFingerLongPress = self->_threeFingerLongPress;
-  v11 = threeFingerLongPress == v6 && threeFingerSlide == v7;
-  if (v11 || (threeFingerSlide == v6 || self->_threeFingerSingleTap == v6 || threeFingerLongPress == v6 || self->_threeFingerDoubleTap == v6) && self->_threeFingerPinch == v7)
+  v11 = threeFingerLongPress == recognizerCopy && threeFingerSlide == gestureRecognizerCopy;
+  if (v11 || (threeFingerSlide == recognizerCopy || self->_threeFingerSingleTap == recognizerCopy || threeFingerLongPress == recognizerCopy || self->_threeFingerDoubleTap == recognizerCopy) && self->_threeFingerPinch == gestureRecognizerCopy)
   {
     isKindOfClass = 1;
   }

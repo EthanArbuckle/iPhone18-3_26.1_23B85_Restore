@@ -1,14 +1,14 @@
 @interface RuleResultsViewController
-- (_TtC22SubscribePageExtension25RuleResultsViewController)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension25RuleResultsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC22SubscribePageExtension25RuleResultsViewController)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension25RuleResultsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didReceiveMemoryWarning;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation RuleResultsViewController
 
-- (_TtC22SubscribePageExtension25RuleResultsViewController)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension25RuleResultsViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension25RuleResultsViewController_textView) = 0;
   result = sub_100754644();
@@ -18,14 +18,14 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100313E54();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100313FD8(a3);
+  selfCopy = self;
+  sub_100313FD8(appear);
 }
 
 - (void)didReceiveMemoryWarning
@@ -35,7 +35,7 @@
   [(RuleResultsViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (_TtC22SubscribePageExtension25RuleResultsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22SubscribePageExtension25RuleResultsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

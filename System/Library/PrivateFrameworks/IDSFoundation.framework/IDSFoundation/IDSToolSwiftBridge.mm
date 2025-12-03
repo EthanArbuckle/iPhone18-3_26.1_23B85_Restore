@@ -3,8 +3,8 @@
 + (NSDictionary)commandAbstractsByName;
 - (IDSCLIToolDelegate)delegate;
 - (IDSToolSwiftBridge)init;
-- (id)help:(id)a3;
-- (void)run:(NSArray *)a3 completionHandler:(id)a4;
+- (id)help:(id)help;
+- (void)run:(NSArray *)run completionHandler:(id)handler;
 @end
 
 @implementation IDSToolSwiftBridge
@@ -47,14 +47,14 @@
   return v2;
 }
 
-- (void)run:(NSArray *)a3 completionHandler:(id)a4
+- (void)run:(NSArray *)run completionHandler:(id)handler
 {
   v7 = sub_1A7CC7FFC(&unk_1EB2B61C0);
   MEMORY[0x1EEE9AC00](v7 - 8, v8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = run;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1A7E226D0();
@@ -69,16 +69,16 @@
   v15[3] = 0;
   v15[4] = &unk_1A7E48E60;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  runCopy = run;
+  selfCopy = self;
   sub_1A7DE5274(0, 0, v10, &unk_1A7E45700, v15);
 }
 
-- (id)help:(id)a3
+- (id)help:(id)help
 {
   v4 = sub_1A7E22290();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1A7D58B30(v4, v6);
   v9 = v8;
 

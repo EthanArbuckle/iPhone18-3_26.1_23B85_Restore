@@ -1,13 +1,13 @@
 @interface JavaNioMemoryBlock_UnmanagedBlock
-- (JavaNioMemoryBlock_UnmanagedBlock)initWithLong:(int64_t)a3 withLong:(int64_t)a4;
+- (JavaNioMemoryBlock_UnmanagedBlock)initWithLong:(int64_t)long withLong:(int64_t)withLong;
 @end
 
 @implementation JavaNioMemoryBlock_UnmanagedBlock
 
-- (JavaNioMemoryBlock_UnmanagedBlock)initWithLong:(int64_t)a3 withLong:(int64_t)a4
+- (JavaNioMemoryBlock_UnmanagedBlock)initWithLong:(int64_t)long withLong:(int64_t)withLong
 {
-  self->super.address_ = a3;
-  self->super.size_ = a4;
+  self->super.address_ = long;
+  self->super.size_ = withLong;
   return self;
 }
 

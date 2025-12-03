@@ -1,13 +1,13 @@
 @interface VUWGalleryProgressStatus
 - (VUWGalleryProgressStatus)init;
-- (VUWGalleryProgressStatus)initWithProgressFraction:(float)a3;
+- (VUWGalleryProgressStatus)initWithProgressFraction:(float)fraction;
 @end
 
 @implementation VUWGalleryProgressStatus
 
-- (VUWGalleryProgressStatus)initWithProgressFraction:(float)a3
+- (VUWGalleryProgressStatus)initWithProgressFraction:(float)fraction
 {
-  *(&self->super.isa + OBJC_IVAR___VUWGalleryProgressStatus_progressFraction) = a3;
+  *(&self->super.isa + OBJC_IVAR___VUWGalleryProgressStatus_progressFraction) = fraction;
   v4.receiver = self;
   v4.super_class = VUWGalleryProgressStatus;
   return [(VUWGalleryProgressStatus *)&v4 init];

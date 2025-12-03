@@ -1,22 +1,22 @@
 @interface BKHIDHapticFeedbackInterface
-- (void)playHapticFeedbackRequest:(id)a3;
+- (void)playHapticFeedbackRequest:(id)request;
 @end
 
 @implementation BKHIDHapticFeedbackInterface
 
-- (void)playHapticFeedbackRequest:(id)a3
+- (void)playHapticFeedbackRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 pattern];
-  v5 = [v3 timestamp];
-  v6 = [v3 senderID];
-  v7 = [v3 powerSourceID];
+  requestCopy = request;
+  pattern = [requestCopy pattern];
+  timestamp = [requestCopy timestamp];
+  senderID = [requestCopy senderID];
+  powerSourceID = [requestCopy powerSourceID];
   v8 = +[AHFManager sharedInstance];
   v9 = v8;
-  if (v7)
+  if (powerSourceID)
   {
     v14 = 0;
-    v10 = [v8 playFeedback:v4 powerSourceID:v7 timestamp:v5 error:&v14];
+    v10 = [v8 playFeedback:pattern powerSourceID:powerSourceID timestamp:timestamp error:&v14];
     v11 = v14;
 
     if (v10)
@@ -28,7 +28,7 @@
   else
   {
     v15 = 0;
-    v13 = [v8 playFeedback:v4 senderID:v6 timestamp:v5 error:&v15];
+    v13 = [v8 playFeedback:pattern senderID:senderID timestamp:timestamp error:&v15];
     v11 = v15;
 
     if (v13)
@@ -38,7 +38,7 @@ LABEL_3:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v17 = v3;
+        v17 = requestCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Haptic feedback request %{public}@ successful", buf, 0xCu);
       }
 
@@ -50,7 +50,7 @@ LABEL_3:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v17 = v3;
+    v17 = requestCopy;
     v18 = 2114;
     v19 = v11;
     _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Haptic feedback request %{public}@ failed with error %{public}@", buf, 0x16u);

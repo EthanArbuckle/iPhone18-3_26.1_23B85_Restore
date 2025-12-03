@@ -15,8 +15,8 @@
   v9[2] = *MEMORY[0x1E69E13E0];
   v10[2] = &unk_1F4A9A2B8;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:3];
-  v4 = [MEMORY[0x1E69E0A90] currentDevice];
-  if (([v4 hasSystemAperture] & 1) == 0)
+  currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+  if (([currentDevice hasSystemAperture] & 1) == 0)
   {
     v5 = [v3 mutableCopy];
     [v5 setObject:&unk_1F4A9A2A0 forKey:*MEMORY[0x1E69E1368]];

@@ -1,33 +1,33 @@
 @interface MRUMediaSuggestionCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation MRUMediaSuggestionCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MRUMediaSuggestionCollectionViewCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUMediaSuggestionCollectionViewCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UICollectionViewCell" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MRUMediaSuggestionCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"MRUMediaSuggestionCollectionViewCell" hasInstanceMethod:@"artworkView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUArtworkView" hasInstanceMethod:@"iconImage" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MRUMediaSuggestionCollectionViewCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUMediaSuggestionCollectionViewCell" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UICollectionViewCell" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MRUMediaSuggestionCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"MRUMediaSuggestionCollectionViewCell" hasInstanceMethod:@"artworkView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUArtworkView" hasInstanceMethod:@"iconImage" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(MRUMediaSuggestionCollectionViewCellAccessibility *)self safeValueForKey:@"artworkView"];
   v4 = [v3 safeValueForKey:@"iconImage"];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  if ([v5 length])
+  if ([accessibilityLabel length])
   {
     v6 = MEMORY[0x29EDBA0F8];
     v7 = accessibilityLocalizedString(@"media.source.app.description");
-    v8 = [v6 localizedStringWithFormat:v7, v5];
+    v8 = [v6 localizedStringWithFormat:v7, accessibilityLabel];
   }
 
   else
@@ -46,17 +46,17 @@
 {
   if ([(MRUMediaSuggestionCollectionViewCellAccessibility *)self safeBoolForKey:@"isSelected"])
   {
-    v3 = accessibilityLocalizedString(@"media.item.loading");
+    accessibilityValue = accessibilityLocalizedString(@"media.item.loading");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = MRUMediaSuggestionCollectionViewCellAccessibility;
-    v3 = [(MRUMediaSuggestionCollectionViewCellAccessibility *)&v5 accessibilityValue];
+    accessibilityValue = [(MRUMediaSuggestionCollectionViewCellAccessibility *)&v5 accessibilityValue];
   }
 
-  return v3;
+  return accessibilityValue;
 }
 
 @end

@@ -15,7 +15,7 @@
 - (BOOL)pollVoteFailed;
 - (CKAggregateAcknowledgmentChatItem)tapbacksChatItem;
 - (CKMessagePartChatItem)init;
-- (CKMessagePartChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4;
+- (CKMessagePartChatItem)initWithIMChatItem:(id)item maxWidth:(double)width;
 - (IMColorComponents)strokeColor;
 - (IMMessage)message;
 - (IMMessageItem)messageItem;
@@ -40,50 +40,50 @@
 - (int64_t)stewieConversationID;
 - (unint64_t)scheduleState;
 - (unint64_t)scheduleType;
-- (void)_setVisibleAssociatedMessageChatItems:(id)a3;
+- (void)_setVisibleAssociatedMessageChatItems:(id)items;
 @end
 
 @implementation CKMessagePartChatItem
 
 - (BOOL)isFromMe
 {
-  v3 = [(CKChatItem *)self notification];
+  notification = [(CKChatItem *)self notification];
 
-  if (v3)
+  if (notification)
   {
     return 0;
   }
 
   if (CKIsRunningForDevelopmentOnSimulator() || CKIsRunningUITests() || CKIsRunningForDevelopmentOnSimulator() || ([(CKMessagePartChatItem *)self message], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
-    v5 = [(CKChatItem *)self IMChatItem];
+    iMChatItem = [(CKChatItem *)self IMChatItem];
   }
 
   else
   {
-    v5 = [(CKMessagePartChatItem *)self message];
+    iMChatItem = [(CKMessagePartChatItem *)self message];
   }
 
-  v6 = v5;
-  v7 = [v5 isFromMe];
+  v6 = iMChatItem;
+  isFromMe = [iMChatItem isFromMe];
 
-  return v7;
+  return isFromMe;
 }
 
 - (IMMessage)message
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 message];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  message = [iMChatItem message];
 
-  return v3;
+  return message;
 }
 
 - (IMMessageItem)messageItem
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 messageItem];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  messageItem = [iMChatItem messageItem];
 
-  return v3;
+  return messageItem;
 }
 
 - (NSArray)messageAcknowledgments
@@ -93,12 +93,12 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(CKMessagePartChatItem *)self visibleAssociatedMessageChatItems];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  visibleAssociatedMessageChatItems = [(CKMessagePartChatItem *)self visibleAssociatedMessageChatItems];
+  v3 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
-    v5 = 0;
+    array = 0;
     v6 = *v11;
     do
     {
@@ -106,23 +106,23 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(visibleAssociatedMessageChatItems);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if (!v5)
+          if (!array)
           {
-            v5 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
           }
 
-          [v5 addObject:v8];
+          [array addObject:v8];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -130,10 +130,10 @@
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  return v5;
+  return array;
 }
 
 - (int64_t)selectedType
@@ -143,20 +143,20 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v2 = [(CKMessagePartChatItem *)self messageAcknowledgments];
-  v3 = [v2 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  messageAcknowledgments = [(CKMessagePartChatItem *)self messageAcknowledgments];
+  v3 = [messageAcknowledgments countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v3)
   {
     v4 = v3;
     v5 = *v22;
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    associatedMessageType = 0x7FFFFFFFFFFFFFFFLL;
     do
     {
       for (i = 0; i != v4; ++i)
       {
         if (*v22 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(messageAcknowledgments);
         }
 
         v8 = *(*(&v21 + 1) + 8 * i);
@@ -164,8 +164,8 @@
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v9 = [v8 acknowledgments];
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        acknowledgments = [v8 acknowledgments];
+        v10 = [acknowledgments countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v10)
         {
           v11 = v10;
@@ -176,25 +176,25 @@
             {
               if (*v18 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(acknowledgments);
               }
 
               v14 = *(*(&v17 + 1) + 8 * j);
-              if (([v14 isFromMe] & 1) != 0 || v6 < 0)
+              if (([v14 isFromMe] & 1) != 0 || associatedMessageType < 0)
               {
-                v15 = [v14 tapback];
-                v6 = [v15 associatedMessageType];
+                tapback = [v14 tapback];
+                associatedMessageType = [tapback associatedMessageType];
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v11 = [acknowledgments countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v11);
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v4 = [messageAcknowledgments countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v4);
@@ -202,17 +202,17 @@
 
   else
   {
-    v6 = 0x7FFFFFFFFFFFFFFFLL;
+    associatedMessageType = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  if (v6 <= 2000)
+  if (associatedMessageType <= 2000)
   {
     return 2000;
   }
 
   else
   {
-    return v6;
+    return associatedMessageType;
   }
 }
 
@@ -250,8 +250,8 @@
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v8 = [v7 acknowledgments];
-        v9 = [v8 countByEnumeratingWithState:&v29 objects:v39 count:16];
+        acknowledgments = [v7 acknowledgments];
+        v9 = [acknowledgments countByEnumeratingWithState:&v29 objects:v39 count:16];
         if (v9)
         {
           v10 = v9;
@@ -262,15 +262,15 @@
             {
               if (*v30 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(acknowledgments);
               }
 
-              v13 = [*(*(&v29 + 1) + 8 * i) tapback];
-              v14 = [v13 associatedMessageType];
+              tapback = [*(*(&v29 + 1) + 8 * i) tapback];
+              associatedMessageType = [tapback associatedMessageType];
 
-              if (v14 > 2002)
+              if (associatedMessageType > 2002)
               {
-                switch(v14)
+                switch(associatedMessageType)
                 {
                   case 2003:
                     ++v4;
@@ -286,7 +286,7 @@
 
               else
               {
-                switch(v14)
+                switch(associatedMessageType)
                 {
                   case 2000:
                     ++v5;
@@ -301,7 +301,7 @@
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v29 objects:v39 count:16];
+            v10 = [acknowledgments countByEnumeratingWithState:&v29 objects:v39 count:16];
           }
 
           while (v10);
@@ -356,8 +356,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CKMessagePartChatItem *)self visibleAssociatedMessageChatItems];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  visibleAssociatedMessageChatItems = [(CKMessagePartChatItem *)self visibleAssociatedMessageChatItems];
+  v3 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -367,7 +367,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(visibleAssociatedMessageChatItems);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -379,7 +379,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -400,11 +400,11 @@ LABEL_11:
   v11.receiver = self;
   v11.super_class = CKMessagePartChatItem;
   v4 = [(CKBalloonChatItem *)&v11 description];
-  v5 = [(CKMessagePartChatItem *)self color];
-  v6 = [(CKMessagePartChatItem *)self messageHighlightChatItem];
-  v7 = [(CKMessagePartChatItem *)self visibleAssociatedMessageChatItems];
-  v8 = [v7 componentsJoinedByString:{@", "}];
-  v9 = [v3 stringWithFormat:@"[%@ color:%d, messageHighlightChatItem: %@, visible associated message items: [%@]]", v4, v5, v6, v8];
+  color = [(CKMessagePartChatItem *)self color];
+  messageHighlightChatItem = [(CKMessagePartChatItem *)self messageHighlightChatItem];
+  visibleAssociatedMessageChatItems = [(CKMessagePartChatItem *)self visibleAssociatedMessageChatItems];
+  v8 = [visibleAssociatedMessageChatItems componentsJoinedByString:{@", "}];
+  v9 = [v3 stringWithFormat:@"[%@ color:%d, messageHighlightChatItem: %@, visible associated message items: [%@]]", v4, color, messageHighlightChatItem, v8];
 
   return v9;
 }
@@ -425,17 +425,17 @@ LABEL_11:
 
 - (BOOL)canSendAsTextMessage
 {
-  v3 = [MEMORY[0x1E69A7F60] sharedManager];
-  v4 = [v3 isMessagesTheDefaultTextApp];
+  mEMORY[0x1E69A7F60] = [MEMORY[0x1E69A7F60] sharedManager];
+  isMessagesTheDefaultTextApp = [mEMORY[0x1E69A7F60] isMessagesTheDefaultTextApp];
 
-  if (!v4 || [(CKMessagePartChatItem *)self scheduleType]== 2)
+  if (!isMessagesTheDefaultTextApp || [(CKMessagePartChatItem *)self scheduleType]== 2)
   {
     return 0;
   }
 
   v6 = MEMORY[0x1E69A5C90];
-  v7 = [(CKMessagePartChatItem *)self serviceName];
-  v8 = [v6 serviceWithName:v7];
+  serviceName = [(CKMessagePartChatItem *)self serviceName];
+  v8 = [v6 serviceWithName:serviceName];
   v9 = [v8 supportsCapability:*MEMORY[0x1E69A7A30]];
 
   return v9;
@@ -443,15 +443,15 @@ LABEL_11:
 
 - (BOOL)canInlineReply
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 canReply];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  canReply = [iMChatItem canReply];
 
   if (canInlineReply_onceToken != -1)
   {
     [CKMessagePartChatItem canInlineReply];
   }
 
-  return (v3 | canInlineReply_canAlwaysReply) & 1;
+  return (canReply | canInlineReply_canAlwaysReply) & 1;
 }
 
 void __39__CKMessagePartChatItem_canInlineReply__block_invoke()
@@ -480,13 +480,13 @@ void __39__CKMessagePartChatItem_canInlineReply__block_invoke()
 
   else
   {
-    v4 = [(CKMessagePartChatItem *)self messageItem];
-    if ([v4 scheduleType] == 2)
+    messageItem = [(CKMessagePartChatItem *)self messageItem];
+    if ([messageItem scheduleType] == 2)
     {
-      v5 = [v4 scheduleState];
-      if (v5 <= 5)
+      scheduleState = [messageItem scheduleState];
+      if (scheduleState <= 5)
       {
-        v3 = 9u >> v5;
+        v3 = 9u >> scheduleState;
       }
 
       else
@@ -506,17 +506,17 @@ void __39__CKMessagePartChatItem_canInlineReply__block_invoke()
 
 - (BOOL)pollVoteFailed
 {
-  v3 = [(CKMessagePartChatItem *)self message];
-  v4 = [v3 balloonBundleID];
-  v5 = [v4 containsString:*MEMORY[0x1E69A6928]];
+  message = [(CKMessagePartChatItem *)self message];
+  balloonBundleID = [message balloonBundleID];
+  v5 = [balloonBundleID containsString:*MEMORY[0x1E69A6928]];
 
   result = 0;
   if (v5)
   {
-    v6 = [(CKMessagePartChatItem *)self messageItem];
-    v7 = [v6 errorCode];
+    messageItem = [(CKMessagePartChatItem *)self messageItem];
+    errorCode = [messageItem errorCode];
 
-    if (v7)
+    if (errorCode)
     {
       return 1;
     }
@@ -532,53 +532,53 @@ void __39__CKMessagePartChatItem_canInlineReply__block_invoke()
     goto LABEL_4;
   }
 
-  v3 = [(CKMessagePartChatItem *)self isFromMe];
-  if (!v3)
+  isFromMe = [(CKMessagePartChatItem *)self isFromMe];
+  if (!isFromMe)
   {
-    return v3;
+    return isFromMe;
   }
 
-  v4 = [(CKMessagePartChatItem *)self message];
-  v5 = [v4 error];
+  message = [(CKMessagePartChatItem *)self message];
+  error = [message error];
 
-  if (v5 || (-[CKMessagePartChatItem messageItem](self, "messageItem"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 scheduleType], v6, v7 == 2) && (-[CKMessagePartChatItem messageItem](self, "messageItem"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "scheduleState"), v8, (v9 & 0xFFFFFFFFFFFFFFFELL) == 4))
+  if (error || (-[CKMessagePartChatItem messageItem](self, "messageItem"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 scheduleType], v6, v7 == 2) && (-[CKMessagePartChatItem messageItem](self, "messageItem"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "scheduleState"), v8, (v9 & 0xFFFFFFFFFFFFFFFELL) == 4))
   {
 LABEL_4:
-    LOBYTE(v3) = 1;
-    return v3;
+    LOBYTE(isFromMe) = 1;
+    return isFromMe;
   }
 
-  LOBYTE(v3) = 0;
-  return v3;
+  LOBYTE(isFromMe) = 0;
+  return isFromMe;
 }
 
 - (id)time
 {
-  v3 = [(CKChatItem *)self notification];
+  notification = [(CKChatItem *)self notification];
 
-  if (v3)
+  if (notification)
   {
-    v4 = [(CKChatItem *)self notification];
-    v5 = [v4 date];
+    notification2 = [(CKChatItem *)self notification];
+    date = [notification2 date];
   }
 
   else
   {
     if (CKIsRunningForDevelopmentOnSimulator() || CKIsRunningUITests() || CKIsRunningForDevelopmentOnSimulator())
     {
-      v6 = [(CKChatItem *)self IMChatItem];
+      iMChatItem = [(CKChatItem *)self IMChatItem];
     }
 
     else
     {
-      v6 = [(CKMessagePartChatItem *)self message];
+      iMChatItem = [(CKMessagePartChatItem *)self message];
     }
 
-    v4 = v6;
-    v5 = [v6 time];
+    notification2 = iMChatItem;
+    date = [iMChatItem time];
   }
 
-  v7 = v5;
+  v7 = date;
 
   return v7;
 }
@@ -587,62 +587,62 @@ LABEL_4:
 {
   if (CKIsRunningForDevelopmentOnSimulator() || CKIsRunningUITests())
   {
-    v3 = [(CKChatItem *)self IMChatItem];
+    iMChatItem = [(CKChatItem *)self IMChatItem];
   }
 
   else
   {
-    v3 = [(CKMessagePartChatItem *)self message];
+    iMChatItem = [(CKMessagePartChatItem *)self message];
   }
 
-  v4 = v3;
-  v5 = [v3 sender];
+  v4 = iMChatItem;
+  sender = [iMChatItem sender];
 
-  return v5;
+  return sender;
 }
 
 - (NSString)serviceName
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 serviceName];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  serviceName = [iMChatItem serviceName];
 
-  return v3;
+  return serviceName;
 }
 
 - (BOOL)_isSURFRelatedMessage
 {
-  v3 = [(CKMessagePartChatItem *)self message];
-  v4 = [v3 balloonBundleID];
+  message = [(CKMessagePartChatItem *)self message];
+  balloonBundleID = [message balloonBundleID];
   v5 = *MEMORY[0x1E69A6A38];
-  if ([v4 containsString:*MEMORY[0x1E69A6A38]])
+  if ([balloonBundleID containsString:*MEMORY[0x1E69A6A38]])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(CKMessagePartChatItem *)self message];
-    v8 = [v7 balloonBundleID];
+    message2 = [(CKMessagePartChatItem *)self message];
+    balloonBundleID2 = [message2 balloonBundleID];
     v9 = *MEMORY[0x1E69A6A40];
-    if ([v8 containsString:*MEMORY[0x1E69A6A40]])
+    if ([balloonBundleID2 containsString:*MEMORY[0x1E69A6A40]])
     {
       v6 = 1;
     }
 
     else
     {
-      v10 = [(CKMessagePartChatItem *)self message];
-      v11 = [v10 associatedBalloonBundleID];
-      if ([v11 containsString:v5])
+      message3 = [(CKMessagePartChatItem *)self message];
+      associatedBalloonBundleID = [message3 associatedBalloonBundleID];
+      if ([associatedBalloonBundleID containsString:v5])
       {
         v6 = 1;
       }
 
       else
       {
-        v12 = [(CKMessagePartChatItem *)self message];
-        v13 = [v12 associatedBalloonBundleID];
-        v6 = [v13 containsString:v9];
+        message4 = [(CKMessagePartChatItem *)self message];
+        associatedBalloonBundleID2 = [message4 associatedBalloonBundleID];
+        v6 = [associatedBalloonBundleID2 containsString:v9];
       }
     }
   }
@@ -652,34 +652,34 @@ LABEL_4:
 
 - (int64_t)index
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 index];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  index = [iMChatItem index];
 
-  return v3;
+  return index;
 }
 
 - (char)balloonStyle
 {
-  v3 = [(CKMessagePartChatItem *)self messageItem];
-  v4 = [v3 isPendingSatelliteSend];
+  messageItem = [(CKMessagePartChatItem *)self messageItem];
+  isPendingSatelliteSend = [messageItem isPendingSatelliteSend];
 
-  if (v4)
+  if (isPendingSatelliteSend)
   {
     LOBYTE(v5) = 4;
   }
 
   else
   {
-    v6 = [(CKMessagePartChatItem *)self messageItem];
-    v7 = [v6 scheduleType];
+    messageItem2 = [(CKMessagePartChatItem *)self messageItem];
+    scheduleType = [messageItem2 scheduleType];
 
-    if (v7 == 2)
+    if (scheduleType == 2)
     {
-      v8 = [(CKMessagePartChatItem *)self messageItem];
-      v9 = [v8 scheduleState];
+      messageItem3 = [(CKMessagePartChatItem *)self messageItem];
+      scheduleState = [messageItem3 scheduleState];
 
-      v5 = 0x40400040400uLL >> (8 * v9);
-      if (v9 > 5)
+      v5 = 0x40400040400uLL >> (8 * scheduleState);
+      if (scheduleState > 5)
       {
         LOBYTE(v5) = 0;
       }
@@ -696,18 +696,18 @@ LABEL_4:
 
 - (IMColorComponents)strokeColor
 {
-  v7 = [(CKMessagePartChatItem *)self messageItem];
-  v8 = [v7 isPendingSatelliteSend];
+  messageItem = [(CKMessagePartChatItem *)self messageItem];
+  isPendingSatelliteSend = [messageItem isPendingSatelliteSend];
 
-  if (v8)
+  if (isPendingSatelliteSend)
   {
     goto LABEL_2;
   }
 
-  v16 = [(CKMessagePartChatItem *)self messageItem];
-  v17 = [v16 scheduleType];
+  messageItem2 = [(CKMessagePartChatItem *)self messageItem];
+  scheduleType = [messageItem2 scheduleType];
 
-  if (v17 < 2)
+  if (scheduleType < 2)
   {
 LABEL_4:
     v2 = *MEMORY[0x1E69A6E08];
@@ -717,19 +717,19 @@ LABEL_4:
     goto LABEL_9;
   }
 
-  if (v17 == 2)
+  if (scheduleType == 2)
   {
-    v18 = [(CKMessagePartChatItem *)self messageItem];
-    v19 = [v18 scheduleState];
+    messageItem3 = [(CKMessagePartChatItem *)self messageItem];
+    scheduleState = [messageItem3 scheduleState];
 
-    if (v19 <= 5)
+    if (scheduleState <= 5)
     {
-      if (((1 << v19) & 0x36) != 0)
+      if (((1 << scheduleState) & 0x36) != 0)
       {
 LABEL_2:
         v9 = +[CKUIBehavior sharedBehaviors];
-        v10 = [v9 theme];
-        v11 = [v10 unfilledBalloonColorForColorType:15];
+        theme = [v9 theme];
+        v11 = [theme unfilledBalloonColorForColorType:15];
         [v11 ck_imColorComponents];
         v2 = v12;
         v3 = v13;
@@ -767,74 +767,74 @@ LABEL_9:
   {
     if ([(CKMessagePartChatItem *)self _isSURFRelatedMessage])
     {
-      LOBYTE(v3) = 5;
+      LOBYTE(__ck_displayColor) = 5;
       [(CKMessagePartChatItem *)self setCachedColor:5];
     }
 
     else if ([(CKMessagePartChatItem *)self isFromMe])
     {
-      v4 = [(CKMessagePartChatItem *)self message];
-      v5 = [(CKChatItem *)self IMChatItem];
-      if ([v5 scheduleType] == 2 && (v6 = objc_msgSend(v5, "scheduleState") - 1, v6 < 5) && ((0x1Bu >> v6) & 1) != 0 || (objc_msgSend(v4, "isPendingSatelliteSend") & 1) != 0)
+      message = [(CKMessagePartChatItem *)self message];
+      iMChatItem = [(CKChatItem *)self IMChatItem];
+      if ([iMChatItem scheduleType] == 2 && (v6 = objc_msgSend(iMChatItem, "scheduleState") - 1, v6 < 5) && ((0x1Bu >> v6) & 1) != 0 || (objc_msgSend(message, "isPendingSatelliteSend") & 1) != 0)
       {
-        v3 = 15;
+        __ck_displayColor = 15;
       }
 
       else
       {
         v8 = +[CKUIBehavior sharedBehaviors];
-        v9 = [v8 isRunningInStoreDemoMode];
+        isRunningInStoreDemoMode = [v8 isRunningInStoreDemoMode];
 
-        if (v9)
+        if (isRunningInStoreDemoMode)
         {
-          v3 = 1;
+          __ck_displayColor = 1;
         }
 
-        else if ([v5 isStewie])
+        else if ([iMChatItem isStewie])
         {
-          v3 = 12;
+          __ck_displayColor = 12;
         }
 
-        else if ([v5 isBusiness])
+        else if ([iMChatItem isBusiness])
         {
-          v3 = 6;
+          __ck_displayColor = 6;
         }
 
-        else if ([v4 wasDowngraded])
+        else if ([message wasDowngraded])
         {
-          v3 = 0;
+          __ck_displayColor = 0;
         }
 
         else
         {
           v10 = MEMORY[0x1E69A5C90];
-          v11 = [(CKMessagePartChatItem *)self serviceName];
-          v12 = [v10 serviceWithName:v11];
-          v3 = [v12 __ck_displayColor];
+          serviceName = [(CKMessagePartChatItem *)self serviceName];
+          v12 = [v10 serviceWithName:serviceName];
+          __ck_displayColor = [v12 __ck_displayColor];
         }
       }
 
-      [(CKMessagePartChatItem *)self setCachedColor:v3];
+      [(CKMessagePartChatItem *)self setCachedColor:__ck_displayColor];
     }
 
     else
     {
       [(CKMessagePartChatItem *)self setCachedColor:0xFFFFFFFFLL];
-      LOBYTE(v3) = -1;
+      LOBYTE(__ck_displayColor) = -1;
     }
 
-    return v3;
+    return __ck_displayColor;
   }
 }
 
 - (NSArray)pasteboardItemProviders
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(CKMessagePartChatItem *)self dragItemProvider];
-  v3 = v2;
-  if (v2)
+  dragItemProvider = [(CKMessagePartChatItem *)self dragItemProvider];
+  v3 = dragItemProvider;
+  if (dragItemProvider)
   {
-    v6[0] = v2;
+    v6[0] = dragItemProvider;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
@@ -846,27 +846,27 @@ LABEL_9:
   return v4;
 }
 
-- (CKMessagePartChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4
+- (CKMessagePartChatItem)initWithIMChatItem:(id)item maxWidth:(double)width
 {
   v33 = *MEMORY[0x1E69E9840];
   v31.receiver = self;
   v31.super_class = CKMessagePartChatItem;
-  v5 = [(CKChatItem *)&v31 initWithIMChatItem:a3 maxWidth:?];
+  v5 = [(CKChatItem *)&v31 initWithIMChatItem:item maxWidth:?];
   v6 = v5;
   if (v5)
   {
-    v7 = [(CKChatItem *)v5 IMChatItem];
+    iMChatItem = [(CKChatItem *)v5 IMChatItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [(CKChatItem *)v6 IMChatItem];
-      v10 = [v9 visibleAssociatedMessageChatItems];
-      v11 = v10;
-      if (v10)
+      iMChatItem2 = [(CKChatItem *)v6 IMChatItem];
+      visibleAssociatedMessageChatItems = [iMChatItem2 visibleAssociatedMessageChatItems];
+      v11 = visibleAssociatedMessageChatItems;
+      if (visibleAssociatedMessageChatItems)
       {
-        v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+        v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(visibleAssociatedMessageChatItems, "count")}];
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
@@ -886,10 +886,10 @@ LABEL_9:
                 objc_enumerationMutation(v13);
               }
 
-              v18 = [objc_alloc(objc_msgSend(*(*(&v27 + 1) + 8 * i) __ck_chatItemClass];
-              if (v18)
+              __ck_chatItemClass = [objc_alloc(objc_msgSend(*(*(&v27 + 1) + 8 * i) __ck_chatItemClass];
+              if (__ck_chatItemClass)
               {
-                [v12 addObject:v18];
+                [v12 addObject:__ck_chatItemClass];
               }
             }
 
@@ -906,20 +906,20 @@ LABEL_9:
       }
 
       objc_storeStrong(&v6->_visibleAssociatedMessageChatItems, v12);
-      v19 = [v9 messageHighlightChatItem];
+      messageHighlightChatItem = [iMChatItem2 messageHighlightChatItem];
 
-      if (v19)
+      if (messageHighlightChatItem)
       {
         v20 = [CKMessagePartHighlightChatItem alloc];
-        v21 = [v9 messageHighlightChatItem];
-        v22 = [(CKMessagePartHighlightChatItem *)v20 initWithIMChatItem:v21 maxWidth:a4];
+        messageHighlightChatItem2 = [iMChatItem2 messageHighlightChatItem];
+        v22 = [(CKMessagePartHighlightChatItem *)v20 initWithIMChatItem:messageHighlightChatItem2 maxWidth:width];
         messageHighlightChatItem = v6->_messageHighlightChatItem;
         v6->_messageHighlightChatItem = v22;
       }
 
-      v24 = [v9 suggestedActionsList];
+      suggestedActionsList = [iMChatItem2 suggestedActionsList];
       suggestedActionsList = v6->_suggestedActionsList;
-      v6->_suggestedActionsList = v24;
+      v6->_suggestedActionsList = suggestedActionsList;
     }
 
     [(CKMessagePartChatItem *)v6 setCachedColor:4294967294];
@@ -932,12 +932,12 @@ LABEL_9:
 {
   if ([(CKMessagePartChatItem *)self hasMessageAcknowledgment])
   {
-    v3 = [(NSArray *)self->_visibleAssociatedMessageChatItems lastObject];
+    lastObject = [(NSArray *)self->_visibleAssociatedMessageChatItems lastObject];
     objc_opt_class();
     v4 = &stru_1F04268F8;
     if (objc_opt_isKindOfClass())
     {
-      v5 = v3;
+      v5 = lastObject;
       if ([v5 includesMultiple])
       {
         v6 = @".2";
@@ -948,21 +948,21 @@ LABEL_9:
         v6 = &stru_1F04268F8;
       }
 
-      v7 = [v5 latestAcknowledgmentType];
+      latestAcknowledgmentType = [v5 latestAcknowledgmentType];
       if ([v5 fromMeAcknowledgmentType])
       {
-        v7 = [v5 fromMeAcknowledgmentType];
+        latestAcknowledgmentType = [v5 fromMeAcknowledgmentType];
         v4 = @".fill";
       }
 
-      if ((v7 - 2000) > 5)
+      if ((latestAcknowledgmentType - 2000) > 5)
       {
         v8 = @"plus";
       }
 
       else
       {
-        v8 = off_1E72F5D20[v7 - 2000];
+        v8 = off_1E72F5D20[latestAcknowledgmentType - 2000];
       }
     }
 
@@ -990,8 +990,8 @@ LABEL_9:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CKMessagePartChatItem *)self visibleAssociatedMessageChatItems];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  visibleAssociatedMessageChatItems = [(CKMessagePartChatItem *)self visibleAssociatedMessageChatItems];
+  v3 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -1001,7 +1001,7 @@ LABEL_9:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(visibleAssociatedMessageChatItems);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -1013,7 +1013,7 @@ LABEL_9:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -1037,13 +1037,13 @@ LABEL_11:
 
   else
   {
-    v4 = [(CKMessagePartChatItem *)self messageItem];
-    if ([v4 scheduleType] == 2)
+    messageItem = [(CKMessagePartChatItem *)self messageItem];
+    if ([messageItem scheduleType] == 2)
     {
-      v5 = [v4 scheduleState];
-      if (v5 <= 5)
+      scheduleState = [messageItem scheduleState];
+      if (scheduleState <= 5)
       {
-        v3 = 9u >> v5;
+        v3 = 9u >> scheduleState;
       }
 
       else
@@ -1063,20 +1063,20 @@ LABEL_11:
 
 - (_NSRange)messagePartRange
 {
-  v2 = [(CKChatItem *)self IMChatItem];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 messagePartRange];
+    messagePartRange = [iMChatItem messagePartRange];
     v5 = v4;
   }
 
   else
   {
-    v3 = 0;
+    messagePartRange = 0;
     v5 = 0;
   }
 
-  v6 = v3;
+  v6 = messagePartRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -1085,11 +1085,11 @@ LABEL_11:
 
 - (_NSRange)originalMessagePartRange
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 originalMessagePartRange];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  originalMessagePartRange = [iMChatItem originalMessagePartRange];
   v5 = v4;
 
-  v6 = v3;
+  v6 = originalMessagePartRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
@@ -1098,8 +1098,8 @@ LABEL_11:
 
 - (BOOL)hasMessageAcknowledgment
 {
-  v2 = [(CKMessagePartChatItem *)self tapbacksChatItem];
-  v3 = v2 != 0;
+  tapbacksChatItem = [(CKMessagePartChatItem *)self tapbacksChatItem];
+  v3 = tapbacksChatItem != 0;
 
   return v3;
 }
@@ -1150,28 +1150,28 @@ LABEL_11:
 
 - (BOOL)isCorrupt
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 isCorrupt];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isCorrupt = [iMChatItem isCorrupt];
 
-  return v3;
+  return isCorrupt;
 }
 
 - (int64_t)stewieConversationID
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 stewieConversationID];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  stewieConversationID = [iMChatItem stewieConversationID];
 
-  return v3;
+  return stewieConversationID;
 }
 
 - (BOOL)isBlackholed
 {
-  v3 = [(CKMessagePartChatItem *)self message];
-  v4 = [v3 error];
-  v5 = [v4 code];
+  message = [(CKMessagePartChatItem *)self message];
+  error = [message error];
+  code = [error code];
 
   result = [(CKMessagePartChatItem *)self isFromMe];
-  if (v5 != 43)
+  if (code != 43)
   {
     return 0;
   }
@@ -1181,8 +1181,8 @@ LABEL_11:
 
 - (BOOL)isReply
 {
-  v3 = [(CKMessagePartChatItem *)self threadIdentifier];
-  if ([v3 length])
+  threadIdentifier = [(CKMessagePartChatItem *)self threadIdentifier];
+  if ([threadIdentifier length])
   {
     v4 = ![(CKChatItem *)self wantsOverlayLayout];
   }
@@ -1197,59 +1197,59 @@ LABEL_11:
 
 - (NSString)threadIdentifier
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 threadIdentifier];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  threadIdentifier = [iMChatItem threadIdentifier];
 
-  return v3;
+  return threadIdentifier;
 }
 
 - (IMMessageItem)threadOriginator
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 threadOriginator];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  threadOriginator = [iMChatItem threadOriginator];
 
-  return v3;
+  return threadOriginator;
 }
 
 - (unint64_t)scheduleType
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 scheduleType];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  scheduleType = [iMChatItem scheduleType];
 
-  return v3;
+  return scheduleType;
 }
 
 - (unint64_t)scheduleState
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 scheduleState];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  scheduleState = [iMChatItem scheduleState];
 
-  return v3;
+  return scheduleState;
 }
 
 - (double)timeIntervalSinceMessageSent
 {
-  v2 = [(CKMessagePartChatItem *)self time];
-  v3 = [MEMORY[0x1E695DF00] __im_dateWithCurrentServerTime];
-  [v3 timeIntervalSinceDate:v2];
+  time = [(CKMessagePartChatItem *)self time];
+  __im_dateWithCurrentServerTime = [MEMORY[0x1E695DF00] __im_dateWithCurrentServerTime];
+  [__im_dateWithCurrentServerTime timeIntervalSinceDate:time];
   v5 = v4;
 
   return v5;
 }
 
-- (void)_setVisibleAssociatedMessageChatItems:(id)a3
+- (void)_setVisibleAssociatedMessageChatItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   visibleAssociatedMessageChatItems = self->_visibleAssociatedMessageChatItems;
-  if (visibleAssociatedMessageChatItems != v5)
+  if (visibleAssociatedMessageChatItems != itemsCopy)
   {
-    v8 = v5;
-    v7 = [(NSArray *)visibleAssociatedMessageChatItems isEqualToArray:v5];
-    v5 = v8;
+    v8 = itemsCopy;
+    v7 = [(NSArray *)visibleAssociatedMessageChatItems isEqualToArray:itemsCopy];
+    itemsCopy = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_visibleAssociatedMessageChatItems, a3);
-      v5 = v8;
+      objc_storeStrong(&self->_visibleAssociatedMessageChatItems, items);
+      itemsCopy = v8;
     }
   }
 }

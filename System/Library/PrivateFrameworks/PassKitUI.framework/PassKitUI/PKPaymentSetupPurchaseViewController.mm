@@ -1,74 +1,74 @@
 @interface PKPaymentSetupPurchaseViewController
 - (BOOL)_isCompactHeight;
 - (BOOL)_shouldHideImage;
-- (PKPaymentSetupPurchaseViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 product:(id)a6;
+- (PKPaymentSetupPurchaseViewController)initWithProvisioningController:(id)controller context:(int64_t)context setupDelegate:(id)delegate product:(id)product;
 - (PKPaymentSetupPurchaseViewControllerFlowDelegate)flowDelegate;
 - (PKPaymentSetupViewControllerDelegate)setupDelegate;
 - (id)_rightBarButton;
 - (id)_spinnerBarButton;
-- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)a3;
+- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator;
 - (void)_createConstraints;
 - (void)_createSubviews;
-- (void)_rightBarButtonPressed:(id)a3;
-- (void)_showSpinner:(BOOL)a3;
+- (void)_rightBarButtonPressed:(id)pressed;
+- (void)_showSpinner:(BOOL)spinner;
 - (void)_updateBottomHeightConstraint;
-- (void)didUpdateAmount:(id)a3 isValid:(BOOL)a4;
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePurchase:(id)a4 completion:(id)a5;
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3;
-- (void)paymentSetupDidFinish:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
+- (void)didUpdateAmount:(id)amount isValid:(BOOL)valid;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePayment:(id)payment handler:(id)handler;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePurchase:(id)purchase completion:(id)completion;
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish;
+- (void)paymentSetupDidFinish:(id)finish;
+- (void)preflightWithCompletion:(id)completion;
 - (void)showKeyPad;
 - (void)transferBalanceFromExistingCard;
-- (void)viewController:(id)a3 didShowProvisioningError:(id)a4;
-- (void)viewControllerDidTerminateSetupFlow:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewController:(id)controller didShowProvisioningError:(id)error;
+- (void)viewControllerDidTerminateSetupFlow:(id)flow;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPaymentSetupPurchaseViewController
 
-- (PKPaymentSetupPurchaseViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 setupDelegate:(id)a5 product:(id)a6
+- (PKPaymentSetupPurchaseViewController)initWithProvisioningController:(id)controller context:(int64_t)context setupDelegate:(id)delegate product:(id)product
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  productCopy = product;
   v27.receiver = self;
   v27.super_class = PKPaymentSetupPurchaseViewController;
   v14 = [(PKPaymentSetupPurchaseViewController *)&v27 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_product, a6);
-    objc_storeStrong(&v15->_provisioningController, a3);
-    v15->_setupContext = a4;
-    objc_storeWeak(&v15->_setupDelegate, v12);
+    objc_storeStrong(&v14->_product, product);
+    objc_storeStrong(&v15->_provisioningController, controller);
+    v15->_setupContext = context;
+    objc_storeWeak(&v15->_setupDelegate, delegateCopy);
     v16 = [(PKPaymentSetupProduct *)v15->_product provisioningMethodMetadataForType:*MEMORY[0x1E69BC130]];
     provisioningMethodMetadata = v15->_provisioningMethodMetadata;
     v15->_provisioningMethodMetadata = v16;
 
-    v18 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
     currentAmount = v15->_currentAmount;
-    v15->_currentAmount = v18;
+    v15->_currentAmount = zero;
 
-    v20 = [[PKPaymentSetupPurchaseController alloc] initWithProvisioningController:v11 context:a4 purchaseControllerDelegate:v15 product:v13 provisioningMetadata:v15->_provisioningMethodMetadata];
+    v20 = [[PKPaymentSetupPurchaseController alloc] initWithProvisioningController:controllerCopy context:context purchaseControllerDelegate:v15 product:productCopy provisioningMetadata:v15->_provisioningMethodMetadata];
     purchaseController = v15->_purchaseController;
     v15->_purchaseController = v20;
 
-    v22 = [(PKPaymentSetupPurchaseViewController *)v15 navigationItem];
+    navigationItem = [(PKPaymentSetupPurchaseViewController *)v15 navigationItem];
     v23 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
     [v23 configureWithTransparentBackground];
-    [v22 setStandardAppearance:v23];
-    [v22 setTitle:0];
-    v24 = [(PKPaymentSetupPurchaseViewController *)v15 _rightBarButton];
-    [v22 setRightBarButtonItem:v24];
+    [navigationItem setStandardAppearance:v23];
+    [navigationItem setTitle:0];
+    _rightBarButton = [(PKPaymentSetupPurchaseViewController *)v15 _rightBarButton];
+    [navigationItem setRightBarButtonItem:_rightBarButton];
 
     v15->_fieldsVerified = 0;
-    v25 = [v22 rightBarButtonItem];
-    [v25 setEnabled:v15->_fieldsVerified];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:v15->_fieldsVerified];
   }
 
   return v15;
@@ -79,46 +79,46 @@
   v5.receiver = self;
   v5.super_class = PKPaymentSetupPurchaseViewController;
   [(PKPaymentSetupPurchaseViewController *)&v5 viewDidLoad];
-  v3 = [(PKPaymentSetupPurchaseViewController *)self view];
+  view = [(PKPaymentSetupPurchaseViewController *)self view];
   v4 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   [(PKPaymentSetupPurchaseViewController *)self _createSubviews];
   [(PKPaymentSetupPurchaseViewController *)self _createConstraints];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PKPaymentSetupPurchaseViewController;
-  [(PKPaymentSetupPurchaseViewController *)&v6 viewWillAppear:a3];
+  [(PKPaymentSetupPurchaseViewController *)&v6 viewWillAppear:appear];
   self->_visibility = 1;
   setupContext = self->_setupContext;
-  v5 = [(PKPaymentSetupPurchaseViewController *)self view];
-  PKPaymentSetupApplyContextAppearance(setupContext, v5);
+  view = [(PKPaymentSetupPurchaseViewController *)self view];
+  PKPaymentSetupApplyContextAppearance(setupContext, view);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupPurchaseViewController;
-  [(PKPaymentSetupPurchaseViewController *)&v4 viewWillDisappear:a3];
+  [(PKPaymentSetupPurchaseViewController *)&v4 viewWillDisappear:disappear];
   self->_visibility = 3;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupPurchaseViewController;
-  [(PKPaymentSetupPurchaseViewController *)&v4 viewDidDisappear:a3];
+  [(PKPaymentSetupPurchaseViewController *)&v4 viewDidDisappear:disappear];
   self->_visibility = 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = PKPaymentSetupPurchaseViewController;
-  [(PKPaymentSetupPurchaseViewController *)&v12 viewDidAppear:a3];
+  [(PKPaymentSetupPurchaseViewController *)&v12 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
   self->_visibility = 2;
   self->_didPurchase = 0;
@@ -135,22 +135,22 @@
     v10 = [v8 actionWithTitle:v9 style:0 handler:0];
 
     [v7 addAction:v10];
-    v11 = [(PKPaymentSetupPurchaseViewController *)self navigationController];
-    [v11 presentViewController:v7 animated:1 completion:0];
+    navigationController = [(PKPaymentSetupPurchaseViewController *)self navigationController];
+    [navigationController presentViewController:v7 animated:1 completion:0];
   }
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   product = self->_product;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__PKPaymentSetupPurchaseViewController_preflightWithCompletion___block_invoke;
   v8[3] = &unk_1E8012AF0;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   v7 = [(PKPaymentSetupProduct *)product digitalCardCachedImage:v8];
 }
 
@@ -173,17 +173,17 @@ void __64__PKPaymentSetupPurchaseViewController_preflightWithCompletion___block_
   }
 }
 
-- (void)didUpdateAmount:(id)a3 isValid:(BOOL)a4
+- (void)didUpdateAmount:(id)amount isValid:(BOOL)valid
 {
-  objc_storeStrong(&self->_currentAmount, a3);
-  self->_fieldsVerified = a4;
-  v6 = [(PKPaymentSetupPurchaseViewController *)self navigationItem];
-  v7 = [v6 rightBarButtonItem];
-  [v7 setEnabled:self->_fieldsVerified];
+  objc_storeStrong(&self->_currentAmount, amount);
+  self->_fieldsVerified = valid;
+  navigationItem = [(PKPaymentSetupPurchaseViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:self->_fieldsVerified];
 
   setupContext = self->_setupContext;
-  v9 = [(PKPaymentSetupPurchaseViewController *)self view];
-  PKPaymentSetupApplyContextAppearance(setupContext, v9);
+  view = [(PKPaymentSetupPurchaseViewController *)self view];
+  PKPaymentSetupApplyContextAppearance(setupContext, view);
 }
 
 - (void)transferBalanceFromExistingCard
@@ -192,22 +192,22 @@ void __64__PKPaymentSetupPurchaseViewController_preflightWithCompletion___block_
   [WeakRetained purchaseViewControllerDidRequestTransferBalance:self];
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePayment:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePayment:(id)payment handler:(id)handler
 {
   v5 = MEMORY[0x1E69B8B80];
-  v6 = a5;
+  handlerCopy = handler;
   v7 = [[v5 alloc] initWithStatus:0 errors:0];
-  v6[2](v6, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __81__PKPaymentSetupPurchaseViewController_paymentAuthorizationCoordinatorDidFinish___block_invoke;
   v3[3] = &unk_1E8010970;
   v3[4] = self;
-  [a3 dismissWithCompletion:v3];
+  [finish dismissWithCompletion:v3];
 }
 
 void __81__PKPaymentSetupPurchaseViewController_paymentAuthorizationCoordinatorDidFinish___block_invoke(uint64_t a1)
@@ -267,59 +267,59 @@ uint64_t __81__PKPaymentSetupPurchaseViewController_paymentAuthorizationCoordina
   return result;
 }
 
-- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)a3
+- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator
 {
-  v3 = [(PKPaymentSetupPurchaseViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  view = [(PKPaymentSetupPurchaseViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizePurchase:(id)a4 completion:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizePurchase:(id)purchase completion:(id)completion
 {
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  purchaseCopy = purchase;
+  v8 = purchaseCopy;
+  if (purchaseCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __104__PKPaymentSetupPurchaseViewController_paymentAuthorizationCoordinator_didAuthorizePurchase_completion___block_invoke;
     v12[3] = &unk_1E8010A10;
     v12[4] = self;
-    v13 = v7;
-    v9 = a5;
+    v13 = purchaseCopy;
+    completionCopy = completion;
     dispatch_async(MEMORY[0x1E69E96A0], v12);
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v10 = *(a5 + 2);
-    v11 = a5;
+    v10 = *(completion + 2);
+    completionCopy2 = completion;
     v10();
   }
 }
 
-- (void)viewControllerDidTerminateSetupFlow:(id)a3
+- (void)viewControllerDidTerminateSetupFlow:(id)flow
 {
   WeakRetained = objc_loadWeakRetained(&self->_setupDelegate);
   [WeakRetained viewControllerDidTerminateSetupFlow:self];
 }
 
-- (void)viewController:(id)a3 didShowProvisioningError:(id)a4
+- (void)viewController:(id)controller didShowProvisioningError:(id)error
 {
-  v9 = a4;
-  [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportError:v9 context:0];
+  errorCopy = error;
+  [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportError:errorCopy context:0];
   WeakRetained = objc_loadWeakRetained(&self->_setupDelegate);
   v6 = objc_opt_respondsToSelector();
 
   v7 = objc_loadWeakRetained(&self->_setupDelegate);
   v8 = v7;
-  if (v9 && (v6 & 1) != 0)
+  if (errorCopy && (v6 & 1) != 0)
   {
-    [v7 viewController:self didShowProvisioningError:v9];
+    [v7 viewController:self didShowProvisioningError:errorCopy];
   }
 
   else
@@ -328,7 +328,7 @@ uint64_t __81__PKPaymentSetupPurchaseViewController_paymentAuthorizationCoordina
   }
 }
 
-- (void)paymentSetupDidFinish:(id)a3
+- (void)paymentSetupDidFinish:(id)finish
 {
   [(PKPaymentSetupPurchaseViewController *)self dismissViewControllerAnimated:1 completion:0];
 
@@ -347,22 +347,22 @@ uint64_t __81__PKPaymentSetupPurchaseViewController_paymentAuthorizationCoordina
 
 - (BOOL)_isCompactHeight
 {
-  v2 = [(PKPaymentSetupPurchaseViewController *)self traitCollection];
-  v3 = [v2 verticalSizeClass] == 1;
+  traitCollection = [(PKPaymentSetupPurchaseViewController *)self traitCollection];
+  v3 = [traitCollection verticalSizeClass] == 1;
 
   return v3;
 }
 
 - (void)_createSubviews
 {
-  v22 = [(PKPaymentSetupPurchaseViewController *)self view];
+  view = [(PKPaymentSetupPurchaseViewController *)self view];
   v3 = [[PKPaymentSetupPurchaseAmountView alloc] initWithProduct:self->_product provisioningMethodMetadata:self->_provisioningMethodMetadata];
   amountView = self->_amountView;
   self->_amountView = v3;
 
   [(PKPaymentSetupPurchaseAmountView *)self->_amountView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(PKPaymentSetupPurchaseAmountView *)self->_amountView setDelegate:self];
-  [v22 addSubview:self->_amountView];
+  [view addSubview:self->_amountView];
   if (![(PKPaymentSetupPurchaseViewController *)self _shouldHideImage])
   {
     PKUIGetMinScreenWidthType();
@@ -382,22 +382,22 @@ uint64_t __81__PKPaymentSetupPurchaseViewController_paymentAuthorizationCoordina
     {
     }
 
-    v10 = [(UIImageView *)self->_passView layer];
-    [v10 setShadowRadius:12.0];
+    layer = [(UIImageView *)self->_passView layer];
+    [layer setShadowRadius:12.0];
     v11 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.15];
-    [v10 setShadowColor:{objc_msgSend(v11, "CGColor")}];
+    [layer setShadowColor:{objc_msgSend(v11, "CGColor")}];
 
-    [v10 setShadowOffset:{0.0, 12.0}];
+    [layer setShadowOffset:{0.0, 12.0}];
     LODWORD(v12) = 1.0;
-    [v10 setShadowOpacity:v12];
-    [v10 setMasksToBounds:0];
+    [layer setShadowOpacity:v12];
+    [layer setMasksToBounds:0];
     v13 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.1];
     [v13 CGColor];
     PKPaymentStyleApplyCorners();
 
     [(UIImageView *)self->_passView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)self->_passView setAccessibilityIgnoresInvertColors:1];
-    [v22 addSubview:self->_passView];
+    [view addSubview:self->_passView];
   }
 
   v14 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -423,17 +423,17 @@ uint64_t __81__PKPaymentSetupPurchaseViewController_paymentAuthorizationCoordina
   [(UILabel *)self->_titleLabel setNumberOfLines:0];
   [(UILabel *)self->_titleLabel setTextAlignment:1];
   [(UILabel *)self->_titleLabel setLineBreakMode:4];
-  [v22 addSubview:self->_titleLabel];
+  [view addSubview:self->_titleLabel];
 }
 
 - (void)_createConstraints
 {
   v53 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentSetupPurchaseViewController *)self view];
+  view = [(PKPaymentSetupPurchaseViewController *)self view];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v42 = v3;
-  v6 = [v3 safeAreaLayoutGuide];
+  v42 = view;
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
   passView = self->_passView;
   v40 = v4;
   if (passView)
@@ -444,10 +444,10 @@ uint64_t __81__PKPaymentSetupPurchaseViewController_paymentAuthorizationCoordina
     v11 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_passView attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v9];
     [v4 addObject:v11];
     [v4 addObject:v10];
-    v12 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_passView attribute:9 relatedBy:0 toItem:v6 attribute:9 multiplier:1.0 constant:0.0];
+    v12 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_passView attribute:9 relatedBy:0 toItem:safeAreaLayoutGuide attribute:9 multiplier:1.0 constant:0.0];
     [v5 addObject:v12];
 
-    v13 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_passView attribute:3 relatedBy:0 toItem:v6 attribute:15 multiplier:1.0 constant:0.0];
+    v13 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_passView attribute:3 relatedBy:0 toItem:safeAreaLayoutGuide attribute:15 multiplier:1.0 constant:0.0];
     [v5 addObject:v13];
 
     passView = self->_passView;
@@ -462,7 +462,7 @@ uint64_t __81__PKPaymentSetupPurchaseViewController_paymentAuthorizationCoordina
 
   else
   {
-    v16 = v6;
+    v16 = safeAreaLayoutGuide;
   }
 
   if (passView)
@@ -475,9 +475,9 @@ uint64_t __81__PKPaymentSetupPurchaseViewController_paymentAuthorizationCoordina
     v17 = 15;
   }
 
-  v18 = [(PKPaymentSetupPurchaseViewController *)self _isCompactHeight];
+  _isCompactHeight = [(PKPaymentSetupPurchaseViewController *)self _isCompactHeight];
   v19 = 8.0;
-  if (!v18)
+  if (!_isCompactHeight)
   {
     v19 = 12.0;
   }
@@ -485,25 +485,25 @@ uint64_t __81__PKPaymentSetupPurchaseViewController_paymentAuthorizationCoordina
   v20 = [v15 constraintWithItem:titleLabel attribute:3 relatedBy:0 toItem:v16 attribute:v17 multiplier:1.0 constant:v19];
   [v5 addObject:v20];
 
-  v21 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:5 relatedBy:0 toItem:v6 attribute:17 multiplier:1.0 constant:0.0];
+  v21 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:5 relatedBy:0 toItem:safeAreaLayoutGuide attribute:17 multiplier:1.0 constant:0.0];
   [v5 addObject:v21];
 
-  v22 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:6 relatedBy:0 toItem:v6 attribute:18 multiplier:1.0 constant:0.0];
+  v22 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_titleLabel attribute:6 relatedBy:0 toItem:safeAreaLayoutGuide attribute:18 multiplier:1.0 constant:0.0];
   [v5 addObject:v22];
 
   v23 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_amountView attribute:3 relatedBy:0 toItem:self->_titleLabel attribute:11 multiplier:1.0 constant:0.0];
   [v5 addObject:v23];
 
-  v24 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_amountView attribute:4 relatedBy:0 toItem:v6 attribute:4 multiplier:1.0 constant:0.0];
+  v24 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_amountView attribute:4 relatedBy:0 toItem:safeAreaLayoutGuide attribute:4 multiplier:1.0 constant:0.0];
   amountViewBottomHeightConstraint = self->_amountViewBottomHeightConstraint;
   self->_amountViewBottomHeightConstraint = v24;
 
   [(PKPaymentSetupPurchaseViewController *)self _updateBottomHeightConstraint];
   [v5 addObject:self->_amountViewBottomHeightConstraint];
-  v26 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_amountView attribute:5 relatedBy:0 toItem:v6 attribute:17 multiplier:1.0 constant:0.0];
+  v26 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_amountView attribute:5 relatedBy:0 toItem:safeAreaLayoutGuide attribute:17 multiplier:1.0 constant:0.0];
   [v5 addObject:v26];
 
-  v27 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_amountView attribute:6 relatedBy:0 toItem:v6 attribute:18 multiplier:1.0 constant:0.0];
+  v27 = [MEMORY[0x1E696ACD8] constraintWithItem:self->_amountView attribute:6 relatedBy:0 toItem:safeAreaLayoutGuide attribute:18 multiplier:1.0 constant:0.0];
   [v5 addObject:v27];
 
   v49 = 0u;
@@ -594,43 +594,43 @@ uint64_t __81__PKPaymentSetupPurchaseViewController_paymentAuthorizationCoordina
 
 - (void)showKeyPad
 {
-  v2 = [(PKPaymentSetupPurchaseAmountView *)self->_amountView amountTextField];
-  [v2 becomeFirstResponder];
+  amountTextField = [(PKPaymentSetupPurchaseAmountView *)self->_amountView amountTextField];
+  [amountTextField becomeFirstResponder];
 }
 
-- (void)_showSpinner:(BOOL)a3
+- (void)_showSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v7 = [(PKPaymentSetupPurchaseViewController *)self navigationItem];
-  if (v3)
+  spinnerCopy = spinner;
+  navigationItem = [(PKPaymentSetupPurchaseViewController *)self navigationItem];
+  if (spinnerCopy)
   {
-    v5 = [(PKPaymentSetupPurchaseViewController *)self _spinnerBarButton];
-    [v7 setRightBarButtonItem:v5];
+    _spinnerBarButton = [(PKPaymentSetupPurchaseViewController *)self _spinnerBarButton];
+    [navigationItem setRightBarButtonItem:_spinnerBarButton];
 
     [(UIActivityIndicatorView *)self->_activityIndicator startAnimating];
   }
 
   else
   {
-    v6 = [(PKPaymentSetupPurchaseViewController *)self _rightBarButton];
-    [v7 setRightBarButtonItem:v6];
+    _rightBarButton = [(PKPaymentSetupPurchaseViewController *)self _rightBarButton];
+    [navigationItem setRightBarButtonItem:_rightBarButton];
 
     [(UIActivityIndicatorView *)self->_activityIndicator stopAnimating];
   }
 }
 
-- (void)_rightBarButtonPressed:(id)a3
+- (void)_rightBarButtonPressed:(id)pressed
 {
   if (self->_fieldsVerified)
   {
     v12 = v3;
     v13 = v4;
     [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportButtonPressed:0];
-    v6 = [(PKPaymentSetupPurchaseAmountView *)self->_amountView amountTextField];
-    [v6 resignFirstResponder];
+    amountTextField = [(PKPaymentSetupPurchaseAmountView *)self->_amountView amountTextField];
+    [amountTextField resignFirstResponder];
 
     v7 = [(PKPaymentSetupPurchaseController *)self->_purchaseController paymentRequestForAmount:self->_currentAmount];
-    v8 = [MEMORY[0x1E69B8A58] sharedInstance];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __63__PKPaymentSetupPurchaseViewController__rightBarButtonPressed___block_invoke;
@@ -638,7 +638,7 @@ uint64_t __81__PKPaymentSetupPurchaseViewController_paymentAuthorizationCoordina
     v10[4] = self;
     v11 = v7;
     v9 = v7;
-    [v8 canPresentPaymentRequest:v9 completion:v10];
+    [mEMORY[0x1E69B8A58] canPresentPaymentRequest:v9 completion:v10];
   }
 }
 

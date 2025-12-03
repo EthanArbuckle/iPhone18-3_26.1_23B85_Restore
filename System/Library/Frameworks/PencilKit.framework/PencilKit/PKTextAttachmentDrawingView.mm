@@ -1,119 +1,119 @@
 @interface PKTextAttachmentDrawingView
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)gestureRecognizerShouldDelayLift:(id)a3;
-- (BOOL)hitByTouchLocation:(CGPoint)a3 bounds:(CGRect)a4;
-- (BOOL)hitChrome:(CGPoint)a3 isStylus:(BOOL)a4 event:(id)a5;
-- (BOOL)hitTestResizeHandles:(CGPoint)a3 threshold:(double)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)gestureRecognizerShouldDelayLift:(id)lift;
+- (BOOL)hitByTouchLocation:(CGPoint)location bounds:(CGRect)bounds;
+- (BOOL)hitChrome:(CGPoint)chrome isStylus:(BOOL)stylus event:(id)event;
+- (BOOL)hitTestResizeHandles:(CGPoint)handles threshold:(double)threshold;
 - (BOOL)isAtBeginningOfDocument;
 - (BOOL)isAtEndOfDocument;
 - (BOOL)resignFirstResponder;
 - (CGAffineTransform)drawingTransform;
-- (CGAffineTransform)drawingTransformForViewWidth:(SEL)a3;
+- (CGAffineTransform)drawingTransformForViewWidth:(SEL)width;
 - (CGPoint)textViewContentOffsetStartLocation;
 - (CGPoint)zoomStartLocationInAttachment;
 - (CGPoint)zoomStartLocationInWindow;
 - (CGRect)drawingBounds;
-- (CGRect)drawingBoundsForViewWidth:(double)a3;
+- (CGRect)drawingBoundsForViewWidth:(double)width;
 - (CGRect)drawingCanvasBounds;
 - (CGRect)drawingContentBounds;
 - (CGRect)drawingTextAttachmentBounds;
-- (CGRect)drawingTextAttachmentBoundsForContainerView:(id)a3;
+- (CGRect)drawingTextAttachmentBoundsForContainerView:(id)view;
 - (CGRect)liveResizeAttachmentBounds;
-- (CGRect)resizeViewDrawingBounds:(id)a3;
-- (CGSize)desiredTextAttachmentSizeForContainerView:(id)a3;
+- (CGRect)resizeViewDrawingBounds:(id)bounds;
+- (CGSize)desiredTextAttachmentSizeForContainerView:(id)view;
 - (CGSize)drawingVisibleSize;
 - (NSTextAttachment)textAttachment;
-- (PKTextAttachmentDrawingView)initWithAttachment:(id)a3 drawingClass:(Class)a4 inserted:(BOOL)a5;
-- (PKTextAttachmentDrawingView)initWithFrame:(CGRect)a3;
-- (PKTextAttachmentDrawingView)initWithFrame:(CGRect)a3 drawing:(id)a4;
-- (double)canvasHeightFromDrawingViewHeight:(double)a3;
-- (double)canvasHeightFromDrawingViewHeight:(double)a3 drawingViewWidth:(double)a4;
-- (double)desiredAttachmentViewWidthForContainerView:(id)a3;
-- (double)heightFromDrawing:(id)a3 delta:(double)a4;
+- (PKTextAttachmentDrawingView)initWithAttachment:(id)attachment drawingClass:(Class)class inserted:(BOOL)inserted;
+- (PKTextAttachmentDrawingView)initWithFrame:(CGRect)frame;
+- (PKTextAttachmentDrawingView)initWithFrame:(CGRect)frame drawing:(id)drawing;
+- (double)canvasHeightFromDrawingViewHeight:(double)height;
+- (double)canvasHeightFromDrawingViewHeight:(double)height drawingViewWidth:(double)width;
+- (double)desiredAttachmentViewWidthForContainerView:(id)view;
+- (double)heightFromDrawing:(id)drawing delta:(double)delta;
 - (id)_drawingGestureRecognizer;
 - (id)_textView;
-- (id)dataForTextAttachment:(id)a3;
-- (id)drawingForTextAttachment:(id)a3 drawingClass:(Class)a4;
+- (id)dataForTextAttachment:(id)attachment;
+- (id)drawingForTextAttachment:(id)attachment drawingClass:(Class)class;
 - (id)keyCommands;
-- (id)linedPaperLayerLinedPaper:(id)a3;
+- (id)linedPaperLayerLinedPaper:(id)paper;
 - (id)tiledView;
 - (id)tiledViewAttachmentViews;
 - (int64_t)_characterIndex;
-- (void)_adjustResizeIndicatorVisibility:(BOOL)a3 highlightBackground:(BOOL)a4;
+- (void)_adjustResizeIndicatorVisibility:(BOOL)visibility highlightBackground:(BOOL)background;
 - (void)_adjustResizeIndicatorVisibilityNotification;
-- (void)_sceneDidActivate:(id)a3;
-- (void)_setAdjustResizeIndicatorVisible:(BOOL)a3 animated:(BOOL)a4 highlightBackground:(BOOL)a5;
-- (void)_setHeight:(double)a3 originalHeight:(double)a4 growFromTop:(BOOL)a5;
-- (void)_share:(id)a3;
+- (void)_sceneDidActivate:(id)activate;
+- (void)_setAdjustResizeIndicatorVisible:(BOOL)visible animated:(BOOL)animated highlightBackground:(BOOL)background;
+- (void)_setHeight:(double)height originalHeight:(double)originalHeight growFromTop:(BOOL)top;
+- (void)_share:(id)_share;
 - (void)_triggerRedraw;
-- (void)_updateAfterBackgroundSnapshotting:(id)a3;
-- (void)_updateAttachmentBoundsEnsureLayout:(BOOL)a3;
-- (void)_updateResizeTouchInsetsFingerDrawingEnabled:(BOOL)a3;
+- (void)_updateAfterBackgroundSnapshotting:(id)snapshotting;
+- (void)_updateAttachmentBoundsEnsureLayout:(BOOL)layout;
+- (void)_updateResizeTouchInsetsFingerDrawingEnabled:(BOOL)enabled;
 - (void)_updateViewHeightIfNecessary;
 - (void)beginLiveResize;
 - (void)cleanupViewProviders;
-- (void)copy:(id)a3;
-- (void)copyStrokeSelection:(id)a3;
-- (void)cut:(id)a3;
-- (void)cutStrokeSelection:(id)a3;
+- (void)copy:(id)copy;
+- (void)copyStrokeSelection:(id)selection;
+- (void)cut:(id)cut;
+- (void)cutStrokeSelection:(id)selection;
 - (void)dealloc;
-- (void)delete:(id)a3;
-- (void)deleteStrokeSelection:(id)a3;
+- (void)delete:(id)delete;
+- (void)deleteStrokeSelection:(id)selection;
 - (void)didBeginDrawing;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)drawingDataDidChange:(id)a3;
-- (void)drawingDidChangeVisibleStrokes:(BOOL)a3;
+- (void)drawingDataDidChange:(id)change;
+- (void)drawingDidChangeVisibleStrokes:(BOOL)strokes;
 - (void)fingerDrawingEnabledDidChange;
-- (void)handleDoubleTap:(id)a3;
-- (void)hideDrawingMenu:(id)a3;
-- (void)higlightResize:(id)a3;
-- (void)insertSpace:(id)a3;
+- (void)handleDoubleTap:(id)tap;
+- (void)hideDrawingMenu:(id)menu;
+- (void)higlightResize:(id)resize;
+- (void)insertSpace:(id)space;
 - (void)layoutSubviews;
 - (void)layoutTileViews;
-- (void)paste:(id)a3;
+- (void)paste:(id)paste;
 - (void)resetZoom;
-- (void)resizeDrawing:(id)a3;
-- (void)resizeView:(id)a3 finishedWithOriginalDrawingBounds:(CGRect)a4 originalViewBounds:(CGRect)a5;
-- (void)resizeViewDidUpdate:(id)a3;
-- (void)resizeViewRemoveAttachment:(id)a3;
-- (void)scaleDrawing:(double)a3;
-- (void)scaleDrawing:(double)a3 withOffset:(CGPoint)a4 animated:(BOOL)a5;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)selectAll:(id)a3;
-- (void)setContentHidden:(BOOL)a3;
-- (void)setDrawingCanvasBounds:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)showDrawingMenu:(id)a3;
-- (void)tapBelowDrawingGesture:(id)a3;
+- (void)resizeDrawing:(id)drawing;
+- (void)resizeView:(id)view finishedWithOriginalDrawingBounds:(CGRect)bounds originalViewBounds:(CGRect)viewBounds;
+- (void)resizeViewDidUpdate:(id)update;
+- (void)resizeViewRemoveAttachment:(id)attachment;
+- (void)scaleDrawing:(double)drawing;
+- (void)scaleDrawing:(double)drawing withOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)selectAll:(id)all;
+- (void)setContentHidden:(BOOL)hidden;
+- (void)setDrawingCanvasBounds:(CGRect)bounds;
+- (void)setHidden:(BOOL)hidden;
+- (void)showDrawingMenu:(id)menu;
+- (void)tapBelowDrawingGesture:(id)gesture;
 - (void)toolPickerDidHide;
 - (void)toolPickerDidShow;
-- (void)updateDrawingHeight:(double)a3 notifyDrawingDidChange:(BOOL)a4;
+- (void)updateDrawingHeight:(double)height notifyDrawingDidChange:(BOOL)change;
 - (void)updateFrameForTextContainer;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation PKTextAttachmentDrawingView
 
-- (PKTextAttachmentDrawingView)initWithFrame:(CGRect)a3 drawing:(id)a4
+- (PKTextAttachmentDrawingView)initWithFrame:(CGRect)frame drawing:(id)drawing
 {
   v5.receiver = self;
   v5.super_class = PKTextAttachmentDrawingView;
-  return [(PKAttachmentView *)&v5 initWithFrame:a4 drawing:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(PKAttachmentView *)&v5 initWithFrame:drawing drawing:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (PKTextAttachmentDrawingView)initWithAttachment:(id)a3 drawingClass:(Class)a4 inserted:(BOOL)a5
+- (PKTextAttachmentDrawingView)initWithAttachment:(id)attachment drawingClass:(Class)class inserted:(BOOL)inserted
 {
-  v8 = a3;
-  v9 = [(PKTextAttachmentDrawingView *)self drawingForTextAttachment:v8 drawingClass:a4];
+  attachmentCopy = attachment;
+  v9 = [(PKTextAttachmentDrawingView *)self drawingForTextAttachment:attachmentCopy drawingClass:class];
   [(PKTextAttachmentDrawingView *)self setZoomScale:1.0];
   v10 = [[PKTextAttachmentResizeView alloc] initAtTop:1 delegate:self];
   v11 = [[PKTextAttachmentResizeView alloc] initAtTop:0 delegate:self];
@@ -131,8 +131,8 @@
     *(v14 + 728) = v17;
     *(v14 + 744) = *(v16 + 32);
     *(v14 + 95) = 0;
-    objc_storeWeak(v14 + 99, v8);
-    v15->_inserted = a5;
+    objc_storeWeak(v14 + 99, attachmentCopy);
+    v15->_inserted = inserted;
     v18 = [_PKInlineDrawingScrollView alloc];
     [(PKTextAttachmentDrawingView *)v15 bounds];
     v19 = [(_PKInlineDrawingScrollView *)v18 initWithFrame:?];
@@ -147,10 +147,10 @@
     [(UIScrollView *)v15->_tileMaskView setClipsToBounds:1];
     [(UIScrollView *)v15->_tileMaskView setScrollEnabled:0];
     [(UIScrollView *)v15->_tileMaskView setZoomEnabled:0];
-    v21 = [(PKTextAttachmentDrawingView *)v15 traitCollection];
-    v22 = [v21 userInterfaceIdiom];
+    traitCollection = [(PKTextAttachmentDrawingView *)v15 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (!v22)
+    if (!userInterfaceIdiom)
     {
       [(UIScrollView *)v15->_tileMaskView setZoomEnabled:1];
       v23 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v15 action:sel_handleDoubleTap_];
@@ -171,23 +171,23 @@
     linesLayer = v15->_linesLayer;
     v15->_linesLayer = v27;
 
-    v29 = [(UIView *)v15->_tileScaleView layer];
-    [v29 addSublayer:v15->_linesLayer];
+    layer = [(UIView *)v15->_tileScaleView layer];
+    [layer addSublayer:v15->_linesLayer];
 
     [(PKTextAttachmentDrawingView *)v15 bounds];
     v31 = v30;
     v33 = v32;
     v35 = v34;
     v37 = v36;
-    v38 = [(PKAttachmentView *)v15 tileContainerView];
-    [v38 setFrame:{v31, v33, v35, v37}];
+    tileContainerView = [(PKAttachmentView *)v15 tileContainerView];
+    [tileContainerView setFrame:{v31, v33, v35, v37}];
 
-    v39 = [(PKAttachmentView *)v15 tileContainerView];
-    [v39 setUserInteractionEnabled:1];
+    tileContainerView2 = [(PKAttachmentView *)v15 tileContainerView];
+    [tileContainerView2 setUserInteractionEnabled:1];
 
     v40 = v15->_tileScaleView;
-    v41 = [(PKAttachmentView *)v15 tileContainerView];
-    [(UIView *)v40 addSubview:v41];
+    tileContainerView3 = [(PKAttachmentView *)v15 tileContainerView];
+    [(UIView *)v40 addSubview:tileContainerView3];
 
     objc_storeStrong(&v15->_topResizeView, v10);
     objc_storeStrong(&v15->_bottomResizeView, v11);
@@ -236,10 +236,10 @@
     [(UILongPressGestureRecognizer *)v15->_hideMenuGestureRecognizer setDelegate:v15];
     [(UILongPressGestureRecognizer *)v15->_hideMenuGestureRecognizer setMinimumPressDuration:0.0];
     [(PKTextAttachmentDrawingView *)v15 addGestureRecognizer:v15->_hideMenuGestureRecognizer];
-    v54 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v55 = *MEMORY[0x1E69DE0E0];
-    v56 = [MEMORY[0x1E69DCC68] sharedMenuController];
-    [v54 addObserver:v15 selector:sel_menuDidHide_ name:v55 object:v56];
+    mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+    [defaultCenter addObserver:v15 selector:sel_menuDidHide_ name:v55 object:mEMORY[0x1E69DCC68]];
 
     [(PKTextAttachmentDrawingView *)v15 layoutSubviews];
     v57 = [objc_alloc(MEMORY[0x1E69DCDB0]) initWithDelegate:v15];
@@ -249,12 +249,12 @@
   return v15;
 }
 
-- (PKTextAttachmentDrawingView)initWithFrame:(CGRect)a3
+- (PKTextAttachmentDrawingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(PKTextAttachmentDrawingView *)self init];
   v8 = v7;
   if (v7)
@@ -267,8 +267,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKTextAttachmentDrawingView;
@@ -292,9 +292,9 @@
   [(PKTextAttachmentDrawingView *)self setLiveResizeAttachmentBounds:?];
 }
 
-- (CGRect)drawingTextAttachmentBoundsForContainerView:(id)a3
+- (CGRect)drawingTextAttachmentBoundsForContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(PKTextAttachmentDrawingView *)self isLiveResizing])
   {
     [(PKTextAttachmentDrawingView *)self liveResizeAttachmentBounds];
@@ -308,12 +308,12 @@
   {
     v6 = *MEMORY[0x1E695F058];
     v8 = *(MEMORY[0x1E695F058] + 8);
-    [(PKTextAttachmentDrawingView *)self desiredTextAttachmentSizeForContainerView:v4];
+    [(PKTextAttachmentDrawingView *)self desiredTextAttachmentSizeForContainerView:viewCopy];
     v10 = v13;
     v15 = v14;
-    v16 = [v4 window];
-    v17 = [v16 screen];
-    [v17 scale];
+    window = [viewCopy window];
+    screen = [window screen];
+    [screen scale];
     v19 = v18;
 
     v20 = 1.0;
@@ -338,8 +338,8 @@
 
 - (CGRect)drawingTextAttachmentBounds
 {
-  v3 = [(PKTextAttachmentDrawingView *)self _textView];
-  [(PKTextAttachmentDrawingView *)self drawingTextAttachmentBoundsForContainerView:v3];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  [(PKTextAttachmentDrawingView *)self drawingTextAttachmentBoundsForContainerView:_textView];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -356,17 +356,17 @@
   return result;
 }
 
-- (id)drawingForTextAttachment:(id)a3 drawingClass:(Class)a4
+- (id)drawingForTextAttachment:(id)attachment drawingClass:(Class)class
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 fileWrapper];
-  v7 = [v6 regularFileContents];
+  attachmentCopy = attachment;
+  fileWrapper = [attachmentCopy fileWrapper];
+  regularFileContents = [fileWrapper regularFileContents];
 
-  if ((v7 && [v7 length] || (objc_msgSend(v5, "contents"), v8 = objc_claimAutoreleasedReturnValue(), v7, (v7 = v8) != 0)) && objc_msgSend(v7, "length"))
+  if ((regularFileContents && [regularFileContents length] || (objc_msgSend(attachmentCopy, "contents"), v8 = objc_claimAutoreleasedReturnValue(), regularFileContents, (regularFileContents = v8) != 0)) && objc_msgSend(regularFileContents, "length"))
   {
     v13 = 0;
-    v9 = [[a4 alloc] initWithData:v7 error:&v13];
+    v9 = [[class alloc] initWithData:regularFileContents error:&v13];
     v10 = v13;
     if (v10)
     {
@@ -382,7 +382,7 @@
 
   else
   {
-    v9 = [PKTiledView newInlineDrawingOfClass:a4];
+    v9 = [PKTiledView newInlineDrawingOfClass:class];
   }
 
   return v9;
@@ -390,8 +390,8 @@
 
 - (CGRect)drawingCanvasBounds
 {
-  v2 = [(PKAttachmentView *)self drawing];
-  [v2 _canvasBounds];
+  drawing = [(PKAttachmentView *)self drawing];
+  [drawing _canvasBounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -408,26 +408,26 @@
   return result;
 }
 
-- (void)setDrawingCanvasBounds:(CGRect)a3
+- (void)setDrawingCanvasBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(PKAttachmentView *)self drawing];
-  [v7 set_canvasBounds:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  drawing = [(PKAttachmentView *)self drawing];
+  [drawing set_canvasBounds:{x, y, width, height}];
 }
 
-- (void)_updateResizeTouchInsetsFingerDrawingEnabled:(BOOL)a3
+- (void)_updateResizeTouchInsetsFingerDrawingEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69DDCE0];
   v5 = *(MEMORY[0x1E69DDCE0] + 8);
   v8 = *(MEMORY[0x1E69DDCE0] + 16);
   v7 = *(MEMORY[0x1E69DDCE0] + 24);
-  v9 = [(PKTextAttachmentDrawingView *)self isFirstResponder];
+  isFirstResponder = [(PKTextAttachmentDrawingView *)self isFirstResponder];
   v10 = -10.0;
   v11 = 0.0;
-  if (a3)
+  if (enabled)
   {
     v12 = v7;
   }
@@ -437,7 +437,7 @@
     v12 = 0.0;
   }
 
-  if (a3)
+  if (enabled)
   {
     v13 = v8;
   }
@@ -447,13 +447,13 @@
     v13 = -10.0;
   }
 
-  if (a3)
+  if (enabled)
   {
     v11 = v5;
     v10 = v6;
   }
 
-  if (v9)
+  if (isFirstResponder)
   {
     v7 = v12;
     v8 = v13;
@@ -462,24 +462,24 @@
   }
 
   [(PKTextAttachmentDrawingView *)self _setTouchInsets:v6, v5, v8, v7];
-  v14 = [(PKTextAttachmentDrawingView *)self topResizeView];
-  [v14 _setTouchInsets:{v6, v5, v8, v7}];
+  topResizeView = [(PKTextAttachmentDrawingView *)self topResizeView];
+  [topResizeView _setTouchInsets:{v6, v5, v8, v7}];
 
-  v15 = [(PKTextAttachmentDrawingView *)self bottomResizeView];
-  [v15 _setTouchInsets:{v6, v5, v8, v7}];
+  bottomResizeView = [(PKTextAttachmentDrawingView *)self bottomResizeView];
+  [bottomResizeView _setTouchInsets:{v6, v5, v8, v7}];
 }
 
 - (void)cleanupViewProviders
 {
-  v2 = [(PKTextAttachmentDrawingView *)self _textView];
-  v3 = v2;
-  if (v2)
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  v3 = _textView;
+  if (_textView)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__PKTextAttachmentDrawingView_cleanupViewProviders__block_invoke;
     block[3] = &unk_1E82D7148;
-    v5 = v2;
+    v5 = _textView;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
@@ -489,27 +489,27 @@
   v4.receiver = self;
   v4.super_class = PKTextAttachmentDrawingView;
   [(PKAttachmentView *)&v4 didMoveToWindow];
-  v3 = [(PKTextAttachmentDrawingView *)self window];
+  window = [(PKTextAttachmentDrawingView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(PKAttachmentView *)self setWantsDataDetection:1];
   }
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v4 = a3;
+  superviewCopy = superview;
   v8.receiver = self;
   v8.super_class = PKTextAttachmentDrawingView;
-  [(PKTextAttachmentDrawingView *)&v8 willMoveToSuperview:v4];
-  v5 = [(PKTextAttachmentDrawingView *)self textAttachment];
+  [(PKTextAttachmentDrawingView *)&v8 willMoveToSuperview:superviewCopy];
+  textAttachment = [(PKTextAttachmentDrawingView *)self textAttachment];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PKTextAttachmentDrawingView *)self textAttachment];
-    [v7 attachmentView:self willMoveToSuperview:v4];
+    textAttachment2 = [(PKTextAttachmentDrawingView *)self textAttachment];
+    [textAttachment2 attachmentView:self willMoveToSuperview:superviewCopy];
   }
 }
 
@@ -518,41 +518,41 @@
   v51.receiver = self;
   v51.super_class = PKTextAttachmentDrawingView;
   [(PKAttachmentView *)&v51 didMoveToSuperview];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = *MEMORY[0x1E69DE750];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE750] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE750] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = *MEMORY[0x1E69DB738];
-  [v5 removeObserver:self name:*MEMORY[0x1E69DB738] object:0];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DB738] object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = *MEMORY[0x1E69DEA28];
-  [v7 removeObserver:self name:*MEMORY[0x1E69DEA28] object:0];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x1E69DEA28] object:0];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
   v10 = *MEMORY[0x1E69DE338];
-  [v9 removeObserver:self name:*MEMORY[0x1E69DE338] object:0];
+  [defaultCenter4 removeObserver:self name:*MEMORY[0x1E69DE338] object:0];
 
-  v11 = [(PKTextAttachmentDrawingView *)self superview];
+  superview = [(PKTextAttachmentDrawingView *)self superview];
 
-  if (v11)
+  if (superview)
   {
     [(PKTextAttachmentDrawingView *)self cleanupViewProviders];
-    v12 = [(PKTextAttachmentDrawingView *)self tiledView];
-    [v12 _didAddDrawingAttachmentView];
+    tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+    [tiledView _didAddDrawingAttachmentView];
     [(PKTextAttachmentDrawingView *)self updateFrameForTextContainer];
     [(PKTextAttachmentDrawingView *)self _triggerRedraw];
     [(PKTextAttachmentDrawingView *)self _adjustResizeIndicatorVisibility];
     if ([(PKTextAttachmentDrawingView *)self inserted])
     {
       v13 = v10;
-      v14 = [(PKTextAttachmentDrawingView *)self window];
-      v49 = [v14 firstResponder];
+      window = [(PKTextAttachmentDrawingView *)self window];
+      firstResponder = [window firstResponder];
 
-      v15 = [(PKTextAttachmentDrawingView *)self window];
-      v16 = [PKToolPicker activeToolPickerForWindow:v15];
-      v48 = [v16 isVisible];
+      window2 = [(PKTextAttachmentDrawingView *)self window];
+      v16 = [PKToolPicker activeToolPickerForWindow:window2];
+      isVisible = [v16 isVisible];
 
       [(PKTextAttachmentDrawingView *)self becomeFirstResponder];
       [(PKTextAttachmentDrawingView *)self setInserted:0];
@@ -562,8 +562,8 @@
       v20 = 13.0;
       if (v19 <= 0x7FFFFFFFFFFFFFFDLL)
       {
-        v21 = [(PKTextAttachmentDrawingView *)self _textView];
-        [v21 _pk_lineFragmentRectForGlyphAtCharacterIndex:v19];
+        _textView = [(PKTextAttachmentDrawingView *)self _textView];
+        [_textView _pk_lineFragmentRectForGlyphAtCharacterIndex:v19];
         v23 = v22;
 
         v20 = fmax(v23, 13.0);
@@ -584,9 +584,9 @@
         v10 = v13;
         if (v26 < 240.0)
         {
-          v27 = [(PKAttachmentView *)self drawing];
-          v28 = [v27 strokes];
-          v29 = [v28 count];
+          drawing = [(PKAttachmentView *)self drawing];
+          strokes = [drawing strokes];
+          v29 = [strokes count];
 
           v10 = v13;
           if (!v29)
@@ -604,61 +604,61 @@
         }
       }
 
-      if (v48)
+      if (isVisible)
       {
-        [v49 becomeFirstResponder];
+        [firstResponder becomeFirstResponder];
       }
     }
 
-    v31 = [(PKTextAttachmentDrawingView *)self traitCollection];
-    if (![v31 userInterfaceIdiom])
+    traitCollection = [(PKTextAttachmentDrawingView *)self traitCollection];
+    if (![traitCollection userInterfaceIdiom])
     {
-      v32 = [(PKTextAttachmentDrawingView *)self window];
-      v33 = [PKToolPicker isActiveToolPickerVisibleForWindow:v32];
+      window3 = [(PKTextAttachmentDrawingView *)self window];
+      v33 = [PKToolPicker isActiveToolPickerVisibleForWindow:window3];
 
       if (v33)
       {
         goto LABEL_19;
       }
 
-      v31 = [(PKTextAttachmentDrawingView *)self tiledView];
-      v34 = [v31 selectionController];
-      v35 = [(PKSelectionController *)v34 selectionInteraction];
-      [v35 setEnabled:0];
+      traitCollection = [(PKTextAttachmentDrawingView *)self tiledView];
+      selectionController = [traitCollection selectionController];
+      selectionInteraction = [(PKSelectionController *)selectionController selectionInteraction];
+      [selectionInteraction setEnabled:0];
     }
 
 LABEL_19:
-    v36 = [MEMORY[0x1E696AD88] defaultCenter];
-    v37 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v36 addObserver:self selector:sel__adjustResizeIndicatorVisibilityNotification name:v4 object:v37];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    _textView2 = [(PKTextAttachmentDrawingView *)self _textView];
+    [defaultCenter5 addObserver:self selector:sel__adjustResizeIndicatorVisibilityNotification name:v4 object:_textView2];
 
-    v38 = [MEMORY[0x1E696AD88] defaultCenter];
-    v39 = [(PKTextAttachmentDrawingView *)self _textView];
-    v40 = [v39 textStorage];
-    [v38 addObserver:self selector:sel__adjustResizeIndicatorVisibilityNotification name:v6 object:v40];
+    defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+    _textView3 = [(PKTextAttachmentDrawingView *)self _textView];
+    textStorage = [_textView3 textStorage];
+    [defaultCenter6 addObserver:self selector:sel__adjustResizeIndicatorVisibilityNotification name:v6 object:textStorage];
 
-    v41 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v41 addObserver:self selector:sel__updateAfterBackgroundSnapshotting_ name:v8 object:0];
+    defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter7 addObserver:self selector:sel__updateAfterBackgroundSnapshotting_ name:v8 object:0];
 
-    v42 = [MEMORY[0x1E696AD88] defaultCenter];
-    v43 = [(PKTextAttachmentDrawingView *)self window];
-    v44 = [v43 windowScene];
-    [v42 addObserver:self selector:sel__sceneDidActivate_ name:v10 object:v44];
+    defaultCenter8 = [MEMORY[0x1E696AD88] defaultCenter];
+    window4 = [(PKTextAttachmentDrawingView *)self window];
+    windowScene = [window4 windowScene];
+    [defaultCenter8 addObserver:self selector:sel__sceneDidActivate_ name:v10 object:windowScene];
 
-    v45 = [(PKTextAttachmentDrawingView *)self textAttachment];
-    LOBYTE(v42) = objc_opt_respondsToSelector();
+    textAttachment = [(PKTextAttachmentDrawingView *)self textAttachment];
+    LOBYTE(defaultCenter8) = objc_opt_respondsToSelector();
 
-    if (v42)
+    if (defaultCenter8)
     {
-      v46 = [(PKTextAttachmentDrawingView *)self textAttachment];
-      v47 = [(PKTextAttachmentDrawingView *)self superview];
-      [v46 attachmentView:self didMoveToSuperview:v47];
+      textAttachment2 = [(PKTextAttachmentDrawingView *)self textAttachment];
+      superview2 = [(PKTextAttachmentDrawingView *)self superview];
+      [textAttachment2 attachmentView:self didMoveToSuperview:superview2];
     }
 
     goto LABEL_21;
   }
 
-  v24 = [(PKTextAttachmentDrawingView *)self textAttachment];
+  textAttachment3 = [(PKTextAttachmentDrawingView *)self textAttachment];
   v25 = objc_opt_respondsToSelector();
 
   if ((v25 & 1) == 0)
@@ -666,8 +666,8 @@ LABEL_19:
     return;
   }
 
-  v12 = [(PKTextAttachmentDrawingView *)self textAttachment];
-  [v12 attachmentView:self didMoveToSuperview:0];
+  tiledView = [(PKTextAttachmentDrawingView *)self textAttachment];
+  [tiledView attachmentView:self didMoveToSuperview:0];
 LABEL_21:
 }
 
@@ -714,28 +714,28 @@ void __49__PKTextAttachmentDrawingView_didMoveToSuperview__block_invoke(uint64_t
   }
 }
 
-- (void)_sceneDidActivate:(id)a3
+- (void)_sceneDidActivate:(id)activate
 {
-  v4 = [(PKTextAttachmentDrawingView *)self textAttachment];
-  v5 = [v4 pkAttachmentBoundsMightBeInvalid];
+  textAttachment = [(PKTextAttachmentDrawingView *)self textAttachment];
+  pkAttachmentBoundsMightBeInvalid = [textAttachment pkAttachmentBoundsMightBeInvalid];
 
-  if (v5)
+  if (pkAttachmentBoundsMightBeInvalid)
   {
 
     [(PKTextAttachmentDrawingView *)self updateFrameForTextContainer];
   }
 }
 
-- (void)_updateAfterBackgroundSnapshotting:(id)a3
+- (void)_updateAfterBackgroundSnapshotting:(id)snapshotting
 {
-  v7 = [(PKTextAttachmentDrawingView *)self textAttachment];
-  if ([v7 pkAttachmentBoundsMightBeInvalid])
+  textAttachment = [(PKTextAttachmentDrawingView *)self textAttachment];
+  if ([textAttachment pkAttachmentBoundsMightBeInvalid])
   {
-    v4 = [(PKTextAttachmentDrawingView *)self window];
-    v5 = [v4 windowScene];
-    v6 = [v5 activationState];
+    window = [(PKTextAttachmentDrawingView *)self window];
+    windowScene = [window windowScene];
+    activationState = [windowScene activationState];
 
-    if (!v6)
+    if (!activationState)
     {
 
       [(PKTextAttachmentDrawingView *)self updateFrameForTextContainer];
@@ -749,32 +749,32 @@ void __49__PKTextAttachmentDrawingView_didMoveToSuperview__block_invoke(uint64_t
 
 - (id)tiledView
 {
-  v2 = [(PKTextAttachmentDrawingView *)self _textView];
-  v3 = [v2 _pkTiledViewIfEnabled];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  _pkTiledViewIfEnabled = [_textView _pkTiledViewIfEnabled];
 
-  return v3;
+  return _pkTiledViewIfEnabled;
 }
 
-- (void)setContentHidden:(BOOL)a3
+- (void)setContentHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5.receiver = self;
   v5.super_class = PKTextAttachmentDrawingView;
   [(PKAttachmentView *)&v5 setContentHidden:?];
-  [(PKLinedPaperLayer *)self->_linesLayer setHidden:v3];
+  [(PKLinedPaperLayer *)self->_linesLayer setHidden:hiddenCopy];
 }
 
 - (void)_triggerRedraw
 {
-  v2 = [(PKTextAttachmentDrawingView *)self tiledView];
-  [v2 _layoutSubviews];
-  [v2 updateTilesForVisibleRect];
+  tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+  [tiledView _layoutSubviews];
+  [tiledView updateTilesForVisibleRect];
 }
 
 - (id)_textView
 {
-  v2 = [(PKTextAttachmentDrawingView *)self superview];
-  if (v2)
+  superview = [(PKTextAttachmentDrawingView *)self superview];
+  if (superview)
   {
     do
     {
@@ -784,15 +784,15 @@ void __49__PKTextAttachmentDrawingView_didMoveToSuperview__block_invoke(uint64_t
         break;
       }
 
-      v3 = [v2 superview];
+      v2Superview = [superview superview];
 
-      v2 = v3;
+      superview = v2Superview;
     }
 
-    while (v3);
+    while (v2Superview);
   }
 
-  return v2;
+  return superview;
 }
 
 - (int64_t)_characterIndex
@@ -801,10 +801,10 @@ void __49__PKTextAttachmentDrawingView_didMoveToSuperview__block_invoke(uint64_t
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = [(PKTextAttachmentDrawingView *)self _textView];
-  v4 = [v3 textStorage];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  textStorage = [_textView textStorage];
 
-  v5 = [v4 length];
+  v5 = [textStorage length];
   v6 = *MEMORY[0x1E69DB5F8];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -812,7 +812,7 @@ void __49__PKTextAttachmentDrawingView_didMoveToSuperview__block_invoke(uint64_t
   v9[3] = &unk_1E82DB360;
   v9[4] = self;
   v9[5] = &v10;
-  [v4 enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{0, v9}];
+  [textStorage enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{0, v9}];
   v7 = v11[3];
 
   _Block_object_dispose(&v10, 8);
@@ -832,14 +832,14 @@ void __46__PKTextAttachmentDrawingView__characterIndex__block_invoke(uint64_t a1
   }
 }
 
-- (void)_updateAttachmentBoundsEnsureLayout:(BOOL)a3
+- (void)_updateAttachmentBoundsEnsureLayout:(BOOL)layout
 {
-  v3 = a3;
-  v5 = [(PKTextAttachmentDrawingView *)self _textView];
-  v6 = [v5 textLayoutManager];
+  layoutCopy = layout;
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  textLayoutManager = [_textView textLayoutManager];
 
-  v31 = [(PKTextAttachmentDrawingView *)self _textView];
-  v7 = [(PKTextAttachmentDrawingView *)self _characterIndex];
+  _textView2 = [(PKTextAttachmentDrawingView *)self _textView];
+  _characterIndex = [(PKTextAttachmentDrawingView *)self _characterIndex];
   WeakRetained = objc_loadWeakRetained(&self->_textAttachment);
   [WeakRetained bounds];
   v10 = v9;
@@ -865,9 +865,9 @@ void __46__PKTextAttachmentDrawingView__characterIndex__block_invoke(uint64_t a1
   v30 = objc_loadWeakRetained(&self->_textAttachment);
   [v30 setBounds:{v23, v25, v27, v29}];
 
-  if (v3 || !v6 || !v21)
+  if (layoutCopy || !textLayoutManager || !v21)
   {
-    [v31 _pk_invalidateLayoutForCharacterRange:v7 invalidateDisplay:1 ensureLayout:{1, v3}];
+    [_textView2 _pk_invalidateLayoutForCharacterRange:_characterIndex invalidateDisplay:1 ensureLayout:{1, layoutCopy}];
   }
 
   [(PKTextAttachmentDrawingView *)self _triggerRedraw];
@@ -875,8 +875,8 @@ void __46__PKTextAttachmentDrawingView__characterIndex__block_invoke(uint64_t a1
 
 - (CGSize)drawingVisibleSize
 {
-  v3 = [(PKTextAttachmentDrawingView *)self _textView];
-  [(PKTextAttachmentDrawingView *)self desiredAttachmentViewWidthForContainerView:v3];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  [(PKTextAttachmentDrawingView *)self desiredAttachmentViewWidthForContainerView:_textView];
   v5 = v4;
 
   [(PKTextAttachmentDrawingView *)self drawingScaleForViewWidth:v5];
@@ -895,8 +895,8 @@ void __46__PKTextAttachmentDrawingView__characterIndex__block_invoke(uint64_t a1
   v6 = v5;
   if ((v7 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (v4 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&v5 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
   {
-    v9 = [(PKAttachmentView *)self drawing];
-    [v9 bounds];
+    drawing = [(PKAttachmentView *)self drawing];
+    [drawing bounds];
     v8 = v10;
     v6 = v11;
   }
@@ -934,18 +934,18 @@ void __46__PKTextAttachmentDrawingView__characterIndex__block_invoke(uint64_t a1
   [(PKTextAttachmentDrawingView *)self becomeFirstResponder];
 }
 
-- (void)drawingDidChangeVisibleStrokes:(BOOL)a3
+- (void)drawingDidChangeVisibleStrokes:(BOOL)strokes
 {
   v18 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PKTextAttachmentDrawingView;
-  [(PKAttachmentView *)&v15 drawingDidChangeVisibleStrokes:a3];
-  v4 = [(PKTextAttachmentDrawingView *)self textAttachment];
+  [(PKAttachmentView *)&v15 drawingDidChangeVisibleStrokes:strokes];
+  textAttachment = [(PKTextAttachmentDrawingView *)self textAttachment];
   v5 = objc_opt_respondsToSelector();
-  v6 = [(PKAttachmentView *)self drawing];
+  drawing = [(PKAttachmentView *)self drawing];
   if (v5)
   {
-    [v4 drawingDataDidChange:v6 view:self];
+    [textAttachment drawingDataDidChange:drawing view:self];
   }
 
   else
@@ -955,23 +955,23 @@ void __46__PKTextAttachmentDrawingView__characterIndex__block_invoke(uint64_t a1
 
     if (v7 == v8)
     {
-      v6 = [(PKAttachmentView *)self drawing];
-      v9 = [v6 serialize];
-      v10 = [(PKTextAttachmentDrawingView *)self textAttachment];
-      [v10 setContents:v9];
+      drawing = [(PKAttachmentView *)self drawing];
+      serialize = [drawing serialize];
+      textAttachment2 = [(PKTextAttachmentDrawingView *)self textAttachment];
+      [textAttachment2 setContents:serialize];
     }
 
     else
     {
-      v6 = os_log_create("com.apple.pencilkit", "");
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      drawing = os_log_create("com.apple.pencilkit", "");
+      if (os_log_type_enabled(drawing, OS_LOG_TYPE_ERROR))
       {
-        v11 = [(PKAttachmentView *)self drawing];
+        drawing2 = [(PKAttachmentView *)self drawing];
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
         *buf = 138412290;
         v17 = v13;
-        _os_log_error_impl(&dword_1C7CCA000, v6, OS_LOG_TYPE_ERROR, "Unexpected drawing class in attachment view: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_1C7CCA000, drawing, OS_LOG_TYPE_ERROR, "Unexpected drawing class in attachment view: %@", buf, 0xCu);
       }
     }
   }
@@ -999,15 +999,15 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
   v8.super_class = PKTextAttachmentDrawingView;
   [(PKAttachmentView *)&v8 toolPickerDidShow];
   [(PKTextAttachmentDrawingView *)self resetZoom];
-  v3 = [(PKTextAttachmentDrawingView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(PKTextAttachmentDrawingView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v4)
+  if (!userInterfaceIdiom)
   {
-    v5 = [(PKTextAttachmentDrawingView *)self tiledView];
-    v6 = [v5 selectionController];
-    v7 = [(PKSelectionController *)v6 selectionInteraction];
-    [v7 setEnabled:1];
+    tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+    selectionController = [tiledView selectionController];
+    selectionInteraction = [(PKSelectionController *)selectionController selectionInteraction];
+    [selectionInteraction setEnabled:1];
   }
 }
 
@@ -1016,48 +1016,48 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
   v8.receiver = self;
   v8.super_class = PKTextAttachmentDrawingView;
   [(PKAttachmentView *)&v8 toolPickerDidHide];
-  v3 = [(PKTextAttachmentDrawingView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(PKTextAttachmentDrawingView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v4)
+  if (!userInterfaceIdiom)
   {
-    v5 = [(PKTextAttachmentDrawingView *)self tiledView];
-    v6 = [v5 selectionController];
-    v7 = [(PKSelectionController *)v6 selectionInteraction];
-    [v7 setEnabled:0];
+    tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+    selectionController = [tiledView selectionController];
+    selectionInteraction = [(PKSelectionController *)selectionController selectionInteraction];
+    [selectionInteraction setEnabled:0];
   }
 }
 
 - (void)fingerDrawingEnabledDidChange
 {
-  v3 = [(PKTextAttachmentDrawingView *)self tiledView];
-  v4 = [v3 allowsFingerDrawing];
+  tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+  allowsFingerDrawing = [tiledView allowsFingerDrawing];
 
-  [(PKTextAttachmentResizeView *)self->_topResizeView setEnabled:v4 ^ 1];
-  [(PKTextAttachmentResizeView *)self->_bottomResizeView setEnabled:v4 ^ 1];
+  [(PKTextAttachmentResizeView *)self->_topResizeView setEnabled:allowsFingerDrawing ^ 1];
+  [(PKTextAttachmentResizeView *)self->_bottomResizeView setEnabled:allowsFingerDrawing ^ 1];
 
-  [(PKTextAttachmentDrawingView *)self _updateResizeTouchInsetsFingerDrawingEnabled:v4];
+  [(PKTextAttachmentDrawingView *)self _updateResizeTouchInsetsFingerDrawingEnabled:allowsFingerDrawing];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(PKTextAttachmentDrawingView *)self isHidden];
+  hiddenCopy = hidden;
+  isHidden = [(PKTextAttachmentDrawingView *)self isHidden];
   v6.receiver = self;
   v6.super_class = PKTextAttachmentDrawingView;
-  [(PKTextAttachmentDrawingView *)&v6 setHidden:v3];
-  if (v5)
+  [(PKTextAttachmentDrawingView *)&v6 setHidden:hiddenCopy];
+  if (isHidden)
   {
-    if (!v3)
+    if (!hiddenCopy)
     {
       [(PKTextAttachmentDrawingView *)self _triggerRedraw];
     }
   }
 }
 
-- (CGSize)desiredTextAttachmentSizeForContainerView:(id)a3
+- (CGSize)desiredTextAttachmentSizeForContainerView:(id)view
 {
-  [(PKTextAttachmentDrawingView *)self desiredAttachmentViewWidthForContainerView:a3];
+  [(PKTextAttachmentDrawingView *)self desiredAttachmentViewWidthForContainerView:view];
   v5 = v4;
   [(PKTextAttachmentDrawingView *)self drawingScaleForViewWidth:?];
   v7 = v6;
@@ -1079,20 +1079,20 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
 {
   [(PKTextAttachmentDrawingView *)self frame];
   v4 = v3;
-  v5 = [(PKTextAttachmentDrawingView *)self _textView];
-  v47 = v5;
-  if (v5)
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  v47 = _textView;
+  if (_textView)
   {
-    v6 = [v5 window];
-    v7 = [v6 screen];
-    [v7 scale];
+    window = [_textView window];
+    screen = [window screen];
+    [screen scale];
     v9 = v8;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v6 scale];
+    window = [MEMORY[0x1E69DCEB0] mainScreen];
+    [window scale];
     v9 = v10;
   }
 
@@ -1100,14 +1100,14 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
   v12 = v11;
   v14 = v13;
   [(PKAttachmentView *)self setFrame:DKDRoundedRectForScale(0.0, v4, v11, v13, v9)];
-  v15 = [(PKTextAttachmentDrawingView *)self window];
-  v16 = [v15 windowScene];
-  v17 = [v16 _isPerformingSystemSnapshot];
+  window2 = [(PKTextAttachmentDrawingView *)self window];
+  windowScene = [window2 windowScene];
+  _isPerformingSystemSnapshot = [windowScene _isPerformingSystemSnapshot];
 
-  v18 = [(PKTextAttachmentDrawingView *)self textAttachment];
-  LOBYTE(v16) = [v18 pkAttachmentBoundsMightBeInvalid] | v17;
+  textAttachment = [(PKTextAttachmentDrawingView *)self textAttachment];
+  LOBYTE(windowScene) = [textAttachment pkAttachmentBoundsMightBeInvalid] | _isPerformingSystemSnapshot;
 
-  [(PKTextAttachmentDrawingView *)self _updateAttachmentBoundsEnsureLayout:v16 & 1];
+  [(PKTextAttachmentDrawingView *)self _updateAttachmentBoundsEnsureLayout:windowScene & 1];
   [(UIScrollView *)self->_tileMaskView contentSize];
   v20 = v19;
   [(UIScrollView *)self->_tileMaskView contentOffset];
@@ -1138,10 +1138,10 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
     [(UIScrollView *)self->_tileMaskView setContentOffset:v22 / v20 * v42, 0.0];
   }
 
-  if ((v17 & 1) != 0 || (-[PKTextAttachmentDrawingView window](self, "window"), v43 = objc_claimAutoreleasedReturnValue(), [v43 windowScene], v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v44, "activationState"), v44, v43, !v45))
+  if ((_isPerformingSystemSnapshot & 1) != 0 || (-[PKTextAttachmentDrawingView window](self, "window"), v43 = objc_claimAutoreleasedReturnValue(), [v43 windowScene], v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v44, "activationState"), v44, v43, !v45))
   {
-    v46 = [(PKTextAttachmentDrawingView *)self textAttachment];
-    [v46 setPkAttachmentBoundsMightBeInvalid:v17 & 1];
+    textAttachment2 = [(PKTextAttachmentDrawingView *)self textAttachment];
+    [textAttachment2 setPkAttachmentBoundsMightBeInvalid:_isPerformingSystemSnapshot & 1];
   }
 }
 
@@ -1160,8 +1160,8 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
 
   else
   {
-    v5 = [(PKAttachmentView *)self drawing];
-    [(PKTextAttachmentDrawingView *)self heightFromDrawing:v5 delta:0.0];
+    drawing = [(PKAttachmentView *)self drawing];
+    [(PKTextAttachmentDrawingView *)self heightFromDrawing:drawing delta:0.0];
     v7 = v6;
   }
 
@@ -1190,24 +1190,24 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
   }
 }
 
-- (void)_adjustResizeIndicatorVisibility:(BOOL)a3 highlightBackground:(BOOL)a4
+- (void)_adjustResizeIndicatorVisibility:(BOOL)visibility highlightBackground:(BOOL)background
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PKTextAttachmentDrawingView *)self isFirstResponder];
+  backgroundCopy = background;
+  visibilityCopy = visibility;
+  isFirstResponder = [(PKTextAttachmentDrawingView *)self isFirstResponder];
 
-  [(PKTextAttachmentDrawingView *)self _setAdjustResizeIndicatorVisible:v7 animated:v5 highlightBackground:v4];
+  [(PKTextAttachmentDrawingView *)self _setAdjustResizeIndicatorVisible:isFirstResponder animated:visibilityCopy highlightBackground:backgroundCopy];
 }
 
-- (void)_setAdjustResizeIndicatorVisible:(BOOL)a3 animated:(BOOL)a4 highlightBackground:(BOOL)a5
+- (void)_setAdjustResizeIndicatorVisible:(BOOL)visible animated:(BOOL)animated highlightBackground:(BOOL)background
 {
-  v6 = a4;
-  if (a3)
+  animatedCopy = animated;
+  if (visible)
   {
     [(PKTextAttachmentDrawingView *)self frame];
     v8 = 0;
     v9 = 0;
-    if (v10 > 1.0 && !a5)
+    if (v10 > 1.0 && !background)
     {
       v8 = [(PKTextAttachmentDrawingView *)self isAtBeginningOfDocument]^ 1;
       v9 = [(PKTextAttachmentDrawingView *)self isAtEndOfDocument]^ 1;
@@ -1221,18 +1221,18 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
   }
 
   topResizeView = self->_topResizeView;
-  v12 = [(PKTextAttachmentDrawingView *)self tiledView];
-  -[PKTextAttachmentResizeView show:enabled:animated:](topResizeView, "show:enabled:animated:", v8, [v12 allowsFingerDrawing] ^ 1, v6);
+  tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+  -[PKTextAttachmentResizeView show:enabled:animated:](topResizeView, "show:enabled:animated:", v8, [tiledView allowsFingerDrawing] ^ 1, animatedCopy);
 
   bottomResizeView = self->_bottomResizeView;
-  v14 = [(PKTextAttachmentDrawingView *)self tiledView];
-  -[PKTextAttachmentResizeView show:enabled:animated:](bottomResizeView, "show:enabled:animated:", v9, [v14 allowsFingerDrawing] ^ 1, v6);
+  tiledView2 = [(PKTextAttachmentDrawingView *)self tiledView];
+  -[PKTextAttachmentResizeView show:enabled:animated:](bottomResizeView, "show:enabled:animated:", v9, [tiledView2 allowsFingerDrawing] ^ 1, animatedCopy);
 
-  if (a5)
+  if (background)
   {
-    v15 = [(PKTextAttachmentDrawingView *)self _textView];
-    v16 = [v15 selectionHighlightColor];
-    [(PKTextAttachmentDrawingView *)self setBackgroundColor:v16];
+    _textView = [(PKTextAttachmentDrawingView *)self _textView];
+    selectionHighlightColor = [_textView selectionHighlightColor];
+    [(PKTextAttachmentDrawingView *)self setBackgroundColor:selectionHighlightColor];
   }
 
   else
@@ -1240,68 +1240,68 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
     [(PKTextAttachmentDrawingView *)self setBackgroundColor:0];
   }
 
-  v17 = [(PKTextAttachmentDrawingView *)self tiledView];
-  -[PKTextAttachmentDrawingView _updateResizeTouchInsetsFingerDrawingEnabled:](self, "_updateResizeTouchInsetsFingerDrawingEnabled:", [v17 allowsFingerDrawing]);
+  tiledView3 = [(PKTextAttachmentDrawingView *)self tiledView];
+  -[PKTextAttachmentDrawingView _updateResizeTouchInsetsFingerDrawingEnabled:](self, "_updateResizeTouchInsetsFingerDrawingEnabled:", [tiledView3 allowsFingerDrawing]);
 
-  v18 = [(PKAttachmentView *)self drawing];
+  drawing = [(PKAttachmentView *)self drawing];
 
-  if (v18)
+  if (drawing)
   {
 
     [(PKTextAttachmentDrawingView *)self layoutTileViews];
   }
 }
 
-- (double)heightFromDrawing:(id)a3 delta:(double)a4
+- (double)heightFromDrawing:(id)drawing delta:(double)delta
 {
-  [a3 bounds];
-  v6 = CGRectGetMaxY(v11) + a4;
+  [drawing bounds];
+  v6 = CGRectGetMaxY(v11) + delta;
   [(PKTextAttachmentDrawingView *)self drawingBounds];
   v7 = v6 - CGRectGetMinY(v12);
   [(PKTextAttachmentDrawingView *)self drawingTransform];
   return v7 * sqrt(v10 * v10 + v9 * v9);
 }
 
-- (double)canvasHeightFromDrawingViewHeight:(double)a3
+- (double)canvasHeightFromDrawingViewHeight:(double)height
 {
   [(PKTextAttachmentDrawingView *)self frame];
 
-  [(PKTextAttachmentDrawingView *)self canvasHeightFromDrawingViewHeight:a3 drawingViewWidth:v5];
+  [(PKTextAttachmentDrawingView *)self canvasHeightFromDrawingViewHeight:height drawingViewWidth:v5];
   return result;
 }
 
-- (double)canvasHeightFromDrawingViewHeight:(double)a3 drawingViewWidth:(double)a4
+- (double)canvasHeightFromDrawingViewHeight:(double)height drawingViewWidth:(double)width
 {
-  [(PKTextAttachmentDrawingView *)self drawingScaleForViewWidth:a4];
+  [(PKTextAttachmentDrawingView *)self drawingScaleForViewWidth:width];
   v7 = v6;
   [(PKTextAttachmentResizeView *)self->_topResizeView resizeContentInset];
   v9 = v8;
   [(PKTextAttachmentResizeView *)self->_bottomResizeView resizeContentInset];
-  v11 = a3 - (v9 + v10);
+  v11 = height - (v9 + v10);
   [(PKTextAttachmentDrawingView *)self zoomScale];
   return v11 / (v7 * v12);
 }
 
-- (void)updateDrawingHeight:(double)a3 notifyDrawingDidChange:(BOOL)a4
+- (void)updateDrawingHeight:(double)height notifyDrawingDidChange:(BOOL)change
 {
-  v4 = a4;
+  changeCopy = change;
   [(PKTextAttachmentResizeView *)self->_topResizeView resizeContentInset];
-  v8 = v7 + a3;
+  v8 = v7 + height;
   [(PKTextAttachmentResizeView *)self->_bottomResizeView resizeContentInset];
   v10 = v8 + v9;
   [(PKTextAttachmentDrawingView *)self bounds];
   [(PKTextAttachmentDrawingView *)self _setHeight:0 originalHeight:v10 growFromTop:v11];
-  if (v4)
+  if (changeCopy)
   {
 
     [(PKTextAttachmentDrawingView *)self drawingDidChangeVisibleStrokes:0];
   }
 }
 
-- (void)_setHeight:(double)a3 originalHeight:(double)a4 growFromTop:(BOOL)a5
+- (void)_setHeight:(double)height originalHeight:(double)originalHeight growFromTop:(BOOL)top
 {
-  v5 = a5;
-  v87 = [(PKTextAttachmentDrawingView *)self _textView];
+  topCopy = top;
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
   [(PKTextAttachmentDrawingView *)self frame];
   v11 = v10;
   v13 = v12;
@@ -1310,24 +1310,24 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
   v18 = v14 * 58.0;
   [(PKTextAttachmentDrawingView *)self drawingBounds];
   v20 = fmax(v18 / v19, 8.0);
-  if (v20 < a3 && (*&a3 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
+  if (v20 < height && (*&height & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
   {
-    v22 = a3;
+    heightCopy = height;
   }
 
   else
   {
-    v22 = v20;
+    heightCopy = v20;
   }
 
-  if (v22 != v17)
+  if (heightCopy != v17)
   {
     v80 = v17;
-    v81 = a4;
+    originalHeightCopy = originalHeight;
     v84 = v13;
     v85 = v11;
-    v77 = v22 - v17;
-    [v87 contentOffset];
+    v77 = heightCopy - v17;
+    [_textView contentOffset];
     [(PKTextAttachmentDrawingView *)self drawingBounds];
     v82 = v23;
     v79 = v24;
@@ -1342,10 +1342,10 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
     v83 = v15;
     [(PKTextAttachmentDrawingView *)self drawingScaleForViewWidth:v15];
     v78 = 1.0 / v36;
-    [v87 contentInset];
+    [_textView contentInset];
     v38 = v37;
-    [v87 _contentScrollInset];
-    if (v5)
+    [_textView _contentScrollInset];
+    if (topCopy)
     {
       v89.origin.x = v29;
       v89.origin.y = v31;
@@ -1353,7 +1353,7 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
       v89.size.height = v35;
       if (CGRectIsEmpty(v89))
       {
-        v40 = v87;
+        v40 = _textView;
         v42 = v82;
         v41 = v15;
         v43 = v77;
@@ -1384,15 +1384,15 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
           v43 = v58;
         }
 
-        v40 = v87;
+        v40 = _textView;
         v41 = v15;
       }
 
       v59 = v43;
       [v40 contentOffset];
-      [v87 setContentOffset:?];
+      [_textView setContentOffset:?];
       v60 = v80 + v59;
-      v61 = v80 + v59 - v81;
+      v61 = v80 + v59 - originalHeightCopy;
       [(PKTextAttachmentDrawingView *)self canvasHeightFromDrawingViewHeight:v80 + v59];
       v63 = v62;
       [(PKTextAttachmentResizeView *)self->_topResizeView originalDrawingBounds];
@@ -1405,9 +1405,9 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
     else
     {
       v45 = v38 + v39;
-      [v87 contentSize];
+      [_textView contentSize];
       v47 = v45 + v46;
-      [v87 bounds];
+      [_textView bounds];
       v48 = v47 - CGRectGetMaxY(v90);
       if (v48 >= 0.0)
       {
@@ -1458,8 +1458,8 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
         v50 = v84;
       }
 
-      v72 = v22 - v81;
-      if (v49 >= v22 - v81)
+      v72 = heightCopy - originalHeightCopy;
+      if (v49 >= heightCopy - originalHeightCopy)
       {
         v72 = v49;
       }
@@ -1483,28 +1483,28 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
   }
 }
 
-- (BOOL)hitChrome:(CGPoint)a3 isStylus:(BOOL)a4 event:(id)a5
+- (BOOL)hitChrome:(CGPoint)chrome isStylus:(BOOL)stylus event:(id)event
 {
   v5 = 80.0;
-  if (a4)
+  if (stylus)
   {
     v5 = 40.0;
   }
 
-  return [(PKTextAttachmentDrawingView *)self hitTestResizeHandles:a3.x threshold:a3.y, v5];
+  return [(PKTextAttachmentDrawingView *)self hitTestResizeHandles:chrome.x threshold:chrome.y, v5];
 }
 
-- (BOOL)hitByTouchLocation:(CGPoint)a3 bounds:(CGRect)a4
+- (BOOL)hitByTouchLocation:(CGPoint)location bounds:(CGRect)bounds
 {
-  y = a3.y;
-  x = a3.x;
-  v20 = CGRectInset(a4, -64.0, 0.0);
+  y = location.y;
+  x = location.x;
+  v20 = CGRectInset(bounds, -64.0, 0.0);
   v7 = v20.origin.x;
   v8 = v20.origin.y;
   width = v20.size.width;
   height = v20.size.height;
-  v11 = [(PKTextAttachmentDrawingView *)self _characterIndex];
-  if (v11)
+  _characterIndex = [(PKTextAttachmentDrawingView *)self _characterIndex];
+  if (_characterIndex)
   {
     v12 = v8;
   }
@@ -1514,7 +1514,7 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
     v12 = v8 + -16.0;
   }
 
-  if (v11)
+  if (_characterIndex)
   {
     v13 = height;
   }
@@ -1532,22 +1532,22 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
   return CGRectContainsPoint(*(&v12 - 1), *&v16);
 }
 
-- (BOOL)hitTestResizeHandles:(CGPoint)a3 threshold:(double)a4
+- (BOOL)hitTestResizeHandles:(CGPoint)handles threshold:(double)threshold
 {
-  y = a3.y;
-  x = a3.x;
+  y = handles.y;
+  x = handles.x;
   [(PKTextAttachmentDrawingView *)self bounds];
   v10 = v9;
   v11 = v8;
-  v12 = a4 * 0.5;
-  if (a4 * 0.5 + v8 * 0.5 >= a4)
+  v12 = threshold * 0.5;
+  if (threshold * 0.5 + v8 * 0.5 >= threshold)
   {
-    v13 = a4;
+    thresholdCopy = threshold;
   }
 
   else
   {
-    v13 = a4 * 0.5 + v8 * 0.5;
+    thresholdCopy = threshold * 0.5 + v8 * 0.5;
   }
 
   if ([(PKTextAttachmentDrawingView *)self effectiveUserInterfaceLayoutDirection]== 1)
@@ -1557,15 +1557,15 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
 
   else
   {
-    v14 = a4 * -0.5;
+    v14 = threshold * -0.5;
   }
 
   v21.origin.x = v14;
-  v21.size.width = a4;
-  v21.size.height = v13;
+  v21.size.width = threshold;
+  v21.size.height = thresholdCopy;
   v19.x = x;
   v19.y = y;
-  v21.origin.y = a4 * -0.5;
+  v21.origin.y = threshold * -0.5;
   if (CGRectContainsPoint(v21, v19) && [(PKTextAttachmentResizeView *)self->_topResizeView shown])
   {
     LOBYTE(v15) = 1;
@@ -1573,10 +1573,10 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
 
   else
   {
-    v22.origin.y = v12 + v11 - v13;
+    v22.origin.y = v12 + v11 - thresholdCopy;
     v22.origin.x = v14;
-    v22.size.width = a4;
-    v22.size.height = v13;
+    v22.size.width = threshold;
+    v22.size.height = thresholdCopy;
     v20.x = x;
     v20.y = y;
     v15 = CGRectContainsPoint(v22, v20);
@@ -1591,53 +1591,53 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
   return v15;
 }
 
-- (void)tapBelowDrawingGesture:(id)a3
+- (void)tapBelowDrawingGesture:(id)gesture
 {
   if ([(PKTextAttachmentDrawingView *)self isFirstResponder])
   {
     [(PKTextAttachmentDrawingView *)self resignFirstResponder];
-    v4 = [(PKTextAttachmentDrawingView *)self window];
-    v5 = [v4 firstResponder];
+    window = [(PKTextAttachmentDrawingView *)self window];
+    firstResponder = [window firstResponder];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 resignFirstResponder];
+      [firstResponder resignFirstResponder];
     }
   }
 
-  v6 = [(PKTextAttachmentDrawingView *)self window];
-  v7 = [PKToolPicker activeToolPickerForWindow:v6];
+  window2 = [(PKTextAttachmentDrawingView *)self window];
+  v7 = [PKToolPicker activeToolPickerForWindow:window2];
 
   [v7 _tellDelegateToHideToolPicker];
 }
 
 - (id)_drawingGestureRecognizer
 {
-  v2 = [(PKTextAttachmentDrawingView *)self _textView];
-  v3 = [v2 _pkTiledViewIfEnabled];
-  v4 = [v3 drawingGestureRecognizer];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  _pkTiledViewIfEnabled = [_textView _pkTiledViewIfEnabled];
+  drawingGestureRecognizer = [_pkTiledViewIfEnabled drawingGestureRecognizer];
 
-  return v4;
+  return drawingGestureRecognizer;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_resizeDragGestureRecognizer == v6 || self->_resizeHighlightGestureRecognizer == v6 || self->_showMenuGestureRecognizer == v6)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  v8 = touchCopy;
+  if (self->_resizeDragGestureRecognizer == recognizerCopy || self->_resizeHighlightGestureRecognizer == recognizerCopy || self->_showMenuGestureRecognizer == recognizerCopy)
   {
-    [v7 locationInView:self];
+    [touchCopy locationInView:self];
     v11 = v10;
     v13 = v12;
     +[PKTextAttachmentResizeView resizeHitSize];
     if ([(PKTextAttachmentDrawingView *)self hitTestResizeHandles:v11 threshold:v13, v14])
     {
-      if (self->_showMenuGestureRecognizer != v6)
+      if (self->_showMenuGestureRecognizer != recognizerCopy)
       {
-        v15 = [MEMORY[0x1E69DCC68] sharedMenuController];
-        [v15 hideMenu];
+        mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+        [mEMORY[0x1E69DCC68] hideMenu];
 
         [(PKTextAttachmentDrawingView *)self _adjustResizeIndicatorVisibility];
       }
@@ -1660,13 +1660,13 @@ void __62__PKTextAttachmentDrawingView_drawingDidChangeVisibleStrokes___block_in
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKTextAttachmentDrawingView *)self showMenuGestureRecognizer];
-  v9 = v8;
-  if (v8 == v7)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  showMenuGestureRecognizer = [(PKTextAttachmentDrawingView *)self showMenuGestureRecognizer];
+  v9 = showMenuGestureRecognizer;
+  if (showMenuGestureRecognizer == gestureRecognizerCopy)
   {
     NSClassFromString(&cfstr_Uitextselectio.isa);
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1683,51 +1683,51 @@ LABEL_7:
   {
   }
 
-  if (self->_resizeDragGestureRecognizer == v6)
+  if (self->_resizeDragGestureRecognizer == recognizerCopy)
   {
-    v11 = [(PKTextAttachmentDrawingView *)self showMenuGestureRecognizer];
+    showMenuGestureRecognizer2 = [(PKTextAttachmentDrawingView *)self showMenuGestureRecognizer];
 
-    if (v11 == v7)
+    if (showMenuGestureRecognizer2 == gestureRecognizerCopy)
     {
       goto LABEL_7;
     }
   }
 
-  v12 = [(PKTextAttachmentDrawingView *)self _drawingGestureRecognizer];
-  v13 = v12 == v7;
+  _drawingGestureRecognizer = [(PKTextAttachmentDrawingView *)self _drawingGestureRecognizer];
+  v13 = _drawingGestureRecognizer == gestureRecognizerCopy;
 
 LABEL_8:
   return v13;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKTextAttachmentDrawingView *)self _drawingGestureRecognizer];
-  v9 = v8;
-  if (v8 == v6)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  _drawingGestureRecognizer = [(PKTextAttachmentDrawingView *)self _drawingGestureRecognizer];
+  v9 = _drawingGestureRecognizer;
+  if (_drawingGestureRecognizer == recognizerCopy)
   {
 
     goto LABEL_7;
   }
 
-  v10 = [(PKTextAttachmentDrawingView *)self _drawingGestureRecognizer];
+  _drawingGestureRecognizer2 = [(PKTextAttachmentDrawingView *)self _drawingGestureRecognizer];
 
-  if (v10 == v7)
+  if (_drawingGestureRecognizer2 == gestureRecognizerCopy)
   {
     goto LABEL_7;
   }
 
   resizeDragGestureRecognizer = self->_resizeDragGestureRecognizer;
   resizeHighlightGestureRecognizer = self->_resizeHighlightGestureRecognizer;
-  if (resizeDragGestureRecognizer == v6)
+  if (resizeDragGestureRecognizer == recognizerCopy)
   {
-    v14 = resizeHighlightGestureRecognizer == v7;
+    v14 = resizeHighlightGestureRecognizer == gestureRecognizerCopy;
     goto LABEL_11;
   }
 
-  if (resizeHighlightGestureRecognizer != v6)
+  if (resizeHighlightGestureRecognizer != recognizerCopy)
   {
     NSClassFromString(&cfstr_Uitextselectio.isa);
     objc_opt_isKindOfClass();
@@ -1735,14 +1735,14 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  if (resizeDragGestureRecognizer == v7)
+  if (resizeDragGestureRecognizer == gestureRecognizerCopy)
   {
 LABEL_7:
     v13 = 1;
     goto LABEL_14;
   }
 
-  v14 = self->_showMenuGestureRecognizer == v7;
+  v14 = self->_showMenuGestureRecognizer == gestureRecognizerCopy;
 LABEL_11:
   v13 = v14;
 LABEL_14:
@@ -1750,32 +1750,32 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  [(UITapGestureRecognizer *)v4 locationInView:self];
+  beginCopy = begin;
+  [(UITapGestureRecognizer *)beginCopy locationInView:self];
   v6 = v5;
   v8 = v7;
   [(PKTextAttachmentDrawingView *)self bounds];
   v13 = [(PKTextAttachmentDrawingView *)self hitByTouchLocation:v6 bounds:v8, v9, v10, v11, v12];
-  if (self->_tapBelowDrawingGestureRecognizer != v4)
+  if (self->_tapBelowDrawingGestureRecognizer != beginCopy)
   {
     v14 = [(PKAttachmentView *)self inlineViewAtPoint:v6, v8];
     v15 = v14;
     if (!v14 || ([v14 alpha], v16 <= 0.0))
     {
-      if (self->_eatKeyboardGestureRecognizer == v4)
+      if (self->_eatKeyboardGestureRecognizer == beginCopy)
       {
-        v17 = 1;
+        isMenuVisible = 1;
         goto LABEL_16;
       }
 
-      if (self->_showMenuGestureRecognizer == v4)
+      if (self->_showMenuGestureRecognizer == beginCopy)
       {
         if ([(PKTextAttachmentDrawingView *)self isFirstResponder])
         {
-          v18 = [MEMORY[0x1E69DCC68] sharedMenuController];
-          v17 = [v18 isMenuVisible] ^ 1;
+          mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+          isMenuVisible = [mEMORY[0x1E69DCC68] isMenuVisible] ^ 1;
 LABEL_14:
 
           goto LABEL_16;
@@ -1784,10 +1784,10 @@ LABEL_14:
 
       else
       {
-        if (self->_hideMenuGestureRecognizer != v4)
+        if (self->_hideMenuGestureRecognizer != beginCopy)
         {
           NSClassFromString(&cfstr_Uitextselectio.isa);
-          v17 = objc_opt_isKindOfClass() ^ 1;
+          isMenuVisible = objc_opt_isKindOfClass() ^ 1;
 LABEL_16:
 
           goto LABEL_17;
@@ -1795,48 +1795,48 @@ LABEL_16:
 
         if ([(PKTextAttachmentDrawingView *)self isFirstResponder])
         {
-          v18 = [MEMORY[0x1E69DCC68] sharedMenuController];
-          v17 = [v18 isMenuVisible];
+          mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+          isMenuVisible = [mEMORY[0x1E69DCC68] isMenuVisible];
           goto LABEL_14;
         }
       }
     }
 
-    v17 = 0;
+    isMenuVisible = 0;
     goto LABEL_16;
   }
 
-  v17 = !v13;
+  isMenuVisible = !v13;
 LABEL_17:
 
-  return v17 & 1;
+  return isMenuVisible & 1;
 }
 
-- (BOOL)gestureRecognizerShouldDelayLift:(id)a3
+- (BOOL)gestureRecognizerShouldDelayLift:(id)lift
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_resizeHighlightGestureRecognizer == v4 || self->_resizeDragGestureRecognizer == v4)
+  liftCopy = lift;
+  v5 = liftCopy;
+  if (self->_resizeHighlightGestureRecognizer == liftCopy || self->_resizeDragGestureRecognizer == liftCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    v6 = [(PKTextAttachmentDrawingView *)self tiledView];
-    v7 = [v6 canvasView];
-    v8 = [v7 drawingGestureRecognizer];
-    v9 = v8 == v5 || self->_showMenuGestureRecognizer == v5;
+    tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+    canvasView = [tiledView canvasView];
+    drawingGestureRecognizer = [canvasView drawingGestureRecognizer];
+    v9 = drawingGestureRecognizer == v5 || self->_showMenuGestureRecognizer == v5;
   }
 
   return v9;
 }
 
-- (void)higlightResize:(id)a3
+- (void)higlightResize:(id)resize
 {
-  v10 = a3;
-  v4 = [v10 state];
-  if (v4 == 5 || v4 == 3)
+  resizeCopy = resize;
+  state = [resizeCopy state];
+  if (state == 5 || state == 3)
   {
     v6 = &OBJC_IVAR___PKTextAttachmentDrawingView__bottomResizeView;
     [(PKTextAttachmentResizeView *)self->_topResizeView setHighlighted:0];
@@ -1845,12 +1845,12 @@ LABEL_17:
 
   else
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       goto LABEL_13;
     }
 
-    [v10 locationInView:self];
+    [resizeCopy locationInView:self];
     v9 = v8;
     [(PKTextAttachmentDrawingView *)self bounds];
     if (v9 >= CGRectGetMidY(v12))
@@ -1870,10 +1870,10 @@ LABEL_17:
 LABEL_13:
 }
 
-- (void)resizeDrawing:(id)a3
+- (void)resizeDrawing:(id)drawing
 {
-  v8 = a3;
-  if ([v8 state] != 1)
+  drawingCopy = drawing;
+  if ([drawingCopy state] != 1)
   {
     v7 = &OBJC_IVAR___PKTextAttachmentDrawingView__topResizeView;
     if (self->_resizeUpper)
@@ -1884,7 +1884,7 @@ LABEL_13:
     goto LABEL_5;
   }
 
-  [v8 locationInView:self];
+  [drawingCopy locationInView:self];
   v5 = v4;
   [(PKTextAttachmentDrawingView *)self bounds];
   MidY = CGRectGetMidY(v10);
@@ -1897,40 +1897,40 @@ LABEL_5:
   }
 
 LABEL_6:
-  [*(&self->super.super.super.super.super.isa + *v7) handleGesture:v8];
+  [*(&self->super.super.super.super.super.isa + *v7) handleGesture:drawingCopy];
 }
 
-- (void)hideDrawingMenu:(id)a3
+- (void)hideDrawingMenu:(id)menu
 {
-  v4 = [MEMORY[0x1E69DCC68] sharedMenuController];
-  [v4 hideMenu];
+  mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+  [mEMORY[0x1E69DCC68] hideMenu];
 
-  v5 = [(PKTextAttachmentDrawingView *)self _textView];
-  [v5 setSelectedTextRange:0];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  [_textView setSelectedTextRange:0];
 
   [(PKTextAttachmentDrawingView *)self resignFirstResponder];
 }
 
-- (void)showDrawingMenu:(id)a3
+- (void)showDrawingMenu:(id)menu
 {
-  v5 = a3;
+  menuCopy = menu;
   if (([(PKTextAttachmentDrawingView *)self isFirstResponder]& 1) == 0)
   {
     [(PKTextAttachmentDrawingView *)self becomeFirstResponder];
   }
 
-  if ([v5 state] == 3)
+  if ([menuCopy state] == 3)
   {
-    v4 = [MEMORY[0x1E69DCC68] sharedMenuController];
-    if ([v4 isMenuVisible])
+    mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+    if ([mEMORY[0x1E69DCC68] isMenuVisible])
     {
-      [v4 hideMenu];
+      [mEMORY[0x1E69DCC68] hideMenu];
     }
 
     else
     {
-      [v5 locationInView:self];
-      [v4 showMenuFromView:self rect:?];
+      [menuCopy locationInView:self];
+      [mEMORY[0x1E69DCC68] showMenuFromView:self rect:?];
     }
 
     [(PKTextAttachmentDrawingView *)self _adjustResizeIndicatorVisibility:1 highlightBackground:1];
@@ -1939,38 +1939,38 @@ LABEL_6:
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(PKTextAttachmentDrawingView *)self _textView];
-  v3 = [v2 _canSelectDrawing];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  _canSelectDrawing = [_textView _canSelectDrawing];
 
-  return v3;
+  return _canSelectDrawing;
 }
 
 - (BOOL)becomeFirstResponder
 {
   v5.receiver = self;
   v5.super_class = PKTextAttachmentDrawingView;
-  v3 = [(PKTextAttachmentDrawingView *)&v5 becomeFirstResponder];
+  becomeFirstResponder = [(PKTextAttachmentDrawingView *)&v5 becomeFirstResponder];
   [(PKTextAttachmentDrawingView *)self _adjustResizeIndicatorVisibility:1 highlightBackground:0];
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
   v5.receiver = self;
   v5.super_class = PKTextAttachmentDrawingView;
-  v3 = [(PKTextAttachmentDrawingView *)&v5 resignFirstResponder];
+  resignFirstResponder = [(PKTextAttachmentDrawingView *)&v5 resignFirstResponder];
   [(PKTextAttachmentDrawingView *)self _adjustResizeIndicatorVisibility:1 highlightBackground:0];
-  return v3;
+  return resignFirstResponder;
 }
 
 - (id)keyCommands
 {
   v20[4] = *MEMORY[0x1E69E9840];
-  v2 = [(PKTextAttachmentDrawingView *)self tiledView];
-  v3 = [v2 _hasSelection];
+  tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+  _hasSelection = [tiledView _hasSelection];
 
   _PencilKitBundle();
-  if (v3)
+  if (_hasSelection)
     v17 = {;
     v4 = [v17 localizedStringForKey:@"Copy strokes" value:@"Copy strokes" table:@"Localizable"];
     v5 = __42__PKTextAttachmentDrawingView_keyCommands__block_invoke(@"c", 0x100000, sel_copyStrokeSelection_, v4);
@@ -2013,20 +2013,20 @@ id __42__PKTextAttachmentDrawingView_keyCommands__block_invoke(uint64_t a1, uint
   return v9;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (sel__share_ == a3)
+  senderCopy = sender;
+  if (sel__share_ == action)
   {
-    v8 = [(PKAttachmentView *)self drawing];
-    [v8 bounds];
+    drawing = [(PKAttachmentView *)self drawing];
+    [drawing bounds];
     if (!CGRectIsEmpty(v23))
     {
-      v10 = [(PKTextAttachmentDrawingView *)self window];
-      v11 = [v10 screen];
-      v12 = [v11 displayIdentity];
-      v7 = [v12 expectsSecureRendering] ^ 1;
+      window = [(PKTextAttachmentDrawingView *)self window];
+      screen = [window screen];
+      displayIdentity = [screen displayIdentity];
+      v7 = [displayIdentity expectsSecureRendering] ^ 1;
 
 LABEL_20:
       goto LABEL_21;
@@ -2039,10 +2039,10 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (sel_cut_ == a3)
+  if (sel_cut_ == action)
   {
-    v9 = [(PKAttachmentView *)self drawing];
-    [v9 bounds];
+    drawing2 = [(PKAttachmentView *)self drawing];
+    [drawing2 bounds];
     if (CGRectIsEmpty(v24))
     {
       v7 = 0;
@@ -2050,48 +2050,48 @@ LABEL_21:
 
     else
     {
-      v13 = [MEMORY[0x1E69DCC68] sharedMenuController];
-      v7 = v13 == v6;
+      mEMORY[0x1E69DCC68] = [MEMORY[0x1E69DCC68] sharedMenuController];
+      v7 = mEMORY[0x1E69DCC68] == senderCopy;
     }
 
     goto LABEL_16;
   }
 
-  if (sel_copy_ == a3)
+  if (sel_copy_ == action)
   {
-    v9 = [(PKAttachmentView *)self drawing];
-    [v9 bounds];
+    drawing2 = [(PKAttachmentView *)self drawing];
+    [drawing2 bounds];
     v7 = !CGRectIsEmpty(v25);
 LABEL_16:
 
     goto LABEL_22;
   }
 
-  if (sel_delete_ == a3)
+  if (sel_delete_ == action)
   {
-    v8 = [(PKAttachmentView *)self drawing];
-    [v8 bounds];
+    drawing = [(PKAttachmentView *)self drawing];
+    [drawing bounds];
     if (!CGRectIsEmpty(v26) || ![(PKTextAttachmentDrawingView *)self isAtEndOfDocument])
     {
-      v10 = [(PKTextAttachmentDrawingView *)self _textView];
-      v11 = [v10 textStorage];
-      v7 = [v11 length] != 0;
+      window = [(PKTextAttachmentDrawingView *)self _textView];
+      screen = [window textStorage];
+      v7 = [screen length] != 0;
       goto LABEL_20;
     }
 
     goto LABEL_10;
   }
 
-  if (sel_paste_ == a3)
+  if (sel_paste_ == action)
   {
-    v15 = [MEMORY[0x1E69DCD50] generalPasteboard];
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
     v22[0] = @"com.apple.drawing";
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-    v17 = [v15 containsPasteboardTypes:v16];
+    v17 = [generalPasteboard containsPasteboardTypes:v16];
 
-    v18 = [(PKTextAttachmentDrawingView *)self tiledView];
-    v19 = [v18 selectionController];
-    v20 = [(PKSelectionController *)v19 _selectionInteractionCanPerformAction:v6 withSender:0 inAttachment:?];
+    tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+    selectionController = [tiledView selectionController];
+    v20 = [(PKSelectionController *)selectionController _selectionInteractionCanPerformAction:senderCopy withSender:0 inAttachment:?];
 
     v7 = v17 | v20;
   }
@@ -2099,11 +2099,11 @@ LABEL_16:
   else
   {
     v7 = 0;
-    if (sel_insertSpace_ != a3 && sel_selectAll_ != a3)
+    if (sel_insertSpace_ != action && sel_selectAll_ != action)
     {
       v21.receiver = self;
       v21.super_class = PKTextAttachmentDrawingView;
-      v7 = [(PKTextAttachmentDrawingView *)&v21 canPerformAction:a3 withSender:v6];
+      v7 = [(PKTextAttachmentDrawingView *)&v21 canPerformAction:action withSender:senderCopy];
     }
   }
 
@@ -2112,42 +2112,42 @@ LABEL_22:
   return v7 & 1;
 }
 
-- (void)cutStrokeSelection:(id)a3
+- (void)cutStrokeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(PKTextAttachmentDrawingView *)self tiledView];
-  [v5 cut:v4];
+  selectionCopy = selection;
+  tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+  [tiledView cut:selectionCopy];
 }
 
-- (void)copyStrokeSelection:(id)a3
+- (void)copyStrokeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(PKTextAttachmentDrawingView *)self tiledView];
-  [v5 copy:v4];
+  selectionCopy = selection;
+  tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+  [tiledView copy:selectionCopy];
 }
 
-- (void)deleteStrokeSelection:(id)a3
+- (void)deleteStrokeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = [(PKTextAttachmentDrawingView *)self tiledView];
-  [v5 delete:v4];
+  selectionCopy = selection;
+  tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+  [tiledView delete:selectionCopy];
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  [(PKTextAttachmentDrawingView *)self copy:a3];
-  v5 = [(PKTextAttachmentDrawingView *)self _textView];
-  v4 = [(PKTextAttachmentDrawingView *)self textAttachment];
-  [v5 _removeDrawingAttachment:v4 withView:self forDeletion:0];
+  [(PKTextAttachmentDrawingView *)self copy:cut];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  textAttachment = [(PKTextAttachmentDrawingView *)self textAttachment];
+  [_textView _removeDrawingAttachment:textAttachment withView:self forDeletion:0];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = [(PKAttachmentView *)self drawing];
-  v5 = [v4 serializeTransiently];
+  drawing = [(PKAttachmentView *)self drawing];
+  serializeTransiently = [drawing serializeTransiently];
 
-  v6 = [(PKAttachmentView *)self drawing];
-  [v6 bounds];
+  drawing2 = [(PKAttachmentView *)self drawing];
+  [drawing2 bounds];
   v8 = v7;
   v10 = v9;
 
@@ -2164,13 +2164,13 @@ LABEL_22:
   }
 
   v12 = [PKImageRenderer alloc];
-  v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v13 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v15 = [(PKImageRenderer *)v12 initWithSize:v8 scale:v10, v14];
 
-  v16 = [(PKAttachmentView *)self drawing];
-  v17 = [(PKAttachmentView *)self drawing];
-  [v17 bounds];
+  drawing3 = [(PKAttachmentView *)self drawing];
+  drawing4 = [(PKAttachmentView *)self drawing];
+  [drawing4 bounds];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -2179,9 +2179,9 @@ LABEL_22:
   v27[1] = 3221225472;
   v27[2] = __36__PKTextAttachmentDrawingView_copy___block_invoke;
   v27[3] = &unk_1E82DB388;
-  v28 = v5;
-  v26 = v5;
-  [(PKImageRenderer *)v15 renderDrawing:v16 clippedToStrokeSpaceRect:v27 scale:v19 completion:v21, v23, v25, v11];
+  v28 = serializeTransiently;
+  v26 = serializeTransiently;
+  [(PKImageRenderer *)v15 renderDrawing:drawing3 clippedToStrokeSpaceRect:v27 scale:v19 completion:v21, v23, v25, v11];
 }
 
 void __36__PKTextAttachmentDrawingView_copy___block_invoke(uint64_t a1, void *a2)
@@ -2240,38 +2240,38 @@ void __36__PKTextAttachmentDrawingView_copy___block_invoke_2(void *a1)
   }
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v4 = a3;
-  v5 = [(PKTextAttachmentDrawingView *)self tiledView];
-  [v5 paste:v4];
+  pasteCopy = paste;
+  tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+  [tiledView paste:pasteCopy];
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  v5 = [(PKTextAttachmentDrawingView *)self _textView];
-  v4 = [(PKTextAttachmentDrawingView *)self textAttachment];
-  [v5 _removeDrawingAttachment:v4 withView:self forDeletion:1];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  textAttachment = [(PKTextAttachmentDrawingView *)self textAttachment];
+  [_textView _removeDrawingAttachment:textAttachment withView:self forDeletion:1];
 }
 
-- (void)insertSpace:(id)a3
+- (void)insertSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(PKTextAttachmentDrawingView *)self tiledView];
-  [v5 insertSpace:v4];
+  spaceCopy = space;
+  tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+  [tiledView insertSpace:spaceCopy];
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  v4 = a3;
-  v5 = [(PKTextAttachmentDrawingView *)self tiledView];
-  [v5 selectAll:v4];
+  allCopy = all;
+  tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+  [tiledView selectAll:allCopy];
 }
 
-- (void)_share:(id)a3
+- (void)_share:(id)_share
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  _shareCopy = _share;
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -2280,17 +2280,17 @@ void __36__PKTextAttachmentDrawingView_copy___block_invoke_2(void *a1)
   v53 = 0;
   v5 = dispatch_semaphore_create(0);
   v6 = [PKImageRenderer alloc];
-  v7 = [(PKAttachmentView *)self drawing];
-  [v7 bounds];
+  drawing = [(PKAttachmentView *)self drawing];
+  [drawing bounds];
   v9 = v8;
   v11 = v10;
-  v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v12 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v14 = [(PKImageRenderer *)v6 initWithSize:v9 scale:v11, v13];
 
-  v15 = [(PKAttachmentView *)self drawing];
-  v16 = [(PKAttachmentView *)self drawing];
-  [v16 bounds];
+  drawing2 = [(PKAttachmentView *)self drawing];
+  drawing3 = [(PKAttachmentView *)self drawing];
+  [drawing3 bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -2302,7 +2302,7 @@ void __36__PKTextAttachmentDrawingView_copy___block_invoke_2(void *a1)
   v47 = &v48;
   v25 = v5;
   v46 = v25;
-  [(PKImageRenderer *)v14 renderDrawing:v15 clippedToStrokeSpaceRect:v45 scale:v18 completion:v20, v22, v24, 1.0];
+  [(PKImageRenderer *)v14 renderDrawing:drawing2 clippedToStrokeSpaceRect:v45 scale:v18 completion:v20, v22, v24, 1.0];
 
   v26 = dispatch_time(0, 4000000000);
   dispatch_semaphore_wait(v25, v26);
@@ -2314,30 +2314,30 @@ void __36__PKTextAttachmentDrawingView_copy___block_invoke_2(void *a1)
     v29 = [v27 initWithActivityItems:v28 applicationActivities:0];
 
     [v29 setModalPresentationStyle:7];
-    v30 = [v29 popoverPresentationController];
-    [v30 setSourceView:self];
+    popoverPresentationController = [v29 popoverPresentationController];
+    [popoverPresentationController setSourceView:self];
 
     [(PKTextAttachmentDrawingView *)self bounds];
     v32 = v31;
     v34 = v33;
     v36 = v35;
     v38 = v37;
-    v39 = [v29 popoverPresentationController];
-    [v39 setSourceRect:{v32, v34, v36, v38}];
+    popoverPresentationController2 = [v29 popoverPresentationController];
+    [popoverPresentationController2 setSourceRect:{v32, v34, v36, v38}];
 
-    v40 = [v29 popoverPresentationController];
-    [v40 setPermittedArrowDirections:3];
+    popoverPresentationController3 = [v29 popoverPresentationController];
+    [popoverPresentationController3 setPermittedArrowDirections:3];
 
-    v41 = [v29 popoverPresentationController];
-    [v41 setCanOverlapSourceViewRect:1];
+    popoverPresentationController4 = [v29 popoverPresentationController];
+    [popoverPresentationController4 setCanOverlapSourceViewRect:1];
 
     v54 = *MEMORY[0x1E69CDAA8];
     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v54 count:1];
     [v29 setExcludedActivityTypes:v42];
 
-    v43 = [(PKTextAttachmentDrawingView *)self window];
-    v44 = [v43 rootViewController];
-    [v44 presentViewController:v29 animated:1 completion:0];
+    window = [(PKTextAttachmentDrawingView *)self window];
+    rootViewController = [window rootViewController];
+    [rootViewController presentViewController:v29 animated:1 completion:0];
   }
 
   _Block_object_dispose(&v48, 8);
@@ -2350,21 +2350,21 @@ void __38__PKTextAttachmentDrawingView__share___block_invoke(uint64_t a1, void *
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)scaleDrawing:(double)a3
+- (void)scaleDrawing:(double)drawing
 {
   [(UIScrollView *)self->_tileMaskView contentOffset];
 
-  [(PKTextAttachmentDrawingView *)self scaleDrawing:0 withOffset:a3 animated:v5, v6];
+  [(PKTextAttachmentDrawingView *)self scaleDrawing:0 withOffset:drawing animated:v5, v6];
 }
 
-- (void)scaleDrawing:(double)a3 withOffset:(CGPoint)a4 animated:(BOOL)a5
+- (void)scaleDrawing:(double)drawing withOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  if (a5)
+  if (animated)
   {
-    y = a4.y;
-    x = a4.x;
+    y = offset.y;
+    x = offset.x;
     [(PKTextAttachmentDrawingView *)self zoomScale];
-    v10 = dbl_1C801EA00[v9 < a3];
+    v10 = dbl_1C801EA00[v9 < drawing];
     [(PKTextAttachmentDrawingView *)self zoomScale];
     v12 = v11;
     [(UIScrollView *)self->_tileMaskView contentOffset];
@@ -2381,22 +2381,22 @@ void __38__PKTextAttachmentDrawingView__share___block_invoke(uint64_t a1, void *
     [(UIScrollView *)self->_tileMaskView contentOffset];
     v22[3] = v16;
     [(PKTextAttachmentDrawingView *)self setZoomingProgramatically:1];
-    v17 = [(PKTextAttachmentDrawingView *)self _textView];
+    _textView = [(PKTextAttachmentDrawingView *)self _textView];
     WeakRetained = objc_loadWeakRetained(&self->_textAttachment);
-    v19 = [(PKTextAttachmentDrawingView *)self _characterIndex];
+    _characterIndex = [(PKTextAttachmentDrawingView *)self _characterIndex];
     v21[1] = 3221225472;
     v21[0] = MEMORY[0x1E69E9820];
     v21[2] = __64__PKTextAttachmentDrawingView_scaleDrawing_withOffset_animated___block_invoke;
     v21[3] = &unk_1E82DB3B0;
-    *&v21[7] = (a3 - v12) * v10;
-    *&v21[8] = a3;
+    *&v21[7] = (drawing - v12) * v10;
+    *&v21[8] = drawing;
     v21[4] = self;
     v21[5] = v23;
     v21[6] = v22;
     v21[9] = v14;
     *&v21[10] = x;
     *&v21[11] = y;
-    [v17 _growView:self textAttachment:WeakRetained atCharacterIndex:v19 step:v21 stop:?];
+    [_textView _growView:self textAttachment:WeakRetained atCharacterIndex:_characterIndex step:v21 stop:?];
 
     _Block_object_dispose(v22, 8);
     _Block_object_dispose(v23, 8);
@@ -2404,7 +2404,7 @@ void __38__PKTextAttachmentDrawingView__share___block_invoke(uint64_t a1, void *
 
   else
   {
-    [(PKTextAttachmentDrawingView *)self setZoomScale:a3, a4.x, a4.y];
+    [(PKTextAttachmentDrawingView *)self setZoomScale:drawing, offset.x, offset.y];
     [(PKTextAttachmentDrawingView *)self zoomScale];
     [(UIScrollView *)self->_tileMaskView setScrollEnabled:v20 > 1.0];
 
@@ -2478,19 +2478,19 @@ uint64_t __64__PKTextAttachmentDrawingView_scaleDrawing_withOffset_animated___bl
 
 - (BOOL)isAtBeginningOfDocument
 {
-  v3 = [(PKTextAttachmentDrawingView *)self textAttachment];
+  textAttachment = [(PKTextAttachmentDrawingView *)self textAttachment];
 
-  if (!v3)
+  if (!textAttachment)
   {
     return 1;
   }
 
-  v4 = [(PKTextAttachmentDrawingView *)self _textView];
-  v5 = [v4 textStorage];
-  if ([v5 length])
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  textStorage = [_textView textStorage];
+  if ([textStorage length])
   {
-    v6 = [v4 textStorage];
-    v7 = [v6 attribute:*MEMORY[0x1E69DB5F8] atIndex:0 effectiveRange:0];
+    textStorage2 = [_textView textStorage];
+    v7 = [textStorage2 attribute:*MEMORY[0x1E69DB5F8] atIndex:0 effectiveRange:0];
   }
 
   else
@@ -2498,32 +2498,32 @@ uint64_t __64__PKTextAttachmentDrawingView_scaleDrawing_withOffset_animated___bl
     v7 = 0;
   }
 
-  v9 = [(PKTextAttachmentDrawingView *)self textAttachment];
-  v8 = v7 == v9;
+  textAttachment2 = [(PKTextAttachmentDrawingView *)self textAttachment];
+  v8 = v7 == textAttachment2;
 
   return v8;
 }
 
 - (BOOL)isAtEndOfDocument
 {
-  v3 = [(PKTextAttachmentDrawingView *)self textAttachment];
+  textAttachment = [(PKTextAttachmentDrawingView *)self textAttachment];
 
-  if (!v3)
+  if (!textAttachment)
   {
     return 1;
   }
 
-  v4 = [(PKTextAttachmentDrawingView *)self _textView];
-  v5 = [v4 textStorage];
-  v6 = [v5 length];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  textStorage = [_textView textStorage];
+  v6 = [textStorage length];
 
-  if (v6 && ([v4 textStorage], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "string"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "invertedSet"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v8, "rangeOfCharacterFromSet:options:", v10, 4), v10, v9, v8, v7, v11 != 0x7FFFFFFFFFFFFFFFLL))
+  if (v6 && ([_textView textStorage], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "string"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "invertedSet"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v8, "rangeOfCharacterFromSet:options:", v10, 4), v10, v9, v8, v7, v11 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v13 = [v4 textStorage];
-    v14 = [v13 attribute:*MEMORY[0x1E69DB5F8] atIndex:v11 effectiveRange:0];
+    textStorage2 = [_textView textStorage];
+    v14 = [textStorage2 attribute:*MEMORY[0x1E69DB5F8] atIndex:v11 effectiveRange:0];
 
-    v15 = [(PKTextAttachmentDrawingView *)self textAttachment];
-    v12 = v14 == v15;
+    textAttachment2 = [(PKTextAttachmentDrawingView *)self textAttachment];
+    v12 = v14 == textAttachment2;
   }
 
   else
@@ -2555,8 +2555,8 @@ uint64_t __64__PKTextAttachmentDrawingView_scaleDrawing_withOffset_animated___bl
     v10 = v6;
     if ([(PKTextAttachmentDrawingView *)self isAtEndOfDocument])
     {
-      v11 = [(PKTextAttachmentDrawingView *)self _textView];
-      [v11 bounds];
+      _textView = [(PKTextAttachmentDrawingView *)self _textView];
+      [_textView bounds];
       v10 = v10 + v12;
     }
 
@@ -2570,8 +2570,8 @@ uint64_t __64__PKTextAttachmentDrawingView_scaleDrawing_withOffset_animated___bl
     v19 = -(v18 * v9);
     [(PKTextAttachmentDrawingView *)self drawingBounds];
     v21 = floor(v19 / v20);
-    v22 = [(PKAttachmentView *)self tileContainerView];
-    [v22 setFrame:{0.0, v21, v9, v10}];
+    tileContainerView = [(PKAttachmentView *)self tileContainerView];
+    [tileContainerView setFrame:{0.0, v21, v9, v10}];
 
     linesLayer = self->_linesLayer;
 
@@ -2579,47 +2579,47 @@ uint64_t __64__PKTextAttachmentDrawingView_scaleDrawing_withOffset_animated___bl
   }
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  v9 = a3;
+  zoomingCopy = zooming;
   if (![(PKTextAttachmentDrawingView *)self zoomingProgramatically])
   {
     [(PKTextAttachmentDrawingView *)self zoomScale];
     [(PKTextAttachmentDrawingView *)self setZoomStartScale:?];
-    v5 = [v9 pinchGestureRecognizer];
-    [v5 locationInView:0];
+    pinchGestureRecognizer = [zoomingCopy pinchGestureRecognizer];
+    [pinchGestureRecognizer locationInView:0];
     [(PKTextAttachmentDrawingView *)self setZoomStartLocationInWindow:?];
 
     tileScaleView = self->_tileScaleView;
     [(PKTextAttachmentDrawingView *)self zoomStartLocationInWindow];
     [(UIView *)tileScaleView convertPoint:0 fromView:?];
     [(PKTextAttachmentDrawingView *)self setZoomStartLocationInAttachment:?];
-    v7 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v7 contentOffset];
+    _textView = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView contentOffset];
     [(PKTextAttachmentDrawingView *)self setTextViewContentOffsetStartLocation:?];
 
-    v8 = [v9 pinchGestureRecognizer];
-    [v8 scale];
+    pinchGestureRecognizer2 = [zoomingCopy pinchGestureRecognizer];
+    [pinchGestureRecognizer2 scale];
     [(PKTextAttachmentDrawingView *)self scaleDrawing:?];
   }
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
-  v23 = a3;
+  zoomCopy = zoom;
   if (![(PKTextAttachmentDrawingView *)self zoomingProgramatically])
   {
-    v4 = [v23 pinchGestureRecognizer];
-    [v4 scale];
+    pinchGestureRecognizer = [zoomCopy pinchGestureRecognizer];
+    [pinchGestureRecognizer scale];
     v6 = v5;
 
     [(PKTextAttachmentDrawingView *)self scaleDrawing:v6];
-    v7 = [(PKTextAttachmentDrawingView *)self _characterIndex];
-    v8 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v8 _pk_ensureLayoutForCharacterRange:{v7, 1}];
+    _characterIndex = [(PKTextAttachmentDrawingView *)self _characterIndex];
+    _textView = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView _pk_ensureLayoutForCharacterRange:{_characterIndex, 1}];
 
-    v9 = [v23 pinchGestureRecognizer];
-    [v9 locationInView:0];
+    pinchGestureRecognizer2 = [zoomCopy pinchGestureRecognizer];
+    [pinchGestureRecognizer2 locationInView:0];
     v11 = v10;
 
     [(PKTextAttachmentDrawingView *)self zoomStartLocationInWindow];
@@ -2632,24 +2632,24 @@ uint64_t __64__PKTextAttachmentDrawingView_scaleDrawing_withOffset_animated___bl
     v19 = v18;
     [(PKTextAttachmentDrawingView *)self textViewContentOffsetStartLocation];
     v21 = v17 + v20;
-    v22 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v22 setContentOffset:{v19, v21}];
+    _textView2 = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView2 setContentOffset:{v19, v21}];
   }
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
-  v68 = a3;
+  zoomingCopy = zooming;
   if (![(PKTextAttachmentDrawingView *)self zoomingProgramatically])
   {
-    [(PKTextAttachmentDrawingView *)self scaleDrawing:a5];
-    v7 = [v68 pinchGestureRecognizer];
-    [v7 locationInView:0];
+    [(PKTextAttachmentDrawingView *)self scaleDrawing:scale];
+    pinchGestureRecognizer = [zoomingCopy pinchGestureRecognizer];
+    [pinchGestureRecognizer locationInView:0];
 
     [(PKTextAttachmentDrawingView *)self zoomStartLocationInWindow];
     [(PKTextAttachmentDrawingView *)self zoomStartLocationInAttachment];
     [(PKTextAttachmentDrawingView *)self zoomStartScale];
-    v8 = [(PKTextAttachmentDrawingView *)self window];
+    window = [(PKTextAttachmentDrawingView *)self window];
     UIRoundToViewScale();
     v10 = v9;
 
@@ -2657,18 +2657,18 @@ uint64_t __64__PKTextAttachmentDrawingView_scaleDrawing_withOffset_animated___bl
     v12 = v11;
     [(PKTextAttachmentDrawingView *)self textViewContentOffsetStartLocation];
     v14 = v10 + v13;
-    v15 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v15 setContentOffset:{v12, v14}];
+    _textView = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView setContentOffset:{v12, v14}];
 
-    v16 = 3.0;
-    if (a5 <= 3.0)
+    scaleCopy = 3.0;
+    if (scale <= 3.0)
     {
-      v16 = a5;
+      scaleCopy = scale;
     }
 
-    if (a5 >= 1.0)
+    if (scale >= 1.0)
     {
-      v17 = v16;
+      v17 = scaleCopy;
     }
 
     else
@@ -2679,7 +2679,7 @@ uint64_t __64__PKTextAttachmentDrawingView_scaleDrawing_withOffset_animated___bl
     [(PKTextAttachmentDrawingView *)self zoomStartLocationInWindow:1.0];
     [(PKTextAttachmentDrawingView *)self zoomStartLocationInAttachment];
     [(PKTextAttachmentDrawingView *)self zoomStartScale];
-    v18 = [(PKTextAttachmentDrawingView *)self window];
+    window2 = [(PKTextAttachmentDrawingView *)self window];
     UIRoundToViewScale();
     v20 = v19;
 
@@ -2687,21 +2687,21 @@ uint64_t __64__PKTextAttachmentDrawingView_scaleDrawing_withOffset_animated___bl
     v22 = v21;
     [(PKTextAttachmentDrawingView *)self textViewContentOffsetStartLocation];
     v24 = v20 + v23;
-    v25 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v25 adjustedContentInset];
+    _textView2 = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView2 adjustedContentInset];
     v27 = -v26;
 
-    v28 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v28 contentSize];
+    _textView3 = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView3 contentSize];
     v30 = v29;
-    v31 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v31 adjustedContentInset];
+    _textView4 = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView4 adjustedContentInset];
     v33 = v30 + v32;
-    v34 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v34 adjustedContentInset];
+    _textView5 = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView5 adjustedContentInset];
     v36 = v33 + v35;
-    v37 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v37 frame];
+    _textView6 = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView6 frame];
     v39 = v38;
 
     if (v24 < v27 || v36 <= v39)
@@ -2709,27 +2709,27 @@ uint64_t __64__PKTextAttachmentDrawingView_scaleDrawing_withOffset_animated___bl
       v24 = v27;
     }
 
-    v41 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v41 contentSize];
+    _textView7 = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView7 contentSize];
     v43 = v42;
-    v44 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v44 frame];
+    _textView8 = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView8 frame];
     v46 = v43 - v45;
-    v47 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v47 adjustedContentInset];
+    _textView9 = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView9 adjustedContentInset];
     v49 = v46 + v48;
 
-    v50 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v50 contentSize];
+    _textView10 = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView10 contentSize];
     v52 = v51;
-    v53 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v53 adjustedContentInset];
+    _textView11 = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView11 adjustedContentInset];
     v55 = v52 + v54;
-    v56 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v56 adjustedContentInset];
+    _textView12 = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView12 adjustedContentInset];
     v58 = v55 + v57;
-    v59 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v59 frame];
+    _textView13 = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView13 frame];
     v61 = v60;
 
     if (v24 <= v49 || v58 <= v61)
@@ -2748,42 +2748,42 @@ uint64_t __64__PKTextAttachmentDrawingView_scaleDrawing_withOffset_animated___bl
     [(UIScrollView *)self->_tileMaskView contentOffset];
     UIRoundToViewScale();
     [(PKTextAttachmentDrawingView *)self scaleDrawing:1 withOffset:v17 animated:v65, v66];
-    v67 = [(PKTextAttachmentDrawingView *)self _textView];
-    [v67 setContentOffset:1 animated:{v22, v63}];
+    _textView14 = [(PKTextAttachmentDrawingView *)self _textView];
+    [_textView14 setContentOffset:1 animated:{v22, v63}];
   }
 }
 
-- (void)handleDoubleTap:(id)a3
+- (void)handleDoubleTap:(id)tap
 {
-  v20 = a3;
-  v4 = [(PKTextAttachmentDrawingView *)self window];
-  v5 = [v4 firstResponder];
-  if (v5)
+  tapCopy = tap;
+  window = [(PKTextAttachmentDrawingView *)self window];
+  firstResponder = [window firstResponder];
+  if (firstResponder)
   {
-    v6 = v5;
-    v7 = [(PKTextAttachmentDrawingView *)self window];
-    v8 = [v7 firstResponder];
+    v6 = firstResponder;
+    window2 = [(PKTextAttachmentDrawingView *)self window];
+    firstResponder2 = [window2 firstResponder];
 
-    if (v8 == self)
+    if (firstResponder2 == self)
     {
       goto LABEL_5;
     }
 
-    v4 = [(PKTextAttachmentDrawingView *)self window];
-    v9 = [v4 firstResponder];
-    [v9 resignFirstResponder];
+    window = [(PKTextAttachmentDrawingView *)self window];
+    firstResponder3 = [window firstResponder];
+    [firstResponder3 resignFirstResponder];
   }
 
 LABEL_5:
-  v10 = [(PKTextAttachmentDrawingView *)self _textView];
-  v11 = [v10 isFingerDrawingEnabled];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  isFingerDrawingEnabled = [_textView isFingerDrawingEnabled];
 
-  if ((v11 & 1) == 0)
+  if ((isFingerDrawingEnabled & 1) == 0)
   {
     [(PKTextAttachmentDrawingView *)self zoomScale];
     if (v12 <= 1.0)
     {
-      [v20 locationInView:self];
+      [tapCopy locationInView:self];
       [(PKTextAttachmentDrawingView *)self bounds];
       UIRoundToViewScale();
       v16 = v15;
@@ -2817,8 +2817,8 @@ LABEL_5:
 
 - (CGRect)drawingContentBounds
 {
-  v3 = [(PKAttachmentView *)self drawing];
-  [v3 bounds];
+  drawing = [(PKAttachmentView *)self drawing];
+  [drawing bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2866,17 +2866,17 @@ LABEL_5:
   return result;
 }
 
-- (CGRect)drawingBoundsForViewWidth:(double)a3
+- (CGRect)drawingBoundsForViewWidth:(double)width
 {
   [(PKTextAttachmentDrawingView *)self drawingContentBounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(PKTextAttachmentDrawingView *)self tiledView];
-  v14 = [v13 cropDrawingAttachmentsWhenViewIsSmaller];
+  tiledView = [(PKTextAttachmentDrawingView *)self tiledView];
+  cropDrawingAttachmentsWhenViewIsSmaller = [tiledView cropDrawingAttachmentsWhenViewIsSmaller];
 
-  if (v14)
+  if (cropDrawingAttachmentsWhenViewIsSmaller)
   {
     if ([MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[PKTextAttachmentDrawingView semanticContentAttribute](self, "semanticContentAttribute")}])
     {
@@ -2885,9 +2885,9 @@ LABEL_5:
       v22.size.width = v10;
       v22.size.height = v12;
       MinX = CGRectGetMinX(v22);
-      if (MinX >= 768.0 - a3 + -16.0)
+      if (MinX >= 768.0 - width + -16.0)
       {
-        MinX = 768.0 - a3 + -16.0;
+        MinX = 768.0 - width + -16.0;
       }
 
       v16 = fmax(MinX, 0.0);
@@ -2901,15 +2901,15 @@ LABEL_5:
       v23.origin.y = v8;
       v23.size.width = v10;
       v23.size.height = v12;
-      v18 = CGRectGetMaxX(v23) + 16.0;
-      if (v18 < a3)
+      widthCopy = CGRectGetMaxX(v23) + 16.0;
+      if (widthCopy < width)
       {
-        v18 = a3;
+        widthCopy = width;
       }
 
-      if (v18 <= 768.0)
+      if (widthCopy <= 768.0)
       {
-        v17 = v18;
+        v17 = widthCopy;
       }
 
       else
@@ -2935,9 +2935,9 @@ LABEL_5:
   return result;
 }
 
-- (CGAffineTransform)drawingTransformForViewWidth:(SEL)a3
+- (CGAffineTransform)drawingTransformForViewWidth:(SEL)width
 {
-  v5 = self;
+  selfCopy = self;
   v7 = a4 - self[15].ty;
   if (v7 < 0.0)
   {
@@ -2986,16 +2986,16 @@ LABEL_16:
   }
 
   v20 = v9;
-  self = [MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[CGAffineTransform semanticContentAttribute](v5, "semanticContentAttribute")}];
-  v21 = &v5[14].ty;
+  self = [MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:{-[CGAffineTransform semanticContentAttribute](selfCopy, "semanticContentAttribute")}];
+  v21 = &selfCopy[14].ty;
   if (self)
   {
     *v21 = v11;
-    v5[15].a = 0.0;
-    v5[15].b = 0.0;
-    v5[15].c = v11;
-    v5[15].d = -(v11 * v20);
-    v5[15].tx = 0.0;
+    selfCopy[15].a = 0.0;
+    selfCopy[15].b = 0.0;
+    selfCopy[15].c = v11;
+    selfCopy[15].d = -(v11 * v20);
+    selfCopy[15].tx = 0.0;
   }
 
   else
@@ -3003,35 +3003,35 @@ LABEL_16:
     self = CGAffineTransformMakeScale(&v24, v11, v11);
     v22 = *&v24.c;
     *v21 = *&v24.a;
-    *&v5[15].b = v22;
-    *&v5[15].d = *&v24.tx;
+    *&selfCopy[15].b = v22;
+    *&selfCopy[15].d = *&v24.tx;
   }
 
-  v5[15].ty = a4;
-  v23 = *&v5[15].b;
+  selfCopy[15].ty = a4;
+  v23 = *&selfCopy[15].b;
   *&retstr->a = *v21;
   *&retstr->c = v23;
-  v19 = *&v5[15].d;
+  v19 = *&selfCopy[15].d;
 LABEL_21:
   *&retstr->tx = v19;
   return self;
 }
 
-- (double)desiredAttachmentViewWidthForContainerView:(id)a3
+- (double)desiredAttachmentViewWidthForContainerView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = _UISolariumEnabled();
-  if (v3 && v4)
+  if (viewCopy && v4)
   {
-    [v3 bounds];
+    [viewCopy bounds];
     v6 = v5;
-    [v3 safeAreaInsets];
+    [viewCopy safeAreaInsets];
     v9 = v6 - (v7 + v8);
   }
 
-  else if (v3)
+  else if (viewCopy)
   {
-    [v3 bounds];
+    [viewCopy bounds];
     v9 = v10;
   }
 
@@ -3045,17 +3045,17 @@ LABEL_21:
 
 - (CGAffineTransform)drawingTransform
 {
-  v5 = [(PKTextAttachmentDrawingView *)self _textView];
-  [(PKTextAttachmentDrawingView *)self desiredAttachmentViewWidthForContainerView:v5];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  [(PKTextAttachmentDrawingView *)self desiredAttachmentViewWidthForContainerView:_textView];
   [(PKTextAttachmentDrawingView *)self drawingTransformForViewWidth:?];
 
   return result;
 }
 
-- (CGRect)resizeViewDrawingBounds:(id)a3
+- (CGRect)resizeViewDrawingBounds:(id)bounds
 {
-  v4 = [(PKAttachmentView *)self drawing];
-  [v4 bounds];
+  drawing = [(PKAttachmentView *)self drawing];
+  [drawing bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -3085,49 +3085,49 @@ LABEL_21:
   return result;
 }
 
-- (void)resizeViewRemoveAttachment:(id)a3
+- (void)resizeViewRemoveAttachment:(id)attachment
 {
-  v5 = [(PKTextAttachmentDrawingView *)self _textView];
-  v4 = [(PKTextAttachmentDrawingView *)self textAttachment];
-  [v5 _removeDrawingAttachment:v4 withView:self forDeletion:0];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  textAttachment = [(PKTextAttachmentDrawingView *)self textAttachment];
+  [_textView _removeDrawingAttachment:textAttachment withView:self forDeletion:0];
 }
 
-- (void)resizeView:(id)a3 finishedWithOriginalDrawingBounds:(CGRect)a4 originalViewBounds:(CGRect)a5
+- (void)resizeView:(id)view finishedWithOriginalDrawingBounds:(CGRect)bounds originalViewBounds:(CGRect)viewBounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v18 = [(PKTextAttachmentDrawingView *)self undoManager];
-  v14 = [(PKTextAttachmentDrawingView *)self _textView];
-  v15 = [v18 prepareWithInvocationTarget:v14];
-  v16 = [(PKAttachmentView *)self drawing];
-  v17 = [v16 uuid];
-  [v15 _undoDrawingBounds:v17 viewBounds:v12 ofAttachmentUUID:{v11, v10, v9, x, y, width, height}];
+  height = viewBounds.size.height;
+  width = viewBounds.size.width;
+  y = viewBounds.origin.y;
+  x = viewBounds.origin.x;
+  v9 = bounds.size.height;
+  v10 = bounds.size.width;
+  v11 = bounds.origin.y;
+  v12 = bounds.origin.x;
+  undoManager = [(PKTextAttachmentDrawingView *)self undoManager];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  v15 = [undoManager prepareWithInvocationTarget:_textView];
+  drawing = [(PKAttachmentView *)self drawing];
+  uuid = [drawing uuid];
+  [v15 _undoDrawingBounds:uuid viewBounds:v12 ofAttachmentUUID:{v11, v10, v9, x, y, width, height}];
 }
 
-- (void)resizeViewDidUpdate:(id)a3
+- (void)resizeViewDidUpdate:(id)update
 {
   [(PKTextAttachmentDrawingView *)self _adjustResizeIndicatorVisibility];
 
   [(PKAttachmentView *)self drawingDidChange];
 }
 
-- (id)dataForTextAttachment:(id)a3
+- (id)dataForTextAttachment:(id)attachment
 {
-  v3 = [(PKAttachmentView *)self drawing];
-  v4 = [v3 serialize];
+  drawing = [(PKAttachmentView *)self drawing];
+  serialize = [drawing serialize];
 
-  return v4;
+  return serialize;
 }
 
-- (void)drawingDataDidChange:(id)a3
+- (void)drawingDataDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = os_log_create("com.apple.pencilkit", "Sketching");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -3135,18 +3135,18 @@ LABEL_21:
     _os_log_debug_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEBUG, "drawingDataDidChange called", buf, 2u);
   }
 
-  v6 = [(PKTextAttachmentDrawingView *)self _textView];
-  v7 = [v6 _pkTiledViewIfEnabled];
-  [v7 setAggd_didMergeWithCollaborator:1];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  _pkTiledViewIfEnabled = [_textView _pkTiledViewIfEnabled];
+  [_pkTiledViewIfEnabled setAggd_didMergeWithCollaborator:1];
 
-  v8 = [(PKAttachmentView *)self drawing];
+  drawing = [(PKAttachmentView *)self drawing];
 
-  if (v4 && v8)
+  if (changeCopy && drawing)
   {
-    v9 = [(PKAttachmentView *)self drawing];
-    v10 = [v9 copy];
+    drawing2 = [(PKAttachmentView *)self drawing];
+    v10 = [drawing2 copy];
 
-    v11 = [v10 mergeWithDrawing:v4];
+    v11 = [v10 mergeWithDrawing:changeCopy];
     v12 = +[PKStatisticsManager sharedStatisticsManager];
     [(PKStatisticsManager *)v12 recordCollaboration:v11];
 
@@ -3213,12 +3213,12 @@ LABEL_16:
   }
 }
 
-- (id)linedPaperLayerLinedPaper:(id)a3
+- (id)linedPaperLayerLinedPaper:(id)paper
 {
-  v3 = [(PKTextAttachmentDrawingView *)self _textView];
-  v4 = [v3 linedPaper];
+  _textView = [(PKTextAttachmentDrawingView *)self _textView];
+  linedPaper = [_textView linedPaper];
 
-  return v4;
+  return linedPaper;
 }
 
 - (NSTextAttachment)textAttachment

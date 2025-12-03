@@ -1,9 +1,9 @@
 @interface WFSequentialParameterInputProvider
-- (WFSequentialParameterInputProvider)initWithDelegate:(id)a3;
+- (WFSequentialParameterInputProvider)initWithDelegate:(id)delegate;
 - (WFSequentialParameterInputProviderDelegate)delegate;
 - (void)askForParameterIfAvailable;
 - (void)persistInFlightParameters;
-- (void)startWithAction:(id)a3 parameters:(id)a4 defaultStates:(id)a5 prompts:(id)a6;
+- (void)startWithAction:(id)action parameters:(id)parameters defaultStates:(id)states prompts:(id)prompts;
 @end
 
 @implementation WFSequentialParameterInputProvider
@@ -17,29 +17,29 @@
 
 - (void)persistInFlightParameters
 {
-  v5 = [(WFSequentialParameterInputProvider *)self delegate];
-  v3 = [(WFSequentialParameterInputProvider *)self inputtedStates];
-  v4 = [(WFSequentialParameterInputProvider *)self lastResponseContext];
-  [v5 sequentialParameterInputProvider:self didFinishWithInputtedStates:v3 responseContext:v4];
+  delegate = [(WFSequentialParameterInputProvider *)self delegate];
+  inputtedStates = [(WFSequentialParameterInputProvider *)self inputtedStates];
+  lastResponseContext = [(WFSequentialParameterInputProvider *)self lastResponseContext];
+  [delegate sequentialParameterInputProvider:self didFinishWithInputtedStates:inputtedStates responseContext:lastResponseContext];
 }
 
 - (void)askForParameterIfAvailable
 {
-  v3 = [(WFSequentialParameterInputProvider *)self queuedParameters];
-  v4 = [v3 firstObject];
+  queuedParameters = [(WFSequentialParameterInputProvider *)self queuedParameters];
+  firstObject = [queuedParameters firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [(WFSequentialParameterInputProvider *)self queuedParameters];
-    [v5 removeObject:v4];
+    queuedParameters2 = [(WFSequentialParameterInputProvider *)self queuedParameters];
+    [queuedParameters2 removeObject:firstObject];
 
-    v6 = [(WFSequentialParameterInputProvider *)self fakeAction];
-    v7 = [v6 visibleParametersWithProcessing:1];
+    fakeAction = [(WFSequentialParameterInputProvider *)self fakeAction];
+    delegate2 = [fakeAction visibleParametersWithProcessing:1];
 
-    v8 = [v4 key];
-    v9 = [v7 objectMatchingKey:@"key" value:v8];
+    v8 = [firstObject key];
+    inputtedStates = [delegate2 objectMatchingKey:@"key" value:v8];
 
-    if (!v9)
+    if (!inputtedStates)
     {
       [(WFSequentialParameterInputProvider *)self askForParameterIfAvailable];
       goto LABEL_9;
@@ -48,43 +48,43 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v13 = [(WFSequentialParameterInputProvider *)self defaultStates];
-      v14 = [v4 key];
-      v22 = [v13 objectForKey:v14];
+      defaultStates = [(WFSequentialParameterInputProvider *)self defaultStates];
+      v14 = [firstObject key];
+      v22 = [defaultStates objectForKey:v14];
 
-      v15 = [(WFSequentialParameterInputProvider *)self prompts];
-      v16 = [v4 key];
-      v17 = [v15 objectForKey:v16];
+      prompts = [(WFSequentialParameterInputProvider *)self prompts];
+      v16 = [firstObject key];
+      v17 = [prompts objectForKey:v16];
 
-      v18 = [(WFSequentialParameterInputProvider *)self delegate];
-      v19 = [(WFSequentialParameterInputProvider *)self fakeAction];
-      v20 = [v17 prompt];
-      v21 = [v17 linkDialog];
+      delegate = [(WFSequentialParameterInputProvider *)self delegate];
+      fakeAction2 = [(WFSequentialParameterInputProvider *)self fakeAction];
+      prompt = [v17 prompt];
+      linkDialog = [v17 linkDialog];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __64__WFSequentialParameterInputProvider_askForParameterIfAvailable__block_invoke;
       v23[3] = &unk_1E8375438;
       v23[4] = self;
-      v24 = v4;
-      [v18 sequentialParameterInputProvider:self didAdvanceToParameter:v24 action:v19 defaultState:v22 prompt:v20 linkDialog:v21 completion:v23];
+      v24 = firstObject;
+      [delegate sequentialParameterInputProvider:self didAdvanceToParameter:v24 action:fakeAction2 defaultState:v22 prompt:prompt linkDialog:linkDialog completion:v23];
 
       goto LABEL_9;
     }
 
-    v10 = [[WFBooleanSubstitutableState alloc] initWithBoolValue:1];
-    v11 = [(WFSequentialParameterInputProvider *)self fakeAction];
-    v12 = [v4 key];
-    [v11 setParameterState:v10 forKey:v12];
+    lastResponseContext = [[WFBooleanSubstitutableState alloc] initWithBoolValue:1];
+    fakeAction3 = [(WFSequentialParameterInputProvider *)self fakeAction];
+    v12 = [firstObject key];
+    [fakeAction3 setParameterState:lastResponseContext forKey:v12];
 
     [(WFSequentialParameterInputProvider *)self askForParameterIfAvailable];
   }
 
   else
   {
-    v7 = [(WFSequentialParameterInputProvider *)self delegate];
-    v9 = [(WFSequentialParameterInputProvider *)self inputtedStates];
-    v10 = [(WFSequentialParameterInputProvider *)self lastResponseContext];
-    [v7 sequentialParameterInputProvider:self didFinishWithInputtedStates:v9 responseContext:v10];
+    delegate2 = [(WFSequentialParameterInputProvider *)self delegate];
+    inputtedStates = [(WFSequentialParameterInputProvider *)self inputtedStates];
+    lastResponseContext = [(WFSequentialParameterInputProvider *)self lastResponseContext];
+    [delegate2 sequentialParameterInputProvider:self didFinishWithInputtedStates:inputtedStates responseContext:lastResponseContext];
   }
 
 LABEL_9:
@@ -146,15 +146,15 @@ void __64__WFSequentialParameterInputProvider_askForParameterIfAvailable__block_
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startWithAction:(id)a3 parameters:(id)a4 defaultStates:(id)a5 prompts:(id)a6
+- (void)startWithAction:(id)action parameters:(id)parameters defaultStates:(id)states prompts:(id)prompts
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v35 = a6;
-  v13 = [v10 copyForProcessing];
-  [(WFSequentialParameterInputProvider *)self setFakeAction:v13];
+  actionCopy = action;
+  parametersCopy = parameters;
+  statesCopy = states;
+  promptsCopy = prompts;
+  copyForProcessing = [actionCopy copyForProcessing];
+  [(WFSequentialParameterInputProvider *)self setFakeAction:copyForProcessing];
 
   v14 = MEMORY[0x1E695DFA0];
   v40[0] = MEMORY[0x1E69E9820];
@@ -162,23 +162,23 @@ void __64__WFSequentialParameterInputProvider_askForParameterIfAvailable__block_
   v40[2] = __87__WFSequentialParameterInputProvider_startWithAction_parameters_defaultStates_prompts___block_invoke;
   v40[3] = &unk_1E8375410;
   v40[4] = self;
-  v15 = [v11 if_compactMap:v40];
+  v15 = [parametersCopy if_compactMap:v40];
   v16 = [v14 orderedSetWithOrderedSet:v15];
   [(WFSequentialParameterInputProvider *)self setQueuedParameters:v16];
 
-  v17 = [(WFSequentialParameterInputProvider *)self fakeAction];
-  v18 = [v10 workflow];
-  [v17 willBeAddedToWorkflow:v18];
+  fakeAction = [(WFSequentialParameterInputProvider *)self fakeAction];
+  workflow = [actionCopy workflow];
+  [fakeAction willBeAddedToWorkflow:workflow];
 
-  v19 = [(WFSequentialParameterInputProvider *)self fakeAction];
-  v20 = [v10 workflow];
-  [v19 wasAddedToWorkflow:v20];
+  fakeAction2 = [(WFSequentialParameterInputProvider *)self fakeAction];
+  workflow2 = [actionCopy workflow];
+  [fakeAction2 wasAddedToWorkflow:workflow2];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v21 = v11;
+  v21 = parametersCopy;
   v22 = [v21 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v22)
   {
@@ -195,13 +195,13 @@ void __64__WFSequentialParameterInputProvider_askForParameterIfAvailable__block_
 
         v26 = *(*(&v36 + 1) + 8 * i);
         v27 = [v26 key];
-        v28 = [v12 objectForKey:v27];
+        v28 = [statesCopy objectForKey:v27];
 
         if (v28)
         {
-          v29 = [(WFSequentialParameterInputProvider *)self fakeAction];
+          fakeAction3 = [(WFSequentialParameterInputProvider *)self fakeAction];
           v30 = [v26 key];
-          [v29 setParameterState:v28 forKey:v30];
+          [fakeAction3 setParameterState:v28 forKey:v30];
         }
       }
 
@@ -214,10 +214,10 @@ void __64__WFSequentialParameterInputProvider_askForParameterIfAvailable__block_
   v31 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [(WFSequentialParameterInputProvider *)self setInputtedStates:v31];
 
-  v32 = [v12 copy];
+  v32 = [statesCopy copy];
   [(WFSequentialParameterInputProvider *)self setDefaultStates:v32];
 
-  v33 = [v35 copy];
+  v33 = [promptsCopy copy];
   [(WFSequentialParameterInputProvider *)self setPrompts:v33];
 
   [(WFSequentialParameterInputProvider *)self askForParameterIfAvailable];
@@ -243,16 +243,16 @@ id __87__WFSequentialParameterInputProvider_startWithAction_parameters_defaultSt
   return v6;
 }
 
-- (WFSequentialParameterInputProvider)initWithDelegate:(id)a3
+- (WFSequentialParameterInputProvider)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = WFSequentialParameterInputProvider;
   v5 = [(WFSequentialParameterInputProvider *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = v6;
   }
 

@@ -1,13 +1,13 @@
 @interface CSLPRFStingSettingsModelData
-+ (id)fromExportData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)fromExportData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (CSLPRFStingSettingsModelData)init;
-- (CSLPRFStingSettingsModelData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CSLPRFStingSettingsModelData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)toExportData;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSLPRFStingSettingsModelData
@@ -30,21 +30,21 @@
   v7 = [v3 appendObject:self->_controlsDictionary withName:@"controls" skipIfNil:1];
   v8 = [v3 appendObject:self->_accessibilityShortcutsArray withName:@"accessibilityShortcuts" skipIfNil:1];
   v9 = [v3 appendObject:self->_startWorkoutsDictionary withName:@"startWorkouts" skipIfNil:1];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   version = self->_version;
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __40__CSLPRFStingSettingsModelData_isEqual___block_invoke;
   v40[3] = &unk_278744E18;
-  v7 = v4;
+  v7 = equalCopy;
   v41 = v7;
   v8 = [v5 appendString:version counterpart:v40];
   actionsDictionary = self->_actionsDictionary;
@@ -103,8 +103,8 @@
 - (unint64_t)hash
 {
   v74 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_version];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_version];
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
@@ -125,7 +125,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [v3 appendObject:*(*(&v64 + 1) + 8 * v9++)];
+        v10 = [builder appendObject:*(*(&v64 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
@@ -155,7 +155,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [v3 appendObject:*(*(&v60 + 1) + 8 * v15++)];
+        v16 = [builder appendObject:*(*(&v60 + 1) + 8 * v15++)];
       }
 
       while (v13 != v15);
@@ -185,7 +185,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [v3 appendObject:*(*(&v56 + 1) + 8 * v21++)];
+        v22 = [builder appendObject:*(*(&v56 + 1) + 8 * v21++)];
       }
 
       while (v19 != v21);
@@ -215,7 +215,7 @@
           objc_enumerationMutation(v23);
         }
 
-        v28 = [v3 appendObject:*(*(&v52 + 1) + 8 * v27++)];
+        v28 = [builder appendObject:*(*(&v52 + 1) + 8 * v27++)];
       }
 
       while (v25 != v27);
@@ -245,7 +245,7 @@
           objc_enumerationMutation(v29);
         }
 
-        v34 = [v3 appendObject:*(*(&v48 + 1) + 8 * v33++)];
+        v34 = [builder appendObject:*(*(&v48 + 1) + 8 * v33++)];
       }
 
       while (v31 != v33);
@@ -275,7 +275,7 @@
           objc_enumerationMutation(v35);
         }
 
-        v40 = [v3 appendObject:{*(*(&v44 + 1) + 8 * v39++), v44}];
+        v40 = [builder appendObject:{*(*(&v44 + 1) + 8 * v39++), v44}];
       }
 
       while (v37 != v39);
@@ -285,12 +285,12 @@
     while (v37);
   }
 
-  v41 = [v3 hash];
+  v41 = [builder hash];
   v42 = *MEMORY[0x277D85DE8];
   return v41;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CSLPRFStingSettingsModelData);
   v5 = [(NSString *)self->_version copy];
@@ -317,39 +317,39 @@
   return v4;
 }
 
-- (CSLPRFStingSettingsModelData)initWithCoder:(id)a3
+- (CSLPRFStingSettingsModelData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CSLPRFStingSettingsModelData;
   v5 = [(CSLPRFStingSettingsModelData *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"version"];
+    v6 = [coderCopy decodeObjectForKey:@"version"];
     version = v5->_version;
     v5->_version = v6;
 
-    v8 = [v4 decodeObjectForKey:@"actions"];
+    v8 = [coderCopy decodeObjectForKey:@"actions"];
     actionsDictionary = v5->_actionsDictionary;
     v5->_actionsDictionary = v8;
 
-    v10 = [v4 decodeObjectForKey:@"secondaryActions"];
+    v10 = [coderCopy decodeObjectForKey:@"secondaryActions"];
     secondaryActionsDictionary = v5->_secondaryActionsDictionary;
     v5->_secondaryActionsDictionary = v10;
 
-    v12 = [v4 decodeObjectForKey:@"shortcuts"];
+    v12 = [coderCopy decodeObjectForKey:@"shortcuts"];
     shortcutsDictionary = v5->_shortcutsDictionary;
     v5->_shortcutsDictionary = v12;
 
-    v14 = [v4 decodeObjectForKey:@"controls"];
+    v14 = [coderCopy decodeObjectForKey:@"controls"];
     controlsDictionary = v5->_controlsDictionary;
     v5->_controlsDictionary = v14;
 
-    v16 = [v4 decodeObjectForKey:@"accessibilityShortcuts"];
+    v16 = [coderCopy decodeObjectForKey:@"accessibilityShortcuts"];
     accessibilityShortcutsArray = v5->_accessibilityShortcutsArray;
     v5->_accessibilityShortcutsArray = v16;
 
-    v18 = [v4 decodeObjectForKey:@"startWorkouts"];
+    v18 = [coderCopy decodeObjectForKey:@"startWorkouts"];
     startWorkoutsDictionary = v5->_startWorkoutsDictionary;
     v5->_startWorkoutsDictionary = v18;
   }
@@ -357,17 +357,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeObject:version forKey:@"version"];
-  [v5 encodeObject:self->_actionsDictionary forKey:@"actions"];
-  [v5 encodeObject:self->_secondaryActionsDictionary forKey:@"secondaryActions"];
-  [v5 encodeObject:self->_shortcutsDictionary forKey:@"shortcuts"];
-  [v5 encodeObject:self->_controlsDictionary forKey:@"controls"];
-  [v5 encodeObject:self->_accessibilityShortcutsArray forKey:@"accessibilityShortcuts"];
-  [v5 encodeObject:self->_startWorkoutsDictionary forKey:@"startWorkouts"];
+  coderCopy = coder;
+  [coderCopy encodeObject:version forKey:@"version"];
+  [coderCopy encodeObject:self->_actionsDictionary forKey:@"actions"];
+  [coderCopy encodeObject:self->_secondaryActionsDictionary forKey:@"secondaryActions"];
+  [coderCopy encodeObject:self->_shortcutsDictionary forKey:@"shortcuts"];
+  [coderCopy encodeObject:self->_controlsDictionary forKey:@"controls"];
+  [coderCopy encodeObject:self->_accessibilityShortcutsArray forKey:@"accessibilityShortcuts"];
+  [coderCopy encodeObject:self->_startWorkoutsDictionary forKey:@"startWorkouts"];
 }
 
 - (CSLPRFStingSettingsModelData)init
@@ -384,15 +384,15 @@
   return v3;
 }
 
-+ (id)fromExportData:(id)a3
++ (id)fromExportData:(id)data
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v25 = a1;
-    v26 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v4 error:0];
+    selfCopy = self;
+    v26 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:0];
     v27 = MEMORY[0x277CBEB98];
     v5 = objc_opt_class();
     v6 = objc_opt_class();
@@ -407,19 +407,19 @@
     v14 = v26;
     v15 = [v27 setWithObjects:{v5, v6, v7, v24, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
     v16 = [v26 decodeObjectOfClasses:v15 forKey:*MEMORY[0x277CCA308]];
-    v17 = [v16 version];
-    LOBYTE(v11) = [v17 isEqualToString:@"0.4"];
+    version = [v16 version];
+    LOBYTE(v11) = [version isEqualToString:@"0.4"];
 
     if ((v11 & 1) == 0)
     {
       v18 = cslprf_sting_settings_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v16 version];
+        version2 = [v16 version];
         *buf = 138412802;
-        v29 = v25;
+        selfCopy2 = selfCopy;
         v30 = 2112;
-        v31 = v19;
+        v31 = version2;
         v32 = 2112;
         v33 = @"0.4";
         _os_log_impl(&dword_22CE92000, v18, OS_LOG_TYPE_DEFAULT, "%@ unexpected model data version %@, expected %@", buf, 0x20u);
@@ -431,9 +431,9 @@
       v20 = cslprf_sting_settings_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v26 error];
+        error = [v26 error];
         *buf = 138412290;
-        v29 = v23;
+        selfCopy2 = error;
         _os_log_error_impl(&dword_22CE92000, v20, OS_LOG_TYPE_ERROR, "Error decoding model data: %@", buf, 0xCu);
       }
     }
@@ -445,9 +445,9 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v29 = a1;
+      selfCopy2 = self;
       v30 = 2112;
-      v31 = v4;
+      v31 = dataCopy;
       _os_log_error_impl(&dword_22CE92000, v14, OS_LOG_TYPE_ERROR, "%@ incorrect data %@", buf, 0x16u);
     }
 

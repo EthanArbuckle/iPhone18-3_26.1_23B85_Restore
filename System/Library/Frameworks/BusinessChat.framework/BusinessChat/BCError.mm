@@ -1,35 +1,35 @@
 @interface BCError
-- (BCError)initWithCode:(id)a3 domain:(id)a4 message:(id)a5;
-- (BCError)initWithCoder:(id)a3;
-- (BCError)initWithDictionary:(id)a3;
+- (BCError)initWithCode:(id)code domain:(id)domain message:(id)message;
+- (BCError)initWithCoder:(id)coder;
+- (BCError)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCError
 
-- (BCError)initWithCode:(id)a3 domain:(id)a4 message:(id)a5
+- (BCError)initWithCode:(id)code domain:(id)domain message:(id)message
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  codeCopy = code;
+  domainCopy = domain;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = BCError;
   v11 = [(BCError *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(BCError *)v11 setCode:v8];
-    [(BCError *)v12 setDomain:v9];
-    [(BCError *)v12 setMessage:v10];
+    [(BCError *)v11 setCode:codeCopy];
+    [(BCError *)v12 setDomain:domainCopy];
+    [(BCError *)v12 setMessage:messageCopy];
   }
 
   return v12;
 }
 
-- (BCError)initWithDictionary:(id)a3
+- (BCError)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = BCError;
   v5 = [(BCError *)&v20 init];
@@ -38,40 +38,40 @@
     goto LABEL_15;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"code"];
-  v7 = [MEMORY[0x277CBEB68] null];
-  if (v6 == v7)
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"code"];
+  null = [MEMORY[0x277CBEB68] null];
+  if (v6 == null)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v4 objectForKeyedSubscript:@"code"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"code"];
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"domain"];
-  v10 = [MEMORY[0x277CBEB68] null];
-  if (v9 == v10)
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
+  null2 = [MEMORY[0x277CBEB68] null];
+  if (v9 == null2)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = [v4 objectForKeyedSubscript:@"domain"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
   }
 
-  v12 = [v4 objectForKeyedSubscript:@"message"];
-  v13 = [MEMORY[0x277CBEB68] null];
-  if (v12 == v13)
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"message"];
+  null3 = [MEMORY[0x277CBEB68] null];
+  if (v12 == null3)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v4 objectForKeyedSubscript:@"message"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"message"];
   }
 
   if (!v8)
@@ -129,32 +129,32 @@ LABEL_24:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   code = self->_code;
-  v5 = a3;
-  [v5 encodeObject:code forKey:@"code"];
-  [v5 encodeObject:self->_domain forKey:@"domain"];
-  [v5 encodeObject:self->_message forKey:@"message"];
+  coderCopy = coder;
+  [coderCopy encodeObject:code forKey:@"code"];
+  [coderCopy encodeObject:self->_domain forKey:@"domain"];
+  [coderCopy encodeObject:self->_message forKey:@"message"];
 }
 
-- (BCError)initWithCoder:(id)a3
+- (BCError)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = BCError;
   v5 = [(BCError *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"code"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"code"];
     code = v5->_code;
     v5->_code = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
     domain = v5->_domain;
     v5->_domain = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     message = v5->_message;
     v5->_message = v10;
   }

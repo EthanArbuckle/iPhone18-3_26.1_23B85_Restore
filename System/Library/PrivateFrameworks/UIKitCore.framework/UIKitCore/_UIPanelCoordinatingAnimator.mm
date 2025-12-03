@@ -1,23 +1,23 @@
 @interface _UIPanelCoordinatingAnimator
-- (BOOL)animateAlongsideTransitionInView:(id)a3 animation:(id)a4 completion:(id)a5;
+- (BOOL)animateAlongsideTransitionInView:(id)view animation:(id)animation completion:(id)completion;
 - (CGAffineTransform)targetTransform;
 - (UIView)containerView;
 - (double)completionVelocity;
 - (double)percentComplete;
-- (void)_runCompletions:(int64_t)a3 finished:(BOOL)a4;
+- (void)_runCompletions:(int64_t)completions finished:(BOOL)finished;
 - (void)_sendPanelCoordinationCompletions;
 - (void)startAnimation;
-- (void)stopAnimation:(BOOL)a3;
+- (void)stopAnimation:(BOOL)animation;
 @end
 
 @implementation _UIPanelCoordinatingAnimator
 
-- (BOOL)animateAlongsideTransitionInView:(id)a3 animation:(id)a4 completion:(id)a5
+- (BOOL)animateAlongsideTransitionInView:(id)view animation:(id)animation completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  viewCopy = view;
+  animationCopy = animation;
+  completionCopy = completion;
+  if (animationCopy)
   {
     if (!self->_isInStartAnimation)
     {
@@ -27,12 +27,12 @@
       v20[2] = __86___UIPanelCoordinatingAnimator_animateAlongsideTransitionInView_animation_completion___block_invoke;
       v20[3] = &unk_1E71036E8;
       objc_copyWeak(&v22, &location);
-      v21 = v9;
+      v21 = animationCopy;
       [(UIViewPropertyAnimator *)self addAnimations:v20];
 
       objc_destroyWeak(&v22);
       objc_destroyWeak(&location);
-      if (!v10)
+      if (!completionCopy)
       {
         goto LABEL_12;
       }
@@ -50,11 +50,11 @@
       lateAnimations = self->_lateAnimations;
     }
 
-    v14 = _Block_copy(v9);
+    v14 = _Block_copy(animationCopy);
     [(NSMutableArray *)lateAnimations addObject:v14];
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
     goto LABEL_12;
   }
@@ -70,7 +70,7 @@ LABEL_9:
     clientCompletions = self->_clientCompletions;
   }
 
-  v18 = _Block_copy(v10);
+  v18 = _Block_copy(completionCopy);
   [(NSMutableArray *)clientCompletions addObject:v18];
 
 LABEL_12:
@@ -228,20 +228,20 @@ LABEL_12:
   }
 }
 
-- (void)stopAnimation:(BOOL)a3
+- (void)stopAnimation:(BOOL)animation
 {
   self->_wasCancelled = 1;
   v3.receiver = self;
   v3.super_class = _UIPanelCoordinatingAnimator;
-  [(UIViewPropertyAnimator *)&v3 stopAnimation:a3];
+  [(UIViewPropertyAnimator *)&v3 stopAnimation:animation];
 }
 
-- (void)_runCompletions:(int64_t)a3 finished:(BOOL)a4
+- (void)_runCompletions:(int64_t)completions finished:(BOOL)finished
 {
   v6.receiver = self;
   v6.super_class = _UIPanelCoordinatingAnimator;
-  [(UIViewPropertyAnimator *)&v6 _runCompletions:a3 finished:?];
-  self->_wasCancelled |= !a4;
+  [(UIViewPropertyAnimator *)&v6 _runCompletions:completions finished:?];
+  self->_wasCancelled |= !finished;
   [(_UIPanelCoordinatingAnimator *)self _sendPanelCoordinationCompletions];
 }
 

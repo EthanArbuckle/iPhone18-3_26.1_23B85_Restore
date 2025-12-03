@@ -22,8 +22,8 @@
     v4 = __UIAccessibilityCastAsClass();
 
     v5 = +[UIColor whiteColor];
-    v6 = [v4 titleLabel];
-    [v6 setTextColor:v5];
+    titleLabel = [v4 titleLabel];
+    [titleLabel setTextColor:v5];
   }
 
   else

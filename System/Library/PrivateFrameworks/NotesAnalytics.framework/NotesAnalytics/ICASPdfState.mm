@@ -1,34 +1,34 @@
 @interface ICASPdfState
-- (ICASPdfState)initWithPdfState:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASPdfState)initWithPdfState:(int64_t)state;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASPdfState
 
-- (ICASPdfState)initWithPdfState:(int64_t)a3
+- (ICASPdfState)initWithPdfState:(int64_t)state
 {
   v5.receiver = self;
   v5.super_class = ICASPdfState;
   result = [(ICASPdfState *)&v5 init];
   if (result)
   {
-    result->_pdfState = a3;
+    result->_pdfState = state;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASPdfState *)self pdfState];
-  if ((v3 - 1) > 3)
+  pdfState = [(ICASPdfState *)self pdfState];
+  if ((pdfState - 1) > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF7E0[v3 - 1];
+    return off_2799AF7E0[pdfState - 1];
   }
 }
 

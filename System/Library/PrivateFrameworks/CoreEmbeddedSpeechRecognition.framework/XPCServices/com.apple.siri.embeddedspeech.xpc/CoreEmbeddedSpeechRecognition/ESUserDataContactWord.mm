@@ -1,6 +1,6 @@
 @interface ESUserDataContactWord
-- (BOOL)isEqual:(id)a3;
-- (ESUserDataContactWord)initWithComponents:(id)a3 frequency:(int)a4;
+- (BOOL)isEqual:(id)equal;
+- (ESUserDataContactWord)initWithComponents:(id)components frequency:(int)frequency;
 - (id)description;
 - (unint64_t)hash;
 - (unint64_t)numComponents;
@@ -10,8 +10,8 @@
 
 - (unint64_t)numComponents
 {
-  v2 = [(ESUserDataContactWord *)self components];
-  v3 = [v2 count];
+  components = [(ESUserDataContactWord *)self components];
+  v3 = [components count];
 
   return v3;
 }
@@ -20,16 +20,16 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(ESUserDataContactWord *)self components];
-  v6 = [NSString stringWithFormat:@"<%@: %p components: %@; frequency: %d>", v4, self, v5, [(ESUserDataContactWord *)self frequency]];;
+  components = [(ESUserDataContactWord *)self components];
+  v6 = [NSString stringWithFormat:@"<%@: %p components: %@; frequency: %d>", v4, self, components, [(ESUserDataContactWord *)self frequency]];;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -39,13 +39,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ESUserDataContactWord *)self frequency];
-      if (v6 == [(ESUserDataContactWord *)v5 frequency])
+      v5 = equalCopy;
+      frequency = [(ESUserDataContactWord *)self frequency];
+      if (frequency == [(ESUserDataContactWord *)v5 frequency])
       {
-        v7 = [(ESUserDataContactWord *)self components];
-        v8 = [(ESUserDataContactWord *)v5 components];
-        v9 = [v7 isEqual:v8];
+        components = [(ESUserDataContactWord *)self components];
+        components2 = [(ESUserDataContactWord *)v5 components];
+        v9 = [components isEqual:components2];
       }
 
       else
@@ -65,25 +65,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(ESUserDataContactWord *)self components];
-  v4 = [v3 hash];
-  v5 = [(ESUserDataContactWord *)self frequency];
+  components = [(ESUserDataContactWord *)self components];
+  v4 = [components hash];
+  frequency = [(ESUserDataContactWord *)self frequency];
 
-  return v4 ^ v5;
+  return v4 ^ frequency;
 }
 
-- (ESUserDataContactWord)initWithComponents:(id)a3 frequency:(int)a4
+- (ESUserDataContactWord)initWithComponents:(id)components frequency:(int)frequency
 {
   v10.receiver = self;
   v10.super_class = ESUserDataContactWord;
-  v5 = a3;
+  componentsCopy = components;
   v6 = [(ESUserDataContactWord *)&v10 init];
-  v7 = [v5 copy];
+  v7 = [componentsCopy copy];
 
   components = v6->_components;
   v6->_components = v7;
 
-  v6->_frequency = a4;
+  v6->_frequency = frequency;
   return v6;
 }
 

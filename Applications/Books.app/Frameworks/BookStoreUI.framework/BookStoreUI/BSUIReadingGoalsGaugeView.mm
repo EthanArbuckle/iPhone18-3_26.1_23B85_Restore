@@ -1,37 +1,37 @@
 @interface BSUIReadingGoalsGaugeView
-+ (id)renderModelWithIdentifier:(id)a3 metrics:(id)a4;
++ (id)renderModelWithIdentifier:(id)identifier metrics:(id)metrics;
 - (void)_configureHostingController;
-- (void)_configureWithModel:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)_configureWithModel:(id)model;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)dealloc;
-- (void)dynamicProgressChanged:(id)a3;
+- (void)dynamicProgressChanged:(id)changed;
 - (void)layoutSubviews;
 @end
 
 @implementation BSUIReadingGoalsGaugeView
 
-+ (id)renderModelWithIdentifier:(id)a3 metrics:(id)a4
++ (id)renderModelWithIdentifier:(id)identifier metrics:(id)metrics
 {
-  v5 = a4;
-  v6 = a3;
+  metricsCopy = metrics;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(_BSUIRenderModelReadingGoalsGauge);
-  [(_BSUIRenderModelReadingGoalsGauge *)v7 setMetrics:v5];
+  [(_BSUIRenderModelReadingGoalsGauge *)v7 setMetrics:metricsCopy];
 
-  v8 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"BSUIReuseIdentifierReadingGoalsGaugeView" identifier:v6 submodel:v7];
+  v8 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"BSUIReuseIdentifierReadingGoalsGaugeView" identifier:identifierCopy submodel:v7];
 
   return v8;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = BSUIReadingGoalsGaugeView;
-  v4 = a3;
-  [(BSUIReadingGoalsGaugeView *)&v7 applyLayoutAttributes:v4];
-  v5 = [v4 renderModel];
+  attributesCopy = attributes;
+  [(BSUIReadingGoalsGaugeView *)&v7 applyLayoutAttributes:attributesCopy];
+  renderModel = [attributesCopy renderModel];
 
-  v6 = [v5 submodel];
-  [(BSUIReadingGoalsGaugeView *)self _configureWithModel:v6];
+  submodel = [renderModel submodel];
+  [(BSUIReadingGoalsGaugeView *)self _configureWithModel:submodel];
 }
 
 - (void)dealloc
@@ -52,17 +52,17 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BSUIReadingGoalsGaugeView *)self hostingViewController];
-  v12 = [v11 view];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  hostingViewController = [(BSUIReadingGoalsGaugeView *)self hostingViewController];
+  view = [hostingViewController view];
+  [view setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)_configureWithModel:(id)a3
+- (void)_configureWithModel:(id)model
 {
-  v5 = a3;
-  if (([v5 isEqualToRenderModel:self->_renderModel] & 1) == 0)
+  modelCopy = model;
+  if (([modelCopy isEqualToRenderModel:self->_renderModel] & 1) == 0)
   {
-    objc_storeStrong(&self->_renderModel, a3);
+    objc_storeStrong(&self->_renderModel, model);
     [(BSUIReadingGoalsGaugeView *)self _configureHostingController];
   }
 }
@@ -71,37 +71,37 @@
 {
   if (!self->_hostingViewController)
   {
-    v3 = [(_BSUIRenderModelReadingGoalsGauge *)self->_renderModel metrics];
-    [v3 size];
+    metrics = [(_BSUIRenderModelReadingGoalsGauge *)self->_renderModel metrics];
+    [metrics size];
     v4 = [BSUIReadingGoalsGaugeHostingControllerFactory createWith:?];
     hostingViewController = self->_hostingViewController;
     self->_hostingViewController = v4;
 
-    v6 = [(BSUIReadingGoalsGaugeView *)self hostingViewController];
-    v7 = [v6 view];
-    [(BSUIReadingGoalsGaugeView *)self addSubview:v7];
+    hostingViewController = [(BSUIReadingGoalsGaugeView *)self hostingViewController];
+    view = [hostingViewController view];
+    [(BSUIReadingGoalsGaugeView *)self addSubview:view];
 
     v8 = +[BSUITemplate manager];
-    v9 = [v8 dynamicRegistry];
+    dynamicRegistry = [v8 dynamicRegistry];
 
     v10 = +[BCReadingTimeToday kind];
-    v11 = [v9 progressProviderForKind:v10];
+    v11 = [dynamicRegistry progressProviderForKind:v10];
     v12 = [v11 dynamicProgressForKind:v10 instance:0 parameters:0];
     [v12 registerProgressObserver:self];
     dynamicProgress = self->_dynamicProgress;
     self->_dynamicProgress = v12;
   }
 
-  v14 = [(_BSUIRenderModelReadingGoalsGauge *)self->_renderModel metrics];
-  [(ReadingGaugeViewControllerProtocol *)self->_hostingViewController setMetrics:v14];
+  metrics2 = [(_BSUIRenderModelReadingGoalsGauge *)self->_renderModel metrics];
+  [(ReadingGaugeViewControllerProtocol *)self->_hostingViewController setMetrics:metrics2];
 }
 
-- (void)dynamicProgressChanged:(id)a3
+- (void)dynamicProgressChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 progress];
+  changedCopy = changed;
+  progress = [changedCopy progress];
 
-  if (v5)
+  if (progress)
   {
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
@@ -109,7 +109,7 @@
     block[2] = sub_A5C8;
     block[3] = &unk_386F40;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
+    v7 = changedCopy;
     dispatch_async(&_dispatch_main_q, block);
 
     objc_destroyWeak(&v8);

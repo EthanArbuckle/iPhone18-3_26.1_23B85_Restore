@@ -1,15 +1,15 @@
 @interface NearbyGroupConnectionInfo
 - (_TtC14NearbySessions25NearbyGroupConnectionInfo)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NearbyGroupConnectionInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  NearbyGroupConnectionInfo.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  NearbyGroupConnectionInfo.encode(with:)(coderCopy);
 }
 
 - (_TtC14NearbySessions25NearbyGroupConnectionInfo)init

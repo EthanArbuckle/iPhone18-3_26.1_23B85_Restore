@@ -1,14 +1,14 @@
 @interface MKApp
-- (BOOL)isSupported:(int64_t)a3;
-- (MKApp)initWithJSONData:(id)a3;
+- (BOOL)isSupported:(int64_t)supported;
+- (MKApp)initWithJSONData:(id)data;
 @end
 
 @implementation MKApp
 
-- (MKApp)initWithJSONData:(id)a3
+- (MKApp)initWithJSONData:(id)data
 {
   v87 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v82.receiver = self;
   v82.super_class = MKApp;
   v5 = [(MKApp *)&v82 init];
@@ -20,11 +20,11 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 mk_stringForKey:@"id"];
+    v6 = [dataCopy mk_stringForKey:@"id"];
     if (v6)
     {
       v7 = v6;
-      v8 = [v4 mk_dictionaryForKey:@"attributes"];
+      v8 = [dataCopy mk_dictionaryForKey:@"attributes"];
       if (v8)
       {
         v9 = v8;
@@ -78,10 +78,10 @@
                       if (objc_opt_isKindOfClass())
                       {
                         v23 = [v22 mk_stringForKey:@"type"];
-                        v24 = [v23 lowercaseString];
+                        lowercaseString = [v23 lowercaseString];
 
                         v25 = [v22 mk_numberForKey:@"price"];
-                        if (v25 && ([v24 isEqualToString:@"get"] & 1) != 0)
+                        if (v25 && ([lowercaseString isEqualToString:@"get"] & 1) != 0)
                         {
                           [v25 floatValue];
                           v19 = v27 == 0.0;
@@ -162,37 +162,37 @@ LABEL_29:
                   while (v34);
                 }
 
-                v40 = [&unk_286AAC7D0 stringValue];
-                v41 = [v31 stringByReplacingOccurrencesOfString:@"{w}" withString:v40];
+                stringValue = [&unk_286AAC7D0 stringValue];
+                v41 = [v31 stringByReplacingOccurrencesOfString:@"{w}" withString:stringValue];
                 [(MKApp *)v5 setIconURLForiPhone3x:v41];
 
-                v42 = [&unk_286AAC7E8 stringValue];
-                v43 = [v31 stringByReplacingOccurrencesOfString:@"{w}" withString:v42];
+                stringValue2 = [&unk_286AAC7E8 stringValue];
+                v43 = [v31 stringByReplacingOccurrencesOfString:@"{w}" withString:stringValue2];
                 [(MKApp *)v5 setIconURLForiPhone2x:v43];
 
-                v44 = [&unk_286AAC800 stringValue];
-                v45 = [v31 stringByReplacingOccurrencesOfString:@"{w}" withString:v44];
+                stringValue3 = [&unk_286AAC800 stringValue];
+                v45 = [v31 stringByReplacingOccurrencesOfString:@"{w}" withString:stringValue3];
                 [(MKApp *)v5 setIconURLForiPadPro:v45];
 
-                v46 = [&unk_286AAC818 stringValue];
-                v47 = [v31 stringByReplacingOccurrencesOfString:@"{w}" withString:v46];
+                stringValue4 = [&unk_286AAC818 stringValue];
+                v47 = [v31 stringByReplacingOccurrencesOfString:@"{w}" withString:stringValue4];
                 [(MKApp *)v5 setIconURLForiPad:v47];
 
-                v48 = [&unk_286AAC830 stringValue];
-                v49 = [v31 stringByReplacingOccurrencesOfString:@"{w}" withString:v48];
+                stringValue5 = [&unk_286AAC830 stringValue];
+                v49 = [v31 stringByReplacingOccurrencesOfString:@"{w}" withString:stringValue5];
                 [(MKApp *)v5 setIconURLForAppStore:v49];
 
                 v50 = objc_alloc_init(MKDevice);
-                v51 = [(MKDevice *)v50 iconSize];
+                iconSize = [(MKDevice *)v50 iconSize];
 
-                if (v51 <= 166)
+                if (iconSize <= 166)
                 {
                   v53 = v67;
                   v52 = v68;
                   v54 = v66;
-                  if (v51 != 120)
+                  if (iconSize != 120)
                   {
-                    v57 = v51 == 152;
+                    v57 = iconSize == 152;
                     v56 = v71;
                     v55 = v72;
                     v58 = v62;
@@ -213,13 +213,13 @@ LABEL_29:
                   v53 = v67;
                   v52 = v68;
                   v54 = v66;
-                  if (v51 != 167)
+                  if (iconSize != 167)
                   {
                     v56 = v71;
                     v55 = v72;
-                    if (v51 != 180)
+                    if (iconSize != 180)
                     {
-                      v57 = v51 == 1024;
+                      v57 = iconSize == 1024;
                       v58 = v62;
                       if (!v57)
                       {
@@ -263,9 +263,9 @@ LABEL_55:
   return v26;
 }
 
-- (BOOL)isSupported:(int64_t)a3
+- (BOOL)isSupported:(int64_t)supported
 {
-  if (a3 == 3)
+  if (supported == 3)
   {
     if ([(MKApp *)self isiPodApp])
     {
@@ -275,9 +275,9 @@ LABEL_55:
 
   else
   {
-    if (a3 != 2)
+    if (supported != 2)
     {
-      return a3 == 1 && [(MKApp *)self isiPhoneApp];
+      return supported == 1 && [(MKApp *)self isiPhoneApp];
     }
 
     if ([(MKApp *)self isiPadApp])

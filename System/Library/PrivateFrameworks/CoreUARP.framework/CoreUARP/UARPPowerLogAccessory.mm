@@ -1,25 +1,25 @@
 @interface UARPPowerLogAccessory
-- (BOOL)isEqual:(id)a3;
-- (UARPPowerLogAccessory)initWithModelNumber:(id)a3 uuid:(id)a4 stagingWindowPeriodSeconds:(unsigned int)a5;
+- (BOOL)isEqual:(id)equal;
+- (UARPPowerLogAccessory)initWithModelNumber:(id)number uuid:(id)uuid stagingWindowPeriodSeconds:(unsigned int)seconds;
 - (id)description;
 - (void)dealloc;
-- (void)setAssetOfferedWithVersion:(id)a3 activeFirmwareVersion:(id)a4;
-- (void)setReachableWithActiveFirmwareVersion:(id)a3 stagedFirmwareVersion:(id)a4;
-- (void)setStagingCompleteForStagedFirmareVersion:(id)a3 activeFirmareVersion:(id)a4 status:(unint64_t)a5;
-- (void)setStagingWindowStartOffset:(unsigned int)a3;
+- (void)setAssetOfferedWithVersion:(id)version activeFirmwareVersion:(id)firmwareVersion;
+- (void)setReachableWithActiveFirmwareVersion:(id)version stagedFirmwareVersion:(id)firmwareVersion;
+- (void)setStagingCompleteForStagedFirmareVersion:(id)version activeFirmareVersion:(id)firmareVersion status:(unint64_t)status;
+- (void)setStagingWindowStartOffset:(unsigned int)offset;
 - (void)setUnreachable;
 - (void)stagingStopped;
 - (void)stagingWindowTimeFired;
 - (void)startStagingWindowTimer;
-- (void)updateStagingProgressWithRequestedOffset:(unsigned int)a3 requestedLength:(unsigned int)a4;
+- (void)updateStagingProgressWithRequestedOffset:(unsigned int)offset requestedLength:(unsigned int)length;
 @end
 
 @implementation UARPPowerLogAccessory
 
-- (UARPPowerLogAccessory)initWithModelNumber:(id)a3 uuid:(id)a4 stagingWindowPeriodSeconds:(unsigned int)a5
+- (UARPPowerLogAccessory)initWithModelNumber:(id)number uuid:(id)uuid stagingWindowPeriodSeconds:(unsigned int)seconds
 {
-  v8 = a3;
-  v9 = a4;
+  numberCopy = number;
+  uuidCopy = uuid;
   v18.receiver = self;
   v18.super_class = UARPPowerLogAccessory;
   v10 = [(UARPPowerLogAccessory *)&v18 init];
@@ -29,16 +29,16 @@
     log = v10->_log;
     v10->_log = v11;
 
-    v13 = [v8 copy];
+    v13 = [numberCopy copy];
     modelNumber = v10->_modelNumber;
     v10->_modelNumber = v13;
 
-    objc_storeStrong(&v10->_uuid, a4);
+    objc_storeStrong(&v10->_uuid, uuid);
     v15 = dispatch_queue_create("UARPPowerLogAccessory", 0);
     queue = v10->_queue;
     v10->_queue = v15;
 
-    v10->_stagingWindowTimerIntervalNS = 1000000000 * a5;
+    v10->_stagingWindowTimerIntervalNS = 1000000000 * seconds;
   }
 
   return v10;
@@ -56,20 +56,20 @@
   [(UARPPowerLogAccessory *)&v3 dealloc];
 }
 
-- (void)setReachableWithActiveFirmwareVersion:(id)a3 stagedFirmwareVersion:(id)a4
+- (void)setReachableWithActiveFirmwareVersion:(id)version stagedFirmwareVersion:(id)firmwareVersion
 {
-  v6 = a3;
-  v7 = a4;
+  versionCopy = version;
+  firmwareVersionCopy = firmwareVersion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __85__UARPPowerLogAccessory_setReachableWithActiveFirmwareVersion_stagedFirmwareVersion___block_invoke;
   block[3] = &unk_278EC29B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = versionCopy;
+  v13 = firmwareVersionCopy;
+  v9 = firmwareVersionCopy;
+  v10 = versionCopy;
   dispatch_sync(queue, block);
 }
 
@@ -167,20 +167,20 @@ LABEL_6:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAssetOfferedWithVersion:(id)a3 activeFirmwareVersion:(id)a4
+- (void)setAssetOfferedWithVersion:(id)version activeFirmwareVersion:(id)firmwareVersion
 {
-  v6 = a3;
-  v7 = a4;
+  versionCopy = version;
+  firmwareVersionCopy = firmwareVersion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__UARPPowerLogAccessory_setAssetOfferedWithVersion_activeFirmwareVersion___block_invoke;
   block[3] = &unk_278EC29B8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = firmwareVersionCopy;
+  v13 = versionCopy;
+  v9 = versionCopy;
+  v10 = firmwareVersionCopy;
   dispatch_sync(queue, block);
 }
 
@@ -233,21 +233,21 @@ void __74__UARPPowerLogAccessory_setAssetOfferedWithVersion_activeFirmwareVersio
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setStagingCompleteForStagedFirmareVersion:(id)a3 activeFirmareVersion:(id)a4 status:(unint64_t)a5
+- (void)setStagingCompleteForStagedFirmareVersion:(id)version activeFirmareVersion:(id)firmareVersion status:(unint64_t)status
 {
-  v8 = a3;
-  v9 = a4;
+  versionCopy = version;
+  firmareVersionCopy = firmareVersion;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __95__UARPPowerLogAccessory_setStagingCompleteForStagedFirmareVersion_activeFirmareVersion_status___block_invoke;
   v13[3] = &unk_278EC2918;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v16 = a5;
-  v11 = v8;
-  v12 = v9;
+  v14 = firmareVersionCopy;
+  v15 = versionCopy;
+  statusCopy = status;
+  v11 = versionCopy;
+  v12 = firmareVersionCopy;
   dispatch_sync(queue, v13);
 }
 
@@ -327,7 +327,7 @@ void __48__UARPPowerLogAccessory_startStagingWindowTimer__block_invoke(uint64_t 
     stagingWindowStartOffset = self->_stagingWindowStartOffset;
     stagingWindowBytesTransferred = self->_stagingWindowBytesTransferred;
     v9 = 138413314;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = stagingActiveFirmwareVersion;
     v13 = 2112;
@@ -344,7 +344,7 @@ void __48__UARPPowerLogAccessory_startStagingWindowTimer__block_invoke(uint64_t 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateStagingProgressWithRequestedOffset:(unsigned int)a3 requestedLength:(unsigned int)a4
+- (void)updateStagingProgressWithRequestedOffset:(unsigned int)offset requestedLength:(unsigned int)length
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -352,8 +352,8 @@ void __48__UARPPowerLogAccessory_startStagingWindowTimer__block_invoke(uint64_t 
   v5[2] = __82__UARPPowerLogAccessory_updateStagingProgressWithRequestedOffset_requestedLength___block_invoke;
   v5[3] = &unk_278EC2C18;
   v5[4] = self;
-  v6 = a3;
-  v7 = a4;
+  offsetCopy = offset;
+  lengthCopy = length;
   dispatch_sync(queue, v5);
 }
 
@@ -377,11 +377,11 @@ void __82__UARPPowerLogAccessory_updateStagingProgressWithRequestedOffset_reques
   }
 }
 
-- (void)setStagingWindowStartOffset:(unsigned int)a3
+- (void)setStagingWindowStartOffset:(unsigned int)offset
 {
   if (!self->_stagingWindowStartOffsetInitialUpdateComplete)
   {
-    self->_stagingWindowStartOffset = a3;
+    self->_stagingWindowStartOffset = offset;
     self->_stagingWindowStartOffsetInitialUpdateComplete = 1;
   }
 }
@@ -405,15 +405,15 @@ void __82__UARPPowerLogAccessory_updateStagingProgressWithRequestedOffset_reques
   self->_stagingInProgress = 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     uuid = self->_uuid;
-    v6 = [v4 uuid];
-    v7 = [(NSUUID *)uuid isEqual:v6];
+    uuid = [equalCopy uuid];
+    v7 = [(NSUUID *)uuid isEqual:uuid];
   }
 
   else

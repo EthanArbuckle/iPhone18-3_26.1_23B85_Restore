@@ -1,25 +1,25 @@
 @interface FMOOSClientPrediction
-- (FMOOSClientPrediction)initWithPredictedCell:(id)a3 nextCells:(id)a4 oosAreaSeenCount:(int)a5 predictedOOSDuration:(double)a6 validPredictionDuration:(double)a7 isSent:(BOOL)a8;
+- (FMOOSClientPrediction)initWithPredictedCell:(id)cell nextCells:(id)cells oosAreaSeenCount:(int)count predictedOOSDuration:(double)duration validPredictionDuration:(double)predictionDuration isSent:(BOOL)sent;
 @end
 
 @implementation FMOOSClientPrediction
 
-- (FMOOSClientPrediction)initWithPredictedCell:(id)a3 nextCells:(id)a4 oosAreaSeenCount:(int)a5 predictedOOSDuration:(double)a6 validPredictionDuration:(double)a7 isSent:(BOOL)a8
+- (FMOOSClientPrediction)initWithPredictedCell:(id)cell nextCells:(id)cells oosAreaSeenCount:(int)count predictedOOSDuration:(double)duration validPredictionDuration:(double)predictionDuration isSent:(BOOL)sent
 {
-  v15 = a3;
-  v16 = a4;
+  cellCopy = cell;
+  cellsCopy = cells;
   v21.receiver = self;
   v21.super_class = FMOOSClientPrediction;
   v17 = [(FMOOSClientPrediction *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_predictedRecoveryCell, a3);
-    objc_storeStrong(&v18->_nextCells, a4);
-    v18->_oosAreaSeenCount = a5;
-    v18->_predictedOOSDuration = a6;
-    v18->_validPredictionDuration = a7;
-    v18->_isSent = a8;
+    objc_storeStrong(&v17->_predictedRecoveryCell, cell);
+    objc_storeStrong(&v18->_nextCells, cells);
+    v18->_oosAreaSeenCount = count;
+    v18->_predictedOOSDuration = duration;
+    v18->_validPredictionDuration = predictionDuration;
+    v18->_isSent = sent;
     v19 = v18;
   }
 

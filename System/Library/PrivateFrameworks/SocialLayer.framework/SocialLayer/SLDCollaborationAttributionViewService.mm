@@ -1,12 +1,12 @@
 @interface SLDCollaborationAttributionViewService
 + (id)sharedService;
-+ (void)setupInterface:(id)a3;
++ (void)setupInterface:(id)interface;
 - (UISSlotMachine)slotMachine;
-- (id)_applicationIdentifierForConnection:(id)a3;
-- (id)_attributionsFromIDs:(id)a3 appID:(id)a4;
-- (id)slotMachineForViewIdentifier:(id)a3;
-- (void)accessibilityLabelForAttributionIdentifiers:(id)a3 reply:(id)a4;
-- (void)collaborationAttributionViewForTitle:(id)a3 attributionIdentifiers:(id)a4 style:(id)a5 placeholderGlyphConfiguration:(id)a6 maxWidth:(double)a7 variant:(int64_t)a8 layerContextID:(unint64_t)a9 reply:(id)a10;
+- (id)_applicationIdentifierForConnection:(id)connection;
+- (id)_attributionsFromIDs:(id)ds appID:(id)d;
+- (id)slotMachineForViewIdentifier:(id)identifier;
+- (void)accessibilityLabelForAttributionIdentifiers:(id)identifiers reply:(id)reply;
+- (void)collaborationAttributionViewForTitle:(id)title attributionIdentifiers:(id)identifiers style:(id)style placeholderGlyphConfiguration:(id)configuration maxWidth:(double)width variant:(int64_t)variant layerContextID:(unint64_t)d reply:(id)self0;
 @end
 
 @implementation SLDCollaborationAttributionViewService
@@ -32,20 +32,20 @@ uint64_t __55__SLDCollaborationAttributionViewService_sharedService__block_invok
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (void)setupInterface:(id)a3
++ (void)setupInterface:(id)interface
 {
-  v3 = a3;
-  [v3 setClass:objc_opt_class() forSelector:sel_collaborationAttributionViewForTitle_attributionIdentifiers_style_placeholderGlyphConfiguration_maxWidth_variant_layerContextID_reply_ argumentIndex:4 ofReply:0];
+  interfaceCopy = interface;
+  [interfaceCopy setClass:objc_opt_class() forSelector:sel_collaborationAttributionViewForTitle_attributionIdentifiers_style_placeholderGlyphConfiguration_maxWidth_variant_layerContextID_reply_ argumentIndex:4 ofReply:0];
 }
 
-- (void)collaborationAttributionViewForTitle:(id)a3 attributionIdentifiers:(id)a4 style:(id)a5 placeholderGlyphConfiguration:(id)a6 maxWidth:(double)a7 variant:(int64_t)a8 layerContextID:(unint64_t)a9 reply:(id)a10
+- (void)collaborationAttributionViewForTitle:(id)title attributionIdentifiers:(id)identifiers style:(id)style placeholderGlyphConfiguration:(id)configuration maxWidth:(double)width variant:(int64_t)variant layerContextID:(unint64_t)d reply:(id)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a10;
-  if (a7 <= 0.0)
+  titleCopy = title;
+  identifiersCopy = identifiers;
+  styleCopy = style;
+  configurationCopy = configuration;
+  replyCopy = reply;
+  if (width <= 0.0)
   {
     v30 = SLDaemonLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -53,27 +53,27 @@ uint64_t __55__SLDCollaborationAttributionViewService_sharedService__block_invok
       [SLDCollaborationAttributionViewService collaborationAttributionViewForTitle:attributionIdentifiers:style:placeholderGlyphConfiguration:maxWidth:variant:layerContextID:reply:];
     }
 
-    v21[2](v21, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
-    v37 = v17;
-    v22 = [MEMORY[0x277CCAE80] currentConnection];
-    v23 = [(SLDCollaborationAttributionViewService *)self _applicationIdentifierForConnection:v22];
+    v37 = titleCopy;
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+    v23 = [(SLDCollaborationAttributionViewService *)self _applicationIdentifierForConnection:currentConnection];
     if (v23)
     {
-      v24 = [(SLDCollaborationAttributionViewService *)self _attributionsFromIDs:v18 appID:v23];
+      v24 = [(SLDCollaborationAttributionViewService *)self _attributionsFromIDs:identifiersCopy appID:v23];
       v25 = [v24 count];
-      if (v22 && v25)
+      if (currentConnection && v25)
       {
-        v26 = [SLDCollaborationAttributionViewSlotTag tagForTitle:v37 attributions:v24 placeholderGlyphConfiguration:v20 maxWidth:a8 variant:a7];
-        v35 = [SLDCollaborationAttributionViewSlotDrawer resolvedStyleForStyle:v19 tag:v26];
+        v26 = [SLDCollaborationAttributionViewSlotTag tagForTitle:v37 attributions:v24 placeholderGlyphConfiguration:configurationCopy maxWidth:variant variant:width];
+        v35 = [SLDCollaborationAttributionViewSlotDrawer resolvedStyleForStyle:styleCopy tag:v26];
         [(SLDRemoteRenderingService *)self _viewIDForStyle:v35 tag:v26];
         v27 = v36 = v24;
-        [(SLDRemoteRenderingService *)self _connection:v22 onlyNeedsViewWithIdentifier:v27];
-        v28 = [(SLDRemoteRenderingService *)self _remoteContentForViewIdentifier:v27 layerContextID:a9 connection:v22];
-        (v21)[2](v21, v28);
+        [(SLDRemoteRenderingService *)self _connection:currentConnection onlyNeedsViewWithIdentifier:v27];
+        v28 = [(SLDRemoteRenderingService *)self _remoteContentForViewIdentifier:v27 layerContextID:d connection:currentConnection];
+        (replyCopy)[2](replyCopy, v28);
         [(SLDRemoteRenderingService *)self _connectionTouchedView:v27];
 
         v29 = v36;
@@ -82,7 +82,7 @@ uint64_t __55__SLDCollaborationAttributionViewService_sharedService__block_invok
       else
       {
         v29 = v24;
-        v32 = [v18 count];
+        v32 = [identifiersCopy count];
         v33 = SLDaemonLogHandle();
         v34 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
         if (v32)
@@ -98,7 +98,7 @@ uint64_t __55__SLDCollaborationAttributionViewService_sharedService__block_invok
           [SLDCollaborationAttributionViewService collaborationAttributionViewForTitle:attributionIdentifiers:style:placeholderGlyphConfiguration:maxWidth:variant:layerContextID:reply:];
         }
 
-        v21[2](v21, 0);
+        replyCopy[2](replyCopy, 0);
       }
     }
 
@@ -110,23 +110,23 @@ uint64_t __55__SLDCollaborationAttributionViewService_sharedService__block_invok
         [SLDCollaborationAttributionViewService collaborationAttributionViewForTitle:attributionIdentifiers:style:placeholderGlyphConfiguration:maxWidth:variant:layerContextID:reply:];
       }
 
-      v21[2](v21, 0);
+      replyCopy[2](replyCopy, 0);
     }
 
-    v17 = v37;
+    titleCopy = v37;
   }
 }
 
-- (void)accessibilityLabelForAttributionIdentifiers:(id)a3 reply:(id)a4
+- (void)accessibilityLabelForAttributionIdentifiers:(id)identifiers reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAE80] currentConnection];
-  if (SLDConnectionIsEntitledForAccessibility(v8))
+  identifiersCopy = identifiers;
+  replyCopy = reply;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if (SLDConnectionIsEntitledForAccessibility(currentConnection))
   {
-    v9 = [(SLDCollaborationAttributionViewService *)self _attributionsFromIDs:v6 appID:@"accessibility"];
+    v9 = [(SLDCollaborationAttributionViewService *)self _attributionsFromIDs:identifiersCopy appID:@"accessibility"];
     v10 = [v9 count];
-    if (v8)
+    if (currentConnection)
     {
       v11 = v10 == 0;
     }
@@ -138,7 +138,7 @@ uint64_t __55__SLDCollaborationAttributionViewService_sharedService__block_invok
 
     if (v11)
     {
-      v12 = [v6 count];
+      v12 = [identifiersCopy count];
       v13 = SLDaemonLogHandle();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
       if (v12)
@@ -154,7 +154,7 @@ uint64_t __55__SLDCollaborationAttributionViewService_sharedService__block_invok
         [SLDCollaborationAttributionViewService accessibilityLabelForAttributionIdentifiers:reply:];
       }
 
-      v7[2](v7, 0);
+      replyCopy[2](replyCopy, 0);
     }
 
     else
@@ -162,7 +162,7 @@ uint64_t __55__SLDCollaborationAttributionViewService_sharedService__block_invok
       v16 = [SLDImageSymbolConfiguration configurationWithName:@"person.crop.circle.badge.checkmark" coreUISize:0 weight:0 pointSize:12.0];
       v17 = [SLDCollaborationAttributionViewSlotTag tagForTitle:&stru_28468DAB8 attributions:v9 placeholderGlyphConfiguration:v16 maxWidth:0 variant:1000.0];
       v18 = [SLDCollaborationAttributionViewRenderer accessibilityLabelForTag:v17];
-      (v7)[2](v7, v18);
+      (replyCopy)[2](replyCopy, v18);
     }
   }
 
@@ -174,8 +174,8 @@ uint64_t __55__SLDCollaborationAttributionViewService_sharedService__block_invok
       [SLDCollaborationAttributionViewService accessibilityLabelForAttributionIdentifiers:reply:];
     }
 
-    v7[2](v7, 0);
-    [v8 invalidate];
+    replyCopy[2](replyCopy, 0);
+    [currentConnection invalidate];
   }
 }
 
@@ -196,33 +196,33 @@ uint64_t __55__SLDCollaborationAttributionViewService_sharedService__block_invok
   return slotMachine;
 }
 
-- (id)slotMachineForViewIdentifier:(id)a3
+- (id)slotMachineForViewIdentifier:(id)identifier
 {
-  v4 = [a3 tag];
+  v4 = [identifier tag];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(SLDCollaborationAttributionViewService *)self slotMachine];
+    slotMachine = [(SLDCollaborationAttributionViewService *)self slotMachine];
   }
 
   else
   {
-    v6 = 0;
+    slotMachine = 0;
   }
 
-  return v6;
+  return slotMachine;
 }
 
-- (id)_applicationIdentifierForConnection:(id)a3
+- (id)_applicationIdentifierForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
+  connectionCopy = connection;
+  v5 = connectionCopy;
   v6 = MEMORY[0x277CC1E90];
-  if (v4)
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -233,9 +233,9 @@ uint64_t __55__SLDCollaborationAttributionViewService_sharedService__block_invok
   v13 = 0;
   v7 = [v6 bundleRecordForAuditToken:v14 error:&v13];
   v8 = v13;
-  v9 = [v7 applicationIdentifier];
+  applicationIdentifier = [v7 applicationIdentifier];
 
-  if (!v9)
+  if (!applicationIdentifier)
   {
     v10 = SLDaemonLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -244,23 +244,23 @@ uint64_t __55__SLDCollaborationAttributionViewService_sharedService__block_invok
     }
   }
 
-  v11 = [v7 applicationIdentifier];
+  applicationIdentifier2 = [v7 applicationIdentifier];
 
-  return v11;
+  return applicationIdentifier2;
 }
 
-- (id)_attributionsFromIDs:(id)a3 appID:(id)a4
+- (id)_attributionsFromIDs:(id)ds appID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [[SLHighlightCenter alloc] initWithAppIdentifier:v6];
+  dsCopy = ds;
+  dCopy = d;
+  array = [MEMORY[0x277CBEB18] array];
+  v8 = [[SLHighlightCenter alloc] initWithAppIdentifier:dCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v5;
+  v9 = dsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -278,7 +278,7 @@ uint64_t __55__SLDCollaborationAttributionViewService_sharedService__block_invok
         v14 = [(SLHighlightCenter *)v8 fetchAttributionForAttributionIdentifier:*(*(&v18 + 1) + 8 * i), v18];
         if (v14)
         {
-          [v7 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -288,7 +288,7 @@ uint64_t __55__SLDCollaborationAttributionViewService_sharedService__block_invok
     while (v11);
   }
 
-  v15 = [v7 copy];
+  v15 = [array copy];
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;

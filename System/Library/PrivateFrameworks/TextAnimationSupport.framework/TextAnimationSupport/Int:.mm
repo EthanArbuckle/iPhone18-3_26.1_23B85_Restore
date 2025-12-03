@@ -20,8 +20,8 @@
 - (uint64_t)CGFloat
 {
   type metadata accessor for [Int : CGFloat](0, &lazy cache variable for type metadata for [Int : CGFloat], MEMORY[0x1E69E6530], MEMORY[0x1E69E6540], MEMORY[0x1E69E5E28]);
-  (*(*(v2 - 8) + 8))(a1, v2);
-  return a1;
+  (*(*(v2 - 8) + 8))(self, v2);
+  return self;
 }
 
 @end

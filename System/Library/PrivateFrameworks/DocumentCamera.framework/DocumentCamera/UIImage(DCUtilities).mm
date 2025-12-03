@@ -28,14 +28,14 @@
 
 - (uint64_t)dc_CGImage
 {
-  v1 = a1;
+  selfCopy = self;
 
-  return [v1 CGImage];
+  return [selfCopy CGImage];
 }
 
 - (uint64_t)dc_scaledImageMinDimension:()DCUtilities scale:
 {
-  [a1 size];
+  [self size];
   if (v6 >= v7)
   {
     v8 = v7;
@@ -50,12 +50,12 @@
   v10 = round(v6 * v9);
   v11 = round(v7 * v9);
 
-  return [a1 dc_scaledImageWithSize:v10 scale:{v11, a3}];
+  return [self dc_scaledImageWithSize:v10 scale:{v11, a3}];
 }
 
 - (uint64_t)dc_scaledImageMaxDimension:()DCUtilities scale:
 {
-  [a1 size];
+  [self size];
   if (v6 >= v7)
   {
     v8 = v6;
@@ -70,19 +70,19 @@
   v10 = round(v6 * v9);
   v11 = round(v7 * v9);
 
-  return [a1 dc_scaledImageWithSize:v10 scale:{v11, a3}];
+  return [self dc_scaledImageWithSize:v10 scale:{v11, a3}];
 }
 
 - (id)dc_scaledImageWithSize:()DCUtilities scale:
 {
-  v8 = [a1 imageRendererFormat];
-  [v8 setScale:a4];
-  v9 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v8 format:{a2, a3}];
+  imageRendererFormat = [self imageRendererFormat];
+  [imageRendererFormat setScale:a4];
+  v9 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:imageRendererFormat format:{a2, a3}];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__UIImage_DCUtilities__dc_scaledImageWithSize_scale___block_invoke;
   v12[3] = &unk_278F930B0;
-  v12[4] = a1;
+  v12[4] = self;
   *&v12[5] = a2;
   *&v12[6] = a3;
   v10 = [v9 imageWithActions:v12];
@@ -116,8 +116,8 @@
   v30 = CGRectApplyAffineTransform(*(&v14 - 8), &transform);
   x = v30.origin.x;
   y = v30.origin.y;
-  v20 = DCTSUCreateRGBABitmapContext(0, v30.size.width, v30.size.height, a1);
-  if (!v20 || (v21 = v20, CGContextTranslateCTM(v20, -x, -y), v22 = a5[1], *&transform.a = *a5, *&transform.c = v22, *&transform.tx = a5[2], CGContextConcatCTM(v21, &transform), v31.origin.x = v10, v31.origin.y = v11, v31.size.width = Width, v31.size.height = Height, CGContextDrawImage(v21, v31, a4), Image = CGBitmapContextCreateImage(v21), CGContextRelease(v21), !Image) || ([MEMORY[0x277D755B8] dc_imageWithCGImage:Image scale:0 orientation:a1], v24 = objc_claimAutoreleasedReturnValue(), CGImageRelease(Image), !v24))
+  v20 = DCTSUCreateRGBABitmapContext(0, v30.size.width, v30.size.height, self);
+  if (!v20 || (v21 = v20, CGContextTranslateCTM(v20, -x, -y), v22 = a5[1], *&transform.a = *a5, *&transform.c = v22, *&transform.tx = a5[2], CGContextConcatCTM(v21, &transform), v31.origin.x = v10, v31.origin.y = v11, v31.size.width = Width, v31.size.height = Height, CGContextDrawImage(v21, v31, a4), Image = CGBitmapContextCreateImage(v21), CGContextRelease(v21), !Image) || ([MEMORY[0x277D755B8] dc_imageWithCGImage:Image scale:0 orientation:self], v24 = objc_claimAutoreleasedReturnValue(), CGImageRelease(Image), !v24))
   {
     v25 = os_log_create("com.apple.documentcamera", "");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -133,9 +133,9 @@
 
 + (id)dc_orientedImageFromImage:()DCUtilities fromOrientation:
 {
-  v5 = [a3 dc_CGImage];
-  Width = CGImageGetWidth(v5);
-  Height = CGImageGetHeight(v5);
+  dc_CGImage = [a3 dc_CGImage];
+  Width = CGImageGetWidth(dc_CGImage);
+  Height = CGImageGetHeight(dc_CGImage);
   v12 = 0u;
   v13 = 0u;
   v11 = 0u;
@@ -143,22 +143,22 @@
   v10[0] = v11;
   v10[1] = v12;
   v10[2] = v13;
-  v8 = [MEMORY[0x277D755B8] dc_orientedImageFromCGImage:v5 scale:v10 transform:1.0];
+  v8 = [MEMORY[0x277D755B8] dc_orientedImageFromCGImage:dc_CGImage scale:v10 transform:1.0];
 
   return v8;
 }
 
 + (id)dc_orientedImageFromImage:()DCUtilities toOrientation:
 {
-  v5 = [a3 dc_CGImage];
-  Width = CGImageGetWidth(v5);
-  Height = CGImageGetHeight(v5);
+  dc_CGImage = [a3 dc_CGImage];
+  Width = CGImageGetWidth(dc_CGImage);
+  Height = CGImageGetHeight(dc_CGImage);
   memset(&v13, 0, sizeof(v13));
   DCTransformFromImageOrientation(a4, &v13, Width, Height);
   v8 = MEMORY[0x277D755B8];
   v11 = v13;
   CGAffineTransformInvert(&v12, &v11);
-  v9 = [v8 dc_orientedImageFromCGImage:v5 scale:&v12 transform:1.0];
+  v9 = [v8 dc_orientedImageFromCGImage:dc_CGImage scale:&v12 transform:1.0];
 
   return v9;
 }
@@ -186,16 +186,16 @@
 
 - (uint64_t)dc_JPEGData
 {
-  v2 = [a1 imageOrientation];
+  imageOrientation = [self imageOrientation];
 
-  return [a1 dc_JPEGDataWithOrientation:v2];
+  return [self dc_JPEGDataWithOrientation:imageOrientation];
 }
 
 - (id)dc_JPEGDataWithOrientation:()DCUtilities
 {
   v4 = *MEMORY[0x277CC20C8];
   v5 = [objc_opt_class() dc_orientationMetadataFromImageOrientation:a3];
-  v6 = [a1 dc_imageDataWithUTType:v4 metadata:v5];
+  v6 = [self dc_imageDataWithUTType:v4 metadata:v5];
 
   return v6;
 }
@@ -205,7 +205,7 @@
   v4 = a3;
   if ([v4 isEqualToString:*MEMORY[0x277CC20C8]])
   {
-    v5 = [objc_opt_class() dc_orientationMetadataFromImageOrientation:{objc_msgSend(a1, "imageOrientation")}];
+    v5 = [objc_opt_class() dc_orientationMetadataFromImageOrientation:{objc_msgSend(self, "imageOrientation")}];
   }
 
   else
@@ -213,7 +213,7 @@
     v5 = 0;
   }
 
-  v6 = [a1 dc_imageDataWithUTType:v4 metadata:v5];
+  v6 = [self dc_imageDataWithUTType:v4 metadata:v5];
 
   return v6;
 }
@@ -227,7 +227,7 @@
   if (v9)
   {
     v10 = v9;
-    CGImageDestinationAddImage(v9, [a1 CGImage], v7);
+    CGImageDestinationAddImage(v9, [self CGImage], v7);
     if (CGImageDestinationFinalize(v10))
     {
       CFRelease(v10);
@@ -281,13 +281,13 @@ LABEL_11:
   v21.size.width = a3;
   v21.size.height = a4;
   CGRectGetHeight(v21);
-  return a1 + v17;
+  return self + v17;
 }
 
 + (id)dc_systemImageNamed:()DCUtilities textStyle:
 {
   v6 = a4;
-  v7 = [a1 systemImageNamed:a3];
+  v7 = [self systemImageNamed:a3];
   v8 = [v7 dc_imageWithTextStyle:v6];
 
   if (!v8)
@@ -305,7 +305,7 @@ LABEL_11:
 + (id)dc_systemImageNamed:()DCUtilities textStyle:scale:
 {
   v8 = a4;
-  v9 = [a1 systemImageNamed:a3];
+  v9 = [self systemImageNamed:a3];
   v10 = [v9 dc_imageWithTextStyle:v8 scale:a5];
 
   if (!v10)
@@ -323,7 +323,7 @@ LABEL_11:
 + (id)dc_systemImageNamed:()DCUtilities fromFont:
 {
   v6 = a4;
-  v7 = [a1 systemImageNamed:a3];
+  v7 = [self systemImageNamed:a3];
   v8 = [v7 dc_imageWithFont:v6];
 
   if (!v8)
@@ -340,7 +340,7 @@ LABEL_11:
 
 + (id)dc_systemImageNamed:()DCUtilities scale:
 {
-  v5 = [a1 systemImageNamed:?];
+  v5 = [self systemImageNamed:?];
   v6 = [v5 dc_imageWithScale:a4];
 
   if (!v6)
@@ -358,7 +358,7 @@ LABEL_11:
 + (id)dc_systemImageNamed:()DCUtilities fromFont:scale:
 {
   v8 = a4;
-  v9 = [a1 systemImageNamed:a3];
+  v9 = [self systemImageNamed:a3];
   v10 = [v9 dc_imageWithFont:v8 scale:a5];
 
   if (!v10)
@@ -376,20 +376,20 @@ LABEL_11:
 - (id)dc_imageWithScale:()DCUtilities
 {
   v2 = [MEMORY[0x277D755D0] configurationWithScale:?];
-  v3 = [a1 imageWithSymbolConfiguration:v2];
+  v3 = [self imageWithSymbolConfiguration:v2];
 
   return v3;
 }
 
 - (id)dc_imageWithFont:()DCUtilities
 {
-  v4 = a1;
+  selfCopy = self;
   if (a3)
   {
     v5 = [MEMORY[0x277D755D0] configurationWithFont:a3];
-    v6 = [v4 imageWithSymbolConfiguration:v5];
+    v6 = [selfCopy imageWithSymbolConfiguration:v5];
 
-    v4 = v6;
+    selfCopy = v6;
   }
 
   else
@@ -401,18 +401,18 @@ LABEL_11:
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)dc_imageWithFont:()DCUtilities scale:
 {
-  v6 = a1;
+  selfCopy = self;
   if (a3)
   {
     v7 = [MEMORY[0x277D755D0] configurationWithFont:a3 scale:a4];
-    v8 = [v6 imageWithSymbolConfiguration:v7];
+    v8 = [selfCopy imageWithSymbolConfiguration:v7];
 
-    v6 = v8;
+    selfCopy = v8;
   }
 
   else
@@ -424,13 +424,13 @@ LABEL_11:
     }
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)dc_imageWithTextStyle:()DCUtilities
 {
   v2 = [MEMORY[0x277D755D0] configurationWithTextStyle:?];
-  v3 = [a1 imageWithSymbolConfiguration:v2];
+  v3 = [self imageWithSymbolConfiguration:v2];
 
   return v3;
 }
@@ -438,7 +438,7 @@ LABEL_11:
 - (id)dc_imageWithTextStyle:()DCUtilities scale:
 {
   v2 = [MEMORY[0x277D755D0] configurationWithTextStyle:? scale:?];
-  v3 = [a1 imageWithSymbolConfiguration:v2];
+  v3 = [self imageWithSymbolConfiguration:v2];
 
   return v3;
 }

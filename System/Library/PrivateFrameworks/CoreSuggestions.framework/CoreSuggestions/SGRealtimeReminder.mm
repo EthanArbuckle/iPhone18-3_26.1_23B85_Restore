@@ -1,10 +1,10 @@
 @interface SGRealtimeReminder
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRealtimeReminder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRealtimeReminder:(id)reminder;
 - (NSString)description;
-- (SGRealtimeReminder)initWithCoder:(id)a3;
-- (SGRealtimeReminder)initWithReminder:(id)a3 notes:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SGRealtimeReminder)initWithCoder:(id)coder;
+- (SGRealtimeReminder)initWithReminder:(id)reminder notes:(id)notes;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGRealtimeReminder
@@ -16,12 +16,12 @@
   return v2;
 }
 
-- (BOOL)isEqualToRealtimeReminder:(id)a3
+- (BOOL)isEqualToRealtimeReminder:(id)reminder
 {
-  v4 = a3;
+  reminderCopy = reminder;
   v5 = self->_reminder;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == reminderCopy[2])
   {
   }
 
@@ -38,7 +38,7 @@
 
   v9 = self->_notes;
   v10 = v9;
-  if (v9 == v4[3])
+  if (v9 == reminderCopy[3])
   {
     v8 = 1;
   }
@@ -52,38 +52,38 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGRealtimeReminder *)self isEqualToRealtimeReminder:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGRealtimeReminder *)self isEqualToRealtimeReminder:v5];
   }
 
   return v6;
 }
 
-- (SGRealtimeReminder)initWithCoder:(id)a3
+- (SGRealtimeReminder)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SGRealtimeReminder;
   v5 = [(SGRealtimeReminder *)&v13 init];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"reminder"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"reminder"];
     reminder = v5->_reminder;
     v5->_reminder = v7;
 
     v9 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"notes"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"notes"];
     notes = v5->_notes;
     v5->_notes = v10;
   }
@@ -91,26 +91,26 @@ LABEL_9:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   reminder = self->_reminder;
-  v5 = a3;
-  [v5 encodeObject:reminder forKey:@"reminder"];
-  [v5 encodeObject:self->_notes forKey:@"notes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:reminder forKey:@"reminder"];
+  [coderCopy encodeObject:self->_notes forKey:@"notes"];
 }
 
-- (SGRealtimeReminder)initWithReminder:(id)a3 notes:(id)a4
+- (SGRealtimeReminder)initWithReminder:(id)reminder notes:(id)notes
 {
-  v7 = a3;
-  v8 = a4;
+  reminderCopy = reminder;
+  notesCopy = notes;
   v12.receiver = self;
   v12.super_class = SGRealtimeReminder;
   v9 = [(SGRealtimeReminder *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_reminder, a3);
-    objc_storeStrong(&v10->_notes, a4);
+    objc_storeStrong(&v9->_reminder, reminder);
+    objc_storeStrong(&v10->_notes, notes);
     v10->_extractionSource = 0;
   }
 

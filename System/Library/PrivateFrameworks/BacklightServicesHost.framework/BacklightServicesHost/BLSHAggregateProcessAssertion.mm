@@ -1,13 +1,13 @@
 @interface BLSHAggregateProcessAssertion
-+ (id)classLock_aggregateForProcessIdentity:(id)a3 shouldCreate:(BOOL)a4;
-+ (void)acquireAggregatedAssertion:(id)a3 completion:(id)a4;
-+ (void)invalidateAggregatedAssertion:(id)a3;
-- (BLSHAggregateProcessAssertion)initWithProcessIdentity:(id)a3;
-- (BOOL)invalidateAggregatedAssertion:(id)a3;
-- (BOOL)isCurrentRBSAssertion:(id)a3;
++ (id)classLock_aggregateForProcessIdentity:(id)identity shouldCreate:(BOOL)create;
++ (void)acquireAggregatedAssertion:(id)assertion completion:(id)completion;
++ (void)invalidateAggregatedAssertion:(id)assertion;
+- (BLSHAggregateProcessAssertion)initWithProcessIdentity:(id)identity;
+- (BOOL)invalidateAggregatedAssertion:(id)assertion;
+- (BOOL)isCurrentRBSAssertion:(id)assertion;
 - (NSString)debugDescription;
-- (os_state_data_s)stateDataWithHints:(os_state_hints_s *)a3;
-- (void)acquireAggregatedAssertion:(id)a3 completion:(id)a4;
+- (os_state_data_s)stateDataWithHints:(os_state_hints_s *)hints;
+- (void)acquireAggregatedAssertion:(id)assertion completion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -34,7 +34,7 @@
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_4();
     v4 = NSStringFromClass(v3);
@@ -47,21 +47,21 @@
   __break(0);
 }
 
-+ (void)acquireAggregatedAssertion:(id)a3 completion:(id)a4
++ (void)acquireAggregatedAssertion:(id)assertion completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&_classLock_4);
-  v8 = [v7 processIdentity];
-  v9 = [a1 classLock_aggregateForProcessIdentity:v8 shouldCreate:1];
+  processIdentity = [assertionCopy processIdentity];
+  v9 = [self classLock_aggregateForProcessIdentity:processIdentity shouldCreate:1];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __71__BLSHAggregateProcessAssertion_acquireAggregatedAssertion_completion___block_invoke;
   v11[3] = &unk_278420870;
-  v12 = v6;
-  v10 = v6;
-  [v9 acquireAggregatedAssertion:v7 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [v9 acquireAggregatedAssertion:assertionCopy completion:v11];
 
   os_unfair_lock_unlock(&_classLock_4);
 }
@@ -81,40 +81,40 @@ void __71__BLSHAggregateProcessAssertion_acquireAggregatedAssertion_completion__
   }
 }
 
-+ (void)invalidateAggregatedAssertion:(id)a3
++ (void)invalidateAggregatedAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&_classLock_4);
-  v7 = [v4 processIdentity];
-  v5 = [a1 classLock_aggregateForProcessIdentity:? shouldCreate:?];
-  v6 = [v5 invalidateAggregatedAssertion:v4];
+  processIdentity = [assertionCopy processIdentity];
+  v5 = [self classLock_aggregateForProcessIdentity:? shouldCreate:?];
+  v6 = [v5 invalidateAggregatedAssertion:assertionCopy];
 
   if ((v6 & 1) == 0)
   {
     [v5 invalidate];
-    [_classLock_aggregates removeObjectForKey:v7];
+    [_classLock_aggregates removeObjectForKey:processIdentity];
   }
 
   os_unfair_lock_unlock(&_classLock_4);
 }
 
-+ (id)classLock_aggregateForProcessIdentity:(id)a3 shouldCreate:(BOOL)a4
++ (id)classLock_aggregateForProcessIdentity:(id)identity shouldCreate:(BOOL)create
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  createCopy = create;
+  identityCopy = identity;
+  if (!identityCopy)
   {
     [BLSHAggregateProcessAssertion classLock_aggregateForProcessIdentity:a2 shouldCreate:?];
   }
 
-  v7 = v6;
+  v7 = identityCopy;
   os_unfair_lock_assert_owner(&_classLock_4);
   v8 = _classLock_aggregates;
   if (!_classLock_aggregates)
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v10 = _classLock_aggregates;
-    _classLock_aggregates = v9;
+    _classLock_aggregates = dictionary;
 
     v8 = _classLock_aggregates;
   }
@@ -127,7 +127,7 @@ void __71__BLSHAggregateProcessAssertion_acquireAggregatedAssertion_completion__
 
   else
   {
-    v12 = !v4;
+    v12 = !createCopy;
   }
 
   if (!v12)
@@ -139,9 +139,9 @@ void __71__BLSHAggregateProcessAssertion_acquireAggregatedAssertion_completion__
   return v11;
 }
 
-- (BLSHAggregateProcessAssertion)initWithProcessIdentity:(id)a3
+- (BLSHAggregateProcessAssertion)initWithProcessIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v13.receiver = self;
   v13.super_class = BLSHAggregateProcessAssertion;
   v6 = [(BLSHAggregateProcessAssertion *)&v13 init];
@@ -155,7 +155,7 @@ void __71__BLSHAggregateProcessAssertion_acquireAggregatedAssertion_completion__
     BSContinuousMachTimeNow();
     v6->_initTimestamp = v7;
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_processIdentity, a3);
+    objc_storeStrong(&v6->_processIdentity, identity);
     v8 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:512 valueOptions:0 capacity:2];
     lock_aggregated = v6->_lock_aggregated;
     v6->_lock_aggregated = v8;
@@ -193,12 +193,12 @@ uint64_t __57__BLSHAggregateProcessAssertion_initWithProcessIdentity___block_inv
   return v4;
 }
 
-- (void)acquireAggregatedAssertion:(id)a3 completion:(id)a4
+- (void)acquireAggregatedAssertion:(id)assertion completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  assertionCopy = assertion;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(NSMapTable *)self->_lock_aggregated objectForKey:v8];
+  v10 = [(NSMapTable *)self->_lock_aggregated objectForKey:assertionCopy];
 
   if (v10)
   {
@@ -210,27 +210,27 @@ uint64_t __57__BLSHAggregateProcessAssertion_initWithProcessIdentity___block_inv
     [BLSHAggregateProcessAssertion acquireAggregatedAssertion:a2 completion:?];
   }
 
-  [v8 duration];
+  [assertionCopy duration];
   v12 = v11;
   v13 = [[BLSHDurationCalculator alloc] initWithDuration:v11];
   if (!self->_lock_rbsAssertion)
   {
-    [(NSMapTable *)self->_lock_aggregated setObject:v13 forKey:v8];
+    [(NSMapTable *)self->_lock_aggregated setObject:v13 forKey:assertionCopy];
     goto LABEL_8;
   }
 
   [(BLSHDurationCalculator *)self->_lock_durationCalculator remainingDuration];
   v15 = v14;
-  [(NSMapTable *)self->_lock_aggregated setObject:v13 forKey:v8];
+  [(NSMapTable *)self->_lock_aggregated setObject:v13 forKey:assertionCopy];
   if (v15 < v12)
   {
 LABEL_8:
-    v16 = [v8 processIdentity];
-    v17 = [v8 createRBSAssertion];
+    processIdentity = [assertionCopy processIdentity];
+    createRBSAssertion = [assertionCopy createRBSAssertion];
     objc_initWeak(&location, self);
     v18 = self->_lock_rbsAssertion;
-    objc_storeStrong(&self->_lock_rbsAssertion, v17);
-    objc_storeStrong(&self->_lock_acquiredAssertion, a3);
+    objc_storeStrong(&self->_lock_rbsAssertion, createRBSAssertion);
+    objc_storeStrong(&self->_lock_acquiredAssertion, assertion);
     objc_storeStrong(&self->_lock_durationCalculator, v13);
     v19 = __rbsAssertionAcquisitionQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -238,14 +238,14 @@ LABEL_8:
     block[2] = __71__BLSHAggregateProcessAssertion_acquireAggregatedAssertion_completion___block_invoke;
     block[3] = &unk_278420898;
     objc_copyWeak(&v29, &location);
-    v24 = v17;
-    v25 = v16;
-    v26 = v8;
+    v24 = createRBSAssertion;
+    v25 = processIdentity;
+    v26 = assertionCopy;
     v27 = v18;
-    v28 = v9;
+    v28 = completionCopy;
     v20 = v18;
-    v21 = v16;
-    v22 = v17;
+    v21 = processIdentity;
+    v22 = createRBSAssertion;
     dispatch_async(v19, block);
 
     objc_destroyWeak(&v29);
@@ -255,9 +255,9 @@ LABEL_8:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v9)
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_9:
@@ -440,32 +440,32 @@ void __71__BLSHAggregateProcessAssertion_acquireAggregatedAssertion_completion__
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isCurrentRBSAssertion:(id)a3
+- (BOOL)isCurrentRBSAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
-  v5 = self->_lock_rbsAssertion == v4;
+  v5 = self->_lock_rbsAssertion == assertionCopy;
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (BOOL)invalidateAggregatedAssertion:(id)a3
+- (BOOL)invalidateAggregatedAssertion:(id)assertion
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_lock(&self->_lock);
   p_lock_aggregated = &self->_lock_aggregated;
-  v6 = [(NSMapTable *)self->_lock_aggregated objectForKey:v4];
+  v6 = [(NSMapTable *)self->_lock_aggregated objectForKey:assertionCopy];
 
   if (!v6)
   {
     goto LABEL_30;
   }
 
-  [(NSMapTable *)self->_lock_aggregated removeObjectForKey:v4];
+  [(NSMapTable *)self->_lock_aggregated removeObjectForKey:assertionCopy];
   lock_acquiredAssertion = self->_lock_acquiredAssertion;
-  if (lock_acquiredAssertion != v4)
+  if (lock_acquiredAssertion != assertionCopy)
   {
     goto LABEL_30;
   }
@@ -481,7 +481,7 @@ void __71__BLSHAggregateProcessAssertion_acquireAggregatedAssertion_completion__
 
   if ([(NSMapTable *)self->_lock_aggregated count])
   {
-    v43 = v4;
+    v43 = assertionCopy;
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
@@ -494,7 +494,7 @@ void __71__BLSHAggregateProcessAssertion_acquireAggregatedAssertion_completion__
       v14 = 0;
 LABEL_24:
 
-      v4 = v43;
+      assertionCopy = v43;
       goto LABEL_25;
     }
 
@@ -502,7 +502,7 @@ LABEL_24:
     p_lock_durationCalculator = &self->_lock_durationCalculator;
     location = &self->_lock_acquiredAssertion;
     v41 = v8;
-    v42 = self;
+    selfCopy = self;
     v14 = 0;
     v15 = 0;
     v16 = *v46;
@@ -516,13 +516,13 @@ LABEL_24:
         }
 
         v18 = *(*(&v45 + 1) + 8 * i);
-        v19 = [(NSMapTable *)*p_lock_aggregated objectForKey:v18, p_lock_durationCalculator];
-        [v19 remainingDuration];
+        p_lock_durationCalculator = [(NSMapTable *)*p_lock_aggregated objectForKey:v18, p_lock_durationCalculator];
+        [p_lock_durationCalculator remainingDuration];
         v21 = v20;
         [v14 remainingDuration];
         if (v21 > v22)
         {
-          v23 = v19;
+          v23 = p_lock_durationCalculator;
 
           v24 = v18;
           v14 = v23;
@@ -537,25 +537,25 @@ LABEL_24:
 
     if (v15)
     {
-      v25 = [v15 createRBSAssertion];
+      createRBSAssertion = [v15 createRBSAssertion];
       v44 = 0;
-      v26 = [v25 acquireWithError:&v44];
+      v26 = [createRBSAssertion acquireWithError:&v44];
       v27 = v44;
       v28 = bls_scenes_log();
       v29 = v28;
-      self = v42;
+      self = selfCopy;
       if (v27 || (v26 & 1) == 0)
       {
         if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
         {
-          v37 = [v27 bls_loggingString];
-          processIdentity = v42->_processIdentity;
+          bls_loggingString = [v27 bls_loggingString];
+          processIdentity = selfCopy->_processIdentity;
           *buf = 134218754;
-          v50 = v42;
+          v50 = selfCopy;
           v51 = 2114;
-          v52 = v37;
+          v52 = bls_loggingString;
           v53 = 2114;
-          v54 = v25;
+          v54 = createRBSAssertion;
           v55 = 2114;
           v56 = processIdentity;
           _os_log_fault_impl(&dword_21FD11000, v29, OS_LOG_TYPE_FAULT, "%p error:%{public}@ failed to reacquire rb assertion:%{public}@ for process:%{public}@", buf, 0x2Au);
@@ -564,28 +564,28 @@ LABEL_24:
 
       else if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = v42->_processIdentity;
+        v30 = selfCopy->_processIdentity;
         *buf = 134218498;
-        v50 = v42;
+        v50 = selfCopy;
         v51 = 2114;
-        v52 = v25;
+        v52 = createRBSAssertion;
         v53 = 2114;
         v54 = v30;
         _os_log_impl(&dword_21FD11000, v29, OS_LOG_TYPE_DEFAULT, "%p (reacquire) acquired rbs assertion:%{public}@ for process:%{public}@", buf, 0x20u);
       }
 
       objc_storeStrong(location, v15);
-      v31 = v42->_lock_rbsAssertion;
-      v42->_lock_rbsAssertion = v25;
-      v11 = v25;
+      v31 = selfCopy->_lock_rbsAssertion;
+      selfCopy->_lock_rbsAssertion = createRBSAssertion;
+      v11 = createRBSAssertion;
 
       objc_storeStrong(p_lock_durationCalculator, v14);
       v8 = v41;
       goto LABEL_24;
     }
 
-    self = v42;
-    v4 = v43;
+    self = selfCopy;
+    assertionCopy = v43;
     v8 = v41;
   }
 
@@ -624,7 +624,7 @@ LABEL_30:
   return v33 != 0;
 }
 
-- (os_state_data_s)stateDataWithHints:(os_state_hints_s *)a3
+- (os_state_data_s)stateDataWithHints:(os_state_hints_s *)hints
 {
   v3 = [(BLSHAggregateProcessAssertion *)self debugDescription];
   v4 = BLSStateDataWithTitleDescriptionAndHints();
@@ -644,13 +644,13 @@ LABEL_30:
   v12 = __49__BLSHAggregateProcessAssertion_debugDescription__block_invoke;
   v13 = &unk_27841E538;
   v14 = v3;
-  v15 = self;
+  selfCopy = self;
   v7 = v3;
   [v7 appendBodySectionWithName:0 multilinePrefix:0 block:&v10];
   os_unfair_lock_unlock(&self->_lock);
-  v8 = [v7 build];
+  build = [v7 build];
 
-  return v8;
+  return build;
 }
 
 void __49__BLSHAggregateProcessAssertion_debugDescription__block_invoke(uint64_t a1)

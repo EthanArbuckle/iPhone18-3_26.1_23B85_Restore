@@ -1,15 +1,15 @@
 @interface FBKAnnouncement
 - (id)fullHTMLContent;
 - (id)generateSearchText;
-- (void)setPropertiesFromJSONObject:(id)a3;
+- (void)setPropertiesFromJSONObject:(id)object;
 @end
 
 @implementation FBKAnnouncement
 
-- (void)setPropertiesFromJSONObject:(id)a3
+- (void)setPropertiesFromJSONObject:(id)object
 {
-  v29 = a3;
-  v4 = [v29 objectForKeyedSubscript:@"title"];
+  objectCopy = object;
+  v4 = [objectCopy objectForKeyedSubscript:@"title"];
   v5 = FBKNilIfNSNull(v4);
   if (v5)
   {
@@ -23,11 +23,11 @@
     [(FBKAnnouncement *)self setTitle:v7];
   }
 
-  v8 = [v29 objectForKeyedSubscript:@"type"];
+  v8 = [objectCopy objectForKeyedSubscript:@"type"];
   v9 = FBKNilIfNSNull(v8);
   [(FBKAnnouncement *)self setType:v9];
 
-  v10 = [v29 objectForKeyedSubscript:@"created_at"];
+  v10 = [objectCopy objectForKeyedSubscript:@"created_at"];
   v11 = FBKNilIfNSNull(v10);
 
   if (v11)
@@ -41,7 +41,7 @@
     [(FBKAnnouncement *)self setCreatedAt:0];
   }
 
-  v13 = [v29 objectForKeyedSubscript:@"updated_at"];
+  v13 = [objectCopy objectForKeyedSubscript:@"updated_at"];
   v14 = FBKNilIfNSNull(v13);
 
   if (v14)
@@ -54,40 +54,40 @@
     v15 = 0;
   }
 
-  v16 = [v29 objectForKeyedSubscript:@"body"];
+  v16 = [objectCopy objectForKeyedSubscript:@"body"];
   v17 = FBKNilIfNSNull(v16);
 
   if (v17)
   {
     [(FBKAnnouncement *)self setBody:v17];
-    v18 = self;
+    selfCopy2 = self;
     v19 = 0;
 LABEL_21:
-    [(FBKAnnouncement *)v18 setIsStub:v19];
+    [(FBKAnnouncement *)selfCopy2 setIsStub:v19];
     goto LABEL_22;
   }
 
-  v20 = [(FBKAnnouncement *)self updatedAt];
-  v21 = v20;
-  if (!v20 || !v15)
+  updatedAt = [(FBKAnnouncement *)self updatedAt];
+  v21 = updatedAt;
+  if (!updatedAt || !v15)
   {
 
     goto LABEL_20;
   }
 
-  v22 = [(FBKAnnouncement *)self body];
+  body = [(FBKAnnouncement *)self body];
 
-  if (!v22)
+  if (!body)
   {
 LABEL_20:
-    v18 = self;
+    selfCopy2 = self;
     v19 = 1;
     goto LABEL_21;
   }
 
-  v23 = [(FBKAnnouncement *)self updatedAt];
-  v24 = [v15 compare:v23];
-  v25 = [(FBKAnnouncement *)self isStub];
+  updatedAt2 = [(FBKAnnouncement *)self updatedAt];
+  v24 = [v15 compare:updatedAt2];
+  isStub = [(FBKAnnouncement *)self isStub];
   if (v24 == 1)
   {
     v26 = 1;
@@ -95,14 +95,14 @@ LABEL_20:
 
   else
   {
-    v26 = v25;
+    v26 = isStub;
   }
 
   [(FBKAnnouncement *)self setIsStub:v26];
 
 LABEL_22:
   [(FBKAnnouncement *)self setUpdatedAt:v15];
-  v27 = [v29 objectForKeyedSubscript:@"acknowledged?"];
+  v27 = [objectCopy objectForKeyedSubscript:@"acknowledged?"];
   v28 = FBKNilIfNSNull(v27);
 
   if (v28)
@@ -118,40 +118,40 @@ LABEL_22:
     [FBKAnnouncement fullHTMLContent];
   }
 
-  v3 = [(FBKAnnouncement *)self cachedFullHTMLContent];
-  if (!v3 || (v4 = v3, -[FBKAnnouncement cachedFullHTMLContent](self, "cachedFullHTMLContent"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, !v6))
+  cachedFullHTMLContent = [(FBKAnnouncement *)self cachedFullHTMLContent];
+  if (!cachedFullHTMLContent || (v4 = cachedFullHTMLContent, -[FBKAnnouncement cachedFullHTMLContent](self, "cachedFullHTMLContent"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, !v6))
   {
-    v7 = [(FBKAnnouncement *)self body];
-    v8 = [v7 rangeOfString:@"<html>" options:1];
+    body = [(FBKAnnouncement *)self body];
+    v8 = [body rangeOfString:@"<html>" options:1];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = fullHTMLContent__announcementTemplate;
-      v10 = [(FBKAnnouncement *)self body];
-      v11 = [v9 stringByReplacingOccurrencesOfString:@"{{ANNOUNCEMENT_CONTENT}}" withString:v10];
+      body2 = [(FBKAnnouncement *)self body];
+      v11 = [v9 stringByReplacingOccurrencesOfString:@"{{ANNOUNCEMENT_CONTENT}}" withString:body2];
       [(FBKAnnouncement *)self setCachedFullHTMLContent:v11];
 
-      v12 = [(FBKAnnouncement *)self cachedFullHTMLContent];
-      v13 = v12;
+      cachedFullHTMLContent2 = [(FBKAnnouncement *)self cachedFullHTMLContent];
+      v13 = cachedFullHTMLContent2;
       v14 = @"target=_blank";
       v15 = &stru_1F5F14EC0;
     }
 
     else
     {
-      v12 = [(FBKAnnouncement *)self body];
-      v13 = v12;
+      cachedFullHTMLContent2 = [(FBKAnnouncement *)self body];
+      v13 = cachedFullHTMLContent2;
       v14 = @"<head>";
       v15 = @"<head>\n<meta name=viewport content=width=device-width, initial-scale=1>\n";
     }
 
-    v16 = [v12 stringByReplacingOccurrencesOfString:v14 withString:v15];
+    v16 = [cachedFullHTMLContent2 stringByReplacingOccurrencesOfString:v14 withString:v15];
     [(FBKAnnouncement *)self setCachedFullHTMLContent:v16];
   }
 
-  v17 = [(FBKAnnouncement *)self cachedFullHTMLContent];
+  cachedFullHTMLContent3 = [(FBKAnnouncement *)self cachedFullHTMLContent];
 
-  return v17;
+  return cachedFullHTMLContent3;
 }
 
 void __34__FBKAnnouncement_fullHTMLContent__block_invoke()
@@ -181,13 +181,13 @@ void __34__FBKAnnouncement_fullHTMLContent__block_invoke()
 - (id)generateSearchText
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [(FBKAnnouncement *)self body];
+  body = [(FBKAnnouncement *)self body];
 
-  if (v3)
+  if (body)
   {
     v4 = [FBKXMLDocument alloc];
-    v5 = [(FBKAnnouncement *)self fullHTMLContent];
-    v6 = [(FBKXMLDocument *)v4 initWithHTMLString:v5];
+    fullHTMLContent = [(FBKAnnouncement *)self fullHTMLContent];
+    v6 = [(FBKXMLDocument *)v4 initWithHTMLString:fullHTMLContent];
 
-    v7 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
 @end

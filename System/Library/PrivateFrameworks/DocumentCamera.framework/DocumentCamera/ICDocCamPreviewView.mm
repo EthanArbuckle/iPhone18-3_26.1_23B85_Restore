@@ -1,23 +1,23 @@
 @interface ICDocCamPreviewView
 - (AVCaptureSession)session;
-- (void)setSession:(id)a3;
+- (void)setSession:(id)session;
 @end
 
 @implementation ICDocCamPreviewView
 
 - (AVCaptureSession)session
 {
-  v2 = [(ICDocCamPreviewView *)self layer];
-  v3 = [v2 session];
+  layer = [(ICDocCamPreviewView *)self layer];
+  session = [layer session];
 
-  return v3;
+  return session;
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v4 = a3;
-  v5 = [(ICDocCamPreviewView *)self layer];
-  [v5 setSession:v4];
+  sessionCopy = session;
+  layer = [(ICDocCamPreviewView *)self layer];
+  [layer setSession:sessionCopy];
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface CalendarEventClassificationModelInput
-- (CalendarEventClassificationModelInput)initWithEmb:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (CalendarEventClassificationModelInput)initWithEmb:(id)emb;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation CalendarEventClassificationModelInput
 
-- (CalendarEventClassificationModelInput)initWithEmb:(id)a3
+- (CalendarEventClassificationModelInput)initWithEmb:(id)emb
 {
-  v5 = a3;
+  embCopy = emb;
   v9.receiver = self;
   v9.super_class = CalendarEventClassificationModelInput;
   v6 = [(CalendarEventClassificationModelInput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_emb, a3);
+    objc_storeStrong(&v6->_emb, emb);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"emb"])
+  if ([name isEqualToString:@"emb"])
   {
     v4 = MEMORY[0x277CBFEF8];
     v5 = [(CalendarEventClassificationModelInput *)self emb];

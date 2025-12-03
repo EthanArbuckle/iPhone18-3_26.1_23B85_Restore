@@ -1,81 +1,81 @@
 @interface CMSPlayerContext
-+ (id)instanceFromCMSCoded:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualContext:(id)a3;
-- (CMSPlayerContext)playerContextWithUpdatedOffset:(int64_t)a3;
-- (CMSPlayerContext)playerContextWithUpdatedSpeed:(float)a3;
-- (CMSPlayerContext)playerContextWithUpdatedSpeed:(float)a3 offset:(int64_t)a4;
++ (id)instanceFromCMSCoded:(id)coded;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualContext:(id)context;
+- (CMSPlayerContext)playerContextWithUpdatedOffset:(int64_t)offset;
+- (CMSPlayerContext)playerContextWithUpdatedSpeed:(float)speed;
+- (CMSPlayerContext)playerContextWithUpdatedSpeed:(float)speed offset:(int64_t)offset;
 - (NSString)description;
 - (id)cmsCoded;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initForActivity:(id)a3 queue:(id)a4 content:(id)a5 speed:(float)a6 offset:(int64_t)a7;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initForActivity:(id)activity queue:(id)queue content:(id)content speed:(float)speed offset:(int64_t)offset;
 - (unint64_t)hash;
 @end
 
 @implementation CMSPlayerContext
 
-- (id)initForActivity:(id)a3 queue:(id)a4 content:(id)a5 speed:(float)a6 offset:(int64_t)a7
+- (id)initForActivity:(id)activity queue:(id)queue content:(id)content speed:(float)speed offset:(int64_t)offset
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  activityCopy = activity;
+  queueCopy = queue;
+  contentCopy = content;
   v19.receiver = self;
   v19.super_class = CMSPlayerContext;
   v16 = [(CMSPlayerContext *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_activityIdentifier, a3);
-    objc_storeStrong(&v17->_queueIdentifier, a4);
-    objc_storeStrong(&v17->_contentIdentifier, a5);
-    v17->_playbackSpeed = a6;
-    v17->_offsetInMillis = a7;
+    objc_storeStrong(&v16->_activityIdentifier, activity);
+    objc_storeStrong(&v17->_queueIdentifier, queue);
+    objc_storeStrong(&v17->_contentIdentifier, content);
+    v17->_playbackSpeed = speed;
+    v17->_offsetInMillis = offset;
   }
 
   return v17;
 }
 
-- (CMSPlayerContext)playerContextWithUpdatedSpeed:(float)a3
+- (CMSPlayerContext)playerContextWithUpdatedSpeed:(float)speed
 {
   v5 = [CMSPlayerContext alloc];
-  *&v6 = a3;
+  *&v6 = speed;
   v7 = [(CMSPlayerContext *)v5 initForActivity:self->_activityIdentifier queue:self->_queueIdentifier content:self->_contentIdentifier speed:self->_offsetInMillis offset:v6];
 
   return v7;
 }
 
-- (CMSPlayerContext)playerContextWithUpdatedSpeed:(float)a3 offset:(int64_t)a4
+- (CMSPlayerContext)playerContextWithUpdatedSpeed:(float)speed offset:(int64_t)offset
 {
   v7 = [CMSPlayerContext alloc];
-  *&v8 = a3;
-  v9 = [(CMSPlayerContext *)v7 initForActivity:self->_activityIdentifier queue:self->_queueIdentifier content:self->_contentIdentifier speed:a4 offset:v8];
+  *&v8 = speed;
+  v9 = [(CMSPlayerContext *)v7 initForActivity:self->_activityIdentifier queue:self->_queueIdentifier content:self->_contentIdentifier speed:offset offset:v8];
 
   return v9;
 }
 
-- (CMSPlayerContext)playerContextWithUpdatedOffset:(int64_t)a3
+- (CMSPlayerContext)playerContextWithUpdatedOffset:(int64_t)offset
 {
   v5 = [CMSPlayerContext alloc];
   *&v6 = self->_playbackSpeed;
-  v7 = [(CMSPlayerContext *)v5 initForActivity:self->_activityIdentifier queue:self->_queueIdentifier content:self->_contentIdentifier speed:a3 offset:v6];
+  v7 = [(CMSPlayerContext *)v5 initForActivity:self->_activityIdentifier queue:self->_queueIdentifier content:self->_contentIdentifier speed:offset offset:v6];
 
   return v7;
 }
 
-- (BOOL)isEqualContext:(id)a3
+- (BOOL)isEqualContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 activityIdentifier];
-  v6 = v5;
-  if (v5 | self->_activityIdentifier && ![v5 isEqualToString:?])
+  contextCopy = context;
+  activityIdentifier = [contextCopy activityIdentifier];
+  v6 = activityIdentifier;
+  if (activityIdentifier | self->_activityIdentifier && ![activityIdentifier isEqualToString:?])
   {
     v13 = 0;
   }
 
   else
   {
-    v7 = [v4 contentIdentifier];
-    v8 = v7;
+    contentIdentifier = [contextCopy contentIdentifier];
+    v8 = contentIdentifier;
     if (self->_contentIdentifier)
     {
       contentIdentifier = self->_contentIdentifier;
@@ -86,10 +86,10 @@
       contentIdentifier = &stru_2856A7BB0;
     }
 
-    if ([v7 isEqualToString:contentIdentifier])
+    if ([contentIdentifier isEqualToString:contentIdentifier])
     {
-      v10 = [v4 queueIdentifier];
-      v11 = v10;
+      queueIdentifier = [contextCopy queueIdentifier];
+      v11 = queueIdentifier;
       if (self->_queueIdentifier)
       {
         queueIdentifier = self->_queueIdentifier;
@@ -100,7 +100,7 @@
         queueIdentifier = &stru_2856A7BB0;
       }
 
-      v13 = [v10 isEqualToString:queueIdentifier];
+      v13 = [queueIdentifier isEqualToString:queueIdentifier];
     }
 
     else
@@ -112,20 +112,20 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 activityIdentifier];
-  v6 = v5;
-  if (v5 | self->_activityIdentifier && ![v5 isEqualToString:?])
+  equalCopy = equal;
+  activityIdentifier = [equalCopy activityIdentifier];
+  v6 = activityIdentifier;
+  if (activityIdentifier | self->_activityIdentifier && ![activityIdentifier isEqualToString:?])
   {
     v14 = 0;
   }
 
   else
   {
-    v7 = [v4 contentIdentifier];
-    v8 = v7;
+    contentIdentifier = [equalCopy contentIdentifier];
+    v8 = contentIdentifier;
     if (self->_contentIdentifier)
     {
       contentIdentifier = self->_contentIdentifier;
@@ -136,10 +136,10 @@
       contentIdentifier = &stru_2856A7BB0;
     }
 
-    if ([v7 isEqualToString:contentIdentifier])
+    if ([contentIdentifier isEqualToString:contentIdentifier])
     {
-      v10 = [v4 queueIdentifier];
-      v11 = v10;
+      queueIdentifier = [equalCopy queueIdentifier];
+      v11 = queueIdentifier;
       if (self->_queueIdentifier)
       {
         queueIdentifier = self->_queueIdentifier;
@@ -150,7 +150,7 @@
         queueIdentifier = &stru_2856A7BB0;
       }
 
-      v14 = [v10 isEqualToString:queueIdentifier] && (objc_msgSend(v4, "playbackSpeed"), vabds_f32(v13, self->_playbackSpeed) < 0.000001) && objc_msgSend(v4, "offsetInMillis") == self->_offsetInMillis;
+      v14 = [queueIdentifier isEqualToString:queueIdentifier] && (objc_msgSend(equalCopy, "playbackSpeed"), vabds_f32(v13, self->_playbackSpeed) < 0.000001) && objc_msgSend(equalCopy, "offsetInMillis") == self->_offsetInMillis;
     }
 
     else
@@ -190,9 +190,9 @@
   return v3;
 }
 
-+ (id)instanceFromCMSCoded:(id)a3
++ (id)instanceFromCMSCoded:(id)coded
 {
-  v4 = cmsSafeDictionary(a3);
+  v4 = cmsSafeDictionary(coded);
   v5 = v4;
   if (v4)
   {
@@ -214,7 +214,7 @@
       [v5 cmsDoubleForKey:@"playbackSpeed" withDefault:1.0];
       v11 = v10;
       v12 = [v5 cmsUnsignedForKey:@"offsetInMillis" withDefault:0x8000000000000000];
-      v13 = [a1 alloc];
+      v13 = [self alloc];
       *&v14 = v11;
       v15 = [v13 initForActivity:v9 queue:v8 content:v6 speed:v12 offset:v14];
     }
@@ -233,9 +233,9 @@
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CMSPlayerContext allocWithZone:a3];
+  v4 = [CMSPlayerContext allocWithZone:zone];
   activityIdentifier = self->_activityIdentifier;
   queueIdentifier = self->_queueIdentifier;
   *&v7 = self->_playbackSpeed;
@@ -248,8 +248,8 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CMSPlayerContext *)self cmsCoded];
-  v5 = [v4 description];
+  cmsCoded = [(CMSPlayerContext *)self cmsCoded];
+  v5 = [cmsCoded description];
   v6 = [v3 stringWithFormat:@"CMSPlayerContext @%p:%@", self, v5];
 
   return v6;

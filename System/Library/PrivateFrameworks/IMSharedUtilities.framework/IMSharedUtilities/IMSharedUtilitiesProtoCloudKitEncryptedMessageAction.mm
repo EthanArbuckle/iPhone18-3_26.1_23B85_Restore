@@ -1,14 +1,14 @@
 @interface IMSharedUtilitiesProtoCloudKitEncryptedMessageAction
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IMSharedUtilitiesProtoCloudKitEncryptedMessageAction
@@ -23,9 +23,9 @@
   [(IMSharedUtilitiesProtoCloudKitEncryptedMessageAction *)&v3 dealloc];
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -47,41 +47,41 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_version), @"version"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_version), @"version"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", self->_messageActionType), @"message_action_type"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithLongLong:", self->_messageActionType), @"message_action_type"}];
   }
 
   otherHandle = self->_otherHandle;
   if (otherHandle)
   {
-    [v3 setObject:otherHandle forKey:@"other_handle"];
+    [dictionary setObject:otherHandle forKey:@"other_handle"];
   }
 
   originalMessageGuid = self->_originalMessageGuid;
   if (originalMessageGuid)
   {
-    [v3 setObject:originalMessageGuid forKey:@"original_message_guid"];
+    [dictionary setObject:originalMessageGuid forKey:@"original_message_guid"];
   }
 
   padding = self->_padding;
   if (padding)
   {
-    [v3 setObject:padding forKey:@"padding"];
+    [dictionary setObject:padding forKey:@"padding"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -112,42 +112,42 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 10) = self->_version;
-    *(a3 + 44) |= 2u;
+    *(to + 10) = self->_version;
+    *(to + 44) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(a3 + 1) = self->_messageActionType;
-    *(a3 + 44) |= 1u;
+    *(to + 1) = self->_messageActionType;
+    *(to + 44) |= 1u;
   }
 
   if (self->_otherHandle)
   {
-    [a3 setOtherHandle:?];
+    [to setOtherHandle:?];
   }
 
   if (self->_originalMessageGuid)
   {
-    [a3 setOriginalMessageGuid:?];
+    [to setOriginalMessageGuid:?];
   }
 
   if (self->_padding)
   {
 
-    [a3 setPadding:?];
+    [to setPadding:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -163,27 +163,27 @@
     *(v5 + 44) |= 1u;
   }
 
-  *(v6 + 24) = [(NSString *)self->_otherHandle copyWithZone:a3];
-  *(v6 + 16) = [(NSString *)self->_originalMessageGuid copyWithZone:a3];
+  *(v6 + 24) = [(NSString *)self->_otherHandle copyWithZone:zone];
+  *(v6 + 16) = [(NSString *)self->_originalMessageGuid copyWithZone:zone];
 
-  *(v6 + 32) = [(NSData *)self->_padding copyWithZone:a3];
+  *(v6 + 32) = [(NSData *)self->_padding copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 44) & 2) == 0 || self->_version != *(a3 + 10))
+      if ((*(equal + 44) & 2) == 0 || self->_version != *(equal + 10))
       {
         goto LABEL_18;
       }
     }
 
-    else if ((*(a3 + 44) & 2) != 0)
+    else if ((*(equal + 44) & 2) != 0)
     {
 LABEL_18:
       LOBYTE(v5) = 0;
@@ -192,25 +192,25 @@ LABEL_18:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 44) & 1) == 0 || self->_messageActionType != *(a3 + 1))
+      if ((*(equal + 44) & 1) == 0 || self->_messageActionType != *(equal + 1))
       {
         goto LABEL_18;
       }
     }
 
-    else if (*(a3 + 44))
+    else if (*(equal + 44))
     {
       goto LABEL_18;
     }
 
     otherHandle = self->_otherHandle;
-    if (!(otherHandle | *(a3 + 3)) || (v5 = [(NSString *)otherHandle isEqual:?]) != 0)
+    if (!(otherHandle | *(equal + 3)) || (v5 = [(NSString *)otherHandle isEqual:?]) != 0)
     {
       originalMessageGuid = self->_originalMessageGuid;
-      if (!(originalMessageGuid | *(a3 + 2)) || (v5 = [(NSString *)originalMessageGuid isEqual:?]) != 0)
+      if (!(originalMessageGuid | *(equal + 2)) || (v5 = [(NSString *)originalMessageGuid isEqual:?]) != 0)
       {
         padding = self->_padding;
-        if (padding | *(a3 + 4))
+        if (padding | *(equal + 4))
         {
 
           LOBYTE(v5) = [(NSData *)padding isEqual:?];
@@ -256,33 +256,33 @@ LABEL_6:
   return v5 ^ v6 ^ [(NSData *)self->_padding hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if ((v5 & 2) != 0)
   {
-    self->_version = *(a3 + 10);
+    self->_version = *(from + 10);
     *&self->_has |= 2u;
-    v5 = *(a3 + 44);
+    v5 = *(from + 44);
   }
 
   if (v5)
   {
-    self->_messageActionType = *(a3 + 1);
+    self->_messageActionType = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessageAction *)self setOtherHandle:?];
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessageAction *)self setOriginalMessageGuid:?];
   }
 
-  if (*(a3 + 4))
+  if (*(from + 4))
   {
 
     [(IMSharedUtilitiesProtoCloudKitEncryptedMessageAction *)self setPadding:?];

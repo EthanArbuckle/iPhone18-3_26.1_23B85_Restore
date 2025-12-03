@@ -3,13 +3,13 @@
 + (MTLTexture)sharedNilTexture2D;
 + (MTLTexture)sharedNilTextureCube;
 + (id)sharedCommandQueue;
-+ (void)addCompletedErrorCheckToCommandBuffer:(id)a3 forCase:(id)a4;
++ (void)addCompletedErrorCheckToCommandBuffer:(id)buffer forCase:(id)case;
 - (CLKUIMetalResourceManager)init;
-- (id)_newAtlasForUuid:(id)a3 nilTexture:(id)a4;
-- (id)_newAtlasForUuid:(id)a3 nullTexture:(id)a4;
+- (id)_newAtlasForUuid:(id)uuid nilTexture:(id)texture;
+- (id)_newAtlasForUuid:(id)uuid nullTexture:(id)texture;
 - (id)nullAtlas2D;
 - (id)nullAtlasCube;
-- (void)_purgeAtlases:(id)a3;
+- (void)_purgeAtlases:(id)atlases;
 @end
 
 @implementation CLKUIMetalResourceManager
@@ -31,8 +31,8 @@
 
 + (MTLDevice)sharedDevice
 {
-  v2 = [a1 sharedMetalInstance];
-  v3 = v2[9];
+  sharedMetalInstance = [self sharedMetalInstance];
+  v3 = sharedMetalInstance[9];
   v4 = v3;
 
   return v3;
@@ -40,47 +40,47 @@
 
 + (id)sharedCommandQueue
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&sharedCommandQueue__sharedCommandQueue);
   if (!WeakRetained)
   {
-    v4 = [v2 sharedDevice];
-    WeakRetained = [v4 newCommandQueue];
+    sharedDevice = [selfCopy sharedDevice];
+    WeakRetained = [sharedDevice newCommandQueue];
 
     objc_storeWeak(&sharedCommandQueue__sharedCommandQueue, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
 
 + (MTLTexture)sharedNilTexture2D
 {
-  v3 = [a1 sharedDevice];
-  v4 = v3;
-  if (v3)
+  sharedDevice = [self sharedDevice];
+  v4 = sharedDevice;
+  if (sharedDevice)
   {
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __47__CLKUIMetalResourceManager_sharedNilTexture2D__block_invoke;
     v12 = &unk_1E7FF8EC8;
-    v13 = v3;
-    v14 = a1;
+    v13 = sharedDevice;
+    selfCopy = self;
     if (sharedNilTexture2D_onceToken != -1)
     {
       dispatch_once(&sharedNilTexture2D_onceToken, &v9);
     }
 
-    v5 = [a1 sharedMetalInstance];
-    v6 = v5[10];
+    sharedMetalInstance = [self sharedMetalInstance];
+    v6 = sharedMetalInstance[10];
   }
 
   else
   {
-    v7 = [a1 sharedMetalInstance];
-    v6 = v7[10];
+    sharedMetalInstance2 = [self sharedMetalInstance];
+    v6 = sharedMetalInstance2[10];
   }
 
   return v6;
@@ -108,29 +108,29 @@ void __47__CLKUIMetalResourceManager_sharedNilTexture2D__block_invoke(uint64_t a
 
 + (MTLTexture)sharedNilTextureCube
 {
-  v3 = [a1 sharedDevice];
-  v4 = v3;
-  if (v3)
+  sharedDevice = [self sharedDevice];
+  v4 = sharedDevice;
+  if (sharedDevice)
   {
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __49__CLKUIMetalResourceManager_sharedNilTextureCube__block_invoke;
     v12 = &unk_1E7FF8EC8;
-    v13 = v3;
-    v14 = a1;
+    v13 = sharedDevice;
+    selfCopy = self;
     if (sharedNilTextureCube_onceToken != -1)
     {
       dispatch_once(&sharedNilTextureCube_onceToken, &v9);
     }
 
-    v5 = [a1 sharedMetalInstance];
-    v6 = v5[11];
+    sharedMetalInstance = [self sharedMetalInstance];
+    v6 = sharedMetalInstance[11];
   }
 
   else
   {
-    v7 = [a1 sharedMetalInstance];
-    v6 = v7[11];
+    sharedMetalInstance2 = [self sharedMetalInstance];
+    v6 = sharedMetalInstance2[11];
   }
 
   return v6;
@@ -160,16 +160,16 @@ void __49__CLKUIMetalResourceManager_sharedNilTextureCube__block_invoke(uint64_t
   v7[11] = v4;
 }
 
-+ (void)addCompletedErrorCheckToCommandBuffer:(id)a3 forCase:(id)a4
++ (void)addCompletedErrorCheckToCommandBuffer:(id)buffer forCase:(id)case
 {
-  v5 = a4;
+  caseCopy = case;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__CLKUIMetalResourceManager_addCompletedErrorCheckToCommandBuffer_forCase___block_invoke;
   v7[3] = &unk_1E7FF8EF0;
-  v8 = v5;
-  v6 = v5;
-  [a3 addCompletedHandler:v7];
+  v8 = caseCopy;
+  v6 = caseCopy;
+  [buffer addCompletedHandler:v7];
 }
 
 void __75__CLKUIMetalResourceManager_addCompletedErrorCheckToCommandBuffer_forCase___block_invoke(uint64_t a1, void *a2)
@@ -232,34 +232,34 @@ void __42__CLKUIMetalResourceManager_nullAtlasCube__block_invoke()
   __nullAtlasCube = v1;
 }
 
-- (id)_newAtlasForUuid:(id)a3 nullTexture:(id)a4
+- (id)_newAtlasForUuid:(id)uuid nullTexture:(id)texture
 {
-  v6 = a3;
-  v7 = [a4 atlas];
-  v8 = [v7 nilTexture];
-  v9 = [(CLKUIMetalResourceManager *)self _newAtlasForUuid:v6 nilTexture:v8];
+  uuidCopy = uuid;
+  atlas = [texture atlas];
+  nilTexture = [atlas nilTexture];
+  v9 = [(CLKUIMetalResourceManager *)self _newAtlasForUuid:uuidCopy nilTexture:nilTexture];
 
   return v9;
 }
 
-- (id)_newAtlasForUuid:(id)a3 nilTexture:(id)a4
+- (id)_newAtlasForUuid:(id)uuid nilTexture:(id)texture
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CLKUIMetalAtlas alloc] initWithUuid:v6 nilTexture:v5];
+  textureCopy = texture;
+  uuidCopy = uuid;
+  v7 = [[CLKUIMetalAtlas alloc] initWithUuid:uuidCopy nilTexture:textureCopy];
 
   return v7;
 }
 
-- (void)_purgeAtlases:(id)a3
+- (void)_purgeAtlases:(id)atlases
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  atlasesCopy = atlases;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [atlasesCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -271,14 +271,14 @@ void __42__CLKUIMetalResourceManager_nullAtlasCube__block_invoke()
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(atlasesCopy);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) purge];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [atlasesCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);

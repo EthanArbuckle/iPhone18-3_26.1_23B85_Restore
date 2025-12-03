@@ -1,71 +1,71 @@
 @interface SFRemoteTextSessionInfo
-- (SFRemoteTextSessionInfo)initWithCoder:(id)a3;
-- (SFRemoteTextSessionInfo)initWithDictionary:(id)a3;
-- (SFRemoteTextSessionInfo)initWithRTIPayload:(id)a3;
+- (SFRemoteTextSessionInfo)initWithCoder:(id)coder;
+- (SFRemoteTextSessionInfo)initWithDictionary:(id)dictionary;
+- (SFRemoteTextSessionInfo)initWithRTIPayload:(id)payload;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFRemoteTextSessionInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   identifier = self->_identifier;
-  v12 = v4;
+  v12 = coderCopy;
   if (identifier)
   {
-    [v4 encodeObject:identifier forKey:@"identifier"];
-    v4 = v12;
+    [coderCopy encodeObject:identifier forKey:@"identifier"];
+    coderCopy = v12;
   }
 
   keyboardType = self->_keyboardType;
   if (keyboardType)
   {
     [v12 encodeInteger:keyboardType forKey:@"keyboardType"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   prompt = self->_prompt;
   if (prompt)
   {
     [v12 encodeObject:prompt forKey:@"prompt"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   returnKeyType = self->_returnKeyType;
   if (returnKeyType)
   {
     [v12 encodeInteger:returnKeyType forKey:@"returnKeyType"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   rtiPayload = self->_rtiPayload;
   if (rtiPayload)
   {
     [v12 encodeObject:rtiPayload forKey:@"rtiPayload"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   if (self->_secureTextEntry)
   {
     [v12 encodeBool:1 forKey:@"secureTextEntry"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   text = self->_text;
   if (text)
   {
     [v12 encodeObject:text forKey:@"text"];
-    v4 = v12;
+    coderCopy = v12;
   }
 
   title = self->_title;
   if (title)
   {
     [v12 encodeObject:title forKey:@"title"];
-    v4 = v12;
+    coderCopy = v12;
   }
 }
 
@@ -157,15 +157,15 @@
   return v3;
 }
 
-- (SFRemoteTextSessionInfo)initWithCoder:(id)a3
+- (SFRemoteTextSessionInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = SFRemoteTextSessionInfo;
   v5 = [(SFRemoteTextSessionInfo *)&v16 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -209,9 +209,9 @@
   return v5;
 }
 
-- (SFRemoteTextSessionInfo)initWithDictionary:(id)a3
+- (SFRemoteTextSessionInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17 = 0;
   v16.receiver = self;
   v16.super_class = SFRemoteTextSessionInfo;
@@ -286,52 +286,52 @@
   return v5;
 }
 
-- (SFRemoteTextSessionInfo)initWithRTIPayload:(id)a3
+- (SFRemoteTextSessionInfo)initWithRTIPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v23.receiver = self;
   v23.super_class = SFRemoteTextSessionInfo;
   v5 = [(SFRemoteTextSessionInfo *)&v23 init];
-  if (v5 && (RTIInputSystemDataPayloadClass_0 = getRTIInputSystemDataPayloadClass_0(), [v4 data], v7 = objc_claimAutoreleasedReturnValue(), -[objc_class payloadWithData:version:](RTIInputSystemDataPayloadClass_0, "payloadWithData:version:", v7, objc_msgSend(v4, "version")), v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
+  if (v5 && (RTIInputSystemDataPayloadClass_0 = getRTIInputSystemDataPayloadClass_0(), [payloadCopy data], v7 = objc_claimAutoreleasedReturnValue(), -[objc_class payloadWithData:version:](RTIInputSystemDataPayloadClass_0, "payloadWithData:version:", v7, objc_msgSend(payloadCopy, "version")), v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
   {
-    v9 = [v8 documentTraits];
-    v10 = [v9 textInputTraits];
+    documentTraits = [v8 documentTraits];
+    textInputTraits = [documentTraits textInputTraits];
 
-    if (v10)
+    if (textInputTraits)
     {
-      v11 = [v8 documentTraits];
-      v12 = [v11 textInputTraits];
-      v13 = [v12 keyboardType];
-      if ((v13 - 1) > 0xA)
+      documentTraits2 = [v8 documentTraits];
+      textInputTraits2 = [documentTraits2 textInputTraits];
+      keyboardType = [textInputTraits2 keyboardType];
+      if ((keyboardType - 1) > 0xA)
       {
         v14 = 0;
       }
 
       else
       {
-        v14 = qword_1A998FED8[v13 - 1];
+        v14 = qword_1A998FED8[keyboardType - 1];
       }
 
       v5->_keyboardType = v14;
 
-      v15 = [v8 documentTraits];
-      v16 = [v15 textInputTraits];
-      v17 = [v16 returnKeyType];
-      if ((v17 - 1) >= 0xB)
+      documentTraits3 = [v8 documentTraits];
+      textInputTraits3 = [documentTraits3 textInputTraits];
+      returnKeyType = [textInputTraits3 returnKeyType];
+      if ((returnKeyType - 1) >= 0xB)
       {
         v18 = 0;
       }
 
       else
       {
-        v18 = v17;
+        v18 = returnKeyType;
       }
 
       v5->_returnKeyType = v18;
 
-      v19 = [v8 documentTraits];
-      v20 = [v19 textInputTraits];
-      v5->_secureTextEntry = [v20 secureTextEntry];
+      documentTraits4 = [v8 documentTraits];
+      textInputTraits4 = [documentTraits4 textInputTraits];
+      v5->_secureTextEntry = [textInputTraits4 secureTextEntry];
     }
 
     v21 = v5;

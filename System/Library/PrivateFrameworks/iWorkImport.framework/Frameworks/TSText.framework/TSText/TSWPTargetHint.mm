@@ -1,20 +1,20 @@
 @interface TSWPTargetHint
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)frameBounds;
 - (NSString)debugDescription;
 - (_NSRange)anchoredRange;
 - (_NSRange)range;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)trimToCharIndex:(unint64_t)a3 inTarget:(id)a4 removeFootnoteReferenceCount:(unint64_t)a5 removeAutoNumberFootnoteCount:(unint64_t)a6;
+- (void)trimToCharIndex:(unint64_t)index inTarget:(id)target removeFootnoteReferenceCount:(unint64_t)count removeAutoNumberFootnoteCount:(unint64_t)footnoteCount;
 @end
 
 @implementation TSWPTargetHint
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   objc_msgSend_frameBounds(self, v11, v12);
   objc_msgSend_setFrameBounds_(v10, v13, v14);
@@ -41,10 +41,10 @@
   return v10;
 }
 
-- (void)trimToCharIndex:(unint64_t)a3 inTarget:(id)a4 removeFootnoteReferenceCount:(unint64_t)a5 removeAutoNumberFootnoteCount:(unint64_t)a6
+- (void)trimToCharIndex:(unint64_t)index inTarget:(id)target removeFootnoteReferenceCount:(unint64_t)count removeAutoNumberFootnoteCount:(unint64_t)footnoteCount
 {
-  v10 = objc_msgSend_range(self, a2, a3, a4, a5, a6);
-  if (a3 <= v10)
+  v10 = objc_msgSend_range(self, a2, index, target, count, footnoteCount);
+  if (index <= v10)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSWPTargetHint trimToCharIndex:inTarget:removeFootnoteReferenceCount:removeAutoNumberFootnoteCount:]");
@@ -54,7 +54,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17);
   }
 
-  if (objc_msgSend_nextWidowPullsDownFromCharIndex(self, v8, v9) < a3)
+  if (objc_msgSend_nextWidowPullsDownFromCharIndex(self, v8, v9) < index)
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSWPTargetHint trimToCharIndex:inTarget:removeFootnoteReferenceCount:removeAutoNumberFootnoteCount:]");
@@ -64,7 +64,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25);
   }
 
-  if (a3 < v10)
+  if (index < v10)
   {
     v26 = MEMORY[0x277D81150];
     v27 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSWPTargetHint trimToCharIndex:inTarget:removeFootnoteReferenceCount:removeAutoNumberFootnoteCount:]");
@@ -74,8 +74,8 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v31, v32);
   }
 
-  objc_msgSend_setRange_(self, v18, v10, a3 - v10);
-  objc_msgSend_setNextWidowPullsDownFromCharIndex_(self, v33, a3);
+  objc_msgSend_setRange_(self, v18, v10, index - v10);
+  objc_msgSend_setNextWidowPullsDownFromCharIndex_(self, v33, index);
 
   objc_msgSend_setLineFragmentCount_(self, v34, 0x7FFFFFFFFFFFFFFFLL);
 }
@@ -91,9 +91,9 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 

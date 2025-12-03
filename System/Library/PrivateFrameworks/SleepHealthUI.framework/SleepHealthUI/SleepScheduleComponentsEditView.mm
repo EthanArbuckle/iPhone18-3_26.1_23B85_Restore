@@ -1,15 +1,15 @@
 @interface SleepScheduleComponentsEditView
-- (_TtC13SleepHealthUI31SleepScheduleComponentsEditView)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI31SleepScheduleComponentsEditView)initWithFrame:(CGRect)a3;
+- (_TtC13SleepHealthUI31SleepScheduleComponentsEditView)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI31SleepScheduleComponentsEditView)initWithFrame:(CGRect)frame;
 - (id)accessibilityComponentsHeader;
-- (void)clockDidChange:(id)a3;
+- (void)clockDidChange:(id)change;
 - (void)layoutSubviews;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation SleepScheduleComponentsEditView
 
-- (_TtC13SleepHealthUI31SleepScheduleComponentsEditView)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI31SleepScheduleComponentsEditView)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -19,11 +19,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_269C6BEA0();
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -33,9 +33,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_269C686E0(a3);
+  windowCopy = window;
+  selfCopy = self;
+  sub_269C686E0(window);
 }
 
 - (void)layoutSubviews
@@ -48,11 +48,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_269C68C34();
 }
 
-- (void)clockDidChange:(id)a3
+- (void)clockDidChange:(id)change
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -62,9 +62,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_269C69B58(v5);
+  changeCopy = change;
+  selfCopy = self;
+  sub_269C69B58(changeCopy);
 }
 
 - (id)accessibilityComponentsHeader
@@ -82,7 +82,7 @@
   return v3;
 }
 
-- (_TtC13SleepHealthUI31SleepScheduleComponentsEditView)initWithFrame:(CGRect)a3
+- (_TtC13SleepHealthUI31SleepScheduleComponentsEditView)initWithFrame:(CGRect)frame
 {
   sub_269D9A8E0();
   sub_269D9A8D0();

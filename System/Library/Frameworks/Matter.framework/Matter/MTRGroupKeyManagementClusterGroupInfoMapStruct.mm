@@ -1,6 +1,6 @@
 @interface MTRGroupKeyManagementClusterGroupInfoMapStruct
 - (MTRGroupKeyManagementClusterGroupInfoMapStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -17,9 +17,9 @@
     groupId = v2->_groupId;
     v2->_groupId = &unk_284C3E588;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     endpoints = v3->_endpoints;
-    v3->_endpoints = v5;
+    v3->_endpoints = array;
 
     groupName = v3->_groupName;
     v3->_groupName = 0;
@@ -31,20 +31,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRGroupKeyManagementClusterGroupInfoMapStruct);
-  v5 = [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)self groupId];
-  [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)v4 setGroupId:v5];
+  groupId = [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)self groupId];
+  [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)v4 setGroupId:groupId];
 
-  v6 = [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)self endpoints];
-  [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)v4 setEndpoints:v6];
+  endpoints = [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)self endpoints];
+  [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)v4 setEndpoints:endpoints];
 
-  v7 = [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)self groupName];
-  [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)v4 setGroupName:v7];
+  groupName = [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)self groupName];
+  [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)v4 setGroupName:groupName];
 
-  v8 = [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)self fabricIndex];
-  [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)v4 setFabricIndex:v8];
+  fabricIndex = [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)self fabricIndex];
+  [(MTRGroupKeyManagementClusterGroupInfoMapStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

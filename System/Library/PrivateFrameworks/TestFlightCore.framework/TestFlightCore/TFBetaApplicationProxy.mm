@@ -2,29 +2,29 @@
 - (BOOL)isBetaAppLaunchScreenEnabledForInstalledVersion;
 - (BOOL)isProactiveFeedbackEnabledForInstalledVersion;
 - (NSString)preferredLocalizedDisplayNameForInstalledVersion;
-- (id)initForAppWithBundleURL:(id)a3;
-- (id)initForAppWithIdentifier:(id)a3 appPlatform:(int64_t)a4;
+- (id)initForAppWithBundleURL:(id)l;
+- (id)initForAppWithIdentifier:(id)identifier appPlatform:(int64_t)platform;
 - (int64_t)_asdAppPlatform;
-- (void)deviceWillInstallBetaAppInfo:(id)a3;
-- (void)deviceWillInstallVersion:(id)a3 build:(id)a4 withLocalizedDisplayNames:(id)a5 localizedTestNotes:(id)a6 primaryLocaleKey:(id)a7 developerName:(id)a8 expirationDate:(id)a9 iconUrlTemplate:(id)a10 testerEmail:(id)a11;
-- (void)overwriteMetadataForInstalledVersion:(id)a3 build:(id)a4 withLocalizedDisplayNames:(id)a5 localizedTestNotes:(id)a6 primaryLocaleKey:(id)a7 developerName:(id)a8 expirationDate:(id)a9 iconUrlTemplate:(id)a10 testerEmail:(id)a11;
-- (void)setBetaAppLaunchScreenEnabled:(BOOL)a3 forVersion:(id)a4 build:(id)a5;
-- (void)setProactiveFeedbackEnabled:(BOOL)a3 forVersion:(id)a4 build:(id)a5;
-- (void)updateLocalizedTestNotes:(id)a3 forVersion:(id)a4 build:(id)a5;
+- (void)deviceWillInstallBetaAppInfo:(id)info;
+- (void)deviceWillInstallVersion:(id)version build:(id)build withLocalizedDisplayNames:(id)names localizedTestNotes:(id)notes primaryLocaleKey:(id)key developerName:(id)name expirationDate:(id)date iconUrlTemplate:(id)self0 testerEmail:(id)self1;
+- (void)overwriteMetadataForInstalledVersion:(id)version build:(id)build withLocalizedDisplayNames:(id)names localizedTestNotes:(id)notes primaryLocaleKey:(id)key developerName:(id)name expirationDate:(id)date iconUrlTemplate:(id)self0 testerEmail:(id)self1;
+- (void)setBetaAppLaunchScreenEnabled:(BOOL)enabled forVersion:(id)version build:(id)build;
+- (void)setProactiveFeedbackEnabled:(BOOL)enabled forVersion:(id)version build:(id)build;
+- (void)updateLocalizedTestNotes:(id)notes forVersion:(id)version build:(id)build;
 @end
 
 @implementation TFBetaApplicationProxy
 
-- (id)initForAppWithBundleURL:(id)a3
+- (id)initForAppWithBundleURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = TFBetaApplicationProxy;
   v6 = [(TFBetaApplicationProxy *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleURL, a3);
+    objc_storeStrong(&v6->_bundleURL, l);
     v8 = AMSGenerateLogCorrelationKey();
     logKey = v7->_logKey;
     v7->_logKey = v8;
@@ -33,17 +33,17 @@
   return v7;
 }
 
-- (id)initForAppWithIdentifier:(id)a3 appPlatform:(int64_t)a4
+- (id)initForAppWithIdentifier:(id)identifier appPlatform:(int64_t)platform
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = TFBetaApplicationProxy;
   v8 = [(TFBetaApplicationProxy *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_bundleIdentifier, a3);
-    v9->_bundleAppPlatform = a4;
+    objc_storeStrong(&v8->_bundleIdentifier, identifier);
+    v9->_bundleAppPlatform = platform;
     v10 = AMSGenerateLogCorrelationKey();
     logKey = v9->_logKey;
     v9->_logKey = v10;
@@ -55,16 +55,16 @@
 - (NSString)preferredLocalizedDisplayNameForInstalledVersion
 {
   bundleURL = self->_bundleURL;
-  v4 = [MEMORY[0x277CEC4C0] sharedInstance];
-  v5 = v4;
+  mEMORY[0x277CEC4C0] = [MEMORY[0x277CEC4C0] sharedInstance];
+  v5 = mEMORY[0x277CEC4C0];
   if (bundleURL)
   {
-    [v4 getDisplayNamesForBundleURL:self->_bundleURL];
+    [mEMORY[0x277CEC4C0] getDisplayNamesForBundleURL:self->_bundleURL];
   }
 
   else
   {
-    [v4 getDisplayNamesForBundleID:self->_bundleIdentifier];
+    [mEMORY[0x277CEC4C0] getDisplayNamesForBundleID:self->_bundleIdentifier];
   }
   v6 = ;
 
@@ -85,37 +85,37 @@
 {
   v23 = *MEMORY[0x277D85DE8];
   bundleURL = self->_bundleURL;
-  v4 = [MEMORY[0x277CEC4C0] sharedInstance];
-  v5 = v4;
+  mEMORY[0x277CEC4C0] = [MEMORY[0x277CEC4C0] sharedInstance];
+  v5 = mEMORY[0x277CEC4C0];
   if (bundleURL)
   {
-    v6 = [v4 isFeedbackEnabledForBundleURL:self->_bundleURL];
+    v6 = [mEMORY[0x277CEC4C0] isFeedbackEnabledForBundleURL:self->_bundleURL];
   }
 
   else
   {
-    v6 = [v4 isFeedbackEnabledForBundleID:self->_bundleIdentifier];
+    v6 = [mEMORY[0x277CEC4C0] isFeedbackEnabledForBundleID:self->_bundleIdentifier];
   }
 
   v7 = v6;
 
   v8 = +[TFLogConfiguration defaultConfiguration];
-  v9 = [v8 generatedLogger];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v8 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = v10;
-    v12 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-    v13 = [(TFBetaApplicationProxy *)self logKey];
+    bundleIdentifier = [(TFBetaApplicationProxy *)self bundleIdentifier];
+    logKey = [(TFBetaApplicationProxy *)self logKey];
     v15 = 138544130;
     v16 = v10;
     v17 = 2114;
-    v18 = v12;
+    v18 = bundleIdentifier;
     v19 = 2112;
-    v20 = v13;
+    v20 = logKey;
     v21 = 1024;
     v22 = v7;
-    _os_log_impl(&dword_26D2C7000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] isProactiveFeedbackEnabledForInstalledVersion enabled = %d", &v15, 0x26u);
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] isProactiveFeedbackEnabledForInstalledVersion enabled = %d", &v15, 0x26u);
   }
 
   return v7;
@@ -125,173 +125,173 @@
 {
   v23 = *MEMORY[0x277D85DE8];
   bundleURL = self->_bundleURL;
-  v4 = [MEMORY[0x277CEC4C0] sharedInstance];
-  v5 = v4;
+  mEMORY[0x277CEC4C0] = [MEMORY[0x277CEC4C0] sharedInstance];
+  v5 = mEMORY[0x277CEC4C0];
   if (bundleURL)
   {
-    v6 = [v4 isLaunchScreenEnabledForBundleURL:self->_bundleURL];
+    v6 = [mEMORY[0x277CEC4C0] isLaunchScreenEnabledForBundleURL:self->_bundleURL];
   }
 
   else
   {
-    v6 = [v4 isLaunchScreenEnabledForBundleID:self->_bundleIdentifier];
+    v6 = [mEMORY[0x277CEC4C0] isLaunchScreenEnabledForBundleID:self->_bundleIdentifier];
   }
 
   v7 = v6;
 
   v8 = +[TFLogConfiguration defaultConfiguration];
-  v9 = [v8 generatedLogger];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v8 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = v10;
-    v12 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-    v13 = [(TFBetaApplicationProxy *)self logKey];
+    bundleIdentifier = [(TFBetaApplicationProxy *)self bundleIdentifier];
+    logKey = [(TFBetaApplicationProxy *)self logKey];
     v15 = 138544130;
     v16 = v10;
     v17 = 2114;
-    v18 = v12;
+    v18 = bundleIdentifier;
     v19 = 2112;
-    v20 = v13;
+    v20 = logKey;
     v21 = 1024;
     v22 = v7;
-    _os_log_impl(&dword_26D2C7000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] isBetaAppLaunchScreenEnabledForInstalledVersion enabled = %d", &v15, 0x26u);
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] isBetaAppLaunchScreenEnabledForInstalledVersion enabled = %d", &v15, 0x26u);
   }
 
   return v7;
 }
 
-- (void)deviceWillInstallVersion:(id)a3 build:(id)a4 withLocalizedDisplayNames:(id)a5 localizedTestNotes:(id)a6 primaryLocaleKey:(id)a7 developerName:(id)a8 expirationDate:(id)a9 iconUrlTemplate:(id)a10 testerEmail:(id)a11
+- (void)deviceWillInstallVersion:(id)version build:(id)build withLocalizedDisplayNames:(id)names localizedTestNotes:(id)notes primaryLocaleKey:(id)key developerName:(id)name expirationDate:(id)date iconUrlTemplate:(id)self0 testerEmail:(id)self1
 {
   v57 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v31 = a4;
-  v30 = a5;
-  v29 = a6;
-  v17 = a7;
-  v28 = a8;
-  v18 = a9;
-  v19 = a10;
-  v20 = a11;
+  versionCopy = version;
+  buildCopy = build;
+  namesCopy = names;
+  notesCopy = notes;
+  keyCopy = key;
+  nameCopy = name;
+  dateCopy = date;
+  templateCopy = template;
+  emailCopy = email;
   v21 = +[TFLogConfiguration defaultConfiguration];
-  v22 = [v21 generatedLogger];
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v21 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v23 = objc_opt_class();
     v27 = v23;
-    v24 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-    v25 = [(TFBetaApplicationProxy *)self logKey];
+    bundleIdentifier = [(TFBetaApplicationProxy *)self bundleIdentifier];
+    logKey = [(TFBetaApplicationProxy *)self logKey];
     *buf = 138546178;
     v34 = v23;
     v35 = 2114;
-    v36 = v24;
+    v36 = bundleIdentifier;
     v37 = 2112;
-    v38 = v25;
+    v38 = logKey;
     v39 = 2112;
-    v40 = v32;
+    v40 = versionCopy;
     v41 = 2112;
-    v42 = v31;
+    v42 = buildCopy;
     v43 = 2112;
-    v44 = v30;
+    v44 = namesCopy;
     v45 = 2112;
-    v46 = v29;
+    v46 = notesCopy;
     v47 = 2112;
-    v48 = v17;
+    v48 = keyCopy;
     v49 = 2112;
-    v50 = v28;
+    v50 = nameCopy;
     v51 = 2112;
-    v52 = v18;
+    v52 = dateCopy;
     v53 = 2112;
-    v54 = v19;
+    v54 = templateCopy;
     v55 = 2112;
-    v56 = v20;
-    _os_log_impl(&dword_26D2C7000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] deviceWillInstallVersion               shortVersionString = %@ |              bundleVersion = %@ |              localizedDisplayNames = %@ |              localizedTestNotes = %@ |              primaryLocaleKey = %@ |              developerName = %@ |              expirationDate = %@ |              iconUrlTemplate = %@ |              testerEmail = %@", buf, 0x7Au);
+    v56 = emailCopy;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] deviceWillInstallVersion               shortVersionString = %@ |              bundleVersion = %@ |              localizedDisplayNames = %@ |              localizedTestNotes = %@ |              primaryLocaleKey = %@ |              developerName = %@ |              expirationDate = %@ |              iconUrlTemplate = %@ |              testerEmail = %@", buf, 0x7Au);
   }
 
   v26 = objc_alloc_init(TFBetaApplicationInfo);
-  [(TFBetaApplicationInfo *)v26 setBundleVersion:v31];
-  [(TFBetaApplicationInfo *)v26 setShortVersionString:v32];
-  [(TFBetaApplicationInfo *)v26 setLocalizedDisplayNames:v30];
-  [(TFBetaApplicationInfo *)v26 setLocalizedTestNotes:v29];
-  [(TFBetaApplicationInfo *)v26 setPrimaryLocaleKey:v17];
-  [(TFBetaApplicationInfo *)v26 setExpirationDate:v18];
-  [(TFBetaApplicationInfo *)v26 setTesterEmail:v20];
-  [(TFBetaApplicationInfo *)v26 setIconUrlTemplate:v19];
+  [(TFBetaApplicationInfo *)v26 setBundleVersion:buildCopy];
+  [(TFBetaApplicationInfo *)v26 setShortVersionString:versionCopy];
+  [(TFBetaApplicationInfo *)v26 setLocalizedDisplayNames:namesCopy];
+  [(TFBetaApplicationInfo *)v26 setLocalizedTestNotes:notesCopy];
+  [(TFBetaApplicationInfo *)v26 setPrimaryLocaleKey:keyCopy];
+  [(TFBetaApplicationInfo *)v26 setExpirationDate:dateCopy];
+  [(TFBetaApplicationInfo *)v26 setTesterEmail:emailCopy];
+  [(TFBetaApplicationInfo *)v26 setIconUrlTemplate:templateCopy];
   [(TFBetaApplicationInfo *)v26 setIconNeedsMask:[(TFBetaApplicationProxy *)self bundleAppPlatform]!= 1];
   [(TFBetaApplicationProxy *)self deviceWillInstallBetaAppInfo:v26];
 }
 
-- (void)deviceWillInstallBetaAppInfo:(id)a3
+- (void)deviceWillInstallBetaAppInfo:(id)info
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = +[TFLogConfiguration defaultConfiguration];
-  v6 = [v5 generatedLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v5 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-    v10 = [(TFBetaApplicationProxy *)self logKey];
+    bundleIdentifier = [(TFBetaApplicationProxy *)self bundleIdentifier];
+    logKey = [(TFBetaApplicationProxy *)self logKey];
     *buf = 138544130;
     v38 = v7;
     v39 = 2114;
-    v40 = v9;
+    v40 = bundleIdentifier;
     v41 = 2112;
-    v42 = v10;
+    v42 = logKey;
     v43 = 2112;
-    v44 = v4;
-    _os_log_impl(&dword_26D2C7000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] InstallBetaAppInfo               betaApplicationInfo = %@", buf, 0x2Au);
+    v44 = infoCopy;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] InstallBetaAppInfo               betaApplicationInfo = %@", buf, 0x2Au);
   }
 
   v11 = objc_alloc_init(MEMORY[0x277CEC360]);
   v12 = MEMORY[0x277CEC368];
-  v13 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-  v14 = [v4 bundleVersion];
-  v15 = [(TFBetaApplicationProxy *)self _asdAppPlatform];
-  v16 = [v4 shortVersionString];
-  v17 = [v12 versionWithBundleID:v13 bundleVersion:v14 platform:v15 andShortVersion:v16];
+  bundleIdentifier2 = [(TFBetaApplicationProxy *)self bundleIdentifier];
+  bundleVersion = [infoCopy bundleVersion];
+  _asdAppPlatform = [(TFBetaApplicationProxy *)self _asdAppPlatform];
+  shortVersionString = [infoCopy shortVersionString];
+  v17 = [v12 versionWithBundleID:bundleIdentifier2 bundleVersion:bundleVersion platform:_asdAppPlatform andShortVersion:shortVersionString];
   [v11 setVersion:v17];
 
-  v18 = [v4 expirationDate];
-  [v11 setExpirationDate:v18];
+  expirationDate = [infoCopy expirationDate];
+  [v11 setExpirationDate:expirationDate];
 
-  v19 = [v4 developerName];
-  [v11 setArtistName:v19];
+  developerName = [infoCopy developerName];
+  [v11 setArtistName:developerName];
 
-  v20 = [v4 iconUrlTemplate];
-  [v11 setIconURLTemplate:v20];
+  iconUrlTemplate = [infoCopy iconUrlTemplate];
+  [v11 setIconURLTemplate:iconUrlTemplate];
 
-  v21 = [v4 localizedTestNotes];
-  [v11 setLocalizedTestNotes:v21];
+  localizedTestNotes = [infoCopy localizedTestNotes];
+  [v11 setLocalizedTestNotes:localizedTestNotes];
 
-  v22 = [v4 testerEmail];
-  [v11 setTesterEmail:v22];
+  testerEmail = [infoCopy testerEmail];
+  [v11 setTesterEmail:testerEmail];
 
   v23 = MEMORY[0x277CEC350];
-  v24 = [v4 localizedDisplayNames];
-  v25 = [v4 primaryLocaleKey];
-  v26 = [v23 displayNameWithLocalizedNames:v24 andPrimaryLocale:v25];
+  localizedDisplayNames = [infoCopy localizedDisplayNames];
+  primaryLocaleKey = [infoCopy primaryLocaleKey];
+  v26 = [v23 displayNameWithLocalizedNames:localizedDisplayNames andPrimaryLocale:primaryLocaleKey];
   [v11 setDisplayNames:v26];
 
-  [v11 setIconNeedsMask:{objc_msgSend(v4, "iconNeedsMask")}];
+  [v11 setIconNeedsMask:{objc_msgSend(infoCopy, "iconNeedsMask")}];
   [v11 setSharedFeedback:0];
   [v11 setFeedbackEnabled:0];
   [v11 setLaunchScreenEnabled:0];
   v27 = objc_opt_class();
-  v28 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-  v29 = [(TFBetaApplicationProxy *)self logKey];
-  v30 = [MEMORY[0x277CEC4C0] sharedInstance];
+  bundleIdentifier3 = [(TFBetaApplicationProxy *)self bundleIdentifier];
+  logKey2 = [(TFBetaApplicationProxy *)self logKey];
+  mEMORY[0x277CEC4C0] = [MEMORY[0x277CEC4C0] sharedInstance];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __55__TFBetaApplicationProxy_deviceWillInstallBetaAppInfo___block_invoke;
   v33[3] = &unk_279D981D0;
-  v35 = v29;
+  v35 = logKey2;
   v36 = v27;
-  v34 = v28;
-  v31 = v29;
-  v32 = v28;
-  [v30 setLaunchInfo:v11 withCompletionHandler:v33];
+  v34 = bundleIdentifier3;
+  v31 = logKey2;
+  v32 = bundleIdentifier3;
+  [mEMORY[0x277CEC4C0] setLaunchInfo:v11 withCompletionHandler:v33];
 }
 
 void __55__TFBetaApplicationProxy_deviceWillInstallBetaAppInfo___block_invoke(void *a1, void *a2)
@@ -321,53 +321,53 @@ void __55__TFBetaApplicationProxy_deviceWillInstallBetaAppInfo___block_invoke(vo
   }
 }
 
-- (void)setProactiveFeedbackEnabled:(BOOL)a3 forVersion:(id)a4 build:(id)a5
+- (void)setProactiveFeedbackEnabled:(BOOL)enabled forVersion:(id)version build:(id)build
 {
-  v6 = a3;
+  enabledCopy = enabled;
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  versionCopy = version;
+  buildCopy = build;
   v10 = +[TFLogConfiguration defaultConfiguration];
-  v11 = [v10 generatedLogger];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v10 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = v12;
-    v14 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-    v15 = [(TFBetaApplicationProxy *)self logKey];
+    bundleIdentifier = [(TFBetaApplicationProxy *)self bundleIdentifier];
+    logKey = [(TFBetaApplicationProxy *)self logKey];
     *buf = 138544642;
     v30 = v12;
     v31 = 2114;
-    v32 = v14;
+    v32 = bundleIdentifier;
     v33 = 2112;
-    v34 = v15;
+    v34 = logKey;
     v35 = 1024;
-    v36 = v6;
+    v36 = enabledCopy;
     v37 = 2112;
-    v38 = v8;
+    v38 = versionCopy;
     v39 = 2112;
-    v40 = v9;
-    _os_log_impl(&dword_26D2C7000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] setProactiveFeedbackEnabled               enabled = %d |              shortVersionString = %@ |              bundleVersion = %@ ", buf, 0x3Au);
+    v40 = buildCopy;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] setProactiveFeedbackEnabled               enabled = %d |              shortVersionString = %@ |              bundleVersion = %@ ", buf, 0x3Au);
   }
 
   v16 = MEMORY[0x277CEC368];
-  v17 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-  v18 = [v16 versionWithBundleID:v17 bundleVersion:v9 platform:-[TFBetaApplicationProxy _asdAppPlatform](self andShortVersion:{"_asdAppPlatform"), v8}];
+  bundleIdentifier2 = [(TFBetaApplicationProxy *)self bundleIdentifier];
+  v18 = [v16 versionWithBundleID:bundleIdentifier2 bundleVersion:buildCopy platform:-[TFBetaApplicationProxy _asdAppPlatform](self andShortVersion:{"_asdAppPlatform"), versionCopy}];
 
   v19 = objc_opt_class();
-  v20 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-  v21 = [(TFBetaApplicationProxy *)self logKey];
-  v22 = [MEMORY[0x277CEC4C0] sharedInstance];
+  bundleIdentifier3 = [(TFBetaApplicationProxy *)self bundleIdentifier];
+  logKey2 = [(TFBetaApplicationProxy *)self logKey];
+  mEMORY[0x277CEC4C0] = [MEMORY[0x277CEC4C0] sharedInstance];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __71__TFBetaApplicationProxy_setProactiveFeedbackEnabled_forVersion_build___block_invoke;
   v25[3] = &unk_279D981D0;
-  v27 = v21;
+  v27 = logKey2;
   v28 = v19;
-  v26 = v20;
-  v23 = v21;
-  v24 = v20;
-  [v22 setFeedbackEnabled:v6 forVersion:v18 withCompletionHandler:v25];
+  v26 = bundleIdentifier3;
+  v23 = logKey2;
+  v24 = bundleIdentifier3;
+  [mEMORY[0x277CEC4C0] setFeedbackEnabled:enabledCopy forVersion:v18 withCompletionHandler:v25];
 }
 
 void __71__TFBetaApplicationProxy_setProactiveFeedbackEnabled_forVersion_build___block_invoke(void *a1, void *a2)
@@ -397,53 +397,53 @@ void __71__TFBetaApplicationProxy_setProactiveFeedbackEnabled_forVersion_build__
   }
 }
 
-- (void)setBetaAppLaunchScreenEnabled:(BOOL)a3 forVersion:(id)a4 build:(id)a5
+- (void)setBetaAppLaunchScreenEnabled:(BOOL)enabled forVersion:(id)version build:(id)build
 {
-  v6 = a3;
+  enabledCopy = enabled;
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  versionCopy = version;
+  buildCopy = build;
   v10 = +[TFLogConfiguration defaultConfiguration];
-  v11 = [v10 generatedLogger];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v10 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = v12;
-    v14 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-    v15 = [(TFBetaApplicationProxy *)self logKey];
+    bundleIdentifier = [(TFBetaApplicationProxy *)self bundleIdentifier];
+    logKey = [(TFBetaApplicationProxy *)self logKey];
     *buf = 138544642;
     v30 = v12;
     v31 = 2114;
-    v32 = v14;
+    v32 = bundleIdentifier;
     v33 = 2112;
-    v34 = v15;
+    v34 = logKey;
     v35 = 1024;
-    v36 = v6;
+    v36 = enabledCopy;
     v37 = 2112;
-    v38 = v8;
+    v38 = versionCopy;
     v39 = 2112;
-    v40 = v9;
-    _os_log_impl(&dword_26D2C7000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] setBetaAppLaunchScreenEnabled               enabled = %d |              shortVersionString = %@ |              bundleVersion = %@ ", buf, 0x3Au);
+    v40 = buildCopy;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] setBetaAppLaunchScreenEnabled               enabled = %d |              shortVersionString = %@ |              bundleVersion = %@ ", buf, 0x3Au);
   }
 
   v16 = MEMORY[0x277CEC368];
-  v17 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-  v18 = [v16 versionWithBundleID:v17 bundleVersion:v9 platform:-[TFBetaApplicationProxy _asdAppPlatform](self andShortVersion:{"_asdAppPlatform"), v8}];
+  bundleIdentifier2 = [(TFBetaApplicationProxy *)self bundleIdentifier];
+  v18 = [v16 versionWithBundleID:bundleIdentifier2 bundleVersion:buildCopy platform:-[TFBetaApplicationProxy _asdAppPlatform](self andShortVersion:{"_asdAppPlatform"), versionCopy}];
 
   v19 = objc_opt_class();
-  v20 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-  v21 = [(TFBetaApplicationProxy *)self logKey];
-  v22 = [MEMORY[0x277CEC4C0] sharedInstance];
+  bundleIdentifier3 = [(TFBetaApplicationProxy *)self bundleIdentifier];
+  logKey2 = [(TFBetaApplicationProxy *)self logKey];
+  mEMORY[0x277CEC4C0] = [MEMORY[0x277CEC4C0] sharedInstance];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __73__TFBetaApplicationProxy_setBetaAppLaunchScreenEnabled_forVersion_build___block_invoke;
   v25[3] = &unk_279D981D0;
-  v27 = v21;
+  v27 = logKey2;
   v28 = v19;
-  v26 = v20;
-  v23 = v21;
-  v24 = v20;
-  [v22 setLaunchScreenEnabled:v6 forVersion:v18 withCompletionHandler:v25];
+  v26 = bundleIdentifier3;
+  v23 = logKey2;
+  v24 = bundleIdentifier3;
+  [mEMORY[0x277CEC4C0] setLaunchScreenEnabled:enabledCopy forVersion:v18 withCompletionHandler:v25];
 }
 
 void __73__TFBetaApplicationProxy_setBetaAppLaunchScreenEnabled_forVersion_build___block_invoke(void *a1, void *a2)
@@ -473,53 +473,53 @@ void __73__TFBetaApplicationProxy_setBetaAppLaunchScreenEnabled_forVersion_build
   }
 }
 
-- (void)updateLocalizedTestNotes:(id)a3 forVersion:(id)a4 build:(id)a5
+- (void)updateLocalizedTestNotes:(id)notes forVersion:(id)version build:(id)build
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  notesCopy = notes;
+  versionCopy = version;
+  buildCopy = build;
   v11 = +[TFLogConfiguration defaultConfiguration];
-  v12 = [v11 generatedLogger];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v11 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     v13 = objc_opt_class();
     v14 = v13;
-    v15 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-    v16 = [(TFBetaApplicationProxy *)self logKey];
+    bundleIdentifier = [(TFBetaApplicationProxy *)self bundleIdentifier];
+    logKey = [(TFBetaApplicationProxy *)self logKey];
     *buf = 138544642;
     v31 = v13;
     v32 = 2114;
-    v33 = v15;
+    v33 = bundleIdentifier;
     v34 = 2112;
-    v35 = v16;
+    v35 = logKey;
     v36 = 2112;
-    v37 = v8;
+    v37 = notesCopy;
     v38 = 2112;
-    v39 = v9;
+    v39 = versionCopy;
     v40 = 2112;
-    v41 = v10;
-    _os_log_impl(&dword_26D2C7000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] updateLocalizedTestNotes               localizedTestNotes = %@ |              shortVersionString = %@ |              bundleVersion = %@ ", buf, 0x3Eu);
+    v41 = buildCopy;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] updateLocalizedTestNotes               localizedTestNotes = %@ |              shortVersionString = %@ |              bundleVersion = %@ ", buf, 0x3Eu);
   }
 
   v17 = MEMORY[0x277CEC368];
-  v18 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-  v19 = [v17 versionWithBundleID:v18 bundleVersion:v10 platform:-[TFBetaApplicationProxy _asdAppPlatform](self andShortVersion:{"_asdAppPlatform"), v9}];
+  bundleIdentifier2 = [(TFBetaApplicationProxy *)self bundleIdentifier];
+  v19 = [v17 versionWithBundleID:bundleIdentifier2 bundleVersion:buildCopy platform:-[TFBetaApplicationProxy _asdAppPlatform](self andShortVersion:{"_asdAppPlatform"), versionCopy}];
 
   v20 = objc_opt_class();
-  v21 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-  v22 = [(TFBetaApplicationProxy *)self logKey];
-  v23 = [MEMORY[0x277CEC4C0] sharedInstance];
+  bundleIdentifier3 = [(TFBetaApplicationProxy *)self bundleIdentifier];
+  logKey2 = [(TFBetaApplicationProxy *)self logKey];
+  mEMORY[0x277CEC4C0] = [MEMORY[0x277CEC4C0] sharedInstance];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __68__TFBetaApplicationProxy_updateLocalizedTestNotes_forVersion_build___block_invoke;
   v26[3] = &unk_279D981D0;
-  v28 = v22;
+  v28 = logKey2;
   v29 = v20;
-  v27 = v21;
-  v24 = v22;
-  v25 = v21;
-  [v23 updateTestNotes:v8 forVersion:v19 withCompletionHandler:v26];
+  v27 = bundleIdentifier3;
+  v24 = logKey2;
+  v25 = bundleIdentifier3;
+  [mEMORY[0x277CEC4C0] updateTestNotes:notesCopy forVersion:v19 withCompletionHandler:v26];
 }
 
 void __68__TFBetaApplicationProxy_updateLocalizedTestNotes_forVersion_build___block_invoke(void *a1, void *a2)
@@ -549,156 +549,156 @@ void __68__TFBetaApplicationProxy_updateLocalizedTestNotes_forVersion_build___bl
   }
 }
 
-- (void)overwriteMetadataForInstalledVersion:(id)a3 build:(id)a4 withLocalizedDisplayNames:(id)a5 localizedTestNotes:(id)a6 primaryLocaleKey:(id)a7 developerName:(id)a8 expirationDate:(id)a9 iconUrlTemplate:(id)a10 testerEmail:(id)a11
+- (void)overwriteMetadataForInstalledVersion:(id)version build:(id)build withLocalizedDisplayNames:(id)names localizedTestNotes:(id)notes primaryLocaleKey:(id)key developerName:(id)name expirationDate:(id)date iconUrlTemplate:(id)self0 testerEmail:(id)self1
 {
   v88 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v54 = a5;
-  v19 = a6;
-  v59 = a7;
-  v58 = a8;
-  v20 = a9;
-  v57 = a10;
-  v56 = a11;
+  versionCopy = version;
+  buildCopy = build;
+  namesCopy = names;
+  notesCopy = notes;
+  keyCopy = key;
+  nameCopy = name;
+  dateCopy = date;
+  templateCopy = template;
+  emailCopy = email;
   v21 = +[TFLogConfiguration defaultConfiguration];
-  v22 = [v21 generatedLogger];
-  v55 = v19;
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v21 generatedLogger];
+  v55 = notesCopy;
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = v18;
+    v23 = buildCopy;
     v24 = objc_opt_class();
     v51 = v24;
-    v25 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-    v26 = [(TFBetaApplicationProxy *)self logKey];
+    bundleIdentifier = [(TFBetaApplicationProxy *)self bundleIdentifier];
+    logKey = [(TFBetaApplicationProxy *)self logKey];
     *buf = 138546178;
     v65 = v24;
-    v18 = v23;
+    buildCopy = v23;
     v66 = 2114;
-    v67 = v25;
+    v67 = bundleIdentifier;
     v68 = 2112;
-    v69 = v26;
+    v69 = logKey;
     v70 = 2112;
-    v71 = v17;
+    v71 = versionCopy;
     v72 = 2112;
     v73 = v23;
     v74 = 2112;
-    v75 = v54;
+    v75 = namesCopy;
     v76 = 2112;
     v77 = v55;
     v78 = 2112;
-    v79 = v59;
+    v79 = keyCopy;
     v80 = 2112;
-    v81 = v58;
+    v81 = nameCopy;
     v82 = 2112;
-    v83 = v20;
+    v83 = dateCopy;
     v84 = 2112;
-    v85 = v57;
+    v85 = templateCopy;
     v86 = 2112;
-    v87 = v56;
-    _os_log_impl(&dword_26D2C7000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] overwriteMetadataForInstalledVersion               shortVersionString = %@ |              bundleVersion = %@ |              localizedDisplayNames = %@ |              localizedTestNotes = %@ |              primaryLocaleKey = %@ |              developerName = %@ |              expirationDate = %@ |              iconUrlTemplate = %@ |              testerEmail = %@", buf, 0x7Au);
+    v87 = emailCopy;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@:%@] overwriteMetadataForInstalledVersion               shortVersionString = %@ |              bundleVersion = %@ |              localizedDisplayNames = %@ |              localizedTestNotes = %@ |              primaryLocaleKey = %@ |              developerName = %@ |              expirationDate = %@ |              iconUrlTemplate = %@ |              testerEmail = %@", buf, 0x7Au);
 
-    v19 = v55;
+    notesCopy = v55;
   }
 
   v27 = MEMORY[0x277CEC368];
-  v28 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-  v29 = [v27 versionWithBundleID:v28 bundleVersion:v18 platform:-[TFBetaApplicationProxy _asdAppPlatform](self andShortVersion:{"_asdAppPlatform"), v17}];
+  bundleIdentifier2 = [(TFBetaApplicationProxy *)self bundleIdentifier];
+  v29 = [v27 versionWithBundleID:bundleIdentifier2 bundleVersion:buildCopy platform:-[TFBetaApplicationProxy _asdAppPlatform](self andShortVersion:{"_asdAppPlatform"), versionCopy}];
 
-  v30 = [MEMORY[0x277CEC4C0] sharedInstance];
-  v31 = [v30 getLaunchInfoForVersion:v29];
+  mEMORY[0x277CEC4C0] = [MEMORY[0x277CEC4C0] sharedInstance];
+  v31 = [mEMORY[0x277CEC4C0] getLaunchInfoForVersion:v29];
 
   if (v31)
   {
-    v32 = v54;
-    if (v54)
+    v32 = namesCopy;
+    if (namesCopy)
     {
-      v33 = [v31 displayNames];
-      [v33 setLocalizedNames:v54];
+      displayNames = [v31 displayNames];
+      [displayNames setLocalizedNames:namesCopy];
     }
 
-    if (v19)
+    if (notesCopy)
     {
-      [v31 setLocalizedTestNotes:v19];
+      [v31 setLocalizedTestNotes:notesCopy];
     }
 
-    if (v59)
+    if (keyCopy)
     {
-      v34 = [v31 displayNames];
-      [v34 setPrimaryLocale:v59];
+      displayNames2 = [v31 displayNames];
+      [displayNames2 setPrimaryLocale:keyCopy];
     }
 
-    v52 = v17;
-    if (v58)
+    v52 = versionCopy;
+    if (nameCopy)
     {
       [v31 setArtistName:?];
     }
 
     v35 = v29;
-    if (v20)
+    if (dateCopy)
     {
-      [v31 setExpirationDate:v20];
+      [v31 setExpirationDate:dateCopy];
     }
 
-    v36 = v20;
-    if (v57)
+    v36 = dateCopy;
+    if (templateCopy)
     {
-      [v31 setIconURLTemplate:v57];
+      [v31 setIconURLTemplate:templateCopy];
     }
 
-    v37 = v18;
-    if (v56)
+    v37 = buildCopy;
+    if (emailCopy)
     {
       [v31 setTesterEmail:?];
     }
 
     v38 = objc_opt_class();
-    v39 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-    v40 = [(TFBetaApplicationProxy *)self logKey];
-    v41 = [MEMORY[0x277CEC4C0] sharedInstance];
+    bundleIdentifier3 = [(TFBetaApplicationProxy *)self bundleIdentifier];
+    logKey2 = [(TFBetaApplicationProxy *)self logKey];
+    mEMORY[0x277CEC4C0]2 = [MEMORY[0x277CEC4C0] sharedInstance];
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
     v60[2] = __188__TFBetaApplicationProxy_overwriteMetadataForInstalledVersion_build_withLocalizedDisplayNames_localizedTestNotes_primaryLocaleKey_developerName_expirationDate_iconUrlTemplate_testerEmail___block_invoke;
     v60[3] = &unk_279D981D0;
-    v62 = v40;
+    v62 = logKey2;
     v63 = v38;
-    v61 = v39;
-    v42 = v40;
-    v43 = v39;
-    [v41 setLaunchInfo:v31 withCompletionHandler:v60];
+    v61 = bundleIdentifier3;
+    generatedLogger2 = logKey2;
+    v43 = bundleIdentifier3;
+    [mEMORY[0x277CEC4C0]2 setLaunchInfo:v31 withCompletionHandler:v60];
 
-    v18 = v37;
-    v20 = v36;
+    buildCopy = v37;
+    dateCopy = v36;
     v29 = v35;
-    v17 = v52;
+    versionCopy = v52;
   }
 
   else
   {
     v43 = +[TFLogConfiguration defaultConfiguration];
-    v42 = [v43 generatedLogger];
-    v32 = v54;
-    if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
+    generatedLogger2 = [v43 generatedLogger];
+    v32 = namesCopy;
+    if (os_log_type_enabled(generatedLogger2, OS_LOG_TYPE_ERROR))
     {
-      v53 = v17;
+      v53 = versionCopy;
       v44 = v29;
-      v45 = v20;
-      v46 = v18;
+      v45 = dateCopy;
+      v46 = buildCopy;
       v47 = objc_opt_class();
       v50 = v47;
-      v48 = [(TFBetaApplicationProxy *)self bundleIdentifier];
-      v49 = [(TFBetaApplicationProxy *)self logKey];
+      bundleIdentifier4 = [(TFBetaApplicationProxy *)self bundleIdentifier];
+      logKey3 = [(TFBetaApplicationProxy *)self logKey];
       *buf = 138543874;
       v65 = v47;
-      v18 = v46;
-      v20 = v45;
+      buildCopy = v46;
+      dateCopy = v45;
       v29 = v44;
-      v17 = v53;
+      versionCopy = v53;
       v66 = 2114;
-      v67 = v48;
+      v67 = bundleIdentifier4;
       v68 = 2112;
-      v69 = v49;
-      _os_log_impl(&dword_26D2C7000, v42, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@:%@] Failed to find beta app launch info to overwrite", buf, 0x20u);
+      v69 = logKey3;
+      _os_log_impl(&dword_26D2C7000, generatedLogger2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@:%@] Failed to find beta app launch info to overwrite", buf, 0x20u);
     }
   }
 }

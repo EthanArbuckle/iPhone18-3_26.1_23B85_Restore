@@ -1,36 +1,36 @@
 @interface CDRichComplicationCurvedProgressView
-- (CDRichComplicationCurvedProgressView)initWithFamily:(int64_t)a3 curveWidth:(double)a4 padding:(double)a5 beginAngle:(double)a6 endAngle:(double)a7 forDevice:(id)a8 withFilterStyle:(int64_t)a9 progressFillStyle:(int64_t)a10;
-- (id)filterForView:(id)a3 style:(int64_t)a4;
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)filtersForView:(id)a3 style:(int64_t)a4;
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)overrideBackgroundGradientColorsForGradientColors:(id)a3;
-- (id)overrideBackgroundGradientColorsForGradientColors:(id)a3 locations:(id)a4;
-- (void)setBeginAngle:(double)a3;
-- (void)setEndAngle:(double)a3;
-- (void)setProgress:(double)a3;
+- (CDRichComplicationCurvedProgressView)initWithFamily:(int64_t)family curveWidth:(double)width padding:(double)padding beginAngle:(double)angle endAngle:(double)endAngle forDevice:(id)device withFilterStyle:(int64_t)style progressFillStyle:(int64_t)self0;
+- (id)filterForView:(id)view style:(int64_t)style;
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)filtersForView:(id)view style:(int64_t)style;
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)overrideBackgroundGradientColorsForGradientColors:(id)colors;
+- (id)overrideBackgroundGradientColorsForGradientColors:(id)colors locations:(id)locations;
+- (void)setBeginAngle:(double)angle;
+- (void)setEndAngle:(double)angle;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation CDRichComplicationCurvedProgressView
 
-- (CDRichComplicationCurvedProgressView)initWithFamily:(int64_t)a3 curveWidth:(double)a4 padding:(double)a5 beginAngle:(double)a6 endAngle:(double)a7 forDevice:(id)a8 withFilterStyle:(int64_t)a9 progressFillStyle:(int64_t)a10
+- (CDRichComplicationCurvedProgressView)initWithFamily:(int64_t)family curveWidth:(double)width padding:(double)padding beginAngle:(double)angle endAngle:(double)endAngle forDevice:(id)device withFilterStyle:(int64_t)style progressFillStyle:(int64_t)self0
 {
-  v18 = a8;
+  deviceCopy = device;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __138__CDRichComplicationCurvedProgressView_initWithFamily_curveWidth_padding_beginAngle_endAngle_forDevice_withFilterStyle_progressFillStyle___block_invoke;
   aBlock[3] = &unk_278DF35C0;
-  v31 = a4;
-  v32 = a5;
-  v33 = a6;
-  v34 = a7;
-  v19 = v18;
+  widthCopy = width;
+  paddingCopy = padding;
+  angleCopy = angle;
+  endAngleCopy = endAngle;
+  v19 = deviceCopy;
   v30 = v19;
-  v35 = a9;
+  styleCopy = style;
   v20 = _Block_copy(aBlock);
-  if (a10 <= 7 && ((0xFDu >> a10) & 1) != 0)
+  if (fillStyle <= 7 && ((0xFDu >> fillStyle) & 1) != 0)
   {
-    v21 = *off_278DF35E0[a10];
+    v21 = *off_278DF35E0[fillStyle];
     v22 = objc_opt_class();
   }
 
@@ -39,12 +39,12 @@
     v22 = 0;
   }
 
-  self->_progressFillStyle = a10;
+  self->_progressFillStyle = fillStyle;
   v23 = v20[2](v20, v22);
   v24 = v20[2](v20, v22);
   v28.receiver = self;
   v28.super_class = CDRichComplicationCurvedProgressView;
-  v25 = [(CDRichComplicationProgressView *)&v28 initForFamily:a3 device:v19 backgroundShapeView:v23 foregroundShapeView:v24];
+  v25 = [(CDRichComplicationProgressView *)&v28 initForFamily:family device:v19 backgroundShapeView:v23 foregroundShapeView:v24];
   v26 = v25;
   if (v25)
   {
@@ -62,25 +62,25 @@ id __138__CDRichComplicationCurvedProgressView_initWithFamily_curveWidth_padding
   return v2;
 }
 
-- (void)setBeginAngle:(double)a3
+- (void)setBeginAngle:(double)angle
 {
-  self->_beginAngle = a3;
+  self->_beginAngle = angle;
   [(CDRichComplicationCurveView *)self->_backgroundView setBeginAngle:?];
-  [(CDRichComplicationCurveView *)self->_foregroundView setBeginAngle:a3];
+  [(CDRichComplicationCurveView *)self->_foregroundView setBeginAngle:angle];
 
   [(CDRichComplicationCurvedProgressView *)self setNeedsLayout];
 }
 
-- (void)setEndAngle:(double)a3
+- (void)setEndAngle:(double)angle
 {
-  self->_endAngle = a3;
+  self->_endAngle = angle;
   [(CDRichComplicationCurveView *)self->_backgroundView setEndAngle:?];
-  [(CDRichComplicationCurveView *)self->_foregroundView setEndAngle:a3];
+  [(CDRichComplicationCurveView *)self->_foregroundView setEndAngle:angle];
 
   [(CDRichComplicationCurvedProgressView *)self setNeedsLayout];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
   if (CDRichComplicationProgressFillStyleIsMetered(self->_progressFillStyle))
   {
@@ -89,22 +89,22 @@ id __138__CDRichComplicationCurvedProgressView_initWithFamily_curveWidth_padding
 
   v5.receiver = self;
   v5.super_class = CDRichComplicationCurvedProgressView;
-  [(CDRichComplicationProgressView *)&v5 setProgress:a3];
+  [(CDRichComplicationProgressView *)&v5 setProgress:progress];
 }
 
-- (id)overrideBackgroundGradientColorsForGradientColors:(id)a3
+- (id)overrideBackgroundGradientColorsForGradientColors:(id)colors
 {
-  v4 = a3;
-  if (CDRichComplicationProgressFillStyleIsMetered(self->_progressFillStyle) && [v4 count])
+  colorsCopy = colors;
+  if (CDRichComplicationProgressFillStyleIsMetered(self->_progressFillStyle) && [colorsCopy count])
   {
-    v5 = CDGenerateMeterBackgroundGradientColors([v4 count]);
+    v5 = CDGenerateMeterBackgroundGradientColors([colorsCopy count]);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CDRichComplicationCurvedProgressView;
-    v5 = [(CDRichComplicationProgressView *)&v8 overrideBackgroundGradientColorsForGradientColors:v4];
+    v5 = [(CDRichComplicationProgressView *)&v8 overrideBackgroundGradientColorsForGradientColors:colorsCopy];
   }
 
   v6 = v5;
@@ -112,20 +112,20 @@ id __138__CDRichComplicationCurvedProgressView_initWithFamily_curveWidth_padding
   return v6;
 }
 
-- (id)overrideBackgroundGradientColorsForGradientColors:(id)a3 locations:(id)a4
+- (id)overrideBackgroundGradientColorsForGradientColors:(id)colors locations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
-  if (CDRichComplicationProgressFillStyleIsMetered(self->_progressFillStyle) && [v6 count])
+  colorsCopy = colors;
+  locationsCopy = locations;
+  if (CDRichComplicationProgressFillStyleIsMetered(self->_progressFillStyle) && [colorsCopy count])
   {
-    v8 = CDGenerateMeterBackgroundGradientColors([v6 count]);
+    v8 = CDGenerateMeterBackgroundGradientColors([colorsCopy count]);
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = CDRichComplicationCurvedProgressView;
-    v8 = [(CDRichComplicationProgressView *)&v11 overrideBackgroundGradientColorsForGradientColors:v6 locations:v7];
+    v8 = [(CDRichComplicationProgressView *)&v11 overrideBackgroundGradientColorsForGradientColors:colorsCopy locations:locationsCopy];
   }
 
   v9 = v8;
@@ -133,34 +133,34 @@ id __138__CDRichComplicationCurvedProgressView_initWithFamily_curveWidth_padding
   return v9;
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4
+- (id)filtersForView:(id)view style:(int64_t)style
 {
-  v6 = [(CDRichComplicationProgressView *)self filterProvider];
-  v7 = [v6 filtersForView:self style:a4];
+  filterProvider = [(CDRichComplicationProgressView *)self filterProvider];
+  v7 = [filterProvider filtersForView:self style:style];
 
   return v7;
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v8 = [(CDRichComplicationProgressView *)self filterProvider];
-  v9 = [v8 filtersForView:self style:a4 fraction:a5];
+  filterProvider = [(CDRichComplicationProgressView *)self filterProvider];
+  v9 = [filterProvider filtersForView:self style:style fraction:fraction];
 
   return v9;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v8 = [(CDRichComplicationProgressView *)self filterProvider];
-  v9 = [v8 filterForView:self style:a4 fraction:a5];
+  filterProvider = [(CDRichComplicationProgressView *)self filterProvider];
+  v9 = [filterProvider filterForView:self style:style fraction:fraction];
 
   return v9;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4
+- (id)filterForView:(id)view style:(int64_t)style
 {
-  v6 = [(CDRichComplicationProgressView *)self filterProvider];
-  v7 = [v6 filterForView:self style:a4];
+  filterProvider = [(CDRichComplicationProgressView *)self filterProvider];
+  v7 = [filterProvider filterForView:self style:style];
 
   return v7;
 }

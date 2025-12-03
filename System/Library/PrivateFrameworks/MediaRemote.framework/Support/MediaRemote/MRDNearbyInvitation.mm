@@ -1,5 +1,5 @@
 @interface MRDNearbyInvitation
-+ (void)createWithNearbyGroup:(_TtC12mediaremoted14MRDNearbyGroup *)a3 displayName:(NSString *)a4 routeType:(unsigned __int8)a5 completion:(id)a6;
++ (void)createWithNearbyGroup:(_TtC12mediaremoted14MRDNearbyGroup *)group displayName:(NSString *)name routeType:(unsigned __int8)type completion:(id)completion;
 - (NSData)invitationData;
 - (NSString)description;
 - (_TtC12mediaremoted19MRDNearbyInvitation)init;
@@ -11,7 +11,7 @@
 - (NSData)invitationData
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC12mediaremoted19MRDNearbyInvitation_nearbyInvitation);
-  v3 = self;
+  selfCopy = self;
   v4 = dispatch thunk of NearbyInvitation.invitationData.getter();
   v6 = v5;
 
@@ -21,19 +21,19 @@
   return v7.super.isa;
 }
 
-+ (void)createWithNearbyGroup:(_TtC12mediaremoted14MRDNearbyGroup *)a3 displayName:(NSString *)a4 routeType:(unsigned __int8)a5 completion:(id)a6
++ (void)createWithNearbyGroup:(_TtC12mediaremoted14MRDNearbyGroup *)group displayName:(NSString *)name routeType:(unsigned __int8)type completion:(id)completion
 {
   v11 = sub_1001BC5A8(&qword_100521B60, &qword_10044F1A0);
   v12 = *(*(v11 - 8) + 64);
   __chkstk_darwin(v11 - 8);
   v14 = &v22 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(completion);
   v16 = swift_allocObject();
-  *(v16 + 16) = a3;
-  *(v16 + 24) = a4;
-  *(v16 + 32) = a5;
+  *(v16 + 16) = group;
+  *(v16 + 24) = name;
+  *(v16 + 32) = type;
   *(v16 + 40) = v15;
-  *(v16 + 48) = a1;
+  *(v16 + 48) = self;
   v17 = type metadata accessor for TaskPriority();
   (*(*(v17 - 8) + 56))(v14, 1, 1, v17);
   v18 = swift_allocObject();
@@ -46,22 +46,22 @@
   v19[3] = 0;
   v19[4] = &unk_10044F2B8;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
+  groupCopy = group;
+  nameCopy = name;
   sub_1001D34BC(0, 0, v14, &unk_10044F2C8, v19);
 }
 
 - (NSString)description
 {
   swift_getObjectType();
-  v3 = self;
+  selfCopy = self;
   v4._countAndFlagsBits = _typeName(_:qualified:)();
   String.append(_:)(v4);
 
   v5._countAndFlagsBits = 0x3D6469203ALL;
   v5._object = 0xE500000000000000;
   String.append(_:)(v5);
-  v8._countAndFlagsBits = (*((swift_isaMask & v3->super.isa) + 0x60))(v6, v7);
+  v8._countAndFlagsBits = (*((swift_isaMask & selfCopy->super.isa) + 0x60))(v6, v7);
   String.append(_:)(v8);
 
   v9._countAndFlagsBits = 62;
@@ -85,7 +85,7 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_1001CB290(0, 0, v6, &unk_10044F298, v8);
 }
 

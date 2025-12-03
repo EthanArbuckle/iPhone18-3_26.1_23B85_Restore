@@ -1,11 +1,11 @@
 @interface MIDIUMPFunctionBlock
-- (BOOL)deserialize:(id)a3;
+- (BOOL)deserialize:(id)deserialize;
 - (BOOL)isEnabled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMine;
 - (MIDICIDevice)midiCIDevice;
 - (MIDIUMPEndpoint)UMPEndpoint;
-- (MIDIUMPFunctionBlock)initWithDescription:(id)a3;
+- (MIDIUMPFunctionBlock)initWithDescription:(id)description;
 - (NSString)name;
 - (id).cxx_construct;
 - (id)serializeDescription;
@@ -16,8 +16,8 @@
 - (unsigned)functionBlockID;
 - (unsigned)maxSysEx8Streams;
 - (unsigned)totalGroupsSpanned;
-- (void)setEndpoint:(id)a3;
-- (void)setFunctionBlockID:(unsigned __int8)a3;
+- (void)setEndpoint:(id)endpoint;
+- (void)setFunctionBlockID:(unsigned __int8)d;
 @end
 
 @implementation MIDIUMPFunctionBlock
@@ -134,13 +134,13 @@
   }
 
   v4 = +[MIDICIDeviceManager sharedInstance];
-  v5 = [v4 devices];
+  devices = [v4 devices];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v5;
+  v6 = devices;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v7)
   {
@@ -158,16 +158,16 @@
       }
 
       v10 = *(*(&v18 + 1) + 8 * i);
-      v11 = [v10 MIDISource];
+      mIDISource = [v10 MIDISource];
       v12 = objc_loadWeakRetained(&self->_UMPEndpoint);
-      if (v11 != [v12 MIDISource])
+      if (mIDISource != [v12 MIDISource])
       {
         goto LABEL_13;
       }
 
-      v13 = [v10 MIDIDestination];
+      mIDIDestination = [v10 MIDIDestination];
       v14 = objc_loadWeakRetained(&self->_UMPEndpoint);
-      if (v13 != [v14 MIDIDestination] || objc_msgSend(v10, "functionBlockID") != self->_functionBlockID)
+      if (mIDIDestination != [v14 MIDIDestination] || objc_msgSend(v10, "functionBlockID") != self->_functionBlockID)
       {
 
 LABEL_13:
@@ -196,19 +196,19 @@ LABEL_19:
   return v7;
 }
 
-- (void)setEndpoint:(id)a3
+- (void)setEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   os_unfair_recursive_lock_lock_with_options();
-  objc_storeWeak(&self->_UMPEndpoint, v4);
+  objc_storeWeak(&self->_UMPEndpoint, endpointCopy);
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)setFunctionBlockID:(unsigned __int8)a3
+- (void)setFunctionBlockID:(unsigned __int8)d
 {
   os_unfair_recursive_lock_lock_with_options();
-  self->_functionBlockID = a3;
+  self->_functionBlockID = d;
 
   os_unfair_recursive_lock_unlock();
 }
@@ -287,42 +287,42 @@ LABEL_19:
   return v13;
 }
 
-- (BOOL)deserialize:(id)a3
+- (BOOL)deserialize:(id)deserialize
 {
-  v4 = a3;
+  deserializeCopy = deserialize;
   os_unfair_recursive_lock_lock_with_options();
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"id"];
-  v24 = [v4 objectForKey:v5];
+  v24 = [deserializeCopy objectForKey:v5];
 
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"name"];
-  obj = [v4 objectForKey:v6];
+  obj = [deserializeCopy objectForKey:v6];
 
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"direction"];
-  v26 = [v4 objectForKey:v7];
+  v26 = [deserializeCopy objectForKey:v7];
 
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"first_group"];
-  v25 = [v4 objectForKey:v8];
+  v25 = [deserializeCopy objectForKey:v8];
 
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"groups_spanned"];
-  v10 = [v4 objectForKey:v9];
+  v10 = [deserializeCopy objectForKey:v9];
 
   v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"max_sysex8_stream"];
-  v12 = [v4 objectForKey:v11];
+  v12 = [deserializeCopy objectForKey:v11];
 
   v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"midi1_info"];
-  v14 = [v4 objectForKey:v13];
+  v14 = [deserializeCopy objectForKey:v13];
 
   v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ui_hint"];
-  v16 = [v4 objectForKey:v15];
+  v16 = [deserializeCopy objectForKey:v15];
 
   v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"enabled"];
-  v18 = [v4 objectForKey:v17];
+  v18 = [deserializeCopy objectForKey:v17];
 
   v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"object"];
-  v20 = [v4 objectForKey:v19];
+  v20 = [deserializeCopy objectForKey:v19];
 
   v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"owner_client_ref"];
-  v22 = [v4 objectForKey:v21];
+  v22 = [deserializeCopy objectForKey:v21];
 
   self->_functionBlockID = [v24 unsignedIntegerValue];
   objc_storeStrong(&self->_name, obj);
@@ -340,18 +340,18 @@ LABEL_19:
   return 1;
 }
 
-- (MIDIUMPFunctionBlock)initWithDescription:(id)a3
+- (MIDIUMPFunctionBlock)initWithDescription:(id)description
 {
-  [(MIDIUMPFunctionBlock *)self deserialize:a3];
+  [(MIDIUMPFunctionBlock *)self deserialize:description];
   self->_ownerClientRef = 0;
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   os_unfair_recursive_lock_lock_with_options();
-  v5 = v4;
+  v5 = equalCopy;
   v6 = [(NSString *)self->_name isEqualToString:v5[1]]&& self->_functionBlockID == *(v5 + 16) && self->_direction == *(v5 + 5) && self->_firstGroup == *(v5 + 24) && self->_totalGroupsSpanned == *(v5 + 25) && self->_maxSysEx8Streams == *(v5 + 26) && self->_MIDI1Info == *(v5 + 7) && self->_UIHint == *(v5 + 8) && self->_isEnabled == *(v5 + 48);
 
   os_unfair_recursive_lock_unlock();

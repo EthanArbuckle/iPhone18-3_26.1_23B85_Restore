@@ -1,36 +1,36 @@
 @interface PLAccountingCorrectionOwner
-- (PLAccountingCorrectionOwner)initWithRootEnergyEstimate:(id)a3;
+- (PLAccountingCorrectionOwner)initWithRootEnergyEstimate:(id)estimate;
 - (id)ID;
 - (id)activationDate;
 - (id)range;
 - (void)correct;
-- (void)setRunDate:(id)a3;
+- (void)setRunDate:(id)date;
 @end
 
 @implementation PLAccountingCorrectionOwner
 
 - (id)ID
 {
-  v2 = [(PLAccountingCorrectionOwner *)self rootEnergyEstimate];
-  v3 = [v2 nodeID];
+  rootEnergyEstimate = [(PLAccountingCorrectionOwner *)self rootEnergyEstimate];
+  nodeID = [rootEnergyEstimate nodeID];
 
-  return v3;
+  return nodeID;
 }
 
 - (id)range
 {
-  v2 = [(PLAccountingCorrectionOwner *)self rootEnergyEstimate];
-  v3 = [v2 range];
+  rootEnergyEstimate = [(PLAccountingCorrectionOwner *)self rootEnergyEstimate];
+  range = [rootEnergyEstimate range];
 
-  return v3;
+  return range;
 }
 
 - (id)activationDate
 {
-  v2 = [(PLAccountingCorrectionOwner *)self rootEnergyEstimate];
-  v3 = [v2 entryDate];
+  rootEnergyEstimate = [(PLAccountingCorrectionOwner *)self rootEnergyEstimate];
+  entryDate = [rootEnergyEstimate entryDate];
 
-  return v3;
+  return entryDate;
 }
 
 - (void)correct
@@ -55,14 +55,14 @@
     if (v4 == 1)
     {
       v5 = MEMORY[0x277CCACA8];
-      v6 = [(PLAccountingCorrectionOwner *)self rootEnergyEstimate];
-      v7 = [v5 stringWithFormat:@"self.rootEnergyEstimate=%@", v6];
+      rootEnergyEstimate = [(PLAccountingCorrectionOwner *)self rootEnergyEstimate];
+      v7 = [v5 stringWithFormat:@"self.rootEnergyEstimate=%@", rootEnergyEstimate];
 
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Correction/PLAccountingCorrectionOwner.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingCorrectionOwner correct]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:49];
+      [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:49];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -72,20 +72,20 @@
     }
   }
 
-  v13 = [(PLAccountingCorrectionOwner *)self rootEnergyEstimate];
-  [v13 energy];
+  rootEnergyEstimate2 = [(PLAccountingCorrectionOwner *)self rootEnergyEstimate];
+  [rootEnergyEstimate2 energy];
   v15 = v14;
 
   v150 = 0u;
   v151 = 0u;
   v148 = 0u;
   v149 = 0u;
-  v16 = [(PLAccountingOwner *)self dependencyIDToDependenciesInRange];
-  v17 = [v16 allKeys];
+  dependencyIDToDependenciesInRange = [(PLAccountingOwner *)self dependencyIDToDependenciesInRange];
+  allKeys = [dependencyIDToDependenciesInRange allKeys];
 
-  obj = v17;
-  v119 = self;
-  v116 = [v17 countByEnumeratingWithState:&v148 objects:v158 count:16];
+  obj = allKeys;
+  selfCopy = self;
+  v116 = [allKeys countByEnumeratingWithState:&v148 objects:v158 count:16];
   if (v116)
   {
     v115 = *v149;
@@ -122,9 +122,9 @@
             v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"rootNodeID=%@", v20];
             v24 = MEMORY[0x277D3F178];
             v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Correction/PLAccountingCorrectionOwner.m"];
-            v26 = [v25 lastPathComponent];
+            lastPathComponent2 = [v25 lastPathComponent];
             v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingCorrectionOwner correct]"];
-            [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:53];
+            [v24 logMessage:v23 fromFile:lastPathComponent2 fromFunction:v27 fromLineNumber:53];
 
             v28 = PLLogCommon();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -134,12 +134,12 @@
               _os_log_debug_impl(&dword_25EDCD000, v28, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
             }
 
-            self = v119;
+            self = selfCopy;
           }
         }
 
-        v29 = [(PLAccountingOwner *)self dependencyIDToDependenciesInRange];
-        v30 = [v29 objectForKeyedSubscript:v20];
+        dependencyIDToDependenciesInRange2 = [(PLAccountingOwner *)self dependencyIDToDependenciesInRange];
+        v30 = [dependencyIDToDependenciesInRange2 objectForKeyedSubscript:v20];
 
         if ([MEMORY[0x277D3F180] debugEnabled])
         {
@@ -162,9 +162,9 @@
             v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"dependenciesInRange=%@", v30];
             v34 = MEMORY[0x277D3F178];
             v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Correction/PLAccountingCorrectionOwner.m"];
-            v36 = [v35 lastPathComponent];
+            lastPathComponent3 = [v35 lastPathComponent];
             v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingCorrectionOwner correct]"];
-            [v34 logMessage:v33 fromFile:v36 fromFunction:v37 fromLineNumber:56];
+            [v34 logMessage:v33 fromFile:lastPathComponent3 fromFunction:v37 fromLineNumber:56];
 
             v38 = PLLogCommon();
             if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -174,7 +174,7 @@
               _os_log_debug_impl(&dword_25EDCD000, v38, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
             }
 
-            self = v119;
+            self = selfCopy;
           }
         }
 
@@ -201,7 +201,7 @@
                 objc_enumerationMutation(v39);
               }
 
-              v45 = [*(*(&v138 + 1) + 8 * v44) energyEvent];
+              energyEvent = [*(*(&v138 + 1) + 8 * v44) energyEvent];
               if ([MEMORY[0x277D3F180] debugEnabled])
               {
                 v46 = objc_opt_class();
@@ -220,12 +220,12 @@
 
                 if (v47 == 1)
                 {
-                  v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEvent=%@", v45];
+                  v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEvent=%@", energyEvent];
                   v49 = MEMORY[0x277D3F178];
                   v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Correction/PLAccountingCorrectionOwner.m"];
-                  v51 = [v50 lastPathComponent];
+                  lastPathComponent4 = [v50 lastPathComponent];
                   v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingCorrectionOwner correct]"];
-                  [v49 logMessage:v48 fromFile:v51 fromFunction:v52 fromLineNumber:62];
+                  [v49 logMessage:v48 fromFile:lastPathComponent4 fromFunction:v52 fromLineNumber:62];
 
                   v53 = PLLogCommon();
                   if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
@@ -235,22 +235,22 @@
                     _os_log_debug_impl(&dword_25EDCD000, v53, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                   }
 
-                  self = v119;
+                  self = selfCopy;
                 }
               }
 
-              [v45 energy];
+              [energyEvent energy];
               if (v54 != 0.0)
               {
-                v55 = [v45 range];
-                v56 = [(PLAccountingCorrectionOwner *)self range];
-                v57 = [v55 intersect:v56];
+                range = [energyEvent range];
+                range2 = [(PLAccountingCorrectionOwner *)self range];
+                v57 = [range intersect:range2];
                 [v57 length];
                 v59 = v58;
-                v60 = [v45 range];
-                [v60 length];
+                range3 = [energyEvent range];
+                [range3 length];
                 v62 = v59 / v61;
-                [v45 energy];
+                [energyEvent energy];
                 v43 = v43 + v62 * v63;
 
                 if ([MEMORY[0x277D3F180] debugEnabled])
@@ -274,9 +274,9 @@
                     v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"totalEstimatedForNode=%f", *&v43];
                     v67 = MEMORY[0x277D3F178];
                     v68 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Correction/PLAccountingCorrectionOwner.m"];
-                    v69 = [v68 lastPathComponent];
+                    lastPathComponent5 = [v68 lastPathComponent];
                     v70 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingCorrectionOwner correct]"];
-                    [v67 logMessage:v66 fromFile:v69 fromFunction:v70 fromLineNumber:67];
+                    [v67 logMessage:v66 fromFile:lastPathComponent5 fromFunction:v70 fromLineNumber:67];
 
                     v71 = PLLogCommon();
                     if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
@@ -286,7 +286,7 @@
                       _os_log_debug_impl(&dword_25EDCD000, v71, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
                     }
 
-                    self = v119;
+                    self = selfCopy;
                   }
                 }
               }
@@ -362,9 +362,9 @@
       v75 = [MEMORY[0x277CCACA8] stringWithFormat:@"totalMeasured=%f, totalEstimated=%f, multiplier=%f", *&v18, *&v15, *&v72];
       v76 = MEMORY[0x277D3F178];
       v77 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Correction/PLAccountingCorrectionOwner.m"];
-      v78 = [v77 lastPathComponent];
+      lastPathComponent6 = [v77 lastPathComponent];
       v79 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingCorrectionOwner correct]"];
-      [v76 logMessage:v75 fromFile:v78 fromFunction:v79 fromLineNumber:80];
+      [v76 logMessage:v75 fromFile:lastPathComponent6 fromFunction:v79 fromLineNumber:80];
 
       v80 = PLLogCommon();
       if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
@@ -374,9 +374,9 @@
     }
   }
 
-  v81 = [MEMORY[0x277CBEB18] array];
-  v82 = [(PLAccountingCorrectionOwner *)self rootEnergyEstimate];
-  [v81 addObject:v82];
+  array = [MEMORY[0x277CBEB18] array];
+  rootEnergyEstimate3 = [(PLAccountingCorrectionOwner *)self rootEnergyEstimate];
+  [array addObject:rootEnergyEstimate3];
 
   do
   {
@@ -398,12 +398,12 @@
 
       if (v84 == 1)
       {
-        v85 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEstimatesToCorrect=%@", v81];
+        v85 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEstimatesToCorrect=%@", array];
         v86 = MEMORY[0x277D3F178];
         v87 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Correction/PLAccountingCorrectionOwner.m"];
-        v88 = [v87 lastPathComponent];
+        lastPathComponent7 = [v87 lastPathComponent];
         v89 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingCorrectionOwner correct]"];
-        [v86 logMessage:v85 fromFile:v88 fromFunction:v89 fromLineNumber:86];
+        [v86 logMessage:v85 fromFile:lastPathComponent7 fromFunction:v89 fromLineNumber:86];
 
         v90 = PLLogCommon();
         if (os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG))
@@ -413,16 +413,16 @@
           _os_log_debug_impl(&dword_25EDCD000, v90, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
 
-        self = v119;
+        self = selfCopy;
       }
     }
 
-    v91 = [v81 firstObject];
-    [v81 removeObjectAtIndex:0];
-    [v91 energy];
-    [v91 setCorrectionEnergy:(v72 + -1.0) * v92];
-    v93 = [(PLAccountingOwner *)self runDate];
-    [v91 setCorrectionDate:v93];
+    firstObject = [array firstObject];
+    [array removeObjectAtIndex:0];
+    [firstObject energy];
+    [firstObject setCorrectionEnergy:(v72 + -1.0) * v92];
+    runDate = [(PLAccountingOwner *)self runDate];
+    [firstObject setCorrectionDate:runDate];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -442,12 +442,12 @@
 
       if (v95 == 1)
       {
-        v96 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEstimateToCorrect=%@", v91];
+        v96 = [MEMORY[0x277CCACA8] stringWithFormat:@"energyEstimateToCorrect=%@", firstObject];
         v97 = MEMORY[0x277D3F178];
         v98 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Correction/PLAccountingCorrectionOwner.m"];
-        v99 = [v98 lastPathComponent];
+        lastPathComponent8 = [v98 lastPathComponent];
         v100 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingCorrectionOwner correct]"];
-        [v97 logMessage:v96 fromFile:v99 fromFunction:v100 fromLineNumber:94];
+        [v97 logMessage:v96 fromFile:lastPathComponent8 fromFunction:v100 fromLineNumber:94];
 
         v101 = PLLogCommon();
         if (os_log_type_enabled(v101, OS_LOG_TYPE_DEBUG))
@@ -457,12 +457,12 @@
           _os_log_debug_impl(&dword_25EDCD000, v101, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
 
-        self = v119;
+        self = selfCopy;
       }
     }
 
-    v102 = [(PLAccountingOwner *)self manager];
-    v103 = [v102 childEnergyEstimatesForParentEntryID:{objc_msgSend(v91, "entryID")}];
+    manager = [(PLAccountingOwner *)self manager];
+    v103 = [manager childEnergyEstimatesForParentEntryID:{objc_msgSend(firstObject, "entryID")}];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -482,59 +482,59 @@
 
       if (v105 == 1)
       {
-        v106 = [MEMORY[0x277CCACA8] stringWithFormat:@"childEnergyEstimatesToCorrect=%@", v103];
+        v103 = [MEMORY[0x277CCACA8] stringWithFormat:@"childEnergyEstimatesToCorrect=%@", v103];
         v107 = MEMORY[0x277D3F178];
         v108 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Correction/PLAccountingCorrectionOwner.m"];
-        v109 = [v108 lastPathComponent];
+        lastPathComponent9 = [v108 lastPathComponent];
         v110 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingCorrectionOwner correct]"];
-        [v107 logMessage:v106 fromFile:v109 fromFunction:v110 fromLineNumber:98];
+        [v107 logMessage:v103 fromFile:lastPathComponent9 fromFunction:v110 fromLineNumber:98];
 
         v111 = PLLogCommon();
         if (os_log_type_enabled(v111, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v157 = v106;
+          v157 = v103;
           _os_log_debug_impl(&dword_25EDCD000, v111, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
 
-        self = v119;
+        self = selfCopy;
       }
     }
 
     if (v103)
     {
-      [v81 addObjectsFromArray:v103];
+      [array addObjectsFromArray:v103];
     }
 
-    v112 = [(PLAccountingOwner *)self manager];
-    [v112 didCorrectEnergyEstimate:v91];
+    manager2 = [(PLAccountingOwner *)self manager];
+    [manager2 didCorrectEnergyEstimate:firstObject];
   }
 
-  while ([v81 count]);
+  while ([array count]);
 
   v113 = *MEMORY[0x277D85DE8];
 }
 
-- (PLAccountingCorrectionOwner)initWithRootEnergyEstimate:(id)a3
+- (PLAccountingCorrectionOwner)initWithRootEnergyEstimate:(id)estimate
 {
-  v5 = a3;
+  estimateCopy = estimate;
   v9.receiver = self;
   v9.super_class = PLAccountingCorrectionOwner;
   v6 = [(PLAccountingCorrectionOwner *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootEnergyEstimate, a3);
+    objc_storeStrong(&v6->_rootEnergyEstimate, estimate);
   }
 
   return v7;
 }
 
-- (void)setRunDate:(id)a3
+- (void)setRunDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PLAccountingCorrectionOwner *)self rootEnergyEstimate];
-  [v5 setCorrectionDate:v4];
+  dateCopy = date;
+  rootEnergyEstimate = [(PLAccountingCorrectionOwner *)self rootEnergyEstimate];
+  [rootEnergyEstimate setCorrectionDate:dateCopy];
 }
 
 uint64_t __38__PLAccountingCorrectionOwner_correct__block_invoke(uint64_t a1)

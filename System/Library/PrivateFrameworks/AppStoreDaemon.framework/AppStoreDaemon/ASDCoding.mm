@@ -1,19 +1,19 @@
 @interface ASDCoding
-+ (BOOL)securelyEncodeObject:(id)a3 forKey:(id)a4 withCoder:(id)a5 error:(id *)a6;
-+ (id)_findNonSecureClassesFromObject:(uint64_t)a1;
-+ (id)createDataByEncodingError:(id)a3;
-+ (id)createErrorByDecodingData:(id)a3;
++ (BOOL)securelyEncodeObject:(id)object forKey:(id)key withCoder:(id)coder error:(id *)error;
++ (id)_findNonSecureClassesFromObject:(uint64_t)object;
++ (id)createDataByEncodingError:(id)error;
++ (id)createErrorByDecodingData:(id)data;
 @end
 
 @implementation ASDCoding
 
-+ (id)createDataByEncodingError:(id)a3
++ (id)createDataByEncodingError:(id)error
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:0];
+    v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:errorCopy requiringSecureCoding:1 error:0];
   }
 
   else
@@ -26,13 +26,13 @@
   return v4;
 }
 
-+ (id)createErrorByDecodingData:(id)a3
++ (id)createErrorByDecodingData:(id)data
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:0];
+    v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,41 +55,41 @@
   return v5;
 }
 
-+ (BOOL)securelyEncodeObject:(id)a3 forKey:(id)a4 withCoder:(id)a5 error:(id *)a6
++ (BOOL)securelyEncodeObject:(id)object forKey:(id)key withCoder:(id)coder error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(ASDCoding *)a1 _findNonSecureClassesFromObject:v10];
+  objectCopy = object;
+  keyCopy = key;
+  coderCopy = coder;
+  v13 = [(ASDCoding *)self _findNonSecureClassesFromObject:objectCopy];
   if ([v13 count])
   {
     v14 = MEMORY[0x1E696AEC0];
     v15 = [v13 componentsJoinedByString:{@", "}];
-    v16 = [v14 stringWithFormat:@"Attempted to encode classes that don't conform to NSSecureCoding: '%@' with key '%@'", v15, v11];
+    keyCopy = [v14 stringWithFormat:@"Attempted to encode classes that don't conform to NSSecureCoding: '%@' with key '%@'", v15, keyCopy];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
       v23 = objc_opt_class();
       v24 = 2114;
-      v25 = v16;
+      v25 = keyCopy;
       v21 = v23;
       _os_log_error_impl(&dword_1B8220000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%{public}@]: %{public}@", buf, 0x16u);
     }
 
-    v17 = ASDErrorWithUnderlyingErrorAndInfo(0, @"ASDErrorDomain", 507, @"Error encoding object", v16, 0);
+    v17 = ASDErrorWithUnderlyingErrorAndInfo(0, @"ASDErrorDomain", 507, @"Error encoding object", keyCopy, 0);
 
-    if (a6 && v17)
+    if (error && v17)
     {
       v18 = v17;
-      *a6 = v17;
+      *error = v17;
     }
   }
 
   else
   {
-    [v12 encodeObject:v10 forKey:v11];
+    [coderCopy encodeObject:objectCopy forKey:keyCopy];
     v17 = 0;
   }
 
@@ -97,7 +97,7 @@
   return v17 == 0;
 }
 
-+ (id)_findNonSecureClassesFromObject:(uint64_t)a1
++ (id)_findNonSecureClassesFromObject:(uint64_t)object
 {
   v30 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -129,8 +129,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v2 userInfo];
-    v8 = [(ASDCoding *)v4 _findNonSecureClassesFromObject:v7];
+    userInfo = [v2 userInfo];
+    v8 = [(ASDCoding *)v4 _findNonSecureClassesFromObject:userInfo];
 
     if ([v8 count])
     {

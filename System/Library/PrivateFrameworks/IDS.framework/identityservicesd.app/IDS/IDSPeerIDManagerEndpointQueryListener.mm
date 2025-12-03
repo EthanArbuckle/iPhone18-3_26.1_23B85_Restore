@@ -1,23 +1,23 @@
 @interface IDSPeerIDManagerEndpointQueryListener
-- (IDSPeerIDManagerEndpointQueryListener)initWithQueryCompletionBlock:(id)a3 queue:(id)a4;
+- (IDSPeerIDManagerEndpointQueryListener)initWithQueryCompletionBlock:(id)block queue:(id)queue;
 @end
 
 @implementation IDSPeerIDManagerEndpointQueryListener
 
-- (IDSPeerIDManagerEndpointQueryListener)initWithQueryCompletionBlock:(id)a3 queue:(id)a4
+- (IDSPeerIDManagerEndpointQueryListener)initWithQueryCompletionBlock:(id)block queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = IDSPeerIDManagerEndpointQueryListener;
   v8 = [(IDSPeerIDManagerEndpointQueryListener *)&v12 init];
   if (v8)
   {
-    v9 = objc_retainBlock(v6);
+    v9 = objc_retainBlock(blockCopy);
     queryCompletionBlock = v8->_queryCompletionBlock;
     v8->_queryCompletionBlock = v9;
 
-    objc_storeStrong(&v8->_queue, a4);
+    objc_storeStrong(&v8->_queue, queue);
   }
 
   return v8;

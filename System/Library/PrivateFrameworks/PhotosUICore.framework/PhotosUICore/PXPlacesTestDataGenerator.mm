@@ -1,22 +1,22 @@
 @interface PXPlacesTestDataGenerator
 - (PXPlacesTestDataGenerator)init;
-- (id)generateOffsetArray:(double)a3 insert:(BOOL)a4;
-- (unint64_t)generateDataPointsFromLocation:(CLLocationCoordinate2D)a3 toLocation:(CLLocationCoordinate2D)a4 longDir:(int64_t)a5 currentCount:(unint64_t)a6;
-- (void)generateTestImages:(unint64_t)a3 fromLocation:(CLLocationCoordinate2D)a4 toLocation:(CLLocationCoordinate2D)a5 atEnd:(id)a6;
+- (id)generateOffsetArray:(double)array insert:(BOOL)insert;
+- (unint64_t)generateDataPointsFromLocation:(CLLocationCoordinate2D)location toLocation:(CLLocationCoordinate2D)toLocation longDir:(int64_t)dir currentCount:(unint64_t)count;
+- (void)generateTestImages:(unint64_t)images fromLocation:(CLLocationCoordinate2D)location toLocation:(CLLocationCoordinate2D)toLocation atEnd:(id)end;
 @end
 
 @implementation PXPlacesTestDataGenerator
 
-- (void)generateTestImages:(unint64_t)a3 fromLocation:(CLLocationCoordinate2D)a4 toLocation:(CLLocationCoordinate2D)a5 atEnd:(id)a6
+- (void)generateTestImages:(unint64_t)images fromLocation:(CLLocationCoordinate2D)location toLocation:(CLLocationCoordinate2D)toLocation atEnd:(id)end
 {
-  longitude = a5.longitude;
-  latitude = a5.latitude;
-  v8 = a4.longitude;
-  v9 = a4.latitude;
-  v12 = a6;
-  if (a3)
+  longitude = toLocation.longitude;
+  latitude = toLocation.latitude;
+  v8 = location.longitude;
+  v9 = location.latitude;
+  endCopy = end;
+  if (images)
   {
-    self->_max = a3;
+    self->_max = images;
   }
 
   self->_from.latitude = v9;
@@ -29,12 +29,12 @@
   v15[2] = __78__PXPlacesTestDataGenerator_generateTestImages_fromLocation_toLocation_atEnd___block_invoke;
   v15[3] = &unk_1E774A508;
   v15[4] = self;
-  v16 = v12;
+  v16 = endCopy;
   v17 = v9;
   v18 = v8;
   v19 = latitude;
   v20 = longitude;
-  v14 = v12;
+  v14 = endCopy;
   dispatch_async(generationQueue, v15);
 }
 
@@ -117,12 +117,12 @@ LABEL_16:
   return result;
 }
 
-- (unint64_t)generateDataPointsFromLocation:(CLLocationCoordinate2D)a3 toLocation:(CLLocationCoordinate2D)a4 longDir:(int64_t)a5 currentCount:(unint64_t)a6
+- (unint64_t)generateDataPointsFromLocation:(CLLocationCoordinate2D)location toLocation:(CLLocationCoordinate2D)toLocation longDir:(int64_t)dir currentCount:(unint64_t)count
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = location.longitude;
+  latitude = location.latitude;
   v48 = *MEMORY[0x1E69E9840];
-  v11 = a3.latitude <= a4.latitude;
+  v11 = location.latitude <= toLocation.latitude;
   v12 = 1.0;
   if (!v11)
   {
@@ -171,7 +171,7 @@ LABEL_10:
           }
 
           [*(*(&v38 + 1) + 8 * v21) doubleValue];
-          v23 = longitude + a5 * v22;
+          v23 = longitude + dir * v22;
           if (fabs(v23) > 180.0)
           {
             if (v23 <= 0.0)
@@ -186,15 +186,15 @@ LABEL_10:
           }
 
           v24 = [PXPlacesTestDataPoint alloc];
-          v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", a6];
+          v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", count];
           v26 = CLLocationCoordinate2DMake(v19, v23);
           v27 = [(PXPlacesTestDataPoint *)v24 initWithName:v25 location:v26.latitude, v26.longitude];
 
           [(NSMutableArray *)self->_dataPoints addObject:v27];
-          ++a6;
+          ++count;
           max = self->_max;
 
-          if (a6 == max)
+          if (count == max)
           {
             break;
           }
@@ -212,7 +212,7 @@ LABEL_10:
         }
       }
 
-      if (a6 == self->_max)
+      if (count == self->_max)
       {
         break;
       }
@@ -230,29 +230,29 @@ LABEL_10:
     }
   }
 
-  if (a6 < self->_max)
+  if (count < self->_max)
   {
     v29 = [PXPlacesTestDataPoint alloc];
-    v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", a6];
+    v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", count];
     v31 = CLLocationCoordinate2DMake(-9999.0, -9999.0);
     v32 = [(PXPlacesTestDataPoint *)v29 initWithName:v30 location:v31.latitude, v31.longitude];
 
     [(NSMutableArray *)self->_dataPoints addObject:v32];
-    ++a6;
+    ++count;
   }
 
-  return a6;
+  return count;
 }
 
-- (id)generateOffsetArray:(double)a3 insert:(BOOL)a4
+- (id)generateOffsetArray:(double)array insert:(BOOL)insert
 {
-  v4 = a4;
+  insertCopy = insert;
   v6 = objc_opt_new();
   v7 = 0.0;
   do
   {
     v8 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
-    if (v4)
+    if (insertCopy)
     {
       [v6 insertObject:v8 atIndex:0];
     }
@@ -262,17 +262,17 @@ LABEL_10:
       [v6 addObject:v8];
     }
 
-    v9 = a3 * 0.5;
-    if (a3 * 0.5 <= 0.0001)
+    v9 = array * 0.5;
+    if (array * 0.5 <= 0.0001)
     {
       break;
     }
 
-    a3 = a3 - v9;
+    array = array - v9;
     v7 = v7 + v9;
   }
 
-  while (a3 > 0.0);
+  while (array > 0.0);
 
   return v6;
 }

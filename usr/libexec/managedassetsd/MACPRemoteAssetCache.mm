@@ -1,41 +1,41 @@
 @interface MACPRemoteAssetCache
-- (BOOL)accessEntry:(id)a3 error:(id *)a4;
-- (BOOL)addEntry:(id)a3 authToken:(id)a4 fileSizeBytes:(int64_t)a5 error:(id *)a6;
-- (BOOL)checkEntryInCache:(id)a3 authToken:(id)a4 error:(id *)a5;
-- (BOOL)checkupWithCacheSizeLimit:(unint64_t)a3 error:(id *)a4;
-- (BOOL)clearAssetCacheWithError:(id *)a3;
-- (BOOL)deleteExpiredAsset:(id)a3 skipCacheUpdate:(BOOL)a4 error:(id *)a5;
-- (BOOL)queryAssetCache:(id)a3 results:(id *)a4 error:(id *)a5;
-- (BOOL)querySize:(unint64_t *)a3 entrySize:(unint64_t *)a4 error:(id *)a5;
-- (BOOL)updateEntrySize:(id)a3 fileSizeBytes:(int64_t)a4 error:(id *)a5;
-- (MACPRemoteAssetCache)initWithStorage:(id)a3 remoteAssetsManager:(id)a4;
+- (BOOL)accessEntry:(id)entry error:(id *)error;
+- (BOOL)addEntry:(id)entry authToken:(id)token fileSizeBytes:(int64_t)bytes error:(id *)error;
+- (BOOL)checkEntryInCache:(id)cache authToken:(id)token error:(id *)error;
+- (BOOL)checkupWithCacheSizeLimit:(unint64_t)limit error:(id *)error;
+- (BOOL)clearAssetCacheWithError:(id *)error;
+- (BOOL)deleteExpiredAsset:(id)asset skipCacheUpdate:(BOOL)update error:(id *)error;
+- (BOOL)queryAssetCache:(id)cache results:(id *)results error:(id *)error;
+- (BOOL)querySize:(unint64_t *)size entrySize:(unint64_t *)entrySize error:(id *)error;
+- (BOOL)updateEntrySize:(id)size fileSizeBytes:(int64_t)bytes error:(id *)error;
+- (MACPRemoteAssetCache)initWithStorage:(id)storage remoteAssetsManager:(id)manager;
 - (id)storeFields;
-- (int64_t)reclaimEntry:(id)a3 currentDay:(int64_t)a4;
-- (void)addToInUseAssetIds:(id)a3;
+- (int64_t)reclaimEntry:(id)entry currentDay:(int64_t)day;
+- (void)addToInUseAssetIds:(id)ids;
 - (void)cacheSizeLimitCheck;
-- (void)checkAndDeleteExpiredEntry:(id)a3 currentDay:(int64_t)a4 reclaimedSize:(unint64_t *)a5;
+- (void)checkAndDeleteExpiredEntry:(id)entry currentDay:(int64_t)day reclaimedSize:(unint64_t *)size;
 - (void)checkup;
 @end
 
 @implementation MACPRemoteAssetCache
 
-- (MACPRemoteAssetCache)initWithStorage:(id)a3 remoteAssetsManager:(id)a4
+- (MACPRemoteAssetCache)initWithStorage:(id)storage remoteAssetsManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  storageCopy = storage;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = MACPRemoteAssetCache;
   v8 = [(MACPRemoteAssetCache *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    [(MACPAssetCache *)v8 setStorage:v6];
+    [(MACPAssetCache *)v8 setStorage:storageCopy];
     [(MACPAssetCache *)v9 setStore:0];
-    v10 = [v6 maremoteAssetPath];
-    [(MACPAssetCache *)v9 setEncAssetsDir:v10];
+    maremoteAssetPath = [storageCopy maremoteAssetPath];
+    [(MACPAssetCache *)v9 setEncAssetsDir:maremoteAssetPath];
 
     [(MACPAssetCache *)v9 setName:@"remoteAssetIDs"];
-    objc_storeStrong(&v9->_remoteAssetsManager, a4);
+    objc_storeStrong(&v9->_remoteAssetsManager, manager);
     v9->_inUseAssetIdsLock._os_unfair_lock_opaque = 0;
     v9->_inCacheCheckWindow = 0;
     v9->_cacheSizeLimit = [MAUtilityHelper readIntValueFromUserDefaultsWithKey:@"maxRemoteAssetCacheSize" defaultValue:0x10000000];
@@ -54,10 +54,10 @@
   return v9;
 }
 
-- (BOOL)deleteExpiredAsset:(id)a3 skipCacheUpdate:(BOOL)a4 error:(id *)a5
+- (BOOL)deleteExpiredAsset:(id)asset skipCacheUpdate:(BOOL)update error:(id *)error
 {
-  v8 = a3;
-  if (a4)
+  assetCopy = asset;
+  if (update)
   {
     v9 = 0;
 LABEL_3:
@@ -70,12 +70,12 @@ LABEL_3:
   v12 = v38;
   if (v11)
   {
-    v13 = [(MACPAssetCache *)self store];
+    store = [(MACPAssetCache *)self store];
     v41 = @"assetId";
-    v42 = v8;
+    v42 = assetCopy;
     v14 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
     v37 = v12;
-    v15 = [v13 deleteFor:v14 attributes:0 error:&v37];
+    v15 = [store deleteFor:v14 attributes:0 error:&v37];
     v9 = v37;
 
     v16 = off_100127D60;
@@ -84,7 +84,7 @@ LABEL_3:
       if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v40 = v8;
+        v40 = assetCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "removed cache entry, assetId=%@", buf, 0xCu);
       }
 
@@ -113,8 +113,8 @@ LABEL_3:
   }
 
 LABEL_15:
-  v25 = [(MACPAssetCache *)self encAssetsDir];
-  v26 = [v25 stringByAppendingString:v8];
+  encAssetsDir = [(MACPAssetCache *)self encAssetsDir];
+  v26 = [encAssetsDir stringByAppendingString:assetCopy];
 
   v27 = +[NSFileManager defaultManager];
   v36 = 0;
@@ -130,7 +130,7 @@ LABEL_15:
       *buf = 138412290;
       v40 = v26;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "deleted encrypted asset file %@", buf, 0xCu);
-      if (!a5)
+      if (!error)
       {
         goto LABEL_24;
       }
@@ -139,7 +139,7 @@ LABEL_15:
     }
 
 LABEL_21:
-    if (!a5)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -162,13 +162,13 @@ LABEL_21:
 
   v32 = 0;
   v9 = v35;
-  if (a5)
+  if (error)
   {
 LABEL_22:
     if (v9)
     {
       v33 = v9;
-      *a5 = v9;
+      *error = v9;
     }
   }
 
@@ -177,12 +177,12 @@ LABEL_24:
   return v10 & v32;
 }
 
-- (void)addToInUseAssetIds:(id)a3
+- (void)addToInUseAssetIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   if (self->_inCacheCheckWindow >= 1)
   {
-    v6 = v4;
+    v6 = idsCopy;
     os_unfair_lock_lock(&self->_inUseAssetIdsLock);
     inUseAssetIds = self->_inUseAssetIds;
     if (inUseAssetIds)
@@ -191,27 +191,27 @@ LABEL_24:
     }
 
     os_unfair_lock_unlock(&self->_inUseAssetIdsLock);
-    v4 = v6;
+    idsCopy = v6;
   }
 }
 
-- (void)checkAndDeleteExpiredEntry:(id)a3 currentDay:(int64_t)a4 reclaimedSize:(unint64_t *)a5
+- (void)checkAndDeleteExpiredEntry:(id)entry currentDay:(int64_t)day reclaimedSize:(unint64_t *)size
 {
-  v8 = a3;
-  v9 = [v8 assetId];
+  entryCopy = entry;
+  assetId = [entryCopy assetId];
   os_unfair_lock_lock(&self->_inUseAssetIdsLock);
-  if (([(NSMutableSet *)self->_inUseAssetIds containsObject:v9]& 1) == 0)
+  if (([(NSMutableSet *)self->_inUseAssetIds containsObject:assetId]& 1) == 0)
   {
-    if (a4 - [v8 createdDay] <= 60 && objc_msgSend(v8, "createdDay") <= a4)
+    if (day - [entryCopy createdDay] <= 60 && objc_msgSend(entryCopy, "createdDay") <= day)
     {
-      if (a4 - [v8 accessDay] <= 30 && objc_msgSend(v8, "accessDay") <= a4)
+      if (day - [entryCopy accessDay] <= 30 && objc_msgSend(entryCopy, "accessDay") <= day)
       {
         os_unfair_lock_unlock(&self->_inUseAssetIdsLock);
         goto LABEL_10;
       }
 
-      [(MACPRemoteAssetCache *)self deleteExpiredAsset:v9 skipCacheUpdate:0 error:0];
-      *a5 += [v8 fileSize];
+      [(MACPRemoteAssetCache *)self deleteExpiredAsset:assetId skipCacheUpdate:0 error:0];
+      *size += [entryCopy fileSize];
       os_unfair_lock_unlock(&self->_inUseAssetIdsLock);
       v16 = off_100127D60;
       if (!os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO))
@@ -221,18 +221,18 @@ LABEL_24:
 
       v11 = v16;
       v17 = 138412802;
-      v18 = v9;
+      v18 = assetId;
       v19 = 2048;
-      v20 = [v8 accessDay];
+      accessDay = [entryCopy accessDay];
       v21 = 2048;
-      v22 = a4;
+      dayCopy2 = day;
       v12 = "assetId %@ expired by accessDay %ld currentDay=%ld";
     }
 
     else
     {
-      [(MACPRemoteAssetCache *)self deleteExpiredAsset:v9 skipCacheUpdate:0 error:0];
-      *a5 += [v8 fileSize];
+      [(MACPRemoteAssetCache *)self deleteExpiredAsset:assetId skipCacheUpdate:0 error:0];
+      *size += [entryCopy fileSize];
       os_unfair_lock_unlock(&self->_inUseAssetIdsLock);
       v15 = off_100127D60;
       if (!os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO))
@@ -242,11 +242,11 @@ LABEL_24:
 
       v11 = v15;
       v17 = 138412802;
-      v18 = v9;
+      v18 = assetId;
       v19 = 2048;
-      v20 = [v8 createdDay];
+      accessDay = [entryCopy createdDay];
       v21 = 2048;
-      v22 = a4;
+      dayCopy2 = day;
       v12 = "assetId %@ expired by createdDay %ld currentDay=%ld";
     }
 
@@ -261,13 +261,13 @@ LABEL_24:
   {
     v11 = v10;
     v17 = 138413058;
-    v18 = v9;
+    v18 = assetId;
     v19 = 2048;
-    v20 = [v8 createdDay];
+    accessDay = [entryCopy createdDay];
     v21 = 2048;
-    v22 = [v8 accessDay];
+    dayCopy2 = [entryCopy accessDay];
     v23 = 2048;
-    v24 = a4;
+    dayCopy3 = day;
     v12 = "skip in-use assetId %@ createdDay %ld accessDay %ld currentDay=%ld";
     v13 = v11;
     v14 = 42;
@@ -278,12 +278,12 @@ LABEL_9:
 LABEL_10:
 }
 
-- (int64_t)reclaimEntry:(id)a3 currentDay:(int64_t)a4
+- (int64_t)reclaimEntry:(id)entry currentDay:(int64_t)day
 {
-  v6 = a3;
-  v7 = [v6 assetId];
+  entryCopy = entry;
+  assetId = [entryCopy assetId];
   os_unfair_lock_lock(&self->_inUseAssetIdsLock);
-  if (([(NSMutableSet *)self->_inUseAssetIds containsObject:v7]& 1) != 0)
+  if (([(NSMutableSet *)self->_inUseAssetIds containsObject:assetId]& 1) != 0)
   {
     os_unfair_lock_unlock(&self->_inUseAssetIdsLock);
     v8 = off_100127D60;
@@ -291,31 +291,31 @@ LABEL_10:
     {
       v9 = v8;
       *buf = 138413058;
-      v18 = v7;
+      v18 = assetId;
       v19 = 2048;
-      v20 = [v6 createdDay];
+      createdDay = [entryCopy createdDay];
       v21 = 2048;
-      v22 = [v6 accessDay];
+      accessDay = [entryCopy accessDay];
       v23 = 2048;
-      v24 = a4;
+      dayCopy = day;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "skip reclaiming in-use assetId %@ createdDay %ld accessDay %ld currentDay=%ld", buf, 0x2Au);
     }
 
-    v10 = 0;
+    fileSize = 0;
 LABEL_5:
     v11 = 0;
     goto LABEL_11;
   }
 
-  v12 = [v6 assetId];
+  assetId2 = [entryCopy assetId];
   v16 = 0;
-  v13 = [(MACPRemoteAssetCache *)self deleteExpiredAsset:v12 skipCacheUpdate:0 error:&v16];
+  v13 = [(MACPRemoteAssetCache *)self deleteExpiredAsset:assetId2 skipCacheUpdate:0 error:&v16];
   v11 = v16;
 
-  v10 = 0;
+  fileSize = 0;
   if (v13)
   {
-    v10 = [v6 fileSize];
+    fileSize = [entryCopy fileSize];
   }
 
   os_unfair_lock_unlock(&self->_inUseAssetIdsLock);
@@ -325,9 +325,9 @@ LABEL_5:
     if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO))
     {
       *buf = 134218242;
-      v18 = v10;
+      v18 = fileSize;
       v19 = 2112;
-      v20 = v7;
+      createdDay = assetId;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "reclaim %ld bytes in asset cache, by deleting %@", buf, 0x16u);
     }
 
@@ -341,7 +341,7 @@ LABEL_5:
 
 LABEL_11:
 
-  return v10;
+  return fileSize;
 }
 
 - (void)checkup
@@ -355,18 +355,18 @@ LABEL_11:
   dispatch_async(v3, block);
 }
 
-- (BOOL)checkupWithCacheSizeLimit:(unint64_t)a3 error:(id *)a4
+- (BOOL)checkupWithCacheSizeLimit:(unint64_t)limit error:(id *)error
 {
   add_explicit = atomic_fetch_add_explicit(&self->_inCacheCheckWindow, 1u, memory_order_relaxed);
   v8 = off_100127D60;
   v9 = os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO);
   if (add_explicit < 1)
   {
-    v109 = a4;
+    errorCopy = error;
     if (v9)
     {
       *buf = 134218240;
-      v155 = a3;
+      limitCopy = limit;
       v156 = 1024;
       LODWORD(v157) = add_explicit;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "assetCache checkup, sizeLimit=%lu _inCacheCheckWindow=%d", buf, 0x12u);
@@ -385,30 +385,30 @@ LABEL_11:
 
     v16 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v15 longValue] / 86400);
 
-    v111 = [v16 longValue];
+    longValue = [v16 longValue];
     v112 = +[NSMutableDictionary dictionary];
-    v17 = [(MACPAssetCache *)self encAssetsDir];
+    encAssetsDir = [(MACPAssetCache *)self encAssetsDir];
     v152 = 0;
     v18 = v13;
-    v19 = [v13 contentsOfDirectoryAtPath:v17 error:&v152];
+    v19 = [v13 contentsOfDirectoryAtPath:encAssetsDir error:&v152];
     v20 = v152;
 
     v110 = v19;
-    v113 = self;
+    selfCopy = self;
     if ([v19 count])
     {
-      v106 = a3;
+      limitCopy2 = limit;
       v151 = v20;
       v21 = [(MACPAssetCache *)self ensureStoreExist:&v151];
       v22 = v151;
 
-      v23 = v109;
+      v23 = errorCopy;
       if (v21)
       {
-        v24 = [(MACPAssetCache *)self store];
+        store = [(MACPAssetCache *)self store];
         v150 = 0;
         v149 = v22;
-        v25 = [v24 queryFor:&__NSDictionary0__struct attributes:0 records:&v150 error:&v149];
+        v25 = [store queryFor:&__NSDictionary0__struct attributes:0 records:&v150 error:&v149];
         v26 = v150;
         v27 = v149;
 
@@ -446,12 +446,12 @@ LABEL_11:
                 v35 = *(*(&v143 + 1) + 8 * i);
                 v36 = [v35 objectForKeyedSubscript:v32];
                 v37 = [v35 objectForKeyedSubscript:v33];
-                v38 = [v37 unsignedLongLongValue];
+                unsignedLongLongValue = [v37 unsignedLongLongValue];
 
                 v39 = [v35 objectForKeyedSubscript:@"size"];
-                v40 = [v39 unsignedLongLongValue];
+                unsignedLongLongValue2 = [v39 unsignedLongLongValue];
 
-                if (v38 == 1)
+                if (unsignedLongLongValue == 1)
                 {
                   v41 = [v35 objectForKeyedSubscript:@"createdDay"];
                   v42 = [v35 objectForKeyedSubscript:@"accessDay"];
@@ -459,7 +459,7 @@ LABEL_11:
                   v43 = v30;
                   v44 = v33;
                   v45 = v32;
-                  v46 = -[MAAssetCacheStat initWith:createdDay:accessDay:fileSize:]([MAAssetCacheStat alloc], "initWith:createdDay:accessDay:fileSize:", v36, [v41 longValue], objc_msgSend(v42, "longValue"), v40);
+                  v46 = -[MAAssetCacheStat initWith:createdDay:accessDay:fileSize:]([MAAssetCacheStat alloc], "initWith:createdDay:accessDay:fileSize:", v36, [v41 longValue], objc_msgSend(v42, "longValue"), unsignedLongLongValue2);
                   [v112 setObject:v46 forKeyedSubscript:v36];
 
                   v32 = v45;
@@ -470,11 +470,11 @@ LABEL_11:
 
                 else
                 {
-                  [(MACPRemoteAssetCache *)v113 deleteExpiredAsset:v36 skipCacheUpdate:0 error:0];
-                  v147 += v40;
+                  [(MACPRemoteAssetCache *)selfCopy deleteExpiredAsset:v36 skipCacheUpdate:0 error:0];
+                  v147 += unsignedLongLongValue2;
                 }
 
-                v31 += v40;
+                v31 += unsignedLongLongValue2;
               }
 
               v30 = [obj countByEnumeratingWithState:&v143 objects:v163 count:16];
@@ -512,7 +512,7 @@ LABEL_11:
 
                 if (!v63)
                 {
-                  [(MACPRemoteAssetCache *)v113 deleteExpiredAsset:v62 skipCacheUpdate:1 error:0];
+                  [(MACPRemoteAssetCache *)selfCopy deleteExpiredAsset:v62 skipCacheUpdate:1 error:0];
                 }
               }
 
@@ -522,13 +522,13 @@ LABEL_11:
             while (v59);
           }
 
-          v64 = [(MARemoteAssetsManager *)v113->_remoteAssetsManager remoteAssetIds];
-          os_unfair_lock_lock(&v113->_inUseAssetIdsLock);
+          remoteAssetIds = [(MARemoteAssetsManager *)selfCopy->_remoteAssetsManager remoteAssetIds];
+          os_unfair_lock_lock(&selfCopy->_inUseAssetIdsLock);
           v137 = 0u;
           v138 = 0u;
           v135 = 0u;
           v136 = 0u;
-          v65 = v64;
+          v65 = remoteAssetIds;
           v66 = [v65 countByEnumeratingWithState:&v135 objects:v161 count:16];
           if (v66)
           {
@@ -543,7 +543,7 @@ LABEL_11:
                   objc_enumerationMutation(v65);
                 }
 
-                [(NSMutableSet *)v113->_inUseAssetIds addObject:*(*(&v135 + 1) + 8 * k)];
+                [(NSMutableSet *)selfCopy->_inUseAssetIds addObject:*(*(&v135 + 1) + 8 * k)];
               }
 
               v67 = [v65 countByEnumeratingWithState:&v135 objects:v161 count:16];
@@ -554,7 +554,7 @@ LABEL_11:
 
           v116 = v65;
 
-          os_unfair_lock_unlock(&v113->_inUseAssetIdsLock);
+          os_unfair_lock_unlock(&selfCopy->_inUseAssetIdsLock);
           v133 = 0u;
           v134 = 0u;
           v131 = 0u;
@@ -575,7 +575,7 @@ LABEL_11:
                 }
 
                 v75 = [v70 objectForKeyedSubscript:*(*(&v131 + 1) + 8 * m)];
-                [(MACPRemoteAssetCache *)v113 checkAndDeleteExpiredEntry:v75 currentDay:v111 reclaimedSize:&v147];
+                [(MACPRemoteAssetCache *)selfCopy checkAndDeleteExpiredEntry:v75 currentDay:longValue reclaimedSize:&v147];
               }
 
               v72 = [v70 countByEnumeratingWithState:&v131 objects:v160 count:16];
@@ -584,18 +584,18 @@ LABEL_11:
             while (v72);
           }
 
-          if (v31 - v147 <= v106)
+          if (v31 - v147 <= limitCopy2)
           {
             v10 = 1;
             v48 = v105;
-            v23 = v109;
+            v23 = errorCopy;
             v50 = v104;
             v49 = v116;
           }
 
           else
           {
-            v118 = v31 - v147 - v106;
+            v118 = v31 - v147 - limitCopy2;
             v76 = [NSMutableDictionary dictionaryWithCapacity:32];
             v127 = 0u;
             v128 = 0u;
@@ -639,16 +639,16 @@ LABEL_11:
               sub_1000329C8();
             }
 
-            v85 = [v76 allKeys];
-            v86 = [v85 sortedArrayUsingComparator:&stru_100116418];
+            allKeys = [v76 allKeys];
+            v86 = [allKeys sortedArrayUsingComparator:&stru_100116418];
 
             v87 = off_100127D60;
-            v23 = v109;
+            v23 = errorCopy;
             v49 = v116;
             if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v155 = v86;
+              limitCopy = v86;
               _os_log_impl(&_mh_execute_header, v87, OS_LOG_TYPE_INFO, "accessDaysSorted: %@", buf, 0xCu);
             }
 
@@ -679,7 +679,7 @@ LABEL_11:
                   if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_DEBUG))
                   {
                     *buf = v103;
-                    v155 = v93;
+                    limitCopy = v93;
                     v156 = 2112;
                     v157 = v94;
                     _os_log_debug_impl(&_mh_execute_header, v95, OS_LOG_TYPE_DEBUG, "checking accessDay: %@ assets: %@", buf, 0x16u);
@@ -704,7 +704,7 @@ LABEL_11:
                           objc_enumerationMutation(v96);
                         }
 
-                        v101 = [(MACPRemoteAssetCache *)v113 reclaimEntry:*(*(&v119 + 1) + 8 * jj) currentDay:v111];
+                        v101 = [(MACPRemoteAssetCache *)selfCopy reclaimEntry:*(*(&v119 + 1) + 8 * jj) currentDay:longValue];
                         if (v118 - v101 < 1)
                         {
 
@@ -752,7 +752,7 @@ LABEL_11:
               if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO))
               {
                 *buf = 134217984;
-                v155 = v118;
+                limitCopy = v118;
                 _os_log_impl(&_mh_execute_header, v102, OS_LOG_TYPE_INFO, "unable to reclaim %ld bytes in asset cache, will retry when COP not in session", buf, 0xCu);
               }
 
@@ -825,7 +825,7 @@ LABEL_105:
         v10 = 0;
         v108 = 0;
         obj = 0;
-        v23 = v109;
+        v23 = errorCopy;
 LABEL_32:
         if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
         {
@@ -835,12 +835,12 @@ LABEL_32:
         v51 = v20;
         *v23 = v20;
 LABEL_41:
-        os_unfair_lock_lock(&v113->_inUseAssetIdsLock);
-        v55 = v113->_inUseAssetIds;
-        v113->_inUseAssetIds = 0;
+        os_unfair_lock_lock(&selfCopy->_inUseAssetIdsLock);
+        v55 = selfCopy->_inUseAssetIds;
+        selfCopy->_inUseAssetIds = 0;
 
-        os_unfair_lock_unlock(&v113->_inUseAssetIdsLock);
-        v113->_inCacheCheckWindow = 0;
+        os_unfair_lock_unlock(&selfCopy->_inUseAssetIdsLock);
+        selfCopy->_inCacheCheckWindow = 0;
 
         return v10;
       }
@@ -850,9 +850,9 @@ LABEL_41:
       if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO))
       {
         v52 = v47;
-        v53 = [(MACPAssetCache *)self encAssetsDir];
+        encAssetsDir2 = [(MACPAssetCache *)self encAssetsDir];
         *buf = 138412290;
-        v155 = v53;
+        limitCopy = encAssetsDir2;
         _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_INFO, "no encrypted assets found in %@", buf, 0xCu);
       }
 
@@ -879,22 +879,22 @@ LABEL_41:
   }
 
   createManagedAssetError();
-  *a4 = v10 = 0;
+  *error = v10 = 0;
   return v10;
 }
 
-- (BOOL)querySize:(unint64_t *)a3 entrySize:(unint64_t *)a4 error:(id *)a5
+- (BOOL)querySize:(unint64_t *)size entrySize:(unint64_t *)entrySize error:(id *)error
 {
-  if ([(MACPAssetCache *)self ensureStoreExist:a5])
+  if ([(MACPAssetCache *)self ensureStoreExist:error])
   {
-    v9 = [(MACPAssetCache *)self store];
+    store = [(MACPAssetCache *)self store];
     v25 = 0;
-    v10 = [v9 queryForColumn:&__NSDictionary0__struct column:@"size" attributes:0 values:&v25 error:a5];
+    v10 = [store queryForColumn:&__NSDictionary0__struct column:@"size" attributes:0 values:&v25 error:error];
     v11 = v25;
 
     if (v10)
     {
-      v20 = a3;
+      sizeCopy = size;
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
@@ -934,17 +934,17 @@ LABEL_41:
         v15 = 0;
       }
 
-      if (a4)
+      if (entrySize)
       {
-        *a4 = [v12 count];
+        *entrySize = [v12 count];
       }
 
-      *v20 = v15;
+      *sizeCopy = v15;
     }
 
     else if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
     {
-      sub_100026094(a5);
+      sub_100026094(error);
     }
   }
 
@@ -952,7 +952,7 @@ LABEL_41:
   {
     if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
     {
-      sub_100032B0C(a5);
+      sub_100032B0C(error);
     }
 
     return 0;
@@ -997,34 +997,34 @@ LABEL_41:
   }
 }
 
-- (BOOL)addEntry:(id)a3 authToken:(id)a4 fileSizeBytes:(int64_t)a5 error:(id *)a6
+- (BOOL)addEntry:(id)entry authToken:(id)token fileSizeBytes:(int64_t)bytes error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  entryCopy = entry;
+  tokenCopy = token;
   v12 = +[NSDate date];
   [v12 timeIntervalSinceReferenceDate];
   v13 = [NSNumber numberWithDouble:?];
 
   v14 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v13 longValue] / 86400);
 
-  if ([(MACPAssetCache *)self ensureStoreExist:a6])
+  if ([(MACPAssetCache *)self ensureStoreExist:error])
   {
     v15 = [NSMutableDictionary dictionaryWithCapacity:5];
-    [v15 setObject:v10 forKeyedSubscript:@"assetId"];
+    [v15 setObject:entryCopy forKeyedSubscript:@"assetId"];
     [v15 setObject:v14 forKeyedSubscript:@"accessDay"];
     [v15 setObject:v14 forKeyedSubscript:@"createdDay"];
     [v15 setObject:&off_10011DCA0 forKeyedSubscript:@"version"];
-    v16 = [NSNumber numberWithInteger:a5];
+    v16 = [NSNumber numberWithInteger:bytes];
     [v15 setObject:v16 forKeyedSubscript:@"size"];
 
-    if (v11)
+    if (tokenCopy)
     {
-      [v15 setObject:v11 forKeyedSubscript:@"auth"];
+      [v15 setObject:tokenCopy forKeyedSubscript:@"auth"];
     }
 
-    [(MACPRemoteAssetCache *)self addToInUseAssetIds:v10];
-    v17 = [(MACPAssetCache *)self store];
-    v18 = [v17 putDictionay:v15 attributes:0 error:a6];
+    [(MACPRemoteAssetCache *)self addToInUseAssetIds:entryCopy];
+    store = [(MACPAssetCache *)self store];
+    v18 = [store putDictionay:v15 attributes:0 error:error];
 
     v19 = off_100127D60;
     if (v18)
@@ -1032,7 +1032,7 @@ LABEL_41:
       if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO))
       {
         v21 = 138412290;
-        v22 = v10;
+        v22 = entryCopy;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "added entry to cache, assetId=%@", &v21, 0xCu);
       }
 
@@ -1042,7 +1042,7 @@ LABEL_41:
 
     else if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
     {
-      sub_100032C5C(v10, a6);
+      sub_100032C5C(entryCopy, error);
     }
   }
 
@@ -1050,7 +1050,7 @@ LABEL_41:
   {
     if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
     {
-      sub_100032B0C(a6);
+      sub_100032B0C(error);
     }
 
     v18 = 0;
@@ -1059,44 +1059,44 @@ LABEL_41:
   return v18;
 }
 
-- (BOOL)updateEntrySize:(id)a3 fileSizeBytes:(int64_t)a4 error:(id *)a5
+- (BOOL)updateEntrySize:(id)size fileSizeBytes:(int64_t)bytes error:(id *)error
 {
-  v8 = a3;
+  sizeCopy = size;
   v9 = +[NSDate date];
   [v9 timeIntervalSinceReferenceDate];
   v10 = [NSNumber numberWithDouble:?];
 
   v11 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v10 longValue] / 86400);
 
-  if (![(MACPAssetCache *)self ensureStoreExist:a5])
+  if (![(MACPAssetCache *)self ensureStoreExist:error])
   {
     if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
     {
-      sub_100032B0C(a5);
+      sub_100032B0C(error);
     }
 
     goto LABEL_10;
   }
 
-  [(MACPRemoteAssetCache *)self addToInUseAssetIds:v8];
-  v12 = [(MACPAssetCache *)self store];
+  [(MACPRemoteAssetCache *)self addToInUseAssetIds:sizeCopy];
+  store = [(MACPAssetCache *)self store];
   v26 = @"assetId";
-  v27 = v8;
+  v27 = sizeCopy;
   v13 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
   v24[0] = @"accessDay";
   v24[1] = @"size";
   v25[0] = v11;
-  v14 = [NSNumber numberWithInteger:a4];
+  v14 = [NSNumber numberWithInteger:bytes];
   v25[1] = v14;
   v15 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
-  v16 = [v12 updateFor:v13 value:v15 attributes:0 error:a5];
+  v16 = [store updateFor:v13 value:v15 attributes:0 error:error];
 
   v17 = off_100127D60;
   if ((v16 & 1) == 0)
   {
     if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
     {
-      sub_100032CC4(v8, a5);
+      sub_100032CC4(sizeCopy, error);
     }
 
 LABEL_10:
@@ -1107,9 +1107,9 @@ LABEL_10:
   if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO))
   {
     v20 = 134218242;
-    v21 = a4;
+    bytesCopy = bytes;
     v22 = 2112;
-    v23 = v8;
+    v23 = sizeCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "updated entry size %ld to cache, assetId=%@", &v20, 0x16u);
   }
 
@@ -1120,14 +1120,14 @@ LABEL_11:
   return v18;
 }
 
-- (BOOL)checkEntryInCache:(id)a3 authToken:(id)a4 error:(id *)a5
+- (BOOL)checkEntryInCache:(id)cache authToken:(id)token error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([(MACPAssetCache *)self ensureStoreExist:a5])
+  cacheCopy = cache;
+  tokenCopy = token;
+  if ([(MACPAssetCache *)self ensureStoreExist:error])
   {
-    v10 = [(MACPAssetCache *)self encAssetsDir];
-    v11 = [v10 stringByAppendingString:v8];
+    encAssetsDir = [(MACPAssetCache *)self encAssetsDir];
+    v11 = [encAssetsDir stringByAppendingString:cacheCopy];
 
     v12 = +[NSFileManager defaultManager];
     if (([v12 fileExistsAtPath:v11] & 1) == 0)
@@ -1136,7 +1136,7 @@ LABEL_11:
       if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v39 = v8;
+        v39 = cacheCopy;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "encrypted asset file doesn't exist, assetId=%@", buf, 0xCu);
       }
 
@@ -1152,26 +1152,26 @@ LABEL_11:
 
     v44[0] = @"assetId";
     v44[1] = @"version";
-    v45[0] = v8;
+    v45[0] = cacheCopy;
     v45[1] = &off_10011DCA0;
     v15 = [NSDictionary dictionaryWithObjects:v45 forKeys:v44 count:2];
-    [(MACPRemoteAssetCache *)self addToInUseAssetIds:v8];
-    v16 = [(MACPAssetCache *)self store];
+    [(MACPRemoteAssetCache *)self addToInUseAssetIds:cacheCopy];
+    store = [(MACPAssetCache *)self store];
     v37 = 0;
-    v17 = [v16 queryFor:v15 attributes:0 records:&v37 error:a5];
+    v17 = [store queryFor:v15 attributes:0 records:&v37 error:error];
     v18 = v37;
 
     if (v17)
     {
       if ([v18 count])
       {
-        v19 = [MAKVStore rowToDictionary:v18 error:a5];
+        v19 = [MAKVStore rowToDictionary:v18 error:error];
         v20 = v19;
-        if (*a5)
+        if (*error)
         {
           if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
           {
-            sub_100032D94(v8, a5);
+            sub_100032D94(cacheCopy, error);
           }
 
           v21 = 0;
@@ -1180,7 +1180,7 @@ LABEL_11:
         else
         {
           v35 = [v19 objectForKeyedSubscript:@"auth"];
-          v25 = MADataEqual(v35, v9);
+          v25 = MADataEqual(v35, tokenCopy);
           v26 = off_100127D60;
           if (v25)
           {
@@ -1188,15 +1188,15 @@ LABEL_11:
             if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v39 = v8;
+              v39 = cacheCopy;
               _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "auth token matched for assetId=%@", buf, 0xCu);
             }
 
-            v33 = [(MACPAssetCache *)self store];
+            store2 = [(MACPAssetCache *)self store];
             v42 = @"accessDay";
             v43 = v36;
             v27 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-            v28 = [v33 updateFor:v15 value:v27 attributes:0 error:a5];
+            v28 = [store2 updateFor:v15 value:v27 attributes:0 error:error];
 
             v29 = off_100127D60;
             if (v28)
@@ -1205,11 +1205,11 @@ LABEL_11:
               if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO))
               {
                 v30 = v29;
-                v31 = [v36 unsignedLongValue];
+                unsignedLongValue = [v36 unsignedLongValue];
                 *buf = 134218242;
-                v39 = v31;
+                v39 = unsignedLongValue;
                 v40 = 2112;
-                v41 = v8;
+                v41 = cacheCopy;
                 _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "updated accessDay %lu, assetId=%@", buf, 0x16u);
               }
 
@@ -1220,7 +1220,7 @@ LABEL_11:
 
             if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
             {
-              sub_100032E64(v8, a5);
+              sub_100032E64(cacheCopy, error);
             }
 
             v20 = v34;
@@ -1234,7 +1234,7 @@ LABEL_11:
           v21 = v35;
         }
 
-        [(MACPRemoteAssetCache *)self deleteExpiredAsset:v8 skipCacheUpdate:0 error:0];
+        [(MACPRemoteAssetCache *)self deleteExpiredAsset:cacheCopy skipCacheUpdate:0 error:0];
         v22 = 0;
 LABEL_34:
 
@@ -1245,14 +1245,14 @@ LABEL_34:
       if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v39 = v8;
+        v39 = cacheCopy;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "no cache record for assetId=%@", buf, 0xCu);
       }
     }
 
     else if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
     {
-      sub_100032D2C(v8, a5);
+      sub_100032D2C(cacheCopy, error);
     }
 
     v22 = 0;
@@ -1264,7 +1264,7 @@ LABEL_36:
 
   if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
   {
-    sub_100032B0C(a5);
+    sub_100032B0C(error);
   }
 
   v22 = 0;
@@ -1273,56 +1273,56 @@ LABEL_37:
   return v22;
 }
 
-- (BOOL)accessEntry:(id)a3 error:(id *)a4
+- (BOOL)accessEntry:(id)entry error:(id *)error
 {
-  v6 = a3;
+  entryCopy = entry;
   v7 = +[NSDate date];
   [v7 timeIntervalSinceReferenceDate];
   v8 = [NSNumber numberWithDouble:?];
 
   v9 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v8 longValue] / 86400);
 
-  if ([(MACPAssetCache *)self ensureStoreExist:a4])
+  if ([(MACPAssetCache *)self ensureStoreExist:error])
   {
     v39[0] = @"assetId";
     v39[1] = @"version";
-    v40[0] = v6;
+    v40[0] = entryCopy;
     v40[1] = &off_10011DCA0;
     v10 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:2];
-    [(MACPRemoteAssetCache *)self addToInUseAssetIds:v6];
-    v11 = [(MACPAssetCache *)self store];
+    [(MACPRemoteAssetCache *)self addToInUseAssetIds:entryCopy];
+    store = [(MACPAssetCache *)self store];
     v32 = 0;
-    v12 = [v11 queryFor:v10 attributes:0 records:&v32 error:a4];
+    v12 = [store queryFor:v10 attributes:0 records:&v32 error:error];
     v13 = v32;
 
     if ((v12 & 1) == 0)
     {
       if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
       {
-        sub_100032D2C(v6, a4);
+        sub_100032D2C(entryCopy, error);
       }
 
       v16 = 0;
       goto LABEL_14;
     }
 
-    v14 = [MAKVStore rowToDictionary:v13 error:a4];
+    v14 = [MAKVStore rowToDictionary:v13 error:error];
     v15 = v14;
-    if (*a4)
+    if (*error)
     {
       if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
       {
-        sub_100032ECC(v6, a4);
+        sub_100032ECC(entryCopy, error);
       }
     }
 
     else if ([v14 count])
     {
-      v26 = [(MACPAssetCache *)self store];
+      store2 = [(MACPAssetCache *)self store];
       v37 = @"accessDay";
       v38 = v9;
       v27 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-      v28 = [v26 updateFor:v10 value:v27 attributes:0 error:a4];
+      v28 = [store2 updateFor:v10 value:v27 attributes:0 error:error];
 
       v29 = off_100127D60;
       if (v28)
@@ -1331,11 +1331,11 @@ LABEL_37:
         if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_INFO))
         {
           v30 = v29;
-          v31 = [v9 unsignedLongValue];
+          unsignedLongValue = [v9 unsignedLongValue];
           *buf = 134218242;
-          v34 = v31;
+          v34 = unsignedLongValue;
           v35 = 2112;
-          v36 = v6;
+          v36 = entryCopy;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "updated accessDay %lu, assetId=%@", buf, 0x16u);
         }
 
@@ -1344,13 +1344,13 @@ LABEL_37:
 
       if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
       {
-        sub_100032E64(v6, a4);
+        sub_100032E64(entryCopy, error);
       }
     }
 
     else
     {
-      *a4 = createManagedAssetError();
+      *error = createManagedAssetError();
       if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
       {
         sub_100032F34();
@@ -1376,30 +1376,30 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)queryAssetCache:(id)a3 results:(id *)a4 error:(id *)a5
+- (BOOL)queryAssetCache:(id)cache results:(id *)results error:(id *)error
 {
-  v8 = a3;
-  if ([(MACPAssetCache *)self ensureStoreExist:a5])
+  cacheCopy = cache;
+  if ([(MACPAssetCache *)self ensureStoreExist:error])
   {
     v9 = +[NSMutableDictionary dictionary];
     v10 = v9;
-    if (v8)
+    if (cacheCopy)
     {
-      [v9 setObject:v8 forKeyedSubscript:@"assetId"];
+      [v9 setObject:cacheCopy forKeyedSubscript:@"assetId"];
     }
 
-    v11 = [(MACPAssetCache *)self store];
+    store = [(MACPAssetCache *)self store];
     v26 = 0;
-    v12 = [v11 queryFor:v10 attributes:0 records:&v26 error:a5];
+    v12 = [store queryFor:v10 attributes:0 records:&v26 error:error];
     v13 = v26;
 
     if (v12)
     {
-      v14 = [MAKVStore queryOutputToArrayOfDictionaries:v13 error:a5];
+      v14 = [MAKVStore queryOutputToArrayOfDictionaries:v13 error:error];
       if (v14)
       {
         v15 = v14;
-        *a4 = v15;
+        *results = v15;
 
         v16 = 1;
 LABEL_13:
@@ -1410,7 +1410,7 @@ LABEL_13:
 
     else if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
     {
-      sub_100032F9C(a5);
+      sub_100032F9C(error);
     }
 
     v16 = 0;
@@ -1429,10 +1429,10 @@ LABEL_14:
   return v16;
 }
 
-- (BOOL)clearAssetCacheWithError:(id *)a3
+- (BOOL)clearAssetCacheWithError:(id *)error
 {
   v22 = 0;
-  v5 = [(MACPRemoteAssetCache *)self queryAssetCache:0 results:&v22 error:a3];
+  v5 = [(MACPRemoteAssetCache *)self queryAssetCache:0 results:&v22 error:error];
   v6 = v22;
   v7 = v6;
   if (!v5)
@@ -1474,14 +1474,14 @@ LABEL_15:
     while (v10);
   }
 
-  v14 = [(MACPAssetCache *)self store];
-  v15 = [v14 deleteFor:&__NSDictionary0__struct attributes:0 error:a3];
+  store = [(MACPAssetCache *)self store];
+  v15 = [store deleteFor:&__NSDictionary0__struct attributes:0 error:error];
 
   if ((v15 & 1) == 0)
   {
     if (os_log_type_enabled(off_100127D60, OS_LOG_TYPE_ERROR))
     {
-      sub_100033004(a3);
+      sub_100033004(error);
     }
 
     goto LABEL_15;

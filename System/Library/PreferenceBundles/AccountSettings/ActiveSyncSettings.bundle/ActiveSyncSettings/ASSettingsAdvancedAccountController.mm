@@ -1,26 +1,26 @@
 @interface ASSettingsAdvancedAccountController
 - (ASSettingsAdvancedAccountController)init;
 - (BOOL)_accountIsManaged;
-- (BOOL)_allowIdentitySelectionForIdentityPickerController:(id)a3;
-- (BOOL)_allowUserInteractiveSwitchForIdentityPickerController:(id)a3;
+- (BOOL)_allowIdentitySelectionForIdentityPickerController:(id)controller;
+- (BOOL)_allowUserInteractiveSwitchForIdentityPickerController:(id)controller;
 - (BOOL)accountArchivesMailByDefault;
-- (BOOL)isPropertyEnabledForIdentityPickerController:(id)a3;
-- (__SecIdentity)selectedIdentityForIdentityPickerController:(id)a3;
-- (__SecTrust)copyTrustForIdentityPickerController:(id)a3 identity:(__SecIdentity *)a4;
-- (id)_persistentRefForIdentity:(__SecIdentity *)a3;
+- (BOOL)isPropertyEnabledForIdentityPickerController:(id)controller;
+- (__SecIdentity)selectedIdentityForIdentityPickerController:(id)controller;
+- (__SecTrust)copyTrustForIdentityPickerController:(id)controller identity:(__SecIdentity *)identity;
+- (id)_persistentRefForIdentity:(__SecIdentity *)identity;
 - (id)_smimeEncryptSpecifier;
 - (id)_smimeSigningSpecifier;
-- (id)accountBooleanPropertyWithSpecifier:(id)a3;
-- (id)copyIdentitiesForIdentityPickerController:(id)a3;
-- (id)emailAddressesForIdentityPickerController:(id)a3;
-- (id)lastGroupSpecifierInSpecifiers:(id)a3;
-- (id)localizedSwitchNameForIdentityPickerController:(id)a3;
+- (id)accountBooleanPropertyWithSpecifier:(id)specifier;
+- (id)copyIdentitiesForIdentityPickerController:(id)controller;
+- (id)emailAddressesForIdentityPickerController:(id)controller;
+- (id)lastGroupSpecifierInSpecifiers:(id)specifiers;
+- (id)localizedSwitchNameForIdentityPickerController:(id)controller;
 - (id)specifiers;
-- (unint64_t)configurationOptionsForIdentityPickerController:(id)a3;
-- (void)_handleTrustFromIdentity:(__SecIdentity *)a3 handler:(id)a4;
+- (unint64_t)configurationOptionsForIdentityPickerController:(id)controller;
+- (void)_handleTrustFromIdentity:(__SecIdentity *)identity handler:(id)handler;
 - (void)dealloc;
-- (void)setAccountBooleanProperty:(id)a3 withSpecifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setAccountBooleanProperty:(id)property withSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ASSettingsAdvancedAccountController
@@ -51,24 +51,24 @@
 
 - (id)specifiers
 {
-  v2 = self;
-  v3 = [(ASSettingsAdvancedAccountController *)self specifier];
-  v4 = [v3 propertyForKey:@"ASAdvancedControllerAccountKey"];
-  [(ASSettingsAdvancedAccountController *)v2 setAccount:v4];
+  selfCopy = self;
+  specifier = [(ASSettingsAdvancedAccountController *)self specifier];
+  v4 = [specifier propertyForKey:@"ASAdvancedControllerAccountKey"];
+  [(ASSettingsAdvancedAccountController *)selfCopy setAccount:v4];
 
-  v5 = [(ASSettingsAdvancedAccountController *)v2 account];
-  v6 = [v5 backingAccountInfo];
-  v7 = [v6 managingOwnerIdentifier];
-  v8 = v7;
-  if (v7)
+  account = [(ASSettingsAdvancedAccountController *)selfCopy account];
+  backingAccountInfo = [account backingAccountInfo];
+  managingOwnerIdentifier = [backingAccountInfo managingOwnerIdentifier];
+  v8 = managingOwnerIdentifier;
+  if (managingOwnerIdentifier)
   {
-    v9 = v7;
+    v9 = managingOwnerIdentifier;
   }
 
   else
   {
-    v10 = [(ASSettingsAdvancedAccountController *)v2 account];
-    v9 = [v10 objectForKeyedSubscript:ACAccountPropertyConfigurationProfileIdentifier];
+    account2 = [(ASSettingsAdvancedAccountController *)selfCopy account];
+    v9 = [account2 objectForKeyedSubscript:ACAccountPropertyConfigurationProfileIdentifier];
   }
 
   if (v9)
@@ -77,47 +77,47 @@
     v12 = _CPLog_to_os_log_type[7];
     if (os_log_type_enabled(v11, v12))
     {
-      v13 = [(ASSettingsAdvancedAccountController *)v2 account];
+      account3 = [(ASSettingsAdvancedAccountController *)selfCopy account];
       *buf = 138412546;
-      v87 = v13;
+      v87 = account3;
       v88 = 2112;
       v89 = v9;
       _os_log_impl(&dword_0, v11, v12, "Disable editing for %@, account is managed by %@", buf, 0x16u);
     }
 
-    v14 = v2;
+    v14 = selfCopy;
     v15 = 1;
   }
 
   else
   {
-    v14 = v2;
+    v14 = selfCopy;
     v15 = 0;
   }
 
   [(ASSettingsAdvancedAccountController *)v14 setRemotedManaged:v15];
-  v16 = *&v2->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
+  v16 = *&selfCopy->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v16)
   {
     v69 = OBJC_IVAR___PSListController__specifiers;
-    v17 = [(ASSettingsAdvancedAccountController *)v2 loadSpecifiersFromPlistName:@"ASAdvancedAccountSetup" target:v2];
+    v17 = [(ASSettingsAdvancedAccountController *)selfCopy loadSpecifiersFromPlistName:@"ASAdvancedAccountSetup" target:selfCopy];
     v18 = +[NSMutableArray array];
     v19 = +[NSMutableArray array];
     v68 = v9;
-    if ([(ASSettingsAdvancedAccountController *)v2 _accountIsManaged])
+    if ([(ASSettingsAdvancedAccountController *)selfCopy _accountIsManaged])
     {
       v66 = v19;
-      v20 = [(ASSettingsAdvancedAccountController *)v2 account];
-      v21 = [v20 backingAccountInfo];
-      v22 = [v21 mcBackingProfile];
+      account4 = [(ASSettingsAdvancedAccountController *)selfCopy account];
+      backingAccountInfo2 = [account4 backingAccountInfo];
+      mcBackingProfile = [backingAccountInfo2 mcBackingProfile];
 
       v23 = [NSBundle bundleForClass:objc_opt_class()];
       v24 = [v23 localizedStringForKey:@"PROFILE_EXPLANATION_FORMAT" value:&stru_30C98 table:@"ASAdvancedAccountSetup"];
-      [v22 friendlyName];
-      v26 = v25 = v2;
+      [mcBackingProfile friendlyName];
+      v26 = v25 = selfCopy;
       v27 = [NSString stringWithFormat:v24, v26];
 
-      v2 = v25;
+      selfCopy = v25;
       v28 = [(ASSettingsAdvancedAccountController *)v25 lastGroupSpecifierInSpecifiers:v17];
       if (!v28)
       {
@@ -130,7 +130,7 @@
           _os_log_impl(&dword_0, v29, v30, "No group found, not setting the profile text.  Specifiers: %@", buf, 0xCu);
         }
 
-        v2 = v25;
+        selfCopy = v25;
       }
 
       [v28 setProperty:v27 forKey:PSFooterTextGroupKey];
@@ -138,18 +138,18 @@
       [v66 addObject:@"USE_SSL"];
     }
 
-    v31 = [(ASSettingsAdvancedAccountController *)v2 account];
-    v32 = [v31 isHotmailAccount];
+    account5 = [(ASSettingsAdvancedAccountController *)selfCopy account];
+    isHotmailAccount = [account5 isHotmailAccount];
 
-    if (v32)
+    if (isHotmailAccount)
     {
       [v18 addObjectsFromArray:&off_327A8];
     }
 
-    v33 = [(ASSettingsAdvancedAccountController *)v2 account];
-    v34 = [v33 supportsDraftFolderSync];
+    account6 = [(ASSettingsAdvancedAccountController *)selfCopy account];
+    supportsDraftFolderSync = [account6 supportsDraftFolderSync];
 
-    if (v34 == 2)
+    if (supportsDraftFolderSync == 2)
     {
       v85[0] = @"DRAFTS_GROUP";
       v85[1] = @"SERVER_DRAFTS_ENABLED";
@@ -217,7 +217,7 @@
     }
 
     v49 = [v17 specifierForID:@"ARCHIVE_MAIL_BY_DEFAULT_GROUP"];
-    if ([(ASSettingsAdvancedAccountController *)v2 accountArchivesMailByDefault])
+    if ([(ASSettingsAdvancedAccountController *)selfCopy accountArchivesMailByDefault])
     {
       v50 = @"ARCHIVE_MAILBOX";
     }
@@ -230,18 +230,18 @@
     v51 = [v17 specifierForID:v50];
     [v49 setProperty:v51 forKey:PSRadioGroupCheckedSpecifierKey];
 
-    v52 = [(ASSettingsAdvancedAccountController *)v2 _smimeSigningSpecifier];
-    [v17 addObject:v52];
+    _smimeSigningSpecifier = [(ASSettingsAdvancedAccountController *)selfCopy _smimeSigningSpecifier];
+    [v17 addObject:_smimeSigningSpecifier];
 
-    v53 = [(ASSettingsAdvancedAccountController *)v2 _smimeEncryptSpecifier];
-    [v17 addObject:v53];
+    _smimeEncryptSpecifier = [(ASSettingsAdvancedAccountController *)selfCopy _smimeEncryptSpecifier];
+    [v17 addObject:_smimeEncryptSpecifier];
 
     v54 = v69;
-    objc_storeStrong(&v2->PSListController_opaque[v69], v17);
-    if ([(ASSettingsAdvancedAccountController *)v2 remotedManaged])
+    objc_storeStrong(&selfCopy->PSListController_opaque[v69], v17);
+    if ([(ASSettingsAdvancedAccountController *)selfCopy remotedManaged])
     {
       v65 = v49;
-      v67 = v2;
+      v67 = selfCopy;
       v72 = 0u;
       v73 = 0u;
       v70 = 0u;
@@ -263,8 +263,8 @@
             }
 
             v61 = *(*(&v70 + 1) + 8 * k);
-            v62 = [v61 identifier];
-            if ([@"USE_SSL" isEqualToString:v62])
+            identifier = [v61 identifier];
+            if ([@"USE_SSL" isEqualToString:identifier])
             {
               [v61 setProperty:&__kCFBooleanFalse forKey:v59];
             }
@@ -276,12 +276,12 @@
         while (v57);
       }
 
-      v2 = v67;
+      selfCopy = v67;
       v54 = v69;
       v49 = v65;
     }
 
-    v16 = *&v2->PSListController_opaque[v54];
+    v16 = *&selfCopy->PSListController_opaque[v54];
     v9 = v68;
   }
 
@@ -330,9 +330,9 @@
   return v5;
 }
 
-- (id)lastGroupSpecifierInSpecifiers:(id)a3
+- (id)lastGroupSpecifierInSpecifiers:(id)specifiers
 {
-  [a3 reverseObjectEnumerator];
+  [specifiers reverseObjectEnumerator];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -373,133 +373,133 @@ LABEL_11:
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = ASSettingsAdvancedAccountController;
-  [(ASSettingsAdvancedAccountController *)&v15 tableView:a3 didSelectRowAtIndexPath:v6];
+  [(ASSettingsAdvancedAccountController *)&v15 tableView:view didSelectRowAtIndexPath:pathCopy];
   v7 = [(ASSettingsAdvancedAccountController *)self specifierForID:@"ARCHIVE_MAIL_BY_DEFAULT_GROUP"];
-  v8 = [v6 section];
+  section = [pathCopy section];
   v9 = [(ASSettingsAdvancedAccountController *)self indexPathForIndex:[(ASSettingsAdvancedAccountController *)self indexOfSpecifier:v7]];
-  v10 = [v9 section];
+  section2 = [v9 section];
 
-  if (v8 == v10)
+  if (section == section2)
   {
-    v11 = [(ASSettingsAdvancedAccountController *)self specifierAtIndex:[(ASSettingsAdvancedAccountController *)self indexForIndexPath:v6]];
+    v11 = [(ASSettingsAdvancedAccountController *)self specifierAtIndex:[(ASSettingsAdvancedAccountController *)self indexForIndexPath:pathCopy]];
     v12 = v11;
     if (v11)
     {
       v13 = [v11 propertyForKey:PSValueKey];
-      v14 = [v13 BOOLValue];
+      bOOLValue = [v13 BOOLValue];
     }
 
     else
     {
-      v14 = 0;
+      bOOLValue = 0;
     }
 
-    [(ASSettingsAdvancedAccountController *)self setAccountArchivesMailByDefault:v14];
+    [(ASSettingsAdvancedAccountController *)self setAccountArchivesMailByDefault:bOOLValue];
   }
 }
 
 - (BOOL)accountArchivesMailByDefault
 {
-  v2 = [(ASSettingsAdvancedAccountController *)self account];
-  v3 = [v2 accountBoolPropertyForKey:MFMailAccountArchive];
+  account = [(ASSettingsAdvancedAccountController *)self account];
+  v3 = [account accountBoolPropertyForKey:MFMailAccountArchive];
 
   return v3;
 }
 
-- (void)setAccountBooleanProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountBooleanProperty:(id)property withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v10 = [a4 identifier];
-  v7 = [v6 BOOLValue];
+  propertyCopy = property;
+  identifier = [specifier identifier];
+  bOOLValue = [propertyCopy BOOLValue];
 
-  v8 = [v10 isEqualToString:@"USE_SSL"];
+  v8 = [identifier isEqualToString:@"USE_SSL"];
   if (v8)
   {
-    v9 = [(ASSettingsAdvancedAccountController *)self account];
-    [v9 setUseSSL:v7];
+    account = [(ASSettingsAdvancedAccountController *)self account];
+    [account setUseSSL:bOOLValue];
   }
 
   else
   {
-    if (![v10 isEqualToString:@"SERVER_DRAFTS_ENABLED"])
+    if (![identifier isEqualToString:@"SERVER_DRAFTS_ENABLED"])
     {
       goto LABEL_6;
     }
 
-    v9 = [(ASSettingsAdvancedAccountController *)self account];
-    [v9 setAccountBoolProperty:v7 forKey:MFDAMailAccountStoreDraftsOnServer];
+    account = [(ASSettingsAdvancedAccountController *)self account];
+    [account setAccountBoolProperty:bOOLValue forKey:MFDAMailAccountStoreDraftsOnServer];
   }
 
 LABEL_6:
   [(ASSettingsAdvancedAccountController *)self _setNeedsSaveAndValidation:v8];
 }
 
-- (id)accountBooleanPropertyWithSpecifier:(id)a3
+- (id)accountBooleanPropertyWithSpecifier:(id)specifier
 {
-  v4 = [a3 identifier];
-  if ([v4 isEqualToString:@"USE_SSL"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"USE_SSL"])
   {
-    v5 = [(ASSettingsAdvancedAccountController *)self account];
-    v6 = [v5 useSSL];
+    account = [(ASSettingsAdvancedAccountController *)self account];
+    useSSL = [account useSSL];
 LABEL_3:
-    v7 = v6;
+    bOOLValue = useSSL;
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"ASSpecifierSMIMESignID"])
+  if ([identifier isEqualToString:@"ASSpecifierSMIMESignID"])
   {
-    v8 = [(ASSettingsAdvancedAccountController *)self account];
-    v5 = v8;
+    account2 = [(ASSettingsAdvancedAccountController *)self account];
+    account = account2;
     v9 = &MFMailAccountSigningEnabled;
 LABEL_8:
-    v10 = [v8 accountPropertyForKey:*v9];
-    v7 = [v10 BOOLValue];
+    v10 = [account2 accountPropertyForKey:*v9];
+    bOOLValue = [v10 BOOLValue];
 
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:@"ASSpecifierSMIMEEncryptID"])
+  if ([identifier isEqualToString:@"ASSpecifierSMIMEEncryptID"])
   {
-    v8 = [(ASSettingsAdvancedAccountController *)self account];
-    v5 = v8;
+    account2 = [(ASSettingsAdvancedAccountController *)self account];
+    account = account2;
     v9 = &MFMailAccountEncryptionEnabled;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"SERVER_DRAFTS_ENABLED"])
+  if ([identifier isEqualToString:@"SERVER_DRAFTS_ENABLED"])
   {
-    v13 = [(ASSettingsAdvancedAccountController *)self account];
-    v5 = [v13 accountPropertyForKey:MFDAMailAccountStoreDraftsOnServer];
+    account3 = [(ASSettingsAdvancedAccountController *)self account];
+    account = [account3 accountPropertyForKey:MFDAMailAccountStoreDraftsOnServer];
 
-    if (!v5)
+    if (!account)
     {
-      v7 = &dword_0 + 1;
+      bOOLValue = &dword_0 + 1;
       goto LABEL_9;
     }
 
-    v6 = [v5 BOOLValue];
+    useSSL = [account BOOLValue];
     goto LABEL_3;
   }
 
-  v7 = 0;
+  bOOLValue = 0;
 LABEL_10:
-  v11 = [NSNumber numberWithBool:v7];
+  v11 = [NSNumber numberWithBool:bOOLValue];
 
   return v11;
 }
 
-- (id)_persistentRefForIdentity:(__SecIdentity *)a3
+- (id)_persistentRefForIdentity:(__SecIdentity *)identity
 {
   keys[0] = kSecValueRef;
   keys[1] = kSecReturnPersistentRef;
-  values[0] = a3;
+  values[0] = identity;
   values[1] = kCFBooleanTrue;
   v3 = CFDictionaryCreate(kCFAllocatorDefault, keys, values, 2, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   result = 0;
@@ -521,22 +521,22 @@ LABEL_10:
   return v5;
 }
 
-- (void)_handleTrustFromIdentity:(__SecIdentity *)a3 handler:(id)a4
+- (void)_handleTrustFromIdentity:(__SecIdentity *)identity handler:(id)handler
 {
-  if (a3 && a4)
+  if (identity && handler)
   {
-    v6 = a4;
-    v7 = [(ASSettingsAdvancedAccountController *)self account];
-    v8 = [v7 emailAddress];
-    v9 = [v8 mf_uncommentedAddress];
+    handlerCopy = handler;
+    account = [(ASSettingsAdvancedAccountController *)self account];
+    emailAddress = [account emailAddress];
+    mf_uncommentedAddress = [emailAddress mf_uncommentedAddress];
 
-    v10 = [MFMessageKeychainManager copySMIMESigningPolicyForAddress:v9];
+    v10 = [MFMessageKeychainManager copySMIMESigningPolicyForAddress:mf_uncommentedAddress];
     v11 = [[CertUITrustManager alloc] initWithAccessGroup:@"com.apple.mobilemail.smime"];
     cf = 0;
     certificateRef = 0;
-    SecIdentityCopyCertificate(a3, &certificateRef);
+    SecIdentityCopyCertificate(identity, &certificateRef);
     SecTrustCreateWithCertificates(certificateRef, v10, &cf);
-    v6[2](v6, cf, v11, v9);
+    handlerCopy[2](handlerCopy, cf, v11, mf_uncommentedAddress);
 
     if (certificateRef)
     {
@@ -557,68 +557,68 @@ LABEL_10:
 
 - (BOOL)_accountIsManaged
 {
-  v2 = [(ASSettingsAdvancedAccountController *)self account];
-  v3 = [v2 backingAccountInfo];
-  v4 = [v3 mcBackingPayload];
-  v5 = v4 != 0;
+  account = [(ASSettingsAdvancedAccountController *)self account];
+  backingAccountInfo = [account backingAccountInfo];
+  mcBackingPayload = [backingAccountInfo mcBackingPayload];
+  v5 = mcBackingPayload != 0;
 
   return v5;
 }
 
-- (BOOL)isPropertyEnabledForIdentityPickerController:(id)a3
+- (BOOL)isPropertyEnabledForIdentityPickerController:(id)controller
 {
-  v4 = [a3 specifier];
-  v5 = [v4 propertyForKey:PSKeyNameKey];
+  specifier = [controller specifier];
+  v5 = [specifier propertyForKey:PSKeyNameKey];
 
   if (v5)
   {
-    v6 = [(ASSettingsAdvancedAccountController *)self account];
-    v7 = [v6 accountPropertyForKey:v5];
+    account = [(ASSettingsAdvancedAccountController *)self account];
+    v7 = [account accountPropertyForKey:v5];
 
     if (v7)
     {
-      v8 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
     }
 
     else
     {
-      v8 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (__SecIdentity)selectedIdentityForIdentityPickerController:(id)a3
+- (__SecIdentity)selectedIdentityForIdentityPickerController:(id)controller
 {
-  v4 = [a3 specifier];
-  v5 = [v4 identifier];
+  specifier = [controller specifier];
+  identifier = [specifier identifier];
 
-  if ([v5 isEqualToString:@"ASSpecifierSMIMESignID"])
+  if ([identifier isEqualToString:@"ASSpecifierSMIMESignID"])
   {
-    v6 = [(ASSettingsAdvancedAccountController *)self account];
-    v7 = [v6 signingIdentityPersistentReference];
+    account = [(ASSettingsAdvancedAccountController *)self account];
+    signingIdentityPersistentReference = [account signingIdentityPersistentReference];
   }
 
   else
   {
-    if (![v5 isEqualToString:@"ASSpecifierSMIMEEncryptID"])
+    if (![identifier isEqualToString:@"ASSpecifierSMIMEEncryptID"])
     {
 LABEL_12:
       v15 = 0;
       goto LABEL_15;
     }
 
-    v6 = [(ASSettingsAdvancedAccountController *)self account];
-    v7 = [v6 encryptionIdentityPersistentReference];
+    account = [(ASSettingsAdvancedAccountController *)self account];
+    signingIdentityPersistentReference = [account encryptionIdentityPersistentReference];
   }
 
-  v8 = v7;
+  v8 = signingIdentityPersistentReference;
 
   if (!v8)
   {
@@ -634,10 +634,10 @@ LABEL_12:
     v12 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v11, v12))
     {
-      v13 = [(ASSettingsAdvancedAccountController *)self account];
-      v14 = [v13 emailAddress];
+      account2 = [(ASSettingsAdvancedAccountController *)self account];
+      emailAddress = [account2 emailAddress];
       *buf = 138412546;
-      v19 = v14;
+      v19 = emailAddress;
       v20 = 2112;
       v21 = v10;
       _os_log_impl(&dword_0, v11, v12, "Error retrieving identity for email address %@ %@", buf, 0x16u);
@@ -658,40 +658,40 @@ LABEL_15:
   return v15;
 }
 
-- (id)localizedSwitchNameForIdentityPickerController:(id)a3
+- (id)localizedSwitchNameForIdentityPickerController:(id)controller
 {
-  v3 = [a3 specifier];
-  v4 = [v3 name];
+  specifier = [controller specifier];
+  name = [specifier name];
 
-  return v4;
+  return name;
 }
 
-- (id)copyIdentitiesForIdentityPickerController:(id)a3
+- (id)copyIdentitiesForIdentityPickerController:(id)controller
 {
-  v4 = [a3 property];
-  if ([v4 isEqualToString:MFMailAccountSigningEnabled])
+  property = [controller property];
+  if ([property isEqualToString:MFMailAccountSigningEnabled])
   {
-    v5 = [(ASSettingsAdvancedAccountController *)self account];
-    v6 = [v5 emailAddress];
+    account = [(ASSettingsAdvancedAccountController *)self account];
+    emailAddress = [account emailAddress];
     v15 = 0;
     v7 = &v15;
-    v8 = [MFMessageKeychainManager copyAllSigningIdentitiesForAddress:v6 error:&v15];
+    v8 = [MFMessageKeychainManager copyAllSigningIdentitiesForAddress:emailAddress error:&v15];
   }
 
   else
   {
-    if (![v4 isEqualToString:MFMailAccountEncryptionEnabled])
+    if (![property isEqualToString:MFMailAccountEncryptionEnabled])
     {
       v10 = 0;
       v9 = 0;
       goto LABEL_10;
     }
 
-    v5 = [(ASSettingsAdvancedAccountController *)self account];
-    v6 = [v5 emailAddress];
+    account = [(ASSettingsAdvancedAccountController *)self account];
+    emailAddress = [account emailAddress];
     v14 = 0;
     v7 = &v14;
-    v8 = [MFMessageKeychainManager copyAllEncryptionIdentitiesForAddress:v6 error:&v14];
+    v8 = [MFMessageKeychainManager copyAllEncryptionIdentitiesForAddress:emailAddress error:&v14];
   }
 
   v9 = v8;
@@ -714,20 +714,20 @@ LABEL_10:
   return v9;
 }
 
-- (__SecTrust)copyTrustForIdentityPickerController:(id)a3 identity:(__SecIdentity *)a4
+- (__SecTrust)copyTrustForIdentityPickerController:(id)controller identity:(__SecIdentity *)identity
 {
-  v6 = [a3 property];
-  v7 = [(ASSettingsAdvancedAccountController *)self account];
-  v8 = [v7 emailAddress];
+  property = [controller property];
+  account = [(ASSettingsAdvancedAccountController *)self account];
+  emailAddress = [account emailAddress];
 
   v13 = 0;
   certificateRef = 0;
-  SecIdentityCopyCertificate(a4, &certificateRef);
+  SecIdentityCopyCertificate(identity, &certificateRef);
   if (certificateRef)
   {
-    if (([v6 isEqualToString:MFMailAccountSigningEnabled] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", MFMailAccountEncryptionEnabled))
+    if (([property isEqualToString:MFMailAccountSigningEnabled] & 1) != 0 || objc_msgSend(property, "isEqualToString:", MFMailAccountEncryptionEnabled))
     {
-      v9 = [MFMessageKeychainManager copySMIMESigningPolicyForAddress:v8, v13];
+      v9 = [MFMessageKeychainManager copySMIMESigningPolicyForAddress:emailAddress, v13];
       if (v9)
       {
         v10 = v9;
@@ -748,19 +748,19 @@ LABEL_10:
   return v11;
 }
 
-- (id)emailAddressesForIdentityPickerController:(id)a3
+- (id)emailAddressesForIdentityPickerController:(id)controller
 {
-  v3 = [(ASSettingsAdvancedAccountController *)self account];
-  v4 = [v3 emailAddresses];
+  account = [(ASSettingsAdvancedAccountController *)self account];
+  emailAddresses = [account emailAddresses];
 
-  return v4;
+  return emailAddresses;
 }
 
-- (unint64_t)configurationOptionsForIdentityPickerController:(id)a3
+- (unint64_t)configurationOptionsForIdentityPickerController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 property];
-  v6 = [v5 isEqualToString:MFMailAccountEncryptionEnabled];
+  controllerCopy = controller;
+  property = [controllerCopy property];
+  v6 = [property isEqualToString:MFMailAccountEncryptionEnabled];
 
   if (v6)
   {
@@ -774,8 +774,8 @@ LABEL_10:
 
   if ([(ASSettingsAdvancedAccountController *)self _accountIsManaged])
   {
-    v8 = v7 | [(ASSettingsAdvancedAccountController *)self _allowUserInteractiveSwitchForIdentityPickerController:v4];
-    if ([(ASSettingsAdvancedAccountController *)self _allowIdentitySelectionForIdentityPickerController:v4])
+    v8 = v7 | [(ASSettingsAdvancedAccountController *)self _allowUserInteractiveSwitchForIdentityPickerController:controllerCopy];
+    if ([(ASSettingsAdvancedAccountController *)self _allowIdentitySelectionForIdentityPickerController:controllerCopy])
     {
       v9 = v8 | 2;
     }
@@ -794,11 +794,11 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)_allowUserInteractiveSwitchForIdentityPickerController:(id)a3
+- (BOOL)_allowUserInteractiveSwitchForIdentityPickerController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 property];
-  v6 = [v5 isEqualToString:MFMailAccountSigningEnabled];
+  controllerCopy = controller;
+  property = [controllerCopy property];
+  v6 = [property isEqualToString:MFMailAccountSigningEnabled];
 
   if (v6)
   {
@@ -807,31 +807,31 @@ LABEL_10:
 
   else
   {
-    v8 = [v4 property];
-    v9 = [v8 isEqualToString:MFMailAccountEncryptionEnabled];
+    property2 = [controllerCopy property];
+    v9 = [property2 isEqualToString:MFMailAccountEncryptionEnabled];
 
     if (!v9)
     {
-      v12 = 1;
+      bOOLValue = 1;
       goto LABEL_7;
     }
 
     v7 = &MFMailAccountEncryptByDefaultUserOverrideable;
   }
 
-  v10 = [(ASSettingsAdvancedAccountController *)self account];
-  v11 = [v10 accountPropertyForKey:*v7];
-  v12 = [v11 BOOLValue];
+  account = [(ASSettingsAdvancedAccountController *)self account];
+  v11 = [account accountPropertyForKey:*v7];
+  bOOLValue = [v11 BOOLValue];
 
 LABEL_7:
-  return v12;
+  return bOOLValue;
 }
 
-- (BOOL)_allowIdentitySelectionForIdentityPickerController:(id)a3
+- (BOOL)_allowIdentitySelectionForIdentityPickerController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 property];
-  v6 = [v5 isEqualToString:MFMailAccountSigningEnabled];
+  controllerCopy = controller;
+  property = [controllerCopy property];
+  v6 = [property isEqualToString:MFMailAccountSigningEnabled];
 
   if (v6)
   {
@@ -840,24 +840,24 @@ LABEL_7:
 
   else
   {
-    v8 = [v4 property];
-    v9 = [v8 isEqualToString:MFMailAccountEncryptionEnabled];
+    property2 = [controllerCopy property];
+    v9 = [property2 isEqualToString:MFMailAccountEncryptionEnabled];
 
     if (!v9)
     {
-      v12 = 1;
+      bOOLValue = 1;
       goto LABEL_7;
     }
 
     v7 = &MFMailAccountEncryptionIdentityUserOverrideable;
   }
 
-  v10 = [(ASSettingsAdvancedAccountController *)self account];
-  v11 = [v10 accountPropertyForKey:*v7];
-  v12 = [v11 BOOLValue];
+  account = [(ASSettingsAdvancedAccountController *)self account];
+  v11 = [account accountPropertyForKey:*v7];
+  bOOLValue = [v11 BOOLValue];
 
 LABEL_7:
-  return v12;
+  return bOOLValue;
 }
 
 @end

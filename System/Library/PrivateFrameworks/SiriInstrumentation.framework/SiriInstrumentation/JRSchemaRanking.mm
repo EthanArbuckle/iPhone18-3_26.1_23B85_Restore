@@ -1,28 +1,28 @@
 @interface JRSchemaRanking
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaRanking)initWithDictionary:(id)a3;
-- (JRSchemaRanking)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaRanking)initWithDictionary:(id)dictionary;
+- (JRSchemaRanking)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addRankingMatrices:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRankingMatrices:(id)matrices;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaRanking
 
-- (JRSchemaRanking)initWithDictionary:(id)a3
+- (JRSchemaRanking)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = JRSchemaRanking;
   v5 = [(JRSchemaRanking *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"rankingMatrices"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"rankingMatrices"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"rankingScoreMatrix", v21}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"rankingScoreMatrix", v21}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(JRSchemaRanking *)v5 setRankingScoreMatrix:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"rankingCandidateMatrix"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"rankingCandidateMatrix"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,30 +88,30 @@
   return v5;
 }
 
-- (JRSchemaRanking)initWithJSON:(id)a3
+- (JRSchemaRanking)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaRanking *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaRanking *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaRanking *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -125,26 +125,26 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_rankingCandidateMatrix)
   {
-    v4 = [(JRSchemaRanking *)self rankingCandidateMatrix];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    rankingCandidateMatrix = [(JRSchemaRanking *)self rankingCandidateMatrix];
+    dictionaryRepresentation = [rankingCandidateMatrix dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"rankingCandidateMatrix"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"rankingCandidateMatrix"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"rankingCandidateMatrix"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"rankingCandidateMatrix"];
     }
   }
 
   if ([(NSArray *)self->_rankingMatrices count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -164,16 +164,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -183,28 +183,28 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"rankingMatrices"];
+    [dictionary setObject:array forKeyedSubscript:@"rankingMatrices"];
   }
 
   if (self->_rankingScoreMatrix)
   {
-    v15 = [(JRSchemaRanking *)self rankingScoreMatrix];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    rankingScoreMatrix = [(JRSchemaRanking *)self rankingScoreMatrix];
+    dictionaryRepresentation3 = [rankingScoreMatrix dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"rankingScoreMatrix"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"rankingScoreMatrix"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"rankingScoreMatrix"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"rankingScoreMatrix"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v19];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v19];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -214,28 +214,28 @@
   return v4 ^ [(JRSchemaRankingCandidateMatrix *)self->_rankingCandidateMatrix hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(JRSchemaRanking *)self rankingMatrices];
-  v6 = [v4 rankingMatrices];
-  if ((v5 != 0) == (v6 == 0))
+  rankingMatrices = [(JRSchemaRanking *)self rankingMatrices];
+  rankingMatrices2 = [equalCopy rankingMatrices];
+  if ((rankingMatrices != 0) == (rankingMatrices2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(JRSchemaRanking *)self rankingMatrices];
-  if (v7)
+  rankingMatrices3 = [(JRSchemaRanking *)self rankingMatrices];
+  if (rankingMatrices3)
   {
-    v8 = v7;
-    v9 = [(JRSchemaRanking *)self rankingMatrices];
-    v10 = [v4 rankingMatrices];
-    v11 = [v9 isEqual:v10];
+    v8 = rankingMatrices3;
+    rankingMatrices4 = [(JRSchemaRanking *)self rankingMatrices];
+    rankingMatrices5 = [equalCopy rankingMatrices];
+    v11 = [rankingMatrices4 isEqual:rankingMatrices5];
 
     if (!v11)
     {
@@ -247,20 +247,20 @@
   {
   }
 
-  v5 = [(JRSchemaRanking *)self rankingScoreMatrix];
-  v6 = [v4 rankingScoreMatrix];
-  if ((v5 != 0) == (v6 == 0))
+  rankingMatrices = [(JRSchemaRanking *)self rankingScoreMatrix];
+  rankingMatrices2 = [equalCopy rankingScoreMatrix];
+  if ((rankingMatrices != 0) == (rankingMatrices2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(JRSchemaRanking *)self rankingScoreMatrix];
-  if (v12)
+  rankingScoreMatrix = [(JRSchemaRanking *)self rankingScoreMatrix];
+  if (rankingScoreMatrix)
   {
-    v13 = v12;
-    v14 = [(JRSchemaRanking *)self rankingScoreMatrix];
-    v15 = [v4 rankingScoreMatrix];
-    v16 = [v14 isEqual:v15];
+    v13 = rankingScoreMatrix;
+    rankingScoreMatrix2 = [(JRSchemaRanking *)self rankingScoreMatrix];
+    rankingScoreMatrix3 = [equalCopy rankingScoreMatrix];
+    v16 = [rankingScoreMatrix2 isEqual:rankingScoreMatrix3];
 
     if (!v16)
     {
@@ -272,12 +272,12 @@
   {
   }
 
-  v5 = [(JRSchemaRanking *)self rankingCandidateMatrix];
-  v6 = [v4 rankingCandidateMatrix];
-  if ((v5 != 0) != (v6 == 0))
+  rankingMatrices = [(JRSchemaRanking *)self rankingCandidateMatrix];
+  rankingMatrices2 = [equalCopy rankingCandidateMatrix];
+  if ((rankingMatrices != 0) != (rankingMatrices2 == 0))
   {
-    v17 = [(JRSchemaRanking *)self rankingCandidateMatrix];
-    if (!v17)
+    rankingCandidateMatrix = [(JRSchemaRanking *)self rankingCandidateMatrix];
+    if (!rankingCandidateMatrix)
     {
 
 LABEL_20:
@@ -285,10 +285,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(JRSchemaRanking *)self rankingCandidateMatrix];
-    v20 = [v4 rankingCandidateMatrix];
-    v21 = [v19 isEqual:v20];
+    v18 = rankingCandidateMatrix;
+    rankingCandidateMatrix2 = [(JRSchemaRanking *)self rankingCandidateMatrix];
+    rankingCandidateMatrix3 = [equalCopy rankingCandidateMatrix];
+    v21 = [rankingCandidateMatrix2 isEqual:rankingCandidateMatrix3];
 
     if (v21)
     {
@@ -308,10 +308,10 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -343,65 +343,65 @@ LABEL_18:
     while (v7);
   }
 
-  v10 = [(JRSchemaRanking *)self rankingScoreMatrix];
+  rankingScoreMatrix = [(JRSchemaRanking *)self rankingScoreMatrix];
 
-  if (v10)
+  if (rankingScoreMatrix)
   {
-    v11 = [(JRSchemaRanking *)self rankingScoreMatrix];
+    rankingScoreMatrix2 = [(JRSchemaRanking *)self rankingScoreMatrix];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(JRSchemaRanking *)self rankingCandidateMatrix];
+  rankingCandidateMatrix = [(JRSchemaRanking *)self rankingCandidateMatrix];
 
-  if (v12)
+  if (rankingCandidateMatrix)
   {
-    v13 = [(JRSchemaRanking *)self rankingCandidateMatrix];
+    rankingCandidateMatrix2 = [(JRSchemaRanking *)self rankingCandidateMatrix];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addRankingMatrices:(id)a3
+- (void)addRankingMatrices:(id)matrices
 {
-  v4 = a3;
+  matricesCopy = matrices;
   rankingMatrices = self->_rankingMatrices;
-  v8 = v4;
+  v8 = matricesCopy;
   if (!rankingMatrices)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_rankingMatrices;
-    self->_rankingMatrices = v6;
+    self->_rankingMatrices = array;
 
-    v4 = v8;
+    matricesCopy = v8;
     rankingMatrices = self->_rankingMatrices;
   }
 
-  [(NSArray *)rankingMatrices addObject:v4];
+  [(NSArray *)rankingMatrices addObject:matricesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v15.receiver = self;
   v15.super_class = JRSchemaRanking;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
-  v6 = [(JRSchemaRanking *)self rankingMatrices];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
+  rankingMatrices = [(JRSchemaRanking *)self rankingMatrices];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:rankingMatrices underConditions:policyCopy];
   [(JRSchemaRanking *)self setRankingMatrices:v7];
 
-  v8 = [(JRSchemaRanking *)self rankingScoreMatrix];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
-  v10 = [v9 suppressMessage];
+  rankingScoreMatrix = [(JRSchemaRanking *)self rankingScoreMatrix];
+  v9 = [rankingScoreMatrix applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v9 suppressMessage];
 
-  if (v10)
+  if (suppressMessage)
   {
     [(JRSchemaRanking *)self deleteRankingScoreMatrix];
   }
 
-  v11 = [(JRSchemaRanking *)self rankingCandidateMatrix];
-  v12 = [v11 applySensitiveConditionsPolicy:v4];
-  v13 = [v12 suppressMessage];
+  rankingCandidateMatrix = [(JRSchemaRanking *)self rankingCandidateMatrix];
+  v12 = [rankingCandidateMatrix applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v12 suppressMessage];
 
-  if (v13)
+  if (suppressMessage2)
   {
     [(JRSchemaRanking *)self deleteRankingCandidateMatrix];
   }

@@ -8,7 +8,7 @@
 
 - (id)_ICSStringForProperyValue
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 _ICSStripControlChracters];
   [v1 _ICSEscapePropertyValue];
 
@@ -17,7 +17,7 @@
 
 - (id)_ICSStringForParameterValue
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 _ICSStripControlChracters];
   [v1 _ICSEscapeParameterValue];
 
@@ -26,7 +26,7 @@
 
 - (id)_ICSStringForParameterQuotedValue
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 _ICSStripControlChracters];
   [v1 _ICSEscapeParameterQuotedValue];
 

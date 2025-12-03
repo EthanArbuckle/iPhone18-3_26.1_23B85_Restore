@@ -1,27 +1,27 @@
 @interface AppleAccountInformationProvider
 - (int64_t)_appleAccountSecurityState;
 - (unint64_t)_primaryAppleAccountSecurityLevel;
-- (void)getAppleAccountSecurityStateWithCompletion:(id)a3;
+- (void)getAppleAccountSecurityStateWithCompletion:(id)completion;
 @end
 
 @implementation AppleAccountInformationProvider
 
-- (void)getAppleAccountSecurityStateWithCompletion:(id)a3
+- (void)getAppleAccountSecurityStateWithCompletion:(id)completion
 {
-  v5 = a3;
-  (*(a3 + 2))(v5, [(AppleAccountInformationProvider *)self _appleAccountSecurityState]);
+  completionCopy = completion;
+  (*(completion + 2))(completionCopy, [(AppleAccountInformationProvider *)self _appleAccountSecurityState]);
 }
 
 - (int64_t)_appleAccountSecurityState
 {
-  v2 = [(AppleAccountInformationProvider *)self _primaryAppleAccountSecurityLevel];
+  _primaryAppleAccountSecurityLevel = [(AppleAccountInformationProvider *)self _primaryAppleAccountSecurityLevel];
   v3 = 1;
-  if (v2 == 4)
+  if (_primaryAppleAccountSecurityLevel == 4)
   {
     v3 = 2;
   }
 
-  if (v2)
+  if (_primaryAppleAccountSecurityLevel)
   {
     return v3;
   }
@@ -35,11 +35,11 @@
 - (unint64_t)_primaryAppleAccountSecurityLevel
 {
   v2 = objc_alloc_init(ACAccountStore);
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 aa_altDSID];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
+  aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
 
   v5 = +[AKAccountManager sharedInstance];
-  v6 = [v5 authKitAccountWithAltDSID:v4];
+  v6 = [v5 authKitAccountWithAltDSID:aa_altDSID];
   v7 = [v5 securityLevelForAccount:v6];
 
   return v7;

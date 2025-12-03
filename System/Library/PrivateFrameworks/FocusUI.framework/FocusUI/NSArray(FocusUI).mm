@@ -8,16 +8,16 @@
 {
   v4 = a3;
   v5 = v4;
-  v6 = a1 == v4;
-  if (v4 && a1 != v4)
+  v6 = self == v4;
+  if (v4 && self != v4)
   {
-    v7 = [a1 count];
-    if (v7 == [v5 count] && objc_msgSend(a1, "count"))
+    v7 = [self count];
+    if (v7 == [v5 count] && objc_msgSend(self, "count"))
     {
       v8 = 0;
       do
       {
-        v9 = [a1 objectAtIndexedSubscript:v8];
+        v9 = [self objectAtIndexedSubscript:v8];
         v10 = [v5 objectAtIndexedSubscript:v8];
         v6 = [v9 fcui_isEqualToAction:v10];
 
@@ -29,7 +29,7 @@
         ++v8;
       }
 
-      while (v8 < [a1 count]);
+      while (v8 < [self count]);
     }
 
     else

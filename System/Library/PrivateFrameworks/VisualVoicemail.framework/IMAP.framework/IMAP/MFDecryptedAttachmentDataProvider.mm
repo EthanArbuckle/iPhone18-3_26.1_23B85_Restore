@@ -1,21 +1,21 @@
 @interface MFDecryptedAttachmentDataProvider
-- (MFDecryptedAttachmentDataProvider)initWithDecryptedMessage:(id)a3;
-- (id)fetchLocalDataForAttachment:(id)a3;
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4;
+- (MFDecryptedAttachmentDataProvider)initWithDecryptedMessage:(id)message;
+- (id)fetchLocalDataForAttachment:(id)attachment;
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message;
 - (void)dealloc;
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6;
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion;
 @end
 
 @implementation MFDecryptedAttachmentDataProvider
 
-- (MFDecryptedAttachmentDataProvider)initWithDecryptedMessage:(id)a3
+- (MFDecryptedAttachmentDataProvider)initWithDecryptedMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = [(MFDecryptedAttachmentDataProvider *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
+    objc_storeStrong(&v6->_message, message);
   }
 
   return v7;
@@ -28,22 +28,22 @@
   [(MFDecryptedAttachmentDataProvider *)&v2 dealloc];
 }
 
-- (id)fetchLocalDataForAttachment:(id)a3
+- (id)fetchLocalDataForAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [(MFMailMessage *)self->_message messageStore];
-  v6 = [v4 part];
-  v7 = [(MFMailMessage *)self->_message messageBody];
-  [v6 setMimeBody:v7];
+  attachmentCopy = attachment;
+  messageStore = [(MFMailMessage *)self->_message messageStore];
+  part = [attachmentCopy part];
+  messageBody = [(MFMailMessage *)self->_message messageBody];
+  [part setMimeBody:messageBody];
 
-  v8 = [v4 readFromDisk];
-  if (v8)
+  readFromDisk = [attachmentCopy readFromDisk];
+  if (readFromDisk)
   {
-    v9 = v8;
-    v10 = [v4 part];
-    v11 = [v4 part];
-    [v11 range];
-    v13 = [v5 dataForMimePart:v10 inRange:0 isComplete:v12 downloadIfNecessary:0 didDownload:{0, 0}];
+    v9 = readFromDisk;
+    part2 = [attachmentCopy part];
+    part3 = [attachmentCopy part];
+    [part3 range];
+    v13 = [messageStore dataForMimePart:part2 inRange:0 isComplete:v12 downloadIfNecessary:0 didDownload:{0, 0}];
   }
 
   else
@@ -54,33 +54,33 @@
   return v13;
 }
 
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  attachmentCopy = attachment;
+  consumerCopy = consumer;
+  progressCopy = progress;
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __89__MFDecryptedAttachmentDataProvider_fetchDataForAttachment_consumer_progress_completion___block_invoke;
   v38[3] = &unk_279E35298;
-  v13 = v12;
+  v13 = progressCopy;
   v39 = v13;
-  v14 = a6;
+  completionCopy = completion;
   v15 = MEMORY[0x2743C3100](v38);
-  v16 = [(MFMailMessage *)self->_message messageStore];
-  v17 = [v10 part];
-  v18 = [(MFMailMessage *)self->_message messageBody];
-  [v17 setMimeBody:v18];
+  messageStore = [(MFMailMessage *)self->_message messageStore];
+  part = [attachmentCopy part];
+  messageBody = [(MFMailMessage *)self->_message messageBody];
+  [part setMimeBody:messageBody];
 
-  v19 = [v10 readFromDisk];
-  v36 = v16;
+  readFromDisk = [attachmentCopy readFromDisk];
+  v36 = messageStore;
   v37 = v15;
-  v35 = v10;
-  if (v19)
+  v35 = attachmentCopy;
+  if (readFromDisk)
   {
-    [v11 appendData:v19];
-    v20 = [v19 length];
+    [consumerCopy appendData:readFromDisk];
+    v20 = [readFromDisk length];
     [v13 setCompletedUnitCount:v20];
     [v13 setTotalUnitCount:v20];
     v21 = 0;
@@ -91,17 +91,17 @@
 
   else
   {
-    v34 = v11;
-    v33 = [v10 decodeFilterWithDataConsumer:v11];
+    v34 = consumerCopy;
+    v33 = [attachmentCopy decodeFilterWithDataConsumer:consumerCopy];
     v25 = objc_alloc(MEMORY[0x277D24F88]);
     v42[0] = v33;
     v24 = 1;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:1];
-    v22 = [v25 initWithConsumers:v26 expectedSize:{objc_msgSend(v10, "encodedFileSize")}];
+    v22 = [v25 initWithConsumers:v26 expectedSize:{objc_msgSend(attachmentCopy, "encodedFileSize")}];
 
     [v22 setProgressBlock:v15];
-    [v17 range];
-    LOBYTE(v26) = [v16 dataForMimePart:v17 inRange:0 withConsumer:v27 downloadIfNecessary:{v22, 1}];
+    [part range];
+    LOBYTE(v26) = [messageStore dataForMimePart:part inRange:0 withConsumer:v27 downloadIfNecessary:{v22, 1}];
 
     if (v26)
     {
@@ -114,8 +114,8 @@
       v28 = MEMORY[0x277CCA9B8];
       v40 = *MEMORY[0x277CCA7E8];
       v29 = +[MFActivityMonitor currentMonitor];
-      v30 = [v29 error];
-      v41 = v30;
+      error = [v29 error];
+      v41 = error;
       v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
       v23 = [v28 errorWithDomain:@"MFMessageErrorDomain" code:1030 localizedDescription:@"Could not retrieve decrypted data for attachment." title:@"No Data Found" userInfo:v31];
 
@@ -123,12 +123,12 @@
       v21 = 0;
     }
 
-    v11 = v34;
+    consumerCopy = v34;
   }
 
   [v22 done];
-  [v11 done];
-  v14[2](v14, v24, v23, v21);
+  [consumerCopy done];
+  completionCopy[2](completionCopy, v24, v23, v21);
 
   v32 = *MEMORY[0x277D85DE8];
 }
@@ -141,21 +141,21 @@ uint64_t __89__MFDecryptedAttachmentDataProvider_fetchDataForAttachment_consumer
   return [v6 setCompletedUnitCount:a2];
 }
 
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message
 {
-  v5 = a3;
-  v6 = [a4 attachmentStorageLocation];
-  if (v6)
+  attachmentCopy = attachment;
+  attachmentStorageLocation = [message attachmentStorageLocation];
+  if (attachmentStorageLocation)
   {
-    v7 = [v5 part];
-    v8 = [v7 partNumber];
-    v9 = [v6 stringByAppendingPathComponent:v8];
+    part = [attachmentCopy part];
+    partNumber = [part partNumber];
+    v9 = [attachmentStorageLocation stringByAppendingPathComponent:partNumber];
 
-    v10 = [v5 fileName];
-    v6 = [v9 stringByAppendingPathComponent:v10];
+    fileName = [attachmentCopy fileName];
+    attachmentStorageLocation = [v9 stringByAppendingPathComponent:fileName];
   }
 
-  return v6;
+  return attachmentStorageLocation;
 }
 
 @end

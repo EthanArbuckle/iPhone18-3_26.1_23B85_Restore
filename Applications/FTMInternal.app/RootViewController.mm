@@ -1,6 +1,6 @@
 @interface RootViewController
-- (_TtC11FTMInternal18RootViewController)initWithCoder:(id)a3;
-- (_TtC11FTMInternal18RootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11FTMInternal18RootViewController)initWithCoder:(id)coder;
+- (_TtC11FTMInternal18RootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -8,38 +8,38 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002221D4();
 }
 
-- (_TtC11FTMInternal18RootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11FTMInternal18RootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for RootViewController();
-  v9 = [(RootViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(RootViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC11FTMInternal18RootViewController)initWithCoder:(id)a3
+- (_TtC11FTMInternal18RootViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for RootViewController();
-  v4 = a3;
-  v5 = [(RootViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(RootViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

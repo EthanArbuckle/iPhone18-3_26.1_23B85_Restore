@@ -1,6 +1,6 @@
 @interface SRDaemonNotification
 + (void)initialize;
-- (id)initWithSensor:(void *)a1;
+- (id)initWithSensor:(void *)sensor;
 - (void)dealloc;
 @end
 
@@ -8,20 +8,20 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogDaemonNotification = os_log_create("com.apple.SensorKit", "SRLogDaemonNotification");
   }
 }
 
-- (id)initWithSensor:(void *)a1
+- (id)initWithSensor:(void *)sensor
 {
-  if (!a1)
+  if (!sensor)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = sensor;
   v6.super_class = SRDaemonNotification;
   v3 = objc_msgSendSuper2(&v6, sel_init);
   if (v3)

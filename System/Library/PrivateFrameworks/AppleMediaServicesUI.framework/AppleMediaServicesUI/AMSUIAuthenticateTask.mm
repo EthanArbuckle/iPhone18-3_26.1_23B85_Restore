@@ -1,220 +1,220 @@
 @interface AMSUIAuthenticateTask
-- (AMSUIAuthenticateTask)initWithAccount:(id)a3 presentingViewController:(id)a4 options:(id)a5;
-- (AMSUIAuthenticateTask)initWithAccount:(id)a3 presentingViewController:(id)a4 options:(id)a5 bag:(id)a6;
-- (AMSUIAuthenticateTask)initWithAccount:(id)a3 presentingWindow:(id)a4 options:(id)a5;
-- (AMSUIAuthenticateTask)initWithAccount:(id)a3 presentingWindow:(id)a4 options:(id)a5 bag:(id)a6;
-- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)a3 presentingViewController:(id)a4 options:(id)a5;
-- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)a3 presentingViewController:(id)a4 options:(id)a5 bag:(id)a6;
-- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)a3 presentingWindow:(id)a4 options:(id)a5;
-- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)a3 presentingWindow:(id)a4 options:(id)a5 bag:(id)a6;
-- (AMSUIAuthenticateTask)initWithRequest:(id)a3 presentingViewController:(id)a4;
-- (AMSUIAuthenticateTask)initWithRequest:(id)a3 presentingViewController:(id)a4 bag:(id)a5;
-- (AMSUIAuthenticateTask)initWithRequest:(id)a3 presentingWindow:(id)a4;
-- (AMSUIAuthenticateTask)initWithRequest:(id)a3 presentingWindow:(id)a4 bag:(id)a5;
-- (id)_createAuthKitUpdateTaskForAccount:(id)a3;
+- (AMSUIAuthenticateTask)initWithAccount:(id)account presentingViewController:(id)controller options:(id)options;
+- (AMSUIAuthenticateTask)initWithAccount:(id)account presentingViewController:(id)controller options:(id)options bag:(id)bag;
+- (AMSUIAuthenticateTask)initWithAccount:(id)account presentingWindow:(id)window options:(id)options;
+- (AMSUIAuthenticateTask)initWithAccount:(id)account presentingWindow:(id)window options:(id)options bag:(id)bag;
+- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)results presentingViewController:(id)controller options:(id)options;
+- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)results presentingViewController:(id)controller options:(id)options bag:(id)bag;
+- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)results presentingWindow:(id)window options:(id)options;
+- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)results presentingWindow:(id)window options:(id)options bag:(id)bag;
+- (AMSUIAuthenticateTask)initWithRequest:(id)request presentingViewController:(id)controller;
+- (AMSUIAuthenticateTask)initWithRequest:(id)request presentingViewController:(id)controller bag:(id)bag;
+- (AMSUIAuthenticateTask)initWithRequest:(id)request presentingWindow:(id)window;
+- (AMSUIAuthenticateTask)initWithRequest:(id)request presentingWindow:(id)window bag:(id)bag;
+- (id)_createAuthKitUpdateTaskForAccount:(id)account;
 - (id)_getPresentingViewController;
-- (id)_presentEngagementRequest:(id)a3;
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
+- (id)_presentEngagementRequest:(id)request;
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSUIAuthenticateTask
 
-- (AMSUIAuthenticateTask)initWithAccount:(id)a3 presentingViewController:(id)a4 options:(id)a5
+- (AMSUIAuthenticateTask)initWithAccount:(id)account presentingViewController:(id)controller options:(id)options
 {
   v8 = MEMORY[0x1E698C7D8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 amsui_internalBag];
-  v13 = [(AMSUIAuthenticateTask *)self initWithAccount:v11 presentingViewController:v10 options:v9 bag:v12];
+  optionsCopy = options;
+  controllerCopy = controller;
+  accountCopy = account;
+  amsui_internalBag = [v8 amsui_internalBag];
+  v13 = [(AMSUIAuthenticateTask *)self initWithAccount:accountCopy presentingViewController:controllerCopy options:optionsCopy bag:amsui_internalBag];
 
   return v13;
 }
 
-- (AMSUIAuthenticateTask)initWithAccount:(id)a3 presentingWindow:(id)a4 options:(id)a5
+- (AMSUIAuthenticateTask)initWithAccount:(id)account presentingWindow:(id)window options:(id)options
 {
   v8 = MEMORY[0x1E698C7D8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 amsui_internalBag];
-  v13 = [(AMSUIAuthenticateTask *)self initWithAccount:v11 presentingWindow:v10 options:v9 bag:v12];
+  optionsCopy = options;
+  windowCopy = window;
+  accountCopy = account;
+  amsui_internalBag = [v8 amsui_internalBag];
+  v13 = [(AMSUIAuthenticateTask *)self initWithAccount:accountCopy presentingWindow:windowCopy options:optionsCopy bag:amsui_internalBag];
 
   return v13;
 }
 
-- (AMSUIAuthenticateTask)initWithAccount:(id)a3 presentingViewController:(id)a4 options:(id)a5 bag:(id)a6
+- (AMSUIAuthenticateTask)initWithAccount:(id)account presentingViewController:(id)controller options:(id)options bag:(id)bag
 {
-  v11 = a4;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = AMSUIAuthenticateTask;
-  v12 = [(AMSAuthenticateTask *)&v16 initWithAccount:a3 options:a5 bag:a6];
+  v12 = [(AMSAuthenticateTask *)&v16 initWithAccount:account options:options bag:bag];
   v13 = v12;
   if (v12)
   {
     v15.receiver = v12;
     v15.super_class = AMSUIAuthenticateTask;
     [(AMSAuthenticateTask *)&v15 setDelegate:v12];
-    objc_storeStrong(&v13->_presentingViewController, a4);
+    objc_storeStrong(&v13->_presentingViewController, controller);
   }
 
   return v13;
 }
 
-- (AMSUIAuthenticateTask)initWithAccount:(id)a3 presentingWindow:(id)a4 options:(id)a5 bag:(id)a6
+- (AMSUIAuthenticateTask)initWithAccount:(id)account presentingWindow:(id)window options:(id)options bag:(id)bag
 {
-  v11 = a4;
+  windowCopy = window;
   v16.receiver = self;
   v16.super_class = AMSUIAuthenticateTask;
-  v12 = [(AMSAuthenticateTask *)&v16 initWithAccount:a3 options:a5 bag:a6];
+  v12 = [(AMSAuthenticateTask *)&v16 initWithAccount:account options:options bag:bag];
   v13 = v12;
   if (v12)
   {
     v15.receiver = v12;
     v15.super_class = AMSUIAuthenticateTask;
     [(AMSAuthenticateTask *)&v15 setDelegate:v12];
-    objc_storeStrong(&v13->_presentingWindow, a4);
+    objc_storeStrong(&v13->_presentingWindow, window);
   }
 
   return v13;
 }
 
-- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)a3 presentingViewController:(id)a4 options:(id)a5
+- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)results presentingViewController:(id)controller options:(id)options
 {
   v8 = MEMORY[0x1E698C7D8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 amsui_internalBag];
-  v13 = [(AMSUIAuthenticateTask *)self initWithAuthenticationResults:v11 presentingViewController:v10 options:v9 bag:v12];
+  optionsCopy = options;
+  controllerCopy = controller;
+  resultsCopy = results;
+  amsui_internalBag = [v8 amsui_internalBag];
+  v13 = [(AMSUIAuthenticateTask *)self initWithAuthenticationResults:resultsCopy presentingViewController:controllerCopy options:optionsCopy bag:amsui_internalBag];
 
   return v13;
 }
 
-- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)a3 presentingWindow:(id)a4 options:(id)a5
+- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)results presentingWindow:(id)window options:(id)options
 {
   v8 = MEMORY[0x1E698C7D8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 amsui_internalBag];
-  v13 = [(AMSUIAuthenticateTask *)self initWithAuthenticationResults:v11 presentingWindow:v10 options:v9 bag:v12];
+  optionsCopy = options;
+  windowCopy = window;
+  resultsCopy = results;
+  amsui_internalBag = [v8 amsui_internalBag];
+  v13 = [(AMSUIAuthenticateTask *)self initWithAuthenticationResults:resultsCopy presentingWindow:windowCopy options:optionsCopy bag:amsui_internalBag];
 
   return v13;
 }
 
-- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)a3 presentingViewController:(id)a4 options:(id)a5 bag:(id)a6
+- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)results presentingViewController:(id)controller options:(id)options bag:(id)bag
 {
-  v11 = a4;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = AMSUIAuthenticateTask;
-  v12 = [(AMSAuthenticateTask *)&v16 initWithAuthenticationResults:a3 options:a5 bag:a6];
+  v12 = [(AMSAuthenticateTask *)&v16 initWithAuthenticationResults:results options:options bag:bag];
   v13 = v12;
   if (v12)
   {
     v15.receiver = v12;
     v15.super_class = AMSUIAuthenticateTask;
     [(AMSAuthenticateTask *)&v15 setDelegate:v12];
-    objc_storeStrong(&v13->_presentingViewController, a4);
+    objc_storeStrong(&v13->_presentingViewController, controller);
   }
 
   return v13;
 }
 
-- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)a3 presentingWindow:(id)a4 options:(id)a5 bag:(id)a6
+- (AMSUIAuthenticateTask)initWithAuthenticationResults:(id)results presentingWindow:(id)window options:(id)options bag:(id)bag
 {
-  v11 = a4;
+  windowCopy = window;
   v16.receiver = self;
   v16.super_class = AMSUIAuthenticateTask;
-  v12 = [(AMSAuthenticateTask *)&v16 initWithAuthenticationResults:a3 options:a5 bag:a6];
+  v12 = [(AMSAuthenticateTask *)&v16 initWithAuthenticationResults:results options:options bag:bag];
   v13 = v12;
   if (v12)
   {
     v15.receiver = v12;
     v15.super_class = AMSUIAuthenticateTask;
     [(AMSAuthenticateTask *)&v15 setDelegate:v12];
-    objc_storeStrong(&v13->_presentingWindow, a4);
+    objc_storeStrong(&v13->_presentingWindow, window);
   }
 
   return v13;
 }
 
-- (AMSUIAuthenticateTask)initWithRequest:(id)a3 presentingViewController:(id)a4
+- (AMSUIAuthenticateTask)initWithRequest:(id)request presentingViewController:(id)controller
 {
   v6 = MEMORY[0x1E698C7D8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 amsui_internalBag];
-  v10 = [(AMSUIAuthenticateTask *)self initWithRequest:v8 presentingViewController:v7 bag:v9];
+  controllerCopy = controller;
+  requestCopy = request;
+  amsui_internalBag = [v6 amsui_internalBag];
+  v10 = [(AMSUIAuthenticateTask *)self initWithRequest:requestCopy presentingViewController:controllerCopy bag:amsui_internalBag];
 
   return v10;
 }
 
-- (AMSUIAuthenticateTask)initWithRequest:(id)a3 presentingWindow:(id)a4
+- (AMSUIAuthenticateTask)initWithRequest:(id)request presentingWindow:(id)window
 {
   v6 = MEMORY[0x1E698C7D8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 amsui_internalBag];
-  v10 = [(AMSUIAuthenticateTask *)self initWithRequest:v8 presentingWindow:v7 bag:v9];
+  windowCopy = window;
+  requestCopy = request;
+  amsui_internalBag = [v6 amsui_internalBag];
+  v10 = [(AMSUIAuthenticateTask *)self initWithRequest:requestCopy presentingWindow:windowCopy bag:amsui_internalBag];
 
   return v10;
 }
 
-- (AMSUIAuthenticateTask)initWithRequest:(id)a3 presentingViewController:(id)a4 bag:(id)a5
+- (AMSUIAuthenticateTask)initWithRequest:(id)request presentingViewController:(id)controller bag:(id)bag
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 logKey];
+  requestCopy = request;
+  bagCopy = bag;
+  controllerCopy = controller;
+  logKey = [requestCopy logKey];
 
-  if (v11)
+  if (logKey)
   {
-    v12 = [v8 logKey];
+    logKey2 = [requestCopy logKey];
     v13 = AMSSetLogKey();
   }
 
-  v14 = [v8 account];
-  v15 = [v8 options];
-  v16 = [(AMSUIAuthenticateTask *)self initWithAccount:v14 presentingViewController:v10 options:v15 bag:v9];
+  account = [requestCopy account];
+  options = [requestCopy options];
+  v16 = [(AMSUIAuthenticateTask *)self initWithAccount:account presentingViewController:controllerCopy options:options bag:bagCopy];
 
   return v16;
 }
 
-- (AMSUIAuthenticateTask)initWithRequest:(id)a3 presentingWindow:(id)a4 bag:(id)a5
+- (AMSUIAuthenticateTask)initWithRequest:(id)request presentingWindow:(id)window bag:(id)bag
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 logKey];
+  requestCopy = request;
+  bagCopy = bag;
+  windowCopy = window;
+  logKey = [requestCopy logKey];
 
-  if (v11)
+  if (logKey)
   {
-    v12 = [v8 logKey];
+    logKey2 = [requestCopy logKey];
     v13 = AMSSetLogKey();
   }
 
-  v14 = [v8 account];
-  v15 = [v8 options];
-  v16 = [(AMSUIAuthenticateTask *)self initWithAccount:v14 presentingWindow:v10 options:v15 bag:v9];
+  account = [requestCopy account];
+  options = [requestCopy options];
+  v16 = [(AMSUIAuthenticateTask *)self initWithAccount:account presentingWindow:windowCopy options:options bag:bagCopy];
 
   return v16;
 }
 
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  requestCopy = request;
   v8 = MEMORY[0x1E698C968];
-  v9 = a5;
-  v10 = [v8 sharedAccountsConfig];
-  if (!v10)
+  completionCopy = completion;
+  sharedAccountsConfig = [v8 sharedAccountsConfig];
+  if (!sharedAccountsConfig)
   {
-    v10 = [MEMORY[0x1E698C968] sharedConfig];
+    sharedAccountsConfig = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [sharedAccountsConfig OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = AMSLogKey();
@@ -225,31 +225,31 @@
     v23 = v13;
     v24 = 2114;
     v25 = v14;
-    _os_log_impl(&dword_1BB036000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling dialog request in UI Task. dialogRequest = %{public}@", &v20, 0x20u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling dialog request in UI Task. dialogRequest = %{public}@", &v20, 0x20u);
   }
 
   v15 = [AMSUIAlertDialogTask alloc];
-  v16 = [(AMSUIAuthenticateTask *)self _getPresentingViewController];
-  v17 = [(AMSUIAlertDialogTask *)v15 initWithRequest:v7 presentingViewController:v16];
+  _getPresentingViewController = [(AMSUIAuthenticateTask *)self _getPresentingViewController];
+  v17 = [(AMSUIAlertDialogTask *)v15 initWithRequest:requestCopy presentingViewController:_getPresentingViewController];
 
-  v18 = [(AMSUIAlertDialogTask *)v17 present];
-  [v18 addFinishBlock:v9];
+  present = [(AMSUIAlertDialogTask *)v17 present];
+  [present addFinishBlock:completionCopy];
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_createAuthKitUpdateTaskForAccount:(id)a3
+- (id)_createAuthKitUpdateTaskForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = objc_alloc_init(MEMORY[0x1E698CA58]);
-  v6 = [(AMSUIAuthenticateTask *)self presentingWindow];
+  presentingWindow = [(AMSUIAuthenticateTask *)self presentingWindow];
 
-  if (v6)
+  if (presentingWindow)
   {
     v7 = [AMSUIAuthKitUpdateTask alloc];
-    v8 = [(AMSUIAuthenticateTask *)self presentingWindow];
-    v9 = [(AMSAuthenticateTask *)self options];
-    v10 = [(AMSUIAuthKitUpdateTask *)v7 initWithAccount:v4 presentingWindow:v8 options:v9];
+    presentingWindow2 = [(AMSUIAuthenticateTask *)self presentingWindow];
+    options = [(AMSAuthenticateTask *)self options];
+    v10 = [(AMSUIAuthKitUpdateTask *)v7 initWithAccount:accountCopy presentingWindow:presentingWindow2 options:options];
 
     [v5 finishWithResult:v10];
   }
@@ -261,7 +261,7 @@
     v15[2] = __60__AMSUIAuthenticateTask__createAuthKitUpdateTaskForAccount___block_invoke;
     v15[3] = &unk_1E7F24590;
     v15[4] = self;
-    v16 = v4;
+    v16 = accountCopy;
     v17 = v5;
     v11 = v15;
     v12 = AMSLogKey();
@@ -306,23 +306,23 @@ void __60__AMSUIAuthenticateTask__createAuthKitUpdateTaskForAccount___block_invo
   [*(a1 + 48) finishWithResult:v8];
 }
 
-- (id)_presentEngagementRequest:(id)a3
+- (id)_presentEngagementRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_new();
   v6 = [AMSUIEngagementTask alloc];
   v7 = [(AMSAuthenticateTask *)self bag];
-  v8 = [(AMSUIAuthenticateTask *)self _getPresentingViewController];
-  v9 = [(AMSUIEngagementTask *)v6 initWithRequest:v4 bag:v7 presentingViewController:v8];
+  _getPresentingViewController = [(AMSUIAuthenticateTask *)self _getPresentingViewController];
+  v9 = [(AMSUIEngagementTask *)v6 initWithRequest:requestCopy bag:v7 presentingViewController:_getPresentingViewController];
 
-  v10 = [(AMSUIEngagementTask *)v9 presentEngagement];
+  presentEngagement = [(AMSUIEngagementTask *)v9 presentEngagement];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__AMSUIAuthenticateTask__presentEngagementRequest___block_invoke;
   v13[3] = &unk_1E7F24650;
   v11 = v5;
   v14 = v11;
-  [v10 addFinishBlock:v13];
+  [presentEngagement addFinishBlock:v13];
 
   return v11;
 }
@@ -343,20 +343,20 @@ uint64_t __51__AMSUIAuthenticateTask__presentEngagementRequest___block_invoke(ui
 
 - (id)_getPresentingViewController
 {
-  v3 = [(AMSUIAuthenticateTask *)self presentingWindow];
+  presentingWindow = [(AMSUIAuthenticateTask *)self presentingWindow];
 
-  if (v3)
+  if (presentingWindow)
   {
-    v4 = [(AMSUIAuthenticateTask *)self presentingWindow];
-    v5 = [v4 rootViewController];
+    presentingWindow2 = [(AMSUIAuthenticateTask *)self presentingWindow];
+    rootViewController = [presentingWindow2 rootViewController];
   }
 
   else
   {
-    v5 = [(AMSUIAuthenticateTask *)self presentingViewController];
+    rootViewController = [(AMSUIAuthenticateTask *)self presentingViewController];
   }
 
-  return v5;
+  return rootViewController;
 }
 
 @end

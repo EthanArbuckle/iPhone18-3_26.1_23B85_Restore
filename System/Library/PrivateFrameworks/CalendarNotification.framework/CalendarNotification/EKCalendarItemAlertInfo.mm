@@ -1,8 +1,8 @@
 @interface EKCalendarItemAlertInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPurelyATimeToLeaveAlert;
 - (CLLocationCoordinate2D)geoLocationCoordinates;
-- (EKCalendarItemAlertInfo)initWithTitle:(id)a3 location:(id)a4 date:(id)a5 endDate:(id)a6 timeZone:(id)a7 allDay:(BOOL)a8 tentative:(BOOL)a9 publisherBulletinID:(id)a10 entityID:(id)a11 appLink:(id)a12 proximity:(int64_t)a13 externalID:(id)a14 databaseID:(int)a15 acknowledged:(BOOL)a16 dismissalID:(id)a17 alarmID:(id)a18 isOffsetFromTravelTimeStart:(BOOL)a19 refiring:(BOOL)a20 pseudoEvent:(BOOL)a21;
+- (EKCalendarItemAlertInfo)initWithTitle:(id)title location:(id)location date:(id)date endDate:(id)endDate timeZone:(id)zone allDay:(BOOL)day tentative:(BOOL)tentative publisherBulletinID:(id)self0 entityID:(id)self1 appLink:(id)self2 proximity:(int64_t)self3 externalID:(id)self4 databaseID:(int)self5 acknowledged:(BOOL)self6 dismissalID:(id)self7 alarmID:(id)self8 isOffsetFromTravelTimeStart:(BOOL)self9 refiring:(BOOL)refiring pseudoEvent:(BOOL)event;
 - (NSString)recordID;
 - (id)description;
 - (unint64_t)hash;
@@ -11,19 +11,19 @@
 
 @implementation EKCalendarItemAlertInfo
 
-- (EKCalendarItemAlertInfo)initWithTitle:(id)a3 location:(id)a4 date:(id)a5 endDate:(id)a6 timeZone:(id)a7 allDay:(BOOL)a8 tentative:(BOOL)a9 publisherBulletinID:(id)a10 entityID:(id)a11 appLink:(id)a12 proximity:(int64_t)a13 externalID:(id)a14 databaseID:(int)a15 acknowledged:(BOOL)a16 dismissalID:(id)a17 alarmID:(id)a18 isOffsetFromTravelTimeStart:(BOOL)a19 refiring:(BOOL)a20 pseudoEvent:(BOOL)a21
+- (EKCalendarItemAlertInfo)initWithTitle:(id)title location:(id)location date:(id)date endDate:(id)endDate timeZone:(id)zone allDay:(BOOL)day tentative:(BOOL)tentative publisherBulletinID:(id)self0 entityID:(id)self1 appLink:(id)self2 proximity:(int64_t)self3 externalID:(id)self4 databaseID:(int)self5 acknowledged:(BOOL)self6 dismissalID:(id)self7 alarmID:(id)self8 isOffsetFromTravelTimeStart:(BOOL)self9 refiring:(BOOL)refiring pseudoEvent:(BOOL)event
 {
-  v60 = a3;
-  v25 = a4;
-  v26 = a5;
-  v59 = a6;
-  v58 = a7;
-  v57 = a10;
-  v56 = a11;
-  v55 = a12;
-  v27 = a14;
-  v28 = a17;
-  v29 = a18;
+  titleCopy = title;
+  locationCopy = location;
+  dateCopy = date;
+  endDateCopy = endDate;
+  zoneCopy = zone;
+  dCopy = d;
+  iDCopy = iD;
+  linkCopy = link;
+  externalIDCopy = externalID;
+  dismissalIDCopy = dismissalID;
+  alarmIDCopy = alarmID;
   v61.receiver = self;
   v61.super_class = EKCalendarItemAlertInfo;
   v30 = [(EKCalendarItemAlertInfo *)&v61 init];
@@ -31,55 +31,55 @@
   if (v30)
   {
     v30->_triggerType = 0;
-    v32 = [v60 copy];
+    v32 = [titleCopy copy];
     title = v31->_title;
     v31->_title = v32;
 
-    v34 = [v25 copy];
+    v34 = [locationCopy copy];
     location = v31->_location;
     v31->_location = v34;
 
-    v36 = [v26 copy];
+    v36 = [dateCopy copy];
     eventDate = v31->_eventDate;
     v31->_eventDate = v36;
 
-    v38 = [v59 copy];
+    v38 = [endDateCopy copy];
     endDate = v31->_endDate;
     v31->_endDate = v38;
 
-    v40 = [v58 copy];
+    v40 = [zoneCopy copy];
     eventTimeZone = v31->_eventTimeZone;
     v31->_eventTimeZone = v40;
 
-    v31->_allDay = a8;
-    v31->_tentative = a9;
-    objc_storeStrong(&v31->_appLink, a12);
-    v42 = [v56 copy];
+    v31->_allDay = day;
+    v31->_tentative = tentative;
+    objc_storeStrong(&v31->_appLink, link);
+    v42 = [iDCopy copy];
     entityID = v31->_entityID;
     v31->_entityID = v42;
 
-    v31->_databaseID = a15;
-    v44 = [v57 copy];
+    v31->_databaseID = databaseID;
+    v44 = [dCopy copy];
     publisherBulletinID = v31->_publisherBulletinID;
     v31->_publisherBulletinID = v44;
 
-    v31->_proximity = a13;
-    v46 = [v27 copy];
+    v31->_proximity = proximity;
+    v46 = [externalIDCopy copy];
     externalID = v31->_externalID;
     v31->_externalID = v46;
 
-    v31->_acknowledged = a16;
-    v48 = [v28 copy];
+    v31->_acknowledged = acknowledged;
+    v48 = [dismissalIDCopy copy];
     dismissalID = v31->_dismissalID;
     v31->_dismissalID = v48;
 
-    v50 = [v29 copy];
+    v50 = [alarmIDCopy copy];
     alarmID = v31->_alarmID;
     v31->_alarmID = v50;
 
-    v31->_isOffsetFromTravelTimeStart = a19;
-    v31->_refiring = a20;
-    v31->_isPseudoEvent = a21;
+    v31->_isOffsetFromTravelTimeStart = start;
+    v31->_refiring = refiring;
+    v31->_isPseudoEvent = event;
   }
 
   return v31;
@@ -89,35 +89,35 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(EKCalendarItemAlertInfo *)self title];
-  v6 = [(EKCalendarItemAlertInfo *)self eventDate];
-  v7 = [(EKCalendarItemAlertInfo *)self eventTimeZone];
-  v8 = [v3 stringWithFormat:@"%@ <%p> {title = %@ date = %@; timeZone = %@}", v4, self, v5, v6, v7];;
+  title = [(EKCalendarItemAlertInfo *)self title];
+  eventDate = [(EKCalendarItemAlertInfo *)self eventDate];
+  eventTimeZone = [(EKCalendarItemAlertInfo *)self eventTimeZone];
+  v8 = [v3 stringWithFormat:@"%@ <%p> {title = %@ date = %@; timeZone = %@}", v4, self, title, eventDate, eventTimeZone];;
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(EKCalendarItemAlertInfo *)self recordID];
-  v4 = [v3 hash];
+  recordID = [(EKCalendarItemAlertInfo *)self recordID];
+  v4 = [recordID hash];
   v5 = [(NSDate *)self->_eventDate hash];
 
   return v5 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(EKCalendarItemAlertInfo *)self recordID];
-    v6 = [v4 recordID];
-    if ([v5 isEqual:v6])
+    recordID = [(EKCalendarItemAlertInfo *)self recordID];
+    recordID2 = [equalCopy recordID];
+    if ([recordID isEqual:recordID2])
     {
       eventDate = self->_eventDate;
-      if (eventDate == v4[8])
+      if (eventDate == equalCopy[8])
       {
         v8 = 1;
       }
@@ -144,26 +144,26 @@
 
 - (NSString)recordID
 {
-  v3 = [(EKCalendarItemAlertInfo *)self publisherBulletinID];
-  v4 = v3;
-  if (v3 && [v3 length])
+  publisherBulletinID = [(EKCalendarItemAlertInfo *)self publisherBulletinID];
+  v4 = publisherBulletinID;
+  if (publisherBulletinID && [publisherBulletinID length])
   {
-    v5 = v4;
+    absoluteString = v4;
   }
 
   else
   {
-    v6 = [(EKCalendarItemAlertInfo *)self entityID];
-    v5 = [v6 absoluteString];
+    entityID = [(EKCalendarItemAlertInfo *)self entityID];
+    absoluteString = [entityID absoluteString];
   }
 
-  return v5;
+  return absoluteString;
 }
 
 - (BOOL)isPurelyATimeToLeaveAlert
 {
-  v2 = [(EKCalendarItemAlertInfo *)self alarmID];
-  v3 = v2 == 0;
+  alarmID = [(EKCalendarItemAlertInfo *)self alarmID];
+  v3 = alarmID == 0;
 
   return v3;
 }

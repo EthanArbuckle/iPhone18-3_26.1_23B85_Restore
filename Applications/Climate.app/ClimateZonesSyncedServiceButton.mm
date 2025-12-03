@@ -1,7 +1,7 @@
 @interface ClimateZonesSyncedServiceButton
 - (_TtC7Climate31ClimateZonesSyncedServiceButton)init;
-- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)a3;
-- (void)zonesSyncedService:(id)a3 didUpdateOn:(BOOL)a4;
+- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)filter;
+- (void)zonesSyncedService:(id)service didUpdateOn:(BOOL)on;
 @end
 
 @implementation ClimateZonesSyncedServiceButton
@@ -13,19 +13,19 @@
   return result;
 }
 
-- (void)zonesSyncedService:(id)a3 didUpdateOn:(BOOL)a4
+- (void)zonesSyncedService:(id)service didUpdateOn:(BOOL)on
 {
-  v4 = self;
+  selfCopy = self;
   sub_1000C10C4();
-  [(ClimateZonesSyncedServiceButton *)v4 setEnabled:sub_10001B250() < 8];
+  [(ClimateZonesSyncedServiceButton *)selfCopy setEnabled:sub_10001B250() < 8];
   sub_10001B428();
   ClimateButton.refreshColorConfig()();
   ClimateButton.createEdgeInsets()();
 }
 
-- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)a3
+- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)filter
 {
-  v3 = self;
+  selfCopy = self;
   sub_10001B428();
 }
 

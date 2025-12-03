@@ -1,46 +1,46 @@
 @interface AMDDODMLModelMetadata
-- (id)initModelMetadata:(id)a3 error:(id *)a4 errorDomain:(id)a5;
+- (id)initModelMetadata:(id)metadata error:(id *)error errorDomain:(id)domain;
 @end
 
 @implementation AMDDODMLModelMetadata
 
-- (id)initModelMetadata:(id)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)initModelMetadata:(id)metadata error:(id *)error errorDomain:(id)domain
 {
-  v134 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v132 = a4;
+  objc_storeStrong(location, metadata);
+  errorCopy = error;
   v131 = 0;
-  objc_storeStrong(&v131, a5);
-  v5 = v134;
-  v134 = 0;
+  objc_storeStrong(&v131, domain);
+  v5 = selfCopy;
+  selfCopy = 0;
   v130.receiver = v5;
   v130.super_class = AMDDODMLModelMetadata;
   v105 = [(AMDDODMLModelMetadata *)&v130 init];
-  v134 = v105;
-  objc_storeStrong(&v134, v105);
+  selfCopy = v105;
+  objc_storeStrong(&selfCopy, v105);
   if (!v105)
   {
     goto LABEL_84;
   }
 
-  v102 = [location[0] parameters];
-  v129 = [v102 stringValueForKey:ModelFileNameKey defaultValue:0];
+  parameters = [location[0] parameters];
+  v129 = [parameters stringValueForKey:ModelFileNameKey defaultValue:0];
 
   if (!v129)
   {
     v6 = [NSError alloc];
     v101 = [v6 initWithDomain:v131 code:1 userInfo:0];
     v7 = v101;
-    *v132 = v101;
+    *errorCopy = v101;
     v135 = 0;
     v128 = 1;
     goto LABEL_83;
   }
 
-  v100 = [location[0] attachments];
-  v127 = [v100 attachmentURLsForBasename:v129];
+  attachments = [location[0] attachments];
+  v127 = [attachments attachmentURLsForBasename:v129];
 
   if ([v127 count])
   {
@@ -49,18 +49,18 @@
       v10 = [NSError alloc];
       v98 = [v10 initWithDomain:v131 code:3 userInfo:0];
       v11 = v98;
-      *v132 = v98;
+      *errorCopy = v98;
       v135 = 0;
       v128 = 1;
       goto LABEL_82;
     }
 
     v96 = [v127 objectAtIndexedSubscript:0];
-    v95 = [v96 path];
-    [v134 setModelPath:?];
+    path = [v96 path];
+    [selfCopy setModelPath:?];
 
-    v97 = [location[0] parameters];
-    v126 = [v97 objectForKeyedSubscript:InputNamesKey];
+    parameters2 = [location[0] parameters];
+    v126 = [parameters2 objectForKeyedSubscript:InputNamesKey];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || ![v126 count])
@@ -68,7 +68,7 @@
       v12 = [NSError alloc];
       v94 = [v12 initWithDomain:v131 code:4 userInfo:0];
       v13 = v94;
-      *v132 = v94;
+      *errorCopy = v94;
       v135 = 0;
       v128 = 1;
 LABEL_81:
@@ -76,9 +76,9 @@ LABEL_81:
       goto LABEL_82;
     }
 
-    [v134 setInputNames:v126];
-    v93 = [location[0] parameters];
-    v125 = [v93 objectForKeyedSubscript:OutputNamesKey];
+    [selfCopy setInputNames:v126];
+    parameters3 = [location[0] parameters];
+    v125 = [parameters3 objectForKeyedSubscript:OutputNamesKey];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || ![v125 count])
@@ -86,7 +86,7 @@ LABEL_81:
       v14 = [NSError alloc];
       v92 = [v14 initWithDomain:v131 code:5 userInfo:0];
       v15 = v92;
-      *v132 = v92;
+      *errorCopy = v92;
       v135 = 0;
       v128 = 1;
 LABEL_80:
@@ -94,9 +94,9 @@ LABEL_80:
       goto LABEL_81;
     }
 
-    [v134 setOutputNames:v125];
-    v91 = [location[0] parameters];
-    v124 = [v91 objectForKeyedSubscript:WeightNamesKey];
+    [selfCopy setOutputNames:v125];
+    parameters4 = [location[0] parameters];
+    v124 = [parameters4 objectForKeyedSubscript:WeightNamesKey];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || ![v124 count])
@@ -104,7 +104,7 @@ LABEL_80:
       v16 = [NSError alloc];
       v90 = [v16 initWithDomain:v131 code:6 userInfo:0];
       v17 = v90;
-      *v132 = v90;
+      *errorCopy = v90;
       v135 = 0;
       v128 = 1;
 LABEL_79:
@@ -112,9 +112,9 @@ LABEL_79:
       goto LABEL_80;
     }
 
-    [v134 setWeightNames:v124];
-    v88 = [location[0] parameters];
-    v89 = [v88 unsignedIntegerValueForKey:BatchSizeKey defaultValue:1];
+    [selfCopy setWeightNames:v124];
+    parameters5 = [location[0] parameters];
+    v89 = [parameters5 unsignedIntegerValueForKey:BatchSizeKey defaultValue:1];
 
     v123 = v89;
     if (v89 < 1)
@@ -122,15 +122,15 @@ LABEL_79:
       v18 = [NSError alloc];
       v87 = [v18 initWithDomain:v131 code:7 userInfo:0];
       v19 = v87;
-      *v132 = v87;
+      *errorCopy = v87;
       v135 = 0;
       v128 = 1;
       goto LABEL_79;
     }
 
-    [v134 setBatchSize:v123];
-    v85 = [location[0] parameters];
-    v86 = [v85 unsignedIntegerValueForKey:NumLocalIterationsKey defaultValue:1];
+    [selfCopy setBatchSize:v123];
+    parameters6 = [location[0] parameters];
+    v86 = [parameters6 unsignedIntegerValueForKey:NumLocalIterationsKey defaultValue:1];
 
     v122 = v86;
     if (v86 < 1)
@@ -138,20 +138,20 @@ LABEL_79:
       v20 = [NSError alloc];
       v84 = [v20 initWithDomain:v131 code:8 userInfo:0];
       v21 = v84;
-      *v132 = v84;
+      *errorCopy = v84;
       v135 = 0;
       v128 = 1;
       goto LABEL_79;
     }
 
-    [v134 setNumLocalIterations:v122];
-    v81 = [location[0] parameters];
-    v82 = [v81 unsignedIntegerValueForKey:NumEpochsKey defaultValue:0];
+    [selfCopy setNumLocalIterations:v122];
+    parameters7 = [location[0] parameters];
+    v82 = [parameters7 unsignedIntegerValueForKey:NumEpochsKey defaultValue:0];
 
     v121[1] = v82;
-    [v134 setNumEpochs:v82];
-    v83 = [location[0] parameters];
-    [v83 floatValueForKey:LearningRateKey defaultValue:0.0];
+    [selfCopy setNumEpochs:v82];
+    parameters8 = [location[0] parameters];
+    [parameters8 floatValueForKey:LearningRateKey defaultValue:0.0];
     v121[0] = [NSNumber numberWithFloat:?];
 
     [v121[0] floatValue];
@@ -160,7 +160,7 @@ LABEL_79:
       v23 = [NSError alloc];
       v80 = [v23 initWithDomain:v131 code:9 userInfo:0];
       v24 = v80;
-      *v132 = v80;
+      *errorCopy = v80;
       v135 = 0;
       v128 = 1;
 LABEL_78:
@@ -168,16 +168,16 @@ LABEL_78:
       goto LABEL_79;
     }
 
-    [v134 setLearningRate:v121[0]];
-    v79 = [location[0] parameters];
-    v120 = [v79 stringValueForKey:InitFunctionNameKey defaultValue:InitFunctionDefaultName];
+    [selfCopy setLearningRate:v121[0]];
+    parameters9 = [location[0] parameters];
+    v120 = [parameters9 stringValueForKey:InitFunctionNameKey defaultValue:InitFunctionDefaultName];
 
     if (![v120 length])
     {
       v25 = [NSError alloc];
       v78 = [v25 initWithDomain:v131 code:10 userInfo:0];
       v26 = v78;
-      *v132 = v78;
+      *errorCopy = v78;
       v135 = 0;
       v128 = 1;
 LABEL_77:
@@ -185,16 +185,16 @@ LABEL_77:
       goto LABEL_78;
     }
 
-    [v134 setInitializationFunctionName:v120];
-    v77 = [location[0] parameters];
-    v119 = [v77 stringValueForKey:TrainingModeBufferNameKey defaultValue:TrainingModeBufferDefaultName];
+    [selfCopy setInitializationFunctionName:v120];
+    parameters10 = [location[0] parameters];
+    v119 = [parameters10 stringValueForKey:TrainingModeBufferNameKey defaultValue:TrainingModeBufferDefaultName];
 
     if (![v119 length])
     {
       v27 = [NSError alloc];
       v76 = [v27 initWithDomain:v131 code:11 userInfo:0];
       v28 = v76;
-      *v132 = v76;
+      *errorCopy = v76;
       v135 = 0;
       v128 = 1;
 LABEL_76:
@@ -202,16 +202,16 @@ LABEL_76:
       goto LABEL_77;
     }
 
-    [v134 setTrainingModeBufferName:v119];
-    v75 = [location[0] parameters];
-    v118 = [v75 stringValueForKey:LearningRateBufferNameKey defaultValue:LearningRateBufferDefaultName];
+    [selfCopy setTrainingModeBufferName:v119];
+    parameters11 = [location[0] parameters];
+    v118 = [parameters11 stringValueForKey:LearningRateBufferNameKey defaultValue:LearningRateBufferDefaultName];
 
     if (![v118 length])
     {
       v29 = [NSError alloc];
       v74 = [v29 initWithDomain:v131 code:12 userInfo:0];
       v30 = v74;
-      *v132 = v74;
+      *errorCopy = v74;
       v135 = 0;
       v128 = 1;
 LABEL_75:
@@ -219,16 +219,16 @@ LABEL_75:
       goto LABEL_76;
     }
 
-    [v134 setLearningRateBufferName:v118];
-    v73 = [location[0] parameters];
-    v117 = [v73 stringValueForKey:LossNameKey defaultValue:0];
+    [selfCopy setLearningRateBufferName:v118];
+    parameters12 = [location[0] parameters];
+    v117 = [parameters12 stringValueForKey:LossNameKey defaultValue:0];
 
     if (!v117)
     {
       v31 = [NSError alloc];
       v72 = [v31 initWithDomain:v131 code:18 userInfo:0];
       v32 = v72;
-      *v132 = v72;
+      *errorCopy = v72;
       v135 = 0;
       v128 = 1;
 LABEL_74:
@@ -236,41 +236,41 @@ LABEL_74:
       goto LABEL_75;
     }
 
-    v70 = [v134 outputNames];
-    v71 = [v70 containsObject:v117];
+    outputNames = [selfCopy outputNames];
+    v71 = [outputNames containsObject:v117];
 
     if ((v71 & 1) == 0)
     {
       v33 = [NSError alloc];
       v69 = [v33 initWithDomain:v131 code:19 userInfo:0];
       v34 = v69;
-      *v132 = v69;
+      *errorCopy = v69;
       v135 = 0;
       v128 = 1;
       goto LABEL_74;
     }
 
-    [v134 setLossName:v117];
-    v68 = [location[0] parameters];
-    v116 = [v68 objectForKeyedSubscript:InitializeManually];
+    [selfCopy setLossName:v117];
+    parameters13 = [location[0] parameters];
+    v116 = [parameters13 objectForKeyedSubscript:InitializeManually];
 
     if (!v116)
     {
       v116 = [NSNumber numberWithLong:0];
     }
 
-    [v134 setInitializeManually:v116];
-    v67 = [location[0] parameters];
-    v115 = [v67 objectForKeyedSubscript:UseCoreMLTrainer];
+    [selfCopy setInitializeManually:v116];
+    parameters14 = [location[0] parameters];
+    v115 = [parameters14 objectForKeyedSubscript:UseCoreMLTrainer];
 
     if (!v115)
     {
       v115 = [NSNumber numberWithLong:0];
     }
 
-    [v134 setUseCoreMLTrainer:v115];
-    v66 = [location[0] parameters];
-    v114 = [v66 objectForKeyedSubscript:LearningRateScheduleKey];
+    [selfCopy setUseCoreMLTrainer:v115];
+    parameters15 = [location[0] parameters];
+    v114 = [parameters15 objectForKeyedSubscript:LearningRateScheduleKey];
 
     if (v114)
     {
@@ -280,7 +280,7 @@ LABEL_74:
         v35 = [NSError alloc];
         v65 = [v35 initWithDomain:v131 code:131 userInfo:0];
         v36 = v65;
-        *v132 = v65;
+        *errorCopy = v65;
         v135 = 0;
         v128 = 1;
 LABEL_73:
@@ -294,50 +294,50 @@ LABEL_73:
     if (v114)
     {
       v64 = [v114 count];
-      if (v64 != [v134 numLocalIterations])
+      if (v64 != [selfCopy numLocalIterations])
       {
         v37 = [NSError alloc];
         v63 = [v37 initWithDomain:v131 code:132 userInfo:0];
         v38 = v63;
-        *v132 = v63;
+        *errorCopy = v63;
         v135 = 0;
         v128 = 1;
         goto LABEL_73;
       }
     }
 
-    [v134 setLearningRateSchedule:v114];
-    v58 = [location[0] parameters];
-    v113 = [v58 objectForKeyedSubscript:ShortenedEmbeddingNames];
+    [selfCopy setLearningRateSchedule:v114];
+    parameters16 = [location[0] parameters];
+    v113 = [parameters16 objectForKeyedSubscript:ShortenedEmbeddingNames];
 
-    v59 = [location[0] parameters];
-    v112 = [v59 objectForKeyedSubscript:ShortenedEmbeddingMappingKeys];
+    parameters17 = [location[0] parameters];
+    v112 = [parameters17 objectForKeyedSubscript:ShortenedEmbeddingMappingKeys];
 
-    v60 = [location[0] parameters];
-    v111 = [v60 objectForKeyedSubscript:ShortenedEmbeddingSize];
+    parameters18 = [location[0] parameters];
+    v111 = [parameters18 objectForKeyedSubscript:ShortenedEmbeddingSize];
 
-    v61 = [location[0] parameters];
-    v110 = [v61 objectForKeyedSubscript:ShortenedEmbeddingNumberVectorsBefore];
+    parameters19 = [location[0] parameters];
+    v110 = [parameters19 objectForKeyedSubscript:ShortenedEmbeddingNumberVectorsBefore];
 
-    v62 = [location[0] parameters];
-    v109 = [v62 objectForKeyedSubscript:ShortenedEmbeddingNumberVectorsAfter];
+    parameters20 = [location[0] parameters];
+    v109 = [parameters20 objectForKeyedSubscript:ShortenedEmbeddingNumberVectorsAfter];
 
     if (!v113 && !v112 && !v111 && !v110 && !v109)
     {
       v53 = objc_alloc_init(NSDictionary);
-      [v134 setShortenedEmbeddingNames:?];
+      [selfCopy setShortenedEmbeddingNames:?];
 
       v54 = objc_alloc_init(NSDictionary);
-      [v134 setShortenedEmbeddingMappingKeys:?];
+      [selfCopy setShortenedEmbeddingMappingKeys:?];
 
       v55 = objc_alloc_init(NSDictionary);
-      [v134 setShortenedEmbeddingSize:?];
+      [selfCopy setShortenedEmbeddingSize:?];
 
       v56 = objc_alloc_init(NSDictionary);
-      [v134 setShortenedEmbeddingNumberVectorsBefore:?];
+      [selfCopy setShortenedEmbeddingNumberVectorsBefore:?];
 
       v57 = objc_alloc_init(NSDictionary);
-      [v134 setShortenedEmbeddingNumberVectorsAfter:?];
+      [selfCopy setShortenedEmbeddingNumberVectorsAfter:?];
 
       goto LABEL_64;
     }
@@ -359,14 +359,14 @@ LABEL_73:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [v134 setShortenedEmbeddingNames:v113];
-                [v134 setShortenedEmbeddingMappingKeys:v112];
-                [v134 setShortenedEmbeddingSize:v111];
-                [v134 setShortenedEmbeddingNumberVectorsBefore:v110];
-                [v134 setShortenedEmbeddingNumberVectorsAfter:v109];
+                [selfCopy setShortenedEmbeddingNames:v113];
+                [selfCopy setShortenedEmbeddingMappingKeys:v112];
+                [selfCopy setShortenedEmbeddingSize:v111];
+                [selfCopy setShortenedEmbeddingNumberVectorsBefore:v110];
+                [selfCopy setShortenedEmbeddingNumberVectorsAfter:v109];
 LABEL_64:
-                v50 = [location[0] parameters];
-                v108 = [v50 objectForKeyedSubscript:MetricsNamesKey];
+                parameters21 = [location[0] parameters];
+                v108 = [parameters21 objectForKeyedSubscript:MetricsNamesKey];
 
                 if (!v108 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                 {
@@ -374,7 +374,7 @@ LABEL_64:
                   v106 = [NSSet setWithArray:v125];
                   if ([v107 isSubsetOfSet:v106])
                   {
-                    [v134 setMetricsNames:v108];
+                    [selfCopy setMetricsNames:v108];
                     v128 = 0;
                   }
 
@@ -383,7 +383,7 @@ LABEL_64:
                     v45 = [NSError alloc];
                     v48 = [v45 initWithDomain:v131 code:61 userInfo:0];
                     v46 = v48;
-                    *v132 = v48;
+                    *errorCopy = v48;
                     v135 = 0;
                     v128 = 1;
                   }
@@ -397,7 +397,7 @@ LABEL_64:
                   v43 = [NSError alloc];
                   v49 = [v43 initWithDomain:v131 code:60 userInfo:0];
                   v44 = v49;
-                  *v132 = v49;
+                  *errorCopy = v49;
                   v135 = 0;
                   v128 = 1;
                 }
@@ -413,7 +413,7 @@ LABEL_64:
       v41 = [NSError alloc];
       v51 = [v41 initWithDomain:v131 code:109 userInfo:0];
       v42 = v51;
-      *v132 = v51;
+      *errorCopy = v51;
       v135 = 0;
       v128 = 1;
     }
@@ -423,7 +423,7 @@ LABEL_64:
       v39 = [NSError alloc];
       v52 = [v39 initWithDomain:v131 code:109 userInfo:0];
       v40 = v52;
-      *v132 = v52;
+      *errorCopy = v52;
       v135 = 0;
       v128 = 1;
     }
@@ -440,7 +440,7 @@ LABEL_72:
   v8 = [NSError alloc];
   v99 = [v8 initWithDomain:v131 code:2 userInfo:0];
   v9 = v99;
-  *v132 = v99;
+  *errorCopy = v99;
   v135 = 0;
   v128 = 1;
 LABEL_82:
@@ -450,13 +450,13 @@ LABEL_83:
   if (!v128)
   {
 LABEL_84:
-    v135 = v134;
+    v135 = selfCopy;
     v128 = 1;
   }
 
   objc_storeStrong(&v131, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v134, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v135;
 }
 

@@ -6,9 +6,9 @@
 
 - (void)unwrappedValue
 {
-  v2 = self;
+  selfCopy = self;
 
-  return [(MPCFWrapper *)v2 refValue];
+  return [(MPCFWrapper *)selfCopy refValue];
 }
 
 @end

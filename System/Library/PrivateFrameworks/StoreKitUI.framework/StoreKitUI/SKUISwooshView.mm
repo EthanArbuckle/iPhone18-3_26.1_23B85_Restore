@@ -1,32 +1,32 @@
 @interface SKUISwooshView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUISwooshView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUISwooshView)initWithFrame:(CGRect)frame;
 - (UIControl)chevronTitleControl;
 - (UIControl)seeAllControl;
 - (UIEdgeInsets)collectionViewInsets;
 - (UIEdgeInsets)contentInsets;
 - (id)_seeAllArrowImage;
-- (id)seeAllColorForControlState:(unint64_t)a3;
+- (id)seeAllColorForControlState:(unint64_t)state;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCollectionView:(id)a3;
-- (void)setCollectionViewInsets:(UIEdgeInsets)a3;
-- (void)setColoringWithColorScheme:(id)a3;
-- (void)setSeeAllColor:(id)a3 forControlState:(unint64_t)a4;
-- (void)setSeeAllTitle:(id)a3;
-- (void)setShowsChevronForTitle:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setCollectionView:(id)view;
+- (void)setCollectionViewInsets:(UIEdgeInsets)insets;
+- (void)setColoringWithColorScheme:(id)scheme;
+- (void)setSeeAllColor:(id)color forControlState:(unint64_t)state;
+- (void)setSeeAllTitle:(id)title;
+- (void)setShowsChevronForTitle:(BOOL)title;
+- (void)setTitle:(id)title;
+- (void)setTitleColor:(id)color;
 @end
 
 @implementation SKUISwooshView
 
-- (SKUISwooshView)initWithFrame:(CGRect)a3
+- (SKUISwooshView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISwooshView initWithFrame:];
@@ -34,29 +34,29 @@
 
   v17.receiver = self;
   v17.super_class = SKUISwooshView;
-  v8 = [(SKUISwooshView *)&v17 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUISwooshView *)&v17 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = objc_alloc_init(MEMORY[0x277D75D18]);
-    v10 = *(v8 + 51);
-    *(v8 + 51) = v9;
+    v10 = *(height + 51);
+    *(height + 51) = v9;
 
-    v11 = *(v8 + 51);
+    v11 = *(height + 51);
     v12 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.2];
     [v11 setBackgroundColor:v12];
 
-    [v8 addSubview:*(v8 + 51)];
+    [height addSubview:*(height + 51)];
     v13 = *(MEMORY[0x277D768C8] + 16);
-    *(v8 + 424) = *MEMORY[0x277D768C8];
-    *(v8 + 440) = v13;
-    *(v8 + 31) = xmmword_215F3F890;
-    *(v8 + 32) = xmmword_215F3F8A0;
-    v14 = [MEMORY[0x277D75348] blackColor];
-    v15 = *(v8 + 60);
-    *(v8 + 60) = v14;
+    *(height + 424) = *MEMORY[0x277D768C8];
+    *(height + 440) = v13;
+    *(height + 31) = xmmword_215F3F890;
+    *(height + 32) = xmmword_215F3F8A0;
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v15 = *(height + 60);
+    *(height + 60) = blackColor;
   }
 
-  return v8;
+  return height;
 }
 
 - (UIControl)chevronTitleControl
@@ -69,13 +69,13 @@
     self->_titleButton = v4;
 
     v6 = self->_titleButton;
-    v7 = [(SKUISwooshView *)self backgroundColor];
-    [(SKUILinkButton *)v6 setBackgroundColor:v7];
+    backgroundColor = [(SKUISwooshView *)self backgroundColor];
+    [(SKUILinkButton *)v6 setBackgroundColor:backgroundColor];
 
     [(SKUILinkButton *)self->_titleButton setTitleColor:self->_titleColor forState:0];
-    v8 = [(SKUILinkButton *)self->_titleButton titleLabel];
+    titleLabel = [(SKUILinkButton *)self->_titleButton titleLabel];
     v9 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
-    [v8 setFont:v9];
+    [titleLabel setFont:v9];
 
     [(SKUILinkButton *)self->_titleButton setHidden:1];
     titleButton = self->_titleButton;
@@ -84,10 +84,10 @@
   return titleButton;
 }
 
-- (id)seeAllColorForControlState:(unint64_t)a3
+- (id)seeAllColorForControlState:(unint64_t)state
 {
-  v4 = [(SKUISwooshView *)self seeAllControl];
-  v5 = [v4 titleColorForState:a3];
+  seeAllControl = [(SKUISwooshView *)self seeAllControl];
+  v5 = [seeAllControl titleColorForState:state];
 
   return v5;
 }
@@ -102,23 +102,23 @@
     self->_seeAllButton = v4;
 
     v6 = self->_seeAllButton;
-    v7 = [(SKUISwooshView *)self backgroundColor];
-    [(UIButton *)v6 setBackgroundColor:v7];
+    backgroundColor = [(SKUISwooshView *)self backgroundColor];
+    [(UIButton *)v6 setBackgroundColor:backgroundColor];
 
     v8 = self->_seeAllButton;
-    v9 = [(SKUISwooshView *)self _seeAllArrowImage];
-    [v9 size];
+    _seeAllArrowImage = [(SKUISwooshView *)self _seeAllArrowImage];
+    [_seeAllArrowImage size];
     [(UIButton *)v8 setTitleEdgeInsets:0.0, -(v10 + 5.0), 0.0, 0.0];
 
-    v11 = [(UIButton *)self->_seeAllButton titleLabel];
+    titleLabel = [(UIButton *)self->_seeAllButton titleLabel];
     v12 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-    [v11 setFont:v12];
+    [titleLabel setFont:v12];
 
     v13 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.8];
     [(SKUISwooshView *)self setSeeAllColor:v13 forControlState:0];
 
-    v14 = [MEMORY[0x277D75348] blackColor];
-    [(SKUISwooshView *)self setSeeAllColor:v14 forControlState:1];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(SKUISwooshView *)self setSeeAllColor:blackColor forControlState:1];
 
     seeAllButton = self->_seeAllButton;
   }
@@ -126,15 +126,15 @@
   return seeAllButton;
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   collectionView = self->_collectionView;
-  v7 = v5;
-  if (collectionView != v5)
+  v7 = viewCopy;
+  if (collectionView != viewCopy)
   {
     [(UICollectionView *)collectionView removeFromSuperview];
-    objc_storeStrong(&self->_collectionView, a3);
+    objc_storeStrong(&self->_collectionView, view);
     if (self->_collectionView)
     {
       [(SKUISwooshView *)self addSubview:?];
@@ -142,41 +142,41 @@
   }
 }
 
-- (void)setCollectionViewInsets:(UIEdgeInsets)a3
+- (void)setCollectionViewInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_collectionViewInsets.top, v3), vceqq_f64(*&self->_collectionViewInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_collectionViewInsets = a3;
+    self->_collectionViewInsets = insets;
     [(SKUISwooshView *)self setNeedsLayout];
   }
 }
 
-- (void)setColoringWithColorScheme:(id)a3
+- (void)setColoringWithColorScheme:(id)scheme
 {
-  v15 = a3;
-  v4 = [v15 backgroundColor];
-  v5 = v4;
-  if (v4)
+  schemeCopy = scheme;
+  backgroundColor = [schemeCopy backgroundColor];
+  v5 = backgroundColor;
+  if (backgroundColor)
   {
-    v6 = v4;
+    whiteColor = backgroundColor;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v7 = v6;
+  v7 = whiteColor;
 
   [(SKUISwooshView *)self setBackgroundColor:v7];
-  v8 = [v15 primaryTextColor];
-  if (v8)
+  primaryTextColor = [schemeCopy primaryTextColor];
+  if (primaryTextColor)
   {
-    [(SKUISwooshView *)self setSeeAllColor:v8 forControlState:0];
+    [(SKUISwooshView *)self setSeeAllColor:primaryTextColor forControlState:0];
   }
 
   else
@@ -185,63 +185,63 @@
     [(SKUISwooshView *)self setSeeAllColor:v9 forControlState:0];
   }
 
-  v10 = [v15 highlightedTextColor];
-  if (v10)
+  highlightedTextColor = [schemeCopy highlightedTextColor];
+  if (highlightedTextColor)
   {
-    [(SKUISwooshView *)self setSeeAllColor:v10 forControlState:1];
+    [(SKUISwooshView *)self setSeeAllColor:highlightedTextColor forControlState:1];
   }
 
   else
   {
-    v11 = [MEMORY[0x277D75348] blackColor];
-    [(SKUISwooshView *)self setSeeAllColor:v11 forControlState:1];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(SKUISwooshView *)self setSeeAllColor:blackColor forControlState:1];
   }
 
-  v12 = [v15 secondaryTextColor];
-  if (!v12)
+  secondaryTextColor = [schemeCopy secondaryTextColor];
+  if (!secondaryTextColor)
   {
-    v12 = [v15 primaryTextColor];
-    if (!v12)
+    secondaryTextColor = [schemeCopy primaryTextColor];
+    if (!secondaryTextColor)
     {
-      v12 = [MEMORY[0x277D75348] blackColor];
+      secondaryTextColor = [MEMORY[0x277D75348] blackColor];
     }
   }
 
-  v13 = v12;
-  [(SKUISwooshView *)self setTitleColor:v12];
+  v13 = secondaryTextColor;
+  [(SKUISwooshView *)self setTitleColor:secondaryTextColor];
 
   [(UICollectionView *)self->_collectionView setBackgroundColor:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-    [v14 setBackgroundColor:v7];
+    collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+    [collectionViewLayout setBackgroundColor:v7];
     [(UICollectionView *)self->_collectionView reloadData];
   }
 }
 
-- (void)setSeeAllColor:(id)a3 forControlState:(unint64_t)a4
+- (void)setSeeAllColor:(id)color forControlState:(unint64_t)state
 {
-  v6 = a3;
-  v9 = [(SKUISwooshView *)self seeAllControl];
-  v7 = [(SKUISwooshView *)self _seeAllArrowImage];
-  v8 = SKUITintedImage(v7, 0, v6);
-  [v9 setImage:v8 forState:a4];
+  colorCopy = color;
+  seeAllControl = [(SKUISwooshView *)self seeAllControl];
+  _seeAllArrowImage = [(SKUISwooshView *)self _seeAllArrowImage];
+  v8 = SKUITintedImage(_seeAllArrowImage, 0, colorCopy);
+  [seeAllControl setImage:v8 forState:state];
 
-  [v9 setTitleColor:v6 forState:a4];
+  [seeAllControl setTitleColor:colorCopy forState:state];
 }
 
-- (void)setSeeAllTitle:(id)a3
+- (void)setSeeAllTitle:(id)title
 {
-  v7 = a3;
-  v4 = [(SKUISwooshView *)self seeAllTitle];
-  if (v4 != v7 && ([v4 isEqualToString:v7] & 1) == 0)
+  titleCopy = title;
+  seeAllTitle = [(SKUISwooshView *)self seeAllTitle];
+  if (seeAllTitle != titleCopy && ([seeAllTitle isEqualToString:titleCopy] & 1) == 0)
   {
-    v5 = [(SKUISwooshView *)self seeAllControl];
-    [v5 setTitle:v7 forState:0];
-    [v5 sizeToFit];
+    seeAllControl = [(SKUISwooshView *)self seeAllControl];
+    [seeAllControl setTitle:titleCopy forState:0];
+    [seeAllControl sizeToFit];
     seeAllButton = self->_seeAllButton;
-    if (v7)
+    if (titleCopy)
     {
       [(SKUISwooshView *)self addSubview:seeAllButton];
     }
@@ -255,31 +255,31 @@
   }
 }
 
-- (void)setShowsChevronForTitle:(BOOL)a3
+- (void)setShowsChevronForTitle:(BOOL)title
 {
-  if (self->_showsChevronForTitle != a3)
+  if (self->_showsChevronForTitle != title)
   {
-    v5 = [(SKUISwooshView *)self title];
+    title = [(SKUISwooshView *)self title];
     [(SKUISwooshView *)self setTitle:0];
-    self->_showsChevronForTitle = a3;
-    [(SKUISwooshView *)self setTitle:v5];
+    self->_showsChevronForTitle = title;
+    [(SKUISwooshView *)self setTitle:title];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v14 = a3;
+  titleCopy = title;
   if ([(SKUISwooshView *)self showsChevronForTitle])
   {
-    v4 = [(SKUILinkButton *)self->_titleButton titleForState:0];
-    if (v4 != v14 && ([v4 isEqualToString:v14] & 1) == 0)
+    text = [(SKUILinkButton *)self->_titleButton titleForState:0];
+    if (text != titleCopy && ([text isEqualToString:titleCopy] & 1) == 0)
     {
-      if (v14)
+      if (titleCopy)
       {
-        v5 = [(SKUISwooshView *)self chevronTitleControl];
-        [v5 setHidden:0];
-        [v5 setTitle:v14 forState:0];
-        [(SKUISwooshView *)self addSubview:v5];
+        chevronTitleControl = [(SKUISwooshView *)self chevronTitleControl];
+        [chevronTitleControl setHidden:0];
+        [chevronTitleControl setTitle:titleCopy forState:0];
+        [(SKUISwooshView *)self addSubview:chevronTitleControl];
       }
 
       else
@@ -295,11 +295,11 @@ LABEL_14:
 
   else
   {
-    v4 = [(UILabel *)self->_titleLabel text];
-    if (v4 != v14 && ([v4 isEqualToString:v14] & 1) == 0)
+    text = [(UILabel *)self->_titleLabel text];
+    if (text != titleCopy && ([text isEqualToString:titleCopy] & 1) == 0)
     {
       titleLabel = self->_titleLabel;
-      if (v14)
+      if (titleCopy)
       {
         if (!titleLabel)
         {
@@ -308,8 +308,8 @@ LABEL_14:
           self->_titleLabel = v7;
 
           v9 = self->_titleLabel;
-          v10 = [(SKUISwooshView *)self backgroundColor];
-          [(UILabel *)v9 setBackgroundColor:v10];
+          backgroundColor = [(SKUISwooshView *)self backgroundColor];
+          [(UILabel *)v9 setBackgroundColor:backgroundColor];
 
           v11 = self->_titleLabel;
           v12 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
@@ -335,17 +335,17 @@ LABEL_14:
   }
 }
 
-- (void)setTitleColor:(id)a3
+- (void)setTitleColor:(id)color
 {
-  if (self->_titleColor != a3)
+  if (self->_titleColor != color)
   {
-    v6 = a3;
-    v4 = [v6 copy];
+    colorCopy = color;
+    v4 = [colorCopy copy];
     titleColor = self->_titleColor;
     self->_titleColor = v4;
 
     [(SKUILinkButton *)self->_titleButton setTitleColor:self->_titleColor forState:0];
-    [(UILabel *)self->_titleLabel setTextColor:v6];
+    [(UILabel *)self->_titleLabel setTextColor:colorCopy];
   }
 }
 
@@ -439,29 +439,29 @@ LABEL_14:
     [(UICollectionView *)self->_collectionView setFrame:v31, top + self->_collectionViewInsets.top, v4 - self->_contentInsets.right - self->_collectionViewInsets.right - v31];
   }
 
-  v32 = [MEMORY[0x277D759A0] mainScreen];
-  [v32 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v34 = 1.0 / v33;
 
   [(UIView *)self->_borderView setFrame:15.0, v6 - v34, v4 + -15.0, v34];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   collectionView = self->_collectionView;
-  v5 = a3;
-  [(UICollectionView *)collectionView setBackgroundColor:v5];
-  [(UIButton *)self->_seeAllButton setBackgroundColor:v5];
-  [(SKUILinkButton *)self->_titleButton setBackgroundColor:v5];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UICollectionView *)collectionView setBackgroundColor:colorCopy];
+  [(UIButton *)self->_seeAllButton setBackgroundColor:colorCopy];
+  [(SKUILinkButton *)self->_titleButton setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUISwooshView;
-  [(SKUISwooshView *)&v6 setBackgroundColor:v5];
+  [(SKUISwooshView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = self->_contentInsets.bottom + self->_contentInsets.top;
   titleButton = self->_titleButton;
   if (titleButton && ([(SKUILinkButton *)titleButton isHidden]& 1) == 0)

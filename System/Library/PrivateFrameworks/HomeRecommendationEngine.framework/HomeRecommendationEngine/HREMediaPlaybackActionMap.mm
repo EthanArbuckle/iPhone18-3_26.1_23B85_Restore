@@ -1,29 +1,29 @@
 @interface HREMediaPlaybackActionMap
-+ (id)actionMapWithState:(int64_t)a3 volume:(id)a4 playbackArchive:(id)a5;
++ (id)actionMapWithState:(int64_t)state volume:(id)volume playbackArchive:(id)archive;
 + (id)emptyMap;
-+ (id)statelessActionMapWithVolume:(id)a3 playbackArchive:(id)a4;
-- (HREMediaPlaybackActionMap)initWithState:(int64_t)a3 volume:(id)a4 playbackArchive:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)flattenedMapEvaluatedForObject:(id)a3;
-- (id)mergeWithActionMaps:(id)a3;
-- (void)mergeMap:(id)a3 intoMap:(id)a4;
++ (id)statelessActionMapWithVolume:(id)volume playbackArchive:(id)archive;
+- (HREMediaPlaybackActionMap)initWithState:(int64_t)state volume:(id)volume playbackArchive:(id)archive;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)flattenedMapEvaluatedForObject:(id)object;
+- (id)mergeWithActionMaps:(id)maps;
+- (void)mergeMap:(id)map intoMap:(id)intoMap;
 @end
 
 @implementation HREMediaPlaybackActionMap
 
-- (HREMediaPlaybackActionMap)initWithState:(int64_t)a3 volume:(id)a4 playbackArchive:(id)a5
+- (HREMediaPlaybackActionMap)initWithState:(int64_t)state volume:(id)volume playbackArchive:(id)archive
 {
-  v8 = a4;
-  v9 = a5;
+  volumeCopy = volume;
+  archiveCopy = archive;
   v13.receiver = self;
   v13.super_class = HREMediaPlaybackActionMap;
   v10 = [(HREActionMap *)&v13 initWithCondition:0 childMaps:0];
   v11 = v10;
   if (v10)
   {
-    [(HREMediaPlaybackActionMap *)v10 setTargetPlaybackState:a3];
-    [(HREMediaPlaybackActionMap *)v11 setTargetVolume:v8];
-    [(HREMediaPlaybackActionMap *)v11 setPlaybackArchive:v9];
+    [(HREMediaPlaybackActionMap *)v10 setTargetPlaybackState:state];
+    [(HREMediaPlaybackActionMap *)v11 setTargetVolume:volumeCopy];
+    [(HREMediaPlaybackActionMap *)v11 setPlaybackArchive:archiveCopy];
   }
 
   return v11;
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __37__HREMediaPlaybackActionMap_emptyMap__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_27F5F9930 != -1)
   {
     dispatch_once(&qword_27F5F9930, block);
@@ -53,30 +53,30 @@ uint64_t __37__HREMediaPlaybackActionMap_emptyMap__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)actionMapWithState:(int64_t)a3 volume:(id)a4 playbackArchive:(id)a5
++ (id)actionMapWithState:(int64_t)state volume:(id)volume playbackArchive:(id)archive
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithState:a3 volume:v9 playbackArchive:v8];
+  archiveCopy = archive;
+  volumeCopy = volume;
+  v10 = [[self alloc] initWithState:state volume:volumeCopy playbackArchive:archiveCopy];
 
   return v10;
 }
 
-+ (id)statelessActionMapWithVolume:(id)a3 playbackArchive:(id)a4
++ (id)statelessActionMapWithVolume:(id)volume playbackArchive:(id)archive
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithState:0 volume:v7 playbackArchive:v6];
+  archiveCopy = archive;
+  volumeCopy = volume;
+  v8 = [[self alloc] initWithState:0 volume:volumeCopy playbackArchive:archiveCopy];
 
   return v8;
 }
 
-- (id)mergeWithActionMaps:(id)a3
+- (id)mergeWithActionMaps:(id)maps
 {
-  v4 = a3;
-  if ([v4 count])
+  mapsCopy = maps;
+  if ([mapsCopy count])
   {
-    v5 = [v4 na_filter:&__block_literal_global_15];
+    v5 = [mapsCopy na_filter:&__block_literal_global_15];
 
     if ([v5 na_all:&__block_literal_global_3_10])
     {
@@ -91,24 +91,24 @@ uint64_t __37__HREMediaPlaybackActionMap_emptyMap__block_invoke(uint64_t a1)
       [v5 na_each:v11];
       [(HREMediaPlaybackActionMap *)self mergeMap:self intoMap:v7];
       v8 = v12;
-      v9 = v7;
+      selfCopy2 = v7;
     }
 
     else
     {
       NSLog(&cfstr_CannotMergeMap.isa, self, v5);
-      v9 = self;
+      selfCopy2 = self;
     }
 
-    v4 = v5;
+    mapsCopy = v5;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
   }
 
-  return v9;
+  return selfCopy2;
 }
 
 uint64_t __49__HREMediaPlaybackActionMap_mergeWithActionMaps___block_invoke(uint64_t a1, void *a2)
@@ -129,48 +129,48 @@ uint64_t __49__HREMediaPlaybackActionMap_mergeWithActionMaps___block_invoke_2(ui
   return isKindOfClass & 1;
 }
 
-- (id)flattenedMapEvaluatedForObject:(id)a3
+- (id)flattenedMapEvaluatedForObject:(id)object
 {
   v5.receiver = self;
   v5.super_class = HREMediaPlaybackActionMap;
-  v3 = [(HREActionMap *)&v5 flattenedMapEvaluatedForObject:a3];
+  v3 = [(HREActionMap *)&v5 flattenedMapEvaluatedForObject:object];
 
   return v3;
 }
 
-- (void)mergeMap:(id)a3 intoMap:(id)a4
+- (void)mergeMap:(id)map intoMap:(id)intoMap
 {
-  v12 = a3;
-  v5 = a4;
-  v6 = [v12 playbackArchive];
+  mapCopy = map;
+  intoMapCopy = intoMap;
+  playbackArchive = [mapCopy playbackArchive];
 
-  if (v6)
+  if (playbackArchive)
   {
-    v7 = [v12 playbackArchive];
-    v8 = [v7 copy];
-    [v5 setPlaybackArchive:v8];
+    playbackArchive2 = [mapCopy playbackArchive];
+    v8 = [playbackArchive2 copy];
+    [intoMapCopy setPlaybackArchive:v8];
   }
 
-  if ([v12 targetPlaybackState])
+  if ([mapCopy targetPlaybackState])
   {
-    [v5 setTargetPlaybackState:{objc_msgSend(v12, "targetPlaybackState")}];
+    [intoMapCopy setTargetPlaybackState:{objc_msgSend(mapCopy, "targetPlaybackState")}];
   }
 
-  v9 = [v12 targetVolume];
+  targetVolume = [mapCopy targetVolume];
 
-  if (v9)
+  if (targetVolume)
   {
-    v10 = [v12 targetVolume];
-    v11 = [v10 copy];
-    [v5 setTargetVolume:v11];
+    targetVolume2 = [mapCopy targetVolume];
+    v11 = [targetVolume2 copy];
+    [intoMapCopy setTargetVolume:v11];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = HREMediaPlaybackActionMap;
-  v4 = [(HREActionMap *)&v13 copyWithZone:a3];
+  v4 = [(HREActionMap *)&v13 copyWithZone:zone];
   objc_opt_class();
   v5 = v4;
   if (objc_opt_isKindOfClass())
@@ -186,12 +186,12 @@ uint64_t __49__HREMediaPlaybackActionMap_mergeWithActionMaps___block_invoke_2(ui
   v7 = v6;
 
   [v7 setTargetPlaybackState:{-[HREMediaPlaybackActionMap targetPlaybackState](self, "targetPlaybackState")}];
-  v8 = [(HREMediaPlaybackActionMap *)self targetVolume];
-  v9 = [v8 copy];
+  targetVolume = [(HREMediaPlaybackActionMap *)self targetVolume];
+  v9 = [targetVolume copy];
   [v7 setTargetVolume:v9];
 
-  v10 = [(HREMediaPlaybackActionMap *)self playbackArchive];
-  v11 = [v10 copy];
+  playbackArchive = [(HREMediaPlaybackActionMap *)self playbackArchive];
+  v11 = [playbackArchive copy];
   [v7 setPlaybackArchive:v11];
 
   return v5;

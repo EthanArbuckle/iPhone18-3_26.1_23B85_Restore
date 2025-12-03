@@ -1,20 +1,20 @@
 @interface MONotificationScheduleOptionsCell
 - (BOOL)_shouldDisableScheduleSetting;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)_configureSelectionViewsIfNecessary;
 - (void)_layoutSelectionViews;
 - (void)layoutSubviews;
-- (void)notificationScheduleSelectionViewDidGetSelected:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)notificationScheduleSelectionViewDidGetSelected:(id)selected;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation MONotificationScheduleOptionsCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v14.receiver = self;
   v14.super_class = MONotificationScheduleOptionsCell;
-  [(MONotificationScheduleOptionsCell *)&v14 refreshCellContentsWithSpecifier:a3];
+  [(MONotificationScheduleOptionsCell *)&v14 refreshCellContentsWithSpecifier:specifier];
   [(MONotificationScheduleOptionsCell *)self setDisableScheduleSetting:[(MONotificationScheduleOptionsCell *)self _shouldDisableScheduleSetting]];
   if ([(MONotificationScheduleOptionsCell *)self disableScheduleSetting])
   {
@@ -24,8 +24,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(MONotificationScheduleOptionsCell *)self selectionViews];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+    selectionViews = [(MONotificationScheduleOptionsCell *)self selectionViews];
+    v5 = [selectionViews countByEnumeratingWithState:&v10 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -36,7 +36,7 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(selectionViews);
           }
 
           v9 = *(*(&v10 + 1) + 8 * i);
@@ -44,7 +44,7 @@
           [v9 setAlpha:0.5];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+        v6 = [selectionViews countByEnumeratingWithState:&v10 objects:v15 count:16];
       }
 
       while (v6);
@@ -61,25 +61,25 @@
   [(MONotificationScheduleOptionsCell *)self _layoutSelectionViews];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [UIDevice currentDevice:a3.width];
-  v6 = [v5 userInterfaceIdiom];
+  width = fits.width;
+  v5 = [UIDevice currentDevice:fits.width];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
   [(MONotificationScheduleOptionsCell *)self _configureSelectionViewsIfNecessary];
-  v7 = [(MONotificationScheduleOptionsCell *)self selectionViews];
-  if ([v7 count])
+  selectionViews = [(MONotificationScheduleOptionsCell *)self selectionViews];
+  if ([selectionViews count])
   {
-    if (v6)
+    if (userInterfaceIdiom)
     {
       v8 = width * 0.5;
     }
 
     else
     {
-      v9 = [(MONotificationScheduleOptionsCell *)self selectionViews];
-      v8 = width / [v9 count];
+      selectionViews2 = [(MONotificationScheduleOptionsCell *)self selectionViews];
+      v8 = width / [selectionViews2 count];
     }
   }
 
@@ -95,21 +95,21 @@
   return result;
 }
 
-- (void)notificationScheduleSelectionViewDidGetSelected:(id)a3
+- (void)notificationScheduleSelectionViewDidGetSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [(MONotificationScheduleOptionsCell *)self selectionViews];
+  selectedCopy = selected;
+  selectionViews = [(MONotificationScheduleOptionsCell *)self selectionViews];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __85__MONotificationScheduleOptionsCell_notificationScheduleSelectionViewDidGetSelected___block_invoke;
   v9[3] = &unk_C458;
-  v10 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v9];
+  v10 = selectedCopy;
+  v6 = selectedCopy;
+  [selectionViews enumerateObjectsUsingBlock:v9];
 
-  v7 = [(MONotificationScheduleOptionsCell *)self specifier];
+  specifier = [(MONotificationScheduleOptionsCell *)self specifier];
   v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 selectionType]);
-  [v7 performSetterWithValue:v8];
+  [specifier performSetterWithValue:v8];
 }
 
 void **__85__MONotificationScheduleOptionsCell_notificationScheduleSelectionViewDidGetSelected___block_invoke(void **result, void *a2)
@@ -124,9 +124,9 @@ void **__85__MONotificationScheduleOptionsCell_notificationScheduleSelectionView
 
 - (void)_configureSelectionViewsIfNecessary
 {
-  v3 = [(MONotificationScheduleOptionsCell *)self selectionViews];
+  selectionViews = [(MONotificationScheduleOptionsCell *)self selectionViews];
 
-  if (!v3)
+  if (!selectionViews)
   {
     v4 = objc_alloc_init(NSMutableArray);
     v5 = +[UIDevice currentDevice];
@@ -175,9 +175,9 @@ void __72__MONotificationScheduleOptionsCell__configureSelectionViewsIfNecessary
 
 - (void)_layoutSelectionViews
 {
-  v3 = [(MONotificationScheduleOptionsCell *)self selectionViews];
+  selectionViews = [(MONotificationScheduleOptionsCell *)self selectionViews];
 
-  if (v3)
+  if (selectionViews)
   {
     [(MONotificationScheduleOptionsCell *)self bounds];
     x = v17.origin.x;
@@ -185,8 +185,8 @@ void __72__MONotificationScheduleOptionsCell__configureSelectionViewsIfNecessary
     width = v17.size.width;
     height = v17.size.height;
     v8 = CGRectGetWidth(v17);
-    v9 = [(MONotificationScheduleOptionsCell *)self selectionViews];
-    v10 = v8 / [v9 count];
+    selectionViews2 = [(MONotificationScheduleOptionsCell *)self selectionViews];
+    v10 = v8 / [selectionViews2 count];
 
     v14[0] = 0;
     v14[1] = v14;
@@ -202,14 +202,14 @@ void __72__MONotificationScheduleOptionsCell__configureSelectionViewsIfNecessary
     v15 = 0uLL;
     *&v16 = v10;
     *(&v16 + 1) = v11;
-    v12 = [(MONotificationScheduleOptionsCell *)self selectionViews];
+    selectionViews3 = [(MONotificationScheduleOptionsCell *)self selectionViews];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = __58__MONotificationScheduleOptionsCell__layoutSelectionViews__block_invoke;
     v13[3] = &unk_C4A8;
     v13[4] = v14;
     *&v13[5] = v10;
-    [v12 enumerateObjectsUsingBlock:v13];
+    [selectionViews3 enumerateObjectsUsingBlock:v13];
 
     _Block_object_dispose(v14, 8);
   }
@@ -217,13 +217,13 @@ void __72__MONotificationScheduleOptionsCell__configureSelectionViewsIfNecessary
 
 - (BOOL)_shouldDisableScheduleSetting
 {
-  v2 = [(MONotificationScheduleOptionsCell *)self specifier];
-  v3 = [v2 userInfo];
+  specifier = [(MONotificationScheduleOptionsCell *)self specifier];
+  userInfo = [specifier userInfo];
 
-  v4 = [v3 objectForKey:@"disableScheduleSetting"];
-  v5 = [v4 BOOLValue];
+  v4 = [userInfo objectForKey:@"disableScheduleSetting"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface MigrationXPCServerResponseGetRecords
 - (_TtC18ReplicatorServices36MigrationXPCServerResponseGetRecords)init;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation MigrationXPCServerResponseGetRecords
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  MigrationXPCServerResponseGetRecords.encode(withBSXPCCoder:)(a3);
+  selfCopy = self;
+  MigrationXPCServerResponseGetRecords.encode(withBSXPCCoder:)(coder);
   swift_unknownObjectRelease();
 }
 

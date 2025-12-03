@@ -6,7 +6,7 @@
 - (id)localizedPaneTitle;
 - (id)specifiers;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -63,8 +63,8 @@
   v9.receiver = self;
   v9.super_class = HPRFMindHapticLevelController;
   [(HPRFMindHapticLevelController *)&v9 viewDidLoad];
-  v3 = [(HPRFMindHapticLevelController *)self localizedPaneTitle];
-  [(HPRFMindHapticLevelController *)self setTitle:v3];
+  localizedPaneTitle = [(HPRFMindHapticLevelController *)self localizedPaneTitle];
+  [(HPRFMindHapticLevelController *)self setTitle:localizedPaneTitle];
 
   objc_initWeak(&location, self);
   v4 = kNLMindPreferencesChangedNotification;
@@ -156,11 +156,11 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HPRFMindHapticLevelController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(HPRFMindHapticLevelController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   v10 = sub_4170();
   v24[0] = _NSConcreteStackBlock;
@@ -203,12 +203,12 @@
 
   [(HPRFMindHapticLevelController *)self reloadSpecifiers];
   WeakRetained = objc_loadWeakRetained(&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v22 = [(HPRFMindHapticLevelController *)self specifier];
-  [WeakRetained reloadSpecifier:v22];
+  specifier = [(HPRFMindHapticLevelController *)self specifier];
+  [WeakRetained reloadSpecifier:specifier];
 
   v23.receiver = self;
   v23.super_class = HPRFMindHapticLevelController;
-  [(HPRFMindHapticLevelController *)&v23 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(HPRFMindHapticLevelController *)&v23 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 - (id)bundle
@@ -220,10 +220,10 @@
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(HPRFMindHapticLevelController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(HPRFMindHapticLevelController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

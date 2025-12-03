@@ -1,17 +1,17 @@
 @interface AKFingerPotView
-- (AKFingerPotView)initWithFrame:(CGRect)a3;
+- (AKFingerPotView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation AKFingerPotView
 
-- (AKFingerPotView)initWithFrame:(CGRect)a3
+- (AKFingerPotView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AKFingerPotView;
-  v3 = [(AKFingerPotView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AKFingerPotView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,63 +22,63 @@
   return v4;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(AKFingerPotView *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(AKFingerPotView *)self isSelected]!= selected)
   {
     v14.receiver = self;
     v14.super_class = AKFingerPotView;
-    [(AKFingerPotView *)&v14 setSelected:v3];
-    if (v3)
+    [(AKFingerPotView *)&v14 setSelected:selectedCopy];
+    if (selectedCopy)
     {
-      v5 = [(AKFingerPotView *)self selectedOutline];
+      selectedOutline = [(AKFingerPotView *)self selectedOutline];
 
-      if (!v5)
+      if (!selectedOutline)
       {
         v6 = objc_alloc(MEMORY[0x277D755E8]);
         v7 = [MEMORY[0x277D755B8] imageNamed:@"ib_text_pop_icon_highlight_swatch_selection"];
         v8 = [v6 initWithImage:v7];
         [(AKFingerPotView *)self setSelectedOutline:v8];
 
-        v9 = [(AKFingerPotView *)self selectedOutline];
-        [v9 setContentMode:4];
+        selectedOutline2 = [(AKFingerPotView *)self selectedOutline];
+        [selectedOutline2 setContentMode:4];
 
-        v10 = [(AKFingerPotView *)self selectedOutline];
-        [(AKFingerPotView *)self addSubview:v10];
+        selectedOutline3 = [(AKFingerPotView *)self selectedOutline];
+        [(AKFingerPotView *)self addSubview:selectedOutline3];
 
-        v11 = [(AKFingerPotView *)self highlight];
+        highlight = [(AKFingerPotView *)self highlight];
 
-        if (v11)
+        if (highlight)
         {
-          v12 = [(AKFingerPotView *)self highlight];
-          [(AKFingerPotView *)self bringSubviewToFront:v12];
+          highlight2 = [(AKFingerPotView *)self highlight];
+          [(AKFingerPotView *)self bringSubviewToFront:highlight2];
         }
       }
     }
 
-    v13 = [(AKFingerPotView *)self selectedOutline];
-    [v13 setHidden:v3 ^ 1];
+    selectedOutline4 = [(AKFingerPotView *)self selectedOutline];
+    [selectedOutline4 setHidden:selectedCopy ^ 1];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(AKFingerPotView *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(AKFingerPotView *)self isHighlighted]!= highlighted)
   {
     v14.receiver = self;
     v14.super_class = AKFingerPotView;
-    [(AKFingerPotView *)&v14 setHighlighted:v3];
-    v5 = [(AKFingerPotView *)self highlight];
+    [(AKFingerPotView *)&v14 setHighlighted:highlightedCopy];
+    highlight = [(AKFingerPotView *)self highlight];
 
-    if (v5)
+    if (highlight)
     {
-      if (v3)
+      if (highlightedCopy)
       {
 LABEL_4:
-        v6 = [(AKFingerPotView *)self highlight];
-        [v6 setAlpha:1.0];
+        highlight2 = [(AKFingerPotView *)self highlight];
+        [highlight2 setAlpha:1.0];
 
         return;
       }
@@ -91,16 +91,16 @@ LABEL_4:
       v9 = [v7 initWithImage:v8];
       [(AKFingerPotView *)self setHighlight:v9];
 
-      v10 = [(AKFingerPotView *)self highlight];
-      [v10 setOpaque:0];
+      highlight3 = [(AKFingerPotView *)self highlight];
+      [highlight3 setOpaque:0];
 
-      v11 = [(AKFingerPotView *)self highlight];
-      [v11 setAlpha:0.0];
+      highlight4 = [(AKFingerPotView *)self highlight];
+      [highlight4 setAlpha:0.0];
 
-      v12 = [(AKFingerPotView *)self highlight];
-      [(AKFingerPotView *)self addSubview:v12];
+      highlight5 = [(AKFingerPotView *)self highlight];
+      [(AKFingerPotView *)self addSubview:highlight5];
 
-      if (v3)
+      if (highlightedCopy)
       {
         goto LABEL_4;
       }
@@ -137,8 +137,8 @@ LABEL_4:
     v11 = v15;
   }
 
-  v16 = [(AKFingerPotView *)self selectedOutline];
-  [v16 setFrame:{v8, v9, v10, v11}];
+  selectedOutline = [(AKFingerPotView *)self selectedOutline];
+  [selectedOutline setFrame:{v8, v9, v10, v11}];
 
   v27.origin.x = v8;
   v27.origin.y = v9;
@@ -150,18 +150,18 @@ LABEL_4:
   v28.size.width = v10;
   v28.size.height = v11;
   MidY = CGRectGetMidY(v28);
-  v19 = [(AKFingerPotView *)self highlight];
-  [v19 setCenter:{MidX, MidY}];
+  highlight = [(AKFingerPotView *)self highlight];
+  [highlight setCenter:{MidX, MidY}];
 
-  v20 = [(AKFingerPotView *)self highlight];
-  [v20 frame];
+  highlight2 = [(AKFingerPotView *)self highlight];
+  [highlight2 frame];
   v30 = CGRectIntegral(v29);
   x = v30.origin.x;
   y = v30.origin.y;
   width = v30.size.width;
   height = v30.size.height;
-  v25 = [(AKFingerPotView *)self highlight];
-  [v25 setFrame:{x, y, width, height}];
+  highlight3 = [(AKFingerPotView *)self highlight];
+  [highlight3 setFrame:{x, y, width, height}];
 }
 
 @end

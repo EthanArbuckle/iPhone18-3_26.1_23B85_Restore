@@ -1,16 +1,16 @@
 @interface COSBuddyNavigationControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)addInternalDashboardButton;
 @end
 
 @implementation COSBuddyNavigationControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"COSBuddyNavigationController" hasInstanceVariable:@"_internalDashboardButton" withType:"UIButton"];
-  [v3 validateClass:@"COSBuddyNavigationController" hasInstanceMethod:@"addInternalDashboardButton" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"COSBuddyNavigationController" hasInstanceVariable:@"_internalDashboardButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"COSBuddyNavigationController" hasInstanceMethod:@"addInternalDashboardButton" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

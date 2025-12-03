@@ -2,34 +2,34 @@
 + (Class)managedClass;
 - (BOOL)navigationInterrupted;
 - (GEOStorageRouteRequestStorage)routeRequestStorage;
-- (MSHistoryMultiPointRoute)initWithNavigationInterrupted:(BOOL)a3 requiredCharge:(id)a4 routeProgressWaypointIndex:(signed __int16)a5 routeRequestStorage:(id)a6 sharedETAData:(id)a7 type:(signed __int16)a8 vehicleIdentifier:(id)a9;
-- (MSHistoryMultiPointRoute)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
-- (MSHistoryMultiPointRoute)initWithStore:(id)a3 navigationInterrupted:(BOOL)a4 requiredCharge:(id)a5 routeProgressWaypointIndex:(signed __int16)a6 routeRequestStorage:(id)a7 sharedETAData:(id)a8 type:(signed __int16)a9 vehicleIdentifier:(id)a10;
+- (MSHistoryMultiPointRoute)initWithNavigationInterrupted:(BOOL)interrupted requiredCharge:(id)charge routeProgressWaypointIndex:(signed __int16)index routeRequestStorage:(id)storage sharedETAData:(id)data type:(signed __int16)type vehicleIdentifier:(id)identifier;
+- (MSHistoryMultiPointRoute)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (MSHistoryMultiPointRoute)initWithStore:(id)store navigationInterrupted:(BOOL)interrupted requiredCharge:(id)charge routeProgressWaypointIndex:(signed __int16)index routeRequestStorage:(id)storage sharedETAData:(id)data type:(signed __int16)type vehicleIdentifier:(id)self0;
 - (NSData)sharedETAData;
 - (NSNumber)requiredCharge;
 - (NSString)vehicleIdentifier;
-- (void)setNavigationInterrupted:(BOOL)a3;
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
-- (void)setRequiredCharge:(id)a3;
-- (void)setRouteProgressWaypointIndex:(signed __int16)a3;
-- (void)setRouteRequestStorage:(id)a3;
-- (void)setSharedETAData:(id)a3;
-- (void)setType:(signed __int16)a3;
-- (void)setVehicleIdentifier:(id)a3;
+- (void)setNavigationInterrupted:(BOOL)interrupted;
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (void)setRequiredCharge:(id)charge;
+- (void)setRouteProgressWaypointIndex:(signed __int16)index;
+- (void)setRouteRequestStorage:(id)storage;
+- (void)setSharedETAData:(id)data;
+- (void)setType:(signed __int16)type;
+- (void)setVehicleIdentifier:(id)identifier;
 @end
 
 @implementation MSHistoryMultiPointRoute
 
-- (MSHistoryMultiPointRoute)initWithNavigationInterrupted:(BOOL)a3 requiredCharge:(id)a4 routeProgressWaypointIndex:(signed __int16)a5 routeRequestStorage:(id)a6 sharedETAData:(id)a7 type:(signed __int16)a8 vehicleIdentifier:(id)a9
+- (MSHistoryMultiPointRoute)initWithNavigationInterrupted:(BOOL)interrupted requiredCharge:(id)charge routeProgressWaypointIndex:(signed __int16)index routeRequestStorage:(id)storage sharedETAData:(id)data type:(signed __int16)type vehicleIdentifier:(id)identifier
 {
-  v9 = a7;
-  if (!a7)
+  dataCopy = data;
+  if (!data)
   {
-    v23 = a4;
-    v24 = a6;
-    v25 = a9;
+    chargeCopy = charge;
+    storageCopy = storage;
+    identifierCopy = identifier;
     v19 = 0xF000000000000000;
-    if (a9)
+    if (identifier)
     {
       goto LABEL_3;
     }
@@ -37,17 +37,17 @@
 LABEL_5:
     v20 = 0;
     v22 = 0;
-    return HistoryMultiPointRoute.init(navigationInterrupted:requiredCharge:routeProgressWaypointIndex:routeRequestStorage:sharedETAData:type:vehicleIdentifier:)(a3, a4, a5, a6, v9, v19, a8, v20, v22);
+    return HistoryMultiPointRoute.init(navigationInterrupted:requiredCharge:routeProgressWaypointIndex:routeRequestStorage:sharedETAData:type:vehicleIdentifier:)(interrupted, charge, index, storage, dataCopy, v19, type, v20, v22);
   }
 
-  v14 = a4;
-  v15 = a6;
-  v16 = a9;
-  v17 = v9;
-  v9 = sub_1B63BE924();
+  chargeCopy2 = charge;
+  storageCopy2 = storage;
+  identifierCopy2 = identifier;
+  v17 = dataCopy;
+  dataCopy = sub_1B63BE924();
   v19 = v18;
 
-  if (!a9)
+  if (!identifier)
   {
     goto LABEL_5;
   }
@@ -56,20 +56,20 @@ LABEL_3:
   v20 = sub_1B63BEBD4();
   v22 = v21;
 
-  return HistoryMultiPointRoute.init(navigationInterrupted:requiredCharge:routeProgressWaypointIndex:routeRequestStorage:sharedETAData:type:vehicleIdentifier:)(a3, a4, a5, a6, v9, v19, a8, v20, v22);
+  return HistoryMultiPointRoute.init(navigationInterrupted:requiredCharge:routeProgressWaypointIndex:routeRequestStorage:sharedETAData:type:vehicleIdentifier:)(interrupted, charge, index, storage, dataCopy, v19, type, v20, v22);
 }
 
-- (MSHistoryMultiPointRoute)initWithStore:(id)a3 navigationInterrupted:(BOOL)a4 requiredCharge:(id)a5 routeProgressWaypointIndex:(signed __int16)a6 routeRequestStorage:(id)a7 sharedETAData:(id)a8 type:(signed __int16)a9 vehicleIdentifier:(id)a10
+- (MSHistoryMultiPointRoute)initWithStore:(id)store navigationInterrupted:(BOOL)interrupted requiredCharge:(id)charge routeProgressWaypointIndex:(signed __int16)index routeRequestStorage:(id)storage sharedETAData:(id)data type:(signed __int16)type vehicleIdentifier:(id)self0
 {
-  v10 = a8;
-  if (!a8)
+  dataCopy = data;
+  if (!data)
   {
-    v25 = a3;
-    v26 = a5;
-    v27 = a7;
-    v28 = a10;
+    storeCopy = store;
+    chargeCopy = charge;
+    storageCopy = storage;
+    identifierCopy = identifier;
     v21 = 0xF000000000000000;
-    if (a10)
+    if (identifier)
     {
       goto LABEL_3;
     }
@@ -77,18 +77,18 @@ LABEL_3:
 LABEL_5:
     v22 = 0;
     v24 = 0;
-    return HistoryMultiPointRoute.init(store:navigationInterrupted:requiredCharge:routeProgressWaypointIndex:routeRequestStorage:sharedETAData:type:vehicleIdentifier:)(a3, a4, a5, a6, a7, v10, v21, a9, v22, v24);
+    return HistoryMultiPointRoute.init(store:navigationInterrupted:requiredCharge:routeProgressWaypointIndex:routeRequestStorage:sharedETAData:type:vehicleIdentifier:)(store, interrupted, charge, index, storage, dataCopy, v21, type, v22, v24);
   }
 
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = a10;
-  v19 = v10;
-  v10 = sub_1B63BE924();
+  storeCopy2 = store;
+  chargeCopy2 = charge;
+  storageCopy2 = storage;
+  identifierCopy2 = identifier;
+  v19 = dataCopy;
+  dataCopy = sub_1B63BE924();
   v21 = v20;
 
-  if (!a10)
+  if (!identifier)
   {
     goto LABEL_5;
   }
@@ -97,7 +97,7 @@ LABEL_3:
   v22 = sub_1B63BEBD4();
   v24 = v23;
 
-  return HistoryMultiPointRoute.init(store:navigationInterrupted:requiredCharge:routeProgressWaypointIndex:routeRequestStorage:sharedETAData:type:vehicleIdentifier:)(a3, a4, a5, a6, a7, v10, v21, a9, v22, v24);
+  return HistoryMultiPointRoute.init(store:navigationInterrupted:requiredCharge:routeProgressWaypointIndex:routeRequestStorage:sharedETAData:type:vehicleIdentifier:)(store, interrupted, charge, index, storage, dataCopy, v21, type, v22, v24);
 }
 
 + (Class)managedClass
@@ -107,74 +107,74 @@ LABEL_3:
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v7 = a3;
-  v8 = self;
-  sub_1B62F9098(v7, a4);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B62F9098(objectCopy, load);
 }
 
 - (BOOL)navigationInterrupted
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  LOBYTE(v4) = *(&v5->super.super.super.isa + OBJC_IVAR___MSHistoryMultiPointRoute__navigationInterrupted);
+  LOBYTE(v4) = *(&selfCopy->super.super.super.isa + OBJC_IVAR___MSHistoryMultiPointRoute__navigationInterrupted);
   [*(&self->super.super.super.isa + v3) unlock];
 
   return v4;
 }
 
-- (void)setNavigationInterrupted:(BOOL)a3
+- (void)setNavigationInterrupted:(BOOL)interrupted
 {
-  v4 = self;
-  sub_1B62F623C(a3);
+  selfCopy = self;
+  sub_1B62F623C(interrupted);
 }
 
 - (NSNumber)requiredCharge
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62F653C();
 
   return v3;
 }
 
-- (void)setRequiredCharge:(id)a3
+- (void)setRequiredCharge:(id)charge
 {
-  v6 = a3;
-  v5 = self;
-  sub_1B62F9340(a3);
+  chargeCopy = charge;
+  selfCopy = self;
+  sub_1B62F9340(charge);
 }
 
-- (void)setRouteProgressWaypointIndex:(signed __int16)a3
+- (void)setRouteProgressWaypointIndex:(signed __int16)index
 {
-  v4 = self;
-  sub_1B62F6BC4(a3);
+  selfCopy = self;
+  sub_1B62F6BC4(index);
 }
 
 - (GEOStorageRouteRequestStorage)routeRequestStorage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62F6E60();
 
   return v3;
 }
 
-- (void)setRouteRequestStorage:(id)a3
+- (void)setRouteRequestStorage:(id)storage
 {
   v5 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v6 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v7 = a3;
-  v8 = self;
+  storageCopy = storage;
+  selfCopy = self;
   [v6 lock];
-  sub_1B62F73CC(*(&self->super.super.super.isa + v5), a3, v8);
+  sub_1B62F73CC(*(&self->super.super.super.isa + v5), storage, selfCopy);
   [*(&self->super.super.super.isa + v5) unlock];
 }
 
 - (NSData)sharedETAData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B62F79F8();
   v5 = v4;
 
@@ -193,36 +193,36 @@ LABEL_3:
   return v6;
 }
 
-- (void)setSharedETAData:(id)a3
+- (void)setSharedETAData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_1B63BE924();
+    selfCopy = self;
+    v5 = dataCopy;
+    dataCopy = sub_1B63BE924();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  sub_1B62F9574(v3, v7);
-  sub_1B6284F64(v3, v7);
+  sub_1B62F9574(dataCopy, v7);
+  sub_1B6284F64(dataCopy, v7);
 }
 
-- (void)setType:(signed __int16)a3
+- (void)setType:(signed __int16)type
 {
-  v4 = self;
-  sub_1B62F81F8(a3);
+  selfCopy = self;
+  sub_1B62F81F8(type);
 }
 
 - (NSString)vehicleIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B62F8538();
   v4 = v3;
 
@@ -239,9 +239,9 @@ LABEL_3:
   return v5;
 }
 
-- (void)setVehicleIdentifier:(id)a3
+- (void)setVehicleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1B63BEBD4();
     v6 = v5;
@@ -253,14 +253,14 @@ LABEL_3:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1B62F8944(v4, v6);
 }
 
-- (MSHistoryMultiPointRoute)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSHistoryMultiPointRoute)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
+  parentCopy = parent;
+  loadCopy = load;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryMultiPointRoute__navigationInterrupted) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryMultiPointRoute__requiredCharge) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistoryMultiPointRoute__routeProgressWaypointIndex) = 0;
@@ -270,8 +270,8 @@ LABEL_3:
   v10 = (&self->super.super.super.isa + OBJC_IVAR___MSHistoryMultiPointRoute__vehicleIdentifier);
   *v10 = 0;
   v10[1] = 0;
-  v11 = a3;
-  return sub_1B62F0450(a3, a4, v7, v6);
+  objectCopy = object;
+  return sub_1B62F0450(object, store, loadCopy, parentCopy);
 }
 
 @end

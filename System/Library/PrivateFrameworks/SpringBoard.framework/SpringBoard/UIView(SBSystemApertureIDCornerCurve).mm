@@ -8,8 +8,8 @@
 
 - (double)IDCornerRadius
 {
-  v1 = [a1 sb_cornerCurveFloatAnimatableProperty];
-  [v1 value];
+  sb_cornerCurveFloatAnimatableProperty = [self sb_cornerCurveFloatAnimatableProperty];
+  [sb_cornerCurveFloatAnimatableProperty value];
   v3 = v2;
 
   return v3;
@@ -18,18 +18,18 @@
 - (id)sb_cornerCurveFloatAnimatableProperty
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v2 = objc_getAssociatedObject(a1, "com.apple.SpringBoardFramework.SBSystemApertureIDCornerCurve.floatAnimatableProperty");
+  v2 = objc_getAssociatedObject(self, "com.apple.SpringBoardFramework.SBSystemApertureIDCornerCurve.floatAnimatableProperty");
   if (!v2)
   {
     v2 = objc_alloc_init(MEMORY[0x277D75D38]);
     [v2 setVelocityUsableForVFD:1];
-    v3 = [a1 layer];
-    [v3 cornerRadius];
+    layer = [self layer];
+    [layer cornerRadius];
     [v2 setValue:?];
 
-    objc_setAssociatedObject(a1, "com.apple.SpringBoardFramework.SBSystemApertureIDCornerCurve.floatAnimatableProperty", v2, 1);
+    objc_setAssociatedObject(self, "com.apple.SpringBoardFramework.SBSystemApertureIDCornerCurve.floatAnimatableProperty", v2, 1);
     objc_initWeak(&location, v2);
-    objc_initWeak(&from, a1);
+    objc_initWeak(&from, self);
     v4 = MEMORY[0x277D75D18];
     v15[0] = v2;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
@@ -64,7 +64,7 @@
   v5[1] = 3221225472;
   v5[2] = __59__UIView_SBSystemApertureIDCornerCurve__setIDCornerRadius___block_invoke;
   v5[3] = &unk_2783A8BC8;
-  v5[4] = a1;
+  v5[4] = self;
   *&v5[5] = a2;
   LODWORD(a2) = *MEMORY[0x277CD9DD0];
   LODWORD(a4) = *(MEMORY[0x277CD9DD0] + 8);

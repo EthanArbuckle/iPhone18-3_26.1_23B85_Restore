@@ -1,18 +1,18 @@
 @interface FitDayCellLayerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 @end
 
 @implementation FitDayCellLayerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FitDayCellLayer" hasInstanceMethod:@"date" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FitDayCellLayer" hasInstanceMethod:@"isToday" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MonthWeekView"];
-  [v3 validateClass:@"FitDayCellLayer" hasClassMethod:@"activityCellImageWithDiameter: thickness: calories: briskMinutes: hourlyBreak: fadeInnerRings: fadeAll:" withFullSignature:{"@", "d", "d", "d", "d", "d", "B", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FitDayCellLayer" hasInstanceMethod:@"date" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FitDayCellLayer" hasInstanceMethod:@"isToday" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MonthWeekView"];
+  [validationsCopy validateClass:@"FitDayCellLayer" hasClassMethod:@"activityCellImageWithDiameter: thickness: calories: briskMinutes: hourlyBreak: fadeInnerRings: fadeAll:" withFullSignature:{"@", "d", "d", "d", "d", "d", "B", "B", 0}];
 }
 
 - (id)accessibilityLabel
@@ -30,7 +30,7 @@
   v4 = [(FitDayCellLayerAccessibility *)self safeValueForKey:@"date"];
   v5 = __UIAccessibilitySafeClass();
 
-  v6 = [(FitDayCellLayerAccessibility *)self accessibilityContainer];
+  accessibilityContainer = [(FitDayCellLayerAccessibility *)self accessibilityContainer];
   AXSafeClassFromString();
   objc_opt_isKindOfClass();
 
@@ -45,10 +45,10 @@
   v2 = [(FitDayCellLayerAccessibility *)self safeValueForKey:@"ringLayer"];
   v3 = __UIAccessibilitySafeClass();
 
-  v4 = [v3 contents];
-  v5 = [v4 accessibilityLabel];
+  contents = [v3 contents];
+  accessibilityLabel = [contents accessibilityLabel];
 
-  return v5;
+  return accessibilityLabel;
 }
 
 @end

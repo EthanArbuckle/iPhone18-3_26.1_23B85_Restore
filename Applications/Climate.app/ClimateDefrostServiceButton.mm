@@ -1,7 +1,7 @@
 @interface ClimateDefrostServiceButton
 - (_TtC7Climate27ClimateDefrostServiceButton)init;
-- (void)defrostService:(id)a3 didUpdateLevel:(unsigned __int8)a4;
-- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)a3;
+- (void)defrostService:(id)service didUpdateLevel:(unsigned __int8)level;
+- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)filter;
 @end
 
 @implementation ClimateDefrostServiceButton
@@ -13,16 +13,16 @@
   return result;
 }
 
-- (void)defrostService:(id)a3 didUpdateLevel:(unsigned __int8)a4
+- (void)defrostService:(id)service didUpdateLevel:(unsigned __int8)level
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   sub_100004C9C();
 }
 
-- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)a3
+- (void)didUpdateColorFilterPreferenceWithFilter:(int64_t)filter
 {
-  v3 = self;
+  selfCopy = self;
   sub_100004308();
 }
 

@@ -1,46 +1,46 @@
 @interface ATXDefaultHomeScreenItemTilerGridSize3
-- (ATXDefaultHomeScreenItemTilerGridSize3)initWithDefaultStack:(id)a3 defaultWidgetsSmall:(id)a4 defaultWidgetsMedium:(id)a5 defaultWidgetsLarge:(id)a6 defaultWidgetsExtraLarge:(id)a7 widgetFamilyMask:(unint64_t)a8 targetNumberOfSuggestions:(unint64_t)a9;
-- (BOOL)_addFirstRow:(id)a3;
-- (BOOL)_addMediumRow:(id)a3;
-- (BOOL)_addRow:(id)a3 rowSizePreference:(unint64_t)a4 allowAlternateRowSizeAsBackup:(BOOL)a5;
-- (BOOL)_addRow:(id)a3 rowType:(unint64_t)a4;
-- (BOOL)_addSmallRow:(id)a3;
+- (ATXDefaultHomeScreenItemTilerGridSize3)initWithDefaultStack:(id)stack defaultWidgetsSmall:(id)small defaultWidgetsMedium:(id)medium defaultWidgetsLarge:(id)large defaultWidgetsExtraLarge:(id)extraLarge widgetFamilyMask:(unint64_t)mask targetNumberOfSuggestions:(unint64_t)suggestions;
+- (BOOL)_addFirstRow:(id)row;
+- (BOOL)_addMediumRow:(id)row;
+- (BOOL)_addRow:(id)row rowSizePreference:(unint64_t)preference allowAlternateRowSizeAsBackup:(BOOL)backup;
+- (BOOL)_addRow:(id)row rowType:(unint64_t)type;
+- (BOOL)_addSmallRow:(id)row;
 - (NSArray)tiledHomeScreenItems;
 @end
 
 @implementation ATXDefaultHomeScreenItemTilerGridSize3
 
-- (ATXDefaultHomeScreenItemTilerGridSize3)initWithDefaultStack:(id)a3 defaultWidgetsSmall:(id)a4 defaultWidgetsMedium:(id)a5 defaultWidgetsLarge:(id)a6 defaultWidgetsExtraLarge:(id)a7 widgetFamilyMask:(unint64_t)a8 targetNumberOfSuggestions:(unint64_t)a9
+- (ATXDefaultHomeScreenItemTilerGridSize3)initWithDefaultStack:(id)stack defaultWidgetsSmall:(id)small defaultWidgetsMedium:(id)medium defaultWidgetsLarge:(id)large defaultWidgetsExtraLarge:(id)extraLarge widgetFamilyMask:(unint64_t)mask targetNumberOfSuggestions:(unint64_t)suggestions
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  stackCopy = stack;
+  smallCopy = small;
+  mediumCopy = medium;
+  largeCopy = large;
   v30.receiver = self;
   v30.super_class = ATXDefaultHomeScreenItemTilerGridSize3;
   v19 = [(ATXDefaultHomeScreenItemTilerGridSize3 *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_defaultStack, a3);
-    v21 = [v16 mutableCopy];
+    objc_storeStrong(&v19->_defaultStack, stack);
+    v21 = [smallCopy mutableCopy];
     defaultWidgetsSmall = v20->_defaultWidgetsSmall;
     v20->_defaultWidgetsSmall = v21;
 
-    v23 = [v17 mutableCopy];
+    v23 = [mediumCopy mutableCopy];
     defaultWidgetsMedium = v20->_defaultWidgetsMedium;
     v20->_defaultWidgetsMedium = v23;
 
-    v25 = [v18 mutableCopy];
+    v25 = [largeCopy mutableCopy];
     defaultWidgetsLarge = v20->_defaultWidgetsLarge;
     v20->_defaultWidgetsLarge = v25;
 
-    v20->_widgetFamilyMask = a8;
+    v20->_widgetFamilyMask = mask;
     v27 = objc_opt_new();
     tilerHelper = v20->_tilerHelper;
     v20->_tilerHelper = v27;
 
-    v20->_targetNumberOfSuggestions = a9;
+    v20->_targetNumberOfSuggestions = suggestions;
   }
 
   return v20;
@@ -81,12 +81,12 @@ LABEL_11:
       }
 
       v10 = [v9 objectAtIndexedSubscript:{v7 % objc_msgSend(v9, "count")}];
-      v11 = [v10 integerValue];
+      integerValue = [v10 integerValue];
 
       ++v7;
     }
 
-    while ([(ATXDefaultHomeScreenItemTilerGridSize3 *)self _addRow:v3 rowSizePreference:v11 allowAlternateRowSizeAsBackup:v6 == 6]);
+    while ([(ATXDefaultHomeScreenItemTilerGridSize3 *)self _addRow:v3 rowSizePreference:integerValue allowAlternateRowSizeAsBackup:v6 == 6]);
     goto LABEL_13;
   }
 
@@ -101,19 +101,19 @@ LABEL_13:
   return v3;
 }
 
-- (BOOL)_addFirstRow:(id)a3
+- (BOOL)_addFirstRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   if (![(ATXDefaultWidgetStack *)self->_defaultStack suggestedSize]&& [(NSMutableArray *)self->_defaultWidgetsSmall count]>= 2)
   {
-    v5 = [(ATXDefaultHomeScreenItemTilerHelper *)self->_tilerHelper filterForNextUnusedWidgetDescriptor:self->_defaultWidgetsSmall];
+    mediumDefaultStack = [(ATXDefaultHomeScreenItemTilerHelper *)self->_tilerHelper filterForNextUnusedWidgetDescriptor:self->_defaultWidgetsSmall];
     v6 = [(ATXDefaultHomeScreenItemTilerHelper *)self->_tilerHelper filterForNextUnusedWidgetDescriptor:self->_defaultWidgetsSmall];
     v7 = v6;
-    if (self->_defaultStack && v5 && v6)
+    if (self->_defaultStack && mediumDefaultStack && v6)
     {
-      [v4 addObject:?];
-      [v4 addObject:v5];
-      [v4 addObject:v7];
+      [rowCopy addObject:?];
+      [rowCopy addObject:mediumDefaultStack];
+      [rowCopy addObject:v7];
 
 LABEL_12:
       v10 = 1;
@@ -122,14 +122,14 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    [(ATXDefaultHomeScreenItemTilerHelper *)self->_tilerHelper unmarkWidgetAsUsed:v5];
+    [(ATXDefaultHomeScreenItemTilerHelper *)self->_tilerHelper unmarkWidgetAsUsed:mediumDefaultStack];
     [(ATXDefaultHomeScreenItemTilerHelper *)self->_tilerHelper unmarkWidgetAsUsed:v7];
 
     goto LABEL_16;
   }
 
-  v5 = [(ATXDefaultWidgetStack *)self->_defaultStack mediumDefaultStack];
-  if (![v5 count])
+  mediumDefaultStack = [(ATXDefaultWidgetStack *)self->_defaultStack mediumDefaultStack];
+  if (![mediumDefaultStack count])
   {
     goto LABEL_16;
   }
@@ -140,11 +140,11 @@ LABEL_17:
   {
     [(ATXDefaultWidgetStack *)self->_defaultStack setSuggestedSize:1];
     v9 = [(ATXDefaultHomeScreenItemTilerHelper *)self->_tilerHelper filterForNextUnusedWidgetDescriptor:self->_defaultWidgetsSmall];
-    v5 = v9;
+    mediumDefaultStack = v9;
     if (self->_defaultStack && v9)
     {
-      [v4 addObject:?];
-      [v4 addObject:v5];
+      [rowCopy addObject:?];
+      [rowCopy addObject:mediumDefaultStack];
       goto LABEL_12;
     }
 
@@ -160,12 +160,12 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)_addRow:(id)a3 rowSizePreference:(unint64_t)a4 allowAlternateRowSizeAsBackup:(BOOL)a5
+- (BOOL)_addRow:(id)row rowSizePreference:(unint64_t)preference allowAlternateRowSizeAsBackup:(BOOL)backup
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(ATXDefaultHomeScreenItemTilerGridSize3 *)self _addRow:v8 rowType:a4];
-  if (!v9 && v5)
+  backupCopy = backup;
+  rowCopy = row;
+  v9 = [(ATXDefaultHomeScreenItemTilerGridSize3 *)self _addRow:rowCopy rowType:preference];
+  if (!v9 && backupCopy)
   {
     v10 = 0;
     v11 = 1;
@@ -174,7 +174,7 @@ LABEL_18:
       while (1)
       {
         v12 = v11;
-        if (v10 != a4)
+        if (v10 != preference)
         {
           break;
         }
@@ -188,7 +188,7 @@ LABEL_18:
         }
       }
 
-      v9 = [(ATXDefaultHomeScreenItemTilerGridSize3 *)self _addRow:v8 rowType:?];
+      v9 = [(ATXDefaultHomeScreenItemTilerGridSize3 *)self _addRow:rowCopy rowType:?];
       if (v9)
       {
         break;
@@ -206,23 +206,23 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)_addRow:(id)a3 rowType:(unint64_t)a4
+- (BOOL)_addRow:(id)row rowType:(unint64_t)type
 {
-  v6 = a3;
-  if (a4 == 1)
+  rowCopy = row;
+  if (type == 1)
   {
-    v7 = [(ATXDefaultHomeScreenItemTilerGridSize3 *)self _addMediumRow:v6];
+    v7 = [(ATXDefaultHomeScreenItemTilerGridSize3 *)self _addMediumRow:rowCopy];
   }
 
   else
   {
-    if (a4)
+    if (type)
     {
       v8 = 0;
       goto LABEL_7;
     }
 
-    v7 = [(ATXDefaultHomeScreenItemTilerGridSize3 *)self _addSmallRow:v6];
+    v7 = [(ATXDefaultHomeScreenItemTilerGridSize3 *)self _addSmallRow:rowCopy];
   }
 
   v8 = v7;
@@ -231,9 +231,9 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)_addSmallRow:(id)a3
+- (BOOL)_addSmallRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   if ([(NSMutableArray *)self->_defaultWidgetsSmall count]< 3)
   {
     v9 = 0;
@@ -247,9 +247,9 @@ LABEL_7:
     v8 = v7;
     if (v5 && v6 && v7)
     {
-      [v4 addObject:v5];
-      [v4 addObject:v6];
-      [v4 addObject:v8];
+      [rowCopy addObject:v5];
+      [rowCopy addObject:v6];
+      [rowCopy addObject:v8];
       v9 = 1;
     }
 
@@ -265,9 +265,9 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)_addMediumRow:(id)a3
+- (BOOL)_addMediumRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v5 = [(ATXDefaultHomeScreenItemTilerHelper *)self->_tilerHelper filterForNextUnusedWidgetDescriptor:self->_defaultWidgetsMedium];
   v6 = [(ATXDefaultHomeScreenItemTilerHelper *)self->_tilerHelper filterForNextUnusedWidgetDescriptor:self->_defaultWidgetsSmall];
   v7 = v6;
@@ -290,8 +290,8 @@ LABEL_7:
 
   else
   {
-    [v4 addObject:v5];
-    [v4 addObject:v7];
+    [rowCopy addObject:v5];
+    [rowCopy addObject:v7];
   }
 
   return v9;

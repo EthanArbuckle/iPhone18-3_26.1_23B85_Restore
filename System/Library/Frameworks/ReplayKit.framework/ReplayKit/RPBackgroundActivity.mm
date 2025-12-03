@@ -1,18 +1,18 @@
 @interface RPBackgroundActivity
-- (RPBackgroundActivity)initWithBackgroundActivityIdentifier:(id)a3;
-- (void)activateWithUserInteractionHandler:(id)a3;
+- (RPBackgroundActivity)initWithBackgroundActivityIdentifier:(id)identifier;
+- (void)activateWithUserInteractionHandler:(id)handler;
 - (void)deactivate;
 - (void)dealloc;
-- (void)publishNewDataWithUserInteractionHandler:(id)a3;
-- (void)updateTimerString:(id)a3;
+- (void)publishNewDataWithUserInteractionHandler:(id)handler;
+- (void)updateTimerString:(id)string;
 @end
 
 @implementation RPBackgroundActivity
 
-- (RPBackgroundActivity)initWithBackgroundActivityIdentifier:(id)a3
+- (RPBackgroundActivity)initWithBackgroundActivityIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -20,18 +20,18 @@
     v17 = 1024;
     v18 = 28;
     v19 = 2112;
-    v20 = v4;
+    v20 = identifierCopy;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Initializing with identifier: %@", buf, 0x1Cu);
   }
 
-  if (!v4 || ![(__CFString *)v4 length])
+  if (!identifierCopy || ![(__CFString *)identifierCopy length])
   {
     if (__RPLogLevel <= 2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       [RPBackgroundActivity initWithBackgroundActivityIdentifier:];
     }
 
-    v4 = @"com.apple.systemstatus.background-activity.replaykit.callrecording.recording";
+    identifierCopy = @"com.apple.systemstatus.background-activity.replaykit.callrecording.recording";
   }
 
   v14.receiver = self;
@@ -39,7 +39,7 @@
   v5 = [(RPBackgroundActivity *)&v14 init];
   if (v5)
   {
-    v6 = [(__CFString *)v4 copy];
+    v6 = [(__CFString *)identifierCopy copy];
     backgroundActivityIdentifier = v5->_backgroundActivityIdentifier;
     v5->_backgroundActivityIdentifier = v6;
 
@@ -72,12 +72,12 @@
   }
 
   [(RPBackgroundActivity *)self deactivate];
-  v3 = [(RPBackgroundActivity *)self publisher];
+  publisher = [(RPBackgroundActivity *)self publisher];
 
-  if (v3)
+  if (publisher)
   {
-    v4 = [(RPBackgroundActivity *)self publisher];
-    [v4 invalidate];
+    publisher2 = [(RPBackgroundActivity *)self publisher];
+    [publisher2 invalidate];
 
     [(RPBackgroundActivity *)self setPublisher:0];
   }
@@ -90,10 +90,10 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activateWithUserInteractionHandler:(id)a3
+- (void)activateWithUserInteractionHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -110,7 +110,7 @@
   block[3] = &unk_278B61B70;
   block[4] = self;
   dispatch_sync(synchronizationQueue, block);
-  [(RPBackgroundActivity *)self publishNewDataWithUserInteractionHandler:v4];
+  [(RPBackgroundActivity *)self publishNewDataWithUserInteractionHandler:handlerCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -194,10 +194,10 @@ void __34__RPBackgroundActivity_deactivate__block_invoke(uint64_t a1)
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateTimerString:(id)a3
+- (void)updateTimerString:(id)string
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446722;
@@ -205,11 +205,11 @@ void __34__RPBackgroundActivity_deactivate__block_invoke(uint64_t a1)
     *&buf[12] = 1024;
     *&buf[14] = 95;
     *&buf[18] = 2112;
-    *&buf[20] = v4;
+    *&buf[20] = stringCopy;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d timer=%@", buf, 0x1Cu);
   }
 
-  if (v4)
+  if (stringCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -222,7 +222,7 @@ void __34__RPBackgroundActivity_deactivate__block_invoke(uint64_t a1)
     block[3] = &unk_278B61BC0;
     v12 = buf;
     block[4] = self;
-    v11 = v4;
+    v11 = stringCopy;
     dispatch_sync(synchronizationQueue, block);
     if (*(*&buf[8] + 24))
     {
@@ -324,10 +324,10 @@ void __42__RPBackgroundActivity_updateTimerString___block_invoke_5(uint64_t a1, 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishNewDataWithUserInteractionHandler:(id)a3
+- (void)publishNewDataWithUserInteractionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -352,8 +352,8 @@ void __42__RPBackgroundActivity_updateTimerString___block_invoke_5(uint64_t a1, 
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Publishing new data with active state: %d", buf, 0x18u);
   }
 
-  v7 = [(RPBackgroundActivity *)self publisher];
-  v8 = v7 == 0;
+  publisher = [(RPBackgroundActivity *)self publisher];
+  v8 = publisher == 0;
 
   if (!v8)
   {
@@ -415,7 +415,7 @@ LABEL_16:
     objc_copyWeak(&v20, buf);
     v15 = v14;
     v18 = v15;
-    v19 = v4;
+    v19 = handlerCopy;
     [(STBackgroundActivitiesStatusDomainPublisher *)publisher updateVolatileData:v21 completion:v17];
 
     objc_destroyWeak(&v20);

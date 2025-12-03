@@ -1,39 +1,39 @@
 @interface CATIDSServiceConnectionTerminal
-- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)a3 assertionProvider:(id)a4 sourceAppleID:(id)a5;
-- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)a3 assertionProvider:(id)a4 sourceAppleID:(id)a5 connectionConfiguration:(id)a6;
-- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)a3 assertionProvider:(id)a4 timerSource:(id)a5 workQueue:(id)a6 delegateQueue:(id)a7 sourceAppleID:(id)a8 connectionConfiguration:(id)a9;
-- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)a3 networkPowerPrimitives:(id)a4 sourceAppleID:(id)a5;
+- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)primitives assertionProvider:(id)provider sourceAppleID:(id)d;
+- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)primitives assertionProvider:(id)provider sourceAppleID:(id)d connectionConfiguration:(id)configuration;
+- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)primitives assertionProvider:(id)provider timerSource:(id)source workQueue:(id)queue delegateQueue:(id)delegateQueue sourceAppleID:(id)d connectionConfiguration:(id)configuration;
+- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)primitives networkPowerPrimitives:(id)powerPrimitives sourceAppleID:(id)d;
 - (CATIDSServiceConnectionTerminalDelegate)delegate;
-- (id)inviteAppleIDToConnect:(id)a3 userInfo:(id)a4;
+- (id)inviteAppleIDToConnect:(id)connect userInfo:(id)info;
 - (void)cancelAllInvitations;
-- (void)cancelInvitationWithIdentifier:(id)a3;
-- (void)connectionInvitatioInbox:(id)a3 timeoutOutForInvitation:(id)a4 connectionIdentifier:(id)a5 senderAppleID:(id)a6 userInfo:(id)a7;
-- (void)connectionInvitationInbox:(id)a3 foundConection:(id)a4 senderAppleID:(id)a5 senderAddress:(id)a6 assertion:(id)a7 messagingVersion:(unint64_t)a8 userInfo:(id)a9;
-- (void)connectionInvitationInbox:(id)a3 rejectedInvitation:(id)a4 connectionIdentifier:(id)a5 appleID:(id)a6 address:(id)a7 error:(id)a8;
-- (void)connectionInvitationInbox:(id)a3 shouldConnectToAppleID:(id)a4 connectionIdentifier:(id)a5 userInfo:(id)a6 responseHandler:(id)a7;
-- (void)connectionInvitationInbox:(id)a3 wantsToAcceptInvitation:(id)a4 connectionIdentifier:(id)a5 destinationAddress:(id)a6;
-- (void)connectionInvitationOutbox:(id)a3 foundConnection:(id)a4 destinationAppleID:(id)a5 destinationAddress:(id)a6 assertion:(id)a7 messagingVersion:(unint64_t)a8 userInfo:(id)a9;
-- (void)connectionInvitationOutbox:(id)a3 receivedARejectionFrom:(id)a4 connectionIdentifier:(id)a5 userInfo:(id)a6 error:(id)a7;
-- (void)connectionInvitationOutbox:(id)a3 wantsToAcknowledgeInvitation:(id)a4 connectionIdentifier:(id)a5 destinationAddress:(id)a6;
-- (void)connectionInvitationOutbox:(id)a3 wantsToSendInvitation:(id)a4 destinationAppleID:(id)a5 userInfo:(id)a6;
-- (void)processMessage:(id)a3 senderAppleID:(id)a4 senderAddress:(id)a5;
+- (void)cancelInvitationWithIdentifier:(id)identifier;
+- (void)connectionInvitatioInbox:(id)inbox timeoutOutForInvitation:(id)invitation connectionIdentifier:(id)identifier senderAppleID:(id)d userInfo:(id)info;
+- (void)connectionInvitationInbox:(id)inbox foundConection:(id)conection senderAppleID:(id)d senderAddress:(id)address assertion:(id)assertion messagingVersion:(unint64_t)version userInfo:(id)info;
+- (void)connectionInvitationInbox:(id)inbox rejectedInvitation:(id)invitation connectionIdentifier:(id)identifier appleID:(id)d address:(id)address error:(id)error;
+- (void)connectionInvitationInbox:(id)inbox shouldConnectToAppleID:(id)d connectionIdentifier:(id)identifier userInfo:(id)info responseHandler:(id)handler;
+- (void)connectionInvitationInbox:(id)inbox wantsToAcceptInvitation:(id)invitation connectionIdentifier:(id)identifier destinationAddress:(id)address;
+- (void)connectionInvitationOutbox:(id)outbox foundConnection:(id)connection destinationAppleID:(id)d destinationAddress:(id)address assertion:(id)assertion messagingVersion:(unint64_t)version userInfo:(id)info;
+- (void)connectionInvitationOutbox:(id)outbox receivedARejectionFrom:(id)from connectionIdentifier:(id)identifier userInfo:(id)info error:(id)error;
+- (void)connectionInvitationOutbox:(id)outbox wantsToAcknowledgeInvitation:(id)invitation connectionIdentifier:(id)identifier destinationAddress:(id)address;
+- (void)connectionInvitationOutbox:(id)outbox wantsToSendInvitation:(id)invitation destinationAppleID:(id)d userInfo:(id)info;
+- (void)processMessage:(id)message senderAppleID:(id)d senderAddress:(id)address;
 - (void)resume;
-- (void)sendContent:(id)a3 toAddress:(id)a4 forInvitation:(id)a5;
+- (void)sendContent:(id)content toAddress:(id)address forInvitation:(id)invitation;
 - (void)suspend;
 @end
 
 @implementation CATIDSServiceConnectionTerminal
 
-- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)a3 assertionProvider:(id)a4 timerSource:(id)a5 workQueue:(id)a6 delegateQueue:(id)a7 sourceAppleID:(id)a8 connectionConfiguration:(id)a9
+- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)primitives assertionProvider:(id)provider timerSource:(id)source workQueue:(id)queue delegateQueue:(id)delegateQueue sourceAppleID:(id)d connectionConfiguration:(id)configuration
 {
-  v39 = a3;
-  v16 = a4;
-  v38 = a5;
-  v17 = a6;
-  v37 = a7;
-  v18 = a8;
-  v19 = a9;
-  if (!v18)
+  primitivesCopy = primitives;
+  providerCopy = provider;
+  sourceCopy = source;
+  queueCopy = queue;
+  delegateQueueCopy = delegateQueue;
+  dCopy = d;
+  configurationCopy = configuration;
+  if (!dCopy)
   {
     [CATIDSServiceConnectionTerminal initWithIDSPrimitives:a2 assertionProvider:self timerSource:? workQueue:? delegateQueue:? sourceAppleID:? connectionConfiguration:?];
   }
@@ -42,34 +42,34 @@
   v40.super_class = CATIDSServiceConnectionTerminal;
   v20 = [(CATIDSServiceConnectionTerminal *)&v40 init];
   v21 = v20;
-  v22 = v19;
-  v23 = v17;
+  v22 = configurationCopy;
+  v23 = queueCopy;
   if (v20)
   {
     v36 = v22;
-    objc_storeStrong(&v20->mIDSPrimitives, a3);
-    objc_storeStrong(&v21->mTimerSource, a5);
-    objc_storeStrong(&v21->mWorkQueue, a6);
-    objc_storeStrong(&v21->mDelegateQueue, a7);
-    v24 = [v18 copy];
+    objc_storeStrong(&v20->mIDSPrimitives, primitives);
+    objc_storeStrong(&v21->mTimerSource, source);
+    objc_storeStrong(&v21->mWorkQueue, queue);
+    objc_storeStrong(&v21->mDelegateQueue, delegateQueue);
+    v24 = [dCopy copy];
     mSourceAppleID = v21->mSourceAppleID;
     v21->mSourceAppleID = v24;
 
-    objc_storeStrong(&v21->mConnectionConfiguration, a9);
+    objc_storeStrong(&v21->mConnectionConfiguration, configuration);
     v26 = [CATIDSServiceConnectionInvitationInbox alloc];
     mTimerSource = v21->mTimerSource;
     [v36 invitationAcknowledgeTimeout];
-    v28 = [(CATIDSServiceConnectionInvitationInbox *)v26 initWithTimerSource:mTimerSource assertionProvider:v16 workQueue:v23 acknowledgeTimeout:?];
+    v28 = [(CATIDSServiceConnectionInvitationInbox *)v26 initWithTimerSource:mTimerSource assertionProvider:providerCopy workQueue:v23 acknowledgeTimeout:?];
     mInvitationInbox = v21->mInvitationInbox;
     v21->mInvitationInbox = v28;
 
-    v30 = [[CATIDSServiceConnectionInvitationOutbox alloc] initWithAssertionProvider:v16 workQueue:v23];
+    v30 = [[CATIDSServiceConnectionInvitationOutbox alloc] initWithAssertionProvider:providerCopy workQueue:v23];
     mInvitationOutbox = v21->mInvitationOutbox;
     v21->mInvitationOutbox = v30;
 
-    v32 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     mBroadcastHandlers = v21->mBroadcastHandlers;
-    v21->mBroadcastHandlers = v32;
+    v21->mBroadcastHandlers = weakObjectsHashTable;
 
     [(CATIDSServiceConnectionInvitationInbox *)v21->mInvitationInbox setDelegate:v21];
     [(CATIDSServiceConnectionInvitationOutbox *)v21->mInvitationOutbox setDelegate:v21];
@@ -80,43 +80,43 @@
   return v21;
 }
 
-- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)a3 networkPowerPrimitives:(id)a4 sourceAppleID:(id)a5
+- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)primitives networkPowerPrimitives:(id)powerPrimitives sourceAppleID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[CATNetworkPowerPrimitivesBackedAssertionProvider alloc] initWithNetworkPowerPrimitives:v9];
+  dCopy = d;
+  powerPrimitivesCopy = powerPrimitives;
+  primitivesCopy = primitives;
+  v11 = [[CATNetworkPowerPrimitivesBackedAssertionProvider alloc] initWithNetworkPowerPrimitives:powerPrimitivesCopy];
 
-  v12 = [(CATIDSServiceConnectionTerminal *)self initWithIDSPrimitives:v10 assertionProvider:v11 sourceAppleID:v8];
+  v12 = [(CATIDSServiceConnectionTerminal *)self initWithIDSPrimitives:primitivesCopy assertionProvider:v11 sourceAppleID:dCopy];
   return v12;
 }
 
-- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)a3 assertionProvider:(id)a4 sourceAppleID:(id)a5
+- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)primitives assertionProvider:(id)provider sourceAppleID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  dCopy = d;
+  providerCopy = provider;
+  primitivesCopy = primitives;
   v11 = objc_opt_new();
-  v12 = [(CATIDSServiceConnectionTerminal *)self initWithIDSPrimitives:v10 assertionProvider:v9 sourceAppleID:v8 connectionConfiguration:v11];
+  v12 = [(CATIDSServiceConnectionTerminal *)self initWithIDSPrimitives:primitivesCopy assertionProvider:providerCopy sourceAppleID:dCopy connectionConfiguration:v11];
 
   return v12;
 }
 
-- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)a3 assertionProvider:(id)a4 sourceAppleID:(id)a5 connectionConfiguration:(id)a6
+- (CATIDSServiceConnectionTerminal)initWithIDSPrimitives:(id)primitives assertionProvider:(id)provider sourceAppleID:(id)d connectionConfiguration:(id)configuration
 {
   v10 = MEMORY[0x277CCACA8];
   v11 = MEMORY[0x277CCAD78];
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v11 UUID];
-  v17 = [v10 stringWithFormat:@"Catalyst.IDSServiceConnection.%@", v16];
+  configurationCopy = configuration;
+  dCopy = d;
+  providerCopy = provider;
+  primitivesCopy = primitives;
+  uUID = [v11 UUID];
+  v17 = [v10 stringWithFormat:@"Catalyst.IDSServiceConnection.%@", uUID];
 
   v18 = dispatch_queue_create([v17 UTF8String], 0);
   v19 = CATGetCatalystQueue();
   v20 = objc_opt_new();
-  v21 = [(CATIDSServiceConnectionTerminal *)self initWithIDSPrimitives:v15 assertionProvider:v14 timerSource:v20 workQueue:v18 delegateQueue:v19 sourceAppleID:v13 connectionConfiguration:v12];
+  v21 = [(CATIDSServiceConnectionTerminal *)self initWithIDSPrimitives:primitivesCopy assertionProvider:providerCopy timerSource:v20 workQueue:v18 delegateQueue:v19 sourceAppleID:dCopy connectionConfiguration:configurationCopy];
 
   return v21;
 }
@@ -343,34 +343,34 @@ void __42__CATIDSServiceConnectionTerminal_suspend__block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)inviteAppleIDToConnect:(id)a3 userInfo:(id)a4
+- (id)inviteAppleIDToConnect:(id)connect userInfo:(id)info
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  connectCopy = connect;
+  infoCopy = info;
   v8 = _CATLogGeneral_5();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v6;
+    *&buf[14] = connectCopy;
     *&buf[22] = 2114;
-    v25 = v7;
+    v25 = infoCopy;
     _os_log_impl(&dword_24329F000, v8, OS_LOG_TYPE_INFO, "%{public}@ inviting appleID %{public}@ with userInfo %{public}@", buf, 0x20u);
   }
 
-  v9 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   mWorkQueue = self->mWorkQueue;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __67__CATIDSServiceConnectionTerminal_inviteAppleIDToConnect_userInfo___block_invoke;
   v20[3] = &unk_278DA79A8;
   v20[4] = self;
-  v11 = v9;
+  v11 = uUID;
   v21 = v11;
-  v22 = v6;
-  v23 = v7;
+  v22 = connectCopy;
+  v23 = infoCopy;
   v12 = v20;
   *buf = MEMORY[0x277D85DD0];
   *&buf[8] = 3221225472;
@@ -378,8 +378,8 @@ void __42__CATIDSServiceConnectionTerminal_suspend__block_invoke(uint64_t a1)
   v25 = &unk_278DA7208;
   v26 = v12;
   v13 = mWorkQueue;
-  v14 = v7;
-  v15 = v6;
+  v14 = infoCopy;
+  v15 = connectCopy;
   dispatch_async(v13, buf);
 
   v16 = v23;
@@ -389,17 +389,17 @@ void __42__CATIDSServiceConnectionTerminal_suspend__block_invoke(uint64_t a1)
   return v11;
 }
 
-- (void)cancelInvitationWithIdentifier:(id)a3
+- (void)cancelInvitationWithIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _CATLogGeneral_5();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v4;
+    *&buf[14] = identifierCopy;
     _os_log_impl(&dword_24329F000, v5, OS_LOG_TYPE_INFO, "%{public}@ canceling invitation with identifier %{public}@", buf, 0x16u);
   }
 
@@ -409,7 +409,7 @@ void __42__CATIDSServiceConnectionTerminal_suspend__block_invoke(uint64_t a1)
   v11[2] = __66__CATIDSServiceConnectionTerminal_cancelInvitationWithIdentifier___block_invoke;
   v11[3] = &unk_278DA7470;
   v11[4] = self;
-  v12 = v4;
+  v12 = identifierCopy;
   v7 = v11;
   *buf = MEMORY[0x277D85DD0];
   *&buf[8] = 3221225472;
@@ -417,7 +417,7 @@ void __42__CATIDSServiceConnectionTerminal_suspend__block_invoke(uint64_t a1)
   v14 = &unk_278DA7208;
   v15 = v7;
   v8 = mWorkQueue;
-  v9 = v4;
+  v9 = identifierCopy;
   dispatch_async(v8, buf);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -452,13 +452,13 @@ void __42__CATIDSServiceConnectionTerminal_suspend__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectionInvitationInbox:(id)a3 shouldConnectToAppleID:(id)a4 connectionIdentifier:(id)a5 userInfo:(id)a6 responseHandler:(id)a7
+- (void)connectionInvitationInbox:(id)inbox shouldConnectToAppleID:(id)d connectionIdentifier:(id)identifier userInfo:(id)info responseHandler:(id)handler
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [[CATIDSServiceConnectionMetadata alloc] initWithConnectionIdentifier:v13 destinationAppleID:v14 userInfo:v12];
+  handlerCopy = handler;
+  infoCopy = info;
+  identifierCopy = identifier;
+  dCopy = d;
+  v15 = [[CATIDSServiceConnectionMetadata alloc] initWithConnectionIdentifier:identifierCopy destinationAppleID:dCopy userInfo:infoCopy];
 
   v16 = self->mWorkQueue;
   mDelegateQueue = self->mDelegateQueue;
@@ -469,7 +469,7 @@ void __42__CATIDSServiceConnectionTerminal_suspend__block_invoke(uint64_t a1)
   v23[4] = self;
   v24 = v15;
   v25 = v16;
-  v26 = v11;
+  v26 = handlerCopy;
   v18 = v23;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -477,7 +477,7 @@ void __42__CATIDSServiceConnectionTerminal_suspend__block_invoke(uint64_t a1)
   block[3] = &unk_278DA7208;
   v28 = v18;
   v19 = mDelegateQueue;
-  v20 = v11;
+  v20 = handlerCopy;
   v21 = v16;
   v22 = v15;
   dispatch_async(v19, block);
@@ -520,22 +520,22 @@ void __130__CATIDSServiceConnectionTerminal_connectionInvitationInbox_shouldConn
   dispatch_async(v9, block);
 }
 
-- (void)connectionInvitationInbox:(id)a3 wantsToAcceptInvitation:(id)a4 connectionIdentifier:(id)a5 destinationAddress:(id)a6
+- (void)connectionInvitationInbox:(id)inbox wantsToAcceptInvitation:(id)invitation connectionIdentifier:(id)identifier destinationAddress:(id)address
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [[CATInitializingIDSServiceConnectionContentAccept alloc] initWithConnectionIdentifier:v10];
+  addressCopy = address;
+  identifierCopy = identifier;
+  invitationCopy = invitation;
+  v12 = [[CATInitializingIDSServiceConnectionContentAccept alloc] initWithConnectionIdentifier:identifierCopy];
 
-  [(CATIDSServiceConnectionTerminal *)self sendContent:v12 toAddress:v9 forInvitation:v11];
+  [(CATIDSServiceConnectionTerminal *)self sendContent:v12 toAddress:addressCopy forInvitation:invitationCopy];
 }
 
-- (void)connectionInvitatioInbox:(id)a3 timeoutOutForInvitation:(id)a4 connectionIdentifier:(id)a5 senderAppleID:(id)a6 userInfo:(id)a7
+- (void)connectionInvitatioInbox:(id)inbox timeoutOutForInvitation:(id)invitation connectionIdentifier:(id)identifier senderAppleID:(id)d userInfo:(id)info
 {
-  v10 = a7;
-  v11 = a6;
-  v12 = a5;
-  v13 = [[CATIDSServiceConnectionMetadata alloc] initWithConnectionIdentifier:v12 destinationAppleID:v11 userInfo:v10];
+  infoCopy = info;
+  dCopy = d;
+  identifierCopy = identifier;
+  v13 = [[CATIDSServiceConnectionMetadata alloc] initWithConnectionIdentifier:identifierCopy destinationAppleID:dCopy userInfo:infoCopy];
 
   mDelegateQueue = self->mDelegateQueue;
   v18[0] = MEMORY[0x277D85DD0];
@@ -561,66 +561,66 @@ void __128__CATIDSServiceConnectionTerminal_connectionInvitatioInbox_timeoutOutF
   [v2 serviceConnectionTerminal:*(a1 + 32) timedOutOnInvitationWithMetadata:*(a1 + 40)];
 }
 
-- (void)connectionInvitationInbox:(id)a3 foundConection:(id)a4 senderAppleID:(id)a5 senderAddress:(id)a6 assertion:(id)a7 messagingVersion:(unint64_t)a8 userInfo:(id)a9
+- (void)connectionInvitationInbox:(id)inbox foundConection:(id)conection senderAppleID:(id)d senderAddress:(id)address assertion:(id)assertion messagingVersion:(unint64_t)version userInfo:(id)info
 {
-  v15 = a9;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v23 = [[CATIDSServiceConnectionCapabilities alloc] initWithMessagingVersion:a8];
-  v20 = [[CATIDSServiceConnectionMetadata alloc] initWithConnectionIdentifier:v19 destinationAppleID:v18 userInfo:v15];
+  infoCopy = info;
+  assertionCopy = assertion;
+  addressCopy = address;
+  dCopy = d;
+  conectionCopy = conection;
+  v23 = [[CATIDSServiceConnectionCapabilities alloc] initWithMessagingVersion:version];
+  v20 = [[CATIDSServiceConnectionMetadata alloc] initWithConnectionIdentifier:conectionCopy destinationAppleID:dCopy userInfo:infoCopy];
 
-  v21 = [CATIDSServiceConnection connectionWithMetadata:v20 configuration:self->mConnectionConfiguration capabilities:v23 IDSPrimitives:self->mIDSPrimitives messageBroadcaster:self timerSource:self->mTimerSource assertion:v16 workQueue:self->mWorkQueue delegateQueue:self->mDelegateQueue destinationAddress:v17 sourceAppleID:self->mSourceAppleID];
+  v21 = [CATIDSServiceConnection connectionWithMetadata:v20 configuration:self->mConnectionConfiguration capabilities:v23 IDSPrimitives:self->mIDSPrimitives messageBroadcaster:self timerSource:self->mTimerSource assertion:assertionCopy workQueue:self->mWorkQueue delegateQueue:self->mDelegateQueue destinationAddress:addressCopy sourceAppleID:self->mSourceAppleID];
 
-  v22 = [(CATIDSServiceConnectionTerminal *)self delegate];
-  [v22 serviceConnectionTerminal:self establishedConnection:v21];
+  delegate = [(CATIDSServiceConnectionTerminal *)self delegate];
+  [delegate serviceConnectionTerminal:self establishedConnection:v21];
 }
 
-- (void)connectionInvitationInbox:(id)a3 rejectedInvitation:(id)a4 connectionIdentifier:(id)a5 appleID:(id)a6 address:(id)a7 error:(id)a8
+- (void)connectionInvitationInbox:(id)inbox rejectedInvitation:(id)invitation connectionIdentifier:(id)identifier appleID:(id)d address:(id)address error:(id)error
 {
-  v12 = a8;
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = [[CATInitializingIDSServiceConnectionContentReject alloc] initWithConnectionIdentifier:v14 error:v12];
+  errorCopy = error;
+  addressCopy = address;
+  identifierCopy = identifier;
+  invitationCopy = invitation;
+  v16 = [[CATInitializingIDSServiceConnectionContentReject alloc] initWithConnectionIdentifier:identifierCopy error:errorCopy];
 
-  [(CATIDSServiceConnectionTerminal *)self sendContent:v16 toAddress:v13 forInvitation:v15];
+  [(CATIDSServiceConnectionTerminal *)self sendContent:v16 toAddress:addressCopy forInvitation:invitationCopy];
 }
 
-- (void)connectionInvitationOutbox:(id)a3 wantsToSendInvitation:(id)a4 destinationAppleID:(id)a5 userInfo:(id)a6
+- (void)connectionInvitationOutbox:(id)outbox wantsToSendInvitation:(id)invitation destinationAppleID:(id)d userInfo:(id)info
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v13 = [[CATInitializingIDSServiceConnectionContentInvite alloc] initWithUserInfo:v9];
+  infoCopy = info;
+  dCopy = d;
+  invitationCopy = invitation;
+  v13 = [[CATInitializingIDSServiceConnectionContentInvite alloc] initWithUserInfo:infoCopy];
 
-  v12 = [(CATIDSPrimitives *)self->mIDSPrimitives addressForAppleID:v10];
+  v12 = [(CATIDSPrimitives *)self->mIDSPrimitives addressForAppleID:dCopy];
 
-  [(CATIDSServiceConnectionTerminal *)self sendContent:v13 toAddress:v12 forInvitation:v11];
+  [(CATIDSServiceConnectionTerminal *)self sendContent:v13 toAddress:v12 forInvitation:invitationCopy];
 }
 
-- (void)connectionInvitationOutbox:(id)a3 wantsToAcknowledgeInvitation:(id)a4 connectionIdentifier:(id)a5 destinationAddress:(id)a6
+- (void)connectionInvitationOutbox:(id)outbox wantsToAcknowledgeInvitation:(id)invitation connectionIdentifier:(id)identifier destinationAddress:(id)address
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [[CATInitializingIDSServiceConnectionContentAcknowledge alloc] initWithConnectionIdentifier:v10];
+  addressCopy = address;
+  identifierCopy = identifier;
+  invitationCopy = invitation;
+  v12 = [[CATInitializingIDSServiceConnectionContentAcknowledge alloc] initWithConnectionIdentifier:identifierCopy];
 
-  [(CATIDSServiceConnectionTerminal *)self sendContent:v12 toAddress:v9 forInvitation:v11];
+  [(CATIDSServiceConnectionTerminal *)self sendContent:v12 toAddress:addressCopy forInvitation:invitationCopy];
 }
 
-- (void)connectionInvitationOutbox:(id)a3 foundConnection:(id)a4 destinationAppleID:(id)a5 destinationAddress:(id)a6 assertion:(id)a7 messagingVersion:(unint64_t)a8 userInfo:(id)a9
+- (void)connectionInvitationOutbox:(id)outbox foundConnection:(id)connection destinationAppleID:(id)d destinationAddress:(id)address assertion:(id)assertion messagingVersion:(unint64_t)version userInfo:(id)info
 {
-  v15 = a9;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = [[CATIDSServiceConnectionCapabilities alloc] initWithMessagingVersion:a8];
-  v21 = [[CATIDSServiceConnectionMetadata alloc] initWithConnectionIdentifier:v19 destinationAppleID:v18 userInfo:v15];
+  infoCopy = info;
+  assertionCopy = assertion;
+  addressCopy = address;
+  dCopy = d;
+  connectionCopy = connection;
+  v20 = [[CATIDSServiceConnectionCapabilities alloc] initWithMessagingVersion:version];
+  v21 = [[CATIDSServiceConnectionMetadata alloc] initWithConnectionIdentifier:connectionCopy destinationAppleID:dCopy userInfo:infoCopy];
 
-  v22 = [CATIDSServiceConnection connectionWithMetadata:v21 configuration:self->mConnectionConfiguration capabilities:v20 IDSPrimitives:self->mIDSPrimitives messageBroadcaster:self timerSource:self->mTimerSource assertion:v16 workQueue:self->mWorkQueue delegateQueue:self->mDelegateQueue destinationAddress:v17 sourceAppleID:self->mSourceAppleID];
+  v22 = [CATIDSServiceConnection connectionWithMetadata:v21 configuration:self->mConnectionConfiguration capabilities:v20 IDSPrimitives:self->mIDSPrimitives messageBroadcaster:self timerSource:self->mTimerSource assertion:assertionCopy workQueue:self->mWorkQueue delegateQueue:self->mDelegateQueue destinationAddress:addressCopy sourceAppleID:self->mSourceAppleID];
 
   mDelegateQueue = self->mDelegateQueue;
   v27[0] = MEMORY[0x277D85DD0];
@@ -646,13 +646,13 @@ void __152__CATIDSServiceConnectionTerminal_connectionInvitationOutbox_foundConn
   [v2 serviceConnectionTerminal:*(a1 + 32) establishedConnection:*(a1 + 40)];
 }
 
-- (void)connectionInvitationOutbox:(id)a3 receivedARejectionFrom:(id)a4 connectionIdentifier:(id)a5 userInfo:(id)a6 error:(id)a7
+- (void)connectionInvitationOutbox:(id)outbox receivedARejectionFrom:(id)from connectionIdentifier:(id)identifier userInfo:(id)info error:(id)error
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = [[CATIDSServiceConnectionMetadata alloc] initWithConnectionIdentifier:v13 destinationAppleID:v14 userInfo:v12];
+  errorCopy = error;
+  infoCopy = info;
+  identifierCopy = identifier;
+  fromCopy = from;
+  v15 = [[CATIDSServiceConnectionMetadata alloc] initWithConnectionIdentifier:identifierCopy destinationAppleID:fromCopy userInfo:infoCopy];
 
   mDelegateQueue = self->mDelegateQueue;
   v21[0] = MEMORY[0x277D85DD0];
@@ -661,7 +661,7 @@ void __152__CATIDSServiceConnectionTerminal_connectionInvitationOutbox_foundConn
   v21[3] = &unk_278DA7280;
   v21[4] = self;
   v22 = v15;
-  v23 = v11;
+  v23 = errorCopy;
   v17 = v21;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -669,7 +669,7 @@ void __152__CATIDSServiceConnectionTerminal_connectionInvitationOutbox_foundConn
   block[3] = &unk_278DA7208;
   v25 = v17;
   v18 = mDelegateQueue;
-  v19 = v11;
+  v19 = errorCopy;
   v20 = v15;
   dispatch_async(v18, block);
 }
@@ -680,12 +680,12 @@ void __121__CATIDSServiceConnectionTerminal_connectionInvitationOutbox_receivedA
   [v2 serviceConnectionTerminal:*(a1 + 32) receivedRejectionWithMetadata:*(a1 + 40) error:*(a1 + 48)];
 }
 
-- (void)processMessage:(id)a3 senderAppleID:(id)a4 senderAddress:(id)a5
+- (void)processMessage:(id)message senderAppleID:(id)d senderAddress:(id)address
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  dCopy = d;
+  addressCopy = address;
   CATAssertIsQueue(self->mWorkQueue);
   if (self->mIsActive)
   {
@@ -694,8 +694,8 @@ void __121__CATIDSServiceConnectionTerminal_connectionInvitationOutbox_receivedA
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v12 = [v11 objectEnumerator];
-    v13 = [v12 countByEnumeratingWithState:&v28 objects:v34 count:16];
+    objectEnumerator = [v11 objectEnumerator];
+    v13 = [objectEnumerator countByEnumeratingWithState:&v28 objects:v34 count:16];
     if (v13)
     {
       v14 = v13;
@@ -707,14 +707,14 @@ void __121__CATIDSServiceConnectionTerminal_connectionInvitationOutbox_receivedA
         {
           if (*v29 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          [*(*(&v28 + 1) + 8 * v16++) processMessage:v8 senderAppleID:v9 senderAddress:v10];
+          [*(*(&v28 + 1) + 8 * v16++) processMessage:messageCopy senderAppleID:dCopy senderAddress:addressCopy];
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v28 objects:v34 count:16];
+        v14 = [objectEnumerator countByEnumeratingWithState:&v28 objects:v34 count:16];
       }
 
       while (v14);
@@ -727,10 +727,10 @@ void __121__CATIDSServiceConnectionTerminal_connectionInvitationOutbox_receivedA
     v23[2] = __78__CATIDSServiceConnectionTerminal_processMessage_senderAppleID_senderAddress___block_invoke;
     v23[3] = &unk_278DA7A48;
     v23[4] = self;
-    v24 = v9;
+    v24 = dCopy;
     v25 = v17;
-    v26 = v8;
-    v27 = v10;
+    v26 = messageCopy;
+    v27 = addressCopy;
     v19 = v23;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -890,15 +890,15 @@ LABEL_24:
   }
 }
 
-- (void)sendContent:(id)a3 toAddress:(id)a4 forInvitation:(id)a5
+- (void)sendContent:(id)content toAddress:(id)address forInvitation:(id)invitation
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [[CATInitializingServiceConnectionIDSMessage alloc] initWithInvitationIdentifier:v9 content:v10];
+  addressCopy = address;
+  invitationCopy = invitation;
+  contentCopy = content;
+  v11 = [[CATInitializingServiceConnectionIDSMessage alloc] initWithInvitationIdentifier:invitationCopy content:contentCopy];
 
   v12 = [[CATIDSMessagePayload alloc] initWithMessage:v11];
-  v13 = [(CATIDSMessagePayload *)v12 dictionaryValue];
+  dictionaryValue = [(CATIDSMessagePayload *)v12 dictionaryValue];
   v14 = objc_opt_new();
   [v14 setDeliveryTimeout:&unk_28560C258];
   mIDSPrimitives = self->mIDSPrimitives;
@@ -908,10 +908,10 @@ LABEL_24:
   v19[2] = __71__CATIDSServiceConnectionTerminal_sendContent_toAddress_forInvitation___block_invoke;
   v19[3] = &unk_278DA7A70;
   v19[4] = self;
-  v20 = v8;
-  v21 = v13;
-  v17 = v13;
-  v18 = v8;
+  v20 = addressCopy;
+  v21 = dictionaryValue;
+  v17 = dictionaryValue;
+  v18 = addressCopy;
   [(CATIDSPrimitives *)mIDSPrimitives sendMessage:v17 toAddress:v18 fromID:mSourceAppleID options:v14 completion:v19];
 }
 

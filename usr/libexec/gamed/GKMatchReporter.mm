@@ -1,13 +1,13 @@
 @interface GKMatchReporter
 + (GKMatchReporter)shared;
-+ (void)onInviteReceivedWithBulletin:(id)a3;
-- (void)recordActiveDevicesWithCount:(id)a3;
-- (void)recordGameCompleteWithCompletion:(id)a3;
++ (void)onInviteReceivedWithBulletin:(id)bulletin;
+- (void)recordActiveDevicesWithCount:(id)count;
+- (void)recordGameCompleteWithCompletion:(id)completion;
 - (void)recordGameStart;
-- (void)recordMatchCompleteWithMatchType:(id)a3 result:(id)a4 completion:(id)a5;
-- (void)recordMatchServerWithType:(id)a3;
-- (void)recordMatchStartWithType:(id)a3 minPlayers:(id)a4 maxPlayers:(id)a5;
-- (void)recordSharePlayDevicesWithCount:(id)a3;
+- (void)recordMatchCompleteWithMatchType:(id)type result:(id)result completion:(id)completion;
+- (void)recordMatchServerWithType:(id)type;
+- (void)recordMatchStartWithType:(id)type minPlayers:(id)players maxPlayers:(id)maxPlayers;
+- (void)recordSharePlayDevicesWithCount:(id)count;
 @end
 
 @implementation GKMatchReporter
@@ -19,49 +19,49 @@
   return matched;
 }
 
-- (void)recordMatchStartWithType:(id)a3 minPlayers:(id)a4 maxPlayers:(id)a5
+- (void)recordMatchStartWithType:(id)type minPlayers:(id)players maxPlayers:(id)maxPlayers
 {
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = a4;
-  v12 = a5;
-  v13 = self;
+  playersCopy = players;
+  maxPlayersCopy = maxPlayers;
+  selfCopy = self;
   v14._countAndFlagsBits = v8;
   v14._object = v10;
-  MatchReporter.recordMatchStart(type:minPlayers:maxPlayers:)(v14, v11, v12);
+  MatchReporter.recordMatchStart(type:minPlayers:maxPlayers:)(v14, playersCopy, maxPlayersCopy);
 }
 
-- (void)recordMatchServerWithType:(id)a3
+- (void)recordMatchServerWithType:(id)type
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   MatchReporter.recordMatchServer(type:)(v8);
 }
 
-- (void)recordActiveDevicesWithCount:(id)a3
+- (void)recordActiveDevicesWithCount:(id)count
 {
-  v4 = a3;
-  v5 = self;
-  MatchReporter.recordActiveDevices(count:)(v4);
+  countCopy = count;
+  selfCopy = self;
+  MatchReporter.recordActiveDevices(count:)(countCopy);
 }
 
-- (void)recordSharePlayDevicesWithCount:(id)a3
+- (void)recordSharePlayDevicesWithCount:(id)count
 {
-  v4 = a3;
-  v5 = self;
-  MatchReporter.recordSharePlayDevices(count:)(v4);
+  countCopy = count;
+  selfCopy = self;
+  MatchReporter.recordSharePlayDevices(count:)(countCopy);
 }
 
-- (void)recordMatchCompleteWithMatchType:(id)a3 result:(id)a4 completion:(id)a5
+- (void)recordMatchCompleteWithMatchType:(id)type result:(id)result completion:(id)completion
 {
-  v8 = _Block_copy(a5);
-  if (a3)
+  v8 = _Block_copy(completion);
+  if (type)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    if (!a4)
+    if (!result)
     {
       goto LABEL_5;
     }
@@ -69,7 +69,7 @@
     goto LABEL_3;
   }
 
-  if (a4)
+  if (result)
   {
 LABEL_3:
     static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -77,27 +77,27 @@ LABEL_3:
 
 LABEL_5:
   *(swift_allocObject() + 16) = v8;
-  v9 = self;
+  selfCopy = self;
   MatchReporter.recordMatchComplete(matchType:result:completion:)();
 }
 
 - (void)recordGameStart
 {
-  v2 = self;
+  selfCopy = self;
   MatchReporter.recordGameStart()();
 }
 
-- (void)recordGameCompleteWithCompletion:(id)a3
+- (void)recordGameCompleteWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   *(swift_allocObject() + 16) = v4;
-  v5 = self;
+  selfCopy = self;
   MatchReporter.recordGameComplete(completion:)();
 }
 
-+ (void)onInviteReceivedWithBulletin:(id)a3
++ (void)onInviteReceivedWithBulletin:(id)bulletin
 {
-  v3 = a3;
+  bulletinCopy = bulletin;
   static MatchReporter.onInviteReceived(bulletin:)();
 }
 

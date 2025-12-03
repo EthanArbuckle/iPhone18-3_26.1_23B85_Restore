@@ -1,18 +1,18 @@
 @interface HeadphoneFlowViewController
-- (_TtC20HeadphoneProxService27HeadphoneFlowViewController)initWithCoder:(id)a3;
-- (_TtC20HeadphoneProxService27HeadphoneFlowViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20HeadphoneProxService27HeadphoneFlowViewController)initWithCoder:(id)coder;
+- (_TtC20HeadphoneProxService27HeadphoneFlowViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_willAppearInRemoteViewController;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HeadphoneFlowViewController
 
-- (_TtC20HeadphoneProxService27HeadphoneFlowViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20HeadphoneProxService27HeadphoneFlowViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -24,11 +24,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10009E3F8(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10009E3F8(v5, v7, bundle);
 }
 
-- (_TtC20HeadphoneProxService27HeadphoneFlowViewController)initWithCoder:(id)a3
+- (_TtC20HeadphoneProxService27HeadphoneFlowViewController)initWithCoder:(id)coder
 {
   v3 = &self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC20HeadphoneProxService27HeadphoneFlowViewController_interactor];
   *(v3 + 4) = 0;
@@ -45,9 +45,9 @@
   return result;
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -60,27 +60,27 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_10009E610(v8, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_10009E610(contextCopy, v6, v7);
   sub_1000622D4(v6);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10009F6A8(a3);
+  selfCopy = self;
+  sub_10009F6A8(appear);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10009F800(a3);
+  selfCopy = self;
+  sub_10009F800(appear);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  if (a3)
+  if (actions)
   {
     sub_1000084D4(0, &qword_10011F948, SBUIRemoteAlertButtonAction_ptr);
     sub_10001C19C(&unk_10011F950, &qword_10011F948, SBUIRemoteAlertButtonAction_ptr);
@@ -92,7 +92,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_10009FE2C(v4);
 }
 

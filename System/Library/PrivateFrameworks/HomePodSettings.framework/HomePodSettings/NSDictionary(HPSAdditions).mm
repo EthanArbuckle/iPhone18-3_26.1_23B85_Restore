@@ -13,7 +13,7 @@
   v6[3] = &unk_279773F28;
   v7 = v2;
   v3 = v2;
-  [a1 enumerateKeysAndObjectsUsingBlock:v6];
+  [self enumerateKeysAndObjectsUsingBlock:v6];
   v4 = [v3 copy];
 
   return v4;

@@ -1,7 +1,7 @@
 @interface PRMonogramColor
 + (NSArray)availableColorNames;
 + (NSArray)availableColors;
-+ (PRMonogramColor)colorWithName:(id)a3 inBundle:(id)a4;
++ (PRMonogramColor)colorWithName:(id)name inBundle:(id)bundle;
 + (id)defaultBundle;
 + (id)defaultGradientEndColor;
 + (id)defaultGradientStartColor;
@@ -9,11 +9,11 @@
 + (id)defaultSelectedActiveTextColor;
 + (id)defaultSelectedInactiveColor;
 + (id)generateMonogramGradientColorsByNameDictionary;
-+ (id)gradientStartColor:(id)a3;
-+ (id)monogramGradientColorNamed:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PRMonogramColor)initWithColorName:(id)a3;
-- (PRMonogramColor)initWithColorName:(id)a3 inBundle:(id)a4;
++ (id)gradientStartColor:(id)color;
++ (id)monogramGradientColorNamed:(id)named;
+- (BOOL)isEqual:(id)equal;
+- (PRMonogramColor)initWithColorName:(id)name;
+- (PRMonogramColor)initWithColorName:(id)name inBundle:(id)bundle;
 - (PRMonogramColor)initWithRandomColor;
 - (UIColor)gradientEndColor;
 - (UIColor)gradientStartColor;
@@ -21,7 +21,7 @@
 - (UIColor)selectedActiveTextColor;
 - (UIColor)selectedInactiveColor;
 - (unint64_t)hash;
-- (void)setColorName:(id)a3;
+- (void)setColorName:(id)name;
 @end
 
 @implementation PRMonogramColor
@@ -34,13 +34,13 @@
   return [v2 bundleForClass:v3];
 }
 
-+ (id)gradientStartColor:(id)a3
++ (id)gradientStartColor:(id)color
 {
   v8 = 0.0;
   v6 = 0.0;
   v7 = 0.0;
   v5 = 0.0;
-  [a3 getRed:&v8 green:&v7 blue:&v6 alpha:&v5];
+  [color getRed:&v8 green:&v7 blue:&v6 alpha:&v5];
   v3 = [MEMORY[0x277D75348] colorWithRed:(v5 * v8 * 0.7 + 0.3) / (v5 * 0.7 + 0.3) green:(v5 * v7 * 0.7 + 0.3) / (v5 * 0.7 + 0.3) blue:(v5 * v6 * 0.7 + 0.3) / (v5 * 0.7 + 0.3) alpha:?];
 
   return v3;
@@ -83,106 +83,106 @@
   v20 = [MEMORY[0x277D75348] colorWithRed:0.690196097 green:0.760784328 blue:0.666666687 alpha:1.0];
   v36 = [MEMORY[0x277D75348] colorWithRed:0.56078434 green:0.56078434 blue:0.56078434 alpha:1.0];
   v48 = [MEMORY[0x277D75348] colorWithRed:0.200000003 green:0.200000003 blue:0.200000003 alpha:1.0];
-  v47 = [a1 gradientStartName:@"Pink"];
+  v47 = [self gradientStartName:@"Pink"];
   v73[0] = v47;
   v74[0] = v72;
-  v46 = [a1 gradientEndName:@"Pink"];
+  v46 = [self gradientEndName:@"Pink"];
   v73[1] = v46;
   v74[1] = v71;
-  v45 = [a1 gradientStartName:@"Red"];
+  v45 = [self gradientStartName:@"Red"];
   v73[2] = v45;
   v74[2] = v70;
-  v44 = [a1 gradientEndName:@"Red"];
+  v44 = [self gradientEndName:@"Red"];
   v73[3] = v44;
   v74[3] = v69;
-  v43 = [a1 gradientStartName:@"Orange"];
+  v43 = [self gradientStartName:@"Orange"];
   v73[4] = v43;
   v74[4] = v68;
-  v42 = [a1 gradientEndName:@"Orange"];
+  v42 = [self gradientEndName:@"Orange"];
   v73[5] = v42;
   v74[5] = v67;
-  v41 = [a1 gradientStartName:@"Yellow"];
+  v41 = [self gradientStartName:@"Yellow"];
   v73[6] = v41;
   v74[6] = v66;
-  v40 = [a1 gradientEndName:@"Yellow"];
+  v40 = [self gradientEndName:@"Yellow"];
   v73[7] = v40;
   v74[7] = v65;
-  v39 = [a1 gradientStartName:@"Green"];
+  v39 = [self gradientStartName:@"Green"];
   v73[8] = v39;
   v74[8] = v64;
-  v38 = [a1 gradientEndName:@"Green"];
+  v38 = [self gradientEndName:@"Green"];
   v73[9] = v38;
   v74[9] = v63;
-  v37 = [a1 gradientStartName:@"Blue"];
+  v37 = [self gradientStartName:@"Blue"];
   v73[10] = v37;
   v74[10] = v62;
-  v35 = [a1 gradientEndName:@"Blue"];
+  v35 = [self gradientEndName:@"Blue"];
   v73[11] = v35;
   v74[11] = v61;
-  v33 = [a1 gradientStartName:@"Purple"];
+  v33 = [self gradientStartName:@"Purple"];
   v73[12] = v33;
   v74[12] = v60;
-  v32 = [a1 gradientEndName:@"Purple"];
+  v32 = [self gradientEndName:@"Purple"];
   v73[13] = v32;
   v74[13] = v59;
-  v29 = [a1 gradientStartName:@"D6CEDE"];
+  v29 = [self gradientStartName:@"D6CEDE"];
   v73[14] = v29;
   v74[14] = v56;
-  v28 = [a1 gradientEndName:@"D6CEDE"];
+  v28 = [self gradientEndName:@"D6CEDE"];
   v73[15] = v28;
   v74[15] = v58;
-  v26 = [a1 gradientStartName:@"C7D7E7"];
+  v26 = [self gradientStartName:@"C7D7E7"];
   v73[16] = v26;
   v74[16] = v54;
-  v25 = [a1 gradientEndName:@"C7D7E7"];
+  v25 = [self gradientEndName:@"C7D7E7"];
   v73[17] = v25;
   v74[17] = v57;
-  v22 = [a1 gradientStartName:@"D0E8EA"];
+  v22 = [self gradientStartName:@"D0E8EA"];
   v73[18] = v22;
   v74[18] = v52;
-  v21 = [a1 gradientEndName:@"D0E8EA"];
+  v21 = [self gradientEndName:@"D0E8EA"];
   v73[19] = v21;
   v74[19] = v55;
-  v18 = [a1 gradientStartName:@"F0B7EC"];
+  v18 = [self gradientStartName:@"F0B7EC"];
   v73[20] = v18;
   v74[20] = v49;
-  v17 = [a1 gradientEndName:@"F0B7EC"];
+  v17 = [self gradientEndName:@"F0B7EC"];
   v73[21] = v17;
   v74[21] = v53;
-  v16 = [a1 gradientStartName:@"AAF0F2"];
+  v16 = [self gradientStartName:@"AAF0F2"];
   v73[22] = v16;
   v74[22] = v34;
-  v15 = [a1 gradientEndName:@"AAF0F2"];
+  v15 = [self gradientEndName:@"AAF0F2"];
   v73[23] = v15;
   v74[23] = v51;
-  v14 = [a1 gradientStartName:@"B1F4C3"];
+  v14 = [self gradientStartName:@"B1F4C3"];
   v73[24] = v14;
   v74[24] = v31;
-  v3 = [a1 gradientEndName:@"B1F4C3"];
+  v3 = [self gradientEndName:@"B1F4C3"];
   v73[25] = v3;
   v74[25] = v30;
-  v4 = [a1 gradientStartName:@"D9D4CF"];
+  v4 = [self gradientStartName:@"D9D4CF"];
   v73[26] = v4;
   v74[26] = v27;
-  v5 = [a1 gradientEndName:@"D9D4CF"];
+  v5 = [self gradientEndName:@"D9D4CF"];
   v73[27] = v5;
   v74[27] = v50;
-  v6 = [a1 gradientStartName:@"E6D6BF"];
+  v6 = [self gradientStartName:@"E6D6BF"];
   v73[28] = v6;
   v74[28] = v24;
-  v7 = [a1 gradientEndName:@"E6D6BF"];
+  v7 = [self gradientEndName:@"E6D6BF"];
   v73[29] = v7;
   v74[29] = v23;
-  v8 = [a1 gradientStartName:@"D4DDD0"];
+  v8 = [self gradientStartName:@"D4DDD0"];
   v73[30] = v8;
   v74[30] = v20;
-  v9 = [a1 gradientEndName:@"D4DDD0"];
+  v9 = [self gradientEndName:@"D4DDD0"];
   v73[31] = v9;
   v74[31] = v19;
-  v10 = [a1 gradientStartName:@"8F8F8F"];
+  v10 = [self gradientStartName:@"8F8F8F"];
   v73[32] = v10;
   v74[32] = v48;
-  v11 = [a1 gradientEndName:@"8F8F8F"];
+  v11 = [self gradientEndName:@"8F8F8F"];
   v73[33] = v11;
   v74[33] = v36;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v74 forKeys:v73 count:34];
@@ -190,21 +190,21 @@
   return v13;
 }
 
-+ (id)monogramGradientColorNamed:(id)a3
++ (id)monogramGradientColorNamed:(id)named
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__PRMonogramColor_monogramGradientColorNamed___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = monogramGradientColorNamed__onceToken;
-  v4 = a3;
+  namedCopy = named;
   if (v3 != -1)
   {
     dispatch_once(&monogramGradientColorNamed__onceToken, block);
   }
 
-  v5 = [monogramGradientColorNamed__monogramGradientColorsByName objectForKeyedSubscript:v4];
+  v5 = [monogramGradientColorNamed__monogramGradientColorsByName objectForKeyedSubscript:namedCopy];
 
   return v5;
 }
@@ -216,10 +216,10 @@ uint64_t __46__PRMonogramColor_monogramGradientColorNamed___block_invoke(uint64_
   return MEMORY[0x2821F96F8]();
 }
 
-+ (PRMonogramColor)colorWithName:(id)a3 inBundle:(id)a4
++ (PRMonogramColor)colorWithName:(id)name inBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277D75348] colorNamed:v6 inBundle:a4 compatibleWithTraitCollection:0];
+  nameCopy = name;
+  v7 = [MEMORY[0x277D75348] colorNamed:nameCopy inBundle:bundle compatibleWithTraitCollection:0];
   v8 = v7;
   if (v7)
   {
@@ -228,7 +228,7 @@ uint64_t __46__PRMonogramColor_monogramGradientColorNamed___block_invoke(uint64_
 
   else
   {
-    v9 = [a1 monogramGradientColorNamed:v6];
+    v9 = [self monogramGradientColorNamed:nameCopy];
   }
 
   v10 = v9;
@@ -238,40 +238,40 @@ uint64_t __46__PRMonogramColor_monogramGradientColorNamed___block_invoke(uint64_
 
 + (id)defaultGradientStartColor
 {
-  v3 = [a1 defaultBundle];
-  v4 = [a1 colorWithName:@"PlateGradientStartColor" inBundle:v3];
+  defaultBundle = [self defaultBundle];
+  v4 = [self colorWithName:@"PlateGradientStartColor" inBundle:defaultBundle];
 
   return v4;
 }
 
 + (id)defaultGradientEndColor
 {
-  v3 = [a1 defaultBundle];
-  v4 = [a1 colorWithName:@"PlateGradientEndColor" inBundle:v3];
+  defaultBundle = [self defaultBundle];
+  v4 = [self colorWithName:@"PlateGradientEndColor" inBundle:defaultBundle];
 
   return v4;
 }
 
 + (id)defaultSelectedActiveColor
 {
-  v3 = [a1 defaultBundle];
-  v4 = [a1 colorWithName:@"PlateSelectedActiveColor" inBundle:v3];
+  defaultBundle = [self defaultBundle];
+  v4 = [self colorWithName:@"PlateSelectedActiveColor" inBundle:defaultBundle];
 
   return v4;
 }
 
 + (id)defaultSelectedInactiveColor
 {
-  v3 = [a1 defaultBundle];
-  v4 = [a1 colorWithName:@"PlateSelectedInactiveColor" inBundle:v3];
+  defaultBundle = [self defaultBundle];
+  v4 = [self colorWithName:@"PlateSelectedInactiveColor" inBundle:defaultBundle];
 
   return v4;
 }
 
 + (id)defaultSelectedActiveTextColor
 {
-  v3 = [a1 defaultBundle];
-  v4 = [a1 colorWithName:@"PlateSelectedActiveTextColor" inBundle:v3];
+  defaultBundle = [self defaultBundle];
+  v4 = [self colorWithName:@"PlateSelectedActiveTextColor" inBundle:defaultBundle];
 
   return v4;
 }
@@ -326,42 +326,42 @@ PRMonogramColor *__34__PRMonogramColor_availableColors__block_invoke(uint64_t a1
   return v5;
 }
 
-- (PRMonogramColor)initWithColorName:(id)a3
+- (PRMonogramColor)initWithColorName:(id)name
 {
-  v4 = a3;
-  v5 = [objc_opt_class() defaultBundle];
-  v6 = [(PRMonogramColor *)self initWithColorName:v4 inBundle:v5];
+  nameCopy = name;
+  defaultBundle = [objc_opt_class() defaultBundle];
+  v6 = [(PRMonogramColor *)self initWithColorName:nameCopy inBundle:defaultBundle];
 
   return v6;
 }
 
-- (PRMonogramColor)initWithColorName:(id)a3 inBundle:(id)a4
+- (PRMonogramColor)initWithColorName:(id)name inBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v11.receiver = self;
   v11.super_class = PRMonogramColor;
   v8 = [(PRMonogramColor *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(PRMonogramColor *)v8 setColorName:v6];
-    objc_storeStrong(&v9->_bundle, a4);
+    [(PRMonogramColor *)v8 setColorName:nameCopy];
+    objc_storeStrong(&v9->_bundle, bundle);
   }
 
   return v9;
 }
 
-- (void)setColorName:(id)a3
+- (void)setColorName:(id)name
 {
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v4 = &stru_2870278B0;
+    nameCopy = &stru_2870278B0;
   }
 
-  v9 = v4;
-  v5 = [(__CFString *)v4 lengthOfBytesUsingEncoding:4];
+  v9 = nameCopy;
+  v5 = [(__CFString *)nameCopy lengthOfBytesUsingEncoding:4];
   if (v5 > 0x10)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v5];
@@ -384,12 +384,12 @@ PRMonogramColor *__34__PRMonogramColor_availableColors__block_invoke(uint64_t a1
   gradientStartColor = self->_gradientStartColor;
   if (!gradientStartColor)
   {
-    v4 = [(PRMonogramColor *)self colorName];
-    v5 = [v4 stringByAppendingString:@"_GradientStart"];
+    colorName = [(PRMonogramColor *)self colorName];
+    v5 = [colorName stringByAppendingString:@"_GradientStart"];
 
     v6 = objc_opt_class();
-    v7 = [(PRMonogramColor *)self bundle];
-    v8 = [v6 colorWithName:v5 inBundle:v7];
+    bundle = [(PRMonogramColor *)self bundle];
+    v8 = [v6 colorWithName:v5 inBundle:bundle];
     v9 = self->_gradientStartColor;
     self->_gradientStartColor = v8;
 
@@ -404,12 +404,12 @@ PRMonogramColor *__34__PRMonogramColor_availableColors__block_invoke(uint64_t a1
   gradientEndColor = self->_gradientEndColor;
   if (!gradientEndColor)
   {
-    v4 = [(PRMonogramColor *)self colorName];
-    v5 = [v4 stringByAppendingString:@"_GradientEnd"];
+    colorName = [(PRMonogramColor *)self colorName];
+    v5 = [colorName stringByAppendingString:@"_GradientEnd"];
 
     v6 = objc_opt_class();
-    v7 = [(PRMonogramColor *)self bundle];
-    v8 = [v6 colorWithName:v5 inBundle:v7];
+    bundle = [(PRMonogramColor *)self bundle];
+    v8 = [v6 colorWithName:v5 inBundle:bundle];
     v9 = self->_gradientEndColor;
     self->_gradientEndColor = v8;
 
@@ -440,17 +440,17 @@ PRMonogramColor *__34__PRMonogramColor_availableColors__block_invoke(uint64_t a1
   return [v2 defaultSelectedActiveTextColor];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PRMonogramColor *)self colorName];
-    v7 = [v5 colorName];
+    v5 = equalCopy;
+    colorName = [(PRMonogramColor *)self colorName];
+    colorName2 = [v5 colorName];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [colorName isEqualToString:colorName2];
   }
 
   else
@@ -463,8 +463,8 @@ PRMonogramColor *__34__PRMonogramColor_availableColors__block_invoke(uint64_t a1
 
 - (unint64_t)hash
 {
-  v2 = [(PRMonogramColor *)self colorName];
-  v3 = [v2 hash];
+  colorName = [(PRMonogramColor *)self colorName];
+  v3 = [colorName hash];
 
   return v3;
 }

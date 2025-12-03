@@ -1,7 +1,7 @@
 @interface AKAppleIDProximityAuthenticationContext
 - (AKAppleIDProximityAuthenticationContext)init;
 - (AKAppleIDProximityAuthenticationContextDelegate)proxDelegate;
-- (void)presentBasicLoginUIWithCompletion:(id)a3;
+- (void)presentBasicLoginUIWithCompletion:(id)completion;
 @end
 
 @implementation AKAppleIDProximityAuthenticationContext
@@ -25,12 +25,12 @@
   return v3;
 }
 
-- (void)presentBasicLoginUIWithCompletion:(id)a3
+- (void)presentBasicLoginUIWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v9 = _AKLogSystem();
   v8 = 16;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))

@@ -1,18 +1,18 @@
 @interface MKHTTPParser
-- (id)chunk:(id)a3 offset:(unint64_t *)a4 done:(BOOL *)a5;
-- (id)parse:(id)a3 hostname:(id)a4;
-- (id)parts:(id)a3 boundary:(id)a4 container:(id)a5;
+- (id)chunk:(id)chunk offset:(unint64_t *)offset done:(BOOL *)done;
+- (id)parse:(id)parse hostname:(id)hostname;
+- (id)parts:(id)parts boundary:(id)boundary container:(id)container;
 @end
 
 @implementation MKHTTPParser
 
-- (id)parse:(id)a3 hostname:(id)a4
+- (id)parse:(id)parse hostname:(id)hostname
 {
-  v5 = a3;
-  v25 = a4;
+  parseCopy = parse;
+  hostnameCopy = hostname;
   v6 = malloc_type_malloc(0x400uLL, 0x100004077774924uLL);
-  v26 = v5;
-  v27 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithData:v5];
+  v26 = parseCopy;
+  v27 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithData:parseCopy];
   [v27 open];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = objc_alloc_init(MEMORY[0x277CCAB68]);
@@ -83,7 +83,7 @@ LABEL_17:
   if (v18)
   {
     v19 = 0;
-    v20 = v25;
+    v20 = hostnameCopy;
   }
 
   else
@@ -91,21 +91,21 @@ LABEL_17:
     v21 = [v26 subdataWithRange:{v10, objc_msgSend(v26, "length") - v10}];
     v22 = [MKHTTPRequest alloc];
     v23 = [[MKHTTPHeaders alloc] initWithArray:v7];
-    v20 = v25;
-    v19 = [(MKHTTPRequest *)v22 initWithHeaders:v23 body:v21 hostname:v25];
+    v20 = hostnameCopy;
+    v19 = [(MKHTTPRequest *)v22 initWithHeaders:v23 body:v21 hostname:hostnameCopy];
   }
 
   return v19;
 }
 
-- (id)chunk:(id)a3 offset:(unint64_t *)a4 done:(BOOL *)a5
+- (id)chunk:(id)chunk offset:(unint64_t *)offset done:(BOOL *)done
 {
-  v6 = a3;
-  if (v6)
+  chunkCopy = chunk;
+  if (chunkCopy)
   {
-    v25 = a5;
+    doneCopy = done;
     v7 = malloc_type_malloc(0x400uLL, 0x100004077774924uLL);
-    v24 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithData:v6];
+    v24 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithData:chunkCopy];
     [v24 open];
     v27 = objc_alloc_init(MEMORY[0x277CBEB28]);
     v8 = 0;
@@ -135,7 +135,7 @@ LABEL_17:
         v17 = v10 - 1;
         if ((v9 & 1) == 0)
         {
-          v19 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:objc_msgSend(v6 length:"bytes") + v11 freeWhenDone:{v10 - 1, 0}];
+          v19 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:objc_msgSend(chunkCopy length:"bytes") + v11 freeWhenDone:{v10 - 1, 0}];
           v20 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v19 encoding:4];
           v21 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:v20];
           [v21 scanHexInt:&v28];
@@ -153,16 +153,16 @@ LABEL_19:
           goto LABEL_19;
         }
 
-        v18 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:objc_msgSend(v6 length:"bytes") + v11 freeWhenDone:{v10 - 1, 0}];
+        v18 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:objc_msgSend(chunkCopy length:"bytes") + v11 freeWhenDone:{v10 - 1, 0}];
         [v27 appendData:v18];
-        if (a4)
+        if (offset)
         {
-          *a4 = v11 + v17 + 2;
+          *offset = v11 + v17 + 2;
         }
 
-        if (v25)
+        if (doneCopy)
         {
-          *v25 = [v18 length] == 0;
+          *doneCopy = [v18 length] == 0;
         }
 
         v11 += v10 + 1;
@@ -190,20 +190,20 @@ LABEL_24:
   return v22;
 }
 
-- (id)parts:(id)a3 boundary:(id)a4 container:(id)a5
+- (id)parts:(id)parts boundary:(id)boundary container:(id)container
 {
-  v7 = a3;
-  v8 = a4;
-  v37 = a5;
+  partsCopy = parts;
+  boundaryCopy = boundary;
+  containerCopy = container;
   v9 = objc_alloc_init(MEMORY[0x277CCAB68]);
   [v9 appendString:@"--"];
-  v35 = v8;
-  [v9 appendString:v8];
+  v35 = boundaryCopy;
+  [v9 appendString:boundaryCopy];
   v34 = v9;
   v43 = [v9 dataUsingEncoding:4];
   v10 = malloc_type_malloc(0x400uLL, 0x100004077774924uLL);
-  v45 = v7;
-  v38 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithData:v7];
+  v45 = partsCopy;
+  v38 = [objc_alloc(MEMORY[0x277CBEAE0]) initWithData:partsCopy];
   [v38 open];
   v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v11 = 0;
@@ -211,7 +211,7 @@ LABEL_24:
   v13 = 0;
   v14 = 0;
   v44 = 0;
-  v41 = 0;
+  unsignedLongLongValue = 0;
   v42 = 0;
   v15 = 1;
   do
@@ -241,7 +241,7 @@ LABEL_24:
         {
           v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
 
-          v41 = 0;
+          unsignedLongLongValue = 0;
           v15 = 0;
           v12 += v13 + 1;
           v14 = 1;
@@ -269,8 +269,8 @@ LABEL_22:
         {
           v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v22 encoding:4];
           [v44 addObject:v24];
-          v25 = [v24 lowercaseString];
-          v26 = [v25 hasPrefix:@"content-length"];
+          lowercaseString = [v24 lowercaseString];
+          v26 = [lowercaseString hasPrefix:@"content-length"];
 
           if (v26)
           {
@@ -281,7 +281,7 @@ LABEL_22:
               [v40 setNumberStyle:1];
               v39 = [v27 objectAtIndexedSubscript:1];
               v28 = [v40 numberFromString:v39];
-              v41 = [v28 unsignedLongLongValue];
+              unsignedLongLongValue = [v28 unsignedLongLongValue];
             }
           }
 
@@ -302,7 +302,7 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        if (v41 && [v22 length] != v41)
+        if (unsignedLongLongValue && [v22 length] != unsignedLongLongValue)
         {
           v14 = 0;
           v15 = 0;
@@ -313,8 +313,8 @@ LABEL_22:
 
         v29 = [MKHTTPRequest alloc];
         v30 = [[MKHTTPHeaders alloc] initWithMultipartHeaderArray:v44];
-        v31 = [v37 hostname];
-        v32 = [(MKHTTPRequest *)v29 initWithHeaders:v30 body:v22 hostname:v31];
+        hostname = [containerCopy hostname];
+        v32 = [(MKHTTPRequest *)v29 initWithHeaders:v30 body:v22 hostname:hostname];
 
         [v36 addObject:v32];
         v12 += v13 + 1;

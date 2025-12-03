@@ -1,54 +1,54 @@
 @interface BICCoreDataPersistentStoring
-+ (id)_predicateForImageEntriesMatchingAddedEntries:(id)a3;
-+ (id)_predicateForToBeDeletedImageEntriesInLevelID:(signed __int16)a3;
-- (BICCoreDataPersistentStoring)initWithURL:(id)a3;
-- (id)addNewImageEntryToSet:(id)a3;
-- (id)addNewImageSetWithIdentifier:(id)a3;
++ (id)_predicateForImageEntriesMatchingAddedEntries:(id)entries;
++ (id)_predicateForToBeDeletedImageEntriesInLevelID:(signed __int16)d;
+- (BICCoreDataPersistentStoring)initWithURL:(id)l;
+- (id)addNewImageEntryToSet:(id)set;
+- (id)addNewImageSetWithIdentifier:(id)identifier;
 - (id)fetchAllImageSets;
-- (id)fetchImageEntriesMatchingAddedEntries:(id)a3;
-- (id)fetchImageEntriesWithLocations:(id)a3;
-- (id)fetchImageSetsWithDescribedImages:(id)a3;
-- (id)fetchImageSetsWithIDs:(id)a3;
-- (id)fetchToBeDeletedImageEntriesInLevelID:(signed __int16)a3;
-- (id)imageSetForIdentifier:(id)a3;
+- (id)fetchImageEntriesMatchingAddedEntries:(id)entries;
+- (id)fetchImageEntriesWithLocations:(id)locations;
+- (id)fetchImageSetsWithDescribedImages:(id)images;
+- (id)fetchImageSetsWithIDs:(id)ds;
+- (id)fetchToBeDeletedImageEntriesInLevelID:(signed __int16)d;
+- (id)imageSetForIdentifier:(id)identifier;
 - (void)_commonInit;
-- (void)clean:(id)a3;
-- (void)deleteObject:(id)a3;
-- (void)performBlock:(id)a3;
-- (void)performBlockAndWait:(id)a3;
+- (void)clean:(id)clean;
+- (void)deleteObject:(id)object;
+- (void)performBlock:(id)block;
+- (void)performBlockAndWait:(id)wait;
 - (void)processPendingChanges;
-- (void)removeImageSets:(id)a3;
+- (void)removeImageSets:(id)sets;
 - (void)saveIfNeeded;
 @end
 
 @implementation BICCoreDataPersistentStoring
 
-+ (id)_predicateForToBeDeletedImageEntriesInLevelID:(signed __int16)a3
++ (id)_predicateForToBeDeletedImageEntriesInLevelID:(signed __int16)d
 {
-  v3 = [NSNumber numberWithShort:a3];
+  v3 = [NSNumber numberWithShort:d];
   v4 = [NSPredicate predicateWithFormat:@"state = %@ AND level = %@", &off_2E5A80, v3];
 
   return v4;
 }
 
-+ (id)_predicateForImageEntriesMatchingAddedEntries:(id)a3
++ (id)_predicateForImageEntriesMatchingAddedEntries:(id)entries
 {
-  v3 = [a3 valueForKey:@"entryLocation"];
+  v3 = [entries valueForKey:@"entryLocation"];
   v4 = [NSPredicate predicateWithFormat:@"entryLocation IN %@", v3];
 
   return v4;
 }
 
-- (BICCoreDataPersistentStoring)initWithURL:(id)a3
+- (BICCoreDataPersistentStoring)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = BICCoreDataPersistentStoring;
   v6 = [(BICCoreDataPersistentStoring *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
     v8 = [BUCoalescingCallBlock alloc];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -81,19 +81,19 @@
   }
 }
 
-- (id)imageSetForIdentifier:(id)a3
+- (id)imageSetForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(BICCoreDataPersistentStoring *)self _commonInit];
   v5 = +[BICCoreDataPersistentStoring _imageSetFetchRequest];
   [v5 setIncludesPendingChanges:1];
   [v5 setReturnsObjectsAsFaults:0];
-  v6 = [BICCoreDataPersistentStoring _predicateForImageSetWithID:v4];
+  v6 = [BICCoreDataPersistentStoring _predicateForImageSetWithID:identifierCopy];
   [v5 setPredicate:v6];
 
-  v7 = [(BICCoreDataPersistentStoring *)self backgroundContext];
+  backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
   v14 = 0;
-  v8 = [v7 executeFetchRequest:v5 error:&v14];
+  v8 = [backgroundContext executeFetchRequest:v5 error:&v14];
   v9 = v14;
 
   if ([v8 count] >= 2)
@@ -127,73 +127,73 @@
   return v12;
 }
 
-- (id)addNewImageSetWithIdentifier:(id)a3
+- (id)addNewImageSetWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(BICCoreDataPersistentStoring *)self _commonInit];
   v5 = [BICImageSet alloc];
-  v6 = [(BICCoreDataPersistentStoring *)self backgroundContext];
-  v7 = [(BICImageSet *)v5 initWithContext:v6];
+  backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
+  v7 = [(BICImageSet *)v5 initWithContext:backgroundContext];
 
-  [(BICImageSet *)v7 setIdentifier:v4];
+  [(BICImageSet *)v7 setIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (id)addNewImageEntryToSet:(id)a3
+- (id)addNewImageEntryToSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   [(BICCoreDataPersistentStoring *)self _commonInit];
   v5 = [BICImageEntry alloc];
-  v6 = [(BICCoreDataPersistentStoring *)self backgroundContext];
-  v7 = [(BICImageEntry *)v5 initWithContext:v6];
+  backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
+  v7 = [(BICImageEntry *)v5 initWithContext:backgroundContext];
 
-  [(BICImageEntry *)v7 setImageSet:v4];
+  [(BICImageEntry *)v7 setImageSet:setCopy];
 
   return v7;
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(BICCoreDataPersistentStoring *)self _commonInit];
-  v5 = [(BICCoreDataPersistentStoring *)self backgroundContext];
-  [v5 performBlock:v4];
+  backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
+  [backgroundContext performBlock:blockCopy];
 }
 
-- (void)performBlockAndWait:(id)a3
+- (void)performBlockAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   [(BICCoreDataPersistentStoring *)self _commonInit];
-  v5 = [(BICCoreDataPersistentStoring *)self backgroundContext];
-  [v5 performBlockAndWait:v4];
+  backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
+  [backgroundContext performBlockAndWait:waitCopy];
 }
 
-- (void)deleteObject:(id)a3
+- (void)deleteObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(BICCoreDataPersistentStoring *)self _commonInit];
-  v5 = [(BICCoreDataPersistentStoring *)self backgroundContext];
-  [v5 deleteObject:v4];
+  backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
+  [backgroundContext deleteObject:objectCopy];
 }
 
 - (void)processPendingChanges
 {
   [(BICCoreDataPersistentStoring *)self _commonInit];
-  v3 = [(BICCoreDataPersistentStoring *)self backgroundContext];
-  [v3 processPendingChanges];
+  backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
+  [backgroundContext processPendingChanges];
 }
 
 - (void)saveIfNeeded
 {
   [(BICCoreDataPersistentStoring *)self _commonInit];
-  v3 = [(BICCoreDataPersistentStoring *)self backgroundContext];
-  v4 = [v3 hasChanges];
+  backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
+  hasChanges = [backgroundContext hasChanges];
 
-  if (v4)
+  if (hasChanges)
   {
-    v5 = [(BICCoreDataPersistentStoring *)self coalescingSaves];
-    [v5 signalWithCompletion:&stru_2CC9B0];
+    coalescingSaves = [(BICCoreDataPersistentStoring *)self coalescingSaves];
+    [coalescingSaves signalWithCompletion:&stru_2CC9B0];
   }
 }
 
@@ -207,9 +207,9 @@
   v4 = [NSPredicate predicateWithValue:1];
   [v3 setPredicate:v4];
 
-  v5 = [(BICCoreDataPersistentStoring *)self backgroundContext];
+  backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
   v10 = 0;
-  v6 = [v5 executeFetchRequest:v3 error:&v10];
+  v6 = [backgroundContext executeFetchRequest:v3 error:&v10];
   v7 = v10;
 
   if (v7)
@@ -224,20 +224,20 @@
   return v6;
 }
 
-- (id)fetchImageSetsWithIDs:(id)a3
+- (id)fetchImageSetsWithIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   [(BICCoreDataPersistentStoring *)self _commonInit];
   v5 = +[BICCoreDataPersistentStoring _imageSetFetchRequest];
   [v5 setIncludesPendingChanges:1];
   [v5 setReturnsObjectsAsFaults:0];
-  [v5 setFetchBatchSize:{32 * (objc_msgSend(v4, "count") > 0x40)}];
-  v6 = [BICCoreDataPersistentStoring _predicateForImageSetsWithIDs:v4];
+  [v5 setFetchBatchSize:{32 * (objc_msgSend(dsCopy, "count") > 0x40)}];
+  v6 = [BICCoreDataPersistentStoring _predicateForImageSetsWithIDs:dsCopy];
 
   [v5 setPredicate:v6];
-  v7 = [(BICCoreDataPersistentStoring *)self backgroundContext];
+  backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
   v12 = 0;
-  v8 = [v7 executeFetchRequest:v5 error:&v12];
+  v8 = [backgroundContext executeFetchRequest:v5 error:&v12];
   v9 = v12;
 
   if (v9)
@@ -252,41 +252,41 @@
   return v8;
 }
 
-- (id)fetchImageSetsWithDescribedImages:(id)a3
+- (id)fetchImageSetsWithDescribedImages:(id)images
 {
-  v4 = [a3 valueForKey:@"identifier"];
+  v4 = [images valueForKey:@"identifier"];
   v5 = [(BICCoreDataPersistentStoring *)self fetchImageSetsWithIDs:v4];
 
   return v5;
 }
 
-- (void)removeImageSets:(id)a3
+- (void)removeImageSets:(id)sets
 {
-  v4 = a3;
+  setsCopy = sets;
   [(BICCoreDataPersistentStoring *)self _commonInit];
-  v5 = [(BICCoreDataPersistentStoring *)self backgroundContext];
+  backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_C190C;
   v7[3] = &unk_2C7BE8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = setsCopy;
+  selfCopy = self;
+  v6 = setsCopy;
+  [backgroundContext performBlock:v7];
 }
 
-- (id)fetchToBeDeletedImageEntriesInLevelID:(signed __int16)a3
+- (id)fetchToBeDeletedImageEntriesInLevelID:(signed __int16)d
 {
-  v3 = a3;
+  dCopy = d;
   [(BICCoreDataPersistentStoring *)self _commonInit];
   v5 = +[BICCoreDataPersistentStoring _imageEntryFetchRequest];
   [v5 setIncludesPendingChanges:1];
-  v6 = [BICCoreDataPersistentStoring _predicateForToBeDeletedImageEntriesInLevelID:v3];
+  v6 = [BICCoreDataPersistentStoring _predicateForToBeDeletedImageEntriesInLevelID:dCopy];
   [v5 setPredicate:v6];
 
-  v7 = [(BICCoreDataPersistentStoring *)self backgroundContext];
+  backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
   v12 = 0;
-  v8 = [v7 executeFetchRequest:v5 error:&v12];
+  v8 = [backgroundContext executeFetchRequest:v5 error:&v12];
   v9 = v12;
 
   if (v9)
@@ -301,20 +301,20 @@
   return v8;
 }
 
-- (id)fetchImageEntriesMatchingAddedEntries:(id)a3
+- (id)fetchImageEntriesMatchingAddedEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   [(BICCoreDataPersistentStoring *)self _commonInit];
   v5 = +[BICCoreDataPersistentStoring _imageEntryFetchRequest];
   [v5 setIncludesPendingChanges:1];
   [v5 setReturnsObjectsAsFaults:0];
   [v5 setFetchBatchSize:32];
-  v6 = [BICCoreDataPersistentStoring _predicateForImageEntriesMatchingAddedEntries:v4];
+  v6 = [BICCoreDataPersistentStoring _predicateForImageEntriesMatchingAddedEntries:entriesCopy];
 
   [v5 setPredicate:v6];
-  v7 = [(BICCoreDataPersistentStoring *)self backgroundContext];
+  backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
   v12 = 0;
-  v8 = [v7 executeFetchRequest:v5 error:&v12];
+  v8 = [backgroundContext executeFetchRequest:v5 error:&v12];
   v9 = v12;
 
   if (v9)
@@ -329,19 +329,19 @@
   return v8;
 }
 
-- (id)fetchImageEntriesWithLocations:(id)a3
+- (id)fetchImageEntriesWithLocations:(id)locations
 {
-  v4 = a3;
+  locationsCopy = locations;
   [(BICCoreDataPersistentStoring *)self _commonInit];
   v5 = +[BICCoreDataPersistentStoring _imageEntryFetchRequest];
   [v5 setIncludesPendingChanges:1];
   [v5 setReturnsObjectsAsFaults:0];
-  v6 = [NSPredicate predicateWithFormat:@"entryLocation in %@", v4];
+  locationsCopy = [NSPredicate predicateWithFormat:@"entryLocation in %@", locationsCopy];
 
-  [v5 setPredicate:v6];
-  v7 = [(BICCoreDataPersistentStoring *)self backgroundContext];
+  [v5 setPredicate:locationsCopy];
+  backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
   v12 = 0;
-  v8 = [v7 executeFetchRequest:v5 error:&v12];
+  v8 = [backgroundContext executeFetchRequest:v5 error:&v12];
   v9 = v12;
 
   if (v9)
@@ -356,9 +356,9 @@
   return v8;
 }
 
-- (void)clean:(id)a3
+- (void)clean:(id)clean
 {
-  v4 = a3;
+  cleanCopy = clean;
   [(BICCoreDataPersistentStoring *)self _commonInit];
   v5 = [(BICCoreDataPersistentStoring *)self url];
 
@@ -370,10 +370,10 @@
     [v6 setPredicate:v7];
 
     v8 = [[NSBatchDeleteRequest alloc] initWithFetchRequest:v6];
-    v9 = [(BICCoreDataPersistentStoring *)self backgroundContext];
-    v10 = [v9 executeRequest:v8 error:0];
+    backgroundContext = [(BICCoreDataPersistentStoring *)self backgroundContext];
+    v10 = [backgroundContext executeRequest:v8 error:0];
 
-    v11 = objc_retainBlock(v4);
+    v11 = objc_retainBlock(cleanCopy);
     v12 = v11;
     if (v11)
     {
@@ -383,14 +383,14 @@
 
   else
   {
-    v13 = [(BICCoreDataPersistentStoring *)self backgroundContext];
+    backgroundContext2 = [(BICCoreDataPersistentStoring *)self backgroundContext];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_C1FA0;
     v14[3] = &unk_2C8488;
     v14[4] = self;
-    v15 = v4;
-    [v13 performBlock:v14];
+    v15 = cleanCopy;
+    [backgroundContext2 performBlock:v14];
   }
 }
 

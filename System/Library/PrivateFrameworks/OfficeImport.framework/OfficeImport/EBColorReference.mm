@@ -1,12 +1,12 @@
 @interface EBColorReference
-+ (id)edColorReferenceFromXlColorIndex:(unsigned int)a3 edResources:(id)a4;
++ (id)edColorReferenceFromXlColorIndex:(unsigned int)index edResources:(id)resources;
 @end
 
 @implementation EBColorReference
 
-+ (id)edColorReferenceFromXlColorIndex:(unsigned int)a3 edResources:(id)a4
++ (id)edColorReferenceFromXlColorIndex:(unsigned int)index edResources:(id)resources
 {
-  v4 = [EDColorReference colorReferenceWithColorIndex:a3 resources:a4];
+  v4 = [EDColorReference colorReferenceWithColorIndex:index resources:resources];
 
   return v4;
 }

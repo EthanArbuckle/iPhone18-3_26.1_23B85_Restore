@@ -1,18 +1,18 @@
 @interface LookAroundFloatingButtonsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateButtonsLabel;
 @end
 
 @implementation LookAroundFloatingButtonsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LookAroundFloatingButtonsViewController" hasInstanceMethod:@"setShowsMinimizedButton:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"LookAroundFloatingButtonsViewController" hasInstanceVariable:@"_alternateButton" withType:"UIButton"];
-  [v3 validateClass:@"LookAroundFloatingButtonsViewController" hasInstanceVariable:@"_menuButton" withType:"UIButton"];
-  [v3 validateClass:@"LookAroundFloatingButtonsViewController" hasInstanceVariable:@"_showsMinimizedButton" withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LookAroundFloatingButtonsViewController" hasInstanceMethod:@"setShowsMinimizedButton:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"LookAroundFloatingButtonsViewController" hasInstanceVariable:@"_alternateButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"LookAroundFloatingButtonsViewController" hasInstanceVariable:@"_menuButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"LookAroundFloatingButtonsViewController" hasInstanceVariable:@"_showsMinimizedButton" withType:"B"];
 }
 
 - (void)_axUpdateButtonsLabel

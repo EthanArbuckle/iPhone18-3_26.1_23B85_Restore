@@ -1,8 +1,8 @@
 @interface CNUIUserActionListModel
 + (id)emptyModel;
 - (BOOL)isEmpty;
-- (CNUIUserActionListModel)initWithDefaultAction:(id)a3 actions:(id)a4 directoryServiceActions:(id)a5 foundOnDeviceActions:(id)a6 hasDefaultApp:(BOOL)a7;
-- (CNUIUserActionListModel)initWithModel:(id)a3 actions:(id)a4;
+- (CNUIUserActionListModel)initWithDefaultAction:(id)action actions:(id)actions directoryServiceActions:(id)serviceActions foundOnDeviceActions:(id)deviceActions hasDefaultApp:(BOOL)app;
+- (CNUIUserActionListModel)initWithModel:(id)model actions:(id)actions;
 - (id)allActions;
 - (id)description;
 @end
@@ -23,32 +23,32 @@
 
 - (BOOL)isEmpty
 {
-  v3 = [(CNUIUserActionListModel *)self defaultAction];
+  defaultAction = [(CNUIUserActionListModel *)self defaultAction];
 
-  if (v3)
+  if (defaultAction)
   {
     return 0;
   }
 
   v4 = *MEMORY[0x1E6996530];
-  v5 = [(CNUIUserActionListModel *)self actions];
-  v6 = (*(v4 + 16))(v4, v5);
+  actions = [(CNUIUserActionListModel *)self actions];
+  v6 = (*(v4 + 16))(v4, actions);
 
   if (!v6)
   {
     return 0;
   }
 
-  v7 = [(CNUIUserActionListModel *)self directoryServiceActions];
-  v8 = (*(v4 + 16))(v4, v7);
+  directoryServiceActions = [(CNUIUserActionListModel *)self directoryServiceActions];
+  v8 = (*(v4 + 16))(v4, directoryServiceActions);
 
   if (!v8)
   {
     return 0;
   }
 
-  v9 = [(CNUIUserActionListModel *)self foundOnDeviceActions];
-  v10 = (*(v4 + 16))(v4, v9);
+  foundOnDeviceActions = [(CNUIUserActionListModel *)self foundOnDeviceActions];
+  v10 = (*(v4 + 16))(v4, foundOnDeviceActions);
 
   return v10;
 }
@@ -61,55 +61,55 @@ uint64_t __37__CNUIUserActionListModel_emptyModel__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (CNUIUserActionListModel)initWithDefaultAction:(id)a3 actions:(id)a4 directoryServiceActions:(id)a5 foundOnDeviceActions:(id)a6 hasDefaultApp:(BOOL)a7
+- (CNUIUserActionListModel)initWithDefaultAction:(id)action actions:(id)actions directoryServiceActions:(id)serviceActions foundOnDeviceActions:(id)deviceActions hasDefaultApp:(BOOL)app
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  actionCopy = action;
+  actionsCopy = actions;
+  serviceActionsCopy = serviceActions;
+  deviceActionsCopy = deviceActions;
   v21.receiver = self;
   v21.super_class = CNUIUserActionListModel;
   v17 = [(CNUIUserActionListModel *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_defaultAction, a3);
-    objc_storeStrong(&v18->_actions, a4);
-    objc_storeStrong(&v18->_directoryServiceActions, a5);
-    objc_storeStrong(&v18->_foundOnDeviceActions, a6);
-    v18->_hasDefaultApp = a7;
+    objc_storeStrong(&v17->_defaultAction, action);
+    objc_storeStrong(&v18->_actions, actions);
+    objc_storeStrong(&v18->_directoryServiceActions, serviceActions);
+    objc_storeStrong(&v18->_foundOnDeviceActions, deviceActions);
+    v18->_hasDefaultApp = app;
     v19 = v18;
   }
 
   return v18;
 }
 
-- (CNUIUserActionListModel)initWithModel:(id)a3 actions:(id)a4
+- (CNUIUserActionListModel)initWithModel:(id)model actions:(id)actions
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 defaultAction];
-  v9 = [v7 directoryServiceActions];
-  v10 = [v7 foundOnDeviceActions];
-  v11 = [v7 hasDefaultApp];
+  actionsCopy = actions;
+  modelCopy = model;
+  defaultAction = [modelCopy defaultAction];
+  directoryServiceActions = [modelCopy directoryServiceActions];
+  foundOnDeviceActions = [modelCopy foundOnDeviceActions];
+  hasDefaultApp = [modelCopy hasDefaultApp];
 
-  v12 = [(CNUIUserActionListModel *)self initWithDefaultAction:v8 actions:v6 directoryServiceActions:v9 foundOnDeviceActions:v10 hasDefaultApp:v11];
+  v12 = [(CNUIUserActionListModel *)self initWithDefaultAction:defaultAction actions:actionsCopy directoryServiceActions:directoryServiceActions foundOnDeviceActions:foundOnDeviceActions hasDefaultApp:hasDefaultApp];
   return v12;
 }
 
 - (id)allActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CNUIUserActionListModel *)self actions];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  actions = [(CNUIUserActionListModel *)self actions];
+  [array addObjectsFromArray:actions];
 
-  v5 = [(CNUIUserActionListModel *)self directoryServiceActions];
-  [v3 addObjectsFromArray:v5];
+  directoryServiceActions = [(CNUIUserActionListModel *)self directoryServiceActions];
+  [array addObjectsFromArray:directoryServiceActions];
 
-  v6 = [(CNUIUserActionListModel *)self foundOnDeviceActions];
-  [v3 addObjectsFromArray:v6];
+  foundOnDeviceActions = [(CNUIUserActionListModel *)self foundOnDeviceActions];
+  [array addObjectsFromArray:foundOnDeviceActions];
 
-  v7 = [v3 copy];
+  v7 = [array copy];
 
   return v7;
 }
@@ -117,18 +117,18 @@ uint64_t __37__CNUIUserActionListModel_emptyModel__block_invoke()
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNUIUserActionListModel *)self defaultAction];
-  v5 = __38__CNUIUserActionListModel_description__block_invoke(v4, v4);
+  defaultAction = [(CNUIUserActionListModel *)self defaultAction];
+  v5 = __38__CNUIUserActionListModel_description__block_invoke(defaultAction, defaultAction);
   v6 = [v3 appendName:@"default" object:v5];
 
-  v7 = [(CNUIUserActionListModel *)self actions];
-  v8 = [v7 _cn_map:&__block_literal_global_4_1];
+  actions = [(CNUIUserActionListModel *)self actions];
+  v8 = [actions _cn_map:&__block_literal_global_4_1];
   v9 = [v8 componentsJoinedByString:{@", "}];
   v10 = [v3 appendName:@"actions" object:v9];
 
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
 id __38__CNUIUserActionListModel_description__block_invoke(uint64_t a1, void *a2)

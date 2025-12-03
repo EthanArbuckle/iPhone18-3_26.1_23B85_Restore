@@ -1,53 +1,53 @@
 @interface TUISmartGridOverlapWithOffsetsLayoutManager
-+ (void)configureContentLayout:(id)a3 configuration:(id)a4;
-+ (void)configureScrollLayout:(id)a3 configuration:(id)a4;
++ (void)configureContentLayout:(id)layout configuration:(id)configuration;
++ (void)configureScrollLayout:(id)layout configuration:(id)configuration;
 - (CGSize)contentLayoutSize;
 - (CGSize)layoutSize;
-- (CGSize)scrollLayoutSizeWithSize:(CGSize)a3;
-- (TUISmartGridOverlapWithOffsetsLayoutManager)initWithContent:(id)a3;
-- (void)layoutContent:(id)a3;
+- (CGSize)scrollLayoutSizeWithSize:(CGSize)size;
+- (TUISmartGridOverlapWithOffsetsLayoutManager)initWithContent:(id)content;
+- (void)layoutContent:(id)content;
 @end
 
 @implementation TUISmartGridOverlapWithOffsetsLayoutManager
 
-- (TUISmartGridOverlapWithOffsetsLayoutManager)initWithContent:(id)a3
+- (TUISmartGridOverlapWithOffsetsLayoutManager)initWithContent:(id)content
 {
-  v5 = a3;
+  contentCopy = content;
   v9.receiver = self;
   v9.super_class = TUISmartGridOverlapWithOffsetsLayoutManager;
   v6 = [(TUISmartGridOverlapWithOffsetsLayoutManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_content, a3);
+    objc_storeStrong(&v6->_content, content);
   }
 
   return v7;
 }
 
-+ (void)configureScrollLayout:(id)a3 configuration:(id)a4
++ (void)configureScrollLayout:(id)layout configuration:(id)configuration
 {
-  v6 = a3;
-  v5 = a4;
-  [v5 width];
-  [v6 setContainingWidth:?];
-  [v6 setContainingHeight:NAN];
+  layoutCopy = layout;
+  configurationCopy = configuration;
+  [configurationCopy width];
+  [layoutCopy setContainingWidth:?];
+  [layoutCopy setContainingHeight:NAN];
 }
 
-+ (void)configureContentLayout:(id)a3 configuration:(id)a4
++ (void)configureContentLayout:(id)layout configuration:(id)configuration
 {
-  v6 = a3;
-  v5 = a4;
-  [v5 width];
-  [v6 setContainingWidth:?];
+  layoutCopy = layout;
+  configurationCopy = configuration;
+  [configurationCopy width];
+  [layoutCopy setContainingWidth:?];
 }
 
-- (void)layoutContent:(id)a3
+- (void)layoutContent:(id)content
 {
-  v4 = a3;
-  v117 = [v4 computedLayoutDirection];
-  v5 = [v4 children];
-  sub_63EE4(&v119, v5, self->_content, 0);
+  contentCopy = content;
+  computedLayoutDirection = [contentCopy computedLayoutDirection];
+  children = [contentCopy children];
+  sub_63EE4(&v119, children, self->_content, 0);
 
   v6 = v119;
   if (v119 == v120)
@@ -75,14 +75,14 @@
   v14 = v13;
   [(TUISmartGridLayoutConfiguration *)self->_configuration width];
   v16 = v15;
-  v17 = [(TUISmartGridLayoutConfiguration *)self->_configuration additionalConfiguration];
+  additionalConfiguration = [(TUISmartGridLayoutConfiguration *)self->_configuration additionalConfiguration];
   v18 = objc_opt_class();
-  v19 = [v17 objectForKeyedSubscript:@"offsets"];
+  v19 = [additionalConfiguration objectForKeyedSubscript:@"offsets"];
   v20 = TUIDynamicCast(v18, v19);
 
   v21 = objc_opt_class();
-  v22 = [(TUISmartGridLayoutConfiguration *)self->_configuration widthSnap];
-  v23 = [v22 identifierForValue:v16];
+  widthSnap = [(TUISmartGridLayoutConfiguration *)self->_configuration widthSnap];
+  v23 = [widthSnap identifierForValue:v16];
   v24 = TUIDynamicCast(v21, v23);
 
   if (v24)
@@ -98,15 +98,15 @@
   }
 
   v27 = objc_opt_class();
-  v28 = [v17 objectForKeyedSubscript:@"minHOffset"];
+  v28 = [additionalConfiguration objectForKeyedSubscript:@"minHOffset"];
   v29 = TUIDynamicCast(v27, v28);
 
   v30 = objc_opt_class();
-  v31 = [v17 objectForKeyedSubscript:@"maxHOffset"];
+  v31 = [additionalConfiguration objectForKeyedSubscript:@"maxHOffset"];
   v32 = TUIDynamicCast(v30, v31);
 
-  v33 = [(TUISmartGridLayoutConfiguration *)self->_configuration columnWidth];
-  v35 = TUILengthValueWithDefault(v33, v34, 120.0);
+  columnWidth = [(TUISmartGridLayoutConfiguration *)self->_configuration columnWidth];
+  v35 = TUILengthValueWithDefault(columnWidth, v34, 120.0);
   v111 = [v118 count];
   v109 = v32;
   if (v29 && v32)
@@ -167,7 +167,7 @@
   v47 = v39 - (v35 + v44 * v46);
   v48 = v12 + v47 * 0.5;
   v49 = v16 - v14 - v47 * 0.5;
-  if (v117 == &dword_0 + 2)
+  if (computedLayoutDirection == &dword_0 + 2)
   {
     v50 = v49;
   }
@@ -178,7 +178,7 @@
   }
 
   v51 = objc_opt_class();
-  v52 = [v17 objectForKeyedSubscript:@"minVerticalCutoff"];
+  v52 = [additionalConfiguration objectForKeyedSubscript:@"minVerticalCutoff"];
   v53 = TUIDynamicCast(v51, v52);
 
   if (v53)
@@ -192,18 +192,18 @@
     v55 = 12.0;
   }
 
-  v56 = [(TUISmartGridLayoutConfiguration *)self->_configuration specifiedHeight];
+  specifiedHeight = [(TUISmartGridLayoutConfiguration *)self->_configuration specifiedHeight];
   v57 = v119;
   v58 = 0x2E8BA2E8BA2E8BA3 * (v120 - v119);
-  v108 = v4;
+  v108 = contentCopy;
   v106 = v24;
   v107 = v20;
-  v105 = self;
+  selfCopy = self;
   v104 = v16;
   v112 = v59;
   if (v120 == v119)
   {
-    v62 = v56;
+    v62 = specifiedHeight;
     v60 = 0;
   }
 
@@ -217,14 +217,14 @@
       v61 += 11;
       if (v58 == v60)
       {
-        v62 = v56;
+        v62 = specifiedHeight;
         v63 = 0.0;
         v64 = v116;
         goto LABEL_52;
       }
     }
 
-    v62 = v56;
+    v62 = specifiedHeight;
   }
 
   v63 = 0.0;
@@ -311,7 +311,7 @@ LABEL_52:
     v80 = 0;
     v110 = v55 + v73;
     v81 = -v46;
-    if (v117 != &dword_0 + 2)
+    if (computedLayoutDirection != &dword_0 + 2)
     {
       v81 = v46;
     }
@@ -325,8 +325,8 @@ LABEL_52:
       if (v118)
       {
         v84 = objc_opt_class();
-        v85 = [v118 objectAtIndexedSubscript:v79 % v111];
-        v86 = TUIDynamicCast(v84, v85);
+        v111 = [v118 objectAtIndexedSubscript:v79 % v111];
+        v86 = TUIDynamicCast(v84, v111);
 
         [v86 doubleValue];
         v88 = v87;
@@ -342,7 +342,7 @@ LABEL_52:
         v88 = v110 - v83;
       }
 
-      if (v117 == &dword_0 + 2)
+      if (computedLayoutDirection == &dword_0 + 2)
       {
         v89 = v50 - v35;
       }
@@ -436,9 +436,9 @@ LABEL_52:
   }
 
 LABEL_89:
-  v105->_contentLayoutSize.width = v104;
-  v105->_contentLayoutSize.height = v115 + v74;
-  v105->_layoutSize = v105->_contentLayoutSize;
+  selfCopy->_contentLayoutSize.width = v104;
+  selfCopy->_contentLayoutSize.height = v115 + v74;
+  selfCopy->_layoutSize = selfCopy->_contentLayoutSize;
 
   if (__p)
   {
@@ -464,7 +464,7 @@ LABEL_89:
   sub_63C64(v128);
 }
 
-- (CGSize)scrollLayoutSizeWithSize:(CGSize)a3
+- (CGSize)scrollLayoutSizeWithSize:(CGSize)size
 {
   width = self->_layoutSize.width;
   height = self->_layoutSize.height;

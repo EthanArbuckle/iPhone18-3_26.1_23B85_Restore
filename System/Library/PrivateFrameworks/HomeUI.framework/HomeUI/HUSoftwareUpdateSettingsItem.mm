@@ -1,29 +1,29 @@
 @interface HUSoftwareUpdateSettingsItem
-+ (id)footerTitleForHome:(id)a3;
++ (id)footerTitleForHome:(id)home;
 - (BOOL)_shouldShowSoftwareUpdateIcon;
-- (HUSoftwareUpdateSettingsItem)initWithHome:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUSoftwareUpdateSettingsItem)initWithHome:(id)home;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)description;
 @end
 
 @implementation HUSoftwareUpdateSettingsItem
 
-- (HUSoftwareUpdateSettingsItem)initWithHome:(id)a3
+- (HUSoftwareUpdateSettingsItem)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v9.receiver = self;
   v9.super_class = HUSoftwareUpdateSettingsItem;
   v6 = [(HUSoftwareUpdateSettingsItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
   }
 
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_opt_new();
   v5 = _HULocalizedStringWithDefaultValue(@"HUEditLocationSoftwareUpdateTitle", @"HUEditLocationSoftwareUpdateTitle", 1);
@@ -41,26 +41,26 @@
   }
 
   v10 = objc_alloc(MEMORY[0x277D14B28]);
-  v11 = [(HUSoftwareUpdateSettingsItem *)self home];
-  v12 = [v11 accessories];
-  v13 = [v10 initWithAccessories:v12];
+  home = [(HUSoftwareUpdateSettingsItem *)self home];
+  accessories = [home accessories];
+  v13 = [v10 initWithAccessories:accessories];
 
-  v14 = [(HUSoftwareUpdateSettingsItem *)self home];
-  v15 = [v14 hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate];
+  home2 = [(HUSoftwareUpdateSettingsItem *)self home];
+  hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate = [home2 hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate];
 
-  v16 = [(HUSoftwareUpdateSettingsItem *)self home];
-  v17 = [v16 hf_hasThirdPartyAccessoriesSupportingSoftwareUpdate];
+  home3 = [(HUSoftwareUpdateSettingsItem *)self home];
+  hf_hasThirdPartyAccessoriesSupportingSoftwareUpdate = [home3 hf_hasThirdPartyAccessoriesSupportingSoftwareUpdate];
 
   v18 = MEMORY[0x277D13E20];
-  if (v15 && v17)
+  if (hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate && hf_hasThirdPartyAccessoriesSupportingSoftwareUpdate)
   {
-    v19 = [(HUSoftwareUpdateSettingsItem *)self home];
-    if ([v19 isAutomaticSoftwareUpdateEnabled])
+    home4 = [(HUSoftwareUpdateSettingsItem *)self home];
+    if ([home4 isAutomaticSoftwareUpdateEnabled])
     {
-      v20 = [(HUSoftwareUpdateSettingsItem *)self home];
-      v21 = [v20 hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
+      home5 = [(HUSoftwareUpdateSettingsItem *)self home];
+      hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled = [home5 hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
 
-      if (v21)
+      if (hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled)
       {
         goto LABEL_23;
       }
@@ -70,20 +70,20 @@
     {
     }
 
-    v22 = [(HUSoftwareUpdateSettingsItem *)self home];
-    v23 = [v22 isAutomaticSoftwareUpdateEnabled];
+    home6 = [(HUSoftwareUpdateSettingsItem *)self home];
+    isAutomaticSoftwareUpdateEnabled = [home6 isAutomaticSoftwareUpdateEnabled];
 
-    if (v23)
+    if (isAutomaticSoftwareUpdateEnabled)
     {
       v24 = @"HUSoftwareUpdateAutomaticSetting_FirstParty";
     }
 
     else
     {
-      v25 = [(HUSoftwareUpdateSettingsItem *)self home];
-      v26 = [v25 hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
+      home7 = [(HUSoftwareUpdateSettingsItem *)self home];
+      hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled2 = [home7 hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
 
-      if ((v26 & 1) == 0)
+      if ((hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled2 & 1) == 0)
       {
         goto LABEL_26;
       }
@@ -94,16 +94,16 @@
     goto LABEL_24;
   }
 
-  if (v15)
+  if (hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate)
   {
-    v16 = [(HUSoftwareUpdateSettingsItem *)self home];
-    if ([v16 isAutomaticSoftwareUpdateEnabled])
+    home3 = [(HUSoftwareUpdateSettingsItem *)self home];
+    if ([home3 isAutomaticSoftwareUpdateEnabled])
     {
 
       goto LABEL_23;
     }
 
-    if ((v17 & 1) == 0)
+    if ((hf_hasThirdPartyAccessoriesSupportingSoftwareUpdate & 1) == 0)
     {
 LABEL_25:
 
@@ -111,17 +111,17 @@ LABEL_25:
     }
   }
 
-  else if (!v17)
+  else if (!hf_hasThirdPartyAccessoriesSupportingSoftwareUpdate)
   {
     goto LABEL_26;
   }
 
-  v27 = [(HUSoftwareUpdateSettingsItem *)self home];
-  v28 = [v27 hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
+  home8 = [(HUSoftwareUpdateSettingsItem *)self home];
+  hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled3 = [home8 hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
 
-  if (!v15)
+  if (!hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate)
   {
-    if (!v28)
+    if (!hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled3)
     {
       goto LABEL_26;
     }
@@ -129,13 +129,13 @@ LABEL_25:
     goto LABEL_23;
   }
 
-  if (v28)
+  if (hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled3)
   {
 LABEL_23:
     v24 = @"HUSoftwareUpdateAutomaticSetting_All";
 LABEL_24:
-    v16 = _HULocalizedStringWithDefaultValue(v24, v24, 1);
-    [v4 setObject:v16 forKeyedSubscript:*v18];
+    home3 = _HULocalizedStringWithDefaultValue(v24, v24, 1);
+    [v4 setObject:home3 forKeyedSubscript:*v18];
     goto LABEL_25;
   }
 
@@ -148,8 +148,8 @@ LABEL_26:
     if ([v13 updatesReadyToInstall])
     {
       [v4 setObject:&unk_282492240 forKeyedSubscript:v6];
-      v31 = [v13 updatesReadyToInstall];
-      v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v31];
+      updatesReadyToInstall = [v13 updatesReadyToInstall];
+      v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:updatesReadyToInstall];
       [v4 setObject:v32 forKeyedSubscript:*MEMORY[0x277D13DD0]];
 
       [v4 setObject:0 forKeyedSubscript:v29];
@@ -169,8 +169,8 @@ LABEL_26:
   [v4 setObject:v37 forKeyedSubscript:*MEMORY[0x277D13DA0]];
 
   v38 = MEMORY[0x277CBEB98];
-  v39 = [(HUSoftwareUpdateSettingsItem *)self home];
-  v40 = [v38 setWithObject:v39];
+  home9 = [(HUSoftwareUpdateSettingsItem *)self home];
+  v40 = [v38 setWithObject:home9];
   [v4 setObject:v40 forKeyedSubscript:*MEMORY[0x277D13DA8]];
 
   v41 = MEMORY[0x277CBEC38];
@@ -178,10 +178,10 @@ LABEL_26:
   [v4 setObject:v41 forKeyedSubscript:*MEMORY[0x277D13F18]];
   if (![v13 allUpdates])
   {
-    v42 = [(HUSoftwareUpdateSettingsItem *)self home];
-    v43 = [v42 hf_shouldShowSoftwareUpdateSettings];
+    home10 = [(HUSoftwareUpdateSettingsItem *)self home];
+    hf_shouldShowSoftwareUpdateSettings = [home10 hf_shouldShowSoftwareUpdateSettings];
 
-    if ((v43 & 1) == 0)
+    if ((hf_shouldShowSoftwareUpdateSettings & 1) == 0)
     {
       [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D13FB8]];
     }
@@ -194,29 +194,29 @@ LABEL_26:
   return v46;
 }
 
-+ (id)footerTitleForHome:(id)a3
++ (id)footerTitleForHome:(id)home
 {
-  v3 = a3;
-  v4 = [v3 hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate];
-  v5 = [v3 hf_hasThirdPartyAccessoriesSupportingSoftwareUpdate];
-  if (v4 && v5)
+  homeCopy = home;
+  hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate = [homeCopy hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate];
+  hf_hasThirdPartyAccessoriesSupportingSoftwareUpdate = [homeCopy hf_hasThirdPartyAccessoriesSupportingSoftwareUpdate];
+  if (hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate && hf_hasThirdPartyAccessoriesSupportingSoftwareUpdate)
   {
-    if ([v3 isAutomaticSoftwareUpdateEnabled] && objc_msgSend(v3, "hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled"))
+    if ([homeCopy isAutomaticSoftwareUpdateEnabled] && objc_msgSend(homeCopy, "hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled"))
     {
       v6 = @"HUSoftwareUpdateAutomaticSetting_All_Footer";
       goto LABEL_21;
     }
 
-    if ([v3 isAutomaticSoftwareUpdateEnabled])
+    if ([homeCopy isAutomaticSoftwareUpdateEnabled])
     {
       v7 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateAutomaticSetting_FirstParty_On_Footer", @"HUSoftwareUpdateAutomaticSetting_FirstParty_On_Footer", 1);
     }
 
     else
     {
-      v8 = [v3 hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
+      hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled = [homeCopy hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
       v7 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateAutomaticSetting_FirstParty_Off_Footer", @"HUSoftwareUpdateAutomaticSetting_FirstParty_Off_Footer", 1);
-      if (v8)
+      if (hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled)
       {
         v9 = @"HUSoftwareUpdateAutomaticSetting_ThirdParty_On_Footer";
 LABEL_17:
@@ -231,9 +231,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (v4)
+  if (hf_hasFirstPartyAccessoriesSupportingSoftwareUpdate)
   {
-    if ([v3 isAutomaticSoftwareUpdateEnabled])
+    if ([homeCopy isAutomaticSoftwareUpdateEnabled])
     {
       v6 = @"HUSoftwareUpdateAutomaticSetting_FirstParty_On_Footer";
     }
@@ -246,13 +246,13 @@ LABEL_17:
 
   else
   {
-    if (!v5)
+    if (!hf_hasThirdPartyAccessoriesSupportingSoftwareUpdate)
     {
       v16 = 0;
       goto LABEL_22;
     }
 
-    if ([v3 hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled])
+    if ([homeCopy hf_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled])
     {
       v6 = @"HUSoftwareUpdateAutomaticSetting_ThirdParty_On_Footer";
     }
@@ -273,34 +273,34 @@ LABEL_22:
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HUSoftwareUpdateSettingsItem *)self latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
+  latestResults = [(HUSoftwareUpdateSettingsItem *)self latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
   v6 = [v3 appendBool:objc_msgSend(v5 withName:"BOOLValue") ifEqualTo:{@"hidden", 1}];
 
-  v7 = [(HUSoftwareUpdateSettingsItem *)self latestResults];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  latestResults2 = [(HUSoftwareUpdateSettingsItem *)self latestResults];
+  v8 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
   [v3 appendString:v8 withName:@"title"];
 
-  v9 = [(HUSoftwareUpdateSettingsItem *)self latestResults];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+  latestResults3 = [(HUSoftwareUpdateSettingsItem *)self latestResults];
+  v10 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
   [v3 appendString:v10 withName:@"description" skipIfEmpty:1];
 
-  v11 = [(HUSoftwareUpdateSettingsItem *)self latestResults];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D13DD0]];
+  latestResults4 = [(HUSoftwareUpdateSettingsItem *)self latestResults];
+  v12 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D13DD0]];
   v13 = [v3 appendObject:v12 withName:@"badgeCount" skipIfNil:1];
 
-  v14 = [v3 build];
+  build = [v3 build];
 
-  return v14;
+  return build;
 }
 
 - (BOOL)_shouldShowSoftwareUpdateIcon
 {
-  v2 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v3 = [v2 homeManager];
-  v4 = [v3 hasOptedToHH2];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  hasOptedToHH2 = [homeManager hasOptedToHH2];
 
-  return v4 ^ 1;
+  return hasOptedToHH2 ^ 1;
 }
 
 @end

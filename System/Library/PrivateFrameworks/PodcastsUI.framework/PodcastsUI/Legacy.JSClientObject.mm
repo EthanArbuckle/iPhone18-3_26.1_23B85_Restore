@@ -6,8 +6,8 @@
 - (NSString)storefrontIdentifier;
 - (_TtCO10PodcastsUI6Legacy14JSClientObject)init;
 - (id)analyticsIdentifiers;
-- (id)getDefaultForKeyName:(id)a3;
-- (void)setDefaultForKeyName:(id)a3 :(id)a4;
+- (id)getDefaultForKeyName:(id)name;
+- (void)setDefaultForKeyName:(id)name :(id)a4;
 @end
 
 @implementation Legacy.JSClientObject
@@ -38,24 +38,24 @@
 
 - (NSString)guid
 {
-  v2 = [objc_opt_self() deviceGUID];
-  if (!v2)
+  deviceGUID = [objc_opt_self() deviceGUID];
+  if (!deviceGUID)
   {
     sub_21B4C9708();
     v3 = sub_21B4C96C8();
 
-    v2 = v3;
+    deviceGUID = v3;
   }
 
-  return v2;
+  return deviceGUID;
 }
 
 - (NSString)storefrontIdentifier
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtCO10PodcastsUI6Legacy14JSClientObject_accountStore);
-  v3 = self;
-  v4 = [v2 ams_activeiTunesAccount];
-  if (v4 && (v5 = v4, v6 = [v4 ams_storefront], v5, v6))
+  selfCopy = self;
+  ams_activeiTunesAccount = [v2 ams_activeiTunesAccount];
+  if (ams_activeiTunesAccount && (v5 = ams_activeiTunesAccount, v6 = [ams_activeiTunesAccount ams_storefront], v5, v6))
   {
     sub_21B4C9708();
 
@@ -81,29 +81,29 @@
   return v2;
 }
 
-- (id)getDefaultForKeyName:(id)a3
+- (id)getDefaultForKeyName:(id)name
 {
   v4 = objc_opt_self();
-  v5 = a3;
-  v6 = [v4 _applePodcastsFoundationSharedUserDefaults];
-  v7 = [v6 stringForKey_];
+  nameCopy = name;
+  _applePodcastsFoundationSharedUserDefaults = [v4 _applePodcastsFoundationSharedUserDefaults];
+  stringForKey_ = [_applePodcastsFoundationSharedUserDefaults stringForKey_];
 
-  if (v7)
+  if (stringForKey_)
   {
     sub_21B4C9708();
 
-    v7 = sub_21B4C96C8();
+    stringForKey_ = sub_21B4C96C8();
   }
 
-  return v7;
+  return stringForKey_;
 }
 
-- (void)setDefaultForKeyName:(id)a3 :(id)a4
+- (void)setDefaultForKeyName:(id)name :(id)a4
 {
   v5 = sub_21B4C9708();
   v7 = v6;
   sub_21B4C9708();
-  v8 = self;
+  selfCopy = self;
   sub_21B46348C(v5, v7);
 }
 

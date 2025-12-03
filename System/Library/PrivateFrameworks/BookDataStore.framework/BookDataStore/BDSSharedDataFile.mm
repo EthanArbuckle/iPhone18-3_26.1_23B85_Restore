@@ -1,28 +1,28 @@
 @interface BDSSharedDataFile
-- (BDSSharedDataFile)initWithURL:(id)a3;
-- (BOOL)remove:(id *)a3;
-- (BOOL)save:(id)a3 error:(id *)a4;
-- (id)load:(id *)a3;
+- (BDSSharedDataFile)initWithURL:(id)l;
+- (BOOL)remove:(id *)remove;
+- (BOOL)save:(id)save error:(id *)error;
+- (id)load:(id *)load;
 @end
 
 @implementation BDSSharedDataFile
 
-- (BDSSharedDataFile)initWithURL:(id)a3
+- (BDSSharedDataFile)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = BDSSharedDataFile;
   v6 = [(BDSSharedDataFile *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_url, a3);
+    objc_storeStrong(&v6->_url, l);
   }
 
   return v7;
 }
 
-- (id)load:(id *)a3
+- (id)load:(id *)load
 {
   v13 = 0;
   v14 = &v13;
@@ -41,10 +41,10 @@
   [v5 coordinateReadingItemAtURL:v6 options:0 error:&v12 byAccessor:v11];
   v7 = v12;
 
-  if (a3 && v7)
+  if (load && v7)
   {
     v8 = v7;
-    *a3 = v7;
+    *load = v7;
   }
 
   v9 = v14[5];
@@ -54,9 +54,9 @@
   return v9;
 }
 
-- (BOOL)save:(id)a3 error:(id *)a4
+- (BOOL)save:(id)save error:(id *)error
 {
-  v6 = a3;
+  saveCopy = save;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -76,18 +76,18 @@
   v14[2] = sub_1E4629714;
   v14[3] = &unk_1E875AB40;
   v16 = &v25;
-  v10 = v6;
+  v10 = saveCopy;
   v15 = v10;
   v17 = &v19;
   [v7 coordinateWritingItemAtURL:v8 options:0 error:&obj byAccessor:v14];
   objc_storeStrong(v9, obj);
 
-  if (a4)
+  if (error)
   {
     v11 = v20[5];
     if (v11)
     {
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -99,7 +99,7 @@
   return v12;
 }
 
-- (BOOL)remove:(id *)a3
+- (BOOL)remove:(id *)remove
 {
   v20 = 0;
   v21 = &v20;
@@ -125,12 +125,12 @@
   [v5 coordinateWritingItemAtURL:v6 options:1 error:&obj byAccessor:v12];
   objc_storeStrong(v8, obj);
 
-  if (a3)
+  if (remove)
   {
     v9 = v15[5];
     if (v9)
     {
-      *a3 = v9;
+      *remove = v9;
     }
   }
 

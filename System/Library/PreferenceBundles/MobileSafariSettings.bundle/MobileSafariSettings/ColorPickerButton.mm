@@ -1,10 +1,10 @@
 @interface ColorPickerButton
 - (CGSize)intrinsicContentSize;
 - (ColorPickerButton)init;
-- (id)_imageForColor:(id)a3 selected:(BOOL)a4;
+- (id)_imageForColor:(id)color selected:(BOOL)selected;
 - (void)_updateButtonImage;
-- (void)setColor:(id)a3;
-- (void)setIsOverflowColorsButton:(BOOL)a3;
+- (void)setColor:(id)color;
+- (void)setIsOverflowColorsButton:(BOOL)button;
 - (void)tintColorDidChange;
 @end
 
@@ -18,8 +18,8 @@
   if (v2)
   {
     v3 = +[UIColor secondaryLabelColor];
-    v4 = [(ColorPickerButton *)v2 imageView];
-    [v4 setTintColor:v3];
+    imageView = [(ColorPickerButton *)v2 imageView];
+    [imageView setTintColor:v3];
 
     v5 = v2;
   }
@@ -27,15 +27,15 @@
   return v2;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
-  if (self->_color != v5)
+  colorCopy = color;
+  if (self->_color != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_color, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_color, color);
     [(ColorPickerButton *)self _updateButtonImage];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -59,9 +59,9 @@
   }
 }
 
-- (id)_imageForColor:(id)a3 selected:(BOOL)a4
+- (id)_imageForColor:(id)color selected:(BOOL)selected
 {
-  v6 = a3;
+  colorCopy = color;
   v7 = [UIGraphicsImageRenderer alloc];
   v8 = +[UIGraphicsImageRendererFormat defaultFormat];
   v9 = [v7 initWithBounds:v8 format:{0.0, 0.0, 50.0, 50.0}];
@@ -70,11 +70,11 @@
   v13[1] = 3221225472;
   v13[2] = __45__ColorPickerButton__imageForColor_selected___block_invoke;
   v13[3] = &unk_89628;
-  v14 = v6;
-  v15 = self;
-  v17 = a4;
+  v14 = colorCopy;
+  selfCopy = self;
+  selectedCopy = selected;
   v16 = 0x4047800000000000;
-  v10 = v6;
+  v10 = colorCopy;
   v11 = [v9 imageWithActions:v13];
 
   return v11;
@@ -112,10 +112,10 @@ void __45__ColorPickerButton__imageForColor_selected___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setIsOverflowColorsButton:(BOOL)a3
+- (void)setIsOverflowColorsButton:(BOOL)button
 {
-  self->_isOverflowColorsButton = a3;
-  if (a3)
+  self->_isOverflowColorsButton = button;
+  if (button)
   {
     v4 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleTitle2 scale:2];
     [(ColorPickerButton *)self setPreferredSymbolConfiguration:v4 forImageInState:0];

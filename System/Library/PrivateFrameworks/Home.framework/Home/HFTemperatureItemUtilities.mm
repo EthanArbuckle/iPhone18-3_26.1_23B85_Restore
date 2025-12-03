@@ -1,36 +1,36 @@
 @interface HFTemperatureItemUtilities
-+ (id)currentHeatingCoolingModeValueInResponse:(id)a3;
-+ (id)integerTemperatureRangeWithinNumberRange:(id)a3 representsCelsius:(BOOL)a4;
-+ (id)targetHeatingCoolingModeValueInResponse:(id)a3;
-+ (id)targetTemperatureValueInResponse:(id)a3;
-+ (int64_t)_heatingCoolingValueForCurrentHeaterCoolerState:(int64_t)a3 isActive:(BOOL)a4;
-+ (int64_t)_heatingCoolingValueForTargetHeaterCoolerState:(int64_t)a3 isActive:(BOOL)a4;
++ (id)currentHeatingCoolingModeValueInResponse:(id)response;
++ (id)integerTemperatureRangeWithinNumberRange:(id)range representsCelsius:(BOOL)celsius;
++ (id)targetHeatingCoolingModeValueInResponse:(id)response;
++ (id)targetTemperatureValueInResponse:(id)response;
++ (int64_t)_heatingCoolingValueForCurrentHeaterCoolerState:(int64_t)state isActive:(BOOL)active;
++ (int64_t)_heatingCoolingValueForTargetHeaterCoolerState:(int64_t)state isActive:(BOOL)active;
 @end
 
 @implementation HFTemperatureItemUtilities
 
-+ (id)currentHeatingCoolingModeValueInResponse:(id)a3
++ (id)currentHeatingCoolingModeValueInResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 responseForCharacteristicType:*MEMORY[0x277CCF818]];
+  responseCopy = response;
+  v5 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF818]];
   v6 = [v5 valueWithExpectedClass:objc_opt_class()];
 
   if (!v6)
   {
-    v7 = [v4 responseForCharacteristicType:*MEMORY[0x277CCF810]];
-    v8 = [v7 characteristic];
-    v9 = [v8 service];
+    v7 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF810]];
+    characteristic = [v7 characteristic];
+    service = [characteristic service];
 
-    if (v9)
+    if (service)
     {
       v10 = [v7 valueWithExpectedClass:objc_opt_class()];
-      v11 = [v4 responseForCharacteristicType:*MEMORY[0x277CCF748] inService:v9];
+      v11 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF748] inService:service];
       v12 = [v11 valueWithExpectedClass:objc_opt_class()];
 
       v6 = 0;
       if (v10 && v12)
       {
-        v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "_heatingCoolingValueForCurrentHeaterCoolerState:isActive:", objc_msgSend(v10, "integerValue"), objc_msgSend(v12, "BOOLValue"))}];
+        v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "_heatingCoolingValueForCurrentHeaterCoolerState:isActive:", objc_msgSend(v10, "integerValue"), objc_msgSend(v12, "BOOLValue"))}];
       }
     }
 
@@ -43,39 +43,39 @@
   return v6;
 }
 
-+ (int64_t)_heatingCoolingValueForTargetHeaterCoolerState:(int64_t)a3 isActive:(BOOL)a4
++ (int64_t)_heatingCoolingValueForTargetHeaterCoolerState:(int64_t)state isActive:(BOOL)active
 {
   result = 0;
-  if (a3 <= 2 && a4)
+  if (state <= 2 && active)
   {
-    return qword_20DD97680[a3];
+    return qword_20DD97680[state];
   }
 
   return result;
 }
 
-+ (id)targetHeatingCoolingModeValueInResponse:(id)a3
++ (id)targetHeatingCoolingModeValueInResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 responseForCharacteristicType:*MEMORY[0x277CCFB20]];
+  responseCopy = response;
+  v5 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFB20]];
   v6 = [v5 valueWithExpectedClass:objc_opt_class()];
 
   if (!v6)
   {
-    v7 = [v4 responseForCharacteristicType:*MEMORY[0x277CCFB18]];
-    v8 = [v7 characteristic];
-    v9 = [v8 service];
+    v7 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFB18]];
+    characteristic = [v7 characteristic];
+    service = [characteristic service];
 
-    if (v9)
+    if (service)
     {
       v10 = [v7 valueWithExpectedClass:objc_opt_class()];
-      v11 = [v4 responseForCharacteristicType:*MEMORY[0x277CCF748] inService:v9];
+      v11 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF748] inService:service];
       v12 = [v11 valueWithExpectedClass:objc_opt_class()];
 
       v6 = 0;
       if (v10 && v12)
       {
-        v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(a1, "_heatingCoolingValueForTargetHeaterCoolerState:isActive:", objc_msgSend(v10, "integerValue"), objc_msgSend(v12, "BOOLValue"))}];
+        v6 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(self, "_heatingCoolingValueForTargetHeaterCoolerState:isActive:", objc_msgSend(v10, "integerValue"), objc_msgSend(v12, "BOOLValue"))}];
       }
     }
 
@@ -88,35 +88,35 @@
   return v6;
 }
 
-+ (id)targetTemperatureValueInResponse:(id)a3
++ (id)targetTemperatureValueInResponse:(id)response
 {
-  v4 = a3;
-  v5 = [a1 currentHeatingCoolingModeValueInResponse:v4];
-  v6 = [a1 targetHeatingCoolingModeValueInResponse:v4];
+  responseCopy = response;
+  v5 = [self currentHeatingCoolingModeValueInResponse:responseCopy];
+  v6 = [self targetHeatingCoolingModeValueInResponse:responseCopy];
   v7 = v6;
   v8 = 0;
   if (v5 && v6)
   {
     v9 = +[HFTargetRangeUtilities rangeModeForHeatingCoolingMode:](HFTargetRangeUtilities, "rangeModeForHeatingCoolingMode:", [v5 integerValue]);
     v10 = +[HFTargetRangeUtilities rangeModeForHeatingCoolingMode:](HFTargetRangeUtilities, "rangeModeForHeatingCoolingMode:", [v7 integerValue]);
-    v11 = [v4 responseForCharacteristicType:*MEMORY[0x277CCF8C8]];
-    v12 = [v4 responseForCharacteristicType:*MEMORY[0x277CCF7F0]];
-    v13 = [v4 responseForCharacteristicType:*MEMORY[0x277CCFB68]];
+    v11 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF8C8]];
+    v12 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCF7F0]];
+    v13 = [responseCopy responseForCharacteristicType:*MEMORY[0x277CCFB68]];
     v8 = [HFTargetRangeUtilities targetValueWithTargetMode:v10 currentMode:v9 rawTargetResponse:v13 minimumThresholdResponse:v11 maximumThresholdResponse:v12];
   }
 
   return v8;
 }
 
-+ (int64_t)_heatingCoolingValueForCurrentHeaterCoolerState:(int64_t)a3 isActive:(BOOL)a4
++ (int64_t)_heatingCoolingValueForCurrentHeaterCoolerState:(int64_t)state isActive:(BOOL)active
 {
-  v4 = a3 == 2;
-  if (a3 == 3)
+  v4 = state == 2;
+  if (state == 3)
   {
     v4 = 2;
   }
 
-  if (a4)
+  if (active)
   {
     return v4;
   }
@@ -127,19 +127,19 @@
   }
 }
 
-+ (id)integerTemperatureRangeWithinNumberRange:(id)a3 representsCelsius:(BOOL)a4
++ (id)integerTemperatureRangeWithinNumberRange:(id)range representsCelsius:(BOOL)celsius
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 minValue];
-  [v6 doubleValue];
-  if (v4)
+  celsiusCopy = celsius;
+  rangeCopy = range;
+  minValue = [rangeCopy minValue];
+  [minValue doubleValue];
+  if (celsiusCopy)
   {
     v8 = ceil(v7);
 
-    v9 = [v5 maxValue];
+    maxValue = [rangeCopy maxValue];
 
-    [v9 doubleValue];
+    [maxValue doubleValue];
     v11 = floor(v10);
   }
 
@@ -148,9 +148,9 @@
     v12 = ceil(v7 * 9.0 / 5.0 + 32.0);
 
     v8 = (v12 + -32.0) * 5.0 / 9.0;
-    v13 = [v5 maxValue];
+    maxValue2 = [rangeCopy maxValue];
 
-    [v13 doubleValue];
+    [maxValue2 doubleValue];
     v15 = floor(v14 * 9.0 / 5.0 + 32.0);
 
     v11 = (v15 + -32.0) * 5.0 / 9.0;

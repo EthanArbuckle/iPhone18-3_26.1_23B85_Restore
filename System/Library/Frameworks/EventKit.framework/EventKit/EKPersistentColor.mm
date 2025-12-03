@@ -1,7 +1,7 @@
 @interface EKPersistentColor
 + (id)defaultPropertiesToLoad;
 + (id)relations;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation EKPersistentColor
@@ -60,23 +60,23 @@ void __30__EKPersistentColor_relations__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(EKPersistentColor);
-  v5 = [(EKPersistentColor *)self data];
-  [(EKPersistentColor *)v4 setData:v5];
+  data = [(EKPersistentColor *)self data];
+  [(EKPersistentColor *)v4 setData:data];
 
-  v6 = [(EKPersistentColor *)self UUID];
-  [(EKPersistentColor *)v4 setUUID:v6];
+  uUID = [(EKPersistentColor *)self UUID];
+  [(EKPersistentColor *)v4 setUUID:uUID];
 
-  v7 = [(EKPersistentColor *)self providerIdentifier];
-  [(EKPersistentColor *)v4 setProviderIdentifier:v7];
+  providerIdentifier = [(EKPersistentColor *)self providerIdentifier];
+  [(EKPersistentColor *)v4 setProviderIdentifier:providerIdentifier];
 
-  v8 = [(EKPersistentColor *)self externalID];
-  [(EKPersistentColor *)v4 setExternalID:v8];
+  externalID = [(EKPersistentColor *)self externalID];
+  [(EKPersistentColor *)v4 setExternalID:externalID];
 
-  v9 = [(EKPersistentColor *)self source];
-  [(EKPersistentColor *)v4 setSource:v9];
+  source = [(EKPersistentColor *)self source];
+  [(EKPersistentColor *)v4 setSource:source];
 
   return v4;
 }

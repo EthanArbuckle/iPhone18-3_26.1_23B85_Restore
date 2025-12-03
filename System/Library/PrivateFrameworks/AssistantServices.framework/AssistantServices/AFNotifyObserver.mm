@@ -1,11 +1,11 @@
 @interface AFNotifyObserver
-- (AFNotifyObserver)initWithName:(id)a3 options:(unint64_t)a4 queue:(id)a5 delegate:(id)a6;
+- (AFNotifyObserver)initWithName:(id)name options:(unint64_t)options queue:(id)queue delegate:(id)delegate;
 - (NSString)description;
 - (unint64_t)state;
 - (void)_invalidate;
-- (void)_updateStateWithToken:(int)a3;
+- (void)_updateStateWithToken:(int)token;
 - (void)dealloc;
-- (void)getStateWithCompletion:(id)a3;
+- (void)getStateWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
@@ -47,10 +47,10 @@
   objc_storeWeak(&self->_delegate, 0);
 }
 
-- (void)_updateStateWithToken:(int)a3
+- (void)_updateStateWithToken:(int)token
 {
   state64 = 0;
-  if (a3 != -1 && !notify_get_state(a3, &state64) || (registrationToken = self->_registrationToken, registrationToken != -1) && !notify_get_state(registrationToken, &state64))
+  if (token != -1 && !notify_get_state(token, &state64) || (registrationToken = self->_registrationToken, registrationToken != -1) && !notify_get_state(registrationToken, &state64))
   {
     state = self->_state;
     v6 = state64;
@@ -77,11 +77,11 @@
   dispatch_async(queue, block);
 }
 
-- (void)getStateWithCompletion:(id)a3
+- (void)getStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     if (self->_options)
     {
@@ -91,13 +91,13 @@
       v7[2] = __43__AFNotifyObserver_getStateWithCompletion___block_invoke;
       v7[3] = &unk_1E7349838;
       v7[4] = self;
-      v8 = v4;
+      v8 = completionCopy;
       dispatch_async(queue, v7);
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -110,15 +110,15 @@
   [(AFNotifyObserver *)&v3 dealloc];
 }
 
-- (AFNotifyObserver)initWithName:(id)a3 options:(unint64_t)a4 queue:(id)a5 delegate:(id)a6
+- (AFNotifyObserver)initWithName:(id)name options:(unint64_t)options queue:(id)queue delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  nameCopy = name;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  if (!nameCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"AFNotifyObserver.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AFNotifyObserver.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"name != nil"}];
   }
 
   v28.receiver = self;
@@ -126,13 +126,13 @@
   v14 = [(AFNotifyObserver *)&v28 init];
   if (v14)
   {
-    v15 = [v11 copy];
+    v15 = [nameCopy copy];
     name = v14->_name;
     v14->_name = v15;
 
-    v14->_options = a4;
-    objc_storeStrong(&v14->_queue, a5);
-    v17 = objc_storeWeak(&v14->_delegate, v13);
+    v14->_options = options;
+    objc_storeStrong(&v14->_queue, queue);
+    v17 = objc_storeWeak(&v14->_delegate, delegateCopy);
     *&v14->_flags = *&v14->_flags & 0xFE | objc_opt_respondsToSelector() & 1;
 
     WeakRetained = objc_loadWeakRetained(&v14->_delegate);
@@ -154,10 +154,10 @@
     block[1] = 3221225472;
     block[2] = __56__AFNotifyObserver_initWithName_options_queue_delegate___block_invoke;
     block[3] = &unk_1E7347068;
-    v24 = v11;
+    v24 = nameCopy;
     v25 = v14;
     objc_copyWeak(v26, &location);
-    v26[1] = a4;
+    v26[1] = options;
     dispatch_async(queue, block);
     objc_destroyWeak(v26);
 

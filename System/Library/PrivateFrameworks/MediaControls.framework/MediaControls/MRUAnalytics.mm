@@ -1,14 +1,14 @@
 @interface MRUAnalytics
-+ (void)sendEvent:(id)a3 withError:(id)a4 payload:(id)a5;
++ (void)sendEvent:(id)event withError:(id)error payload:(id)payload;
 @end
 
 @implementation MRUAnalytics
 
-+ (void)sendEvent:(id)a3 withError:(id)a4 payload:(id)a5
++ (void)sendEvent:(id)event withError:(id)error payload:(id)payload
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  eventCopy = event;
+  errorCopy = error;
+  payloadCopy = payload;
   if (sendEvent_withError_payload__once != -1)
   {
     +[MRUAnalytics sendEvent:withError:payload:];
@@ -18,19 +18,19 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __44__MRUAnalytics_sendEvent_withError_payload___block_invoke_2;
   aBlock[3] = &unk_1E7664778;
-  v20 = v8;
-  v21 = v9;
-  v10 = v8;
-  v11 = v9;
+  v20 = errorCopy;
+  v21 = payloadCopy;
+  v10 = errorCopy;
+  v11 = payloadCopy;
   v12 = _Block_copy(aBlock);
   v13 = sendEvent_withError_payload____analyticsQueue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __44__MRUAnalytics_sendEvent_withError_payload___block_invoke_3;
   v16[3] = &unk_1E7663FD8;
-  v17 = v7;
+  v17 = eventCopy;
   v18 = v12;
-  v14 = v7;
+  v14 = eventCopy;
   v15 = v12;
   dispatch_async(v13, v16);
 }

@@ -1,9 +1,9 @@
 @interface BannerBaseViewController
 - (NSString)requestIdentifier;
 - (NSString)requesterIdentifier;
-- (_TtC13MediaRemoteUI24BannerBaseViewController)initWithCoder:(id)a3;
-- (_TtC13MediaRemoteUI24BannerBaseViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)presentableDidAppearAsBanner:(id)a3;
+- (_TtC13MediaRemoteUI24BannerBaseViewController)initWithCoder:(id)coder;
+- (_TtC13MediaRemoteUI24BannerBaseViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)presentableDidAppearAsBanner:(id)banner;
 - (void)viewDidLoad;
 @end
 
@@ -20,18 +20,18 @@
 - (NSString)requestIdentifier
 {
   v2 = *(self + OBJC_IVAR____TtC13MediaRemoteUI24BannerBaseViewController_configuration);
-  v3 = self;
-  v4 = [v2 requestIdentifier];
-  if (!v4)
+  selfCopy = self;
+  requestIdentifier = [v2 requestIdentifier];
+  if (!requestIdentifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v4 = String._bridgeToObjectiveC()();
+    requestIdentifier = String._bridgeToObjectiveC()();
   }
 
-  return v4;
+  return requestIdentifier;
 }
 
-- (_TtC13MediaRemoteUI24BannerBaseViewController)initWithCoder:(id)a3
+- (_TtC13MediaRemoteUI24BannerBaseViewController)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR____TtC13MediaRemoteUI24BannerBaseViewController_delegate + 8) = 0;
   swift_unknownObjectWeakInit();
@@ -50,19 +50,19 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000297F0();
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_100029C84();
   swift_unknownObjectRelease();
 }
 
-- (_TtC13MediaRemoteUI24BannerBaseViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13MediaRemoteUI24BannerBaseViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

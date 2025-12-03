@@ -3,25 +3,25 @@
 - (BOOL)requiresInexpensiveNetworkConnectivity;
 - (BOOL)requiresNetworkConnectivity;
 - (BOOL)requiresSignificantUserInactivity;
-- (CKXPCActivity)initWithActivity:(id)a3;
+- (CKXPCActivity)initWithActivity:(id)activity;
 - (double)interval;
 - (int64_t)priority;
-- (void)_handleActivityUpdate:(id)a3;
+- (void)_handleActivityUpdate:(id)update;
 - (void)dealloc;
 @end
 
 @implementation CKXPCActivity
 
-- (CKXPCActivity)initWithActivity:(id)a3
+- (CKXPCActivity)initWithActivity:(id)activity
 {
-  v5 = a3;
-  if (!xpc_activity_get_state(v5))
+  activityCopy = activity;
+  if (!xpc_activity_get_state(activityCopy))
   {
     v21 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v6, v7);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v21, v22, a2, self, @"CKBackgroundTask.m", 452, @"Invalid activity state");
   }
 
-  v8 = v5;
+  v8 = activityCopy;
   objc_opt_self();
   v9 = xpc_activity_copy_identifier();
 
@@ -65,11 +65,11 @@
   [(CKBackgroundTask *)&v4 dealloc];
 }
 
-- (void)_handleActivityUpdate:(id)a3
+- (void)_handleActivityUpdate:(id)update
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  state = xpc_activity_get_state(v4);
+  updateCopy = update;
+  state = xpc_activity_get_state(updateCopy);
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -103,7 +103,7 @@
     }
 
 LABEL_11:
-    if (xpc_activity_should_defer(v4))
+    if (xpc_activity_should_defer(updateCopy))
     {
       sub_188645E6C(self);
     }

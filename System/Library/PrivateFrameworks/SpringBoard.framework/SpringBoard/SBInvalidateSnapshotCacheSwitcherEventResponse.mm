@@ -1,19 +1,19 @@
 @interface SBInvalidateSnapshotCacheSwitcherEventResponse
-- (SBInvalidateSnapshotCacheSwitcherEventResponse)initWithDisplayItems:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBInvalidateSnapshotCacheSwitcherEventResponse)initWithDisplayItems:(id)items;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBInvalidateSnapshotCacheSwitcherEventResponse
 
-- (SBInvalidateSnapshotCacheSwitcherEventResponse)initWithDisplayItems:(id)a3
+- (SBInvalidateSnapshotCacheSwitcherEventResponse)initWithDisplayItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = SBInvalidateSnapshotCacheSwitcherEventResponse;
   v5 = [(SBChainableModifierEventResponse *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemsCopy copy];
     displayItems = v5->_displayItems;
     v5->_displayItems = v6;
   }
@@ -21,11 +21,11 @@
   return v5;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v8.receiver = self;
   v8.super_class = SBInvalidateSnapshotCacheSwitcherEventResponse;
-  v4 = [(SBChainableModifierEventResponse *)&v8 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBChainableModifierEventResponse *)&v8 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = v4;
   displayItems = self->_displayItems;
   if (displayItems)

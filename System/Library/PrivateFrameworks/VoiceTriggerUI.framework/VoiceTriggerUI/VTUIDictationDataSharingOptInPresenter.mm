@@ -16,12 +16,12 @@
 {
   v3 = [[VTUISiriDataSharingOptInViewController alloc] initWithViewStyle:2];
   v4 = +[MGWrapper sharedMGWrapper];
-  v5 = [v4 isGMDevice];
+  isGMDevice = [v4 isGMDevice];
 
   v6 = +[MGWrapper sharedMGWrapper];
-  v7 = [v6 isDeviceIPad];
+  isDeviceIPad = [v6 isDeviceIPad];
 
-  if (v5)
+  if (isGMDevice)
   {
     v8 = @"DATA_SHARING_DETAIL_IPAD_GM";
   }
@@ -31,9 +31,9 @@
     v8 = @"DATA_SHARING_DETAIL_IPAD";
   }
 
-  if ((v7 & 1) == 0)
+  if ((isDeviceIPad & 1) == 0)
   {
-    if (v5)
+    if (isGMDevice)
     {
       v9 = @"DATA_SHARING_DETAIL_IPHONE_GM";
     }
@@ -44,9 +44,9 @@
     }
 
     v10 = +[MGWrapper sharedMGWrapper];
-    v11 = [v10 isDeviceVision];
+    isDeviceVision = [v10 isDeviceVision];
 
-    if (v11)
+    if (isDeviceVision)
     {
       v8 = @"DATA_SHARING_DETAIL_VISION";
     }
@@ -57,45 +57,45 @@
     }
   }
 
-  v12 = [(VTUISiriDataSharingOptInViewController *)v3 headerView];
+  headerView = [(VTUISiriDataSharingOptInViewController *)v3 headerView];
   v13 = +[VTUIStringsHelper sharedStringsHelper];
   v14 = [v13 uiLocalizedStringForKey:v8];
-  [v12 setDetailText:v14];
+  [headerView setDetailText:v14];
 
-  v15 = [MEMORY[0x277D37638] accessoryButton];
+  accessoryButton = [MEMORY[0x277D37638] accessoryButton];
   v16 = +[VTUIStringsHelper sharedStringsHelper];
   v17 = [v16 uiLocalizedStringForKey:@"DATA_SHARING_DETAIL_LINK"];
-  [v15 setTitle:v17 forState:0];
+  [accessoryButton setTitle:v17 forState:0];
 
-  [v15 addTarget:self action:sel__userTappedDetailLinkText forControlEvents:64];
-  v18 = [(VTUISiriDataSharingOptInViewController *)v3 headerView];
-  [v18 addAccessoryButton:v15];
+  [accessoryButton addTarget:self action:sel__userTappedDetailLinkText forControlEvents:64];
+  headerView2 = [(VTUISiriDataSharingOptInViewController *)v3 headerView];
+  [headerView2 addAccessoryButton:accessoryButton];
 
-  v19 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   v20 = +[VTUIStringsHelper sharedStringsHelper];
   v21 = [v20 uiLocalizedStringForKey:@"DATA_SHARING_CONFIRMATION_BUTTON_TITLE"];
-  [v19 setTitle:v21 forState:0];
+  [boldButton setTitle:v21 forState:0];
 
-  [v19 addTarget:self action:sel__optInButtonTapped forControlEvents:64];
-  v22 = [(VTUISiriDataSharingOptInViewController *)v3 buttonTray];
-  [v22 addButton:v19];
+  [boldButton addTarget:self action:sel__optInButtonTapped forControlEvents:64];
+  buttonTray = [(VTUISiriDataSharingOptInViewController *)v3 buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v23 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   v24 = +[VTUIStringsHelper sharedStringsHelper];
   v25 = [v24 uiLocalizedStringForKey:@"DATA_SHARING_DECLINE_BUTTON_TITLE"];
-  [v23 setTitle:v25 forState:0];
+  [linkButton setTitle:v25 forState:0];
 
-  [v23 addTarget:self action:sel__optOutButtonTapped forControlEvents:64];
-  v26 = [(VTUISiriDataSharingOptInViewController *)v3 buttonTray];
-  [v26 addButton:v23];
+  [linkButton addTarget:self action:sel__optOutButtonTapped forControlEvents:64];
+  buttonTray2 = [(VTUISiriDataSharingOptInViewController *)v3 buttonTray];
+  [buttonTray2 addButton:linkButton];
 
   currentWelcomeController = self->_currentWelcomeController;
   self->_currentWelcomeController = &v3->super;
   v28 = v3;
 
-  v29 = [(VTUISiriDataSharingOptInViewController *)v28 view];
+  view = [(VTUISiriDataSharingOptInViewController *)v28 view];
 
-  return v29;
+  return view;
 }
 
 - (id)dataSharingOptInAlertController
@@ -255,20 +255,20 @@ void __73__VTUIDictationDataSharingOptInPresenter_dataSharingOptInAlertControlle
 
 - (void)_optInButtonTapped
 {
-  v3 = [(VTUIDictationDataSharingOptInPresenter *)self presentationDelegate];
-  [v3 optInButtonPressedForPresenter:self];
+  presentationDelegate = [(VTUIDictationDataSharingOptInPresenter *)self presentationDelegate];
+  [presentationDelegate optInButtonPressedForPresenter:self];
 }
 
 - (void)_learnMoreButtonTapped
 {
-  v3 = [(VTUIDictationDataSharingOptInPresenter *)self presentationDelegate];
-  [v3 learnMoreButtonPressedForPresenter:self];
+  presentationDelegate = [(VTUIDictationDataSharingOptInPresenter *)self presentationDelegate];
+  [presentationDelegate learnMoreButtonPressedForPresenter:self];
 }
 
 - (void)_optOutButtonTapped
 {
-  v3 = [(VTUIDictationDataSharingOptInPresenter *)self presentationDelegate];
-  [v3 optOutButtonPressedForPresenter:self];
+  presentationDelegate = [(VTUIDictationDataSharingOptInPresenter *)self presentationDelegate];
+  [presentationDelegate optOutButtonPressedForPresenter:self];
 }
 
 - (VTUIDictationDataSharingOptInPresentationDelegate)presentationDelegate

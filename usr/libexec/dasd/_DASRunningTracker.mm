@@ -1,20 +1,20 @@
 @interface _DASRunningTracker
 - (double)remainingRuntime;
 - (id)description;
-- (id)initRuntimeTrackerWithMaximumRuntime:(double)a3;
-- (void)updateCurrentRuntimeWithActivity:(id)a3;
+- (id)initRuntimeTrackerWithMaximumRuntime:(double)runtime;
+- (void)updateCurrentRuntimeWithActivity:(id)activity;
 @end
 
 @implementation _DASRunningTracker
 
-- (id)initRuntimeTrackerWithMaximumRuntime:(double)a3
+- (id)initRuntimeTrackerWithMaximumRuntime:(double)runtime
 {
   v5.receiver = self;
   v5.super_class = _DASRunningTracker;
   result = [(_DASRunningTracker *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = runtime;
     *(result + 3) = 0;
     *(result + 4) = 0;
     *(result + 2) = 0;
@@ -34,14 +34,14 @@
   return result;
 }
 
-- (void)updateCurrentRuntimeWithActivity:(id)a3
+- (void)updateCurrentRuntimeWithActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 startDate];
-  if (v5)
+  activityCopy = activity;
+  startDate = [activityCopy startDate];
+  if (startDate)
   {
-    v6 = [v4 endTime];
-    if (!v6)
+    endTime = [activityCopy endTime];
+    if (!endTime)
     {
       v7 = [_DASDaemonLogger logForCategory:@"runtimeTracker"];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -49,17 +49,17 @@
         sub_100122B74();
       }
 
-      v6 = +[NSDate now];
+      endTime = +[NSDate now];
     }
 
-    [v6 timeIntervalSinceDate:v5];
+    [endTime timeIntervalSinceDate:startDate];
     self->_currentRuntime = v8 + self->_currentRuntime;
   }
 
   else
   {
-    v6 = [_DASDaemonLogger logForCategory:@"runtimeTracker"];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    endTime = [_DASDaemonLogger logForCategory:@"runtimeTracker"];
+    if (os_log_type_enabled(endTime, OS_LOG_TYPE_ERROR))
     {
       sub_100122BDC();
     }

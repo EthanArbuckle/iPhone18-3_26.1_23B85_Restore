@@ -1,30 +1,30 @@
 @interface TVFilterOptionsCell
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation TVFilterOptionsCell
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20B8EA1AC(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  sub_20B8EA1AC(contextCopy, coordinatorCopy);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   if (_UISolariumEnabled())
   {
-    v3 = *(&v2->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI21TVFloatingContentCell_floatingView);
-    [(TVFilterOptionsCell *)v2 bounds];
+    v3 = *(&selfCopy->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI21TVFloatingContentCell_floatingView);
+    [(TVFilterOptionsCell *)selfCopy bounds];
     [v3 setCornerRadius_];
   }
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for TVFilterOptionsCell();
   [(TVFloatingContentCell *)&v4 layoutSubviews];
 }
@@ -37,13 +37,13 @@
   v6 = type metadata accessor for TVFilterOptionsCell();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(TVFocusableCollectionViewCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI19TVFilterOptionsCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v5, v7 + v9);
+  sub_20B5E267C(v5, selfCopy + v9);
   swift_endAccess();
 }
 

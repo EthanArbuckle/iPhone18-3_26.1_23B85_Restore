@@ -1,24 +1,24 @@
 @interface _CDPSimpleModelParameterManager
-- (_CDPSimpleModelParameterManager)initWithSettings:(id)a3;
-- (id)accountIdentifierForSettings:(id)a3;
-- (void)getLambda:(float *)a3 w0:(float *)a4 threshold:(float *)a5;
+- (_CDPSimpleModelParameterManager)initWithSettings:(id)settings;
+- (id)accountIdentifierForSettings:(id)settings;
+- (void)getLambda:(float *)lambda w0:(float *)w0 threshold:(float *)threshold;
 - (void)loadAccountState;
-- (void)modelTuner:(id)a3 heartBeatWithlambda:(float)a4 w0:(float)a5 threshold:(float)a6 score:(float)a7 progress:(float)a8;
+- (void)modelTuner:(id)tuner heartBeatWithlambda:(float)withlambda w0:(float)w0 threshold:(float)threshold score:(float)score progress:(float)progress;
 - (void)saveAccountState;
 @end
 
 @implementation _CDPSimpleModelParameterManager
 
-- (_CDPSimpleModelParameterManager)initWithSettings:(id)a3
+- (_CDPSimpleModelParameterManager)initWithSettings:(id)settings
 {
   v10.receiver = self;
   v10.super_class = _CDPSimpleModelParameterManager;
-  v3 = a3;
+  settingsCopy = settings;
   v4 = [(_CDPSimpleModelParameterManager *)&v10 init];
-  v5 = [v3 constrainAccounts];
+  constrainAccounts = [settingsCopy constrainAccounts];
 
-  v6 = [v5 allObjects];
-  v7 = [v6 componentsJoinedByString:{@", "}];
+  allObjects = [constrainAccounts allObjects];
+  v7 = [allObjects componentsJoinedByString:{@", "}];
   accountStateKey = v4->_accountStateKey;
   v4->_accountStateKey = v7;
 
@@ -26,32 +26,32 @@
   return v4;
 }
 
-- (id)accountIdentifierForSettings:(id)a3
+- (id)accountIdentifierForSettings:(id)settings
 {
-  v3 = [a3 constrainAccounts];
-  v4 = [v3 allObjects];
-  v5 = [v4 componentsJoinedByString:{@", "}];
+  constrainAccounts = [settings constrainAccounts];
+  allObjects = [constrainAccounts allObjects];
+  v5 = [allObjects componentsJoinedByString:{@", "}];
 
   return v5;
 }
 
-- (void)modelTuner:(id)a3 heartBeatWithlambda:(float)a4 w0:(float)a5 threshold:(float)a6 score:(float)a7 progress:(float)a8
+- (void)modelTuner:(id)tuner heartBeatWithlambda:(float)withlambda w0:(float)w0 threshold:(float)threshold score:(float)score progress:(float)progress
 {
   v47 = *MEMORY[0x1E69E9840];
-  v14 = a3;
+  tunerCopy = tuner;
   v15 = [_CDPSimpleModelParameterManagerTuningValue alloc];
-  *&v16 = a4;
-  *&v17 = a5;
-  *&v18 = a6;
-  *&v19 = a7;
+  *&v16 = withlambda;
+  *&v17 = w0;
+  *&v18 = threshold;
+  *&v19 = score;
   v20 = [(_CDPSimpleModelParameterManagerTuningValue *)v15 initWithLambda:v16 w0:v17 threshold:v18 score:v19];
-  v21 = [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState tuningValues];
-  [v21 addObject:v20];
+  tuningValues = [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState tuningValues];
+  [tuningValues addObject:v20];
 
   [(_CDPSimpleModelParameterManagerTuningValue *)v20 score];
   v23 = v22;
-  v24 = [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState previousBestTuningValue];
-  [v24 score];
+  previousBestTuningValue = [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState previousBestTuningValue];
+  [previousBestTuningValue score];
   v26 = v25;
 
   if (v23 > v26)
@@ -59,18 +59,18 @@
     [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState setPreviousBestTuningValue:v20];
   }
 
-  v27 = [v14 currentState];
-  v28 = [v27 copy];
+  currentState = [tunerCopy currentState];
+  v28 = [currentState copy];
   [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState setLastTuningState:v28];
 
-  if (a8 == 1.0)
+  if (progress == 1.0)
   {
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v29 = [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState tuningValues];
-    v30 = [v29 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    tuningValues2 = [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState tuningValues];
+    v30 = [tuningValues2 countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v30)
     {
       v31 = v30;
@@ -83,7 +83,7 @@
         {
           if (*v43 != v33)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(tuningValues2);
           }
 
           v36 = *(*(&v42 + 1) + 8 * i);
@@ -98,7 +98,7 @@
           }
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v42 objects:v46 count:16];
+        v31 = [tuningValues2 countByEnumeratingWithState:&v42 objects:v46 count:16];
       }
 
       while (v31);
@@ -109,8 +109,8 @@
       v32 = 0;
     }
 
-    v40 = [MEMORY[0x1E695DF70] array];
-    [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState setTuningValues:v40];
+    array = [MEMORY[0x1E695DF70] array];
+    [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState setTuningValues:array];
 
     [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState setPreviousBestTuningValue:v32];
     [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState setLastTuningState:0];
@@ -119,25 +119,25 @@
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getLambda:(float *)a3 w0:(float *)a4 threshold:(float *)a5
+- (void)getLambda:(float *)lambda w0:(float *)w0 threshold:(float *)threshold
 {
-  v9 = [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState previousBestTuningValue];
-  [v9 lambda];
-  *a3 = v10;
+  previousBestTuningValue = [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState previousBestTuningValue];
+  [previousBestTuningValue lambda];
+  *lambda = v10;
 
-  v11 = [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState previousBestTuningValue];
-  [v11 w0];
-  *a4 = v12;
+  previousBestTuningValue2 = [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState previousBestTuningValue];
+  [previousBestTuningValue2 w0];
+  *w0 = v12;
 
-  v14 = [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState previousBestTuningValue];
-  [v14 threshold];
-  *a5 = v13;
+  previousBestTuningValue3 = [(_CDPSimpleModelParameterManagerAccountState *)self->_accountState previousBestTuningValue];
+  [previousBestTuningValue3 threshold];
+  *threshold = v13;
 }
 
 - (void)loadAccountState
 {
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if (self->_accountStateKey && ([v8 objectForKey:?], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if (self->_accountStateKey && ([standardUserDefaults objectForKey:?], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v4 = v3;
     v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:0];
@@ -158,9 +158,9 @@
   if (self->_accountStateKey && self->_accountState)
   {
     v3 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:?];
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v4 setObject:v3 forKey:self->_accountStateKey];
-    [v4 synchronize];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults setObject:v3 forKey:self->_accountStateKey];
+    [standardUserDefaults synchronize];
     v5 = +[_CDLogging instrumentationChannel];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {

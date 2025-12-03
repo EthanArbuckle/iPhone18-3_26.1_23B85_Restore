@@ -1,17 +1,17 @@
 @interface UISceneLayerTargetFactory
-+ (id)targetForContextID:(unsigned int)a3;
-+ (id)targetForUIWindow:(id)a3;
++ (id)targetForContextID:(unsigned int)d;
++ (id)targetForUIWindow:(id)window;
 @end
 
 @implementation UISceneLayerTargetFactory
 
-+ (id)targetForContextID:(unsigned int)a3
++ (id)targetForContextID:(unsigned int)d
 {
-  v3 = *&a3;
-  if (!a3)
+  v3 = *&d;
+  if (!d)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"UISceneLayerTarget.m" lineNumber:18 description:@"ContextID cannot be 0."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISceneLayerTarget.m" lineNumber:18 description:@"ContextID cannot be 0."];
   }
 
   v4 = [_UISceneLayerTargetWithContext alloc];
@@ -26,13 +26,13 @@
   return v6;
 }
 
-+ (id)targetForUIWindow:(id)a3
++ (id)targetForUIWindow:(id)window
 {
-  v5 = a3;
-  if (!v5)
+  windowCopy = window;
+  if (!windowCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"UISceneLayerTarget.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"window"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UISceneLayerTarget.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"window"}];
   }
 
   v6 = [_UISceneLayerTargetWithContext alloc];
@@ -40,8 +40,8 @@
   v11[1] = 3221225472;
   v11[2] = __47__UISceneLayerTargetFactory_targetForUIWindow___block_invoke;
   v11[3] = &unk_1E710A168;
-  v12 = v5;
-  v7 = v5;
+  v12 = windowCopy;
+  v7 = windowCopy;
   v8 = [(_UISceneLayerTargetWithContext *)v6 initWithContext:v7 equalityType:0 matchingBlock:v11];
 
   return v8;

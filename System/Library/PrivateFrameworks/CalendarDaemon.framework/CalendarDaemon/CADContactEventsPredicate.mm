@@ -1,32 +1,32 @@
 @interface CADContactEventsPredicate
-- (BOOL)_isCandidate:(void *)a3 allowAllDayEvent:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (CADContactEventsPredicate)initWithCalendarIDs:(id)a3 startDate:(id)a4 endDate:(id)a5 contacts:(id)a6;
-- (CADContactEventsPredicate)initWithCoder:(id)a3;
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3;
+- (BOOL)_isCandidate:(void *)candidate allowAllDayEvent:(BOOL)event;
+- (BOOL)isEqual:(id)equal;
+- (CADContactEventsPredicate)initWithCalendarIDs:(id)ds startDate:(id)date endDate:(id)endDate contacts:(id)contacts;
+- (CADContactEventsPredicate)initWithCoder:(id)coder;
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database;
 - (id)predicateFormat;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADContactEventsPredicate
 
-- (CADContactEventsPredicate)initWithCalendarIDs:(id)a3 startDate:(id)a4 endDate:(id)a5 contacts:(id)a6
+- (CADContactEventsPredicate)initWithCalendarIDs:(id)ds startDate:(id)date endDate:(id)endDate contacts:(id)contacts
 {
   v75 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  contactsCopy = contacts;
   v66.receiver = self;
   v66.super_class = CADContactEventsPredicate;
-  v13 = [(EKPredicate *)&v66 initWithCalendars:a3];
+  v13 = [(EKPredicate *)&v66 initWithCalendars:ds];
   if (!v13)
   {
     goto LABEL_31;
   }
 
-  if (v10 && v11)
+  if (dateCopy && endDateCopy)
   {
-    if ([v10 CalIsAfterDate:v11])
+    if ([dateCopy CalIsAfterDate:endDateCopy])
     {
       v14 = CADLogHandle;
       if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
@@ -37,9 +37,9 @@
         *buf = 138412802;
         v70 = v17;
         v71 = 2112;
-        v72 = v10;
+        v72 = dateCopy;
         v73 = 2112;
-        v74 = v11;
+        v74 = endDateCopy;
         v18 = "[%@] must be given a 'startDate' that occurs before the given 'endDate.'  startDate: [%@] endDate: [%@]";
         v19 = v15;
         v20 = 32;
@@ -52,19 +52,19 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v51 = v10;
-    [(EKPredicate *)v13 setStartDate:v10];
+    v51 = dateCopy;
+    [(EKPredicate *)v13 setStartDate:dateCopy];
     v48 = v13;
-    v50 = v11;
-    [(EKPredicate *)v13 setEndDate:v11];
+    v50 = endDateCopy;
+    [(EKPredicate *)v13 setEndDate:endDateCopy];
     v24 = objc_opt_new();
     v52 = objc_opt_new();
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v49 = v12;
-    obj = v12;
+    v49 = contactsCopy;
+    obj = contactsCopy;
     v25 = [obj countByEnumeratingWithState:&v62 objects:v68 count:16];
     if (v25)
     {
@@ -90,8 +90,8 @@ LABEL_9:
           if ([v31 isKeyAvailable:v28])
           {
             v32 = v27;
-            v33 = [v31 emailAddresses];
-            v34 = [v33 valueForKey:@"value"];
+            emailAddresses = [v31 emailAddresses];
+            v34 = [emailAddresses valueForKey:@"value"];
             v58 = 0u;
             v59 = 0u;
             v60 = 0u;
@@ -110,8 +110,8 @@ LABEL_9:
                     objc_enumerationMutation(v34);
                   }
 
-                  v39 = [*(*(&v58 + 1) + 8 * i) lowercaseString];
-                  [v24 addObject:v39];
+                  lowercaseString = [*(*(&v58 + 1) + 8 * i) lowercaseString];
+                  [v24 addObject:lowercaseString];
                 }
 
                 v36 = [v34 countByEnumeratingWithState:&v58 objects:v67 count:16];
@@ -127,14 +127,14 @@ LABEL_9:
 
           if ([v31 isKeyAvailable:v57] && objc_msgSend(v31, "isKeyAvailable:", v53))
           {
-            v40 = [v31 familyName];
-            v41 = [v31 givenName];
-            v42 = [v40 stringByAppendingString:v41];
+            familyName = [v31 familyName];
+            givenName = [v31 givenName];
+            v42 = [familyName stringByAppendingString:givenName];
             [v52 addObject:v42];
 
-            v43 = [v31 givenName];
-            v44 = [v31 familyName];
-            v45 = [v43 stringByAppendingString:v44];
+            givenName2 = [v31 givenName];
+            familyName2 = [v31 familyName];
+            v45 = [givenName2 stringByAppendingString:familyName2];
             [v52 addObject:v45];
           }
 
@@ -152,9 +152,9 @@ LABEL_9:
     [(CADContactEventsPredicate *)v48 setContactEmailAddresses:v24];
     [(CADContactEventsPredicate *)v48 setContactNameComponents:v52];
 
-    v11 = v50;
-    v10 = v51;
-    v12 = v49;
+    endDateCopy = v50;
+    dateCopy = v51;
+    contactsCopy = v49;
 LABEL_31:
     v23 = v13;
     goto LABEL_32;
@@ -182,50 +182,50 @@ LABEL_32:
   return v23;
 }
 
-- (CADContactEventsPredicate)initWithCoder:(id)a3
+- (CADContactEventsPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CADContactEventsPredicate;
-  v5 = [(EKPredicate *)&v14 initWithCoder:v4];
+  v5 = [(EKPredicate *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     [(EKPredicate *)v5 setStartDate:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     [(EKPredicate *)v5 setEndDate:v7];
 
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"contactEmailAddresses"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"contactEmailAddresses"];
     [(CADContactEventsPredicate *)v5 setContactEmailAddresses:v11];
 
-    v12 = [v4 decodeObjectOfClasses:v10 forKey:@"contactNameComponents"];
+    v12 = [coderCopy decodeObjectOfClasses:v10 forKey:@"contactNameComponents"];
     [(CADContactEventsPredicate *)v5 setContactNameComponents:v12];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = CADContactEventsPredicate;
-  v4 = a3;
-  [(EKPredicate *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(EKPredicate *)&v9 encodeWithCoder:coderCopy];
   v5 = [(EKPredicate *)self startDate:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"startDate"];
+  [coderCopy encodeObject:v5 forKey:@"startDate"];
 
-  v6 = [(EKPredicate *)self endDate];
-  [v4 encodeObject:v6 forKey:@"endDate"];
+  endDate = [(EKPredicate *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"endDate"];
 
-  v7 = [(CADContactEventsPredicate *)self contactEmailAddresses];
-  [v4 encodeObject:v7 forKey:@"contactEmailAddresses"];
+  contactEmailAddresses = [(CADContactEventsPredicate *)self contactEmailAddresses];
+  [coderCopy encodeObject:contactEmailAddresses forKey:@"contactEmailAddresses"];
 
-  v8 = [(CADContactEventsPredicate *)self contactNameComponents];
-  [v4 encodeObject:v8 forKey:@"contactNameComponents"];
+  contactNameComponents = [(CADContactEventsPredicate *)self contactNameComponents];
+  [coderCopy encodeObject:contactNameComponents forKey:@"contactNameComponents"];
 }
 
 - (id)predicateFormat
@@ -236,21 +236,21 @@ LABEL_32:
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(EKPredicate *)self startDate];
-  v8 = [v3 stringFromDate:v7];
-  v9 = [(EKPredicate *)self endDate];
-  v10 = [v3 stringFromDate:v9];
-  v11 = [(EKPredicate *)self calendars];
-  v12 = [CADPredicate conciseCalendarList:v11];
+  startDate = [(EKPredicate *)self startDate];
+  v8 = [v3 stringFromDate:startDate];
+  endDate = [(EKPredicate *)self endDate];
+  v10 = [v3 stringFromDate:endDate];
+  calendars = [(EKPredicate *)self calendars];
+  v12 = [CADPredicate conciseCalendarList:calendars];
   v13 = [v4 stringWithFormat:@"[%@] start:%@ end:%@; cals:%@", v6, v8, v10, v12];;
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
     goto LABEL_27;
@@ -259,9 +259,9 @@ LABEL_32:
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v8 = [(EKPredicate *)v5 startDate];
-    v9 = [(EKPredicate *)self startDate];
-    if (![v8 isEqual:v9])
+    startDate = [(EKPredicate *)equalCopy startDate];
+    startDate2 = [(EKPredicate *)self startDate];
+    if (![startDate isEqual:startDate2])
     {
       v7 = 0;
 LABEL_26:
@@ -269,9 +269,9 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v10 = [(EKPredicate *)v5 endDate];
-    v11 = [(EKPredicate *)self endDate];
-    if (![v10 isEqual:v11])
+    endDate = [(EKPredicate *)equalCopy endDate];
+    endDate2 = [(EKPredicate *)self endDate];
+    if (![endDate isEqual:endDate2])
     {
       v7 = 0;
 LABEL_25:
@@ -279,52 +279,52 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v12 = [(EKPredicate *)v5 calendars];
-    v31 = [(EKPredicate *)self calendars];
-    v32 = v12;
-    if (v12 != v31)
+    calendars = [(EKPredicate *)equalCopy calendars];
+    calendars2 = [(EKPredicate *)self calendars];
+    v32 = calendars;
+    if (calendars != calendars2)
     {
-      v12 = [(EKPredicate *)v5 calendars];
-      v3 = [(EKPredicate *)self calendars];
-      if (![v12 isEqual:v3])
+      calendars = [(EKPredicate *)equalCopy calendars];
+      calendars3 = [(EKPredicate *)self calendars];
+      if (![calendars isEqual:calendars3])
       {
         v7 = 0;
         goto LABEL_23;
       }
     }
 
-    v13 = [(CADContactEventsPredicate *)v5 contactEmailAddresses];
-    v14 = [(CADContactEventsPredicate *)self contactEmailAddresses];
-    v30 = v13;
-    v15 = v13 == v14;
-    v16 = v14;
+    contactEmailAddresses = [(CADContactEventsPredicate *)equalCopy contactEmailAddresses];
+    contactEmailAddresses2 = [(CADContactEventsPredicate *)self contactEmailAddresses];
+    v30 = contactEmailAddresses;
+    v15 = contactEmailAddresses == contactEmailAddresses2;
+    v16 = contactEmailAddresses2;
     if (v15)
     {
-      v28 = v3;
-      v29 = v12;
+      v28 = calendars3;
+      v29 = calendars;
     }
 
     else
     {
-      v17 = [(CADContactEventsPredicate *)v5 contactEmailAddresses];
-      v25 = [(CADContactEventsPredicate *)self contactEmailAddresses];
-      v26 = v17;
-      if (![v17 isEqual:?])
+      contactEmailAddresses3 = [(CADContactEventsPredicate *)equalCopy contactEmailAddresses];
+      contactEmailAddresses4 = [(CADContactEventsPredicate *)self contactEmailAddresses];
+      v26 = contactEmailAddresses3;
+      if (![contactEmailAddresses3 isEqual:?])
       {
         v7 = 0;
         v23 = v30;
         goto LABEL_21;
       }
 
-      v28 = v3;
-      v29 = v12;
+      v28 = calendars3;
+      v29 = calendars;
     }
 
     v27 = v16;
-    v18 = [(CADContactEventsPredicate *)v5 contactNameComponents];
-    v19 = [(CADContactEventsPredicate *)self contactNameComponents];
-    v20 = v19;
-    if (v18 == v19)
+    contactNameComponents = [(CADContactEventsPredicate *)equalCopy contactNameComponents];
+    contactNameComponents2 = [(CADContactEventsPredicate *)self contactNameComponents];
+    v20 = contactNameComponents2;
+    if (contactNameComponents == contactNameComponents2)
     {
 
       v7 = 1;
@@ -332,20 +332,20 @@ LABEL_25:
 
     else
     {
-      v21 = [(CADContactEventsPredicate *)v5 contactNameComponents];
-      v22 = [(CADContactEventsPredicate *)self contactNameComponents];
-      v7 = [v21 isEqual:v22];
+      contactNameComponents3 = [(CADContactEventsPredicate *)equalCopy contactNameComponents];
+      contactNameComponents4 = [(CADContactEventsPredicate *)self contactNameComponents];
+      v7 = [contactNameComponents3 isEqual:contactNameComponents4];
     }
 
-    v12 = v29;
+    calendars = v29;
     v23 = v30;
     v16 = v27;
-    v3 = v28;
+    calendars3 = v28;
     if (v30 == v27)
     {
 LABEL_22:
 
-      if (v32 == v31)
+      if (v32 == calendars2)
       {
 LABEL_24:
 
@@ -368,12 +368,12 @@ LABEL_27:
   return v7;
 }
 
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = [(EKPredicate *)self startDate];
-  v5 = [(EKPredicate *)self endDate];
-  v6 = [v4 CalIsAfterDate:v5];
+  startDate = [(EKPredicate *)self startDate];
+  endDate = [(EKPredicate *)self endDate];
+  v6 = [startDate CalIsAfterDate:endDate];
 
   if (v6)
   {
@@ -390,20 +390,20 @@ LABEL_27:
   if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v14 = v13;
-    v15 = [(EKPredicate *)self startDate];
-    v16 = [(EKPredicate *)self endDate];
+    startDate2 = [(EKPredicate *)self startDate];
+    endDate2 = [(EKPredicate *)self endDate];
     *buf = 138412802;
-    v34 = v15;
+    selfCopy = startDate2;
     v35 = 2112;
-    v36 = v16;
+    v36 = endDate2;
     v37 = 2112;
     v38 = v10;
     _os_log_impl(&dword_22430B000, v14, OS_LOG_TYPE_DEBUG, "Commencing contact event search with start date: [%@] end date: [%@] calendar object IDs: [%@]", buf, 0x20u);
   }
 
-  v17 = [(EKPredicate *)self startDate];
-  v18 = [(EKPredicate *)self endDate];
-  v19 = [MEMORY[0x277CBEBB0] defaultTimeZone];
+  startDate3 = [(EKPredicate *)self startDate];
+  endDate3 = [(EKPredicate *)self endDate];
+  defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
   v20 = CalEventOccurrenceCacheCopyEventOccurrencesInDateRange();
 
   if (v20)
@@ -414,7 +414,7 @@ LABEL_27:
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      v34 = Count;
+      selfCopy = Count;
       _os_log_impl(&dword_22430B000, v22, OS_LOG_TYPE_DEBUG, "Found [%ld] contact event candidates.  Proceeding to filter.", buf, 0xCu);
     }
 
@@ -451,7 +451,7 @@ LABEL_27:
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v34 = self;
+      selfCopy = self;
       _os_log_impl(&dword_22430B000, v28, OS_LOG_TYPE_DEBUG, "NULL occurrences array returned for [%@].", buf, 0xCu);
     }
 
@@ -543,14 +543,14 @@ LABEL_9:
 LABEL_10:
 }
 
-- (BOOL)_isCandidate:(void *)a3 allowAllDayEvent:(BOOL)a4
+- (BOOL)_isCandidate:(void *)candidate allowAllDayEvent:(BOOL)event
 {
-  if (!a3)
+  if (!candidate)
   {
     return 0;
   }
 
-  if (!a4 && (CalEventIsAllDay() & 1) != 0 || CalCalendarItemGetStatus() == 3)
+  if (!event && (CalEventIsAllDay() & 1) != 0 || CalCalendarItemGetStatus() == 3)
   {
     return 0;
   }

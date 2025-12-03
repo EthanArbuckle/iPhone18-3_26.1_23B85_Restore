@@ -1,9 +1,9 @@
 @interface ICMusicLibraryArtistAffinityAnalyzer
 - (id)_requestItemProperties;
-- (id)aggregateLibraryRecommendationMetricsFromSnapshots:(id)a3;
-- (id)createFeatureProviderDictionaryFromNewContentResponse:(id)a3 withLibraryArtistSnapshots:(id)a4;
-- (void)performLibraryAnalysisFromResponse:(id)a3 withCompletionHandler:(id)a4;
-- (void)performLibraryAnalysisWithCompletionHandler:(id)a3;
+- (id)aggregateLibraryRecommendationMetricsFromSnapshots:(id)snapshots;
+- (id)createFeatureProviderDictionaryFromNewContentResponse:(id)response withLibraryArtistSnapshots:(id)snapshots;
+- (void)performLibraryAnalysisFromResponse:(id)response withCompletionHandler:(id)handler;
+- (void)performLibraryAnalysisWithCompletionHandler:(id)handler;
 @end
 
 @implementation ICMusicLibraryArtistAffinityAnalyzer
@@ -279,16 +279,16 @@ LABEL_44:
   return v41;
 }
 
-- (id)aggregateLibraryRecommendationMetricsFromSnapshots:(id)a3
+- (id)aggregateLibraryRecommendationMetricsFromSnapshots:(id)snapshots
 {
-  v3 = a3;
+  snapshotsCopy = snapshots;
   v4 = objc_alloc_init(NSMutableDictionary);
   v29 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v3;
+  obj = snapshotsCopy;
   v5 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v5)
   {
@@ -308,47 +308,47 @@ LABEL_44:
         v9 = *(*(&v33 + 1) + 8 * i);
         if ([v9 isValid])
         {
-          v10 = [v9 artistMetadataDescriptor];
-          v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [v10 storeAdamID]);
+          artistMetadataDescriptor = [v9 artistMetadataDescriptor];
+          v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [artistMetadataDescriptor storeAdamID]);
 
           v12 = [v4 valueForKey:v11];
           if (v12)
           {
             [v12 setCumulativePlayCount:{objc_msgSend(v9, "playCount") + objc_msgSend(v12, "cumulativePlayCount")}];
             [v12 setCumulativeSkipCount:{objc_msgSend(v9, "skipCount") + objc_msgSend(v12, "cumulativeSkipCount")}];
-            v13 = [v9 albumMetadataDescriptor];
-            v14 = [v12 uniqueAlbums];
-            v15 = [v14 containsObject:v13];
+            albumMetadataDescriptor = [v9 albumMetadataDescriptor];
+            uniqueAlbums = [v12 uniqueAlbums];
+            v15 = [uniqueAlbums containsObject:albumMetadataDescriptor];
 
             if ((v15 & 1) == 0)
             {
-              v16 = [v12 uniqueAlbums];
-              [v16 addObject:v13];
+              uniqueAlbums2 = [v12 uniqueAlbums];
+              [uniqueAlbums2 addObject:albumMetadataDescriptor];
             }
 
-            v17 = [v9 songMetadataDescriptor];
-            v18 = [v12 uniqueSongs];
-            v19 = [v18 containsObject:v17];
+            songMetadataDescriptor = [v9 songMetadataDescriptor];
+            uniqueSongs = [v12 uniqueSongs];
+            v19 = [uniqueSongs containsObject:songMetadataDescriptor];
 
             if ((v19 & 1) == 0)
             {
-              v20 = [v12 uniqueSongs];
-              [v20 addObject:v17];
+              uniqueSongs2 = [v12 uniqueSongs];
+              [uniqueSongs2 addObject:songMetadataDescriptor];
             }
 
-            v21 = [v9 libraryAddedDate];
-            if (v21)
+            libraryAddedDate = [v9 libraryAddedDate];
+            if (libraryAddedDate)
             {
-              v22 = [v29 components:28 fromDate:v21];
-              v23 = [v12 uniqueDatesWithAddedContent];
-              [v23 addObject:v22];
+              v22 = [v29 components:28 fromDate:libraryAddedDate];
+              uniqueDatesWithAddedContent = [v12 uniqueDatesWithAddedContent];
+              [uniqueDatesWithAddedContent addObject:v22];
             }
 
-            v24 = [v9 lastPlayedDate];
-            if (v24)
+            lastPlayedDate = [v9 lastPlayedDate];
+            if (lastPlayedDate)
             {
-              v25 = [v12 lastPlayedDate];
-              v26 = [v25 laterDate:v24];
+              lastPlayedDate2 = [v12 lastPlayedDate];
+              v26 = [lastPlayedDate2 laterDate:lastPlayedDate];
 
               [v12 setLastPlayedDate:v26];
             }
@@ -359,8 +359,8 @@ LABEL_44:
 
           else
           {
-            v13 = [[ICMusicLibraryArtistAffinitySnapshot alloc] initWithContentItemSnapshot:v9];
-            [v4 setValue:v13 forKey:v11];
+            albumMetadataDescriptor = [[ICMusicLibraryArtistAffinitySnapshot alloc] initWithContentItemSnapshot:v9];
+            [v4 setValue:albumMetadataDescriptor forKey:v11];
           }
         }
       }
@@ -371,22 +371,22 @@ LABEL_44:
     while (v6);
   }
 
-  v27 = [v4 allValues];
+  allValues = [v4 allValues];
 
-  return v27;
+  return allValues;
 }
 
-- (void)performLibraryAnalysisWithCompletionHandler:(id)a3
+- (void)performLibraryAnalysisWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(sub_10003B614());
   [v5 setLabel:@"LibraryRecommendationArtistAffinity"];
   v6 = [sub_10003B6F4() kindWithVariants:3];
   [v5 setItemKind:v6];
 
-  v7 = [(ICMusicLibraryArtistAffinityAnalyzer *)self _requestItemProperties];
-  [v5 setItemProperties:v7];
+  _requestItemProperties = [(ICMusicLibraryArtistAffinityAnalyzer *)self _requestItemProperties];
+  [v5 setItemProperties:_requestItemProperties];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -394,7 +394,7 @@ LABEL_44:
   v9[3] = &unk_1001DA988;
   v9[4] = self;
   objc_copyWeak(&v11, &location);
-  v8 = v4;
+  v8 = handlerCopy;
   v10 = v8;
   [v5 performWithResponseHandler:v9];
 
@@ -402,17 +402,17 @@ LABEL_44:
   objc_destroyWeak(&location);
 }
 
-- (id)createFeatureProviderDictionaryFromNewContentResponse:(id)a3 withLibraryArtistSnapshots:(id)a4
+- (id)createFeatureProviderDictionaryFromNewContentResponse:(id)response withLibraryArtistSnapshots:(id)snapshots
 {
-  v91 = a3;
-  v5 = a4;
+  responseCopy = response;
+  snapshotsCopy = snapshots;
   v6 = +[NSMutableDictionary dictionary];
-  if ([v5 count])
+  if ([snapshotsCopy count])
   {
     v7 = 0;
     do
     {
-      v8 = [v5 objectAtIndex:v7];
+      v8 = [snapshotsCopy objectAtIndex:v7];
       v9 = [NSNumber numberWithInt:v7];
       v10 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v8 artistAdamID]);
       [v6 setObject:v9 forKey:v10];
@@ -420,38 +420,38 @@ LABEL_44:
       ++v7;
     }
 
-    while ([v5 count] > v7);
+    while ([snapshotsCopy count] > v7);
   }
 
   v87 = objc_alloc_init(NSMutableArray);
   v86 = objc_alloc_init(NSMutableArray);
-  v88 = v5;
+  v88 = snapshotsCopy;
   v76 = v6;
-  obj = [v91 artistContentsCount];
+  obj = [responseCopy artistContentsCount];
   if (obj)
   {
     for (i = 0; i != obj; ++i)
     {
-      v12 = [v91 artistContentAtIndex:i];
+      v12 = [responseCopy artistContentAtIndex:i];
       v13 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v12 adamId]);
       v14 = [v6 objectForKey:v13];
       v15 = v14;
       if (v14)
       {
-        v16 = [v5 objectAtIndex:{objc_msgSend(v14, "intValue")}];
+        v16 = [snapshotsCopy objectAtIndex:{objc_msgSend(v14, "intValue")}];
         v112 = 0u;
         v113 = 0u;
         v114 = 0u;
         v115 = 0u;
         v96 = v16;
-        v17 = [v16 uniqueAlbums];
-        v82 = [v17 countByEnumeratingWithState:&v112 objects:v123 count:16];
+        uniqueAlbums = [v16 uniqueAlbums];
+        v82 = [uniqueAlbums countByEnumeratingWithState:&v112 objects:v123 count:16];
         if (v82)
         {
           v18 = *v113;
           v92 = v12;
           v89 = v13;
-          v84 = v17;
+          v84 = uniqueAlbums;
           v80 = *v113;
           do
           {
@@ -460,7 +460,7 @@ LABEL_44:
             {
               if (*v113 != v18)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(uniqueAlbums);
               }
 
               v20 = *(*(&v112 + 1) + 8 * v19);
@@ -468,8 +468,8 @@ LABEL_44:
               v109 = 0u;
               v110 = 0u;
               v111 = 0u;
-              v21 = [v12 catalogContents];
-              v22 = [v21 countByEnumeratingWithState:&v108 objects:v122 count:16];
+              catalogContents = [v12 catalogContents];
+              v22 = [catalogContents countByEnumeratingWithState:&v108 objects:v122 count:16];
               if (v22)
               {
                 v23 = v22;
@@ -480,15 +480,15 @@ LABEL_44:
                   {
                     if (*v109 != v24)
                     {
-                      objc_enumerationMutation(v21);
+                      objc_enumerationMutation(catalogContents);
                     }
 
                     v26 = *(*(&v108 + 1) + 8 * j);
-                    v27 = [v20 storeAdamID];
-                    if (v27 == [v26 adamId])
+                    storeAdamID = [v20 storeAdamID];
+                    if (storeAdamID == [v26 adamId])
                     {
 
-                      v5 = v88;
+                      snapshotsCopy = v88;
                       v13 = v89;
                       v6 = v76;
                       v12 = v92;
@@ -496,7 +496,7 @@ LABEL_44:
                     }
                   }
 
-                  v23 = [v21 countByEnumeratingWithState:&v108 objects:v122 count:16];
+                  v23 = [catalogContents countByEnumeratingWithState:&v108 objects:v122 count:16];
                   if (v23)
                   {
                     continue;
@@ -507,7 +507,7 @@ LABEL_44:
               }
 
               v19 = v19 + 1;
-              v17 = v84;
+              uniqueAlbums = v84;
               v6 = v76;
               v12 = v92;
               v13 = v89;
@@ -515,7 +515,7 @@ LABEL_44:
             }
 
             while (v19 != v82);
-            v5 = v88;
+            snapshotsCopy = v88;
             v82 = [v84 countByEnumeratingWithState:&v112 objects:v123 count:16];
           }
 
@@ -564,17 +564,17 @@ LABEL_24:
     do
     {
       v38 = [v29 objectAtIndex:v37];
-      v39 = [v38 intValue];
+      intValue = [v38 intValue];
 
-      v90 = [v91 artistContentAtIndex:v39];
+      v90 = [responseCopy artistContentAtIndex:intValue];
       v40 = [v90 catalogContentAtIndex:0];
-      v41 = [v40 contentFeatures];
+      contentFeatures = [v40 contentFeatures];
 
       v101 = 0u;
       v102 = 0u;
       v99 = 0u;
       v100 = 0u;
-      obja = v41;
+      obja = contentFeatures;
       v42 = [obja countByEnumeratingWithState:&v99 objects:v120 count:16];
       if (v42)
       {
@@ -615,16 +615,16 @@ LABEL_24:
       }
 
       v53 = [v86 objectAtIndex:v37];
-      v54 = [v53 intValue];
+      intValue2 = [v53 intValue];
 
-      v5 = v88;
-      v55 = [v88 objectAtIndex:v54];
-      v56 = [v55 uniqueDatesWithAddedContent];
-      v57 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v56 count]);
+      snapshotsCopy = v88;
+      v55 = [v88 objectAtIndex:intValue2];
+      uniqueDatesWithAddedContent = [v55 uniqueDatesWithAddedContent];
+      v57 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [uniqueDatesWithAddedContent count]);
       [v85 setObject:v57 atIndexedSubscript:v37];
 
-      v58 = [v55 uniqueAlbums];
-      v59 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v58 count]);
+      uniqueAlbums2 = [v55 uniqueAlbums];
+      v59 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [uniqueAlbums2 count]);
       [v83 setObject:v59 atIndexedSubscript:v37];
 
       v60 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v55 cumulativePlayCount]);
@@ -679,7 +679,7 @@ LABEL_24:
   if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v117 = self;
+    selfCopy5 = self;
     v118 = 2114;
     v119 = v85;
     _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, "%{public}@ MLModel inputs: unique days with added content: %{public}@", buf, 0x16u);
@@ -690,7 +690,7 @@ LABEL_24:
   if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v117 = self;
+    selfCopy5 = self;
     v118 = 2114;
     v119 = v83;
     _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "%{public}@ MLModel inputs: number of unique albums: %{public}@", buf, 0x16u);
@@ -701,7 +701,7 @@ LABEL_24:
   if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v117 = self;
+    selfCopy5 = self;
     v118 = 2114;
     v119 = v81;
     _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_DEFAULT, "%{public}@ MLModel inputs: cumulative song play count: %{public}@", buf, 0x16u);
@@ -712,7 +712,7 @@ LABEL_24:
   if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v117 = self;
+    selfCopy5 = self;
     v118 = 2114;
     v119 = v79;
     _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_DEFAULT, "%{public}@ MLModel inputs: number of days since last play: %{public}@", buf, 0x16u);
@@ -723,7 +723,7 @@ LABEL_24:
   if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v117 = self;
+    selfCopy5 = self;
     v118 = 2114;
     v119 = v78;
     _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_DEFAULT, "%{public}@ MLModel inputs: average plays per item added: %{public}@", buf, 0x16u);
@@ -736,17 +736,17 @@ LABEL_24:
   return v68;
 }
 
-- (void)performLibraryAnalysisFromResponse:(id)a3 withCompletionHandler:(id)a4
+- (void)performLibraryAnalysisFromResponse:(id)response withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  handlerCopy = handler;
   v8 = objc_alloc_init(sub_10003B614());
   [v8 setLabel:@"LibraryRecommendationArtistAffinity"];
   v9 = [sub_10003B6F4() kindWithVariants:3];
   [v8 setItemKind:v9];
 
-  v10 = [(ICMusicLibraryArtistAffinityAnalyzer *)self _requestItemProperties];
-  [v8 setItemProperties:v10];
+  _requestItemProperties = [(ICMusicLibraryArtistAffinityAnalyzer *)self _requestItemProperties];
+  [v8 setItemProperties:_requestItemProperties];
 
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
@@ -755,9 +755,9 @@ LABEL_24:
   v13[3] = &unk_1001DA960;
   objc_copyWeak(&v16, &location);
   v13[4] = self;
-  v11 = v6;
+  v11 = responseCopy;
   v14 = v11;
-  v12 = v7;
+  v12 = handlerCopy;
   v15 = v12;
   [v8 performWithResponseHandler:v13];
 

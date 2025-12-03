@@ -1,7 +1,7 @@
 @interface ICContentKeyNonceRequest
-- (ICContentKeyNonceRequest)initWithStoreRequestContext:(id)a3 adamID:(id)a4 accountDSID:(id)a5 keyServerURL:(id)a6;
+- (ICContentKeyNonceRequest)initWithStoreRequestContext:(id)context adamID:(id)d accountDSID:(id)iD keyServerURL:(id)l;
 - (void)execute;
-- (void)performWithResponseHandler:(id)a3;
+- (void)performWithResponseHandler:(id)handler;
 @end
 
 @implementation ICContentKeyNonceRequest
@@ -25,7 +25,7 @@
     v27[1] = v5;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
     *buf = 138543618;
-    v29 = self;
+    selfCopy2 = self;
     v30 = 2114;
     v31 = v6;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Executing nonce request with params: %{public}@", buf, 0x16u);
@@ -60,7 +60,7 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2114;
       v31 = v13;
       _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_ERROR, "[%{public}@]: [SKD] - Failed to serialize key server request data with error: %{public}@", buf, 0x16u);
@@ -75,8 +75,8 @@
     v14 = [MEMORY[0x1E695AC18] requestWithURL:self->_keyServerURL];
     [v14 setHTTPMethod:@"POST"];
     [v14 setHTTPBody:v11];
-    v15 = [(NSNumber *)self->_accountDSID stringValue];
-    [v14 setValue:v15 forHTTPHeaderField:@"X-Secure-Invalidation-Dsid"];
+    stringValue = [(NSNumber *)self->_accountDSID stringValue];
+    [v14 setValue:stringValue forHTTPHeaderField:@"X-Secure-Invalidation-Dsid"];
 
     [v14 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     v16 = [[ICStoreURLRequest alloc] initWithURLRequest:v14 requestContext:self->_storeRequestContext];
@@ -214,35 +214,35 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)performWithResponseHandler:(id)a3
+- (void)performWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__ICContentKeyNonceRequest_performWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
-- (ICContentKeyNonceRequest)initWithStoreRequestContext:(id)a3 adamID:(id)a4 accountDSID:(id)a5 keyServerURL:(id)a6
+- (ICContentKeyNonceRequest)initWithStoreRequestContext:(id)context adamID:(id)d accountDSID:(id)iD keyServerURL:(id)l
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  dCopy = d;
+  iDCopy = iD;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = ICContentKeyNonceRequest;
   v15 = [(ICRequestOperation *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_storeRequestContext, a3);
-    objc_storeStrong(&v16->_adamID, a4);
-    objc_storeStrong(&v16->_accountDSID, a5);
-    objc_storeStrong(&v16->_keyServerURL, a6);
+    objc_storeStrong(&v15->_storeRequestContext, context);
+    objc_storeStrong(&v16->_adamID, d);
+    objc_storeStrong(&v16->_accountDSID, iD);
+    objc_storeStrong(&v16->_keyServerURL, l);
   }
 
   return v16;

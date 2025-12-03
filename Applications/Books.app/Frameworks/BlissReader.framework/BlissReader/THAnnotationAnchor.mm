@@ -1,6 +1,6 @@
 @interface THAnnotationAnchor
-+ (id)annotationAnchorWithContentNode:(id)a3 annotation:(id)a4 noteRange:(_NSRange)a5;
-- (THAnnotationAnchor)initWithContentNode:(id)a3 annotation:(id)a4 noteRange:(_NSRange)a5;
++ (id)annotationAnchorWithContentNode:(id)node annotation:(id)annotation noteRange:(_NSRange)range;
+- (THAnnotationAnchor)initWithContentNode:(id)node annotation:(id)annotation noteRange:(_NSRange)range;
 - (_NSRange)noteRange;
 - (unint64_t)absolutePageIndex;
 - (void)dealloc;
@@ -8,16 +8,16 @@
 
 @implementation THAnnotationAnchor
 
-- (THAnnotationAnchor)initWithContentNode:(id)a3 annotation:(id)a4 noteRange:(_NSRange)a5
+- (THAnnotationAnchor)initWithContentNode:(id)node annotation:(id)annotation noteRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v10.receiver = self;
   v10.super_class = THAnnotationAnchor;
-  v8 = [(THModelBoundAnchor *)&v10 initWithContentNode:a3];
+  v8 = [(THModelBoundAnchor *)&v10 initWithContentNode:node];
   if (v8)
   {
-    v8->_annotation = a4;
+    v8->_annotation = annotation;
     v8->_noteRange.location = location;
     v8->_noteRange.length = length;
   }
@@ -25,9 +25,9 @@
   return v8;
 }
 
-+ (id)annotationAnchorWithContentNode:(id)a3 annotation:(id)a4 noteRange:(_NSRange)a5
++ (id)annotationAnchorWithContentNode:(id)node annotation:(id)annotation noteRange:(_NSRange)range
 {
-  v5 = [objc_alloc(objc_opt_class()) initWithContentNode:a3 annotation:a4 noteRange:{a5.location, a5.length}];
+  v5 = [objc_alloc(objc_opt_class()) initWithContentNode:node annotation:annotation noteRange:{range.location, range.length}];
 
   return v5;
 }
@@ -41,9 +41,9 @@
 
 - (unint64_t)absolutePageIndex
 {
-  v2 = [(THAnnotationAnchor *)self annotation];
+  annotation = [(THAnnotationAnchor *)self annotation];
 
-  return [(THAnnotation *)v2 annotationAbsolutePhysicalPageIndex];
+  return [(THAnnotation *)annotation annotationAbsolutePhysicalPageIndex];
 }
 
 - (_NSRange)noteRange

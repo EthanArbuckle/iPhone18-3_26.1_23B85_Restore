@@ -1,13 +1,13 @@
 @interface SINoOpScaler
-- (BOOL)scaleImage:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4;
-- (__CVBuffer)createScaledImage:(__CVBuffer *)a3;
+- (BOOL)scaleImage:(__CVBuffer *)image outputBuffer:(__CVBuffer *)buffer;
+- (__CVBuffer)createScaledImage:(__CVBuffer *)image;
 @end
 
 @implementation SINoOpScaler
 
-- (BOOL)scaleImage:(__CVBuffer *)a3 outputBuffer:(__CVBuffer *)a4
+- (BOOL)scaleImage:(__CVBuffer *)image outputBuffer:(__CVBuffer *)buffer
 {
-  if (a3)
+  if (image)
   {
     [SINoOpScaler scaleImage:outputBuffer:];
   }
@@ -15,10 +15,10 @@
   return 0;
 }
 
-- (__CVBuffer)createScaledImage:(__CVBuffer *)a3
+- (__CVBuffer)createScaledImage:(__CVBuffer *)image
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (image)
   {
     if (![(SIBaseScaler *)self _imageConformsToOutput:?])
     {
@@ -27,7 +27,7 @@
 
     v4 = *MEMORY[0x277D85DE8];
 
-    return CVPixelBufferRetain(a3);
+    return CVPixelBufferRetain(image);
   }
 
   else

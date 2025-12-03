@@ -1,62 +1,62 @@
 @interface CSAttendingTriggerInfo
 + (id)triggerInfoForServerInvoke;
-- (CSAttendingTriggerInfo)initWithAttendingType:(int64_t)a3 detectedToken:(id)a4 triggerMachTime:(unint64_t)a5 triggerAbsStartSampleId:(unint64_t)a6 audioRecordType:(int64_t)a7 audioRecordDeviceId:(id)a8 amountOfSpeechDetectedInMs:(float)a9 triggerThresholdInMs:(float)a10;
-- (CSAttendingTriggerInfo)initWithCoder:(id)a3;
+- (CSAttendingTriggerInfo)initWithAttendingType:(int64_t)type detectedToken:(id)token triggerMachTime:(unint64_t)time triggerAbsStartSampleId:(unint64_t)id audioRecordType:(int64_t)recordType audioRecordDeviceId:(id)deviceId amountOfSpeechDetectedInMs:(float)ms triggerThresholdInMs:(float)self0;
+- (CSAttendingTriggerInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSAttendingTriggerInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   attendingType = self->_attendingType;
-  v11 = a3;
+  coderCopy = coder;
   v5 = [NSNumber numberWithInteger:attendingType];
-  [v11 encodeObject:v5 forKey:@"CSAttendingTriggerInfo:::attendingType"];
+  [coderCopy encodeObject:v5 forKey:@"CSAttendingTriggerInfo:::attendingType"];
 
-  [v11 encodeObject:self->_detectedToken forKey:@"CSAttendingTriggerInfo:::detectedToken"];
+  [coderCopy encodeObject:self->_detectedToken forKey:@"CSAttendingTriggerInfo:::detectedToken"];
   v6 = [NSNumber numberWithUnsignedLongLong:self->_triggerMachTime];
-  [v11 encodeObject:v6 forKey:@"CSAttendingTriggerInfo:::triggerMachTime"];
+  [coderCopy encodeObject:v6 forKey:@"CSAttendingTriggerInfo:::triggerMachTime"];
 
   v7 = [NSNumber numberWithUnsignedLongLong:self->_triggerAbsStartSampleId];
-  [v11 encodeObject:v7 forKey:@"CSAttendingTriggerInfo:::triggerAbsStartSampleId"];
+  [coderCopy encodeObject:v7 forKey:@"CSAttendingTriggerInfo:::triggerAbsStartSampleId"];
 
   v8 = [NSNumber numberWithLongLong:self->_audioRecordType];
-  [v11 encodeObject:v8 forKey:@"CSAttendingTriggerInfo:::audioRecordType"];
+  [coderCopy encodeObject:v8 forKey:@"CSAttendingTriggerInfo:::audioRecordType"];
 
-  [v11 encodeObject:self->_deviceId forKey:@"CSAttendingTriggerInfo:::deviceId"];
+  [coderCopy encodeObject:self->_deviceId forKey:@"CSAttendingTriggerInfo:::deviceId"];
   *&v9 = self->_amountOfSpeechDetectedInMs;
-  [v11 encodeFloat:@"CSAttendingTriggerInfo:::amountOfSpeechDetectedInMs" forKey:v9];
+  [coderCopy encodeFloat:@"CSAttendingTriggerInfo:::amountOfSpeechDetectedInMs" forKey:v9];
   *&v10 = self->_triggerThresholdInMs;
-  [v11 encodeFloat:@"CSAttendingTriggerInfo:::detectionThresholdInMs" forKey:v10];
+  [coderCopy encodeFloat:@"CSAttendingTriggerInfo:::detectionThresholdInMs" forKey:v10];
 }
 
-- (CSAttendingTriggerInfo)initWithCoder:(id)a3
+- (CSAttendingTriggerInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSAttendingTriggerInfo:::attendingType"];
-  v6 = [v5 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSAttendingTriggerInfo:::attendingType"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSAttendingTriggerInfo:::detectedToken"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSAttendingTriggerInfo:::triggerMachTime"];
-  v9 = [v8 unsignedLongLongValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSAttendingTriggerInfo:::detectedToken"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSAttendingTriggerInfo:::triggerMachTime"];
+  unsignedLongLongValue = [v8 unsignedLongLongValue];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSAttendingTriggerInfo:::triggerAbsStartSampleId"];
-  v11 = [v10 unsignedLongLongValue];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSAttendingTriggerInfo:::triggerAbsStartSampleId"];
+  unsignedLongLongValue2 = [v10 unsignedLongLongValue];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSAttendingTriggerInfo:::audioRecordType"];
-  v13 = [v12 longLongValue];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSAttendingTriggerInfo:::audioRecordType"];
+  longLongValue = [v12 longLongValue];
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSAttendingTriggerInfo:::deviceId"];
-  [v4 decodeFloatForKey:@"CSAttendingTriggerInfo:::amountOfSpeechDetectedInMs"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSAttendingTriggerInfo:::deviceId"];
+  [coderCopy decodeFloatForKey:@"CSAttendingTriggerInfo:::amountOfSpeechDetectedInMs"];
   v16 = v15;
-  [v4 decodeFloatForKey:@"CSAttendingTriggerInfo:::detectionThresholdInMs"];
+  [coderCopy decodeFloatForKey:@"CSAttendingTriggerInfo:::detectionThresholdInMs"];
   v18 = v17;
 
   LODWORD(v19) = v16;
   LODWORD(v20) = v18;
-  v21 = [(CSAttendingTriggerInfo *)self initWithAttendingType:v6 detectedToken:v7 triggerMachTime:v9 triggerAbsStartSampleId:v11 audioRecordType:v13 audioRecordDeviceId:v14 amountOfSpeechDetectedInMs:v19 triggerThresholdInMs:v20];
+  v21 = [(CSAttendingTriggerInfo *)self initWithAttendingType:unsignedIntegerValue detectedToken:v7 triggerMachTime:unsignedLongLongValue triggerAbsStartSampleId:unsignedLongLongValue2 audioRecordType:longLongValue audioRecordDeviceId:v14 amountOfSpeechDetectedInMs:v19 triggerThresholdInMs:v20];
 
   return v21;
 }
@@ -89,24 +89,24 @@
   return v3;
 }
 
-- (CSAttendingTriggerInfo)initWithAttendingType:(int64_t)a3 detectedToken:(id)a4 triggerMachTime:(unint64_t)a5 triggerAbsStartSampleId:(unint64_t)a6 audioRecordType:(int64_t)a7 audioRecordDeviceId:(id)a8 amountOfSpeechDetectedInMs:(float)a9 triggerThresholdInMs:(float)a10
+- (CSAttendingTriggerInfo)initWithAttendingType:(int64_t)type detectedToken:(id)token triggerMachTime:(unint64_t)time triggerAbsStartSampleId:(unint64_t)id audioRecordType:(int64_t)recordType audioRecordDeviceId:(id)deviceId amountOfSpeechDetectedInMs:(float)ms triggerThresholdInMs:(float)self0
 {
-  v19 = a4;
-  v20 = a8;
+  tokenCopy = token;
+  deviceIdCopy = deviceId;
   v24.receiver = self;
   v24.super_class = CSAttendingTriggerInfo;
   v21 = [(CSAttendingTriggerInfo *)&v24 init];
   v22 = v21;
   if (v21)
   {
-    v21->_attendingType = a3;
-    objc_storeStrong(&v21->_detectedToken, a4);
-    v22->_triggerMachTime = a5;
-    v22->_triggerAbsStartSampleId = a6;
-    v22->_audioRecordType = a7;
-    objc_storeStrong(&v22->_deviceId, a8);
-    v22->_amountOfSpeechDetectedInMs = a9;
-    v22->_triggerThresholdInMs = a10;
+    v21->_attendingType = type;
+    objc_storeStrong(&v21->_detectedToken, token);
+    v22->_triggerMachTime = time;
+    v22->_triggerAbsStartSampleId = id;
+    v22->_audioRecordType = recordType;
+    objc_storeStrong(&v22->_deviceId, deviceId);
+    v22->_amountOfSpeechDetectedInMs = ms;
+    v22->_triggerThresholdInMs = inMs;
   }
 
   return v22;

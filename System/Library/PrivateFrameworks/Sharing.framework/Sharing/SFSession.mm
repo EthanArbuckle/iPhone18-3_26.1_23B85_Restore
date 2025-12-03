@@ -1,82 +1,82 @@
 @interface SFSession
-- (BOOL)_appleIDAddProof:(id)a3 error:(id *)a4;
-- (BOOL)_sessionReceivedRegisteredRequestID:(id)a3 flags:(unsigned int)a4 xidKey:(id)a5 xidValue:(id)a6;
-- (BOOL)pairingContainsACL:(id)a3;
+- (BOOL)_appleIDAddProof:(id)proof error:(id *)error;
+- (BOOL)_sessionReceivedRegisteredRequestID:(id)d flags:(unsigned int)flags xidKey:(id)key xidValue:(id)value;
+- (BOOL)pairingContainsACL:(id)l;
 - (SFSession)init;
-- (SFSession)initWithCoder:(id)a3;
-- (id)_appleIDVerifyProof:(id)a3 error:(id *)a4;
+- (SFSession)initWithCoder:(id)coder;
+- (id)_appleIDVerifyProof:(id)proof error:(id *)error;
 - (id)description;
-- (id)pairingDeriveKeyForIdentifier:(id)a3 keyLength:(unint64_t)a4;
-- (int)setEncryptionReadKey:(const char *)a3 readKeyLen:(unint64_t)a4 writeKey:(const char *)a5 writeKeyLen:(unint64_t)a6;
-- (void)_activateWithCompletion:(id)a3;
+- (id)pairingDeriveKeyForIdentifier:(id)identifier keyLength:(unint64_t)length;
+- (int)setEncryptionReadKey:(const char *)key readKeyLen:(unint64_t)len writeKey:(const char *)writeKey writeKeyLen:(unint64_t)keyLen;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_activated;
-- (void)_activatedIfReady:(id)a3;
+- (void)_activatedIfReady:(id)ready;
 - (void)_cleanup;
-- (void)_deregisterRequestID:(id)a3;
+- (void)_deregisterRequestID:(id)d;
 - (void)_ensureXPCStarted;
 - (void)_fetchInfo;
 - (void)_hearbeatTimer;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_pairSetup:(id)a3 start:(BOOL)a4;
-- (void)_pairSetupTryPIN:(id)a3;
-- (void)_pairSetupWithFlags:(unsigned int)a3 completion:(id)a4 isServer:(BOOL)a5;
-- (void)_pairVerify:(id)a3 start:(BOOL)a4;
-- (void)_pairVerifyWithFlags:(unsigned int)a3 completion:(id)a4;
-- (void)_registerRequestID:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)_sendEncryptedObject:(id)a3;
-- (void)_sendRequestID:(id)a3 options:(id)a4 request:(id)a5 responseHandler:(id)a6;
-- (void)_serviceInitiatedPairSetup:(id)a3;
-- (void)_sessionReceivedEncryptedData:(id)a3 type:(unsigned __int8)a4;
-- (void)_sessionReceivedStartAck:(id)a3;
-- (void)_sessionReceivedUnencryptedData:(id)a3 type:(unsigned __int8)a4;
+- (void)_pairSetup:(id)setup start:(BOOL)start;
+- (void)_pairSetupTryPIN:(id)n;
+- (void)_pairSetupWithFlags:(unsigned int)flags completion:(id)completion isServer:(BOOL)server;
+- (void)_pairVerify:(id)verify start:(BOOL)start;
+- (void)_pairVerifyWithFlags:(unsigned int)flags completion:(id)completion;
+- (void)_registerRequestID:(id)d options:(id)options handler:(id)handler;
+- (void)_sendEncryptedObject:(id)object;
+- (void)_sendRequestID:(id)d options:(id)options request:(id)request responseHandler:(id)handler;
+- (void)_serviceInitiatedPairSetup:(id)setup;
+- (void)_sessionReceivedEncryptedData:(id)data type:(unsigned __int8)type;
+- (void)_sessionReceivedStartAck:(id)ack;
+- (void)_sessionReceivedUnencryptedData:(id)data type:(unsigned __int8)type;
 - (void)_setupMessageSession;
 - (void)_setupTouchRemote;
 - (void)_startTimeoutIfNeeded;
 - (void)_tearDownMessageSession;
 - (void)_tearDownTouchRemote;
 - (void)_timeoutTimerFired;
-- (void)activateWithCompletion:(id)a3;
-- (void)appleIDAddProof:(id)a3 dispatchQueue:(id)a4 completion:(id)a5;
-- (void)appleIDVerifyProof:(id)a3 dispatchQueue:(id)a4 completion:(id)a5;
+- (void)activateWithCompletion:(id)completion;
+- (void)appleIDAddProof:(id)proof dispatchQueue:(id)queue completion:(id)completion;
+- (void)appleIDVerifyProof:(id)proof dispatchQueue:(id)queue completion:(id)completion;
 - (void)dealloc;
-- (void)deregisterRequestID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)deregisterRequestID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)pairSetupTryPIN:(id)a3;
-- (void)pairSetupWithFlags:(unsigned int)a3 completion:(id)a4 isServer:(BOOL)a5;
-- (void)pairVerifyWithFlags:(unsigned int)a3 completion:(id)a4;
-- (void)registerForExternalIO:(id)a3;
-- (void)registerRequestID:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)sendEvent:(id)a3;
-- (void)sendExternalIO:(id)a3;
-- (void)sendFrameType:(unsigned __int8)a3 data:(id)a4;
-- (void)sendFrameType:(unsigned __int8)a3 object:(id)a4;
-- (void)sendRequest:(id)a3;
-- (void)sendRequestID:(id)a3 options:(id)a4 request:(id)a5 responseHandler:(id)a6;
-- (void)sendRequestWithFlags:(unsigned int)a3 object:(id)a4 responseHandler:(id)a5;
-- (void)sendResponse:(id)a3;
-- (void)sendWithFlags:(unsigned int)a3 object:(id)a4;
-- (void)sessionBluetoothStateChanged:(int64_t)a3;
-- (void)sessionError:(id)a3;
-- (void)sessionReceivedEvent:(id)a3;
-- (void)sessionReceivedFragmentData:(id)a3 last:(BOOL)a4;
-- (void)sessionReceivedRequest:(id)a3;
-- (void)sessionReceivedResponse:(id)a3;
-- (void)setLabel:(id)a3;
+- (void)pairSetupTryPIN:(id)n;
+- (void)pairSetupWithFlags:(unsigned int)flags completion:(id)completion isServer:(BOOL)server;
+- (void)pairVerifyWithFlags:(unsigned int)flags completion:(id)completion;
+- (void)registerForExternalIO:(id)o;
+- (void)registerRequestID:(id)d options:(id)options handler:(id)handler;
+- (void)sendEvent:(id)event;
+- (void)sendExternalIO:(id)o;
+- (void)sendFrameType:(unsigned __int8)type data:(id)data;
+- (void)sendFrameType:(unsigned __int8)type object:(id)object;
+- (void)sendRequest:(id)request;
+- (void)sendRequestID:(id)d options:(id)options request:(id)request responseHandler:(id)handler;
+- (void)sendRequestWithFlags:(unsigned int)flags object:(id)object responseHandler:(id)handler;
+- (void)sendResponse:(id)response;
+- (void)sendWithFlags:(unsigned int)flags object:(id)object;
+- (void)sessionBluetoothStateChanged:(int64_t)changed;
+- (void)sessionError:(id)error;
+- (void)sessionReceivedEvent:(id)event;
+- (void)sessionReceivedFragmentData:(id)data last:(BOOL)last;
+- (void)sessionReceivedRequest:(id)request;
+- (void)sessionReceivedResponse:(id)response;
+- (void)setLabel:(id)label;
 @end
 
 @implementation SFSession
 
-- (void)registerForExternalIO:(id)a3
+- (void)registerForExternalIO:(id)o
 {
-  v4 = a3;
+  oCopy = o;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__SFSession_CNJ__registerForExternalIO___block_invoke;
   v6[3] = &unk_1E788B4F8;
-  v7 = v4;
-  v5 = v4;
+  v7 = oCopy;
+  v5 = oCopy;
   [(SFSession *)self registerRequestID:@"_cnjExtIO" options:0 handler:v6];
 }
 
@@ -107,17 +107,17 @@ void __40__SFSession_CNJ__registerForExternalIO___block_invoke(uint64_t a1, uint
   }
 }
 
-- (void)sendExternalIO:(id)a3
+- (void)sendExternalIO:(id)o
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  oCopy = o;
   if (gLogCategory_SFDeviceOperationCNJ <= 30 && (gLogCategory_SFDeviceOperationCNJ != -1 || _LogCategory_Initialize()))
   {
-    [SFSession(CNJ) sendExternalIO:v4];
+    [SFSession(CNJ) sendExternalIO:oCopy];
   }
 
   v7 = @"d";
-  v8[0] = v4;
+  v8[0] = oCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   [(SFSession *)self sendRequestID:@"_cnjExtIO" options:0 request:v5 responseHandler:&__block_literal_global_52];
 
@@ -154,42 +154,42 @@ void __33__SFSession_CNJ__sendExternalIO___block_invoke(uint64_t a1, void *a2, v
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   identifier = self->_identifier;
-  v9 = v4;
+  v9 = coderCopy;
   if (identifier)
   {
-    [v4 encodeObject:identifier forKey:@"ident"];
-    v4 = v9;
+    [coderCopy encodeObject:identifier forKey:@"ident"];
+    coderCopy = v9;
   }
 
   peerDevice = self->_peerDevice;
   if (peerDevice)
   {
     [v9 encodeObject:peerDevice forKey:@"pd"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   if (self->_serviceType)
   {
     [v9 encodeInteger:? forKey:?];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   serviceUUID = self->_serviceUUID;
   if (serviceUUID)
   {
     [v9 encodeObject:serviceUUID forKey:@"sid"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   sessionFlags = self->_sessionFlags;
   if (sessionFlags)
   {
     [v9 encodeInteger:sessionFlags forKey:@"seFl"];
-    v4 = v9;
+    coderCopy = v9;
   }
 }
 
@@ -406,24 +406,24 @@ LABEL_6:
   return v3;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__SFSession_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E788B210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  completionCopy = completion;
   v7 = _os_activity_create(&dword_1A9662000, "Sharing/SFSession/sessionActivate", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -489,21 +489,21 @@ LABEL_39:
 
         if (!self->_identifier)
         {
-          v17 = [MEMORY[0x1E696AFB0] UUID];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
           identifier = self->_identifier;
-          self->_identifier = v17;
+          self->_identifier = uUID;
         }
 
         if (!self->_peer)
         {
-          v19 = [(SFDevice *)self->_peerDevice identifier];
+          identifier = [(SFDevice *)self->_peerDevice identifier];
           peer = self->_peer;
-          self->_peer = v19;
+          self->_peer = identifier;
         }
 
         [(SFSession *)self _ensureXPCStarted:v35];
         [(SFSession *)self _fetchInfo];
-        v21 = _Block_copy(v6);
+        v21 = _Block_copy(completionCopy);
         activateCompletion = self->_activateCompletion;
         self->_activateCompletion = v21;
 
@@ -514,7 +514,7 @@ LABEL_39:
         v38[2] = __37__SFSession__activateWithCompletion___block_invoke;
         v38[3] = &unk_1E788BF88;
         v38[4] = self;
-        v39 = v6;
+        v39 = completionCopy;
         v24 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v38];
         v37[0] = MEMORY[0x1E69E9820];
         v37[1] = 3221225472;
@@ -557,7 +557,7 @@ LABEL_25:
   }
 
 LABEL_27:
-  if (v6)
+  if (completionCopy)
   {
     v28 = v40;
     if (v40)
@@ -582,7 +582,7 @@ LABEL_27:
       v32 = 0;
     }
 
-    (*(v6 + 2))(v6, v32);
+    (*(completionCopy + 2))(completionCopy, v32);
     if (v28)
     {
     }
@@ -1359,11 +1359,11 @@ LABEL_7:
         }
 
         v12 = [(NSMutableDictionary *)self->_requestQueue objectForKeyedSubscript:*(*(&v34 + 1) + 8 * v11)];
-        v13 = [v12 responseHandler];
+        responseHandler = [v12 responseHandler];
 
-        if (v13)
+        if (responseHandler)
         {
-          v14 = [v12 responseHandler];
+          responseHandler2 = [v12 responseHandler];
           v15 = MEMORY[0x1E696ABC0];
           v38 = v10;
           v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:DebugGetErrorString()];
@@ -1377,7 +1377,7 @@ LABEL_7:
           v39 = v18;
           v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
           v20 = [v15 errorWithDomain:v32 code:-6723 userInfo:v19];
-          (v14)[2](v14, v20, 0);
+          (responseHandler2)[2](responseHandler2, v20, 0);
         }
 
         [v12 invalidate];
@@ -1549,9 +1549,9 @@ LABEL_6:
   v15[4] = self;
   [(CUMessageSessionServer *)self->_messageSessionServer setSendRequestHandler:v15];
   [(CUMessageSessionServer *)self->_messageSessionServer activate];
-  v10 = [(CUMessageSessionServer *)self->_messageSessionServer templateSession];
+  templateSession = [(CUMessageSessionServer *)self->_messageSessionServer templateSession];
   messageSessionTemplate = self->_messageSessionTemplate;
-  self->_messageSessionTemplate = v10;
+  self->_messageSessionTemplate = templateSession;
 
   if (!self->_messageSessionTemplate)
   {
@@ -1701,9 +1701,9 @@ LABEL_5:
   [(SFTRSession *)self->_sfTRSession setDispatchQueue:self->_dispatchQueue];
   [(SFTRSession *)self->_sfTRSession setSession:self];
   [(SFTRSession *)self->_sfTRSession activate];
-  v6 = [(SFTRSession *)self->_sfTRSession trSession];
+  trSession = [(SFTRSession *)self->_sfTRSession trSession];
   trSession = self->_trSession;
-  self->_trSession = v6;
+  self->_trSession = trSession;
 }
 
 - (void)_tearDownTouchRemote
@@ -1800,14 +1800,14 @@ LABEL_5:
   self->_timeoutHandler = 0;
 }
 
-- (BOOL)pairingContainsACL:(id)a3
+- (BOOL)pairingContainsACL:(id)l
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  lCopy = l;
   dispatch_assert_queue_V2(dispatchQueue);
   if (self->_pairVerifySession)
   {
-    v6 = PairingSessionCopyPairedPeer();
+    pairedPeer = PairingSessionCopyPairedPeer();
   }
 
   else
@@ -1819,10 +1819,10 @@ LABEL_5:
       goto LABEL_6;
     }
 
-    v6 = [(CUPairingSession *)pairSetupSession pairedPeer];
+    pairedPeer = [(CUPairingSession *)pairSetupSession pairedPeer];
   }
 
-  v8 = v6;
+  v8 = pairedPeer;
 LABEL_6:
   v9 = [v8 acl];
   Int64 = CFDictionaryGetInt64();
@@ -1830,17 +1830,17 @@ LABEL_6:
   return Int64 != 0;
 }
 
-- (id)pairingDeriveKeyForIdentifier:(id)a3 keyLength:(unint64_t)a4
+- (id)pairingDeriveKeyForIdentifier:(id)identifier keyLength:(unint64_t)length
 {
-  v6 = a3;
-  v7 = [v6 UTF8String];
-  v8 = strlen(v7);
-  v9 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:a4];
+  identifierCopy = identifier;
+  uTF8String = [identifierCopy UTF8String];
+  v8 = strlen(uTF8String);
+  v9 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:length];
   v10 = v9;
   pairSetupSession = self->_pairSetupSession;
   if (pairSetupSession)
   {
-    if (!-[CUPairingSession deriveKeyWithSaltPtr:saltLen:infoPtr:infoLen:keyLen:outputKeyPtr:](pairSetupSession, "deriveKeyWithSaltPtr:saltLen:infoPtr:infoLen:keyLen:outputKeyPtr:", "IdentifierKeyInfo", 17, v7, v8, a4, [v9 mutableBytes]))
+    if (!-[CUPairingSession deriveKeyWithSaltPtr:saltLen:infoPtr:infoLen:keyLen:outputKeyPtr:](pairSetupSession, "deriveKeyWithSaltPtr:saltLen:infoPtr:infoLen:keyLen:outputKeyPtr:", "IdentifierKeyInfo", 17, uTF8String, v8, length, [v9 mutableBytes]))
     {
 LABEL_3:
       v12 = v10;
@@ -1880,17 +1880,17 @@ LABEL_4:
   return v12;
 }
 
-- (void)_serviceInitiatedPairSetup:(id)a3
+- (void)_serviceInitiatedPairSetup:(id)setup
 {
-  v4 = a3;
+  setupCopy = setup;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__SFSession__serviceInitiatedPairSetup___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = setupCopy;
+  v6 = setupCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1968,28 +1968,28 @@ LABEL_9:
 LABEL_14:
 }
 
-- (void)pairSetupWithFlags:(unsigned int)a3 completion:(id)a4 isServer:(BOOL)a5
+- (void)pairSetupWithFlags:(unsigned int)flags completion:(id)completion isServer:(BOOL)server
 {
-  v8 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__SFSession_pairSetupWithFlags_completion_isServer___block_invoke;
   block[3] = &unk_1E7890DC8;
-  v13 = a3;
+  flagsCopy = flags;
   block[4] = self;
-  v12 = v8;
-  v14 = a5;
-  v10 = v8;
+  v12 = completionCopy;
+  serverCopy = server;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_pairSetupWithFlags:(unsigned int)a3 completion:(id)a4 isServer:(BOOL)a5
+- (void)_pairSetupWithFlags:(unsigned int)flags completion:(id)completion isServer:(BOOL)server
 {
-  v5 = a5;
+  serverCopy = server;
   v38[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (!v5)
+  completionCopy = completion;
+  if (!serverCopy)
   {
     RandomBytes();
   }
@@ -2035,7 +2035,7 @@ LABEL_14:
 
 LABEL_11:
   pairSetupCompletion = self->_pairSetupCompletion;
-  if ((a3 & 0x80000) == 0)
+  if ((flags & 0x80000) == 0)
   {
     v11 = MEMORY[0x1E696ABC0];
     v12 = *MEMORY[0x1E696A768];
@@ -2066,7 +2066,7 @@ LABEL_16:
   self->_pairSetupSession = 0;
 
   self->_pairSetupEnded = 0;
-  self->_pairSetupFlags = a3 | 4;
+  self->_pairSetupFlags = flags | 4;
   v19 = objc_alloc_init(MEMORY[0x1E69994F8]);
   v20 = self->_pairSetupSession;
   self->_pairSetupSession = v19;
@@ -2076,7 +2076,7 @@ LABEL_16:
   [(CUPairingSession *)self->_pairSetupSession setLabel:v21];
 
   [(CUPairingSession *)self->_pairSetupSession setFlags:self->_pairSetupFlags];
-  if (v5)
+  if (serverCopy)
   {
     v22 = 2;
   }
@@ -2149,7 +2149,7 @@ LABEL_42:
   v35[2] = __53__SFSession__pairSetupWithFlags_completion_isServer___block_invoke;
   v35[3] = &unk_1E7890598;
   v35[4] = self;
-  v36 = a3;
+  flagsCopy = flags;
   [(CUPairingSession *)self->_pairSetupSession setSendDataHandler:v35];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
@@ -2157,7 +2157,7 @@ LABEL_42:
   v34[3] = &unk_1E788B238;
   v34[4] = self;
   [(CUPairingSession *)self->_pairSetupSession setCompletionHandler:v34];
-  v28 = _Block_copy(v8);
+  v28 = _Block_copy(completionCopy);
   v29 = self->_pairSetupCompletion;
   self->_pairSetupCompletion = v28;
 
@@ -2205,10 +2205,10 @@ uint64_t __53__SFSession__pairSetupWithFlags_completion_isServer___block_invoke_
   return [v1 _pairSetupCompleted:v2];
 }
 
-- (void)_pairSetup:(id)a3 start:(BOOL)a4
+- (void)_pairSetup:(id)setup start:(BOOL)start
 {
-  v4 = a4;
-  v6 = a3;
+  startCopy = start;
+  setupCopy = setup;
   Int64Ranged = 0;
   if (!self->_pairSetupSession)
   {
@@ -2236,12 +2236,12 @@ LABEL_4:
   }
 
 LABEL_6:
-  if (v4)
+  if (startCopy)
   {
     [(CUPairingSession *)self->_pairSetupSession activate];
   }
 
-  if (!v6)
+  if (!setupCopy)
   {
     v10 = 0;
     goto LABEL_14;
@@ -2298,25 +2298,25 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)pairSetupTryPIN:(id)a3
+- (void)pairSetupTryPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __29__SFSession_pairSetupTryPIN___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nCopy;
+  v6 = nCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_pairSetupTryPIN:(id)a3
+- (void)_pairSetupTryPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   var0 = self->_ucatCore->var0;
-  v9 = v4;
+  v9 = nCopy;
   if (var0 > 30)
   {
     goto LABEL_5;
@@ -2328,21 +2328,21 @@ LABEL_16:
   }
 
   v6 = _LogCategory_Initialize();
-  v4 = v9;
+  nCopy = v9;
   if (v6)
   {
     ucatCore = self->_ucatCore;
 LABEL_3:
     IsAppleInternalBuild();
     LogPrintF();
-    v4 = v9;
+    nCopy = v9;
   }
 
 LABEL_5:
   pairSetupSession = self->_pairSetupSession;
   if (pairSetupSession)
   {
-    [(CUPairingSession *)pairSetupSession tryPIN:v4];
+    [(CUPairingSession *)pairSetupSession tryPIN:nCopy];
   }
 
   else
@@ -2351,25 +2351,25 @@ LABEL_5:
   }
 }
 
-- (void)pairVerifyWithFlags:(unsigned int)a3 completion:(id)a4
+- (void)pairVerifyWithFlags:(unsigned int)flags completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__SFSession_pairVerifyWithFlags_completion___block_invoke;
   block[3] = &unk_1E788EAE0;
-  v11 = a3;
+  flagsCopy = flags;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_pairVerifyWithFlags:(unsigned int)a3 completion:(id)a4
+- (void)_pairVerifyWithFlags:(unsigned int)flags completion:(id)completion
 {
   v63[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   var0 = self->_ucatCore->var0;
   if (var0 <= 30)
   {
@@ -2397,7 +2397,7 @@ LABEL_5:
     goto LABEL_14;
   }
 
-  v58 = v6;
+  v58 = completionCopy;
   v12 = self->_ucatCore->var0;
   if (v12 <= 30)
   {
@@ -2444,7 +2444,7 @@ LABEL_10:
   v23 = self->_pairVerifyCompletion;
   self->_pairVerifyCompletion = 0;
 
-  v6 = v58;
+  completionCopy = v58;
 LABEL_14:
   pairVerifySession = self->_pairVerifySession;
   if (pairVerifySession)
@@ -2454,11 +2454,11 @@ LABEL_14:
   }
 
   self->_pairVerifyEnded = 0;
-  self->_pairVerifyFlags = a3 | 4;
+  self->_pairVerifyFlags = flags | 4;
   v25 = PairingSessionCreate();
   if (v25)
   {
-    if (v6)
+    if (completionCopy)
     {
       v26 = *(v8 + 3008);
       v27 = *v9;
@@ -2479,14 +2479,14 @@ LABEL_14:
       v61 = v31;
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
       v33 = [v26 errorWithDomain:v27 code:v28 userInfo:v32];
-      v6[2](v6, v33);
+      completionCopy[2](completionCopy, v33);
     }
   }
 
   else
   {
     sessionFlags = self->_sessionFlags;
-    if (sessionFlags & 4 | a3 & 0x1000)
+    if (sessionFlags & 4 | flags & 0x1000)
     {
       if ((sessionFlags & 8) != 0)
       {
@@ -2527,16 +2527,16 @@ LABEL_14:
         if (v59 == 1)
         {
           v43 = [v41 mutableCopy];
-          v44 = [(SFAppleIDContactInfo *)self->_appleIDContactInfo validatedPhoneNumbers];
-          v45 = [(SFAppleIDContactInfo *)self->_appleIDContactInfo validatedEmailAddresses];
-          if (v44)
+          validatedPhoneNumbers = [(SFAppleIDContactInfo *)self->_appleIDContactInfo validatedPhoneNumbers];
+          validatedEmailAddresses = [(SFAppleIDContactInfo *)self->_appleIDContactInfo validatedEmailAddresses];
+          if (validatedPhoneNumbers)
           {
-            [v43 addObjectsFromArray:v44];
+            [v43 addObjectsFromArray:validatedPhoneNumbers];
           }
 
-          if (v45)
+          if (validatedEmailAddresses)
           {
-            [v43 addObjectsFromArray:v45];
+            [v43 addObjectsFromArray:validatedEmailAddresses];
           }
 
           v46 = [v43 copy];
@@ -2569,7 +2569,7 @@ LABEL_14:
     v51 = self->_pairVerifySession;
     ucatCrypto = self->_ucatCrypto;
     PairingSessionSetLogging();
-    v53 = _Block_copy(v6);
+    v53 = _Block_copy(completionCopy);
     v54 = self->_pairVerifyCompletion;
     self->_pairVerifyCompletion = v53;
 
@@ -2579,10 +2579,10 @@ LABEL_14:
   v55 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_pairVerify:(id)a3 start:(BOOL)a4
+- (void)_pairVerify:(id)verify start:(BOOL)start
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  verifyCopy = verify;
   Int64Ranged = 0;
   v12 = 0;
   v13 = 0;
@@ -2610,7 +2610,7 @@ LABEL_14:
   }
 
 LABEL_6:
-  if (v5)
+  if (verifyCopy)
   {
     Int64Ranged = CFDictionaryGetInt64Ranged();
     if (Int64Ranged)
@@ -2664,23 +2664,23 @@ LABEL_15:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)appleIDAddProof:(id)a3 dispatchQueue:(id)a4 completion:(id)a5
+- (void)appleIDAddProof:(id)proof dispatchQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  proofCopy = proof;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = dispatch_queue_create("AppleIDAddProof", 0);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __54__SFSession_appleIDAddProof_dispatchQueue_completion___block_invoke;
   v15[3] = &unk_1E788B750;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = proofCopy;
+  v17 = queueCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = queueCopy;
+  v14 = proofCopy;
   dispatch_async(v11, v15);
 }
 
@@ -2723,20 +2723,20 @@ LABEL_6:
   dispatch_async(v6, block);
 }
 
-- (BOOL)_appleIDAddProof:(id)a3 error:(id *)a4
+- (BOOL)_appleIDAddProof:(id)proof error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SDStatusMonitor *)self->_statusMonitor myMediumHashes];
-  if ([v7 length])
+  proofCopy = proof;
+  myMediumHashes = [(SDStatusMonitor *)self->_statusMonitor myMediumHashes];
+  if ([myMediumHashes length])
   {
-    if ([v7 length] <= 8)
+    if ([myMediumHashes length] <= 8)
     {
-      v8 = v6;
-      v9 = [v7 mutableCopy];
+      v8 = proofCopy;
+      v9 = [myMediumHashes mutableCopy];
       [v9 setLength:9];
 
-      v7 = v9;
-      v6 = v8;
+      myMediumHashes = v9;
+      proofCopy = v8;
     }
 
     v10 = [(SFSession *)self pairingDeriveKeyForIdentifier:@"AppleIDChallenge" keyLength:16];
@@ -2749,14 +2749,14 @@ LABEL_6:
       v14 = v13;
       if (v12)
       {
-        v27 = v6;
+        v27 = proofCopy;
         v29 = v13;
         v15 = [v11 copyMyValidationDataAndReturnError:&v29];
         v16 = v29;
 
         if (v15)
         {
-          v24 = a4;
+          errorCopy = error;
           v26 = v10;
           v17 = v10;
           v25 = v12;
@@ -2772,17 +2772,17 @@ LABEL_6:
 
           if (v21)
           {
-            v6 = v27;
-            [v27 setObject:v18 forKeyedSubscript:{@"cert", v24}];
-            [v27 setObject:v7 forKeyedSubscript:@"medHash"];
+            proofCopy = v27;
+            [v27 setObject:v18 forKeyedSubscript:{@"cert", errorCopy}];
+            [v27 setObject:myMediumHashes forKeyedSubscript:@"medHash"];
             [v27 setObject:v21 forKeyedSubscript:@"sig"];
             [v27 setObject:v19 forKeyedSubscript:@"vrec"];
           }
 
           else
           {
-            [SFSession _appleIDAddProof:v24 error:?];
-            v6 = v27;
+            [SFSession _appleIDAddProof:errorCopy error:?];
+            proofCopy = v27;
           }
 
           v12 = v25;
@@ -2792,10 +2792,10 @@ LABEL_6:
 
         else
         {
-          if (a4)
+          if (error)
           {
             SFNestedErrorF();
-            *a4 = v22 = 0;
+            *error = v22 = 0;
           }
 
           else
@@ -2804,14 +2804,14 @@ LABEL_6:
           }
 
           v14 = v16;
-          v6 = v27;
+          proofCopy = v27;
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         SFNestedErrorF();
-        *a4 = v22 = 0;
+        *error = v22 = 0;
       }
 
       else
@@ -2820,10 +2820,10 @@ LABEL_6:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       SFErrorF();
-      *a4 = v22 = 0;
+      *error = v22 = 0;
     }
 
     else
@@ -2832,10 +2832,10 @@ LABEL_6:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     SFErrorF();
-    *a4 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
@@ -2846,23 +2846,23 @@ LABEL_6:
   return v22;
 }
 
-- (void)appleIDVerifyProof:(id)a3 dispatchQueue:(id)a4 completion:(id)a5
+- (void)appleIDVerifyProof:(id)proof dispatchQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  proofCopy = proof;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = dispatch_queue_create("AppleIDVerifyProof", 0);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __57__SFSession_appleIDVerifyProof_dispatchQueue_completion___block_invoke;
   v15[3] = &unk_1E788B750;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = proofCopy;
+  v17 = queueCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = queueCopy;
+  v14 = proofCopy;
   dispatch_async(v11, v15);
 }
 
@@ -2906,14 +2906,14 @@ LABEL_6:
   dispatch_async(v7, block);
 }
 
-- (id)_appleIDVerifyProof:(id)a3 error:(id *)a4
+- (id)_appleIDVerifyProof:(id)proof error:(id *)error
 {
-  v6 = a3;
+  proofCopy = proof;
   CFDataGetTypeID();
   v7 = CFDictionaryGetTypedValue();
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_24;
     }
@@ -2924,11 +2924,11 @@ LABEL_6:
   statusMonitor = self->_statusMonitor;
   if (!statusMonitor)
   {
-    if (a4)
+    if (error)
     {
 LABEL_24:
       SFErrorF();
-      *a4 = v22 = 0;
+      *error = v22 = 0;
       goto LABEL_18;
     }
 
@@ -2962,7 +2962,7 @@ LABEL_39:
             v15 = [(SFSession *)self pairingDeriveKeyForIdentifier:@"AppleIDChallenge" keyLength:16];
             if (v15)
             {
-              v24 = a4;
+              errorCopy = error;
               v25 = v10;
               v26 = v7;
               v16 = v28;
@@ -2983,10 +2983,10 @@ LABEL_39:
                 v22 = v30;
               }
 
-              else if (v24)
+              else if (errorCopy)
               {
                 SFNestedErrorF();
-                *v24 = v22 = 0;
+                *errorCopy = v22 = 0;
               }
 
               else
@@ -2998,10 +2998,10 @@ LABEL_39:
               v7 = v26;
             }
 
-            else if (a4)
+            else if (error)
             {
               SFErrorF();
-              *a4 = v22 = 0;
+              *error = v22 = 0;
             }
 
             else
@@ -3010,10 +3010,10 @@ LABEL_39:
             }
           }
 
-          else if (a4)
+          else if (error)
           {
             SFErrorF();
-            *a4 = v22 = 0;
+            *error = v22 = 0;
           }
 
           else
@@ -3022,10 +3022,10 @@ LABEL_39:
           }
         }
 
-        else if (a4)
+        else if (error)
         {
           SFErrorF();
-          *a4 = v22 = 0;
+          *error = v22 = 0;
         }
 
         else
@@ -3034,10 +3034,10 @@ LABEL_39:
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         SFErrorF();
-        *a4 = v22 = 0;
+        *error = v22 = 0;
       }
 
       else
@@ -3046,10 +3046,10 @@ LABEL_39:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       SFErrorF();
-      *a4 = v22 = 0;
+      *error = v22 = 0;
     }
 
     else
@@ -3058,10 +3058,10 @@ LABEL_39:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     SFErrorF();
-    *a4 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
@@ -3074,11 +3074,11 @@ LABEL_18:
   return v22;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  [v4 setIdentifier:v5];
+  eventCopy = event;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [eventCopy setIdentifier:uUID];
 
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -3086,8 +3086,8 @@ LABEL_18:
   v8[2] = __23__SFSession_sendEvent___block_invoke;
   v8[3] = &unk_1E788A658;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = eventCopy;
+  v7 = eventCopy;
   dispatch_async(dispatchQueue, v8);
 }
 
@@ -3125,21 +3125,21 @@ LABEL_5:
   }
 }
 
-- (void)sendRequest:(id)a3
+- (void)sendRequest:(id)request
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  [v4 setIdentifier:v5];
+  requestCopy = request;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [requestCopy setIdentifier:uUID];
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __25__SFSession_sendRequest___block_invoke;
   block[3] = &unk_1E788BD88;
   block[4] = self;
-  v10 = v4;
-  v11 = v5;
-  v7 = v5;
-  v8 = v4;
+  v10 = requestCopy;
+  v11 = uUID;
+  v7 = uUID;
+  v8 = requestCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -3179,12 +3179,12 @@ LABEL_5:
   }
 }
 
-- (void)sendResponse:(id)a3
+- (void)sendResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  responseCopy = response;
+  identifier = [responseCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
     dispatchQueue = self->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -3192,8 +3192,8 @@ LABEL_5:
     block[2] = __26__SFSession_sendResponse___block_invoke;
     block[3] = &unk_1E788A658;
     block[4] = self;
-    v10 = v4;
-    v7 = v4;
+    v10 = responseCopy;
+    v7 = responseCopy;
     dispatch_async(dispatchQueue, block);
   }
 
@@ -3238,18 +3238,18 @@ LABEL_5:
   }
 }
 
-- (void)sendFrameType:(unsigned __int8)a3 data:(id)a4
+- (void)sendFrameType:(unsigned __int8)type data:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __32__SFSession_sendFrameType_data___block_invoke;
   block[3] = &unk_1E788F2F0;
-  v11 = a3;
+  typeCopy = type;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = dataCopy;
+  v8 = dataCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -3286,45 +3286,45 @@ void __32__SFSession_sendFrameType_data___block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendFrameType:(unsigned __int8)a3 object:(id)a4
+- (void)sendFrameType:(unsigned __int8)type object:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__SFSession_sendFrameType_object___block_invoke;
   block[3] = &unk_1E788F2F0;
-  v11 = a3;
+  typeCopy = type;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = objectCopy;
+  v8 = objectCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)sendRequestWithFlags:(unsigned int)a3 object:(id)a4 responseHandler:(id)a5
+- (void)sendRequestWithFlags:(unsigned int)flags object:(id)object responseHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __57__SFSession_sendRequestWithFlags_object_responseHandler___block_invoke;
   v13[3] = &unk_1E788EAB8;
-  v16 = a3;
+  flagsCopy = flags;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = objectCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = objectCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
-- (void)sendWithFlags:(unsigned int)a3 object:(id)a4
+- (void)sendWithFlags:(unsigned int)flags object:(id)object
 {
-  v4 = a3;
-  v6 = a4;
+  flagsCopy = flags;
+  objectCopy = object;
   dispatchQueue = self->_dispatchQueue;
-  if (v4)
+  if (flagsCopy)
   {
     v8 = v12;
     v12[0] = MEMORY[0x1E69E9820];
@@ -3343,7 +3343,7 @@ void __32__SFSession_sendFrameType_data___block_invoke(uint64_t a1)
   v8[2] = v9;
   v8[3] = &unk_1E788A658;
   v8[4] = self;
-  v10 = v6;
+  v10 = objectCopy;
   v8[5] = v10;
   dispatch_async(dispatchQueue, v8);
 }
@@ -3363,10 +3363,10 @@ uint64_t __34__SFSession_sendWithFlags_object___block_invoke_2(uint64_t a1)
   return [*(a1 + 32) _sendFrameType:v1 object:*(a1 + 40)];
 }
 
-- (void)_sendEncryptedObject:(id)a3
+- (void)_sendEncryptedObject:(id)object
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFSession/sessionSendFrameType", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -3450,7 +3450,7 @@ LABEL_38:
   if ((self->_sessionFlags & 2) != 0)
   {
     v8 = NSDataCompress();
-    v9 = 0;
+    remoteObjectProxy = 0;
     if (!v8)
     {
       v26 = self->_ucatCore->var0;
@@ -3512,8 +3512,8 @@ LABEL_16:
   if (!v14)
   {
     [DataMutable appendBytes:v34 length:{16, v34, 16}];
-    v9 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-    [v9 sessionSendFrameType:v7 data:DataMutable];
+    remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+    [remoteObjectProxy sessionSendFrameType:v7 data:DataMutable];
     goto LABEL_16;
   }
 
@@ -3540,14 +3540,14 @@ LABEL_17:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerRequestID:(id)a3 options:(id)a4 handler:(id)a5
+- (void)registerRequestID:(id)d options:(id)options handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (CFDictionaryGetInt64())
   {
-    [(SFSession *)self _registerRequestID:v8 options:v9 handler:v10];
+    [(SFSession *)self _registerRequestID:dCopy options:optionsCopy handler:handlerCopy];
   }
 
   else
@@ -3558,19 +3558,19 @@ LABEL_17:
     v12[2] = __47__SFSession_registerRequestID_options_handler___block_invoke;
     v12[3] = &unk_1E788B750;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
-    v15 = v10;
+    v13 = dCopy;
+    v14 = optionsCopy;
+    v15 = handlerCopy;
     dispatch_async(dispatchQueue, v12);
   }
 }
 
-- (void)_registerRequestID:(id)a3 options:(id)a4 handler:(id)a5
+- (void)_registerRequestID:(id)d options:(id)options handler:(id)handler
 {
-  v18 = a3;
-  v8 = a4;
+  dCopy = d;
+  optionsCopy = options;
   dispatchQueue = self->_dispatchQueue;
-  v10 = a5;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(dispatchQueue);
   var0 = self->_ucatCore->var0;
   if (var0 <= 30)
@@ -3578,7 +3578,7 @@ LABEL_17:
     if (var0 != -1)
     {
 LABEL_3:
-      v17 = v18;
+      v17 = dCopy;
       LogPrintF();
       goto LABEL_5;
     }
@@ -3592,11 +3592,11 @@ LABEL_3:
 
 LABEL_5:
   v12 = objc_alloc_init(SFMessageSessionRequestEntry);
-  [(SFMessageSessionRequestEntry *)v12 setHandler:v10];
+  [(SFMessageSessionRequestEntry *)v12 setHandler:handlerCopy];
 
-  if (v8)
+  if (optionsCopy)
   {
-    [(SFMessageSessionRequestEntry *)v12 setOptions:v8];
+    [(SFMessageSessionRequestEntry *)v12 setOptions:optionsCopy];
   }
 
   [(SFMessageSessionRequestEntry *)v12 setAllowUnencrypted:CFDictionaryGetInt64() != 0, v17];
@@ -3610,31 +3610,31 @@ LABEL_5:
     requestHandlers = self->_requestHandlers;
   }
 
-  [(NSMutableDictionary *)requestHandlers setObject:v12 forKeyedSubscript:v18];
+  [(NSMutableDictionary *)requestHandlers setObject:v12 forKeyedSubscript:dCopy];
 }
 
-- (void)deregisterRequestID:(id)a3
+- (void)deregisterRequestID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__SFSession_deregisterRequestID___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_deregisterRequestID:(id)a3
+- (void)_deregisterRequestID:(id)d
 {
-  v8 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   var0 = self->_ucatCore->var0;
   if (var0 <= 30)
   {
-    v5 = v8;
+    v5 = dCopy;
     if (var0 != -1)
     {
 LABEL_3:
@@ -3646,45 +3646,45 @@ LABEL_3:
     if (_LogCategory_Initialize())
     {
       ucatCore = self->_ucatCore;
-      v5 = v8;
+      v5 = dCopy;
       goto LABEL_3;
     }
   }
 
 LABEL_5:
-  [(NSMutableDictionary *)self->_requestHandlers setObject:0 forKeyedSubscript:v8, v7];
+  [(NSMutableDictionary *)self->_requestHandlers setObject:0 forKeyedSubscript:dCopy, v7];
 }
 
-- (void)sendRequestID:(id)a3 options:(id)a4 request:(id)a5 responseHandler:(id)a6
+- (void)sendRequestID:(id)d options:(id)options request:(id)request responseHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  optionsCopy = options;
+  requestCopy = request;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__SFSession_sendRequestID_options_request_responseHandler___block_invoke;
   block[3] = &unk_1E7890068;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = dCopy;
+  v21 = optionsCopy;
+  v22 = requestCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = requestCopy;
+  v17 = optionsCopy;
+  v18 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_sendRequestID:(id)a3 options:(id)a4 request:(id)a5 responseHandler:(id)a6
+- (void)_sendRequestID:(id)d options:(id)options request:(id)request responseHandler:(id)handler
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  optionsCopy = options;
+  requestCopy = request;
+  handlerCopy = handler;
   var0 = self->_ucatCore->var0;
   if (var0 > 30)
   {
@@ -3701,8 +3701,8 @@ LABEL_5:
   {
     v21 = self->_ucatCore;
 LABEL_3:
-    v22 = v10;
-    v23 = [v12 count];
+    v22 = dCopy;
+    v23 = [requestCopy count];
     LogPrintF();
   }
 
@@ -3719,19 +3719,19 @@ LABEL_5:
 
   v28[0] = @"_ri";
   v28[1] = @"_ro";
-  v29[0] = v10;
-  v29[1] = v12;
+  v29[0] = dCopy;
+  v29[1] = requestCopy;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:{2, v22, v23}];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __60__SFSession__sendRequestID_options_request_responseHandler___block_invoke;
   v24[3] = &unk_1E7890DF0;
   v24[4] = self;
-  v25 = v10;
-  v26 = v13;
+  v25 = dCopy;
+  v26 = handlerCopy;
   v27 = v16;
-  v18 = v13;
-  v19 = v10;
+  v18 = handlerCopy;
+  v19 = dCopy;
   [(SFSession *)self _sendRequestWithFlags:v16 object:v17 responseHandler:v24];
 
   v20 = *MEMORY[0x1E69E9840];
@@ -3888,7 +3888,7 @@ LABEL_34:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sessionBluetoothStateChanged:(int64_t)a3
+- (void)sessionBluetoothStateChanged:(int64_t)changed
 {
   var0 = self->_ucatCore->var0;
   if (var0 <= 30)
@@ -3903,9 +3903,9 @@ LABEL_34:
       ucatCore = self->_ucatCore;
     }
 
-    if (a3 <= 5)
+    if (changed <= 5)
     {
-      v6 = off_1E7891070[a3];
+      v6 = off_1E7891070[changed];
     }
 
     LogPrintF();
@@ -3913,26 +3913,26 @@ LABEL_34:
 
 LABEL_8:
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  self->_bluetoothState = a3;
+  self->_bluetoothState = changed;
   bluetoothStateChangedHandler = self->_bluetoothStateChangedHandler;
   if (bluetoothStateChangedHandler)
   {
-    bluetoothStateChangedHandler[2](bluetoothStateChangedHandler, a3);
+    bluetoothStateChangedHandler[2](bluetoothStateChangedHandler, changed);
   }
 
   [(SFSession *)self _startTimeoutIfNeeded];
 }
 
-- (void)sessionError:(id)a3
+- (void)sessionError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   var0 = self->_ucatCore->var0;
   if (var0 <= 50)
   {
     if (var0 != -1)
     {
 LABEL_3:
-      v19 = v4;
+      v19 = errorCopy;
       LogPrintF();
       goto LABEL_5;
     }
@@ -3997,7 +3997,7 @@ LABEL_5:
   v20[2] = __26__SFSession_sessionError___block_invoke;
   v20[3] = &unk_1E7890E18;
   v20[4] = self;
-  v15 = v4;
+  v15 = errorCopy;
   v21 = v15;
   [(NSMutableDictionary *)requestMap enumerateKeysAndObjectsUsingBlock:v20];
   [(NSMutableDictionary *)self->_requestMap removeAllObjects];
@@ -4043,9 +4043,9 @@ LABEL_5:
   }
 }
 
-- (void)sessionReceivedEvent:(id)a3
+- (void)sessionReceivedEvent:(id)event
 {
-  v8 = a3;
+  eventCopy = event;
   var0 = self->_ucatCore->var0;
   if (var0 <= 10)
   {
@@ -4066,29 +4066,29 @@ LABEL_3:
 LABEL_5:
   dispatch_assert_queue_V2(self->_dispatchQueue);
   eventMessageHandler = self->_eventMessageHandler;
-  v6 = v8;
+  v6 = eventCopy;
   if (eventMessageHandler)
   {
-    eventMessageHandler[2](eventMessageHandler, v8);
-    v6 = v8;
+    eventMessageHandler[2](eventMessageHandler, eventCopy);
+    v6 = eventCopy;
   }
 }
 
-- (void)sessionReceivedFragmentData:(id)a3 last:(BOOL)a4
+- (void)sessionReceivedFragmentData:(id)data last:(BOOL)last
 {
-  v33 = a3;
-  v6 = [v33 length];
+  dataCopy = data;
+  v6 = [dataCopy length];
   if (!v6)
   {
     goto LABEL_24;
   }
 
   v7 = v6;
-  v8 = [v33 bytes];
-  v9 = *v8;
+  bytes = [dataCopy bytes];
+  v9 = *bytes;
   if (self->_fragmentLastIndex + 1 != v9)
   {
-    v31 = *v8;
+    v31 = *bytes;
 LABEL_24:
     v22 = NSErrorWithOSStatusF();
     v14 = 0;
@@ -4105,10 +4105,10 @@ LABEL_24:
     fragmentData = self->_fragmentData;
   }
 
-  v13 = [v33 subdataWithRange:{1, v7 - 1}];
+  v13 = [dataCopy subdataWithRange:{1, v7 - 1}];
   [(NSMutableData *)fragmentData appendData:v13];
 
-  if (!a4)
+  if (!last)
   {
     var0 = self->_ucatCore->var0;
     if (var0 <= 30)
@@ -4160,11 +4160,11 @@ LABEL_8:
 LABEL_13:
   if (v15 > 1)
   {
-    v18 = [(NSMutableData *)v14 bytes];
-    v19 = *v18;
+    bytes2 = [(NSMutableData *)v14 bytes];
+    v19 = *bytes2;
     if (((v19 - 48) & 0xEE) != 0)
     {
-      if (v18[1] == self->_serviceType)
+      if (bytes2[1] == self->_serviceType)
       {
         v20 = [(NSMutableData *)v14 subdataWithRange:2, v15 - 2];
 
@@ -4178,7 +4178,7 @@ LABEL_13:
         goto LABEL_19;
       }
 
-      v32 = v18[1];
+      v32 = bytes2[1];
     }
   }
 
@@ -4213,11 +4213,11 @@ LABEL_34:
 LABEL_19:
 }
 
-- (void)_sessionReceivedEncryptedData:(id)a3 type:(unsigned __int8)a4
+- (void)_sessionReceivedEncryptedData:(id)data type:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  typeCopy = type;
+  dataCopy = data;
+  v7 = dataCopy;
   if (!self->_encryptionReadAEAD)
   {
     var0 = self->_ucatCore->var0;
@@ -4241,7 +4241,7 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v8 = [v6 length];
+  v8 = [dataCopy length];
   v9 = v8;
   if (v8 <= 0xF)
   {
@@ -4267,7 +4267,7 @@ LABEL_22:
   }
 
   v10 = v8 - 16;
-  v11 = [v7 bytes];
+  bytes = [v7 bytes];
   v12 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v9 - 16];
   if ([v12 length] != v10)
   {
@@ -4295,7 +4295,7 @@ LABEL_40:
   [v12 mutableBytes];
   serviceType = self->_serviceType;
   encryptionReadAEAD = self->_encryptionReadAEAD;
-  v36 = v11 + v10;
+  v36 = bytes + v10;
   v14 = CryptoAEADDecryptMessage();
   v15 = 24;
   do
@@ -4332,7 +4332,7 @@ LABEL_28:
     goto LABEL_40;
   }
 
-  if (v4 == 28)
+  if (typeCopy == 28)
   {
     v18 = NSDataDecompress();
     v19 = 0;
@@ -4404,11 +4404,11 @@ LABEL_41:
 LABEL_16:
 }
 
-- (void)_sessionReceivedUnencryptedData:(id)a3 type:(unsigned __int8)a4
+- (void)_sessionReceivedUnencryptedData:(id)data type:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 == 29)
+  typeCopy = type;
+  dataCopy = data;
+  if (typeCopy == 29)
   {
     v7 = NSDataDecompress();
     v8 = 0;
@@ -4416,11 +4416,11 @@ LABEL_16:
     if (!v7)
     {
       [SFSession _sessionReceivedUnencryptedData:? type:?];
-      v6 = 0;
+      dataCopy = 0;
       goto LABEL_15;
     }
 
-    v6 = v7;
+    dataCopy = v7;
   }
 
   v9 = OPACKDecodeData();
@@ -4451,13 +4451,13 @@ LABEL_32:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(SFSession *)self _sessionReceivedUnencryptedData:v7 type:v6, &v16, &v17];
-    v6 = v16;
+    [(SFSession *)self _sessionReceivedUnencryptedData:v7 type:dataCopy, &v16, &v17];
+    dataCopy = v16;
     v7 = v17;
     goto LABEL_15;
   }
 
-  switch(v4)
+  switch(typeCopy)
   {
     case 19:
       if (self->_pairVerifySession)
@@ -4520,11 +4520,11 @@ LABEL_21:
 LABEL_15:
 }
 
-- (BOOL)_sessionReceivedRegisteredRequestID:(id)a3 flags:(unsigned int)a4 xidKey:(id)a5 xidValue:(id)a6
+- (BOOL)_sessionReceivedRegisteredRequestID:(id)d flags:(unsigned int)flags xidKey:(id)key xidValue:(id)value
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  keyCopy = key;
+  valueCopy = value;
   CFStringGetTypeID();
   v13 = CFDictionaryGetTypedValue();
   if (v13)
@@ -4537,13 +4537,13 @@ LABEL_15:
       v16 = v15;
       if (v15)
       {
-        if (a4 & 1) != 0 || ([v15 allowUnencrypted])
+        if (flags & 1) != 0 || ([v15 allowUnencrypted])
         {
           v31 = v16;
-          v17 = [v16 handler];
-          v18 = v17 != 0;
+          handler = [v16 handler];
+          v18 = handler != 0;
           var0 = self->_ucatCore->var0;
-          if (!v17)
+          if (!handler)
           {
             if (var0 <= 60)
             {
@@ -4593,10 +4593,10 @@ LABEL_28:
           v32[3] = &unk_1E7890E40;
           v32[4] = self;
           v33 = v13;
-          v36 = a4;
-          v34 = v11;
-          v35 = v12;
-          (v17)[2](v17, 0, v14, v32);
+          flagsCopy = flags;
+          v34 = keyCopy;
+          v35 = valueCopy;
+          (handler)[2](handler, 0, v14, v32);
 
           goto LABEL_29;
         }
@@ -4809,9 +4809,9 @@ LABEL_12:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sessionReceivedStartAck:(id)a3
+- (void)_sessionReceivedStartAck:(id)ack
 {
-  v4 = a3;
+  ackCopy = ack;
   v19 = 0;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4953,9 +4953,9 @@ int *__38__SFSession__sessionReceivedStartAck___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)sessionReceivedRequest:(id)a3
+- (void)sessionReceivedRequest:(id)request
 {
-  v8 = a3;
+  requestCopy = request;
   var0 = self->_ucatCore->var0;
   if (var0 <= 10)
   {
@@ -4976,18 +4976,18 @@ LABEL_3:
 LABEL_5:
   dispatch_assert_queue_V2(self->_dispatchQueue);
   requestMessageHandler = self->_requestMessageHandler;
-  v6 = v8;
+  v6 = requestCopy;
   if (requestMessageHandler)
   {
-    requestMessageHandler[2](requestMessageHandler, v8);
-    v6 = v8;
+    requestMessageHandler[2](requestMessageHandler, requestCopy);
+    v6 = requestCopy;
   }
 }
 
-- (void)sessionReceivedResponse:(id)a3
+- (void)sessionReceivedResponse:(id)response
 {
-  v12 = a3;
-  v4 = [v12 identifier];
+  responseCopy = response;
+  identifier = [responseCopy identifier];
   var0 = self->_ucatCore->var0;
   if (var0 <= 10)
   {
@@ -5001,24 +5001,24 @@ LABEL_5:
       ucatCore = self->_ucatCore;
     }
 
-    v11 = v12;
+    v11 = responseCopy;
     LogPrintF();
   }
 
 LABEL_5:
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v4 && ([(NSMutableDictionary *)self->_requestQueue objectForKeyedSubscript:v4], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (identifier && ([(NSMutableDictionary *)self->_requestQueue objectForKeyedSubscript:identifier], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [v6 responseHandler];
+    responseHandler = [v6 responseHandler];
 
-    if (v8)
+    if (responseHandler)
     {
-      v9 = [v7 responseHandler];
-      (v9)[2](v9, 0, v12);
+      responseHandler2 = [v7 responseHandler];
+      (responseHandler2)[2](responseHandler2, 0, responseCopy);
     }
 
-    [(NSMutableDictionary *)self->_requestQueue removeObjectForKey:v4, v11];
+    [(NSMutableDictionary *)self->_requestQueue removeObjectForKey:identifier, v11];
   }
 
   else
@@ -5027,9 +5027,9 @@ LABEL_5:
   }
 }
 
-- (SFSession)initWithCoder:(id)a3
+- (SFSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = SFSession;
   v5 = [(SFSession *)&v21 init];
@@ -5042,23 +5042,23 @@ LABEL_5:
 
     v6->_ucatCore = &gLogCategory_SFSessionCore;
     v6->_ucatCrypto = &gLogCategory_SFSessionCrypto;
-    if ([v4 containsValueForKey:@"ident"])
+    if ([coderCopy containsValueForKey:@"ident"])
     {
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ident"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ident"];
       identifier = v6->_identifier;
       v6->_identifier = v9;
     }
 
-    if ([v4 containsValueForKey:@"pd"])
+    if ([coderCopy containsValueForKey:@"pd"])
     {
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pd"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pd"];
       peerDevice = v6->_peerDevice;
       v6->_peerDevice = v11;
     }
 
-    if ([v4 containsValueForKey:@"st"])
+    if ([coderCopy containsValueForKey:@"st"])
     {
-      v13 = [v4 decodeIntegerForKey:@"st"];
+      v13 = [coderCopy decodeIntegerForKey:@"st"];
       v6->_serviceType = v13;
       if (v13 >= 0x100)
       {
@@ -5069,9 +5069,9 @@ LABEL_5:
       }
     }
 
-    if ([v4 containsValueForKey:@"sid"])
+    if ([coderCopy containsValueForKey:@"sid"])
     {
-      v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
+      v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
       serviceUUID = v6->_serviceUUID;
       v6->_serviceUUID = v17;
     }
@@ -5088,7 +5088,7 @@ LABEL_5:
   return v6;
 }
 
-- (int)setEncryptionReadKey:(const char *)a3 readKeyLen:(unint64_t)a4 writeKey:(const char *)a5 writeKeyLen:(unint64_t)a6
+- (int)setEncryptionReadKey:(const char *)key readKeyLen:(unint64_t)len writeKey:(const char *)writeKey writeKeyLen:(unint64_t)keyLen
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   encryptionReadAEAD = self->_encryptionReadAEAD;
@@ -5141,9 +5141,9 @@ LABEL_5:
   return 0;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [a3 copy];
+  v4 = [label copy];
   label = self->_label;
   self->_label = v4;
 
@@ -5152,11 +5152,11 @@ LABEL_5:
   ASPrintF();
 }
 
-- (void)_activatedIfReady:(id)a3
+- (void)_activatedIfReady:(id)ready
 {
-  v11 = a3;
+  readyCopy = ready;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v11)
+  if (readyCopy)
   {
     OUTLINED_FUNCTION_2_17(self->_ucatCore);
     if (!(v8 ^ v9 | v7))
@@ -5179,7 +5179,7 @@ LABEL_5:
     activateCompletion = self->_activateCompletion;
     if (activateCompletion)
     {
-      activateCompletion[2](activateCompletion, v11);
+      activateCompletion[2](activateCompletion, readyCopy);
       v5 = self->_activateCompletion;
     }
 

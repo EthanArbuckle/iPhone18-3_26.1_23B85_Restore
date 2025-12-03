@@ -1,7 +1,7 @@
 @interface WCM_RCU2ControllerIOS
 - (WCM_RCU2ControllerIOS)init;
 - (void)dealloc;
-- (void)handleMessage:(id)a3;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation WCM_RCU2ControllerIOS
@@ -27,22 +27,22 @@
   [(WCM_RCU2Controller *)&v3 dealloc];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v6 = a3;
-  uint64 = xpc_dictionary_get_uint64(v6, "kMessageId");
+  messageCopy = message;
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "kMessageId");
   [WCM_Logging logLevel:2 message:@"In RCU2 Controller handleMessage messageId = %lld", uint64];
   if (uint64 == 1402)
   {
-    v5 = [(WCM_RCU2Controller *)self threadClient];
-    [v5 HandleThreadStop:v6];
+    threadClient = [(WCM_RCU2Controller *)self threadClient];
+    [threadClient HandleThreadStop:messageCopy];
     goto LABEL_5;
   }
 
   if (uint64 == 1401)
   {
-    v5 = [(WCM_RCU2Controller *)self threadClient];
-    [v5 HandleThreadStart:v6];
+    threadClient = [(WCM_RCU2Controller *)self threadClient];
+    [threadClient HandleThreadStart:messageCopy];
 LABEL_5:
 
     goto LABEL_7;

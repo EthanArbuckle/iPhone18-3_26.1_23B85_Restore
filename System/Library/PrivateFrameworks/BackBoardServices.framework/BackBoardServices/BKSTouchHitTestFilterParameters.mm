@@ -1,38 +1,38 @@
 @interface BKSTouchHitTestFilterParameters
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 + (id)new;
 - (BKSTouchHitTestFilterParameters)init;
-- (BKSTouchHitTestFilterParameters)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BKSTouchHitTestFilterParameters)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)_init;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_initWithCopyOf:(void *)a1;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_initWithCopyOf:(void *)of;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSTouchHitTestFilterParameters
 
-- (void)_initWithCopyOf:(void *)a1
+- (void)_initWithCopyOf:(void *)of
 {
   v3 = a2;
-  if (a1)
+  if (of)
   {
-    a1 = [(BKSTouchHitTestFilterParameters *)a1 _init];
-    if (a1)
+    of = [(BKSTouchHitTestFilterParameters *)of _init];
+    if (of)
     {
       v4 = [v3[1] copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = of[1];
+      of[1] = v4;
 
       v6 = [v3[2] copy];
-      v7 = a1[2];
-      a1[2] = v6;
+      v7 = of[2];
+      of[2] = v6;
     }
   }
 
-  return a1;
+  return of;
 }
 
 - (id)_init
@@ -84,27 +84,27 @@
   return result;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v6 = a3;
-  v4 = [v6 appendObject:self->_senderDescriptors withName:@"senderDescriptors"];
-  v5 = [v6 appendObject:self->_contextIDs withName:@"contextIDs"];
+  streamCopy = stream;
+  v4 = [streamCopy appendObject:self->_senderDescriptors withName:@"senderDescriptors"];
+  v5 = [streamCopy appendObject:self->_contextIDs withName:@"contextIDs"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BKSMutableTouchHitTestFilterParameters alloc];
 
   return [(BKSTouchHitTestFilterParameters *)v4 _initWithCopyOf:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[1];
     senderDescriptors = self->_senderDescriptors;
     if (BSEqualObjects())
@@ -136,36 +136,36 @@
   return BSHashPurifyNS();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   senderDescriptors = self->_senderDescriptors;
-  v7 = v4;
+  v7 = coderCopy;
   if (senderDescriptors)
   {
-    [v4 encodeObject:senderDescriptors forKey:@"senderDescriptors"];
-    v4 = v7;
+    [coderCopy encodeObject:senderDescriptors forKey:@"senderDescriptors"];
+    coderCopy = v7;
   }
 
   contextIDs = self->_contextIDs;
   if (contextIDs)
   {
     [v7 encodeObject:contextIDs forKey:@"contextIDs"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
-- (BKSTouchHitTestFilterParameters)initWithCoder:(id)a3
+- (BKSTouchHitTestFilterParameters)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = BKSTouchHitTestFilterParameters;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(BKSTouchHitTestFilterParameters *)&v10 init];
-  v5 = [v3 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:{@"senderDescriptors", v10.receiver, v10.super_class}];
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:{@"senderDescriptors", v10.receiver, v10.super_class}];
   senderDescriptors = v4->_senderDescriptors;
   v4->_senderDescriptors = v5;
 
-  v7 = [v3 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"contextIDs"];
+  v7 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"contextIDs"];
 
   contextIDs = v4->_contextIDs;
   v4->_contextIDs = v7;
@@ -226,13 +226,13 @@ void __49__BKSTouchHitTestFilterParameters_protobufSchema__block_invoke(uint64_t
   return result;
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
-  v4 = [(BKSTouchHitTestFilterParameters *)[BKSMutableTouchHitTestFilterParameters alloc] _init];
-  v3[2](v3, v4);
+  buildCopy = build;
+  _init = [(BKSTouchHitTestFilterParameters *)[BKSMutableTouchHitTestFilterParameters alloc] _init];
+  buildCopy[2](buildCopy, _init);
 
-  v5 = [v4 copy];
+  v5 = [_init copy];
 
   return v5;
 }

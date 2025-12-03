@@ -1,55 +1,55 @@
 @interface _SWCServiceSpecifier
-+ (id)_serviceSpecifiersWithEntitlementValue:(id)a3 serviceType:(id)a4 error:(id *)a5;
-+ (id)serviceSpecifiersWithEntitlementValue:(id)a3 error:(id *)a4;
-+ (id)serviceSpecifiersWithEntitlementValue:(id)a3 serviceType:(id)a4 error:(id *)a5;
-- (BOOL)domainEncompassesDomain:(id)a3;
-- (BOOL)domainEncompassesDomainOfServiceSpecifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_serviceSpecifiersWithEntitlementValue:(id)value serviceType:(id)type error:(id *)error;
++ (id)serviceSpecifiersWithEntitlementValue:(id)value error:(id *)error;
++ (id)serviceSpecifiersWithEntitlementValue:(id)value serviceType:(id)type error:(id *)error;
+- (BOOL)domainEncompassesDomain:(id)domain;
+- (BOOL)domainEncompassesDomainOfServiceSpecifier:(id)specifier;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
-- (_SWCServiceSpecifier)initWithCoder:(id)a3;
-- (_SWCServiceSpecifier)initWithServiceType:(id)a3 applicationIdentifier:(id)a4 domain:(id)a5;
-- (id)_initWithServiceType:(id)a3 applicationIdentifier:(id)a4 domain:(id)a5;
+- (_SWCServiceSpecifier)initWithCoder:(id)coder;
+- (_SWCServiceSpecifier)initWithServiceType:(id)type applicationIdentifier:(id)identifier domain:(id)domain;
+- (id)_initWithServiceType:(id)type applicationIdentifier:(id)identifier domain:(id)domain;
 - (id)debugDescription;
 - (id)description;
 - (id)redactedDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SWCServiceSpecifier
 
-+ (id)serviceSpecifiersWithEntitlementValue:(id)a3 error:(id *)a4
++ (id)serviceSpecifiersWithEntitlementValue:(id)value error:(id *)error
 {
-  v4 = [a1 _serviceSpecifiersWithEntitlementValue:a3 serviceType:0 error:a4];
+  v4 = [self _serviceSpecifiersWithEntitlementValue:value serviceType:0 error:error];
 
   return v4;
 }
 
-+ (id)serviceSpecifiersWithEntitlementValue:(id)a3 serviceType:(id)a4 error:(id *)a5
++ (id)serviceSpecifiersWithEntitlementValue:(id)value serviceType:(id)type error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  valueCopy = value;
+  typeCopy = type;
+  if (!typeCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"SWCServiceSpecifier.mm" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"serviceType != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SWCServiceSpecifier.mm" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"serviceType != nil"}];
   }
 
-  v11 = [a1 _serviceSpecifiersWithEntitlementValue:v9 serviceType:v10 error:a5];
+  v11 = [self _serviceSpecifiersWithEntitlementValue:valueCopy serviceType:typeCopy error:error];
 
   return v11;
 }
 
-- (_SWCServiceSpecifier)initWithServiceType:(id)a3 applicationIdentifier:(id)a4 domain:(id)a5
+- (_SWCServiceSpecifier)initWithServiceType:(id)type applicationIdentifier:(id)identifier domain:(id)domain
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  typeCopy = type;
+  identifierCopy = identifier;
+  domainCopy = domain;
+  v11 = domainCopy;
+  if (!identifierCopy)
   {
     v12 = 0;
-    if (v10)
+    if (domainCopy)
     {
       goto LABEL_3;
     }
@@ -59,7 +59,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v12 = [[_SWCApplicationIdentifier alloc] initWithString:v9];
+  v12 = [[_SWCApplicationIdentifier alloc] initWithString:identifierCopy];
   if (!v11)
   {
     goto LABEL_5;
@@ -68,36 +68,36 @@ LABEL_5:
 LABEL_3:
   v13 = [[_SWCDomain alloc] initWithString:v11];
 LABEL_6:
-  v14 = [(_SWCServiceSpecifier *)self _initWithServiceType:v8 applicationIdentifier:v12 domain:v13];
+  v14 = [(_SWCServiceSpecifier *)self _initWithServiceType:typeCopy applicationIdentifier:v12 domain:v13];
 
   return v14;
 }
 
-- (id)_initWithServiceType:(id)a3 applicationIdentifier:(id)a4 domain:(id)a5
+- (id)_initWithServiceType:(id)type applicationIdentifier:(id)identifier domain:(id)domain
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  identifierCopy = identifier;
+  domainCopy = domain;
   v15.receiver = self;
   v15.super_class = _SWCServiceSpecifier;
   v11 = [(_SWCServiceSpecifier *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [typeCopy copy];
     serviceType = v11->_serviceType;
     v11->_serviceType = v12;
 
-    objc_storeStrong(&v11->_applicationIdentifier, a4);
-    objc_storeStrong(&v11->_domain, a5);
+    objc_storeStrong(&v11->_applicationIdentifier, identifier);
+    objc_storeStrong(&v11->_domain, domain);
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -107,7 +107,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       serviceType = self->_serviceType;
       v9 = 0;
       if (!(serviceType | v5->_serviceType) || [(NSString *)serviceType isEqual:?])
@@ -163,42 +163,42 @@ LABEL_6:
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   serviceType = self->_serviceType;
-  v5 = [(_SWCApplicationIdentifier *)self->_applicationIdentifier redactedDescription];
-  v6 = [(_SWCDomain *)self->_domain redactedDescription];
-  v7 = [v3 initWithFormat:@"{ s = %@, a = %@, d = %@ }", serviceType, v5, v6];
+  redactedDescription = [(_SWCApplicationIdentifier *)self->_applicationIdentifier redactedDescription];
+  redactedDescription2 = [(_SWCDomain *)self->_domain redactedDescription];
+  v7 = [v3 initWithFormat:@"{ s = %@, a = %@, d = %@ }", serviceType, redactedDescription, redactedDescription2];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_serviceType forKey:@"serviceType"];
-  [v4 encodeObject:self->_applicationIdentifier forKey:@"applicationIdentifier"];
-  [v4 encodeObject:self->_domain forKey:@"domain"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_serviceType forKey:@"serviceType"];
+  [coderCopy encodeObject:self->_applicationIdentifier forKey:@"applicationIdentifier"];
+  [coderCopy encodeObject:self->_domain forKey:@"domain"];
 }
 
-- (_SWCServiceSpecifier)initWithCoder:(id)a3
+- (_SWCServiceSpecifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 swc_decodeObjectOfClass:objc_opt_class() forKey:@"serviceType"];
-  v6 = [v4 swc_decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
-  v7 = [v4 swc_decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+  coderCopy = coder;
+  v5 = [coderCopy swc_decodeObjectOfClass:objc_opt_class() forKey:@"serviceType"];
+  v6 = [coderCopy swc_decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+  v7 = [coderCopy swc_decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
   v8 = [(_SWCServiceSpecifier *)self _initWithServiceType:v5 applicationIdentifier:v6 domain:v7];
 
   return v8;
 }
 
-- (BOOL)domainEncompassesDomain:(id)a3
+- (BOOL)domainEncompassesDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(_SWCServiceSpecifier *)self SWCDomain];
-  if (v5)
+  domainCopy = domain;
+  sWCDomain = [(_SWCServiceSpecifier *)self SWCDomain];
+  if (sWCDomain)
   {
-    v6 = [[_SWCDomain alloc] initWithString:v4];
+    v6 = [[_SWCDomain alloc] initWithString:domainCopy];
     if (v6)
     {
-      v7 = [v5 encompassesDomain:v6];
+      v7 = [sWCDomain encompassesDomain:v6];
     }
 
     else
@@ -215,16 +215,16 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)domainEncompassesDomainOfServiceSpecifier:(id)a3
+- (BOOL)domainEncompassesDomainOfServiceSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(_SWCServiceSpecifier *)self SWCDomain];
-  v6 = [v4 SWCDomain];
-  v7 = v6;
+  specifierCopy = specifier;
+  sWCDomain = [(_SWCServiceSpecifier *)self SWCDomain];
+  sWCDomain2 = [specifierCopy SWCDomain];
+  v7 = sWCDomain2;
   v8 = 0;
-  if (v5 && v6)
+  if (sWCDomain && sWCDomain2)
   {
-    v8 = [v5 encompassesDomain:v6];
+    v8 = [sWCDomain encompassesDomain:sWCDomain2];
   }
 
   return v8;
@@ -255,14 +255,14 @@ LABEL_6:
   return v4;
 }
 
-+ (id)_serviceSpecifiersWithEntitlementValue:(id)a3 serviceType:(id)a4 error:(id *)a5
++ (id)_serviceSpecifiersWithEntitlementValue:(id)value serviceType:(id)type error:(id *)error
 {
   v54[3] = *MEMORY[0x277D85DE8];
-  v41 = a3;
-  v8 = a4;
+  valueCopy = value;
+  typeCopy = type;
   context = objc_autoreleasePoolPush();
-  v43 = v8;
-  if (v8 && (_SWCServiceTypeIsWhitelisted(v8) & 1) == 0)
+  v43 = typeCopy;
+  if (typeCopy && (_SWCServiceTypeIsWhitelisted(typeCopy) & 1) == 0)
   {
     v30 = objc_alloc(MEMORY[0x277CCA9B8]);
     v54[0] = &unk_2877A7378;
@@ -271,14 +271,14 @@ LABEL_6:
     obj = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[_SWCServiceSpecifier(Private) _serviceSpecifiersWithEntitlementValue:serviceType:error:]"];
     v54[1] = obj;
     v53[2] = *MEMORY[0x277CCA068];
-    v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Service %@ is not supported.", v8];
-    v54[2] = v24;
+    typeCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Service %@ is not supported.", typeCopy];
+    v54[2] = typeCopy;
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:3];
     v29 = [v30 initWithDomain:@"SWCErrorDomain" code:2 userInfo:v28];
     goto LABEL_28;
   }
 
-  if (!v41 || (v9 = 0, !_NSIsNSArray()))
+  if (!valueCopy || (v9 = 0, !_NSIsNSArray()))
   {
     v27 = objc_alloc(MEMORY[0x277CCA9B8]);
     v49[0] = &unk_2877A73A8;
@@ -287,8 +287,8 @@ LABEL_6:
     obj = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[_SWCServiceSpecifier(Private) _serviceSpecifiersWithEntitlementValue:serviceType:error:]"];
     v49[1] = obj;
     v48[2] = *MEMORY[0x277CCA068];
-    v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Invalid entitlement value of class %@", objc_opt_class()];
-    v49[2] = v24;
+    typeCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Invalid entitlement value of class %@", objc_opt_class()];
+    v49[2] = typeCopy;
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:3];
     v29 = [v27 initWithDomain:@"SWCErrorDomain" code:2 userInfo:v28];
 LABEL_28:
@@ -302,15 +302,15 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v10 = [v8 length];
+  v10 = [typeCopy length];
   v40 = objc_alloc_init(MEMORY[0x277CBEB40]);
-  v36 = a1;
+  selfCopy = self;
   v37 = v10;
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v41;
+  obj = valueCopy;
   v11 = [obj countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (!v11)
   {
@@ -335,8 +335,8 @@ LABEL_30:
         v51[0] = &unk_2877A7390;
         v50[0] = @"Line";
         v50[1] = @"Function";
-        v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[_SWCServiceSpecifier(Private) _serviceSpecifiersWithEntitlementValue:serviceType:error:]"];
-        v51[1] = v24;
+        typeCopy = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[_SWCServiceSpecifier(Private) _serviceSpecifiersWithEntitlementValue:serviceType:error:]"];
+        v51[1] = typeCopy;
         v50[2] = *MEMORY[0x277CCA068];
         v28 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Invalid entitlement value (in array) of class %@", objc_opt_class()];
         v51[2] = v28;
@@ -359,7 +359,7 @@ LABEL_30:
           }
 
           v19 = [v14 compare:v43 options:1 range:0];
-          v20 = v43;
+          lowercaseString = v43;
           if (v19)
           {
             continue;
@@ -369,11 +369,11 @@ LABEL_30:
         else
         {
           v5 = [v14 substringToIndex:v15];
-          v20 = [v5 lowercaseString];
-          v9 = v20;
+          lowercaseString = [v5 lowercaseString];
+          v9 = lowercaseString;
         }
 
-        v21 = _SWCServiceTypeCanonicalize(v20);
+        v21 = _SWCServiceTypeCanonicalize(lowercaseString);
         if (!v43)
         {
         }
@@ -381,7 +381,7 @@ LABEL_30:
         v22 = [v14 substringFromIndex:v17 + v18];
         if (_SWCServiceTypeIsWhitelisted(v21))
         {
-          v23 = [[v36 alloc] initWithServiceType:v21 applicationIdentifier:0 domain:v22];
+          v23 = [[selfCopy alloc] initWithServiceType:v21 applicationIdentifier:0 domain:v22];
           [v40 addObject:v23];
         }
       }
@@ -400,8 +400,8 @@ LABEL_24:
 
   if (v40)
   {
-    v24 = [v40 array];
-    v25 = [v24 copy];
+    typeCopy = [v40 array];
+    v25 = [typeCopy copy];
     v26 = 0;
     goto LABEL_30;
   }
@@ -410,10 +410,10 @@ LABEL_24:
   v25 = 0;
 LABEL_31:
   objc_autoreleasePoolPop(context);
-  if (a5 && !v25)
+  if (error && !v25)
   {
     v31 = v26;
-    *a5 = v26;
+    *error = v26;
   }
 
   v32 = *MEMORY[0x277D85DE8];

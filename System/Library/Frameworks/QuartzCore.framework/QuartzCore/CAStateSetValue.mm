@@ -1,16 +1,16 @@
 @interface CAStateSetValue
-- (BOOL)CAMLTypeSupportedForKey:(id)a3;
-- (BOOL)matches:(id)a3;
-- (CAStateSetValue)initWithCoder:(id)a3;
-- (id)CAMLTypeForKey:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)CAMLTypeSupportedForKey:(id)key;
+- (BOOL)matches:(id)matches;
+- (CAStateSetValue)initWithCoder:(id)coder;
+- (id)CAMLTypeForKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)apply:(id)a3;
+- (void)apply:(id)apply;
 - (void)dealloc;
-- (void)encodeWithCAMLWriter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)foreachLayer:(id)a3;
-- (void)setValue:(id)a3;
+- (void)encodeWithCAMLWriter:(id)writer;
+- (void)encodeWithCoder:(id)coder;
+- (void)foreachLayer:(id)layer;
+- (void)setValue:(id)value;
 @end
 
 @implementation CAStateSetValue
@@ -24,7 +24,7 @@
   [(CAStateElement *)&v3 dealloc];
 }
 
-- (CAStateSetValue)initWithCoder:(id)a3
+- (CAStateSetValue)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -32,21 +32,21 @@
   v4 = [(CAStateElement *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_keyPath = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"keyPath", "copy"}];
-    v4->_value = [a3 CA_decodeObjectForKey:@"value"];
+    v4->_keyPath = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"keyPath", "copy"}];
+    v4->_value = [coder CA_decodeObjectForKey:@"value"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = CAStateSetValue;
   [(CAStateElement *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_keyPath forKey:@"keyPath"];
-  [a3 CA_encodeObject:self->_value forKey:@"value" conditional:0];
+  [coder encodeObject:self->_keyPath forKey:@"keyPath"];
+  [coder CA_encodeObject:self->_value forKey:@"value" conditional:0];
 }
 
 - (id)debugDescription
@@ -58,33 +58,33 @@
   return [v3 stringWithFormat:@"{%@:%p %@:%p %@ %@}", v4, self, v5, objc_loadWeak(&self->super._target), self->_keyPath, self->_value];
 }
 
-- (BOOL)CAMLTypeSupportedForKey:(id)a3
+- (BOOL)CAMLTypeSupportedForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"value"])
+  if ([key isEqualToString:@"value"])
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = CAStateSetValue;
-  return [(CAStateElement *)&v6 CAMLTypeSupportedForKey:a3];
+  return [(CAStateElement *)&v6 CAMLTypeSupportedForKey:key];
 }
 
-- (id)CAMLTypeForKey:(id)a3
+- (id)CAMLTypeForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:@"keyPath"])
+  if ([key isEqualToString:@"keyPath"])
   {
     return @"string";
   }
 
   v6.receiver = self;
   v6.super_class = CAStateSetValue;
-  return [(CAStateElement *)&v6 CAMLTypeForKey:a3];
+  return [(CAStateElement *)&v6 CAMLTypeForKey:key];
 }
 
-- (void)encodeWithCAMLWriter:(id)a3
+- (void)encodeWithCAMLWriter:(id)writer
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -93,18 +93,18 @@
   keyPath = self->_keyPath;
   if (keyPath)
   {
-    [a3 setElementAttribute:keyPath forKey:@"keyPath"];
+    [writer setElementAttribute:keyPath forKey:@"keyPath"];
   }
 
   if (self->_value)
   {
-    [a3 beginPropertyElement:@"value"];
-    [a3 encodeObject:self->_value];
-    [a3 endElement];
+    [writer beginPropertyElement:@"value"];
+    [writer encodeObject:self->_value];
+    [writer endElement];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CAStateSetValue);
   v4->_keyPath = self->_keyPath;
@@ -113,7 +113,7 @@
   return v4;
 }
 
-- (void)foreachLayer:(id)a3
+- (void)foreachLayer:(id)layer
 {
   v17 = *MEMORY[0x1E69E9840];
   if ([(NSString *)self->_keyPath isEqualToString:@"sublayers"])
@@ -137,7 +137,7 @@
             objc_enumerationMutation(value);
           }
 
-          (*(a3 + 2))(a3, *(*(&v13 + 1) + 8 * i));
+          (*(layer + 2))(layer, *(*(&v13 + 1) + 8 * i));
         }
 
         v7 = [value countByEnumeratingWithState:&v13 objects:v12 count:16];
@@ -150,16 +150,16 @@
   else if ([(NSString *)self->_keyPath isEqualToString:@"mask"])
   {
     v10 = self->_value;
-    v11 = *(a3 + 2);
+    v11 = *(layer + 2);
 
-    v11(a3, v10);
+    v11(layer, v10);
   }
 }
 
-- (void)apply:(id)a3
+- (void)apply:(id)apply
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (apply)
   {
     v5 = objc_alloc_init(CAStateSetValue);
     [(CAStateElement *)v5 setSource:self];
@@ -168,7 +168,7 @@
     v6 = [objc_loadWeak(&self->super._target) valueForKeyPath:self->_keyPath];
     v7 = (objc_opt_respondsToSelector() & 1) != 0 ? [v6 copy] : v6;
     v5->_value = v7;
-    [a3 addElement:v5];
+    [apply addElement:v5];
 
     if (objc_opt_respondsToSelector())
     {
@@ -196,7 +196,7 @@
               v13 = *(*(&v16 + 1) + 8 * i);
               if (![v13 superlayer])
               {
-                [a3 willAddLayer:v13];
+                [apply willAddLayer:v13];
               }
             }
 
@@ -212,7 +212,7 @@
         v14 = self->_value;
         if (![v14 superlayer])
         {
-          [a3 willAddLayer:v14];
+          [apply willAddLayer:v14];
         }
       }
     }
@@ -221,42 +221,42 @@
   [objc_loadWeak(&self->super._target) setValue:self->_value forKeyPath:self->_keyPath];
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
-  v5 = [a3 target];
-  if (v5 != objc_loadWeak(&self->super._target))
+  target = [matches target];
+  if (target != objc_loadWeak(&self->super._target))
   {
     return 0;
   }
 
-  v7 = [a3 keyPath];
+  keyPath = [matches keyPath];
   keyPath = self->_keyPath;
 
-  return [v7 isEqualToString:keyPath];
+  return [keyPath isEqualToString:keyPath];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   value = self->_value;
-  if (value != a3)
+  if (value != value)
   {
 
     if ([(NSString *)self->_keyPath isEqualToString:@"sublayers"])
     {
-      v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:a3];
+      valueCopy = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:value];
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      v6 = [a3 copyWithZone:0];
+      valueCopy = [value copyWithZone:0];
     }
 
     else
     {
-      v6 = a3;
+      valueCopy = value;
     }
 
-    self->_value = v6;
+    self->_value = valueCopy;
   }
 }
 

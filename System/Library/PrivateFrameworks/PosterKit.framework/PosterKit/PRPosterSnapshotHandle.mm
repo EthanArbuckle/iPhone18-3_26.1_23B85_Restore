@@ -1,23 +1,23 @@
 @interface PRPosterSnapshotHandle
-- (PRPosterSnapshotHandle)initWithKnownContexts:(id)a3 inflightContext:(id)a4;
+- (PRPosterSnapshotHandle)initWithKnownContexts:(id)contexts inflightContext:(id)context;
 @end
 
 @implementation PRPosterSnapshotHandle
 
-- (PRPosterSnapshotHandle)initWithKnownContexts:(id)a3 inflightContext:(id)a4
+- (PRPosterSnapshotHandle)initWithKnownContexts:(id)contexts inflightContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  contextsCopy = contexts;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = PRPosterSnapshotHandle;
   v8 = [(PRPosterSnapshotHandle *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [contextsCopy copy];
     knownContexts = v8->_knownContexts;
     v8->_knownContexts = v9;
 
-    v11 = [v7 copy];
+    v11 = [contextCopy copy];
     inflightContext = v8->_inflightContext;
     v8->_inflightContext = v11;
   }

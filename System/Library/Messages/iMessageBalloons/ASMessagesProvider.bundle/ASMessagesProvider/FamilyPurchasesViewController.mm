@@ -1,28 +1,28 @@
 @interface FamilyPurchasesViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FamilyPurchasesViewController
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(FamilyPurchasesViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(FamilyPurchasesViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     return 30;
   }
@@ -33,60 +33,60 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for FamilyPurchasesViewController();
   v4 = v7.receiver;
-  [(StoreCollectionViewController *)&v7 viewWillAppear:v3];
-  v5 = [v4 collectionView];
-  if (v5)
+  [(StoreCollectionViewController *)&v7 viewWillAppear:appearCopy];
+  collectionView = [v4 collectionView];
+  if (collectionView)
   {
-    v6 = v5;
-    [v5 selectItemAtIndexPath:0 animated:1 scrollPosition:0];
+    v6 = collectionView;
+    [collectionView selectItemAtIndexPath:0 animated:1 scrollPosition:0];
   }
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2CFF0();
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_760B90();
 
   return v5;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_760BB0();
 
   return v4;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_757640();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_2D2D8(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_2D2D8(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = sub_757640();
   v8 = *(v7 - 8);
@@ -95,43 +95,43 @@
   v11 = sub_769240();
   v13 = v12;
   sub_757590();
-  v14 = a3;
-  v15 = self;
-  v16 = sub_2EC30(v14, v11, v13);
+  viewCopy = view;
+  selfCopy = self;
+  v16 = sub_2EC30(viewCopy, v11, v13);
 
   (*(v8 + 8))(v10, v7);
 
   return v16;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v5 = sub_757640();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v9 = self;
+  selfCopy = self;
   sub_760BA0();
   (*(v6 + 8))(v8, v5);
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_757640();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_2ED6C(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_2ED6C(cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)collectionView:(id)a3 willDisplaySupplementaryView:(id)a4 forElementKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view willDisplaySupplementaryView:(id)supplementaryView forElementKind:(id)kind atIndexPath:(id)path
 {
   v9 = sub_757640();
   v10 = *(v9 - 8);
@@ -140,25 +140,25 @@
   v13 = sub_769240();
   v15 = v14;
   sub_757590();
-  v16 = a3;
-  v17 = a4;
-  v18 = self;
-  sub_2F41C(v17, v13, v15);
+  viewCopy = view;
+  supplementaryViewCopy = supplementaryView;
+  selfCopy = self;
+  sub_2F41C(supplementaryViewCopy, v13, v15);
 
   (*(v10 + 8))(v12, v9);
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v8 = sub_757640();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v21 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_2F7D4(v12);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_2F7D4(viewCopy);
   v16 = v15;
   v18 = v17;
 
@@ -170,13 +170,13 @@
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   v6 = sub_75FAD0();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v19 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = self;
+  selfCopy = self;
   sub_760B60();
   if ((*(v7 + 88))(v9, v6) == enum case for FamilyPurchasesSection.loggedInUser(_:))
   {
@@ -208,11 +208,11 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
   sub_30120();
   v11 = v10;
   v13 = v12;

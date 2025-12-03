@@ -1,7 +1,7 @@
 @interface ClarityUIListLayoutController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ClarityUIListLayoutController
@@ -39,34 +39,34 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = ClarityUIListLayoutController;
-  v6 = a4;
-  v7 = [(ClarityUIListLayoutController *)&v13 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(ClarityUIListLayoutController *)self specifierAtIndexPath:v6, v13.receiver, v13.super_class];
+  pathCopy = path;
+  v7 = [(ClarityUIListLayoutController *)&v13 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(ClarityUIListLayoutController *)self specifierAtIndexPath:pathCopy, v13.receiver, v13.super_class];
 
   v9 = [v8 propertyForKey:@"ListLayout"];
   v10 = +[CLFSettings sharedInstance];
-  v11 = [v10 listLayout];
-  [v7 setChecked:{objc_msgSend(v11, "isEqualToString:", v9)}];
+  listLayout = [v10 listLayout];
+  [v7 setChecked:{objc_msgSend(listLayout, "isEqualToString:", v9)}];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = ClarityUIListLayoutController;
-  v6 = a4;
-  [(ClarityUIListLayoutController *)&v10 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(ClarityUIListLayoutController *)self specifierAtIndexPath:v6, v10.receiver, v10.super_class];
+  pathCopy = path;
+  [(ClarityUIListLayoutController *)&v10 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(ClarityUIListLayoutController *)self specifierAtIndexPath:pathCopy, v10.receiver, v10.super_class];
   v8 = [v7 propertyForKey:@"ListLayout"];
   v9 = +[CLFSettings sharedInstance];
   [v9 setListLayout:v8];
 
-  [(ClarityUIListLayoutController *)self updateTableCheckedSelection:v6];
+  [(ClarityUIListLayoutController *)self updateTableCheckedSelection:pathCopy];
 }
 
 @end

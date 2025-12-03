@@ -1,19 +1,19 @@
 @interface ASSettingsCurrentTimeCell
-- (ASSettingsCurrentTimeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (ASSettingsCurrentTimeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)layoutSubviews;
 @end
 
 @implementation ASSettingsCurrentTimeCell
 
-- (ASSettingsCurrentTimeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (ASSettingsCurrentTimeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v12.receiver = self;
   v12.super_class = ASSettingsCurrentTimeCell;
-  v9 = [(ASSettingsCurrentTimeCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v9 = [(ASSettingsCurrentTimeCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   if (v9)
   {
-    v10 = [v8 propertyForKey:@"kPSOofScheduleEndDateTextColor"];
+    v10 = [specifierCopy propertyForKey:@"kPSOofScheduleEndDateTextColor"];
     -[ASSettingsCurrentTimeCell setCellFocusColor:](v9, "setCellFocusColor:", [v10 BOOLValue]);
   }
 
@@ -25,43 +25,43 @@
   v22.receiver = self;
   v22.super_class = ASSettingsCurrentTimeCell;
   [(ASSettingsCurrentTimeCell *)&v22 layoutSubviews];
-  v3 = [(ASSettingsCurrentTimeCell *)self textLabel];
-  [v3 frame];
+  textLabel = [(ASSettingsCurrentTimeCell *)self textLabel];
+  [textLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(ASSettingsCurrentTimeCell *)self textLabel];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  textLabel2 = [(ASSettingsCurrentTimeCell *)self textLabel];
+  [textLabel2 setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(ASSettingsCurrentTimeCell *)self oldTextColor];
+  oldTextColor = [(ASSettingsCurrentTimeCell *)self oldTextColor];
 
-  if (!v13)
+  if (!oldTextColor)
   {
-    v14 = [(ASSettingsCurrentTimeCell *)self valueLabel];
-    v15 = [v14 color];
-    [(ASSettingsCurrentTimeCell *)self setOldTextColor:v15];
+    valueLabel = [(ASSettingsCurrentTimeCell *)self valueLabel];
+    color = [valueLabel color];
+    [(ASSettingsCurrentTimeCell *)self setOldTextColor:color];
   }
 
   if ([(ASSettingsCurrentTimeCell *)self cellFocusColor])
   {
-    v16 = [(ASSettingsCurrentTimeCell *)self valueLabel];
-    v17 = [v16 color];
-    [(ASSettingsCurrentTimeCell *)self setOldTextColor:v17];
+    valueLabel2 = [(ASSettingsCurrentTimeCell *)self valueLabel];
+    color2 = [valueLabel2 color];
+    [(ASSettingsCurrentTimeCell *)self setOldTextColor:color2];
 
-    v18 = +[UIApplication sharedApplication];
-    v19 = [v18 keyWindow];
-    v20 = [v19 tintColor];
-    v21 = [(ASSettingsCurrentTimeCell *)self valueLabel];
-    [v21 setColor:v20];
+    oldTextColor2 = +[UIApplication sharedApplication];
+    keyWindow = [oldTextColor2 keyWindow];
+    tintColor = [keyWindow tintColor];
+    valueLabel3 = [(ASSettingsCurrentTimeCell *)self valueLabel];
+    [valueLabel3 setColor:tintColor];
   }
 
   else
   {
-    v18 = [(ASSettingsCurrentTimeCell *)self oldTextColor];
-    v19 = [(ASSettingsCurrentTimeCell *)self valueLabel];
-    [v19 setColor:v18];
+    oldTextColor2 = [(ASSettingsCurrentTimeCell *)self oldTextColor];
+    keyWindow = [(ASSettingsCurrentTimeCell *)self valueLabel];
+    [keyWindow setColor:oldTextColor2];
   }
 
   [(ASSettingsCurrentTimeCell *)self setSelectionStyle:3];

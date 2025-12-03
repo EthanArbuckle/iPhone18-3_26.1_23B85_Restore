@@ -1,16 +1,16 @@
 @interface BFFProximityVisualPairingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation BFFProximityVisualPairingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BFFProximityVisualPairingViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"BFFProximityVisualPairingViewController" hasInstanceMethod:@"visualPairingView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BFFProximityVisualPairingViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"BFFProximityVisualPairingViewController" hasInstanceMethod:@"visualPairingView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

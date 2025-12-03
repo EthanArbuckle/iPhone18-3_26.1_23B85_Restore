@@ -1,32 +1,32 @@
 @interface ARCoachingAnimTime
 - (ARCoachingAnimTime)init;
-- (void)setAbsoluteTime:(double)a3;
-- (void)setStartTime:(double)a3;
+- (void)setAbsoluteTime:(double)time;
+- (void)setStartTime:(double)time;
 @end
 
 @implementation ARCoachingAnimTime
 
-- (void)setAbsoluteTime:(double)a3
+- (void)setAbsoluteTime:(double)time
 {
-  self->_absoluteTime = a3;
+  self->_absoluteTime = time;
   [(ARCoachingAnimTime *)self startTime];
-  v6 = a3 - v5;
-  self->_delta = a3 - v5;
+  v6 = time - v5;
+  self->_delta = time - v5;
   [(ARCoachingAnimTime *)self duration];
   self->_deltaPercentage = fmin(fmax(v6 / v7, 0.0), 1.0);
-  *&v7 = a3 * 5.0;
+  *&v7 = time * 5.0;
   self->_oscillatingTime = sinf(*&v7) * 0.5 + 0.5;
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
   [(ARCoachingAnimTime *)self absoluteTime];
-  if (v5 > a3)
+  if (v5 > time)
   {
     [ARCoachingAnimTime setStartTime:];
   }
 
-  self->_startTime = a3;
+  self->_startTime = time;
 }
 
 - (ARCoachingAnimTime)init

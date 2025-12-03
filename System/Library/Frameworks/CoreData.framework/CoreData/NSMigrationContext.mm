@@ -1,10 +1,10 @@
 @interface NSMigrationContext
-- (NSMigrationContext)initWithMigrationManager:(id)a3;
-- (id)destinationInstancesForEntityMapping:(uint64_t)a3 sourceInstance:;
-- (id)sourceInstancesForEntityMapping:(uint64_t)a3 destinationInstance:;
-- (uint64_t)_createAssociationsByDestination:(uint64_t)a3 fromSource:(void *)a4 forEntityMapping:;
-- (uint64_t)_createAssociationsBySource:(uint64_t)a3 withDestination:(void *)a4 forEntityMapping:;
-- (uint64_t)associateSourceInstance:(const void *)a3 withDestinationInstance:(void *)a4 forEntityMapping:;
+- (NSMigrationContext)initWithMigrationManager:(id)manager;
+- (id)destinationInstancesForEntityMapping:(uint64_t)mapping sourceInstance:;
+- (id)sourceInstancesForEntityMapping:(uint64_t)mapping destinationInstance:;
+- (uint64_t)_createAssociationsByDestination:(uint64_t)destination fromSource:(void *)source forEntityMapping:;
+- (uint64_t)_createAssociationsBySource:(uint64_t)source withDestination:(void *)destination forEntityMapping:;
+- (uint64_t)associateSourceInstance:(const void *)instance withDestinationInstance:(void *)destinationInstance forEntityMapping:;
 - (uint64_t)setCurrentEntityMapping:(uint64_t)result;
 - (uint64_t)setCurrentPropertyMapping:(uint64_t)result;
 - (void)clearAssociationTables;
@@ -13,7 +13,7 @@
 
 @implementation NSMigrationContext
 
-- (NSMigrationContext)initWithMigrationManager:(id)a3
+- (NSMigrationContext)initWithMigrationManager:(id)manager
 {
   v10.receiver = self;
   v10.super_class = NSMigrationContext;
@@ -21,7 +21,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_migrationManager = a3;
+    v4->_migrationManager = manager;
     v4->_currentStep = 0;
     v6 = *MEMORY[0x1E695E480];
     v7 = MEMORY[0x1E695E9D8];
@@ -51,15 +51,15 @@
 
 - (void)clearAssociationTables
 {
-  if (a1)
+  if (self)
   {
 
-    *(a1 + 8) = 0;
-    *(a1 + 16) = 0;
+    *(self + 8) = 0;
+    *(self + 16) = 0;
 
-    *(a1 + 24) = 0;
-    *(a1 + 32) = 0;
-    *(a1 + 56) = 0;
+    *(self + 24) = 0;
+    *(self + 32) = 0;
+    *(self + 56) = 0;
   }
 }
 
@@ -106,16 +106,16 @@
   return result;
 }
 
-- (uint64_t)_createAssociationsBySource:(uint64_t)a3 withDestination:(void *)a4 forEntityMapping:
+- (uint64_t)_createAssociationsBySource:(uint64_t)source withDestination:(void *)destination forEntityMapping:
 {
   if (result)
   {
     v7 = result;
-    Mutable = [*(result + 24) objectForKey:{objc_msgSend(a4, "name")}];
+    Mutable = [*(result + 24) objectForKey:{objc_msgSend(destination, "name")}];
     if (!Mutable)
     {
       Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-      [*(v7 + 24) setObject:Mutable forKey:{objc_msgSend(a4, "name")}];
+      [*(v7 + 24) setObject:Mutable forKey:{objc_msgSend(destination, "name")}];
     }
 
     v9 = [(__CFDictionary *)Mutable objectForKey:a2];
@@ -125,7 +125,7 @@
       CFDictionarySetValue(Mutable, a2, v9);
     }
 
-    [v9 addObject:a3];
+    [v9 addObject:source];
     v10 = [*(v7 + 8) objectForKey:a2];
     if (!v10)
     {
@@ -133,22 +133,22 @@
       CFDictionarySetValue(*(v7 + 8), a2, v10);
     }
 
-    return [v10 addObject:a3];
+    return [v10 addObject:source];
   }
 
   return result;
 }
 
-- (uint64_t)_createAssociationsByDestination:(uint64_t)a3 fromSource:(void *)a4 forEntityMapping:
+- (uint64_t)_createAssociationsByDestination:(uint64_t)destination fromSource:(void *)source forEntityMapping:
 {
   if (result)
   {
     v7 = result;
-    Mutable = [*(result + 32) objectForKey:{objc_msgSend(a4, "name")}];
+    Mutable = [*(result + 32) objectForKey:{objc_msgSend(source, "name")}];
     if (!Mutable)
     {
       Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-      [*(v7 + 32) setObject:Mutable forKey:{objc_msgSend(a4, "name")}];
+      [*(v7 + 32) setObject:Mutable forKey:{objc_msgSend(source, "name")}];
     }
 
     v9 = [(__CFDictionary *)Mutable objectForKey:a2];
@@ -158,7 +158,7 @@
       CFDictionarySetValue(Mutable, a2, v9);
     }
 
-    [v9 addObject:a3];
+    [v9 addObject:destination];
     v10 = [*(v7 + 16) objectForKey:a2];
     if (!v10)
     {
@@ -166,26 +166,26 @@
       CFDictionarySetValue(*(v7 + 16), a2, v10);
     }
 
-    return [v10 addObject:a3];
+    return [v10 addObject:destination];
   }
 
   return result;
 }
 
-- (uint64_t)associateSourceInstance:(const void *)a3 withDestinationInstance:(void *)a4 forEntityMapping:
+- (uint64_t)associateSourceInstance:(const void *)instance withDestinationInstance:(void *)destinationInstance forEntityMapping:
 {
   if (result)
   {
     v7 = result;
-    [(NSMigrationContext *)result _createAssociationsBySource:a2 withDestination:a3 forEntityMapping:a4];
+    [(NSMigrationContext *)result _createAssociationsBySource:a2 withDestination:instance forEntityMapping:destinationInstance];
 
-    return [(NSMigrationContext *)v7 _createAssociationsByDestination:a3 fromSource:a2 forEntityMapping:a4];
+    return [(NSMigrationContext *)v7 _createAssociationsByDestination:instance fromSource:a2 forEntityMapping:destinationInstance];
   }
 
   return result;
 }
 
-- (id)destinationInstancesForEntityMapping:(uint64_t)a3 sourceInstance:
+- (id)destinationInstancesForEntityMapping:(uint64_t)mapping sourceInstance:
 {
   v19 = *MEMORY[0x1E69E9840];
   if (result)
@@ -193,7 +193,7 @@
     v5 = result;
     if (a2)
     {
-      if (!a3)
+      if (!mapping)
       {
         v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v9 = [objc_msgSend(v5[3] objectForKey:{objc_msgSend(a2, "name")), "allValues"}];
@@ -235,7 +235,7 @@
       v6 = result[1];
     }
 
-    v7 = [objc_msgSend(v6 objectForKey:{a3), "copy"}];
+    v7 = [objc_msgSend(v6 objectForKey:{mapping), "copy"}];
 LABEL_7:
     if (v7)
     {
@@ -252,7 +252,7 @@ LABEL_7:
   return result;
 }
 
-- (id)sourceInstancesForEntityMapping:(uint64_t)a3 destinationInstance:
+- (id)sourceInstancesForEntityMapping:(uint64_t)mapping destinationInstance:
 {
   v19 = *MEMORY[0x1E69E9840];
   if (result)
@@ -260,7 +260,7 @@ LABEL_7:
     v5 = result;
     if (a2)
     {
-      if (!a3)
+      if (!mapping)
       {
         v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v9 = [objc_msgSend(v5[4] objectForKey:{objc_msgSend(a2, "name")), "allValues"}];
@@ -302,7 +302,7 @@ LABEL_7:
       v6 = result[2];
     }
 
-    v7 = [objc_msgSend(v6 objectForKey:{a3), "copy"}];
+    v7 = [objc_msgSend(v6 objectForKey:{mapping), "copy"}];
 LABEL_7:
     if (v7)
     {

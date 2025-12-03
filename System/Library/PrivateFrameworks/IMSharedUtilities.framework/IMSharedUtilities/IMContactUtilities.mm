@@ -1,17 +1,17 @@
 @interface IMContactUtilities
-+ (id)getContactFullNameAndOrganizationNameForHandleID:(id)a3;
-+ (id)getContactGivenNameAndBirthdayForHandleID:(id)a3;
-+ (id)getContactPropertiesForHandleID:(id)a3 withKeys:(id)a4;
++ (id)getContactFullNameAndOrganizationNameForHandleID:(id)d;
++ (id)getContactGivenNameAndBirthdayForHandleID:(id)d;
++ (id)getContactPropertiesForHandleID:(id)d withKeys:(id)keys;
 @end
 
 @implementation IMContactUtilities
 
-+ (id)getContactGivenNameAndBirthdayForHandleID:(id)a3
++ (id)getContactGivenNameAndBirthdayForHandleID:(id)d
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  dCopy = d;
+  v4 = dCopy;
+  if (dCopy && [dCopy length])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v6 = [IMContactStore validateAndCleanupID:v4];
@@ -29,12 +29,12 @@
 
     if (v10)
     {
-      v13 = [v11 givenName];
+      givenName = [v11 givenName];
 
-      if (v13)
+      if (givenName)
       {
-        v14 = [v11 givenName];
-        [v5 setObject:v14 forKey:v9];
+        givenName2 = [v11 givenName];
+        [v5 setObject:givenName2 forKey:v9];
       }
     }
 
@@ -44,25 +44,25 @@
 
     if (v16)
     {
-      v17 = [v11 birthday];
+      birthday = [v11 birthday];
 
-      if (v17)
+      if (birthday)
       {
-        v18 = [MEMORY[0x1E695DEE8] currentCalendar];
-        v19 = [MEMORY[0x1E695DFE8] systemTimeZone];
-        [v18 setTimeZone:v19];
+        currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+        systemTimeZone = [MEMORY[0x1E695DFE8] systemTimeZone];
+        [currentCalendar setTimeZone:systemTimeZone];
 
         v20 = objc_alloc_init(MEMORY[0x1E695DF10]);
-        v21 = [v11 birthday];
-        [v20 setDay:{objc_msgSend(v21, "day")}];
+        birthday2 = [v11 birthday];
+        [v20 setDay:{objc_msgSend(birthday2, "day")}];
 
-        v22 = [v11 birthday];
-        [v20 setMonth:{objc_msgSend(v22, "month")}];
+        birthday3 = [v11 birthday];
+        [v20 setMonth:{objc_msgSend(birthday3, "month")}];
 
-        v23 = [v11 birthday];
-        [v20 setYear:{objc_msgSend(v23, "year")}];
+        birthday4 = [v11 birthday];
+        [v20 setYear:{objc_msgSend(birthday4, "year")}];
 
-        v24 = [v18 dateFromComponents:v20];
+        v24 = [currentCalendar dateFromComponents:v20];
         [v5 setObject:v24 forKey:v8];
       }
     }
@@ -76,7 +76,7 @@
   return v5;
 }
 
-+ (id)getContactFullNameAndOrganizationNameForHandleID:(id)a3
++ (id)getContactFullNameAndOrganizationNameForHandleID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E695C230];
@@ -84,31 +84,31 @@
   v10 = v3;
   v11 = *MEMORY[0x1E695C328];
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  dCopy = d;
   v6 = [v4 arrayWithObjects:&v9 count:3];
-  v7 = [IMContactUtilities getContactPropertiesForHandleID:v5 withKeys:v6, v9, v10, v11, v12];
+  v7 = [IMContactUtilities getContactPropertiesForHandleID:dCopy withKeys:v6, v9, v10, v11, v12];
 
   return v7;
 }
 
-+ (id)getContactPropertiesForHandleID:(id)a3 withKeys:(id)a4
++ (id)getContactPropertiesForHandleID:(id)d withKeys:(id)keys
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [v5 length])
+  dCopy = d;
+  keysCopy = keys;
+  if (dCopy && [dCopy length])
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v8 = [IMContactStore validateAndCleanupID:v5];
+    v8 = [IMContactStore validateAndCleanupID:dCopy];
     v9 = +[IMContactStore sharedInstance];
     v19 = v8;
-    v10 = [v9 fetchCNContactForHandleID:v8 withKeys:v6];
+    v10 = [v9 fetchCNContactForHandleID:v8 withKeys:keysCopy];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v11 = v6;
+    v11 = keysCopy;
     v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v12)
     {

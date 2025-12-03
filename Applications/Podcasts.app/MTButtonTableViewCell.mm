@@ -14,48 +14,48 @@
   v3 = objc_alloc_init(UILabel);
   [(MTButtonTableViewCell *)self setButtonLabel:v3];
 
-  v4 = [(MTButtonTableViewCell *)self buttonLabel];
-  [v4 setNumberOfLines:0];
+  buttonLabel = [(MTButtonTableViewCell *)self buttonLabel];
+  [buttonLabel setNumberOfLines:0];
 
-  v5 = [(MTButtonTableViewCell *)self buttonLabel];
-  [v5 setLineBreakMode:0];
+  buttonLabel2 = [(MTButtonTableViewCell *)self buttonLabel];
+  [buttonLabel2 setLineBreakMode:0];
 
-  v6 = [(MTButtonTableViewCell *)self buttonLabel];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  buttonLabel3 = [(MTButtonTableViewCell *)self buttonLabel];
+  [buttonLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v7 = [UIFont mt_preferredFontForTextStyle:UIFontTextStyleBody];
-  v8 = [(MTButtonTableViewCell *)self buttonLabel];
-  [v8 setFont:v7];
+  buttonLabel4 = [(MTButtonTableViewCell *)self buttonLabel];
+  [buttonLabel4 setFont:v7];
 
-  v9 = [(MTButtonTableViewCell *)self contentView];
-  [v9 setLayoutMargins:{12.0, 0.0, 12.0, 0.0}];
+  contentView = [(MTButtonTableViewCell *)self contentView];
+  [contentView setLayoutMargins:{12.0, 0.0, 12.0, 0.0}];
 
-  v10 = [(MTButtonTableViewCell *)self contentView];
-  v11 = [v10 layoutMarginsGuide];
+  contentView2 = [(MTButtonTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
 
-  v12 = [(MTButtonTableViewCell *)self contentView];
-  v13 = [(MTButtonTableViewCell *)self buttonLabel];
-  [v12 addSubview:v13];
+  contentView3 = [(MTButtonTableViewCell *)self contentView];
+  buttonLabel5 = [(MTButtonTableViewCell *)self buttonLabel];
+  [contentView3 addSubview:buttonLabel5];
 
-  v30 = [(MTButtonTableViewCell *)self buttonLabel];
-  v29 = [v30 topAnchor];
-  v28 = [v11 topAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  buttonLabel6 = [(MTButtonTableViewCell *)self buttonLabel];
+  topAnchor = [buttonLabel6 topAnchor];
+  topAnchor2 = [layoutMarginsGuide topAnchor];
+  v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v32[0] = v27;
-  v26 = [(MTButtonTableViewCell *)self buttonLabel];
-  v25 = [v26 trailingAnchor];
-  v24 = [v11 trailingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  buttonLabel7 = [(MTButtonTableViewCell *)self buttonLabel];
+  trailingAnchor = [buttonLabel7 trailingAnchor];
+  trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+  v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v32[1] = v23;
-  v14 = [(MTButtonTableViewCell *)self buttonLabel];
-  v15 = [v14 bottomAnchor];
-  v16 = [v11 bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  buttonLabel8 = [(MTButtonTableViewCell *)self buttonLabel];
+  bottomAnchor = [buttonLabel8 bottomAnchor];
+  bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32[2] = v17;
-  v18 = [(MTButtonTableViewCell *)self buttonLabel];
-  v19 = [v18 leadingAnchor];
-  v20 = [v11 leadingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  buttonLabel9 = [(MTButtonTableViewCell *)self buttonLabel];
+  leadingAnchor = [buttonLabel9 leadingAnchor];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[3] = v21;
   v22 = [NSArray arrayWithObjects:v32 count:4];
   [NSLayoutConstraint activateConstraints:v22];
@@ -66,14 +66,14 @@
   v7.receiver = self;
   v7.super_class = MTButtonTableViewCell;
   [(MTTableViewCell *)&v7 layoutSubviews];
-  v3 = [(MTButtonTableViewCell *)self contentView];
-  [v3 layoutIfNeeded];
+  contentView = [(MTButtonTableViewCell *)self contentView];
+  [contentView layoutIfNeeded];
 
-  v4 = [(MTButtonTableViewCell *)self buttonLabel];
-  [v4 frame];
+  buttonLabel = [(MTButtonTableViewCell *)self buttonLabel];
+  [buttonLabel frame];
   Width = CGRectGetWidth(v8);
-  v6 = [(MTButtonTableViewCell *)self buttonLabel];
-  [v6 setPreferredMaxLayoutWidth:Width];
+  buttonLabel2 = [(MTButtonTableViewCell *)self buttonLabel];
+  [buttonLabel2 setPreferredMaxLayoutWidth:Width];
 }
 
 - (CGSize)fittingSize

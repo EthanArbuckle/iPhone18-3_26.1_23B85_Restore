@@ -1,12 +1,12 @@
 @interface QSSSpeechTranslationStreamingRequest
-- (Offset<siri::speech::qss_fb::SpeechTranslationStreamingRequest>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::qss_fb::SpeechTranslationStreamingRequest>)addObjectToBuffer:(void *)buffer;
 - (QSSAudioPacket)contentAsQSSAudioPacket;
 - (QSSFinishAudio)contentAsQSSFinishAudio;
 - (QSSLanguageDetected)contentAsQSSLanguageDetected;
 - (QSSResetServerEndpointer)contentAsQSSResetServerEndpointer;
 - (QSSSetEndpointerState)contentAsQSSSetEndpointerState;
 - (QSSSpeechTranslationAudioPacket)contentAsQSSSpeechTranslationAudioPacket;
-- (QSSSpeechTranslationStreamingRequest)initWithFlatbuffData:(id)a3 root:(const SpeechTranslationStreamingRequest *)a4 verify:(BOOL)a5;
+- (QSSSpeechTranslationStreamingRequest)initWithFlatbuffData:(id)data root:(const SpeechTranslationStreamingRequest *)root verify:(BOOL)verify;
 - (QSSStartSpeechTranslationLoggingRequest)contentAsQSSStartSpeechTranslationLoggingRequest;
 - (QSSStartSpeechTranslationRequest)contentAsQSSStartSpeechTranslationRequest;
 - (id)flatbuffData;
@@ -44,13 +44,13 @@ flatbuffers::DetachedBuffer *__52__QSSSpeechTranslationStreamingRequest_flatbuff
   return result;
 }
 
-- (Offset<siri::speech::qss_fb::SpeechTranslationStreamingRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::SpeechTranslationStreamingRequest>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSSpeechTranslationStreamingRequest *)self content_type];
+  content_type = [(QSSSpeechTranslationStreamingRequest *)self content_type];
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 1)
   {
-    v6 = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSStartSpeechTranslationRequest];
-    v7 = [v6 addObjectToBuffer:a3];
+    contentAsQSSStartSpeechTranslationRequest = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSStartSpeechTranslationRequest];
+    v7 = [contentAsQSSStartSpeechTranslationRequest addObjectToBuffer:buffer];
 
     v8 = v7;
   }
@@ -62,8 +62,8 @@ flatbuffers::DetachedBuffer *__52__QSSSpeechTranslationStreamingRequest_flatbuff
 
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 2)
   {
-    v9 = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSLanguageDetected];
-    v10 = [v9 addObjectToBuffer:a3];
+    contentAsQSSLanguageDetected = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSLanguageDetected];
+    v10 = [contentAsQSSLanguageDetected addObjectToBuffer:buffer];
 
     v11 = v10;
   }
@@ -75,8 +75,8 @@ flatbuffers::DetachedBuffer *__52__QSSSpeechTranslationStreamingRequest_flatbuff
 
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 3)
   {
-    v12 = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSAudioPacket];
-    v13 = [v12 addObjectToBuffer:a3];
+    contentAsQSSAudioPacket = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSAudioPacket];
+    v13 = [contentAsQSSAudioPacket addObjectToBuffer:buffer];
 
     v14 = v13;
   }
@@ -88,8 +88,8 @@ flatbuffers::DetachedBuffer *__52__QSSSpeechTranslationStreamingRequest_flatbuff
 
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 4)
   {
-    v15 = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSSpeechTranslationAudioPacket];
-    v16 = [v15 addObjectToBuffer:a3];
+    contentAsQSSSpeechTranslationAudioPacket = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSSpeechTranslationAudioPacket];
+    v16 = [contentAsQSSSpeechTranslationAudioPacket addObjectToBuffer:buffer];
 
     v17 = v16;
   }
@@ -101,8 +101,8 @@ flatbuffers::DetachedBuffer *__52__QSSSpeechTranslationStreamingRequest_flatbuff
 
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 5)
   {
-    v18 = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSFinishAudio];
-    v19 = [v18 addObjectToBuffer:a3];
+    contentAsQSSFinishAudio = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSFinishAudio];
+    v19 = [contentAsQSSFinishAudio addObjectToBuffer:buffer];
 
     v20 = v19;
   }
@@ -114,8 +114,8 @@ flatbuffers::DetachedBuffer *__52__QSSSpeechTranslationStreamingRequest_flatbuff
 
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 6)
   {
-    v21 = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSSetEndpointerState];
-    v22 = [v21 addObjectToBuffer:a3];
+    contentAsQSSSetEndpointerState = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSSetEndpointerState];
+    v22 = [contentAsQSSSetEndpointerState addObjectToBuffer:buffer];
 
     v36 = v22;
   }
@@ -127,8 +127,8 @@ flatbuffers::DetachedBuffer *__52__QSSSpeechTranslationStreamingRequest_flatbuff
 
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 7)
   {
-    v23 = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSResetServerEndpointer];
-    v24 = [v23 addObjectToBuffer:a3];
+    contentAsQSSResetServerEndpointer = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSResetServerEndpointer];
+    v24 = [contentAsQSSResetServerEndpointer addObjectToBuffer:buffer];
 
     v34 = v24;
   }
@@ -141,8 +141,8 @@ flatbuffers::DetachedBuffer *__52__QSSSpeechTranslationStreamingRequest_flatbuff
   v35 = v20;
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 8)
   {
-    v25 = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSStartSpeechTranslationLoggingRequest];
-    v26 = [v25 addObjectToBuffer:a3];
+    contentAsQSSStartSpeechTranslationLoggingRequest = [(QSSSpeechTranslationStreamingRequest *)self contentAsQSSStartSpeechTranslationLoggingRequest];
+    v26 = [contentAsQSSStartSpeechTranslationLoggingRequest addObjectToBuffer:buffer];
     v27 = v14;
 
     v32 = v26;
@@ -154,53 +154,53 @@ flatbuffers::DetachedBuffer *__52__QSSSpeechTranslationStreamingRequest_flatbuff
     v32 = 0;
   }
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v28 = *(a3 + 5);
-  v29 = *(a3 + 6);
-  v30 = *(a3 + 4);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v28 = *(buffer + 5);
+  v29 = *(buffer + 6);
+  v30 = *(buffer + 4);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, content_type);
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 1)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v8);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v8);
   }
 
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 2)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v11);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v11);
   }
 
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 3)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v27);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v27);
   }
 
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 4)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v17);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v17);
   }
 
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 5)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v35);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v35);
   }
 
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 6)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v36);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v36);
   }
 
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 7)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v34);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v34);
   }
 
   if ([(QSSSpeechTranslationStreamingRequest *)self content_type]== 8)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v33);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v33);
   }
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v30 - v29 + v28);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v30 - v29 + v28);
 }
 
 - (QSSStartSpeechTranslationLoggingRequest)contentAsQSSStartSpeechTranslationLoggingRequest
@@ -482,10 +482,10 @@ flatbuffers::DetachedBuffer *__52__QSSSpeechTranslationStreamingRequest_flatbuff
   }
 }
 
-- (QSSSpeechTranslationStreamingRequest)initWithFlatbuffData:(id)a3 root:(const SpeechTranslationStreamingRequest *)a4 verify:(BOOL)a5
+- (QSSSpeechTranslationStreamingRequest)initWithFlatbuffData:(id)data root:(const SpeechTranslationStreamingRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v33.receiver = self;
   v33.super_class = QSSSpeechTranslationStreamingRequest;
   v10 = [(QSSSpeechTranslationStreamingRequest *)&v33 init];
@@ -495,32 +495,32 @@ flatbuffers::DetachedBuffer *__52__QSSSpeechTranslationStreamingRequest_flatbuff
     goto LABEL_60;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_61;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (v5)
+  v10->_root = root;
+  if (verifyCopy)
   {
-    v13 = [(NSData *)v10->_data bytes];
+    bytes2 = [(NSData *)v10->_data bytes];
     v14 = [(NSData *)v10->_data length];
     root = v10->_root;
-    if (root < v13 || root > v13 + v14)
+    if (root < bytes2 || root > bytes2 + v14)
     {
       goto LABEL_61;
     }
 
-    v17 = [(NSData *)v10->_data bytes];
+    bytes3 = [(NSData *)v10->_data bytes];
     v18 = [(NSData *)v10->_data length];
-    v28 = v17;
+    v28 = bytes3;
     v29 = v18;
     v30 = xmmword_26914CD70;
     v31 = 0;
@@ -639,9 +639,9 @@ LABEL_61:
   }
 
 LABEL_59:
-  v24 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v24;
+  v11->_storage = dictionary;
 
 LABEL_60:
   v26 = v11;

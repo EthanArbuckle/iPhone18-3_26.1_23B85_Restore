@@ -1,25 +1,25 @@
 @interface AMDFetchDescriptor
-+ (char)getCodeForSaveAsType:(id)a3;
-+ (id)extractPart:(id)a3 from:(id)a4 required:(BOOL)a5 error:(id *)a6;
-+ (id)refreshAggregationDescriptors:(id)a3 forDomain:(id)a4 error:(id *)a5;
-- (AMDFetchDescriptor)initWithDict:(id)a3 usingSchema:(id)a4 error:(id *)a5;
++ (char)getCodeForSaveAsType:(id)type;
++ (id)extractPart:(id)part from:(id)from required:(BOOL)required error:(id *)error;
++ (id)refreshAggregationDescriptors:(id)descriptors forDomain:(id)domain error:(id *)error;
+- (AMDFetchDescriptor)initWithDict:(id)dict usingSchema:(id)schema error:(id *)error;
 - (BOOL)isPersistable;
-- (id)persist:(id)a3 error:(id *)a4;
-- (id)persistObject:(id)a3 error:(id *)a4;
+- (id)persist:(id)persist error:(id *)error;
+- (id)persistObject:(id)object error:(id *)error;
 @end
 
 @implementation AMDFetchDescriptor
 
-+ (id)extractPart:(id)a3 from:(id)a4 required:(BOOL)a5 error:(id *)a6
++ (id)extractPart:(id)part from:(id)from required:(BOOL)required error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, part);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
-  v18 = a5;
-  v17 = a6;
+  objc_storeStrong(&v19, from);
+  requiredCopy = required;
+  errorCopy = error;
   v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing or invalid %@", location[0]];
   v15 = [v19 objectForKey:location[0]];
   if (v15)
@@ -34,18 +34,18 @@
     {
       v10 = [AMDMiscHelpers logAndCreateError:29 errorMessage:v16];
       v7 = v10;
-      *v17 = v10;
+      *errorCopy = v10;
       v21 = 0;
     }
   }
 
   else
   {
-    if (v18)
+    if (requiredCopy)
     {
       v11 = [AMDMiscHelpers logAndCreateError:29 errorMessage:v16];
       v6 = v11;
-      *v17 = v11;
+      *errorCopy = v11;
     }
 
     v21 = 0;
@@ -60,13 +60,13 @@
   return v8;
 }
 
-+ (char)getCodeForSaveAsType:(id)a3
++ (char)getCodeForSaveAsType:(id)type
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   if (location[0])
   {
     if (!getCodeForSaveAsType__typeMap)
@@ -86,15 +86,15 @@
     v7 = [getCodeForSaveAsType__typeMap objectForKey:location[0]];
     if (v7)
     {
-      v6 = [v7 unsignedIntValue];
+      unsignedIntValue = [v7 unsignedIntValue];
     }
 
     else
     {
-      v6 = 0;
+      unsignedIntValue = 0;
     }
 
-    v10 = v6;
+    v10 = unsignedIntValue;
     v8 = 1;
     objc_storeStrong(&v7, 0);
   }
@@ -110,16 +110,16 @@
   return v10;
 }
 
-+ (id)refreshAggregationDescriptors:(id)a3 forDomain:(id)a4 error:(id *)a5
++ (id)refreshAggregationDescriptors:(id)descriptors forDomain:(id)domain error:(id *)error
 {
   v87 = *MEMORY[0x277D85DE8];
-  v67 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, descriptors);
   v65 = 0;
-  objc_storeStrong(&v65, a4);
-  v64 = a5;
+  objc_storeStrong(&v65, domain);
+  errorCopy = error;
   v63 = MEMORY[0x277D82BE0](@"SaveAggDescripors");
   v62 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
   v61 = [location[0] objectForKey:0x2852B18C8];
@@ -141,18 +141,18 @@
         v50 = [v28 mutableCopy];
         MEMORY[0x277D82BD8](v28);
         [v50 setObject:v65 forKey:@"domain"];
-        v30 = [v67 alloc];
+        v30 = [selfCopy alloc];
         v29 = v50;
-        v31 = [v56 getDataSchema];
+        getDataSchema = [v56 getDataSchema];
         v49 = [v30 initWithDict:v29 usingSchema:? error:?];
-        MEMORY[0x277D82BD8](v31);
-        if (*v64)
+        MEMORY[0x277D82BD8](getDataSchema);
+        if (*errorCopy)
         {
           v26 = MEMORY[0x277CCACA8];
           v25 = i;
-          v27 = [*v64 localizedDescription];
-          v48 = [v26 stringWithFormat:@"SQLITE bad aggregation descriptor %u: '%@'", v25, v27];
-          MEMORY[0x277D82BD8](v27);
+          localizedDescription = [*errorCopy localizedDescription];
+          v48 = [v26 stringWithFormat:@"SQLITE bad aggregation descriptor %u: '%@'", v25, localizedDescription];
+          MEMORY[0x277D82BD8](localizedDescription);
           v79 = v63;
           v80 = v48;
           v68 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
@@ -162,19 +162,19 @@
 
         else
         {
-          v47 = [v49 getId];
-          v46 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v50 options:6 error:v64];
-          if (*v64)
+          getId = [v49 getId];
+          v46 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v50 options:6 error:errorCopy];
+          if (*errorCopy)
           {
             v23 = MEMORY[0x277CCACA8];
-            v24 = v47;
-            v7 = *v64;
+            v24 = getId;
+            v7 = *errorCopy;
             v43 = 0;
             if (v7)
             {
-              v44 = [*v64 localizedDescription];
+              localizedDescription2 = [*errorCopy localizedDescription];
               v43 = 1;
-              v22 = v44;
+              v22 = localizedDescription2;
             }
 
             else
@@ -185,7 +185,7 @@
             v45 = [v23 stringWithFormat:@"SQLITE agg descriptor '%@' serialization failure: %@", v24, v22];
             if (v43)
             {
-              MEMORY[0x277D82BD8](v44);
+              MEMORY[0x277D82BD8](localizedDescription2);
             }
 
             v77 = v63;
@@ -204,7 +204,7 @@
             v21 = [MEMORY[0x277CCABB0] numberWithInteger:{+[AMDDomains getCodeForDomain:](AMDDomains, "getCodeForDomain:", v65)}];
             v76[1] = v21;
             v75[2] = 0x2852A70A8;
-            v76[2] = v47;
+            v76[2] = getId;
             v75[3] = 0x2852A9168;
             v20 = +[AMDMiscHelpers getCurrentEpochSeconds];
             v76[3] = v20;
@@ -217,7 +217,7 @@
           }
 
           objc_storeStrong(&v46, 0);
-          objc_storeStrong(&v47, 0);
+          objc_storeStrong(&getId, 0);
         }
 
         objc_storeStrong(&v49, 0);
@@ -236,14 +236,14 @@
       v73[2] = @"predicateExpression";
       v74[2] = v42;
       v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v74 forKeys:v73 count:3];
-      v40 = [v56 deleteRows:v41 error:v64];
-      if (*v64)
+      v40 = [v56 deleteRows:v41 error:errorCopy];
+      if (*errorCopy)
       {
         v16 = MEMORY[0x277CCACA8];
         v15 = v65;
-        v17 = [*v64 localizedDescription];
-        v39 = [v16 stringWithFormat:@"SQLITE could not delete descriptors for domain '%@': %@", v15, v17];
-        MEMORY[0x277D82BD8](v17);
+        localizedDescription3 = [*errorCopy localizedDescription];
+        v39 = [v16 stringWithFormat:@"SQLITE could not delete descriptors for domain '%@': %@", v15, localizedDescription3];
+        MEMORY[0x277D82BD8](localizedDescription3);
         v71 = v63;
         v72 = v39;
         v68 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
@@ -255,16 +255,16 @@
       {
         [v62 addEntriesFromDictionary:v40];
         v13 = v56;
-        v14 = [v56 getBootSchema];
+        getBootSchema = [v56 getBootSchema];
         v38 = [v13 insertRows:v41 usingSchema:? error:?];
-        MEMORY[0x277D82BD8](v14);
-        if (*v64)
+        MEMORY[0x277D82BD8](getBootSchema);
+        if (*errorCopy)
         {
           v11 = MEMORY[0x277CCACA8];
           v10 = v65;
-          v12 = [*v64 localizedDescription];
-          v37 = [v11 stringWithFormat:@"SQLITE could not insert descriptors for domain '%@': %@", v10, v12];
-          MEMORY[0x277D82BD8](v12);
+          localizedDescription4 = [*errorCopy localizedDescription];
+          v37 = [v11 stringWithFormat:@"SQLITE could not insert descriptors for domain '%@': %@", v10, localizedDescription4];
+          MEMORY[0x277D82BD8](localizedDescription4);
           v69 = v63;
           v70 = v37;
           v68 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v70 forKeys:&v69 count:1];
@@ -294,7 +294,7 @@ LABEL_32:
       v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQL database pointer is nil"];
       v33 = [AMDError allocError:22 withMessage:v55];
       v6 = v33;
-      *v64 = v33;
+      *errorCopy = v33;
       v54 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v53 = OS_LOG_TYPE_INFO;
       if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
@@ -319,7 +319,7 @@ LABEL_32:
     v60 = [MEMORY[0x277CCACA8] stringWithFormat:@"No SQLite aggregators for domain '%@'", v65];
     v34 = [AMDError allocError:15 withMessage:v60];
     v5 = v34;
-    *v64 = v34;
+    *errorCopy = v34;
     oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     type = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
@@ -347,26 +347,26 @@ LABEL_32:
   return v8;
 }
 
-- (AMDFetchDescriptor)initWithDict:(id)a3 usingSchema:(id)a4 error:(id *)a5
+- (AMDFetchDescriptor)initWithDict:(id)dict usingSchema:(id)schema error:(id *)error
 {
   v104 = *MEMORY[0x277D85DE8];
-  v101 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dict);
   v99 = 0;
-  objc_storeStrong(&v99, a4);
-  v98 = a5;
-  v5 = v101;
-  v101 = 0;
+  objc_storeStrong(&v99, schema);
+  errorCopy = error;
+  v5 = selfCopy;
+  selfCopy = 0;
   v97.receiver = v5;
   v97.super_class = AMDFetchDescriptor;
-  v101 = [(AMDFetchDescriptor *)&v97 init];
-  objc_storeStrong(&v101, v101);
-  v51 = [AMDFetchDescriptor extractPart:@"id" from:location[0] required:1 error:v98];
-  [v101 set_id:?];
+  selfCopy = [(AMDFetchDescriptor *)&v97 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  v51 = [AMDFetchDescriptor extractPart:@"id" from:location[0] required:1 error:errorCopy];
+  [selfCopy set_id:?];
   MEMORY[0x277D82BD8](v51);
-  if (*v98)
+  if (*errorCopy)
   {
     v102 = 0;
     v96 = 1;
@@ -374,8 +374,8 @@ LABEL_32:
 
   else
   {
-    v95 = [AMDFetchDescriptor extractPart:@"tableName" from:location[0] required:1 error:v98];
-    if (*v98)
+    v95 = [AMDFetchDescriptor extractPart:@"tableName" from:location[0] required:1 error:errorCopy];
+    if (*errorCopy)
     {
       v102 = 0;
       v96 = 1;
@@ -383,8 +383,8 @@ LABEL_32:
 
     else
     {
-      v94 = [v99 getTables];
-      v48 = [v94 objectForKey:v95];
+      getTables = [v99 getTables];
+      v48 = [getTables objectForKey:v95];
       MEMORY[0x277D82BD8](v48);
       if (v48)
       {
@@ -419,12 +419,12 @@ LABEL_32:
               }
 
               v85 = MEMORY[0x277D82BE0](v87);
-              v38 = [v85 allKeys];
-              v9 = [v38 firstObject];
+              allKeys = [v85 allKeys];
+              firstObject = [allKeys firstObject];
               v10 = v91;
-              v91 = v9;
+              v91 = firstObject;
               MEMORY[0x277D82BD8](v10);
-              MEMORY[0x277D82BD8](v38);
+              MEMORY[0x277D82BD8](allKeys);
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
@@ -438,8 +438,8 @@ LABEL_32:
                 {
                   v83 = MEMORY[0x277D82BE0](v91);
                   v15 = [AMDSQLiteColumnSpec alloc];
-                  v82 = [(AMDSQLiteColumnSpec *)v15 initWithDict:v83 withName:v84 error:v98];
-                  if (*v98)
+                  v82 = [(AMDSQLiteColumnSpec *)v15 initWithDict:v83 withName:v84 error:errorCopy];
+                  if (*errorCopy)
                   {
                     v102 = 0;
                     v96 = 1;
@@ -449,9 +449,9 @@ LABEL_32:
                   {
                     [v89 addObject:v82];
                     v34 = v88;
-                    v35 = [v82 getSelectColumnExpression];
+                    getSelectColumnExpression = [v82 getSelectColumnExpression];
                     [v34 addObject:?];
-                    MEMORY[0x277D82BD8](v35);
+                    MEMORY[0x277D82BD8](getSelectColumnExpression);
                     v96 = 0;
                   }
 
@@ -463,7 +463,7 @@ LABEL_32:
                 {
                   v36 = [AMDMiscHelpers logAndCreateError:29 errorMessage:@"Invalid column spec"];
                   v14 = v36;
-                  *v98 = v36;
+                  *errorCopy = v36;
                   v102 = 0;
                   v96 = 1;
                 }
@@ -475,7 +475,7 @@ LABEL_32:
               {
                 v37 = [AMDMiscHelpers logAndCreateError:29 errorMessage:@"Invalid column name"];
                 v11 = v37;
-                *v98 = v37;
+                *errorCopy = v37;
                 v102 = 0;
                 v96 = 1;
               }
@@ -500,7 +500,7 @@ LABEL_32:
 
             v39 = [AMDMiscHelpers logAndCreateError:29 errorMessage:@"Invalid columnspec"];
             v8 = v39;
-            *v98 = v39;
+            *errorCopy = v39;
             v102 = 0;
             v96 = 1;
           }
@@ -515,9 +515,9 @@ LABEL_29:
           MEMORY[0x277D82BD8](v44);
           if (!v96)
           {
-            [v101 set_columnSpecs:v89];
-            v81 = [AMDFetchDescriptor extractPart:@"joinExpression" from:location[0] required:0 error:v98];
-            if (*v98)
+            [selfCopy set_columnSpecs:v89];
+            v81 = [AMDFetchDescriptor extractPart:@"joinExpression" from:location[0] required:0 error:errorCopy];
+            if (*errorCopy)
             {
               v102 = 0;
               v96 = 1;
@@ -525,8 +525,8 @@ LABEL_29:
 
             else
             {
-              v80 = [AMDFetchDescriptor extractPart:@"predicateExpression" from:location[0] required:0 error:v98];
-              if (*v98)
+              v80 = [AMDFetchDescriptor extractPart:@"predicateExpression" from:location[0] required:0 error:errorCopy];
+              if (*errorCopy)
               {
                 v102 = 0;
                 v96 = 1;
@@ -534,8 +534,8 @@ LABEL_29:
 
               else
               {
-                v79 = [AMDFetchDescriptor extractPart:@"groupByExpression" from:location[0] required:0 error:v98];
-                if (*v98)
+                v79 = [AMDFetchDescriptor extractPart:@"groupByExpression" from:location[0] required:0 error:errorCopy];
+                if (*errorCopy)
                 {
                   v102 = 0;
                   v96 = 1;
@@ -543,8 +543,8 @@ LABEL_29:
 
                 else
                 {
-                  v78 = [AMDFetchDescriptor extractPart:@"havingExpression" from:location[0] required:0 error:v98];
-                  if (*v98)
+                  v78 = [AMDFetchDescriptor extractPart:@"havingExpression" from:location[0] required:0 error:errorCopy];
+                  if (*errorCopy)
                   {
                     v102 = 0;
                     v96 = 1;
@@ -552,8 +552,8 @@ LABEL_29:
 
                   else
                   {
-                    v77 = [AMDFetchDescriptor extractPart:@"sortExpression" from:location[0] required:0 error:v98];
-                    if (*v98)
+                    v77 = [AMDFetchDescriptor extractPart:@"sortExpression" from:location[0] required:0 error:errorCopy];
+                    if (*errorCopy)
                     {
                       v102 = 0;
                       v96 = 1;
@@ -561,8 +561,8 @@ LABEL_29:
 
                     else
                     {
-                      v76 = [AMDFetchDescriptor extractPart:@"limit" from:location[0] required:0 error:v98];
-                      if (*v98)
+                      v76 = [AMDFetchDescriptor extractPart:@"limit" from:location[0] required:0 error:errorCopy];
+                      if (*errorCopy)
                       {
                         v102 = 0;
                         v96 = 1;
@@ -570,8 +570,8 @@ LABEL_29:
 
                       else
                       {
-                        v75 = [AMDFetchDescriptor extractPart:@"onlyLocalData" from:location[0] required:0 error:v98];
-                        if (*v98)
+                        v75 = [AMDFetchDescriptor extractPart:@"onlyLocalData" from:location[0] required:0 error:errorCopy];
+                        if (*errorCopy)
                         {
                           v102 = 0;
                           v96 = 1;
@@ -738,9 +738,9 @@ LABEL_29:
                             MEMORY[0x277D82BD8](v56);
                           }
 
-                          [v101 set_statement:v67];
-                          v54 = [AMDFetchDescriptor extractPart:@"saveAs" from:location[0] required:0 error:v98];
-                          if (*v98)
+                          [selfCopy set_statement:v67];
+                          v54 = [AMDFetchDescriptor extractPart:@"saveAs" from:location[0] required:0 error:errorCopy];
+                          if (*errorCopy)
                           {
                             v102 = 0;
                             v96 = 1;
@@ -749,9 +749,9 @@ LABEL_29:
                           else
                           {
                             v18 = [AMDFetchDescriptor getCodeForSaveAsType:v54];
-                            [v101 set_saveAsType:v18];
-                            v53 = [AMDFetchDescriptor extractPart:@"domain" from:location[0] required:0 error:v98];
-                            if (*v98)
+                            [selfCopy set_saveAsType:v18];
+                            v53 = [AMDFetchDescriptor extractPart:@"domain" from:location[0] required:0 error:errorCopy];
+                            if (*errorCopy)
                             {
                               v102 = 0;
                               v96 = 1;
@@ -760,10 +760,10 @@ LABEL_29:
                             else
                             {
                               v19 = [AMDDomains getCodeForDomain:v53];
-                              [v101 set_domain:v19];
-                              v52 = [AMDFetchDescriptor extractPart:@"listColumn" from:location[0] required:0 error:v98];
+                              [selfCopy set_domain:v19];
+                              v52 = [AMDFetchDescriptor extractPart:@"listColumn" from:location[0] required:0 error:errorCopy];
                               MEMORY[0x277D82BD8](0);
-                              if (*v98)
+                              if (*errorCopy)
                               {
                                 v102 = 0;
                                 v96 = 1;
@@ -773,20 +773,20 @@ LABEL_29:
                               {
                                 if (v52)
                                 {
-                                  v27 = [v52 intValue];
+                                  intValue = [v52 intValue];
                                 }
 
                                 else
                                 {
-                                  v27 = -1;
+                                  intValue = -1;
                                 }
 
-                                [v101 set_listColumn:v27];
-                                v20 = [AMDFetchDescriptor extractPart:@"keyColumn" from:location[0] required:0 error:v98];
+                                [selfCopy set_listColumn:intValue];
+                                v20 = [AMDFetchDescriptor extractPart:@"keyColumn" from:location[0] required:0 error:errorCopy];
                                 v21 = v52;
                                 v52 = v20;
                                 MEMORY[0x277D82BD8](v21);
-                                if (*v98)
+                                if (*errorCopy)
                                 {
                                   v102 = 0;
                                   v96 = 1;
@@ -796,20 +796,20 @@ LABEL_29:
                                 {
                                   if (v52)
                                   {
-                                    v26 = [v52 intValue];
+                                    intValue2 = [v52 intValue];
                                   }
 
                                   else
                                   {
-                                    v26 = -1;
+                                    intValue2 = -1;
                                   }
 
-                                  [v101 set_keyColumn:v26];
-                                  v22 = [AMDFetchDescriptor extractPart:@"valueColumn" from:location[0] required:0 error:v98];
+                                  [selfCopy set_keyColumn:intValue2];
+                                  v22 = [AMDFetchDescriptor extractPart:@"valueColumn" from:location[0] required:0 error:errorCopy];
                                   v23 = v52;
                                   v52 = v22;
                                   MEMORY[0x277D82BD8](v23);
-                                  if (*v98)
+                                  if (*errorCopy)
                                   {
                                     v102 = 0;
                                     v96 = 1;
@@ -819,16 +819,16 @@ LABEL_29:
                                   {
                                     if (v52)
                                     {
-                                      v25 = [v52 intValue];
+                                      intValue3 = [v52 intValue];
                                     }
 
                                     else
                                     {
-                                      v25 = -1;
+                                      intValue3 = -1;
                                     }
 
-                                    [v101 set_valueColumn:v25];
-                                    v102 = MEMORY[0x277D82BE0](v101);
+                                    [selfCopy set_valueColumn:intValue3];
+                                    v102 = MEMORY[0x277D82BE0](selfCopy);
                                     v96 = 1;
                                   }
                                 }
@@ -874,7 +874,7 @@ LABEL_29:
         {
           v46 = [AMDMiscHelpers logAndCreateError:29 errorMessage:@"No or invalid columns"];
           v7 = v46;
-          *v98 = v46;
+          *errorCopy = v46;
           v102 = 0;
           v96 = 1;
         }
@@ -888,13 +888,13 @@ LABEL_29:
         v93 = [MEMORY[0x277CCACA8] stringWithFormat:@"SQLITE No table '%@'", v95];
         v47 = [AMDMiscHelpers logAndCreateError:29 errorMessage:v93];
         v6 = v47;
-        *v98 = v47;
+        *errorCopy = v47;
         v102 = 0;
         v96 = 1;
         objc_storeStrong(&v93, 0);
       }
 
-      objc_storeStrong(&v94, 0);
+      objc_storeStrong(&getTables, 0);
     }
 
     objc_storeStrong(&v95, 0);
@@ -902,16 +902,16 @@ LABEL_29:
 
   objc_storeStrong(&v99, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v101, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v102;
 }
 
 - (BOOL)isPersistable
 {
-  v6 = [(AMDFetchDescriptor *)self _columnSpecs];
-  v7 = [(NSArray *)v6 count];
-  MEMORY[0x277D82BD8](v6);
+  _columnSpecs = [(AMDFetchDescriptor *)self _columnSpecs];
+  v7 = [(NSArray *)_columnSpecs count];
+  MEMORY[0x277D82BD8](_columnSpecs);
   v8 = 0;
   if ([(AMDFetchDescriptor *)self _domain])
   {
@@ -934,8 +934,8 @@ LABEL_29:
                 v5 = 0;
                 if ([(AMDFetchDescriptor *)self _valueColumn]< v7)
                 {
-                  v4 = [(AMDFetchDescriptor *)self _keyColumn];
-                  v5 = v4 != [(AMDFetchDescriptor *)self _valueColumn];
+                  _keyColumn = [(AMDFetchDescriptor *)self _keyColumn];
+                  v5 = _keyColumn != [(AMDFetchDescriptor *)self _valueColumn];
                 }
               }
             }
@@ -957,43 +957,43 @@ LABEL_29:
   return v8;
 }
 
-- (id)persist:(id)a3 error:(id *)a4
+- (id)persist:(id)persist error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v32 = a4;
+  objc_storeStrong(location, persist);
+  errorCopy = error;
   v31 = MEMORY[0x277D82BE0](@"SQlitePersist");
-  if ([(AMDFetchDescriptor *)v34 isPersistable])
+  if ([(AMDFetchDescriptor *)selfCopy isPersistable])
   {
     v26 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     v25 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [(AMDFetchDescriptor *)v34 _id];
-      __os_log_helper_16_2_2_8_64_4_0(v38, v16, [(AMDFetchDescriptor *)v34 _saveAsType]);
+      v16 = [(AMDFetchDescriptor *)selfCopy _id];
+      __os_log_helper_16_2_2_8_64_4_0(v38, v16, [(AMDFetchDescriptor *)selfCopy _saveAsType]);
       _os_log_debug_impl(&dword_240CB9000, v26, v25, "SQLITE Saving agg results for '%@', type: %d", v38, 0x12u);
       MEMORY[0x277D82BD8](v16);
     }
 
     objc_storeStrong(&v26, 0);
     v24 = 0;
-    v15 = [(AMDFetchDescriptor *)v34 _saveAsType];
-    if (v15)
+    _saveAsType = [(AMDFetchDescriptor *)selfCopy _saveAsType];
+    if (_saveAsType)
     {
-      switch(v15)
+      switch(_saveAsType)
       {
         case 1:
           v23 = [location[0] objectForKey:0x2852A9368];
           v12 = MEMORY[0x277CBEAC0];
-          v14 = [v23 objectAtIndexedSubscript:{-[AMDFetchDescriptor _valueColumn](v34, "_valueColumn")}];
-          v13 = [v23 objectAtIndexedSubscript:{-[AMDFetchDescriptor _keyColumn](v34, "_keyColumn")}];
+          v14 = [v23 objectAtIndexedSubscript:{-[AMDFetchDescriptor _valueColumn](selfCopy, "_valueColumn")}];
+          v13 = [v23 objectAtIndexedSubscript:{-[AMDFetchDescriptor _keyColumn](selfCopy, "_keyColumn")}];
           v22 = [v12 dictionaryWithObjects:v14 forKeys:?];
           MEMORY[0x277D82BD8](v13);
           MEMORY[0x277D82BD8](v14);
-          v4 = [(AMDFetchDescriptor *)v34 persistObject:v22 error:v32];
+          v4 = [(AMDFetchDescriptor *)selfCopy persistObject:v22 error:errorCopy];
           v5 = v24;
           v24 = v4;
           MEMORY[0x277D82BD8](v5);
@@ -1002,8 +1002,8 @@ LABEL_29:
           break;
         case 2:
           v21 = [location[0] objectForKey:0x2852A9368];
-          v20 = [v21 objectAtIndexedSubscript:{-[AMDFetchDescriptor _listColumn](v34, "_listColumn")}];
-          v6 = [(AMDFetchDescriptor *)v34 persistObject:v20 error:v32];
+          v20 = [v21 objectAtIndexedSubscript:{-[AMDFetchDescriptor _listColumn](selfCopy, "_listColumn")}];
+          v6 = [(AMDFetchDescriptor *)selfCopy persistObject:v20 error:errorCopy];
           v7 = v24;
           v24 = v6;
           MEMORY[0x277D82BD8](v7);
@@ -1011,7 +1011,7 @@ LABEL_29:
           objc_storeStrong(&v21, 0);
           break;
         case 3:
-          v8 = [(AMDFetchDescriptor *)v34 persistObject:location[0] error:v32];
+          v8 = [(AMDFetchDescriptor *)selfCopy persistObject:location[0] error:errorCopy];
           v9 = v24;
           v24 = v8;
           MEMORY[0x277D82BD8](v9);
@@ -1034,7 +1034,7 @@ LABEL_29:
   else
   {
     v17 = MEMORY[0x277CCACA8];
-    v18 = [(AMDFetchDescriptor *)v34 _id];
+    v18 = [(AMDFetchDescriptor *)selfCopy _id];
     v30 = [v17 stringWithFormat:@"Cannot persist '%@', check descriptor", v18];
     MEMORY[0x277D82BD8](v18);
     v29 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -1061,27 +1061,27 @@ LABEL_29:
   return v10;
 }
 
-- (id)persistObject:(id)a3 error:(id *)a4
+- (id)persistObject:(id)object error:(id *)error
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v45 = a4;
+  objc_storeStrong(location, object);
+  errorCopy = error;
   v44 = MEMORY[0x277D82BE0](@"persistFDOutput");
-  v43 = [MEMORY[0x277CCAAA0] dataWithJSONObject:location[0] options:6 error:a4];
-  if (*a4)
+  v43 = [MEMORY[0x277CCAAA0] dataWithJSONObject:location[0] options:6 error:error];
+  if (*error)
   {
     v26 = MEMORY[0x277CCACA8];
-    v27 = [(AMDFetchDescriptor *)v47 _id];
-    v4 = *v45;
+    v27 = [(AMDFetchDescriptor *)selfCopy _id];
+    v4 = *errorCopy;
     v40 = 0;
     if (v4)
     {
-      v41 = [*v45 localizedDescription];
+      localizedDescription = [*errorCopy localizedDescription];
       v40 = 1;
-      v25 = v41;
+      v25 = localizedDescription;
     }
 
     else
@@ -1092,7 +1092,7 @@ LABEL_29:
     v42 = [v26 stringWithFormat:@"SQLITE tp data '%@' serialization failure: %@", v27, v25];
     if (v40)
     {
-      MEMORY[0x277D82BD8](v41);
+      MEMORY[0x277D82BD8](localizedDescription);
     }
 
     MEMORY[0x277D82BD8](v27);
@@ -1106,20 +1106,20 @@ LABEL_29:
   else
   {
     v18 = MEMORY[0x277CCACA8];
-    v17 = [(AMDFetchDescriptor *)v47 _domain];
-    v19 = [(AMDFetchDescriptor *)v47 _id];
-    v38 = [v18 stringWithFormat:@"%@ = %ld AND %@ = '%@'", 0x2852A86A8, v17, 0x2852A8408, v19];
+    _domain = [(AMDFetchDescriptor *)selfCopy _domain];
+    v19 = [(AMDFetchDescriptor *)selfCopy _id];
+    v38 = [v18 stringWithFormat:@"%@ = %ld AND %@ = '%@'", 0x2852A86A8, _domain, 0x2852A8408, v19];
     MEMORY[0x277D82BD8](v19);
     v57[0] = 0x2852A86A8;
-    v24 = [MEMORY[0x277CCABB0] numberWithInteger:{-[AMDFetchDescriptor _domain](v47, "_domain")}];
+    v24 = [MEMORY[0x277CCABB0] numberWithInteger:{-[AMDFetchDescriptor _domain](selfCopy, "_domain")}];
     v58[0] = v24;
     v57[1] = 0x2852A8408;
-    v23 = [(AMDFetchDescriptor *)v47 _id];
+    v23 = [(AMDFetchDescriptor *)selfCopy _id];
     v58[1] = v23;
     v57[2] = 0x2852A9228;
     v58[2] = 0x2852B1228;
     v57[3] = 0x2852A9248;
-    v22 = [MEMORY[0x277CCABB0] numberWithChar:{-[AMDFetchDescriptor _saveAsType](v47, "_saveAsType")}];
+    v22 = [MEMORY[0x277CCABB0] numberWithChar:{-[AMDFetchDescriptor _saveAsType](selfCopy, "_saveAsType")}];
     v58[3] = v22;
     v57[4] = 0x2852A9268;
     v58[4] = v43;
@@ -1145,15 +1145,15 @@ LABEL_29:
     v34 = +[AMDSQLite getSharedInstance];
     if ([v34 getDb])
     {
-      v32 = [v34 deleteRows:v36 error:v45];
-      if (*v45)
+      v32 = [v34 deleteRows:v36 error:errorCopy];
+      if (*errorCopy)
       {
         v14 = MEMORY[0x277CCACA8];
-        v16 = [(AMDFetchDescriptor *)v47 _id];
-        v13 = [(AMDFetchDescriptor *)v47 _domain];
-        v15 = [*v45 localizedDescription];
-        v31 = [v14 stringWithFormat:@"SQLITE error deleting old TP entry '%@', domain %lu: %@", v16, v13, v15];
-        MEMORY[0x277D82BD8](v15);
+        v16 = [(AMDFetchDescriptor *)selfCopy _id];
+        _domain2 = [(AMDFetchDescriptor *)selfCopy _domain];
+        localizedDescription2 = [*errorCopy localizedDescription];
+        v31 = [v14 stringWithFormat:@"SQLITE error deleting old TP entry '%@', domain %lu: %@", v16, _domain2, localizedDescription2];
+        MEMORY[0x277D82BD8](localizedDescription2);
         MEMORY[0x277D82BD8](v16);
         v51 = v44;
         v52 = v31;
@@ -1165,17 +1165,17 @@ LABEL_29:
       else
       {
         [v35 addEntriesFromDictionary:v32];
-        v12 = [v34 getBootSchema];
+        getBootSchema = [v34 getBootSchema];
         v30 = [v34 insertRows:v36 usingSchema:? error:?];
-        MEMORY[0x277D82BD8](v12);
-        if (*v45)
+        MEMORY[0x277D82BD8](getBootSchema);
+        if (*errorCopy)
         {
           v9 = MEMORY[0x277CCACA8];
-          v11 = [(AMDFetchDescriptor *)v47 _id];
-          v8 = [(AMDFetchDescriptor *)v47 _domain];
-          v10 = [*v45 localizedDescription];
-          v29 = [v9 stringWithFormat:@"SQLITE error inserting new TP entry '%@', domain %lu: %@", v11, v8, v10];
-          MEMORY[0x277D82BD8](v10);
+          v11 = [(AMDFetchDescriptor *)selfCopy _id];
+          _domain3 = [(AMDFetchDescriptor *)selfCopy _domain];
+          localizedDescription3 = [*errorCopy localizedDescription];
+          v29 = [v9 stringWithFormat:@"SQLITE error inserting new TP entry '%@', domain %lu: %@", v11, _domain3, localizedDescription3];
+          MEMORY[0x277D82BD8](localizedDescription3);
           MEMORY[0x277D82BD8](v11);
           v49 = v44;
           v50 = v29;
@@ -1187,7 +1187,7 @@ LABEL_29:
         else
         {
           [v35 addEntriesFromDictionary:v30];
-          v7 = [(AMDFetchDescriptor *)v47 _id];
+          v7 = [(AMDFetchDescriptor *)selfCopy _id];
           [v35 setObject:? forKey:?];
           MEMORY[0x277D82BD8](v7);
           v48 = MEMORY[0x277D82BE0](v35);

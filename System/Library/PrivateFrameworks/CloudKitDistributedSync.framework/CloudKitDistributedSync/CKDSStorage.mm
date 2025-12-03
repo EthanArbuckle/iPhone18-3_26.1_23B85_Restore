@@ -1,20 +1,20 @@
 @interface CKDSStorage
-- (BOOL)isEqual:(id)a3;
-- (BOOL)size:(unint64_t *)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)size:(unint64_t *)size error:(id *)error;
 - (NSURL)fileURL;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dataWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dataWithError:(id *)error;
 - (id)description;
-- (id)initForWriting:(BOOL)a3 withFile:(id)a4 orData:(id)a5;
+- (id)initForWriting:(BOOL)writing withFile:(id)file orData:(id)data;
 @end
 
 @implementation CKDSStorage
 
-- (id)initForWriting:(BOOL)a3 withFile:(id)a4 orData:(id)a5
+- (id)initForWriting:(BOOL)writing withFile:(id)file orData:(id)data
 {
-  v10 = a4;
-  v17 = a5;
-  if (!(v10 | v17))
+  fileCopy = file;
+  dataCopy = data;
+  if (!(fileCopy | dataCopy))
   {
     v29 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v11, v12, v13, v14, v15, v16);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v29, v30, a2, self, @"CKDSUtils.m", 56, @"Unexpected arguments");
@@ -26,27 +26,27 @@
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_file, a4);
-    if (a3)
+    objc_storeStrong(&v18->_file, file);
+    if (writing)
     {
-      v26 = objc_msgSend_mutableCopy(v17, v20, v21, v22, v23, v24, v25);
+      v26 = objc_msgSend_mutableCopy(dataCopy, v20, v21, v22, v23, v24, v25);
     }
 
     else
     {
-      v26 = objc_msgSend_copy(v17, v20, v21, v22, v23, v24, v25);
+      v26 = objc_msgSend_copy(dataCopy, v20, v21, v22, v23, v24, v25);
     }
 
     data = v19->_data;
     v19->_data = v26;
 
-    v19->_writable = a3;
+    v19->_writable = writing;
   }
 
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v11 = objc_msgSend_writable(self, v5, v6, v7, v8, v9, v10);
@@ -65,20 +65,20 @@
   return v14;
 }
 
-- (BOOL)size:(unint64_t *)a3 error:(id *)a4
+- (BOOL)size:(unint64_t *)size error:(id *)error
 {
   v69[2] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!size)
   {
     goto LABEL_4;
   }
 
-  v10 = objc_msgSend_data(self, a2, a3, a4, v4, v5, v6);
+  v10 = objc_msgSend_data(self, a2, size, error, v4, v5, v6);
 
   if (v10)
   {
     v17 = objc_msgSend_data(self, v11, v12, v13, v14, v15, v16);
-    *a3 = objc_msgSend_length(v17, v18, v19, v20, v21, v22, v23);
+    *size = objc_msgSend_length(v17, v18, v19, v20, v21, v22, v23);
 
 LABEL_4:
     ResourceValue_forKey_error = 1;
@@ -89,7 +89,7 @@ LABEL_4:
 
   if (!v27)
   {
-    *a3 = 0;
+    *size = 0;
     goto LABEL_4;
   }
 
@@ -108,7 +108,7 @@ LABEL_4:
 
   else
   {
-    if (a4)
+    if (error)
     {
       v48 = MEMORY[0x277CCA9B8];
       v68[0] = *MEMORY[0x277CCA450];
@@ -122,23 +122,23 @@ LABEL_4:
       v64 = objc_msgSend_errorWithDomain_code_userInfo_(v48, v61, @"CKDSErrorDomain", 5, v60, v62, v63);
 
       v65 = v64;
-      *a4 = v64;
+      *error = v64;
     }
 
     v47 = 0;
   }
 
-  *a3 = v47;
+  *size = v47;
 
 LABEL_5:
   v25 = *MEMORY[0x277D85DE8];
   return ResourceValue_forKey_error;
 }
 
-- (id)dataWithError:(id *)a3
+- (id)dataWithError:(id *)error
 {
   v46[1] = *MEMORY[0x277D85DE8];
-  v9 = objc_msgSend_data(self, a2, a3, v3, v4, v5, v6);
+  v9 = objc_msgSend_data(self, a2, error, v3, v4, v5, v6);
 
   if (v9)
   {
@@ -181,11 +181,11 @@ LABEL_6:
   }
 
 LABEL_7:
-  if (a3)
+  if (error)
   {
     v41 = v18;
     v17 = 0;
-    *a3 = v18;
+    *error = v18;
   }
 
   else
@@ -200,10 +200,10 @@ LABEL_10:
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -211,9 +211,9 @@ LABEL_10:
   else
   {
     v6 = objc_opt_class();
-    if (objc_msgSend_isMemberOfClass_(v5, v7, v6, v8, v9, v10, v11))
+    if (objc_msgSend_isMemberOfClass_(equalCopy, v7, v6, v8, v9, v10, v11))
     {
-      v12 = v5;
+      v12 = equalCopy;
       v19 = objc_msgSend_data(self, v13, v14, v15, v16, v17, v18);
       v32 = objc_msgSend_data(v12, v20, v21, v22, v23, v24, v25);
       if (v19 != v32)

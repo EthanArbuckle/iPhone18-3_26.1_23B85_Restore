@@ -6,7 +6,7 @@
 
 - (id)constraintEqualToAnchor:()UIKitExtras constant:priority:
 {
-  v4 = [a1 constraintEqualToAnchor:? constant:?];
+  v4 = [self constraintEqualToAnchor:? constant:?];
   *&v5 = a3;
   [v4 setPriority:v5];
 

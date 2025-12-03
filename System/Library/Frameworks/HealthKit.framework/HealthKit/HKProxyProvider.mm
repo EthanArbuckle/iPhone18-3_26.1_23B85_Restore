@@ -1,33 +1,33 @@
 @interface HKProxyProvider
 + (id)_relaunchQueue;
-- (HKProxyProvider)initWithSource:(id)a3 serviceIdentifier:(id)a4 exportedObject:(id)a5 exportedInterface:(id)a6 remoteInterface:(id)a7;
+- (HKProxyProvider)initWithSource:(id)source serviceIdentifier:(id)identifier exportedObject:(id)object exportedInterface:(id)interface remoteInterface:(id)remoteInterface;
 - (_HKXPCExportable)exportedObject;
-- (id)_fetchConnectionAndGeneration:(int64_t *)a3 error:(id *)a4;
-- (id)_lock_sourceWithError:(id *)a3;
+- (id)_fetchConnectionAndGeneration:(int64_t *)generation error:(id *)error;
+- (id)_lock_sourceWithError:(id *)error;
 - (id)automaticProxyReconnectionHandler;
-- (id)clientQueueActionHandlerWithCompletion:(id)a3;
-- (id)clientQueueDoubleObjectHandlerWithCompletion:(id)a3;
-- (id)clientQueueErrorHandlerWithCompletion:(id)a3;
-- (id)clientQueueObjectHandlerWithCompletion:(id)a3;
-- (id)clientQueueProgressHandlerWithHandler:(id)a3;
-- (id)proxyServiceEndpointFromSource:(id)a3 serviceIdentifier:(id)a4 error:(id *)a5;
-- (void)_fetchEndpointAndConnectionWithContinuation:(id)a3;
-- (void)_fetchProxyWithHandler:(id)a3 errorHandler:(id)a4;
-- (void)_fetchRetryingProxyWithErrorCount:(int64_t)a3 handler:(id)a4 errorHandler:(id)a5;
-- (void)_getSynchronousProxyWithErrorCount:(int64_t)a3 handler:(id)a4 errorHandler:(id)a5;
-- (void)_getSynchronousProxyWithHandler:(id)a3 errorHandler:(id)a4;
-- (void)_handleError:(id)a3 connectionGeneration:(int64_t)a4;
-- (void)_lock_flushContinuationsWithConnection:(id)a3 error:(id)a4;
-- (void)_lock_setUpConnectionWithEndpoint:(id)a3;
-- (void)_resetConnectionWithGeneration:(int64_t)a3;
+- (id)clientQueueActionHandlerWithCompletion:(id)completion;
+- (id)clientQueueDoubleObjectHandlerWithCompletion:(id)completion;
+- (id)clientQueueErrorHandlerWithCompletion:(id)completion;
+- (id)clientQueueObjectHandlerWithCompletion:(id)completion;
+- (id)clientQueueProgressHandlerWithHandler:(id)handler;
+- (id)proxyServiceEndpointFromSource:(id)source serviceIdentifier:(id)identifier error:(id *)error;
+- (void)_fetchEndpointAndConnectionWithContinuation:(id)continuation;
+- (void)_fetchProxyWithHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)_fetchRetryingProxyWithErrorCount:(int64_t)count handler:(id)handler errorHandler:(id)errorHandler;
+- (void)_getSynchronousProxyWithErrorCount:(int64_t)count handler:(id)handler errorHandler:(id)errorHandler;
+- (void)_getSynchronousProxyWithHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)_handleError:(id)error connectionGeneration:(int64_t)generation;
+- (void)_lock_flushContinuationsWithConnection:(id)connection error:(id)error;
+- (void)_lock_setUpConnectionWithEndpoint:(id)endpoint;
+- (void)_resetConnectionWithGeneration:(int64_t)generation;
 - (void)_serverDidFinishLaunching;
 - (void)dealloc;
-- (void)fetchProxyServiceEndpointFromSource:(id)a3 serviceIdentifier:(id)a4 endpointHandler:(id)a5 errorHandler:(id)a6;
-- (void)fetchProxyWithHandler:(id)a3 errorHandler:(id)a4;
-- (void)getSynchronousProxyWithHandler:(id)a3 errorHandler:(id)a4;
+- (void)fetchProxyServiceEndpointFromSource:(id)source serviceIdentifier:(id)identifier endpointHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)fetchProxyWithHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)getSynchronousProxyWithHandler:(id)handler errorHandler:(id)errorHandler;
 - (void)invalidate;
 - (void)referenceSourceWeakly;
-- (void)setAutomaticProxyReconnectionHandler:(id)a3;
+- (void)setAutomaticProxyReconnectionHandler:(id)handler;
 @end
 
 @implementation HKProxyProvider
@@ -38,7 +38,7 @@
   block[1] = 3221225472;
   block[2] = __33__HKProxyProvider__relaunchQueue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_relaunchQueue_onceToken != -1)
   {
     dispatch_once(&_relaunchQueue_onceToken, block);
@@ -56,14 +56,14 @@ uint64_t __33__HKProxyProvider__relaunchQueue__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (HKProxyProvider)initWithSource:(id)a3 serviceIdentifier:(id)a4 exportedObject:(id)a5 exportedInterface:(id)a6 remoteInterface:(id)a7
+- (HKProxyProvider)initWithSource:(id)source serviceIdentifier:(id)identifier exportedObject:(id)object exportedInterface:(id)interface remoteInterface:(id)remoteInterface
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v13)
+  sourceCopy = source;
+  identifierCopy = identifier;
+  objectCopy = object;
+  interfaceCopy = interface;
+  remoteInterfaceCopy = remoteInterface;
+  if (!sourceCopy)
   {
     _HKInitializeLogging();
     v18 = HKLogInfrastructure();
@@ -79,21 +79,21 @@ uint64_t __33__HKProxyProvider__relaunchQueue__block_invoke(uint64_t a1)
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_source, a3);
-    v21 = [v14 copy];
+    objc_storeStrong(&v19->_source, source);
+    v21 = [identifierCopy copy];
     serviceIdentifier = v20->_serviceIdentifier;
     v20->_serviceIdentifier = v21;
 
-    objc_storeWeak(&v20->_exportedObject, v15);
-    objc_storeStrong(&v20->_exportedInterface, a6);
-    objc_storeStrong(&v20->_remoteInterface, a7);
+    objc_storeWeak(&v20->_exportedObject, objectCopy);
+    objc_storeStrong(&v20->_exportedInterface, interface);
+    objc_storeStrong(&v20->_remoteInterface, remoteInterface);
     v20->_shouldRetryOnInterruption = 1;
     *&v20->_lock._os_unfair_lock_opaque = 0xFFFFFFFF00000000;
-    v23 = [v13 clientQueue];
-    v24 = v23;
-    if (v23)
+    clientQueue = [sourceCopy clientQueue];
+    v24 = clientQueue;
+    if (clientQueue)
     {
-      v25 = v23;
+      v25 = clientQueue;
     }
 
     else
@@ -104,9 +104,9 @@ uint64_t __33__HKProxyProvider__relaunchQueue__block_invoke(uint64_t a1)
     clientQueue = v20->_clientQueue;
     v20->_clientQueue = v25;
 
-    v27 = [v13 daemonLaunchDarwinNotificationName];
+    daemonLaunchDarwinNotificationName = [sourceCopy daemonLaunchDarwinNotificationName];
     daemonLaunchNotificationName = v20->_daemonLaunchNotificationName;
-    v20->_daemonLaunchNotificationName = v27;
+    v20->_daemonLaunchNotificationName = daemonLaunchDarwinNotificationName;
   }
 
   return v20;
@@ -154,7 +154,7 @@ uint64_t __33__HKProxyProvider__relaunchQueue__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_lock_sourceWithError:(id *)a3
+- (id)_lock_sourceWithError:(id *)error
 {
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_invalidated)
@@ -169,10 +169,10 @@ LABEL_3:
     v12 = v11;
     if (v11)
     {
-      if (a3)
+      if (error)
       {
         v13 = v11;
-        *a3 = v12;
+        *error = v12;
       }
 
       else
@@ -207,24 +207,24 @@ LABEL_12:
   return WeakRetained;
 }
 
-- (void)_handleError:(id)a3 connectionGeneration:(int64_t)a4
+- (void)_handleError:(id)error connectionGeneration:(int64_t)generation
 {
-  if ([a3 hk_isXPCConnectionError])
+  if ([error hk_isXPCConnectionError])
   {
 
-    [(HKProxyProvider *)self _resetConnectionWithGeneration:a4];
+    [(HKProxyProvider *)self _resetConnectionWithGeneration:generation];
   }
 }
 
-- (void)_resetConnectionWithGeneration:(int64_t)a3
+- (void)_resetConnectionWithGeneration:(int64_t)generation
 {
   os_unfair_lock_lock(&self->_lock);
-  if (!self->_invalidated && self->_connectionGeneration == a3)
+  if (!self->_invalidated && self->_connectionGeneration == generation)
   {
     connection = self->_connection;
     if (connection)
     {
-      self->_connectionGeneration = a3 + 1;
+      self->_connectionGeneration = generation + 1;
       [(_HKXPCConnection *)connection invalidate];
       v6 = self->_connection;
       self->_connection = 0;
@@ -254,24 +254,24 @@ void __50__HKProxyProvider__resetConnectionWithGeneration___block_invoke(uint64_
   }
 }
 
-- (id)_fetchConnectionAndGeneration:(int64_t *)a3 error:(id *)a4
+- (id)_fetchConnectionAndGeneration:(int64_t *)generation error:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   connection = self->_connection;
   if (connection)
   {
     v9 = connection;
-    *a3 = self->_connectionGeneration;
+    *generation = self->_connectionGeneration;
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
-    v10 = [(HKProxyProvider *)self _lock_sourceWithError:a4];
+    v10 = [(HKProxyProvider *)self _lock_sourceWithError:error];
     os_unfair_lock_unlock(&self->_lock);
     if (v10)
     {
-      v11 = [(HKProxyProvider *)self proxyServiceEndpointFromSource:v10 serviceIdentifier:self->_serviceIdentifier error:a4];
+      v11 = [(HKProxyProvider *)self proxyServiceEndpointFromSource:v10 serviceIdentifier:self->_serviceIdentifier error:error];
       if (v11)
       {
         os_unfair_lock_lock(&self->_lock);
@@ -285,10 +285,10 @@ void __50__HKProxyProvider__resetConnectionWithGeneration___block_invoke(uint64_
           v17 = v16;
           if (v16)
           {
-            if (a4)
+            if (error)
             {
               v18 = v16;
-              *a4 = v17;
+              *error = v17;
             }
 
             else
@@ -310,7 +310,7 @@ void __50__HKProxyProvider__resetConnectionWithGeneration___block_invoke(uint64_
           }
 
           v9 = v19;
-          *a3 = self->_connectionGeneration;
+          *generation = self->_connectionGeneration;
         }
 
         os_unfair_lock_unlock(&self->_lock);
@@ -331,14 +331,14 @@ void __50__HKProxyProvider__resetConnectionWithGeneration___block_invoke(uint64_
   return v9;
 }
 
-- (void)_fetchEndpointAndConnectionWithContinuation:(id)a3
+- (void)_fetchEndpointAndConnectionWithContinuation:(id)continuation
 {
-  v4 = a3;
+  continuationCopy = continuation;
   os_unfair_lock_lock(&self->_lock);
   connection = self->_connection;
   if (connection)
   {
-    v4[2](v4, connection, self->_connectionGeneration, 0);
+    continuationCopy[2](continuationCopy, connection, self->_connectionGeneration, 0);
 LABEL_5:
     os_unfair_lock_unlock(&self->_lock);
     goto LABEL_6;
@@ -347,7 +347,7 @@ LABEL_5:
   pendingFetchContinuations = self->_pendingFetchContinuations;
   if (pendingFetchContinuations)
   {
-    v7 = [v4 copy];
+    v7 = [continuationCopy copy];
     v8 = _Block_copy(v7);
     [(NSMutableArray *)pendingFetchContinuations addObject:v8];
 
@@ -359,7 +359,7 @@ LABEL_5:
   self->_pendingFetchContinuations = v9;
 
   v11 = self->_pendingFetchContinuations;
-  v12 = [v4 copy];
+  v12 = [continuationCopy copy];
   v13 = _Block_copy(v12);
   [(NSMutableArray *)v11 addObject:v13];
 
@@ -416,22 +416,22 @@ void __63__HKProxyProvider__fetchEndpointAndConnectionWithContinuation___block_i
   os_unfair_lock_unlock(v5);
 }
 
-- (void)_lock_setUpConnectionWithEndpoint:(id)a3
+- (void)_lock_setUpConnectionWithEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   os_unfair_lock_assert_owner(&self->_lock);
   if (!self->_connection)
   {
     WeakRetained = objc_loadWeakRetained(&self->_exportedObject);
     if (WeakRetained)
     {
-      v6 = [[_HKXPCConnection alloc] initWithListenerEndpoint:v4];
+      v6 = [[_HKXPCConnection alloc] initWithListenerEndpoint:endpointCopy];
       connection = self->_connection;
       self->_connection = v6;
 
       v8 = self->_connection;
-      v9 = [(HKProxyProvider *)self debugIdentifier];
-      [(_HKXPCConnection *)v8 setDebugIdentifier:v9];
+      debugIdentifier = [(HKProxyProvider *)self debugIdentifier];
+      [(_HKXPCConnection *)v8 setDebugIdentifier:debugIdentifier];
 
       objc_initWeak(&location, self);
       connectionGeneration = self->_connectionGeneration;
@@ -479,11 +479,11 @@ void __53__HKProxyProvider__lock_setUpConnectionWithEndpoint___block_invoke_2(ui
   [WeakRetained _resetConnectionWithGeneration:*(a1 + 40)];
 }
 
-- (void)_lock_flushContinuationsWithConnection:(id)a3 error:(id)a4
+- (void)_lock_flushContinuationsWithConnection:(id)connection error:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  errorCopy = error;
   os_unfair_lock_assert_owner(&self->_lock);
   connectionGeneration = self->_connectionGeneration;
   v16 = 0u;
@@ -523,10 +523,10 @@ void __53__HKProxyProvider__lock_setUpConnectionWithEndpoint___block_invoke_2(ui
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_fetchRetryingProxyWithErrorCount:(int64_t)a3 handler:(id)a4 errorHandler:(id)a5
+- (void)_fetchRetryingProxyWithErrorCount:(int64_t)count handler:(id)handler errorHandler:(id)errorHandler
 {
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__HKProxyProvider__fetchRetryingProxyWithErrorCount_handler_errorHandler___block_invoke;
@@ -542,11 +542,11 @@ void __53__HKProxyProvider__lock_setUpConnectionWithEndpoint___block_invoke_2(ui
   v12[2] = __74__HKProxyProvider__fetchRetryingProxyWithErrorCount_handler_errorHandler___block_invoke_2;
   v12[3] = &unk_1E7379A30;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v9;
-  v11 = v8;
+  v13 = handlerCopy;
+  v14 = errorHandlerCopy;
+  countCopy = count;
+  v10 = errorHandlerCopy;
+  v11 = handlerCopy;
   [(HKProxyProvider *)self _fetchProxyWithHandler:v11 errorHandler:v12];
 }
 
@@ -586,39 +586,39 @@ void __74__HKProxyProvider__fetchRetryingProxyWithErrorCount_handler_errorHandle
   }
 }
 
-- (void)fetchProxyWithHandler:(id)a3 errorHandler:(id)a4
+- (void)fetchProxyWithHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v6 = a4;
-  v7 = a3;
+  errorHandlerCopy = errorHandler;
+  handlerCopy = handler;
   if ([(HKProxyProvider *)self shouldRetryOnInterruption])
   {
-    [(HKProxyProvider *)self _fetchRetryingProxyWithErrorCount:0 handler:v7 errorHandler:v6];
+    [(HKProxyProvider *)self _fetchRetryingProxyWithErrorCount:0 handler:handlerCopy errorHandler:errorHandlerCopy];
   }
 
   else
   {
-    [(HKProxyProvider *)self _fetchProxyWithHandler:v7 errorHandler:v6];
+    [(HKProxyProvider *)self _fetchProxyWithHandler:handlerCopy errorHandler:errorHandlerCopy];
   }
 }
 
-- (void)_fetchProxyWithHandler:(id)a3 errorHandler:(id)a4
+- (void)_fetchProxyWithHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   v8 = self->_clientQueue;
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __55__HKProxyProvider__fetchProxyWithHandler_errorHandler___block_invoke;
   v16 = &unk_1E7379A80;
-  v17 = self;
+  selfCopy = self;
   v18 = v8;
-  v19 = v7;
-  v20 = v6;
-  v9 = v6;
+  v19 = errorHandlerCopy;
+  v20 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v8;
-  v11 = v7;
+  v11 = errorHandlerCopy;
   v12 = _Block_copy(&v13);
-  [(HKProxyProvider *)self _fetchEndpointAndConnectionWithContinuation:v12, v13, v14, v15, v16, v17];
+  [(HKProxyProvider *)self _fetchEndpointAndConnectionWithContinuation:v12, v13, v14, v15, v16, selfCopy];
 }
 
 void __55__HKProxyProvider__fetchProxyWithHandler_errorHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -678,35 +678,35 @@ void __55__HKProxyProvider__fetchProxyWithHandler_errorHandler___block_invoke_2(
   (*(a1[5] + 16))();
 }
 
-- (void)getSynchronousProxyWithHandler:(id)a3 errorHandler:(id)a4
+- (void)getSynchronousProxyWithHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v6 = a4;
-  v7 = a3;
+  errorHandlerCopy = errorHandler;
+  handlerCopy = handler;
   if ([(HKProxyProvider *)self shouldRetryOnInterruption])
   {
-    [(HKProxyProvider *)self _getSynchronousProxyWithErrorCount:0 handler:v7 errorHandler:v6];
+    [(HKProxyProvider *)self _getSynchronousProxyWithErrorCount:0 handler:handlerCopy errorHandler:errorHandlerCopy];
   }
 
   else
   {
-    [(HKProxyProvider *)self _getSynchronousProxyWithHandler:v7 errorHandler:v6];
+    [(HKProxyProvider *)self _getSynchronousProxyWithHandler:handlerCopy errorHandler:errorHandlerCopy];
   }
 }
 
-- (void)_getSynchronousProxyWithErrorCount:(int64_t)a3 handler:(id)a4 errorHandler:(id)a5
+- (void)_getSynchronousProxyWithErrorCount:(int64_t)count handler:(id)handler errorHandler:(id)errorHandler
 {
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __75__HKProxyProvider__getSynchronousProxyWithErrorCount_handler_errorHandler___block_invoke;
   v12[3] = &unk_1E7379A30;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v9;
-  v11 = v8;
+  v13 = handlerCopy;
+  v14 = errorHandlerCopy;
+  countCopy = count;
+  v10 = errorHandlerCopy;
+  v11 = handlerCopy;
   [(HKProxyProvider *)self _getSynchronousProxyWithHandler:v11 errorHandler:v12];
 }
 
@@ -724,10 +724,10 @@ void __75__HKProxyProvider__getSynchronousProxyWithErrorCount_handler_errorHandl
   }
 }
 
-- (void)_getSynchronousProxyWithHandler:(id)a3 errorHandler:(id)a4
+- (void)_getSynchronousProxyWithHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   v17 = 0;
   v16 = 0;
   v8 = [(HKProxyProvider *)self _fetchConnectionAndGeneration:&v17 error:&v16];
@@ -741,20 +741,20 @@ void __75__HKProxyProvider__getSynchronousProxyWithErrorCount_handler_errorHandl
     v13[3] = &unk_1E7379A58;
     v13[4] = self;
     v15 = v17;
-    v14 = v7;
+    v14 = errorHandlerCopy;
     v11 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v13];
-    v6[2](v6, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 
   else if (v9)
   {
-    (*(v7 + 2))(v7, v9);
+    (*(errorHandlerCopy + 2))(errorHandlerCopy, v9);
   }
 
   else
   {
     v12 = [MEMORY[0x1E696ABC0] hk_error:100 format:@"Failed to fetch proxy connection."];
-    (*(v7 + 2))(v7, v12);
+    (*(errorHandlerCopy + 2))(errorHandlerCopy, v12);
   }
 }
 
@@ -767,24 +767,24 @@ void __64__HKProxyProvider__getSynchronousProxyWithHandler_errorHandler___block_
   (*(a1[5] + 16))();
 }
 
-- (void)setAutomaticProxyReconnectionHandler:(id)a3
+- (void)setAutomaticProxyReconnectionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
   lock_automaticProxyReconnectionHandler = self->_lock_automaticProxyReconnectionHandler;
-  if (v4)
+  if (handlerCopy)
   {
     if (!lock_automaticProxyReconnectionHandler && self->_daemonLaunchNotificationName)
     {
       objc_initWeak(&location, self);
-      v6 = [(NSString *)self->_daemonLaunchNotificationName UTF8String];
-      v7 = [objc_opt_class() _relaunchQueue];
+      uTF8String = [(NSString *)self->_daemonLaunchNotificationName UTF8String];
+      _relaunchQueue = [objc_opt_class() _relaunchQueue];
       v11 = MEMORY[0x1E69E9820];
       v12 = 3221225472;
       v13 = __56__HKProxyProvider_setAutomaticProxyReconnectionHandler___block_invoke;
       v14 = &unk_1E7379AA8;
       objc_copyWeak(&v15, &location);
-      notify_register_dispatch(v6, &self->_notifyToken, v7, &v11);
+      notify_register_dispatch(uTF8String, &self->_notifyToken, _relaunchQueue, &v11);
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
@@ -801,7 +801,7 @@ void __64__HKProxyProvider__getSynchronousProxyWithHandler_errorHandler___block_
     }
   }
 
-  v9 = [v4 copy];
+  v9 = [handlerCopy copy];
   v10 = self->_lock_automaticProxyReconnectionHandler;
   self->_lock_automaticProxyReconnectionHandler = v9;
 
@@ -826,16 +826,16 @@ void __56__HKProxyProvider_setAutomaticProxyReconnectionHandler___block_invoke(u
 
 - (void)_serverDidFinishLaunching
 {
-  v3 = [(HKProxyProvider *)self automaticProxyReconnectionHandler];
-  v4 = v3;
-  if (v3)
+  automaticProxyReconnectionHandler = [(HKProxyProvider *)self automaticProxyReconnectionHandler];
+  v4 = automaticProxyReconnectionHandler;
+  if (automaticProxyReconnectionHandler)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __44__HKProxyProvider__serverDidFinishLaunching__block_invoke;
     aBlock[3] = &unk_1E7379AD0;
     aBlock[4] = self;
-    v9 = v3;
+    v9 = automaticProxyReconnectionHandler;
     v5 = _Block_copy(aBlock);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -892,23 +892,23 @@ void __44__HKProxyProvider__serverDidFinishLaunching__block_invoke_44(uint64_t a
   }
 }
 
-- (id)clientQueueErrorHandlerWithCompletion:(id)a3
+- (id)clientQueueErrorHandlerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__5;
   v11[4] = __Block_byref_object_dispose__5;
-  v12 = [(HKProxyProvider *)self exportedObject];
+  exportedObject = [(HKProxyProvider *)self exportedObject];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __57__HKProxyProvider_clientQueueErrorHandlerWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7379B20;
   aBlock[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v10 = v11;
-  v5 = v4;
+  v5 = completionCopy;
   v6 = _Block_copy(aBlock);
 
   _Block_object_dispose(v11, 8);
@@ -945,23 +945,23 @@ void __57__HKProxyProvider_clientQueueErrorHandlerWithCompletion___block_invoke_
   *(v3 + 40) = 0;
 }
 
-- (id)clientQueueActionHandlerWithCompletion:(id)a3
+- (id)clientQueueActionHandlerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__5;
   v11[4] = __Block_byref_object_dispose__5;
-  v12 = [(HKProxyProvider *)self exportedObject];
+  exportedObject = [(HKProxyProvider *)self exportedObject];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__HKProxyProvider_clientQueueActionHandlerWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7379B70;
   aBlock[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v10 = v11;
-  v5 = v4;
+  v5 = completionCopy;
   v6 = _Block_copy(aBlock);
 
   _Block_object_dispose(v11, 8);
@@ -999,23 +999,23 @@ void __58__HKProxyProvider_clientQueueActionHandlerWithCompletion___block_invoke
   *(v3 + 40) = 0;
 }
 
-- (id)clientQueueObjectHandlerWithCompletion:(id)a3
+- (id)clientQueueObjectHandlerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__5;
   v11[4] = __Block_byref_object_dispose__5;
-  v12 = [(HKProxyProvider *)self exportedObject];
+  exportedObject = [(HKProxyProvider *)self exportedObject];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__HKProxyProvider_clientQueueObjectHandlerWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7379BC0;
   aBlock[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v10 = v11;
-  v5 = v4;
+  v5 = completionCopy;
   v6 = _Block_copy(aBlock);
 
   _Block_object_dispose(v11, 8);
@@ -1056,23 +1056,23 @@ void __58__HKProxyProvider_clientQueueObjectHandlerWithCompletion___block_invoke
   *(v3 + 40) = 0;
 }
 
-- (id)clientQueueDoubleObjectHandlerWithCompletion:(id)a3
+- (id)clientQueueDoubleObjectHandlerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__5;
   v11[4] = __Block_byref_object_dispose__5;
-  v12 = [(HKProxyProvider *)self exportedObject];
+  exportedObject = [(HKProxyProvider *)self exportedObject];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__HKProxyProvider_clientQueueDoubleObjectHandlerWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7379C10;
   aBlock[4] = self;
-  v9 = v4;
+  v9 = completionCopy;
   v10 = v11;
-  v5 = v4;
+  v5 = completionCopy;
   v6 = _Block_copy(aBlock);
 
   _Block_object_dispose(v11, 8);
@@ -1115,23 +1115,23 @@ void __64__HKProxyProvider_clientQueueDoubleObjectHandlerWithCompletion___block_
   *(v3 + 40) = 0;
 }
 
-- (id)clientQueueProgressHandlerWithHandler:(id)a3
+- (id)clientQueueProgressHandlerWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__5;
   v11[4] = __Block_byref_object_dispose__5;
-  v12 = [(HKProxyProvider *)self exportedObject];
+  exportedObject = [(HKProxyProvider *)self exportedObject];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __57__HKProxyProvider_clientQueueProgressHandlerWithHandler___block_invoke;
   aBlock[3] = &unk_1E7379C38;
   aBlock[4] = self;
-  v9 = v4;
+  v9 = handlerCopy;
   v10 = v11;
-  v5 = v4;
+  v5 = handlerCopy;
   v6 = _Block_copy(aBlock);
 
   _Block_object_dispose(v11, 8);
@@ -1175,14 +1175,14 @@ void __57__HKProxyProvider_clientQueueProgressHandlerWithHandler___block_invoke_
   return WeakRetained;
 }
 
-- (id)proxyServiceEndpointFromSource:(id)a3 serviceIdentifier:(id)a4 error:(id *)a5
+- (id)proxyServiceEndpointFromSource:(id)source serviceIdentifier:(id)identifier error:(id *)error
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (void)fetchProxyServiceEndpointFromSource:(id)a3 serviceIdentifier:(id)a4 endpointHandler:(id)a5 errorHandler:(id)a6
+- (void)fetchProxyServiceEndpointFromSource:(id)source serviceIdentifier:(id)identifier endpointHandler:(id)handler errorHandler:(id)errorHandler
 {
   objc_opt_class();
 

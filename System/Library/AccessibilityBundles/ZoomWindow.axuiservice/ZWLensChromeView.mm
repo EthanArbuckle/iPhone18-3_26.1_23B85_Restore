@@ -1,25 +1,25 @@
 @interface ZWLensChromeView
 - (CGRect)previousResizeBounds;
-- (ZWLensChromeView)initWithFrame:(CGRect)a3;
+- (ZWLensChromeView)initWithFrame:(CGRect)frame;
 - (id)accessibilityElements;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)showLensResizingHandles:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateChromeVisibility:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)showLensResizingHandles:(BOOL)handles animated:(BOOL)animated;
+- (void)updateChromeVisibility:(BOOL)visibility animated:(BOOL)animated completion:(id)completion;
 - (void)updateCornerRadii;
 @end
 
 @implementation ZWLensChromeView
 
-- (ZWLensChromeView)initWithFrame:(CGRect)a3
+- (ZWLensChromeView)initWithFrame:(CGRect)frame
 {
   v54.receiver = self;
   v54.super_class = ZWLensChromeView;
-  v3 = [(ZWLensChromeView *)&v54 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ZWLensChromeView *)&v54 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(ZWLensChromeView *)v3 layer];
+    layer = [(ZWLensChromeView *)v3 layer];
     if (ZWEnableLensEyeCandy() && ZWUseVibrantBlendModes())
     {
       v6 = objc_alloc_init(CABackdropLayer);
@@ -28,12 +28,12 @@
       [v6 setMarginWidth:12.0];
       [v6 setMasksToBounds:0];
       [(ZWLensChromeView *)v4 setBackdropLayer:v6];
-      v7 = [(ZWLensChromeView *)v4 layer];
-      [v7 addSublayer:v6];
+      layer2 = [(ZWLensChromeView *)v4 layer];
+      [layer2 addSublayer:v6];
 
       v8 = +[CALayer layer];
-      v9 = [(ZWLensChromeView *)v4 backdropLayer];
-      [v9 setMask:v8];
+      backdropLayer = [(ZWLensChromeView *)v4 backdropLayer];
+      [backdropLayer setMask:v8];
 
       v10 = +[CAShapeLayer layer];
       [(ZWLensChromeView *)v4 setBackdropMaskShapeLayer:v10];
@@ -42,45 +42,45 @@
       [(ZWLensChromeView *)v4 setBackdropResizingMaskLayer:v11];
 
       v12 = +[UIColor whiteColor];
-      v13 = [v12 CGColor];
-      v14 = [(ZWLensChromeView *)v4 backdropResizingMaskLayer];
-      [v14 setBackgroundColor:v13];
+      cGColor = [v12 CGColor];
+      backdropResizingMaskLayer = [(ZWLensChromeView *)v4 backdropResizingMaskLayer];
+      [backdropResizingMaskLayer setBackgroundColor:cGColor];
 
-      v15 = [(ZWLensChromeView *)v4 backdropResizingMaskLayer];
-      [v15 setOpacity:0.0];
+      backdropResizingMaskLayer2 = [(ZWLensChromeView *)v4 backdropResizingMaskLayer];
+      [backdropResizingMaskLayer2 setOpacity:0.0];
 
       v16 = +[CAShapeLayer layer];
       [(ZWLensChromeView *)v4 setBackdropGrabberMaskLayer:v16];
 
       v17 = +[UIColor whiteColor];
-      v18 = [v17 CGColor];
-      v19 = [(ZWLensChromeView *)v4 backdropGrabberMaskLayer];
-      [v19 setBackgroundColor:v18];
+      cGColor2 = [v17 CGColor];
+      backdropGrabberMaskLayer = [(ZWLensChromeView *)v4 backdropGrabberMaskLayer];
+      [backdropGrabberMaskLayer setBackgroundColor:cGColor2];
 
-      v20 = [(ZWLensChromeView *)v4 backdropGrabberMaskLayer];
-      [v20 setCornerRadius:5.0];
+      backdropGrabberMaskLayer2 = [(ZWLensChromeView *)v4 backdropGrabberMaskLayer];
+      [backdropGrabberMaskLayer2 setCornerRadius:5.0];
 
-      v21 = [(ZWLensChromeView *)v4 backdropLayer];
-      v22 = [v21 mask];
-      v23 = [(ZWLensChromeView *)v4 backdropMaskShapeLayer];
-      [v22 addSublayer:v23];
+      backdropLayer2 = [(ZWLensChromeView *)v4 backdropLayer];
+      mask = [backdropLayer2 mask];
+      backdropMaskShapeLayer = [(ZWLensChromeView *)v4 backdropMaskShapeLayer];
+      [mask addSublayer:backdropMaskShapeLayer];
 
-      v24 = [(ZWLensChromeView *)v4 backdropLayer];
-      v25 = [v24 mask];
-      v26 = [(ZWLensChromeView *)v4 backdropGrabberMaskLayer];
-      [v25 addSublayer:v26];
+      backdropLayer3 = [(ZWLensChromeView *)v4 backdropLayer];
+      mask2 = [backdropLayer3 mask];
+      backdropGrabberMaskLayer3 = [(ZWLensChromeView *)v4 backdropGrabberMaskLayer];
+      [mask2 addSublayer:backdropGrabberMaskLayer3];
 
-      v27 = [(ZWLensChromeView *)v4 backdropLayer];
-      v28 = [v27 mask];
-      v29 = [(ZWLensChromeView *)v4 backdropResizingMaskLayer];
-      [v28 addSublayer:v29];
+      backdropLayer4 = [(ZWLensChromeView *)v4 backdropLayer];
+      mask3 = [backdropLayer4 mask];
+      backdropResizingMaskLayer3 = [(ZWLensChromeView *)v4 backdropResizingMaskLayer];
+      [mask3 addSublayer:backdropResizingMaskLayer3];
 
-      v5 = v6;
+      layer = v6;
     }
 
     v30 = +[CAShapeLayer layer];
     [(ZWLensChromeView *)v4 setChromeInnerBorderLayer:v30];
-    [v5 addSublayer:v30];
+    [layer addSublayer:v30];
     v31 = +[UIColor clearColor];
     [v30 setFillColor:{objc_msgSend(v31, "CGColor")}];
 
@@ -101,13 +101,13 @@
     [v35 setCompositingFilter:v37];
 
     [(ZWLensChromeView *)v4 setGrabberOverlayLayer:v35];
-    v38 = [(ZWLensChromeView *)v4 grabberOverlayLayer];
-    [v38 setCornerRadius:5.0];
+    grabberOverlayLayer = [(ZWLensChromeView *)v4 grabberOverlayLayer];
+    [grabberOverlayLayer setCornerRadius:5.0];
 
-    [v5 addSublayer:v35];
+    [layer addSublayer:v35];
     v39 = +[CAShapeLayer layer];
     [(ZWLensChromeView *)v4 setChromeOuterBorderLayer:v39];
-    [v5 addSublayer:v39];
+    [layer addSublayer:v39];
     v40 = +[UIColor clearColor];
     [v39 setFillColor:{objc_msgSend(v40, "CGColor")}];
 
@@ -127,8 +127,8 @@
     v45 = [CAFilter filterWithType:v33];
     [v43 setCompositingFilter:v45];
 
-    v46 = [(ZWLensChromeView *)v4 layer];
-    [v46 addSublayer:v43];
+    layer3 = [(ZWLensChromeView *)v4 layer];
+    [layer3 addSublayer:v43];
 
     v47 = +[CAShapeLayer layer];
 
@@ -143,8 +143,8 @@
     [v47 setFillColor:{objc_msgSend(v51, "CGColor")}];
 
     [v47 setLineWidth:ZWZoomLensBorderThicknessForTouches()];
-    v52 = [(ZWLensChromeView *)v4 layer];
-    [v52 addSublayer:v47];
+    layer4 = [(ZWLensChromeView *)v4 layer];
+    [layer4 addSublayer:v47];
   }
 
   return v4;
@@ -162,110 +162,110 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(ZWLensChromeView *)self chromeInnerBorderLayer];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  chromeInnerBorderLayer = [(ZWLensChromeView *)self chromeInnerBorderLayer];
+  [chromeInnerBorderLayer setFrame:{v4, v6, v8, v10}];
 
   [(ZWLensChromeView *)self bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(ZWLensChromeView *)self chromeOuterBorderLayer];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  chromeOuterBorderLayer = [(ZWLensChromeView *)self chromeOuterBorderLayer];
+  [chromeOuterBorderLayer setFrame:{v13, v15, v17, v19}];
 
   [(ZWLensChromeView *)self bounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(ZWLensChromeView *)self lensResizingHandlesLayer];
-  [v29 setFrame:{v22, v24, v26, v28}];
+  lensResizingHandlesLayer = [(ZWLensChromeView *)self lensResizingHandlesLayer];
+  [lensResizingHandlesLayer setFrame:{v22, v24, v26, v28}];
 
   [(ZWLensChromeView *)self bounds];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  v38 = [(ZWLensChromeView *)self backdropLayer];
-  v39 = [v38 mask];
-  [v39 setFrame:{v31, v33, v35, v37}];
+  backdropLayer = [(ZWLensChromeView *)self backdropLayer];
+  mask = [backdropLayer mask];
+  [mask setFrame:{v31, v33, v35, v37}];
 
   [(ZWLensChromeView *)self bounds];
   v41 = v40;
   v43 = v42;
   v45 = v44;
   v47 = v46;
-  v48 = [(ZWLensChromeView *)self backdropResizingMaskLayer];
-  [v48 setFrame:{v41, v43, v45, v47}];
+  backdropResizingMaskLayer = [(ZWLensChromeView *)self backdropResizingMaskLayer];
+  [backdropResizingMaskLayer setFrame:{v41, v43, v45, v47}];
 
   [(ZWLensChromeView *)self bounds];
   v50 = v49;
   v52 = v51;
   v54 = v53;
   v56 = v55;
-  v57 = [(ZWLensChromeView *)self backdropMaskShapeLayer];
-  [v57 setFrame:{v50, v52, v54, v56}];
+  backdropMaskShapeLayer = [(ZWLensChromeView *)self backdropMaskShapeLayer];
+  [backdropMaskShapeLayer setFrame:{v50, v52, v54, v56}];
 
   [(ZWLensChromeView *)self bounds];
   v59 = v58;
   v61 = v60;
   v63 = v62;
   v65 = v64;
-  v66 = [(ZWLensChromeView *)self touchStealerShapeLayer];
-  [v66 setFrame:{v59, v61, v63, v65}];
+  touchStealerShapeLayer = [(ZWLensChromeView *)self touchStealerShapeLayer];
+  [touchStealerShapeLayer setFrame:{v59, v61, v63, v65}];
 
   [(ZWLensChromeView *)self bounds];
   v67 = [UIBezierPath bezierPathWithRect:?];
-  v68 = [v67 CGPath];
-  v69 = [(ZWLensChromeView *)self touchStealerShapeLayer];
-  [v69 setPath:v68];
+  cGPath = [v67 CGPath];
+  touchStealerShapeLayer2 = [(ZWLensChromeView *)self touchStealerShapeLayer];
+  [touchStealerShapeLayer2 setPath:cGPath];
 
   [(ZWLensChromeView *)self updateCornerRadii];
   [(ZWLensChromeView *)self bounds];
   v70 = CGRectGetMidX(v113) + -23.0;
   [(ZWLensChromeView *)self bounds];
   v71 = CGRectGetMaxY(v114) + -5.0;
-  v72 = [(ZWLensChromeView *)self grabberOverlayLayer];
-  [v72 setFrame:{v70, v71, 46.0, 10.0}];
+  grabberOverlayLayer = [(ZWLensChromeView *)self grabberOverlayLayer];
+  [grabberOverlayLayer setFrame:{v70, v71, 46.0, 10.0}];
 
-  v73 = [(ZWLensChromeView *)self grabberOverlayLayer];
-  [v73 frame];
+  grabberOverlayLayer2 = [(ZWLensChromeView *)self grabberOverlayLayer];
+  [grabberOverlayLayer2 frame];
   v75 = v74;
   v77 = v76;
   v79 = v78;
   v81 = v80;
-  v82 = [(ZWLensChromeView *)self backdropGrabberMaskLayer];
-  [v82 setFrame:{v75, v77, v79, v81}];
+  backdropGrabberMaskLayer = [(ZWLensChromeView *)self backdropGrabberMaskLayer];
+  [backdropGrabberMaskLayer setFrame:{v75, v77, v79, v81}];
 
   [(ZWLensChromeView *)self bounds];
   v84 = v83;
   v86 = v85;
   v88 = v87;
   v90 = v89;
-  v91 = [(ZWLensChromeView *)self backdropLayer];
-  [v91 setFrame:{v84, v86, v88, v90}];
+  backdropLayer2 = [(ZWLensChromeView *)self backdropLayer];
+  [backdropLayer2 setFrame:{v84, v86, v88, v90}];
 
   [(ZWLensChromeView *)self bounds];
   v96 = ZWResizeGrabberPath(v92, v93, v94, v95);
-  v97 = [v96 CGPath];
-  v98 = [(ZWLensChromeView *)self lensResizingHandlesLayer];
-  [v98 setPath:v97];
+  cGPath2 = [v96 CGPath];
+  lensResizingHandlesLayer2 = [(ZWLensChromeView *)self lensResizingHandlesLayer];
+  [lensResizingHandlesLayer2 setPath:cGPath2];
 
   [(ZWLensChromeView *)self bounds];
   v103 = ZWResizeGrabberPath(v99, v100, v101, v102);
-  v104 = [v103 CGPath];
-  v105 = [(ZWLensChromeView *)self backdropResizingMaskLayer];
-  [v105 setPath:v104];
+  cGPath3 = [v103 CGPath];
+  backdropResizingMaskLayer2 = [(ZWLensChromeView *)self backdropResizingMaskLayer];
+  [backdropResizingMaskLayer2 setPath:cGPath3];
 
   v106 = +[UIColor whiteColor];
-  v107 = [v106 CGColor];
-  v108 = [(ZWLensChromeView *)self backdropResizingMaskLayer];
-  [v108 setFillColor:v107];
+  cGColor = [v106 CGColor];
+  backdropResizingMaskLayer3 = [(ZWLensChromeView *)self backdropResizingMaskLayer];
+  [backdropResizingMaskLayer3 setFillColor:cGColor];
 
   v109 = +[UIColor clearColor];
-  v110 = [v109 CGColor];
-  v111 = [(ZWLensChromeView *)self backdropResizingMaskLayer];
-  [v111 setBackgroundColor:v110];
+  cGColor2 = [v109 CGColor];
+  backdropResizingMaskLayer4 = [(ZWLensChromeView *)self backdropResizingMaskLayer];
+  [backdropResizingMaskLayer4 setBackgroundColor:cGColor2];
 
   +[CATransaction commit];
 }
@@ -280,24 +280,24 @@
 
 - (void)updateCornerRadii
 {
-  v3 = [(ZWLensChromeView *)self window];
+  window = [(ZWLensChromeView *)self window];
   [(ZWLensChromeView *)self bounds];
-  [v3 convertRect:self fromView:?];
+  [window convertRect:self fromView:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(ZWLensChromeView *)self traitCollection];
-  [v12 displayCornerRadius];
+  traitCollection = [(ZWLensChromeView *)self traitCollection];
+  [traitCollection displayCornerRadius];
   v14 = v13;
 
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v15 = [(ZWLensChromeView *)self window];
-  [v15 bounds];
+  window2 = [(ZWLensChromeView *)self window];
+  [window2 bounds];
   ZWCornerRadiiForFrameInContainer(&v63, v5, v7, v9, v11, v16, v17, v18, v19, v14);
 
   [(ZWLensChromeView *)self bounds];
@@ -305,46 +305,46 @@
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  v28 = [(ZWLensChromeView *)self showingResizeHandles];
+  showingResizeHandles = [(ZWLensChromeView *)self showingResizeHandles];
   v59 = v63;
   v60 = v64;
   v61 = v65;
   v62 = v66;
-  v29 = ZWOuterLensBorderForBounds(v28, &v59, v21, v23, v25, v27);
+  v29 = ZWOuterLensBorderForBounds(showingResizeHandles, &v59, v21, v23, v25, v27);
   [(ZWLensChromeView *)self bounds];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  v38 = [(ZWLensChromeView *)self showingResizeHandles];
+  showingResizeHandles2 = [(ZWLensChromeView *)self showingResizeHandles];
   v59 = v63;
   v60 = v64;
   v61 = v65;
   v62 = v66;
-  v39 = ZWInnerLensBorderForBounds(v38, &v59, v31, v33, v35, v37);
-  v40 = [v29 CGPath];
-  v41 = [(ZWLensChromeView *)self chromeOuterBorderLayer];
-  [v41 setPath:v40];
+  v39 = ZWInnerLensBorderForBounds(showingResizeHandles2, &v59, v31, v33, v35, v37);
+  cGPath = [v29 CGPath];
+  chromeOuterBorderLayer = [(ZWLensChromeView *)self chromeOuterBorderLayer];
+  [chromeOuterBorderLayer setPath:cGPath];
 
-  v42 = [v39 CGPath];
-  v43 = [(ZWLensChromeView *)self chromeInnerBorderLayer];
-  [v43 setPath:v42];
+  cGPath2 = [v39 CGPath];
+  chromeInnerBorderLayer = [(ZWLensChromeView *)self chromeInnerBorderLayer];
+  [chromeInnerBorderLayer setPath:cGPath2];
 
   v44 = [v39 copy];
   [v44 appendPath:v29];
-  v45 = [v44 CGPath];
-  v46 = [(ZWLensChromeView *)self backdropMaskShapeLayer];
-  [v46 setPath:v45];
+  cGPath3 = [v44 CGPath];
+  backdropMaskShapeLayer = [(ZWLensChromeView *)self backdropMaskShapeLayer];
+  [backdropMaskShapeLayer setPath:cGPath3];
 
   v47 = +[UIColor clearColor];
-  v48 = [v47 CGColor];
-  v49 = [(ZWLensChromeView *)self backdropMaskShapeLayer];
-  [v49 setFillColor:v48];
+  cGColor = [v47 CGColor];
+  backdropMaskShapeLayer2 = [(ZWLensChromeView *)self backdropMaskShapeLayer];
+  [backdropMaskShapeLayer2 setFillColor:cGColor];
 
   v50 = +[UIColor whiteColor];
-  v51 = [v50 CGColor];
-  v52 = [(ZWLensChromeView *)self backdropMaskShapeLayer];
-  [v52 setStrokeColor:v51];
+  cGColor2 = [v50 CGColor];
+  backdropMaskShapeLayer3 = [(ZWLensChromeView *)self backdropMaskShapeLayer];
+  [backdropMaskShapeLayer3 setStrokeColor:cGColor2];
 
   v53 = ZWLensInnerBorderWidth();
   v54 = ZWLensOuterBorderWidth();
@@ -353,21 +353,21 @@
     v53 = v54;
   }
 
-  v55 = [(ZWLensChromeView *)self backdropMaskShapeLayer];
-  [v55 setLineWidth:v53];
+  backdropMaskShapeLayer4 = [(ZWLensChromeView *)self backdropMaskShapeLayer];
+  [backdropMaskShapeLayer4 setLineWidth:v53];
 
   v56 = +[UIColor clearColor];
-  v57 = [v56 CGColor];
-  v58 = [(ZWLensChromeView *)self backdropMaskShapeLayer];
-  [v58 setBackgroundColor:v57];
+  cGColor3 = [v56 CGColor];
+  backdropMaskShapeLayer5 = [(ZWLensChromeView *)self backdropMaskShapeLayer];
+  [backdropMaskShapeLayer5 setBackgroundColor:cGColor3];
 }
 
-- (void)updateChromeVisibility:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)updateChromeVisibility:(BOOL)visibility animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   v9 = 0.0;
-  if (v5)
+  if (animatedCopy)
   {
     v9 = ZWDefaultFadeAnimationDuration();
   }
@@ -377,13 +377,13 @@
   v13[2] = __63__ZWLensChromeView_updateChromeVisibility_animated_completion___block_invoke;
   v13[3] = &unk_78BD0;
   v13[4] = self;
-  v14 = a3;
+  visibilityCopy = visibility;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __63__ZWLensChromeView_updateChromeVisibility_animated_completion___block_invoke_2;
   v11[3] = &unk_78DB8;
-  v12 = v8;
-  v10 = v8;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [UIView animateWithDuration:v13 animations:v11 completion:v9];
 }
 
@@ -409,15 +409,15 @@ uint64_t __63__ZWLensChromeView_updateChromeVisibility_animated_completion___blo
   return result;
 }
 
-- (void)showLensResizingHandles:(BOOL)a3 animated:(BOOL)a4
+- (void)showLensResizingHandles:(BOOL)handles animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  handlesCopy = handles;
   +[CATransaction begin];
-  [CATransaction setDisableActions:!v4];
-  v7 = [(ZWLensChromeView *)self lensResizingHandlesLayer];
-  v8 = v7;
-  if (v5)
+  [CATransaction setDisableActions:!animatedCopy];
+  lensResizingHandlesLayer = [(ZWLensChromeView *)self lensResizingHandlesLayer];
+  v8 = lensResizingHandlesLayer;
+  if (handlesCopy)
   {
     v9 = 1.0;
   }
@@ -427,7 +427,7 @@ uint64_t __63__ZWLensChromeView_updateChromeVisibility_animated_completion___blo
     v9 = 0.0;
   }
 
-  if (v5)
+  if (handlesCopy)
   {
     v10 = 0.0;
   }
@@ -437,21 +437,21 @@ uint64_t __63__ZWLensChromeView_updateChromeVisibility_animated_completion___blo
     v10 = 1.0;
   }
 
-  [v7 setOpacity:COERCE_DOUBLE(LODWORD(v9))];
+  [lensResizingHandlesLayer setOpacity:COERCE_DOUBLE(LODWORD(v9))];
 
-  v11 = [(ZWLensChromeView *)self grabberOverlayLayer];
+  grabberOverlayLayer = [(ZWLensChromeView *)self grabberOverlayLayer];
   *&v12 = v10;
-  [v11 setOpacity:v12];
+  [grabberOverlayLayer setOpacity:v12];
 
-  v13 = [(ZWLensChromeView *)self backdropResizingMaskLayer];
+  backdropResizingMaskLayer = [(ZWLensChromeView *)self backdropResizingMaskLayer];
   *&v14 = v9;
-  [v13 setOpacity:v14];
+  [backdropResizingMaskLayer setOpacity:v14];
 
-  v15 = [(ZWLensChromeView *)self backdropGrabberMaskLayer];
+  backdropGrabberMaskLayer = [(ZWLensChromeView *)self backdropGrabberMaskLayer];
   *&v16 = v10;
-  [v15 setOpacity:v16];
+  [backdropGrabberMaskLayer setOpacity:v16];
 
-  [(ZWLensChromeView *)self setShowingResizeHandles:v5];
+  [(ZWLensChromeView *)self setShowingResizeHandles:handlesCopy];
   [(ZWLensChromeView *)self layoutSubviews];
 
   +[CATransaction commit];
@@ -473,9 +473,9 @@ uint64_t __63__ZWLensChromeView_updateChromeVisibility_animated_completion___blo
   v12 = objc_retainBlock(v83);
   if ([(ZWLensChromeView *)self showingResizeHandles])
   {
-    v13 = [(ZWLensChromeView *)self resizeElements];
+    resizeElements = [(ZWLensChromeView *)self resizeElements];
 
-    if (!v13)
+    if (!resizeElements)
     {
       v14 = +[NSMutableArray array];
       v15 = [[UIAccessibilityElement alloc] initWithAccessibilityContainer:self];
@@ -566,29 +566,29 @@ uint64_t __63__ZWLensChromeView_updateChromeVisibility_animated_completion___blo
     v119.size.height = v11;
     if (!CGRectEqualToRect(v86, v119))
     {
-      v38 = [(ZWLensChromeView *)self resizeElements];
-      v70 = [v38 objectAtIndexedSubscript:0];
+      resizeElements2 = [(ZWLensChromeView *)self resizeElements];
+      v70 = [resizeElements2 objectAtIndexedSubscript:0];
 
-      v39 = [(ZWLensChromeView *)self resizeElements];
-      v40 = [v39 objectAtIndexedSubscript:1];
+      resizeElements3 = [(ZWLensChromeView *)self resizeElements];
+      v40 = [resizeElements3 objectAtIndexedSubscript:1];
 
-      v41 = [(ZWLensChromeView *)self resizeElements];
-      v42 = [v41 objectAtIndexedSubscript:2];
+      resizeElements4 = [(ZWLensChromeView *)self resizeElements];
+      v42 = [resizeElements4 objectAtIndexedSubscript:2];
 
-      v43 = [(ZWLensChromeView *)self resizeElements];
-      v76 = [v43 objectAtIndexedSubscript:3];
+      resizeElements5 = [(ZWLensChromeView *)self resizeElements];
+      v76 = [resizeElements5 objectAtIndexedSubscript:3];
 
-      v44 = [(ZWLensChromeView *)self resizeElements];
-      v45 = [v44 objectAtIndexedSubscript:4];
+      resizeElements6 = [(ZWLensChromeView *)self resizeElements];
+      v45 = [resizeElements6 objectAtIndexedSubscript:4];
 
-      v46 = [(ZWLensChromeView *)self resizeElements];
-      v72 = [v46 objectAtIndexedSubscript:5];
+      resizeElements7 = [(ZWLensChromeView *)self resizeElements];
+      v72 = [resizeElements7 objectAtIndexedSubscript:5];
 
-      v47 = [(ZWLensChromeView *)self resizeElements];
-      v74 = [v47 objectAtIndexedSubscript:6];
+      resizeElements8 = [(ZWLensChromeView *)self resizeElements];
+      v74 = [resizeElements8 objectAtIndexedSubscript:6];
 
-      v48 = [(ZWLensChromeView *)self resizeElements];
-      v78 = [v48 objectAtIndexedSubscript:7];
+      resizeElements9 = [(ZWLensChromeView *)self resizeElements];
+      v78 = [resizeElements9 objectAtIndexedSubscript:7];
 
       v87.origin.x = v5;
       v87.origin.y = v7;
@@ -697,15 +697,15 @@ uint64_t __63__ZWLensChromeView_updateChromeVisibility_animated_completion___blo
       [(ZWLensChromeView *)self setPreviousResizeBounds:v5, v7, v9, v11];
     }
 
-    v65 = [(ZWLensChromeView *)self resizeElements];
+    resizeElements10 = [(ZWLensChromeView *)self resizeElements];
   }
 
   else
   {
-    v65 = 0;
+    resizeElements10 = 0;
   }
 
-  return v65;
+  return resizeElements10;
 }
 
 - (CGRect)previousResizeBounds

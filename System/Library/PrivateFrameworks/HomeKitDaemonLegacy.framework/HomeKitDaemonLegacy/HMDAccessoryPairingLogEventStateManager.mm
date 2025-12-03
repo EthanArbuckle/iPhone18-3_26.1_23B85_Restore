@@ -3,26 +3,26 @@
 + (id)logCategory;
 - (BOOL)isConfigured;
 - (HMDAccessoryPairingEvent)pairingEvent;
-- (HMDAccessoryPairingLogEventStateManager)initWithNotificationCenter:(id)a3;
-- (double)getTimeDurationForLongestProgressStateForAccessory:(id)a3;
-- (double)getTimeDurationForProgressStateForIdentifier:(id)a3 state:(id)a4;
-- (id)getLastProgressStateForAccessory:(id)a3;
-- (id)getLongestProgressStateForAccessory:(id)a3;
-- (unint64_t)retryCountForIdentifier:(id)a3;
-- (void)_handleMatterAccessoryUpdatePairingMetricNotification:(id)a3 pairingEvent:(id)a4 logEventSubmitter:(id)a5;
-- (void)_handlePairingStateProgressNotification:(id)a3;
-- (void)_updateStateOnPairingProgress:(int64_t)a3;
-- (void)clearPairingProgressStateTrackerForIdentifier:(id)a3;
+- (HMDAccessoryPairingLogEventStateManager)initWithNotificationCenter:(id)center;
+- (double)getTimeDurationForLongestProgressStateForAccessory:(id)accessory;
+- (double)getTimeDurationForProgressStateForIdentifier:(id)identifier state:(id)state;
+- (id)getLastProgressStateForAccessory:(id)accessory;
+- (id)getLongestProgressStateForAccessory:(id)accessory;
+- (unint64_t)retryCountForIdentifier:(id)identifier;
+- (void)_handleMatterAccessoryUpdatePairingMetricNotification:(id)notification pairingEvent:(id)event logEventSubmitter:(id)submitter;
+- (void)_handlePairingStateProgressNotification:(id)notification;
+- (void)_updateStateOnPairingProgress:(int64_t)progress;
+- (void)clearPairingProgressStateTrackerForIdentifier:(id)identifier;
 - (void)clearRetryCountMap;
-- (void)configureWithPairingEvent:(id)a3 workQueue:(id)a4 logEventSubmitter:(id)a5;
-- (void)fillUnknownErrorIfMissingErrorForPairingEvent:(id)a3;
-- (void)handleMatterAccessoryUpdatePairingMetricNotification:(id)a3;
-- (void)incrementRetryCount:(id)a3;
+- (void)configureWithPairingEvent:(id)event workQueue:(id)queue logEventSubmitter:(id)submitter;
+- (void)fillUnknownErrorIfMissingErrorForPairingEvent:(id)event;
+- (void)handleMatterAccessoryUpdatePairingMetricNotification:(id)notification;
+- (void)incrementRetryCount:(id)count;
 - (void)resetStatesForNewAddOperation;
-- (void)startProgressStateTrackerWithDate:(id)a3 identifier:(id)a4;
-- (void)updateLastPairingProgressStateEventForIdentifier:(id)a3 withDate:(id)a4;
-- (void)updatePairingProgressState:(id)a3;
-- (void)updateStatesOnResult:(BOOL)a3;
+- (void)startProgressStateTrackerWithDate:(id)date identifier:(id)identifier;
+- (void)updateLastPairingProgressStateEventForIdentifier:(id)identifier withDate:(id)date;
+- (void)updatePairingProgressState:(id)state;
+- (void)updateStatesOnResult:(BOOL)result;
 @end
 
 @implementation HMDAccessoryPairingLogEventStateManager
@@ -37,8 +37,8 @@
 - (void)resetStatesForNewAddOperation
 {
   [(HMDAccessoryPairingLogEventStateManager *)self setPairingUIState:0];
-  v3 = [(HMDAccessoryPairingLogEventStateManager *)self lastPairingEndTime];
-  [v3 timeIntervalSinceNow];
+  lastPairingEndTime = [(HMDAccessoryPairingLogEventStateManager *)self lastPairingEndTime];
+  [lastPairingEndTime timeIntervalSinceNow];
   v5 = fabs(v4);
 
   if (v5 > 300.0)
@@ -48,21 +48,21 @@
   }
 }
 
-- (double)getTimeDurationForProgressStateForIdentifier:(id)a3 state:(id)a4
+- (double)getTimeDurationForProgressStateForIdentifier:(id)identifier state:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  stateCopy = state;
   os_unfair_lock_lock_with_options();
   v8 = 0.0;
-  if (v7)
+  if (stateCopy)
   {
-    v9 = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
-    v10 = [v9 objectForKey:v6];
+    pairingProgressStateTracker = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
+    v10 = [pairingProgressStateTracker objectForKey:identifierCopy];
 
     if (v10)
     {
-      v11 = [v10 progressStateMap];
-      v12 = [v11 objectForKey:v7];
+      progressStateMap = [v10 progressStateMap];
+      v12 = [progressStateMap objectForKey:stateCopy];
       [v12 doubleValue];
       v8 = v13 * 1000.0;
     }
@@ -73,12 +73,12 @@
   return v8;
 }
 
-- (double)getTimeDurationForLongestProgressStateForAccessory:(id)a3
+- (double)getTimeDurationForLongestProgressStateForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
-  v6 = [v5 objectForKey:v4];
+  pairingProgressStateTracker = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
+  v6 = [pairingProgressStateTracker objectForKey:accessoryCopy];
 
   if (v6)
   {
@@ -95,103 +95,103 @@
   return v8;
 }
 
-- (id)getLastProgressStateForAccessory:(id)a3
+- (id)getLastProgressStateForAccessory:(id)accessory
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
-  v6 = [v5 objectForKey:v4];
+  pairingProgressStateTracker = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
+  v6 = [pairingProgressStateTracker objectForKey:accessoryCopy];
 
   if (v6)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v6 progressStateMap];
+      progressStateMap = [v6 progressStateMap];
       v15 = 138543874;
       v16 = v10;
       v17 = 2114;
-      v18 = v4;
+      v18 = accessoryCopy;
       v19 = 2114;
-      v20 = v11;
+      v20 = progressStateMap;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Final pairing progress state map before metric submission for identifier %{public}@ - %{public}@", &v15, 0x20u);
     }
 
     objc_autoreleasePoolPop(v7);
-    v12 = [v6 lastProgressState];
+    lastProgressState = [v6 lastProgressState];
   }
 
   else
   {
-    v12 = 0;
+    lastProgressState = 0;
   }
 
   os_unfair_lock_unlock(&self->_accessoryPairingProgressStateTrackerLock);
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return lastProgressState;
 }
 
-- (id)getLongestProgressStateForAccessory:(id)a3
+- (id)getLongestProgressStateForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
-  v6 = [v5 objectForKey:v4];
+  pairingProgressStateTracker = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
+  v6 = [pairingProgressStateTracker objectForKey:accessoryCopy];
 
   if (v6)
   {
-    v7 = [v6 longestProgressState];
+    longestProgressState = [v6 longestProgressState];
   }
 
   else
   {
-    v7 = 0;
+    longestProgressState = 0;
   }
 
   os_unfair_lock_unlock(&self->_accessoryPairingProgressStateTrackerLock);
 
-  return v7;
+  return longestProgressState;
 }
 
-- (void)clearPairingProgressStateTrackerForIdentifier:(id)a3
+- (void)clearPairingProgressStateTrackerForIdentifier:(id)identifier
 {
-  v7 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
-  v5 = [v4 objectForKey:v7];
+  pairingProgressStateTracker = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
+  v5 = [pairingProgressStateTracker objectForKey:identifierCopy];
 
   if (v5)
   {
-    v6 = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
-    [v6 removeObjectForKey:v7];
+    pairingProgressStateTracker2 = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
+    [pairingProgressStateTracker2 removeObjectForKey:identifierCopy];
   }
 
   os_unfair_lock_unlock(&self->_accessoryPairingProgressStateTrackerLock);
 }
 
-- (void)updateLastPairingProgressStateEventForIdentifier:(id)a3 withDate:(id)a4
+- (void)updateLastPairingProgressStateEventForIdentifier:(id)identifier withDate:(id)date
 {
-  v9 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   os_unfair_lock_lock_with_options();
-  v7 = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
-  v8 = [v7 objectForKey:v9];
+  pairingProgressStateTracker = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
+  v8 = [pairingProgressStateTracker objectForKey:identifierCopy];
 
-  [v8 updateWithProgressState:0 date:v6];
+  [v8 updateWithProgressState:0 date:dateCopy];
   os_unfair_lock_unlock(&self->_accessoryPairingProgressStateTrackerLock);
 }
 
-- (void)_updateStateOnPairingProgress:(int64_t)a3
+- (void)_updateStateOnPairingProgress:(int64_t)progress
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (a3 > 47)
+  if (progress > 47)
   {
-    switch(a3)
+    switch(progress)
     {
       case '0':
         v4 = 2;
@@ -209,7 +209,7 @@
     goto LABEL_15;
   }
 
-  if (a3 == 2)
+  if (progress == 2)
   {
     v5 = 1;
 LABEL_13:
@@ -217,13 +217,13 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if (a3 == 3)
+  if (progress == 3)
   {
     v5 = 2;
     goto LABEL_13;
   }
 
-  if (a3 != 47)
+  if (progress != 47)
   {
     goto LABEL_16;
   }
@@ -233,20 +233,20 @@ LABEL_15:
   [(HMDAccessoryPairingLogEventStateManager *)self setRecoveryType:v4];
 LABEL_16:
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [(HMDAccessoryPairingLogEventStateManager *)v7 pairingUIState];
-    v11 = [(HMDAccessoryPairingLogEventStateManager *)v7 recoveryType];
+    pairingUIState = [(HMDAccessoryPairingLogEventStateManager *)selfCopy pairingUIState];
+    recoveryType = [(HMDAccessoryPairingLogEventStateManager *)selfCopy recoveryType];
     v12 = HMSetupAccessoryProgressAsString();
     v14 = 138544130;
     v15 = v9;
     v16 = 2048;
-    v17 = v10;
+    v17 = pairingUIState;
     v18 = 2048;
-    v19 = v11;
+    v19 = recoveryType;
     v20 = 2112;
     v21 = v12;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Updated Pairing UI state: %lu, recoveryType: %lu on progress: %@", &v14, 0x2Au);
@@ -256,20 +256,20 @@ LABEL_16:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatePairingProgressState:(id)a3
+- (void)updatePairingProgressState:(id)state
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   os_unfair_lock_lock_with_options();
-  v5 = [v4 objectForKey:@"HMDAccessoryProgressStateNotificationKey"];
-  v6 = [v4 objectForKey:@"HMDAccessoryProgressStateTimeNotificationKey"];
-  v7 = [v4 objectForKey:@"HMDAccessoryProgressStateforAccessoryKey"];
-  v8 = [v4 hmf_numberForKey:@"HMDSetupAccessoryProgressStateKey"];
-  v9 = [v8 integerValue];
+  v5 = [stateCopy objectForKey:@"HMDAccessoryProgressStateNotificationKey"];
+  v6 = [stateCopy objectForKey:@"HMDAccessoryProgressStateTimeNotificationKey"];
+  v7 = [stateCopy objectForKey:@"HMDAccessoryProgressStateforAccessoryKey"];
+  v8 = [stateCopy hmf_numberForKey:@"HMDSetupAccessoryProgressStateKey"];
+  integerValue = [v8 integerValue];
 
-  [(HMDAccessoryPairingLogEventStateManager *)self _updateStateOnPairingProgress:v9];
-  v10 = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
-  v11 = [v10 objectForKey:v7];
+  [(HMDAccessoryPairingLogEventStateManager *)self _updateStateOnPairingProgress:integerValue];
+  pairingProgressStateTracker = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
+  v11 = [pairingProgressStateTracker objectForKey:v7];
 
   if (v11)
   {
@@ -279,7 +279,7 @@ LABEL_16:
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -298,53 +298,53 @@ LABEL_16:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startProgressStateTrackerWithDate:(id)a3 identifier:(id)a4
+- (void)startProgressStateTrackerWithDate:(id)date identifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
+  dateCopy = date;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v7 = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
-  [v7 removeObjectForKey:v6];
+  pairingProgressStateTracker = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
+  [pairingProgressStateTracker removeObjectForKey:identifierCopy];
 
-  v8 = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
-  v9 = [[HMDAccessoryPairingProgressStateMap alloc] initWithDate:v10];
-  [v8 setObject:v9 forKey:v6];
+  pairingProgressStateTracker2 = [(HMDAccessoryPairingLogEventStateManager *)self pairingProgressStateTracker];
+  v9 = [[HMDAccessoryPairingProgressStateMap alloc] initWithDate:dateCopy];
+  [pairingProgressStateTracker2 setObject:v9 forKey:identifierCopy];
 
   os_unfair_lock_unlock(&self->_accessoryPairingProgressStateTrackerLock);
 }
 
-- (void)_handlePairingStateProgressNotification:(id)a3
+- (void)_handlePairingStateProgressNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 name];
+    name = [notificationCopy name];
     v12 = 138543618;
     v13 = v8;
     v14 = 2112;
-    v15 = v9;
+    v15 = name;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Received accessory pairing progress notification %@", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [v4 userInfo];
-  [(HMDAccessoryPairingLogEventStateManager *)v6 updatePairingProgressState:v10];
+  userInfo = [notificationCopy userInfo];
+  [(HMDAccessoryPairingLogEventStateManager *)selfCopy updatePairingProgressState:userInfo];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)incrementRetryCount:(id)a3
+- (void)incrementRetryCount:(id)count
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  countCopy = count;
   os_unfair_lock_lock_with_options();
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -352,39 +352,39 @@ LABEL_16:
     v14 = 138543618;
     v15 = v8;
     v16 = 2112;
-    v17 = v4;
+    v17 = countCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Incrementing retry count for identifier %@", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDAccessoryPairingLogEventStateManager *)v6 retryCountMap];
-  v10 = [v9 objectForKeyedSubscript:v4];
+  retryCountMap = [(HMDAccessoryPairingLogEventStateManager *)selfCopy retryCountMap];
+  v10 = [retryCountMap objectForKeyedSubscript:countCopy];
 
   if (v10)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "intValue") + 1}];
-    v12 = [(HMDAccessoryPairingLogEventStateManager *)v6 retryCountMap];
-    [v12 setObject:v11 forKeyedSubscript:v4];
+    retryCountMap3 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v10, "intValue") + 1}];
+    retryCountMap2 = [(HMDAccessoryPairingLogEventStateManager *)selfCopy retryCountMap];
+    [retryCountMap2 setObject:retryCountMap3 forKeyedSubscript:countCopy];
   }
 
   else
   {
-    v11 = [(HMDAccessoryPairingLogEventStateManager *)v6 retryCountMap];
-    [v11 setObject:&unk_286628B10 forKeyedSubscript:v4];
+    retryCountMap3 = [(HMDAccessoryPairingLogEventStateManager *)selfCopy retryCountMap];
+    [retryCountMap3 setObject:&unk_286628B10 forKeyedSubscript:countCopy];
   }
 
   os_unfair_lock_unlock(&self->_accessoryPairingRetryMapLock);
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateStatesOnResult:(BOOL)a3
+- (void)updateStatesOnResult:(BOOL)result
 {
-  v3 = a3;
+  resultCopy = result;
   v16 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
-  if (v3)
+  if (resultCopy)
   {
-    v5 = 0;
+    recoveryType = 0;
   }
 
   else
@@ -394,18 +394,18 @@ LABEL_16:
       goto LABEL_6;
     }
 
-    v5 = [(HMDAccessoryPairingLogEventStateManager *)self recoveryType];
+    recoveryType = [(HMDAccessoryPairingLogEventStateManager *)self recoveryType];
   }
 
-  [(HMDAccessoryPairingLogEventStateManager *)self setPreviousRecoveryType:v5];
+  [(HMDAccessoryPairingLogEventStateManager *)self setPreviousRecoveryType:recoveryType];
 LABEL_6:
   [(HMDAccessoryPairingLogEventStateManager *)self setRecoveryType:0];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [(HMDAccessoryPairingLogEventStateManager *)self setLastPairingEndTime:v6];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(HMDAccessoryPairingLogEventStateManager *)self setLastPairingEndTime:date];
 
   os_unfair_lock_unlock(&self->_accessoryPairingRetryMapLock);
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -413,7 +413,7 @@ LABEL_6:
     v12 = 138543618;
     v13 = v10;
     v14 = 2048;
-    v15 = [(HMDAccessoryPairingLogEventStateManager *)v8 previousRecoveryType];
+    previousRecoveryType = [(HMDAccessoryPairingLogEventStateManager *)selfCopy previousRecoveryType];
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Updated previous recoveryType to: %lu", &v12, 0x16u);
   }
 
@@ -424,35 +424,35 @@ LABEL_6:
 - (void)clearRetryCountMap
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMDAccessoryPairingLogEventStateManager *)self retryCountMap];
-  [v3 removeAllObjects];
+  retryCountMap = [(HMDAccessoryPairingLogEventStateManager *)self retryCountMap];
+  [retryCountMap removeAllObjects];
 
   os_unfair_lock_unlock(&self->_accessoryPairingRetryMapLock);
 }
 
-- (unint64_t)retryCountForIdentifier:(id)a3
+- (unint64_t)retryCountForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDAccessoryPairingLogEventStateManager *)self retryCountMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v6 unsignedIntegerValue];
+  retryCountMap = [(HMDAccessoryPairingLogEventStateManager *)self retryCountMap];
+  v6 = [retryCountMap objectForKeyedSubscript:identifierCopy];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
   os_unfair_lock_unlock(&self->_accessoryPairingRetryMapLock);
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (void)fillUnknownErrorIfMissingErrorForPairingEvent:(id)a3
+- (void)fillUnknownErrorIfMissingErrorForPairingEvent:(id)event
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 matterAccessoryPairingStep];
-  v6 = [v4 error];
+  eventCopy = event;
+  matterAccessoryPairingStep = [eventCopy matterAccessoryPairingStep];
+  error = [eventCopy error];
 
-  if (v5 != 27 && !v6)
+  if (matterAccessoryPairingStep != 27 && !error)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -464,40 +464,40 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v7);
     v11 = [MEMORY[0x277CCA9B8] hmdErrorWithCode:1];
-    [v4 setError:v11];
+    [eventCopy setError:v11];
 
-    [v4 setMatterAccessorySourceErrorDomain:@"HMDErrorDomain"];
+    [eventCopy setMatterAccessorySourceErrorDomain:@"HMDErrorDomain"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleMatterAccessoryUpdatePairingMetricNotification:(id)a3 pairingEvent:(id)a4 logEventSubmitter:(id)a5
+- (void)_handleMatterAccessoryUpdatePairingMetricNotification:(id)notification pairingEvent:(id)event logEventSubmitter:(id)submitter
 {
   v159 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  notificationCopy = notification;
+  eventCopy = event;
+  submitterCopy = submitter;
   os_unfair_lock_lock_with_options();
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v8 name];
+    name = [notificationCopy name];
     *buf = 138543618;
     v150 = v14;
     v151 = 2112;
-    v152 = v15;
+    v152 = name;
     _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Handling %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
-  if (!v9)
+  if (!eventCopy)
   {
     v16 = objc_autoreleasePoolPush();
-    v20 = v12;
+    v20 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -510,10 +510,10 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  if (([v9 isMatterAccessory] & 1) == 0)
+  if (([eventCopy isMatterAccessory] & 1) == 0)
   {
     v16 = objc_autoreleasePoolPush();
-    v22 = v12;
+    v22 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -526,10 +526,10 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  if (([v9 isAddOperation] & 1) == 0)
+  if (([eventCopy isAddOperation] & 1) == 0)
   {
     v16 = objc_autoreleasePoolPush();
-    v24 = v12;
+    v24 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -542,10 +542,10 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  if ([v9 isSubmitted])
+  if ([eventCopy isSubmitted])
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = v12;
+    v17 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -561,10 +561,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v9 isSubmitting])
+  if ([eventCopy isSubmitting])
   {
     v16 = objc_autoreleasePoolPush();
-    v27 = v12;
+    v27 = selfCopy;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -577,96 +577,96 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v29 = [v9 error];
+  error = [eventCopy error];
 
-  v30 = [v9 matterAccessoryPairingStep];
-  if (v29 || v30 == 27)
+  matterAccessoryPairingStep = [eventCopy matterAccessoryPairingStep];
+  if (error || matterAccessoryPairingStep == 27)
   {
     context = objc_autoreleasePoolPush();
-    v31 = v12;
+    v31 = selfCopy;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       v33 = HMFGetLogIdentifier();
-      v34 = HMDMatterAccessoryPairingStepAsString([v9 matterAccessoryPairingStep]);
-      v35 = [v9 error];
+      v34 = HMDMatterAccessoryPairingStepAsString([eventCopy matterAccessoryPairingStep]);
+      error2 = [eventCopy error];
       *buf = 138543874;
       v150 = v33;
       v151 = 2112;
       v152 = v34;
       v153 = 2112;
-      v154 = v35;
+      v154 = error2;
       _os_log_impl(&dword_2531F8000, v32, OS_LOG_TYPE_ERROR, "%{public}@Received update to pairing event when metric is completed already %@ %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(context);
   }
 
-  v36 = [v8 userInfo];
-  v138 = [v36 objectForKeyedSubscript:@"HMDMatterAccessoryPairingMTRMetricsKey"];
+  userInfo = [notificationCopy userInfo];
+  v138 = [userInfo objectForKeyedSubscript:@"HMDMatterAccessoryPairingMTRMetricsKey"];
 
   if (v138)
   {
     v37 = objc_autoreleasePoolPush();
-    v38 = v12;
+    v38 = selfCopy;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
       v40 = HMFGetLogIdentifier();
-      v41 = [v9 mtrMetrics];
+      mtrMetrics = [eventCopy mtrMetrics];
       *buf = 138543874;
       v150 = v40;
       v151 = 2048;
-      v152 = v41;
+      v152 = mtrMetrics;
       v153 = 2048;
       v154 = v138;
       _os_log_impl(&dword_2531F8000, v39, OS_LOG_TYPE_INFO, "%{public}@Updating mtr metrics %p -> %p", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v37);
-    [v9 setMtrMetrics:v138];
+    [eventCopy setMtrMetrics:v138];
   }
 
-  v42 = [v8 userInfo];
+  userInfo2 = [notificationCopy userInfo];
   v148 = 0;
-  v139 = [v42 hmf_integerForKey:@"HMDMatterAccessoryPairingStepKey" error:&v148];
+  v139 = [userInfo2 hmf_integerForKey:@"HMDMatterAccessoryPairingStepKey" error:&v148];
   v131 = v148;
 
-  v43 = [v8 userInfo];
+  userInfo3 = [notificationCopy userInfo];
   v147 = 0;
-  v126 = [v43 hmf_BOOLForKey:@"HMDMatterAccessoryPairingAccessoryDiscoveredKey" error:&v147];
+  v126 = [userInfo3 hmf_BOOLForKey:@"HMDMatterAccessoryPairingAccessoryDiscoveredKey" error:&v147];
   v130 = v147;
 
-  v44 = [v8 userInfo];
-  v137 = [v44 hmf_numberForKey:@"HMDMatterAccessoryMatterVendorIDKey"];
+  userInfo4 = [notificationCopy userInfo];
+  v137 = [userInfo4 hmf_numberForKey:@"HMDMatterAccessoryMatterVendorIDKey"];
 
-  v45 = [v8 userInfo];
-  v136 = [v45 hmf_numberForKey:@"HMDMatterAccessoryMatterProductIDKey"];
+  userInfo5 = [notificationCopy userInfo];
+  v136 = [userInfo5 hmf_numberForKey:@"HMDMatterAccessoryMatterProductIDKey"];
 
-  v46 = [v8 userInfo];
-  v135 = [v46 hmf_numberForKey:@"HMDMatterAccessoryMatterDeviceTypeKey"];
+  userInfo6 = [notificationCopy userInfo];
+  v135 = [userInfo6 hmf_numberForKey:@"HMDMatterAccessoryMatterDeviceTypeKey"];
 
-  v47 = [v8 userInfo];
-  v134 = [v47 hmf_numberForKey:@"HMDMatterAccessoryThreadCapabilitiesKey"];
+  userInfo7 = [notificationCopy userInfo];
+  v134 = [userInfo7 hmf_numberForKey:@"HMDMatterAccessoryThreadCapabilitiesKey"];
 
-  v48 = [v8 userInfo];
-  v133 = [v48 hmf_numberForKey:@"HMDMatterAccessoryIsWEDAccessoryKey"];
+  userInfo8 = [notificationCopy userInfo];
+  v133 = [userInfo8 hmf_numberForKey:@"HMDMatterAccessoryIsWEDAccessoryKey"];
 
-  v49 = [v8 userInfo];
-  contexta = [v49 hmf_numberForKey:@"HMDAccessoryPairingSupportedLinkLayerTypesKey"];
+  userInfo9 = [notificationCopy userInfo];
+  contexta = [userInfo9 hmf_numberForKey:@"HMDAccessoryPairingSupportedLinkLayerTypesKey"];
 
-  v50 = [v8 userInfo];
-  v132 = [v50 hmf_numberForKey:@"HMDMatterAccessoryUnauthenticatedPromptStartStopKey"];
+  userInfo10 = [notificationCopy userInfo];
+  v132 = [userInfo10 hmf_numberForKey:@"HMDMatterAccessoryUnauthenticatedPromptStartStopKey"];
 
   if (!v131)
   {
     v123 = objc_autoreleasePoolPush();
-    v51 = v12;
+    v51 = selfCopy;
     v52 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
     {
       v53 = HMFGetLogIdentifier();
-      v54 = HMDMatterAccessoryPairingStepAsString([v9 matterAccessoryPairingStep]);
+      v54 = HMDMatterAccessoryPairingStepAsString([eventCopy matterAccessoryPairingStep]);
       v55 = HMDMatterAccessoryPairingStepAsString(v139);
       *buf = 138543874;
       v150 = v53;
@@ -678,18 +678,18 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v123);
-    [v9 setMatterAccessoryPairingStep:v139];
+    [eventCopy setMatterAccessoryPairingStep:v139];
   }
 
   if (!v130)
   {
     v140 = objc_autoreleasePoolPush();
-    v56 = v12;
+    v56 = selfCopy;
     v57 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_INFO))
     {
       v58 = HMFGetLogIdentifier();
-      [v9 matterAccessoryDiscovered];
+      [eventCopy matterAccessoryDiscovered];
       v59 = HMFBooleanToString();
       v60 = HMFBooleanToString();
       *buf = 138543874;
@@ -702,89 +702,89 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v140);
-    [v9 setMatterAccessoryDiscovered:v126];
+    [eventCopy setMatterAccessoryDiscovered:v126];
   }
 
   if (v137)
   {
     v61 = objc_autoreleasePoolPush();
-    v62 = v12;
+    v62 = selfCopy;
     v63 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
     {
       v64 = HMFGetLogIdentifier();
-      v65 = [v9 matterVendorID];
+      matterVendorID = [eventCopy matterVendorID];
       *buf = 138543874;
       v150 = v64;
       v151 = 2112;
-      v152 = v65;
+      v152 = matterVendorID;
       v153 = 2112;
       v154 = v137;
       _os_log_impl(&dword_2531F8000, v63, OS_LOG_TYPE_INFO, "%{public}@Updating Matter vendorID %@ -> %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v61);
-    [v9 setMatterVendorID:v137];
+    [eventCopy setMatterVendorID:v137];
   }
 
   if (v136)
   {
     v66 = objc_autoreleasePoolPush();
-    v67 = v12;
+    v67 = selfCopy;
     v68 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v68, OS_LOG_TYPE_INFO))
     {
       v69 = HMFGetLogIdentifier();
-      v70 = [v9 matterProductID];
+      matterProductID = [eventCopy matterProductID];
       *buf = 138543874;
       v150 = v69;
       v151 = 2112;
-      v152 = v70;
+      v152 = matterProductID;
       v153 = 2112;
       v154 = v136;
       _os_log_impl(&dword_2531F8000, v68, OS_LOG_TYPE_INFO, "%{public}@Updating Matter productID %@ -> %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v66);
-    [v9 setMatterProductID:v136];
+    [eventCopy setMatterProductID:v136];
   }
 
   if (v135)
   {
     v71 = objc_autoreleasePoolPush();
-    v72 = v12;
+    v72 = selfCopy;
     v73 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v73, OS_LOG_TYPE_INFO))
     {
       v74 = HMFGetLogIdentifier();
-      v75 = [v9 matterDeviceType];
+      matterDeviceType = [eventCopy matterDeviceType];
       *buf = 138543874;
       v150 = v74;
       v151 = 2112;
-      v152 = v75;
+      v152 = matterDeviceType;
       v153 = 2112;
       v154 = v135;
       _os_log_impl(&dword_2531F8000, v73, OS_LOG_TYPE_INFO, "%{public}@Updating Matter device type %@ -> %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v71);
-    [v9 setMatterDeviceType:v135];
+    [eventCopy setMatterDeviceType:v135];
   }
 
   if (contexta)
   {
-    v76 = [contexta unsignedIntegerValue];
+    unsignedIntegerValue = [contexta unsignedIntegerValue];
     v141 = objc_autoreleasePoolPush();
-    v77 = v12;
+    v77 = selfCopy;
     v78 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
     {
       v79 = HMFGetLogIdentifier();
-      v80 = [v9 supportedLinkLayerTypes];
+      supportedLinkLayerTypes = [eventCopy supportedLinkLayerTypes];
       *buf = 138543874;
       v150 = v79;
       v151 = 2112;
-      v152 = v80;
+      v152 = supportedLinkLayerTypes;
       v153 = 2112;
       v154 = contexta;
       _os_log_impl(&dword_2531F8000, v78, OS_LOG_TYPE_INFO, "%{public}@Updating supported link layer types %@ -> %@", buf, 0x20u);
@@ -794,11 +794,11 @@ LABEL_15:
     v127 = objc_autoreleasePoolPush();
     v81 = v77;
     HMFGetOSLogHandle();
-    v82 = v142 = (v76 & 0x12);
+    v82 = v142 = (unsignedIntegerValue & 0x12);
     if (os_log_type_enabled(v82, OS_LOG_TYPE_INFO))
     {
       v83 = HMFGetLogIdentifier();
-      [v9 isThreadAccessory];
+      [eventCopy isThreadAccessory];
       v84 = HMFBooleanToString();
       v85 = HMFBooleanToString();
       *buf = 138543874;
@@ -811,43 +811,43 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v127);
-    [v9 setSupportedLinkLayerTypes:contexta];
-    [v9 setThreadAccessory:v142 == 16];
+    [eventCopy setSupportedLinkLayerTypes:contexta];
+    [eventCopy setThreadAccessory:v142 == 16];
   }
 
   if (v134)
   {
     v86 = objc_autoreleasePoolPush();
-    v87 = v12;
+    v87 = selfCopy;
     v88 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v88, OS_LOG_TYPE_INFO))
     {
       v89 = HMFGetLogIdentifier();
-      v90 = [v9 matterThreadCapabilities];
+      matterThreadCapabilities = [eventCopy matterThreadCapabilities];
       *buf = 138543874;
       v150 = v89;
       v151 = 2112;
-      v152 = v90;
+      v152 = matterThreadCapabilities;
       v153 = 2112;
       v154 = v134;
       _os_log_impl(&dword_2531F8000, v88, OS_LOG_TYPE_INFO, "%{public}@Updating Matter Thread capabilities %@ -> %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v86);
-    [v9 setMatterThreadCapabilities:v134];
+    [eventCopy setMatterThreadCapabilities:v134];
   }
 
   if (v133)
   {
     v143 = objc_autoreleasePoolPush();
-    v91 = v12;
+    v91 = selfCopy;
     v92 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v92, OS_LOG_TYPE_INFO))
     {
       v128 = HMFGetLogIdentifier();
-      v93 = [v9 wedAccessory];
-      [v9 wedAccessory];
-      if (v93)
+      wedAccessory = [eventCopy wedAccessory];
+      [eventCopy wedAccessory];
+      if (wedAccessory)
         v124 = {;
         [v124 BOOLValue];
         v94 = HMFBooleanToString();
@@ -867,20 +867,20 @@ LABEL_15:
       v153 = 2112;
       v154 = v95;
       _os_log_impl(&dword_2531F8000, v92, OS_LOG_TYPE_INFO, "%{public}@Updating isWEDAccessory %@ -> %@", buf, 0x20u);
-      if (v93)
+      if (wedAccessory)
       {
       }
     }
 
     objc_autoreleasePoolPop(v143);
-    [v9 setWedAccessory:v133];
+    [eventCopy setWedAccessory:v133];
   }
 
   if (v132)
   {
     v96 = [v132 isEqualToNumber:MEMORY[0x277CBEC38]];
     v97 = objc_autoreleasePoolPush();
-    v98 = v12;
+    v98 = selfCopy;
     if (v96)
     {
       v99 = HMFGetOSLogHandle();
@@ -893,7 +893,7 @@ LABEL_15:
       }
 
       objc_autoreleasePoolPop(v97);
-      [v9 handleUnauthenticatedMatterAccessoryPromptStart];
+      [eventCopy handleUnauthenticatedMatterAccessoryPromptStart];
     }
 
     else
@@ -908,22 +908,22 @@ LABEL_15:
       }
 
       objc_autoreleasePoolPop(v97);
-      [v9 handleUnauthenticatedMatterAccessoryPromptEnd];
+      [eventCopy handleUnauthenticatedMatterAccessoryPromptEnd];
     }
   }
 
-  v103 = [v8 userInfo];
-  v144 = [v103 hmf_errorForKey:@"HMDMatterAccessoryPairingFailureErrorKey"];
+  userInfo11 = [notificationCopy userInfo];
+  v144 = [userInfo11 hmf_errorForKey:@"HMDMatterAccessoryPairingFailureErrorKey"];
 
   if (v144)
   {
-    v104 = [v8 userInfo];
-    v129 = [v104 hmf_stringForKey:@"HMDMatterAccessoryPairingSourceErrorDomain"];
+    userInfo12 = [notificationCopy userInfo];
+    v129 = [userInfo12 hmf_stringForKey:@"HMDMatterAccessoryPairingSourceErrorDomain"];
 
     if (!v129)
     {
       v105 = objc_autoreleasePoolPush();
-      v106 = v12;
+      v106 = selfCopy;
       v107 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v107, OS_LOG_TYPE_ERROR))
       {
@@ -937,43 +937,43 @@ LABEL_15:
     }
 
     v109 = MEMORY[0x277CCA9B8];
-    v110 = [v144 domain];
-    v125 = [v109 errorWithDomain:v110 code:objc_msgSend(v144 userInfo:{"code"), 0}];
+    domain = [v144 domain];
+    v125 = [v109 errorWithDomain:domain code:objc_msgSend(v144 userInfo:{"code"), 0}];
 
     v122 = objc_autoreleasePoolPush();
-    v111 = v12;
+    v111 = selfCopy;
     v112 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v112, OS_LOG_TYPE_INFO))
     {
       v113 = HMFGetLogIdentifier();
-      v114 = [v9 error];
-      v115 = [v9 matterAccessorySourceErrorDomain];
+      error3 = [eventCopy error];
+      matterAccessorySourceErrorDomain = [eventCopy matterAccessorySourceErrorDomain];
       *buf = 138544386;
       v150 = v113;
       v151 = 2112;
-      v152 = v114;
+      v152 = error3;
       v153 = 2112;
       v154 = v125;
       v155 = 2112;
-      v156 = v115;
+      v156 = matterAccessorySourceErrorDomain;
       v157 = 2112;
       v158 = v129;
       _os_log_impl(&dword_2531F8000, v112, OS_LOG_TYPE_INFO, "%{public}@Updating error %@ -> %@, sourceErrorDomain %@ -> %@", buf, 0x34u);
     }
 
     objc_autoreleasePoolPop(v122);
-    [v9 setError:v125];
-    [v9 setMatterAccessorySourceErrorDomain:v129];
+    [eventCopy setError:v125];
+    [eventCopy setMatterAccessorySourceErrorDomain:v129];
   }
 
-  v116 = [v8 userInfo];
-  v117 = [v116 hmf_BOOLForKey:@"HMDMatterAccessoryPairingSubmitKey"];
+  userInfo13 = [notificationCopy userInfo];
+  v117 = [userInfo13 hmf_BOOLForKey:@"HMDMatterAccessoryPairingSubmitKey"];
 
   if (v117)
   {
-    [(HMDAccessoryPairingLogEventStateManager *)v12 fillUnknownErrorIfMissingErrorForPairingEvent:v9];
+    [(HMDAccessoryPairingLogEventStateManager *)selfCopy fillUnknownErrorIfMissingErrorForPairingEvent:eventCopy];
     v118 = objc_autoreleasePoolPush();
-    v119 = v12;
+    v119 = selfCopy;
     v120 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v120, OS_LOG_TYPE_INFO))
     {
@@ -981,13 +981,13 @@ LABEL_15:
       *buf = 138543618;
       v150 = v121;
       v151 = 2112;
-      v152 = v9;
+      v152 = eventCopy;
       _os_log_impl(&dword_2531F8000, v120, OS_LOG_TYPE_INFO, "%{public}@Submitting Event %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v118);
-    [v9 setSubmitting:1];
-    [v10 submitLogEvent:v9];
+    [eventCopy setSubmitting:1];
+    [submitterCopy submitLogEvent:eventCopy];
   }
 
 LABEL_16:
@@ -996,46 +996,46 @@ LABEL_16:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleMatterAccessoryUpdatePairingMetricNotification:(id)a3
+- (void)handleMatterAccessoryUpdatePairingMetricNotification:(id)notification
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryPairingLogEventStateManager *)self isConfigured];
+  notificationCopy = notification;
+  isConfigured = [(HMDAccessoryPairingLogEventStateManager *)self isConfigured];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = v8;
-  if (v5)
+  if (isConfigured)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [v4 name];
-      v12 = [(HMDAccessoryPairingLogEventStateManager *)v7 pairingEvent];
+      name = [notificationCopy name];
+      pairingEvent = [(HMDAccessoryPairingLogEventStateManager *)selfCopy pairingEvent];
       *buf = 138543874;
       v26 = v10;
       v27 = 2112;
-      v28 = v11;
+      v28 = name;
       v29 = 2112;
-      v30 = v12;
+      v30 = pairingEvent;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@Handling %@ %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v6);
-    v13 = [(HMDAccessoryPairingLogEventStateManager *)v7 pairingEvent];
-    v14 = [(HMDAccessoryPairingLogEventStateManager *)v7 logEventSubmitter];
-    v15 = [(HMDAccessoryPairingLogEventStateManager *)v7 workQueue];
+    pairingEvent2 = [(HMDAccessoryPairingLogEventStateManager *)selfCopy pairingEvent];
+    logEventSubmitter = [(HMDAccessoryPairingLogEventStateManager *)selfCopy logEventSubmitter];
+    workQueue = [(HMDAccessoryPairingLogEventStateManager *)selfCopy workQueue];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __96__HMDAccessoryPairingLogEventStateManager_handleMatterAccessoryUpdatePairingMetricNotification___block_invoke;
     v21[3] = &unk_279734870;
-    v21[4] = v7;
-    v22 = v4;
-    v23 = v13;
-    v24 = v14;
-    v16 = v14;
-    v17 = v13;
-    dispatch_async(v15, v21);
+    v21[4] = selfCopy;
+    v22 = notificationCopy;
+    v23 = pairingEvent2;
+    v24 = logEventSubmitter;
+    v16 = logEventSubmitter;
+    v17 = pairingEvent2;
+    dispatch_async(workQueue, v21);
   }
 
   else
@@ -1043,11 +1043,11 @@ LABEL_16:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v18 = HMFGetLogIdentifier();
-      v19 = [v4 name];
+      name2 = [notificationCopy name];
       *buf = 138543618;
       v26 = v18;
       v27 = 2112;
-      v28 = v19;
+      v28 = name2;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_ERROR, "%{public}@Not handling %@ logEventStateManager is not configured", buf, 0x16u);
     }
 
@@ -1059,14 +1059,14 @@ LABEL_16:
 
 - (BOOL)isConfigured
 {
-  v3 = [(HMDAccessoryPairingLogEventStateManager *)self pairingEvent];
-  if (v3)
+  pairingEvent = [(HMDAccessoryPairingLogEventStateManager *)self pairingEvent];
+  if (pairingEvent)
   {
-    v4 = [(HMDAccessoryPairingLogEventStateManager *)self workQueue];
-    if (v4)
+    workQueue = [(HMDAccessoryPairingLogEventStateManager *)self workQueue];
+    if (workQueue)
     {
-      v5 = [(HMDAccessoryPairingLogEventStateManager *)self logEventSubmitter];
-      v6 = v5 != 0;
+      logEventSubmitter = [(HMDAccessoryPairingLogEventStateManager *)self logEventSubmitter];
+      v6 = logEventSubmitter != 0;
     }
 
     else
@@ -1083,44 +1083,44 @@ LABEL_16:
   return v6;
 }
 
-- (void)configureWithPairingEvent:(id)a3 workQueue:(id)a4 logEventSubmitter:(id)a5
+- (void)configureWithPairingEvent:(id)event workQueue:(id)queue logEventSubmitter:(id)submitter
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  queueCopy = queue;
+  submitterCopy = submitter;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [(HMDAccessoryPairingLogEventStateManager *)v12 workQueue];
-    v16 = [(HMDAccessoryPairingLogEventStateManager *)v12 logEventSubmitter];
+    workQueue = [(HMDAccessoryPairingLogEventStateManager *)selfCopy workQueue];
+    logEventSubmitter = [(HMDAccessoryPairingLogEventStateManager *)selfCopy logEventSubmitter];
     v18 = 138544386;
     v19 = v14;
     v20 = 2112;
-    v21 = v9;
+    v21 = queueCopy;
     v22 = 2112;
-    v23 = v10;
+    v23 = submitterCopy;
     v24 = 2112;
-    v25 = v15;
+    v25 = workQueue;
     v26 = 2112;
-    v27 = v16;
+    v27 = logEventSubmitter;
     _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Configuring with workQueue %@ logEventSubmitter %@, from workQueue %@ logEventSubmitter %@", &v18, 0x34u);
   }
 
   objc_autoreleasePoolPop(v11);
-  [(HMDAccessoryPairingLogEventStateManager *)v12 setPairingEvent:v8];
-  [(HMDAccessoryPairingLogEventStateManager *)v12 setWorkQueue:v9];
-  [(HMDAccessoryPairingLogEventStateManager *)v12 setLogEventSubmitter:v10];
+  [(HMDAccessoryPairingLogEventStateManager *)selfCopy setPairingEvent:eventCopy];
+  [(HMDAccessoryPairingLogEventStateManager *)selfCopy setWorkQueue:queueCopy];
+  [(HMDAccessoryPairingLogEventStateManager *)selfCopy setLogEventSubmitter:submitterCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAccessoryPairingLogEventStateManager)initWithNotificationCenter:(id)a3
+- (HMDAccessoryPairingLogEventStateManager)initWithNotificationCenter:(id)center
 {
-  v5 = a3;
+  centerCopy = center;
   v14.receiver = self;
   v14.super_class = HMDAccessoryPairingLogEventStateManager;
   v6 = [(HMDAccessoryPairingLogEventStateManager *)&v14 init];
@@ -1130,18 +1130,18 @@ LABEL_16:
     retryCountMap = v6->_retryCountMap;
     v6->_retryCountMap = v7;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pairingProgressStateTracker = v6->_pairingProgressStateTracker;
-    v6->_pairingProgressStateTracker = v9;
+    v6->_pairingProgressStateTracker = dictionary;
 
     v6->_pairingUIState = 0;
     v6->_recoveryType = 0;
     v6->_previousRecoveryType = 0;
-    v11 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     lastPairingEndTime = v6->_lastPairingEndTime;
-    v6->_lastPairingEndTime = v11;
+    v6->_lastPairingEndTime = distantPast;
 
-    objc_storeStrong(&v6->_notificationCenter, a3);
+    objc_storeStrong(&v6->_notificationCenter, center);
     [(NSNotificationCenter *)v6->_notificationCenter addObserver:v6 selector:sel_handleMatterAccessoryUpdatePairingMetricNotification_ name:@"HMDMatterAccessoryUpdatePairingMetricNotification" object:0];
     [(NSNotificationCenter *)v6->_notificationCenter addObserver:v6 selector:sel__handlePairingStateProgressNotification_ name:@"HMDAccessoryProgressStateUpdateNotification" object:0];
   }
@@ -1173,14 +1173,14 @@ uint64_t __54__HMDAccessoryPairingLogEventStateManager_logCategory__block_invoke
 
 + (HMDAccessoryPairingLogEventStateManager)sharedManager
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__HMDAccessoryPairingLogEventStateManager_sharedManager__block_invoke;
   block[3] = &unk_279735D00;
-  v9 = v2;
+  v9 = defaultCenter;
   v3 = sharedManager__hmf_once_t11;
-  v4 = v2;
+  v4 = defaultCenter;
   if (v3 != -1)
   {
     dispatch_once(&sharedManager__hmf_once_t11, block);

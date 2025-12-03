@@ -1,20 +1,20 @@
 @interface SKUIProductPageTableUpdateHistorySection
-- (SKUIProductPageTableUpdateHistorySection)initWithClientContext:(id)a3;
-- (double)heightForCellInTableView:(id)a3 indexPath:(id)a4;
-- (id)headerViewForTableView:(id)a3;
-- (id)selectionActionForTableView:(id)a3 indexPath:(id)a4;
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4;
+- (SKUIProductPageTableUpdateHistorySection)initWithClientContext:(id)context;
+- (double)heightForCellInTableView:(id)view indexPath:(id)path;
+- (id)headerViewForTableView:(id)view;
+- (id)selectionActionForTableView:(id)view indexPath:(id)path;
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path;
 - (int64_t)numberOfRowsInSection;
 - (void)_reloadHeaderView;
-- (void)setColorScheme:(id)a3;
-- (void)setExpanded:(BOOL)a3;
+- (void)setColorScheme:(id)scheme;
+- (void)setExpanded:(BOOL)expanded;
 @end
 
 @implementation SKUIProductPageTableUpdateHistorySection
 
-- (SKUIProductPageTableUpdateHistorySection)initWithClientContext:(id)a3
+- (SKUIProductPageTableUpdateHistorySection)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProductPageTableUpdateHistorySection initWithClientContext:];
@@ -26,7 +26,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
     v8 = objc_alloc_init(MEMORY[0x277CCA968]);
     dateFormatter = v7->_dateFormatter;
     v7->_dateFormatter = v8;
@@ -38,18 +38,18 @@
   return v7;
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
-  if (self->_colorScheme != v5)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_colorScheme, a3);
+    v9 = schemeCopy;
+    objc_storeStrong(&self->_colorScheme, scheme);
     headerView = self->_headerView;
-    v7 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v7)
+    primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(SKUIProductPageTableExpandableHeaderView *)headerView setBottomBorderColor:v7];
+      [(SKUIProductPageTableExpandableHeaderView *)headerView setBottomBorderColor:primaryTextColor];
     }
 
     else
@@ -59,11 +59,11 @@
     }
 
     [(SKUIProductPageTableExpandableHeaderView *)self->_headerView setColorScheme:self->_colorScheme];
-    v5 = v9;
+    schemeCopy = v9;
   }
 }
 
-- (id)headerViewForTableView:(id)a3
+- (id)headerViewForTableView:(id)view
 {
   if (!self->_headerView && ![(SKUITableViewSection *)self hidesHeaderView])
   {
@@ -87,10 +87,10 @@
     [(SKUIProductPageTableExpandableHeaderView *)v6 setTitle:v8];
 
     v9 = self->_headerView;
-    v10 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v10)
+    primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(SKUIProductPageTableExpandableHeaderView *)v9 setBottomBorderColor:v10];
+      [(SKUIProductPageTableExpandableHeaderView *)v9 setBottomBorderColor:primaryTextColor];
     }
 
     else
@@ -108,9 +108,9 @@
   return v12;
 }
 
-- (double)heightForCellInTableView:(id)a3 indexPath:(id)a4
+- (double)heightForCellInTableView:(id)view indexPath:(id)path
 {
-  v5 = [a4 row];
+  v5 = [path row];
   v6 = [(SKUILayoutCache *)self->_textLayoutCache layoutForIndex:self->_firstStringIndex + v5];
   [(SKUIProductPageTableSection *)self heightForTextLayout:v6 isExpanded:[(NSMutableIndexSet *)self->_expandedIndexSet containsIndex:v5]];
   v8 = v7;
@@ -130,9 +130,9 @@
   return [(NSArray *)releaseNotes count];
 }
 
-- (id)selectionActionForTableView:(id)a3 indexPath:(id)a4
+- (id)selectionActionForTableView:(id)view indexPath:(id)path
 {
-  v5 = [a4 row];
+  v5 = [path row];
   v6 = [(SKUILayoutCache *)self->_textLayoutCache layoutForIndex:self->_firstStringIndex + v5];
   if ((-[NSMutableIndexSet containsIndex:](self->_expandedIndexSet, "containsIndex:", v5) & 1) != 0 || ![v6 requiresTruncation])
   {
@@ -158,22 +158,22 @@
   return v10;
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
   v4.receiver = self;
   v4.super_class = SKUIProductPageTableUpdateHistorySection;
-  [(SKUIProductPageTableSection *)&v4 setExpanded:a3];
+  [(SKUIProductPageTableSection *)&v4 setExpanded:expanded];
   [(SKUIProductPageTableUpdateHistorySection *)self _reloadHeaderView];
 }
 
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v6 = a4;
-  v7 = [(SKUIProductPageTableSection *)self textBoxTableViewCellForTableView:a3 indexPath:v6];
-  v8 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-  if (v8)
+  pathCopy = path;
+  v7 = [(SKUIProductPageTableSection *)self textBoxTableViewCellForTableView:view indexPath:pathCopy];
+  primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+  if (primaryTextColor)
   {
-    [v7 setBottomBorderColor:v8];
+    [v7 setBottomBorderColor:primaryTextColor];
   }
 
   else
@@ -188,14 +188,14 @@
     [v7 setTextBoxInsets:{0.0, 15.0, 0.0, 0.0}];
   }
 
-  v10 = [v6 row];
+  v10 = [pathCopy row];
   v11 = [(SKUILayoutCache *)self->_textLayoutCache layoutForIndex:self->_firstStringIndex + v10];
-  v12 = [v7 textBoxView];
-  v13 = v12;
+  textBoxView = [v7 textBoxView];
+  v13 = textBoxView;
   if (v11)
   {
-    v29 = v6;
-    [v12 setFixedWidthTextFrame:{objc_msgSend(v11, "textFrame")}];
+    v29 = pathCopy;
+    [textBoxView setFixedWidthTextFrame:{objc_msgSend(v11, "textFrame")}];
     clientContext = self->_clientContext;
     if (clientContext)
     {
@@ -221,8 +221,8 @@
 
     [v13 setNumberOfVisibleLines:v16];
     v17 = [(NSArray *)self->_releaseNotes objectAtIndex:v10];
-    v18 = [v17 date];
-    if (v18)
+    date = [v17 date];
+    if (date)
     {
       v19 = self->_clientContext;
       if (v19)
@@ -235,7 +235,7 @@
         [SKUIClientContext localizedStringForKey:@"PRODUCT_PAGE_UPDATED_DATE" inBundles:0 inTable:@"ProductPage"];
       }
       v21 = ;
-      v22 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:v18];
+      v22 = [(NSDateFormatter *)self->_dateFormatter stringFromDate:date];
       v20 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v21 validFormatSpecifiers:@"%@" error:0, v22];
     }
 
@@ -245,10 +245,10 @@
     }
 
     [v13 setSubtitle:v20];
-    v23 = [v17 versionString];
-    if (v23)
+    versionString = [v17 versionString];
+    if (versionString)
     {
-      v24 = v23;
+      v24 = versionString;
       v25 = self->_clientContext;
       if (v25)
       {
@@ -270,12 +270,12 @@
 
     [v13 setTitle:v26];
 
-    v6 = v29;
+    pathCopy = v29;
   }
 
   else
   {
-    [v12 reset];
+    [textBoxView reset];
   }
 
   return v7;
@@ -283,9 +283,9 @@
 
 - (void)_reloadHeaderView
 {
-  v3 = [(SKUIProductPageTableSection *)self isExpanded];
+  isExpanded = [(SKUIProductPageTableSection *)self isExpanded];
   headerView = self->_headerView;
-  if (v3)
+  if (isExpanded)
   {
     v5 = self->_headerView;
 

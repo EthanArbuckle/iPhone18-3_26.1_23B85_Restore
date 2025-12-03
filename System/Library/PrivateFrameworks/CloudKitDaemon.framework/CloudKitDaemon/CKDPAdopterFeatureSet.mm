@@ -1,16 +1,16 @@
 @interface CKDPAdopterFeatureSet
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)minimumSchemaVersion;
 - (unint64_t)hash;
-- (void)addFieldFeatures:(id)a3;
-- (void)addRecordFeatures:(id)a3;
-- (void)addZoneFeatures:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addFieldFeatures:(id)features;
+- (void)addRecordFeatures:(id)features;
+- (void)addZoneFeatures:(id)features;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPAdopterFeatureSet
@@ -28,58 +28,58 @@
   }
 }
 
-- (void)addZoneFeatures:(id)a3
+- (void)addZoneFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   zoneFeatures = self->_zoneFeatures;
-  v8 = v4;
+  v8 = featuresCopy;
   if (!zoneFeatures)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_zoneFeatures;
     self->_zoneFeatures = v6;
 
-    v4 = v8;
+    featuresCopy = v8;
     zoneFeatures = self->_zoneFeatures;
   }
 
-  objc_msgSend_addObject_(zoneFeatures, v4, v4);
+  objc_msgSend_addObject_(zoneFeatures, featuresCopy, featuresCopy);
 }
 
-- (void)addRecordFeatures:(id)a3
+- (void)addRecordFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   recordFeatures = self->_recordFeatures;
-  v8 = v4;
+  v8 = featuresCopy;
   if (!recordFeatures)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_recordFeatures;
     self->_recordFeatures = v6;
 
-    v4 = v8;
+    featuresCopy = v8;
     recordFeatures = self->_recordFeatures;
   }
 
-  objc_msgSend_addObject_(recordFeatures, v4, v4);
+  objc_msgSend_addObject_(recordFeatures, featuresCopy, featuresCopy);
 }
 
-- (void)addFieldFeatures:(id)a3
+- (void)addFieldFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   fieldFeatures = self->_fieldFeatures;
-  v8 = v4;
+  v8 = featuresCopy;
   if (!fieldFeatures)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_fieldFeatures;
     self->_fieldFeatures = v6;
 
-    v4 = v8;
+    featuresCopy = v8;
     fieldFeatures = self->_fieldFeatures;
   }
 
-  objc_msgSend_addObject_(fieldFeatures, v4, v4);
+  objc_msgSend_addObject_(fieldFeatures, featuresCopy, featuresCopy);
 }
 
 - (id)description
@@ -220,10 +220,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     minimumSchemaVersion = self->_minimumSchemaVersion;
@@ -329,16 +329,16 @@
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_minimumSchemaVersion;
-    *(v4 + 40) |= 1u;
+    toCopy[4] = self->_minimumSchemaVersion;
+    *(toCopy + 40) |= 1u;
   }
 
-  v35 = v4;
+  v35 = toCopy;
   if (objc_msgSend_zoneFeaturesCount(self, v5, v6))
   {
     objc_msgSend_clearZoneFeatures(v35, v7, v8);
@@ -385,11 +385,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v56 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v11 = v10;
   if (*&self->_has)
@@ -418,7 +418,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v19 = objc_msgSend_copyWithZone_(*(*(&v49 + 1) + 8 * v18), v15, a3);
+        v19 = objc_msgSend_copyWithZone_(*(*(&v49 + 1) + 8 * v18), v15, zone);
         objc_msgSend_addZoneFeatures_(v11, v20, v19);
 
         ++v18;
@@ -451,7 +451,7 @@
           objc_enumerationMutation(v21);
         }
 
-        v28 = objc_msgSend_copyWithZone_(*(*(&v45 + 1) + 8 * v27), v24, a3);
+        v28 = objc_msgSend_copyWithZone_(*(*(&v45 + 1) + 8 * v27), v24, zone);
         objc_msgSend_addRecordFeatures_(v11, v29, v28);
 
         ++v27;
@@ -484,7 +484,7 @@
           objc_enumerationMutation(v30);
         }
 
-        v37 = objc_msgSend_copyWithZone_(*(*(&v41 + 1) + 8 * v36), v33, a3, v41);
+        v37 = objc_msgSend_copyWithZone_(*(*(&v41 + 1) + 8 * v36), v33, zone, v41);
         objc_msgSend_addFieldFeatures_(v11, v38, v37);
 
         ++v36;
@@ -501,25 +501,25 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_13;
   }
 
-  v8 = *(v4 + 40);
+  v8 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((v4[5] & 1) == 0 || self->_minimumSchemaVersion != *(v4 + 4))
+    if ((equalCopy[5] & 1) == 0 || self->_minimumSchemaVersion != *(equalCopy + 4))
     {
       goto LABEL_13;
     }
   }
 
-  else if (v4[5])
+  else if (equalCopy[5])
   {
 LABEL_13:
     isEqual = 0;
@@ -527,14 +527,14 @@ LABEL_13:
   }
 
   zoneFeatures = self->_zoneFeatures;
-  v10 = v4[4];
+  v10 = equalCopy[4];
   if (zoneFeatures | v10 && !objc_msgSend_isEqual_(zoneFeatures, v7, v10))
   {
     goto LABEL_13;
   }
 
   recordFeatures = self->_recordFeatures;
-  v12 = v4[3];
+  v12 = equalCopy[3];
   if (recordFeatures | v12)
   {
     if (!objc_msgSend_isEqual_(recordFeatures, v7, v12))
@@ -544,7 +544,7 @@ LABEL_13:
   }
 
   fieldFeatures = self->_fieldFeatures;
-  v14 = v4[1];
+  v14 = equalCopy[1];
   if (fieldFeatures | v14)
   {
     isEqual = objc_msgSend_isEqual_(fieldFeatures, v7, v14);
@@ -577,14 +577,14 @@ LABEL_14:
   return v5 ^ v8 ^ objc_msgSend_hash(self->_fieldFeatures, v9, v10);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 40))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 40))
   {
-    self->_minimumSchemaVersion = *(v4 + 4);
+    self->_minimumSchemaVersion = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
@@ -592,7 +592,7 @@ LABEL_14:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v36, v42, 16);
   if (v8)
   {

@@ -1,57 +1,57 @@
 @interface HUSoftwareUpdateItemModuleController
-- (Class)cellClassForItem:(id)a3;
+- (Class)cellClassForItem:(id)item;
 - (HUExpandableTextViewCellDelegate)expandableTextViewCellDelegate;
-- (HUSoftwareUpdateItemModuleController)initWithModule:(id)a3;
-- (HUSoftwareUpdateItemModuleController)initWithModule:(id)a3 delegate:(id)a4 expandableTextViewCellDelegate:(id)a5;
+- (HUSoftwareUpdateItemModuleController)initWithModule:(id)module;
+- (HUSoftwareUpdateItemModuleController)initWithModule:(id)module delegate:(id)delegate expandableTextViewCellDelegate:(id)cellDelegate;
 - (HUSoftwareUpdateItemModuleControllerDelegate)delegate;
-- (id)softwareUpdateUIManager:(id)a3 dismissViewController:(id)a4;
-- (id)softwareUpdateUIManager:(id)a3 presentViewController:(id)a4;
-- (void)_startUpdateOnAccessories:(id)a3;
-- (void)lockupView:(id)a3 downloadControlTapped:(id)a4;
-- (void)lockupView:(id)a3 expandableTextViewDidExpand:(id)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4;
+- (id)softwareUpdateUIManager:(id)manager dismissViewController:(id)controller;
+- (id)softwareUpdateUIManager:(id)manager presentViewController:(id)controller;
+- (void)_startUpdateOnAccessories:(id)accessories;
+- (void)lockupView:(id)view downloadControlTapped:(id)tapped;
+- (void)lockupView:(id)view expandableTextViewDidExpand:(id)expand;
+- (void)setupCell:(id)cell forItem:(id)item;
 - (void)updateAllAccessories;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUSoftwareUpdateItemModuleController
 
-- (HUSoftwareUpdateItemModuleController)initWithModule:(id)a3
+- (HUSoftwareUpdateItemModuleController)initWithModule:(id)module
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithModule_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateItemModuleController.m" lineNumber:33 description:{@"%s is unavailable; use %@ instead", "-[HUSoftwareUpdateItemModuleController initWithModule:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateItemModuleController.m" lineNumber:33 description:{@"%s is unavailable; use %@ instead", "-[HUSoftwareUpdateItemModuleController initWithModule:]", v6}];
 
   return 0;
 }
 
-- (HUSoftwareUpdateItemModuleController)initWithModule:(id)a3 delegate:(id)a4 expandableTextViewCellDelegate:(id)a5
+- (HUSoftwareUpdateItemModuleController)initWithModule:(id)module delegate:(id)delegate expandableTextViewCellDelegate:(id)cellDelegate
 {
-  v8 = a4;
-  v9 = a5;
+  delegateCopy = delegate;
+  cellDelegateCopy = cellDelegate;
   v17.receiver = self;
   v17.super_class = HUSoftwareUpdateItemModuleController;
-  v10 = [(HUItemModuleController *)&v17 initWithModule:a3];
+  v10 = [(HUItemModuleController *)&v17 initWithModule:module];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_delegate, v8);
-    objc_storeWeak(&v11->_expandableTextViewCellDelegate, v9);
-    v12 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    objc_storeWeak(&v10->_delegate, delegateCopy);
+    objc_storeWeak(&v11->_expandableTextViewCellDelegate, cellDelegateCopy);
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     serviceGridViewControllersByItems = v11->_serviceGridViewControllersByItems;
-    v11->_serviceGridViewControllersByItems = v12;
+    v11->_serviceGridViewControllersByItems = weakToStrongObjectsMapTable;
 
-    v14 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     expandedStateByItems = v11->_expandedStateByItems;
-    v11->_expandedStateByItems = v14;
+    v11->_expandedStateByItems = weakToStrongObjectsMapTable2;
   }
 
   return v11;
 }
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -60,8 +60,8 @@
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateItemModuleController.m" lineNumber:55 description:{@"Unknown item %@", v5}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateItemModuleController.m" lineNumber:55 description:{@"Unknown item %@", itemCopy}];
 
     v6 = 0;
   }
@@ -69,61 +69,61 @@
   return v6;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v30.receiver = self;
   v30.super_class = HUSoftwareUpdateItemModuleController;
-  [(HUItemModuleController *)&v30 setupCell:v6 forItem:v7];
+  [(HUItemModuleController *)&v30 setupCell:cellCopy forItem:itemCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [(HUSoftwareUpdateItemModuleController *)self expandedStateByItems];
-    v10 = [v9 objectForKey:v7];
-    v11 = [v10 BOOLValue];
+    v8 = cellCopy;
+    expandedStateByItems = [(HUSoftwareUpdateItemModuleController *)self expandedStateByItems];
+    v10 = [expandedStateByItems objectForKey:itemCopy];
+    bOOLValue = [v10 BOOLValue];
 
-    v12 = [v8 lockupView];
-    v13 = [v12 descriptionExpandableTextView];
-    [v13 setDelegate:0];
+    lockupView = [v8 lockupView];
+    descriptionExpandableTextView = [lockupView descriptionExpandableTextView];
+    [descriptionExpandableTextView setDelegate:0];
 
-    v14 = [v8 lockupView];
-    v15 = [v14 descriptionExpandableTextView];
-    [v15 setExpanded:v11];
+    lockupView2 = [v8 lockupView];
+    descriptionExpandableTextView2 = [lockupView2 descriptionExpandableTextView];
+    [descriptionExpandableTextView2 setExpanded:bOOLValue];
 
-    v16 = [v8 lockupView];
-    v17 = [v8 lockupView];
-    v18 = [v17 descriptionExpandableTextView];
-    [v18 setDelegate:v16];
+    lockupView3 = [v8 lockupView];
+    lockupView4 = [v8 lockupView];
+    descriptionExpandableTextView3 = [lockupView4 descriptionExpandableTextView];
+    [descriptionExpandableTextView3 setDelegate:lockupView3];
 
-    v19 = [(HUSoftwareUpdateItemModuleController *)self serviceGridViewControllersByItems];
-    v20 = [v19 objectForKey:v7];
+    serviceGridViewControllersByItems = [(HUSoftwareUpdateItemModuleController *)self serviceGridViewControllersByItems];
+    v20 = [serviceGridViewControllersByItems objectForKey:itemCopy];
 
     v21 = v20;
     v22 = v21;
     if (!v21)
     {
       v22 = objc_alloc_init(HUInformationalAccessoryGridViewController);
-      v23 = [(HUInformationalAccessoryGridViewController *)v22 view];
-      [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+      view = [(HUInformationalAccessoryGridViewController *)v22 view];
+      [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v24 = [(HUInformationalAccessoryGridViewController *)v22 collectionView];
-      [v24 setScrollEnabled:0];
+      collectionView = [(HUInformationalAccessoryGridViewController *)v22 collectionView];
+      [collectionView setScrollEnabled:0];
 
       [(HUItemCollectionViewController *)v22 setWantsPreferredContentSize:1];
-      v25 = [(HUInformationalAccessoryGridViewController *)v22 collectionView];
-      [v25 setClipsToBounds:1];
+      collectionView2 = [(HUInformationalAccessoryGridViewController *)v22 collectionView];
+      [collectionView2 setClipsToBounds:1];
 
-      v26 = [(HUSoftwareUpdateItemModuleController *)self serviceGridViewControllersByItems];
-      [v26 setObject:v22 forKey:v7];
+      serviceGridViewControllersByItems2 = [(HUSoftwareUpdateItemModuleController *)self serviceGridViewControllersByItems];
+      [serviceGridViewControllersByItems2 setObject:v22 forKey:itemCopy];
     }
 
     objc_opt_class();
-    v27 = [v8 lockupView];
+    lockupView5 = [v8 lockupView];
     if (objc_opt_isKindOfClass())
     {
-      v28 = v27;
+      v28 = lockupView5;
     }
 
     else
@@ -137,21 +137,21 @@
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
+  animatedCopy = animated;
+  cellCopy = cell;
   v14.receiver = self;
   v14.super_class = HUSoftwareUpdateItemModuleController;
-  v9 = a4;
-  [(HUItemModuleController *)&v14 updateCell:v8 forItem:v9 animated:v5];
+  itemCopy = item;
+  [(HUItemModuleController *)&v14 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
   objc_opt_class();
-  LOBYTE(v5) = objc_opt_isKindOfClass();
+  LOBYTE(animatedCopy) = objc_opt_isKindOfClass();
 
-  if (v5)
+  if (animatedCopy)
   {
     objc_opt_class();
-    v10 = v8;
+    v10 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -164,16 +164,16 @@
 
     v12 = v11;
 
-    v13 = [v12 lockupView];
-    [v13 setDelegate:self];
+    lockupView = [v12 lockupView];
+    [lockupView setDelegate:self];
   }
 }
 
-- (void)lockupView:(id)a3 downloadControlTapped:(id)a4
+- (void)lockupView:(id)view downloadControlTapped:(id)tapped
 {
-  v5 = [a3 item];
+  item = [view item];
   objc_opt_class();
-  v9 = v5;
+  v9 = item;
   if (objc_opt_isKindOfClass())
   {
     v6 = v9;
@@ -188,53 +188,53 @@
 
   if (v7)
   {
-    v8 = [v7 accessories];
-    [(HUSoftwareUpdateItemModuleController *)self _startUpdateOnAccessories:v8];
+    accessories = [v7 accessories];
+    [(HUSoftwareUpdateItemModuleController *)self _startUpdateOnAccessories:accessories];
   }
 }
 
-- (void)lockupView:(id)a3 expandableTextViewDidExpand:(id)a4
+- (void)lockupView:(id)view expandableTextViewDidExpand:(id)expand
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUSoftwareUpdateItemModuleController *)self expandedStateByItems];
-  v9 = [v7 item];
+  expandCopy = expand;
+  viewCopy = view;
+  expandedStateByItems = [(HUSoftwareUpdateItemModuleController *)self expandedStateByItems];
+  item = [viewCopy item];
 
-  [v8 setObject:MEMORY[0x277CBEC38] forKey:v9];
-  v10 = [(HUSoftwareUpdateItemModuleController *)self expandableTextViewCellDelegate];
-  [v10 expandableTextViewCellStateDidChange:v6];
+  [expandedStateByItems setObject:MEMORY[0x277CBEC38] forKey:item];
+  expandableTextViewCellDelegate = [(HUSoftwareUpdateItemModuleController *)self expandableTextViewCellDelegate];
+  [expandableTextViewCellDelegate expandableTextViewCellStateDidChange:expandCopy];
 }
 
 - (void)updateAllAccessories
 {
-  v4 = [(HUItemModuleController *)self module];
-  v3 = [v4 accessories];
-  [(HUSoftwareUpdateItemModuleController *)self _startUpdateOnAccessories:v3];
+  module = [(HUItemModuleController *)self module];
+  accessories = [module accessories];
+  [(HUSoftwareUpdateItemModuleController *)self _startUpdateOnAccessories:accessories];
 }
 
-- (void)_startUpdateOnAccessories:(id)a3
+- (void)_startUpdateOnAccessories:(id)accessories
 {
-  v10 = a3;
-  if ([v10 count] == 1)
+  accessoriesCopy = accessories;
+  if ([accessoriesCopy count] == 1)
   {
     v4 = +[HUSoftwareUpdateUIManager sharedManager];
-    v5 = [v10 anyObject];
-    v6 = [v4 startUpdateForAccessory:v5 presentationDelegate:self];
+    anyObject = [accessoriesCopy anyObject];
+    v6 = [v4 startUpdateForAccessory:anyObject presentationDelegate:self];
   }
 
   else
   {
     v7 = +[HUSoftwareUpdateUIManager sharedManager];
     v4 = v7;
-    if (v10)
+    if (accessoriesCopy)
     {
-      v6 = [v7 startUpdatesForAccessories:v10 presentationDelegate:self];
+      v6 = [v7 startUpdatesForAccessories:accessoriesCopy presentationDelegate:self];
       goto LABEL_7;
     }
 
-    v5 = [(HUItemModuleController *)self module];
-    v8 = [v5 home];
-    v6 = [v4 startUpdatesForAllAccessoriesInHome:v8 presentationDelegate:self];
+    anyObject = [(HUItemModuleController *)self module];
+    home = [anyObject home];
+    v6 = [v4 startUpdatesForAllAccessoriesInHome:home presentationDelegate:self];
   }
 
 LABEL_7:
@@ -251,20 +251,20 @@ void __66__HUSoftwareUpdateItemModuleController__startUpdateOnAccessories___bloc
   }
 }
 
-- (id)softwareUpdateUIManager:(id)a3 presentViewController:(id)a4
+- (id)softwareUpdateUIManager:(id)manager presentViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [(HUSoftwareUpdateItemModuleController *)self delegate];
-  v7 = [v6 softwareUpdateModuleController:self presentViewController:v5];
+  controllerCopy = controller;
+  delegate = [(HUSoftwareUpdateItemModuleController *)self delegate];
+  v7 = [delegate softwareUpdateModuleController:self presentViewController:controllerCopy];
 
   return v7;
 }
 
-- (id)softwareUpdateUIManager:(id)a3 dismissViewController:(id)a4
+- (id)softwareUpdateUIManager:(id)manager dismissViewController:(id)controller
 {
-  v5 = a4;
-  v6 = [(HUSoftwareUpdateItemModuleController *)self delegate];
-  v7 = [v6 softwareUpdateModuleController:self dismissViewController:v5];
+  controllerCopy = controller;
+  delegate = [(HUSoftwareUpdateItemModuleController *)self delegate];
+  v7 = [delegate softwareUpdateModuleController:self dismissViewController:controllerCopy];
 
   return v7;
 }

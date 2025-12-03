@@ -1,89 +1,89 @@
 @interface CKTranscriptStatusCell
 + (id)statusButton;
-+ (void)transitionFromView:(id)a3 toView:(id)a4 duration:(double)a5 options:(unint64_t)a6 completion:(id)a7;
++ (void)transitionFromView:(id)view toView:(id)toView duration:(double)duration options:(unint64_t)options completion:(id)completion;
 - (NSAttributedString)attributedButtonText;
 - (UIEdgeInsets)buttonAlignmentInsets;
 - (UIEdgeInsets)contentAlignmentInsets;
 - (double)statusItemInsetFromBalloonEdge;
-- (unint64_t)_statusItemInsetEdgeForTranscriptOrientation:(char)a3;
-- (void)addFilter:(id)a3;
+- (unint64_t)_statusItemInsetEdgeForTranscriptOrientation:(char)orientation;
+- (void)addFilter:(id)filter;
 - (void)clearFilters;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)layoutSubviewsForAlignmentContents;
-- (void)performInsertion:(id)a3;
-- (void)performReload:(id)a3 completion:(id)a4;
-- (void)performRemoval:(id)a3;
+- (void)performInsertion:(id)insertion;
+- (void)performReload:(id)reload completion:(id)completion;
+- (void)performRemoval:(id)removal;
 - (void)prepareForReuse;
-- (void)setAttributedButtonText:(id)a3;
-- (void)setOrientation:(char)a3;
-- (void)setPrevBalloonWidth:(double)a3;
+- (void)setAttributedButtonText:(id)text;
+- (void)setOrientation:(char)orientation;
+- (void)setPrevBalloonWidth:(double)width;
 @end
 
 @implementation CKTranscriptStatusCell
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
+  animatedCopy = animated;
+  itemCopy = item;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    -[CKTranscriptStatusCell setButtonAlignmentRelativeToContent:](self, "setButtonAlignmentRelativeToContent:", [v12 statusAlignment]);
+    -[CKTranscriptStatusCell setButtonAlignmentRelativeToContent:](self, "setButtonAlignmentRelativeToContent:", [itemCopy statusAlignment]);
     v53.receiver = self;
     v53.super_class = CKTranscriptStatusCell;
-    [(CKTranscriptStampCell *)&v53 configureForChatItem:v12 context:v13 animated:v9 animationDuration:a7 animationCurve:a6];
-    v14 = [v12 transcriptButtonText];
-    [(CKTranscriptStatusCell *)self setAttributedButtonText:v14];
+    [(CKTranscriptStampCell *)&v53 configureForChatItem:itemCopy context:contextCopy animated:animatedCopy animationDuration:curve animationCurve:duration];
+    transcriptButtonText = [itemCopy transcriptButtonText];
+    [(CKTranscriptStatusCell *)self setAttributedButtonText:transcriptButtonText];
 
-    v15 = [(CKTranscriptStatusCell *)self statusButton];
-    [v15 contentEdgeInsets];
+    statusButton = [(CKTranscriptStatusCell *)self statusButton];
+    [statusButton contentEdgeInsets];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    [v12 buttonSize];
+    [itemCopy buttonSize];
     v25 = v24 + v19 + v23;
     v27 = v26 + v17 + v21;
-    [v15 frame];
+    [statusButton frame];
     if (v29 != v25 || v28 != v27)
     {
-      [v15 setFrame:?];
+      [statusButton setFrame:?];
       [(CKTranscriptStatusCell *)self setNeedsLayout];
     }
 
-    v31 = [(CKTranscriptLabelCell *)self label];
-    [v31 frame];
+    label = [(CKTranscriptLabelCell *)self label];
+    [label frame];
     v33 = v32;
     v35 = v34;
     v37 = v36;
     v39 = v38;
-    [v31 setNumberOfLines:0];
-    [v12 labelTextAlignmentInsets];
+    [label setNumberOfLines:0];
+    [itemCopy labelTextAlignmentInsets];
     v41 = v40;
     v43 = v42;
     v45 = v44;
     v47 = v46;
-    [v12 labelSize];
+    [itemCopy labelSize];
     if (v37 != v49 + v43 + v47 || v39 != v48 + v41 + v45)
     {
-      [v31 setFrame:{v33, v35}];
+      [label setFrame:{v33, v35}];
       [(CKTranscriptStatusCell *)self setNeedsLayout];
     }
 
-    -[NSObject setUserInteractionEnabled:](v15, "setUserInteractionEnabled:", [v12 buttonType] != 0);
-    if ([v12 shouldHideDuringDarkFSM])
+    -[NSObject setUserInteractionEnabled:](statusButton, "setUserInteractionEnabled:", [itemCopy buttonType] != 0);
+    if ([itemCopy shouldHideDuringDarkFSM])
     {
-      v51 = [(CKTranscriptCell *)self shouldConfigureForDarkFSM];
-      v52 = [(CKTranscriptStatusCell *)self statusButton];
-      [v52 setHidden:v51];
+      shouldConfigureForDarkFSM = [(CKTranscriptCell *)self shouldConfigureForDarkFSM];
+      statusButton2 = [(CKTranscriptStatusCell *)self statusButton];
+      [statusButton2 setHidden:shouldConfigureForDarkFSM];
     }
   }
 
   else
   {
-    v15 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    statusButton = IMLogHandleForCategory();
+    if (os_log_type_enabled(statusButton, OS_LOG_TYPE_ERROR))
     {
       [CKTranscriptStatusCell(CKChatItem) configureForChatItem:context:animated:animationDuration:animationCurve:];
     }
@@ -95,29 +95,29 @@
   v4.receiver = self;
   v4.super_class = CKTranscriptStatusCell;
   [(CKTranscriptStampCell *)&v4 prepareForReuse];
-  v3 = [(CKTranscriptStatusCell *)self statusButton];
-  [v3 removeFromSuperview];
+  statusButton = [(CKTranscriptStatusCell *)self statusButton];
+  [statusButton removeFromSuperview];
 
   [(CKTranscriptStatusCell *)self setStatusButton:0];
   [(CKTranscriptStatusCell *)self setPreviousBalloonIsReplyContextPreview:0];
 }
 
-- (void)setOrientation:(char)a3
+- (void)setOrientation:(char)orientation
 {
-  v3 = a3;
-  if ([(CKEditableCollectionViewCell *)self orientation]!= a3)
+  orientationCopy = orientation;
+  if ([(CKEditableCollectionViewCell *)self orientation]!= orientation)
   {
     v5.receiver = self;
     v5.super_class = CKTranscriptStatusCell;
-    [(CKTranscriptStampCell *)&v5 setOrientation:v3];
+    [(CKTranscriptStampCell *)&v5 setOrientation:orientationCopy];
     [(CKTranscriptStatusCell *)self setNeedsLayout];
   }
 }
 
 - (void)layoutSubviewsForAlignmentContents
 {
-  v3 = [(CKTranscriptLabelCell *)self label];
-  [v3 frame];
+  label = [(CKTranscriptLabelCell *)self label];
+  [label frame];
   v82 = v4;
   rect = v5;
   v7 = v6;
@@ -125,7 +125,7 @@
   v85.receiver = self;
   v85.super_class = CKTranscriptStatusCell;
   [(CKTranscriptStampCell *)&v85 layoutSubviewsForAlignmentContents];
-  v10 = [(CKEditableCollectionViewCell *)self orientation];
+  orientation = [(CKEditableCollectionViewCell *)self orientation];
   [(CKTranscriptStampCell *)self contentAlignmentRect];
   v13 = v12;
   v15 = v14;
@@ -136,12 +136,12 @@
   v21 = *(MEMORY[0x1E69DDCE0] + 16);
   v80 = v15;
   v81 = v7;
-  if (v10)
+  if (orientation)
   {
     v22 = v11;
     v72 = v9;
     v23 = *(MEMORY[0x1E69DDCE0] + 24);
-    if (v10 == 2)
+    if (orientation == 2)
     {
       v74 = *(MEMORY[0x1E69DDCE0] + 16);
       v77 = *(MEMORY[0x1E695F058] + 24);
@@ -183,7 +183,7 @@
     v39 = v18 + v20;
     v40 = v28 - (v23 + v26);
     v41 = v19 - (v20 + v21);
-    if (v10 == 2)
+    if (orientation == 2)
     {
       v87.origin.x = v26 + v30;
       v87.origin.y = v39;
@@ -225,12 +225,12 @@
     v42 = v38;
   }
 
-  v43 = [(CKTranscriptStatusCell *)self statusButton];
-  v44 = v43;
-  if (v43)
+  statusButton = [(CKTranscriptStatusCell *)self statusButton];
+  v44 = statusButton;
+  if (statusButton)
   {
     v83 = v42;
-    [v43 frame];
+    [statusButton frame];
     v46 = v45;
     v48 = v47;
     [(CKTranscriptStatusCell *)self buttonAlignmentInsets];
@@ -258,7 +258,7 @@
     }
 
     v57 = v48 - v54;
-    if (MinX < v38 && v10 == 0)
+    if (MinX < v38 && orientation == 0)
     {
       v59 = v38;
     }
@@ -268,12 +268,12 @@
       v59 = MinX;
     }
 
-    v60 = [(CKTranscriptLabelCell *)self attributedText];
+    attributedText = [(CKTranscriptLabelCell *)self attributedText];
 
-    if (v60)
+    if (attributedText)
     {
       v56 = v81;
-      if (v10 == 2)
+      if (orientation == 2)
       {
         v61 = MinX;
       }
@@ -292,9 +292,9 @@
         MinX = v59;
       }
 
-      else if (v10)
+      else if (orientation)
       {
-        if (v10 == 2)
+        if (orientation == 2)
         {
           v61 = MinX - (rect + 6.0);
         }
@@ -332,8 +332,8 @@
     v56 = v81;
   }
 
-  v62 = [(CKTranscriptStatusCell *)self traitCollection];
-  [v62 displayScale];
+  traitCollection = [(CKTranscriptStatusCell *)self traitCollection];
+  [traitCollection displayScale];
   if (v63 == 0.0)
   {
     if (CKMainScreenScale_once_99 != -1)
@@ -378,7 +378,7 @@
   v69 = floor(v56 * v63) / v63;
   v70 = ceil(v9 * v65) / v65;
 
-  [v3 setFrame:{v66, v69, v68, v70}];
+  [label setFrame:{v66, v69, v68, v70}];
 }
 
 - (UIEdgeInsets)contentAlignmentInsets
@@ -390,10 +390,10 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v12 = [v11 isRoundTailedBalloonShapeEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
-  if (v12)
+  if (isRoundTailedBalloonShapeEnabled)
   {
     v13 = +[CKUIBehavior sharedBehaviors];
     [(CKTranscriptStatusCell *)self _statusItemInsetEdgeForTranscriptOrientation:[(CKEditableCollectionViewCell *)self orientation]];
@@ -435,11 +435,11 @@
   return v4;
 }
 
-- (unint64_t)_statusItemInsetEdgeForTranscriptOrientation:(char)a3
+- (unint64_t)_statusItemInsetEdgeForTranscriptOrientation:(char)orientation
 {
-  if (a3)
+  if (orientation)
   {
-    return 8 * (a3 == 2);
+    return 8 * (orientation == 2);
   }
 
   else
@@ -450,8 +450,8 @@
 
 - (UIEdgeInsets)buttonAlignmentInsets
 {
-  v2 = [(CKTranscriptStatusCell *)self statusButton];
-  [v2 contentEdgeInsets];
+  statusButton = [(CKTranscriptStatusCell *)self statusButton];
+  [statusButton contentEdgeInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -468,28 +468,28 @@
   return result;
 }
 
-- (void)performInsertion:(id)a3
+- (void)performInsertion:(id)insertion
 {
-  v4 = a3;
-  v5 = [(CKTranscriptLabelCell *)self label];
-  v6 = [(CKTranscriptStatusCell *)self statusButton];
+  insertionCopy = insertion;
+  label = [(CKTranscriptLabelCell *)self label];
+  statusButton = [(CKTranscriptStatusCell *)self statusButton];
   [(CKTranscriptStatusCell *)self layoutIfNeeded];
   CGAffineTransformMakeScale(&v30, 0.0, 0.0);
-  [v5 setTransform:&v30];
+  [label setTransform:&v30];
   CGAffineTransformMakeScale(&v30, 0.0, 0.0);
-  [v6 setTransform:&v30];
+  [statusButton setTransform:&v30];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __43__CKTranscriptStatusCell_performInsertion___block_invoke;
   v27[3] = &unk_1E72EB8D0;
-  v7 = v5;
+  v7 = label;
   v28 = v7;
-  v8 = v6;
+  v8 = statusButton;
   v29 = v8;
-  [CKTranscriptStatusCell zoomAnimation:v27 completion:v4];
+  [CKTranscriptStatusCell zoomAnimation:v27 completion:insertionCopy];
 
-  v9 = [v7 attributedText];
-  if (![v9 length])
+  attributedText = [v7 attributedText];
+  if (![attributedText length])
   {
     goto LABEL_4;
   }
@@ -519,7 +519,7 @@
     v26 = v19;
     [CKTranscriptStatusCell zoomAnimation:v20 completion:0];
 
-    v9 = v21;
+    attributedText = v21;
 LABEL_4:
   }
 }
@@ -551,42 +551,42 @@ uint64_t __43__CKTranscriptStatusCell_performInsertion___block_invoke_2(uint64_t
   return [v2 setCenter:{v3, v4}];
 }
 
-- (void)performReload:(id)a3 completion:(id)a4
+- (void)performReload:(id)reload completion:(id)completion
 {
-  v6 = a3;
-  v25 = a4;
-  v7 = [(CKTranscriptLabelCell *)self label];
-  if (v7)
+  reloadCopy = reload;
+  completionCopy = completion;
+  label = [(CKTranscriptLabelCell *)self label];
+  if (label)
   {
-    v8 = [objc_opt_class() createStampLabelView];
-    [(CKTranscriptStampCell *)self setStampTextView:v8];
+    createStampLabelView = [objc_opt_class() createStampLabelView];
+    [(CKTranscriptStampCell *)self setStampTextView:createStampLabelView];
   }
 
-  v9 = [(CKTranscriptStatusCell *)self statusButton];
-  if (v9)
+  statusButton = [(CKTranscriptStatusCell *)self statusButton];
+  if (statusButton)
   {
-    v10 = [objc_opt_class() statusButton];
-    [(CKTranscriptStatusCell *)self setStatusButton:v10];
+    statusButton2 = [objc_opt_class() statusButton];
+    [(CKTranscriptStatusCell *)self setStatusButton:statusButton2];
   }
 
-  if (v6)
+  if (reloadCopy)
   {
-    v6[2](v6);
+    reloadCopy[2](reloadCopy);
   }
 
   [(CKTranscriptStatusCell *)self layoutIfNeeded];
   v11 = dispatch_group_create();
-  v12 = [(CKTranscriptLabelCell *)self label];
-  v13 = [v7 attributedText];
-  v14 = [v12 attributedText];
-  v15 = [v13 isEqualToAttributedString:v14];
+  label2 = [(CKTranscriptLabelCell *)self label];
+  attributedText = [label attributedText];
+  attributedText2 = [label2 attributedText];
+  v15 = [attributedText isEqualToAttributedString:attributedText2];
 
   if (v15)
   {
-    v16 = [v7 superview];
-    [v16 addSubview:v12];
+    superview = [label superview];
+    [superview addSubview:label2];
 
-    [v7 removeFromSuperview];
+    [label removeFromSuperview];
   }
 
   else
@@ -598,20 +598,20 @@ uint64_t __43__CKTranscriptStatusCell_performInsertion___block_invoke_2(uint64_t
     v30[2] = __51__CKTranscriptStatusCell_performReload_completion___block_invoke;
     v30[3] = &unk_1E72EB9C8;
     v31 = v11;
-    [v17 transitionFromView:v7 toView:v12 duration:327680 options:v30 completion:0.5];
+    [v17 transitionFromView:label toView:label2 duration:327680 options:v30 completion:0.5];
   }
 
-  v18 = [(CKTranscriptStatusCell *)self statusButton];
-  v19 = [v9 attributedTitleForState:0];
-  v20 = [v18 attributedTitleForState:0];
+  statusButton3 = [(CKTranscriptStatusCell *)self statusButton];
+  v19 = [statusButton attributedTitleForState:0];
+  v20 = [statusButton3 attributedTitleForState:0];
   v21 = [v19 isEqualToAttributedString:v20];
 
   if (v21)
   {
-    v22 = [v9 superview];
-    [v22 addSubview:v18];
+    superview2 = [statusButton superview];
+    [superview2 addSubview:statusButton3];
 
-    [v9 removeFromSuperview];
+    [statusButton removeFromSuperview];
   }
 
   else
@@ -623,38 +623,38 @@ uint64_t __43__CKTranscriptStatusCell_performInsertion___block_invoke_2(uint64_t
     v28[2] = __51__CKTranscriptStatusCell_performReload_completion___block_invoke_2;
     v28[3] = &unk_1E72EB9C8;
     v29 = v11;
-    [v23 transitionFromView:v9 toView:v18 duration:327680 options:v28 completion:0.5];
+    [v23 transitionFromView:statusButton toView:statusButton3 duration:327680 options:v28 completion:0.5];
   }
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__CKTranscriptStatusCell_performReload_completion___block_invoke_3;
   block[3] = &unk_1E72EBDB8;
-  v27 = v25;
-  v24 = v25;
+  v27 = completionCopy;
+  v24 = completionCopy;
   dispatch_group_notify(v11, MEMORY[0x1E69E96A0], block);
 }
 
-- (void)performRemoval:(id)a3
+- (void)performRemoval:(id)removal
 {
-  v4 = a3;
-  v5 = [(CKTranscriptLabelCell *)self label];
-  v6 = [(CKTranscriptStatusCell *)self statusButton];
+  removalCopy = removal;
+  label = [(CKTranscriptLabelCell *)self label];
+  statusButton = [(CKTranscriptStatusCell *)self statusButton];
   v7 = MEMORY[0x1E69DD250];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __41__CKTranscriptStatusCell_performRemoval___block_invoke;
   v15[3] = &unk_1E72EB8D0;
-  v16 = v5;
-  v17 = v6;
+  v16 = label;
+  v17 = statusButton;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __41__CKTranscriptStatusCell_performRemoval___block_invoke_2;
   v11[3] = &unk_1E72F2C80;
   v12 = v16;
   v13 = v17;
-  v14 = v4;
-  v8 = v4;
+  v14 = removalCopy;
+  v8 = removalCopy;
   v9 = v17;
   v10 = v16;
   [v7 animateWithDuration:327680 delay:v15 options:v11 animations:0.25 completion:0.0];
@@ -683,110 +683,110 @@ uint64_t __41__CKTranscriptStatusCell_performRemoval___block_invoke_2(uint64_t a
   return result;
 }
 
-- (void)setAttributedButtonText:(id)a3
+- (void)setAttributedButtonText:(id)text
 {
-  v20 = a3;
-  v4 = [(CKTranscriptStatusCell *)self attributedButtonText];
+  textCopy = text;
+  attributedButtonText = [(CKTranscriptStatusCell *)self attributedButtonText];
 
-  v5 = v20;
-  if (v4 == v20)
+  v5 = textCopy;
+  if (attributedButtonText == textCopy)
   {
     goto LABEL_13;
   }
 
-  v6 = [(CKTranscriptStatusCell *)self attributedButtonText];
-  v7 = [v6 string];
-  v8 = [v20 string];
-  v9 = [v7 isEqualToString:v8];
+  attributedButtonText2 = [(CKTranscriptStatusCell *)self attributedButtonText];
+  string = [attributedButtonText2 string];
+  string2 = [textCopy string];
+  v9 = [string isEqualToString:string2];
 
-  v5 = v20;
+  v5 = textCopy;
   if (v9)
   {
     goto LABEL_13;
   }
 
-  v10 = [(CKTranscriptStatusCell *)self statusButton];
-  v11 = v20;
-  if (!v20)
+  statusButton = [(CKTranscriptStatusCell *)self statusButton];
+  v11 = textCopy;
+  if (!textCopy)
   {
-    [v10 removeFromSuperview];
+    [statusButton removeFromSuperview];
     [(CKTranscriptStatusCell *)self setStatusButton:0];
-    v12 = 0;
+    statusButton2 = 0;
     goto LABEL_7;
   }
 
-  if (!v10)
+  if (!statusButton)
   {
-    v12 = [objc_opt_class() statusButton];
-    [(CKTranscriptStatusCell *)self setStatusButton:v12];
-    v10 = [(CKEditableCollectionViewCell *)self contentView];
-    [v10 addSubview:v12];
+    statusButton2 = [objc_opt_class() statusButton];
+    [(CKTranscriptStatusCell *)self setStatusButton:statusButton2];
+    statusButton = [(CKEditableCollectionViewCell *)self contentView];
+    [statusButton addSubview:statusButton2];
 LABEL_7:
 
-    v10 = v12;
-    v11 = v20;
+    statusButton = statusButton2;
+    v11 = textCopy;
   }
 
   v13 = v11;
   if ([(CKTranscriptCell *)self shouldConfigureForDarkFSM])
   {
     v14 = +[CKUIBehavior sharedBehaviors];
-    v15 = [v14 theme];
-    v16 = [v15 balloonColorsForColorType:0xFFFFFFFFLL];
-    v17 = [v16 lastObject];
+    theme = [v14 theme];
+    v16 = [theme balloonColorsForColorType:0xFFFFFFFFLL];
+    lastObject = [v16 lastObject];
 
     v18 = [v13 mutableCopy];
-    [v18 addAttribute:*MEMORY[0x1E69DB650] value:v17 range:{0, objc_msgSend(v18, "length")}];
+    [v18 addAttribute:*MEMORY[0x1E69DB650] value:lastObject range:{0, objc_msgSend(v18, "length")}];
     v19 = [v18 copy];
 
     v13 = v19;
   }
 
-  [v10 setAttributedTitle:v13 forState:0];
-  if (v10)
+  [statusButton setAttributedTitle:v13 forState:0];
+  if (statusButton)
   {
     [(CKTranscriptStatusCell *)self setNeedsLayout];
   }
 
-  v5 = v20;
+  v5 = textCopy;
 LABEL_13:
 }
 
 - (NSAttributedString)attributedButtonText
 {
-  v2 = [(CKTranscriptStatusCell *)self statusButton];
-  v3 = [v2 attributedTitleForState:0];
+  statusButton = [(CKTranscriptStatusCell *)self statusButton];
+  v3 = [statusButton attributedTitleForState:0];
 
   return v3;
 }
 
-- (void)setPrevBalloonWidth:(double)a3
+- (void)setPrevBalloonWidth:(double)width
 {
-  if (self->_prevBalloonWidth != a3)
+  if (self->_prevBalloonWidth != width)
   {
-    self->_prevBalloonWidth = a3;
+    self->_prevBalloonWidth = width;
     [(CKTranscriptStatusCell *)self setNeedsLayout];
   }
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
   v12.receiver = self;
   v12.super_class = CKTranscriptStatusCell;
-  v4 = a3;
-  [(CKTranscriptStampCell *)&v12 addFilter:v4];
+  filterCopy = filter;
+  [(CKTranscriptStampCell *)&v12 addFilter:filterCopy];
   v5 = [(CKTranscriptStatusCell *)self statusButton:v12.receiver];
-  v6 = [v5 layer];
-  [v6 setAllowsGroupBlending:0];
+  layer = [v5 layer];
+  [layer setAllowsGroupBlending:0];
 
-  v7 = [v5 layer];
-  [v7 setAllowsGroupOpacity:0];
+  layer2 = [v5 layer];
+  [layer2 setAllowsGroupOpacity:0];
 
-  v8 = [v5 layer];
-  v9 = [v4 textCompositingFilter];
-  [v8 setCompositingFilter:v9];
+  layer3 = [v5 layer];
+  textCompositingFilter = [filterCopy textCompositingFilter];
+  [layer3 setCompositingFilter:textCompositingFilter];
 
-  [v4 contentAlpha];
+  [filterCopy contentAlpha];
   v11 = v10;
 
   [v5 setAlpha:v11];
@@ -797,25 +797,25 @@ LABEL_13:
   v7.receiver = self;
   v7.super_class = CKTranscriptStatusCell;
   [(CKTranscriptStampCell *)&v7 clearFilters];
-  v3 = [(CKTranscriptStatusCell *)self statusButton];
-  v4 = [v3 layer];
-  [v4 setAllowsGroupBlending:1];
+  statusButton = [(CKTranscriptStatusCell *)self statusButton];
+  layer = [statusButton layer];
+  [layer setAllowsGroupBlending:1];
 
-  v5 = [v3 layer];
-  [v5 setAllowsGroupOpacity:1];
+  layer2 = [statusButton layer];
+  [layer2 setAllowsGroupOpacity:1];
 
-  v6 = [v3 layer];
-  [v6 setCompositingFilter:0];
+  layer3 = [statusButton layer];
+  [layer3 setCompositingFilter:0];
 
-  [v3 setAlpha:1.0];
+  [statusButton setAlpha:1.0];
 }
 
 + (id)statusButton
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 transcriptStatusCellButtonConfiguration];
+  transcriptStatusCellButtonConfiguration = [v2 transcriptStatusCellButtonConfiguration];
 
-  v4 = [CKTranscriptLegibilityButton buttonWithConfiguration:v3 primaryAction:0];
+  v4 = [CKTranscriptLegibilityButton buttonWithConfiguration:transcriptStatusCellButtonConfiguration primaryAction:0];
   [v4 setConfigurationUpdateHandler:&__block_literal_global_280];
   [v4 setEnabled:CKIsRunningInMessagesNotificationExtension() == 0];
 
@@ -853,37 +853,37 @@ uint64_t __38__CKTranscriptStatusCell_statusButton__block_invoke_2(uint64_t a1)
   return [v4 setAlpha:v3];
 }
 
-+ (void)transitionFromView:(id)a3 toView:(id)a4 duration:(double)a5 options:(unint64_t)a6 completion:(id)a7
++ (void)transitionFromView:(id)view toView:(id)toView duration:(double)duration options:(unint64_t)options completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5 * 0.5;
-  v14 = a7;
-  v15 = [v11 superview];
-  [v15 addSubview:v12];
+  viewCopy = view;
+  toViewCopy = toView;
+  v13 = duration * 0.5;
+  completionCopy = completion;
+  superview = [viewCopy superview];
+  [superview addSubview:toViewCopy];
 
-  [v12 setAlpha:0.0];
+  [toViewCopy setAlpha:0.0];
   v16 = MEMORY[0x1E69DD250];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __80__CKTranscriptStatusCell_transitionFromView_toView_duration_options_completion___block_invoke;
   v24[3] = &unk_1E72EBA18;
-  v25 = v11;
+  v25 = viewCopy;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __80__CKTranscriptStatusCell_transitionFromView_toView_duration_options_completion___block_invoke_2;
   v22[3] = &unk_1E72EB9C8;
   v23 = v25;
   v17 = v25;
-  [v16 animateWithDuration:a6 delay:v24 options:v22 animations:v13 completion:0.0];
+  [v16 animateWithDuration:options delay:v24 options:v22 animations:v13 completion:0.0];
   v18 = MEMORY[0x1E69DD250];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __80__CKTranscriptStatusCell_transitionFromView_toView_duration_options_completion___block_invoke_3;
   v20[3] = &unk_1E72EBA18;
-  v21 = v12;
-  v19 = v12;
-  [v18 animateWithDuration:a6 delay:v20 options:v14 animations:v13 completion:v13];
+  v21 = toViewCopy;
+  v19 = toViewCopy;
+  [v18 animateWithDuration:options delay:v20 options:completionCopy animations:v13 completion:v13];
 }
 
 @end

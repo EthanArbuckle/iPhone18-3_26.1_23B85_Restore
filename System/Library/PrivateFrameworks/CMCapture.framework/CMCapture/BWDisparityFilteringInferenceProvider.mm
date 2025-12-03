@@ -1,23 +1,23 @@
 @interface BWDisparityFilteringInferenceProvider
-- (BWDisparityFilteringInferenceProvider)initWithDisparityInputRequirement:(id)a3 disparityOutputRequirement:(id)a4 resourceProvider:(id)a5 configuration:(id)a6 isPreprocessing:(BOOL)a7;
+- (BWDisparityFilteringInferenceProvider)initWithDisparityInputRequirement:(id)requirement disparityOutputRequirement:(id)outputRequirement resourceProvider:(id)provider configuration:(id)configuration isPreprocessing:(BOOL)preprocessing;
 - (id)newStorage;
-- (int)prepareForSubmissionWithWorkQueue:(id)a3;
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7;
+- (int)prepareForSubmissionWithWorkQueue:(id)queue;
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler;
 - (void)dealloc;
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6;
-- (void)setCustomInferenceIdentifier:(id)a3;
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer;
+- (void)setCustomInferenceIdentifier:(id)identifier;
 @end
 
 @implementation BWDisparityFilteringInferenceProvider
 
-- (BWDisparityFilteringInferenceProvider)initWithDisparityInputRequirement:(id)a3 disparityOutputRequirement:(id)a4 resourceProvider:(id)a5 configuration:(id)a6 isPreprocessing:(BOOL)a7
+- (BWDisparityFilteringInferenceProvider)initWithDisparityInputRequirement:(id)requirement disparityOutputRequirement:(id)outputRequirement resourceProvider:(id)provider configuration:(id)configuration isPreprocessing:(BOOL)preprocessing
 {
   v19.receiver = self;
   v19.super_class = BWDisparityFilteringInferenceProvider;
   v12 = [(BWDisparityFilteringInferenceProvider *)&v19 init];
   if (v12)
   {
-    v12->_metalInferenceContext = [a5 defaultDeviceMetalContext];
+    v12->_metalInferenceContext = [provider defaultDeviceMetalContext];
     v18 = 0;
     v13 = -[MTLDevice newDefaultLibraryWithBundle:error:](-[BWMetalInferenceContext device](v12->_metalInferenceContext, "device"), "newDefaultLibraryWithBundle:error:", [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()], &v18);
     if (v13)
@@ -28,17 +28,17 @@
       v12->_cropPipelineState = [(MTLDevice *)[(BWMetalInferenceContext *)v12->_metalInferenceContext device] newComputePipelineStateWithFunction:v15 error:&v18];
       if (v12->_cropPipelineState)
       {
-        v12->_disparityInputRequirement = a3;
-        v12->_outputRequirement = a4;
-        v12->_concurrencyWidth = [a6 concurrencyWidth];
-        v12->_requiresCroppingOfDepthBuffer = [a6 requiresCroppingOfDepthBuffer];
-        v12->_requiresVerticalFlipOfDepthBuffer = [a6 requiresVerticalFlipOfDepthBuffer];
+        v12->_disparityInputRequirement = requirement;
+        v12->_outputRequirement = outputRequirement;
+        v12->_concurrencyWidth = [configuration concurrencyWidth];
+        v12->_requiresCroppingOfDepthBuffer = [configuration requiresCroppingOfDepthBuffer];
+        v12->_requiresVerticalFlipOfDepthBuffer = [configuration requiresVerticalFlipOfDepthBuffer];
         v12->_inputSource = 0;
-        v16 = [a6 videoDepthAlgorithm];
-        if (v16 < 4)
+        videoDepthAlgorithm = [configuration videoDepthAlgorithm];
+        if (videoDepthAlgorithm < 4)
         {
-          v12->_inputSource = qword_1AD055B90[v16];
-          v12->_isPreProcessing = a7;
+          v12->_inputSource = qword_1AD055B90[videoDepthAlgorithm];
+          v12->_isPreProcessing = preprocessing;
           return v12;
         }
       }
@@ -77,7 +77,7 @@
   [(BWDisparityFilteringInferenceProvider *)&v4 dealloc];
 }
 
-- (int)prepareForSubmissionWithWorkQueue:(id)a3
+- (int)prepareForSubmissionWithWorkQueue:(id)queue
 {
   RequestedRotationDegrees = bwisr_getRequestedRotationDegrees([(BWInferenceVideoRequirement *)self->_disparityInputRequirement videoFormat], [(BWInferenceVideoRequirement *)self->_outputRequirement videoFormat]);
   if (self->_requiresVerticalFlipOfDepthBuffer)
@@ -110,8 +110,8 @@
   self->_stereoPipeline = v7;
   if (v7)
   {
-    v8 = [(BWInferenceVideoRequirement *)self->_disparityInputRequirement videoFormat];
-    v9 = [(BWInferenceVideoRequirement *)self->_outputRequirement videoFormat];
+    videoFormat = [(BWInferenceVideoRequirement *)self->_disparityInputRequirement videoFormat];
+    videoFormat2 = [(BWInferenceVideoRequirement *)self->_outputRequirement videoFormat];
     if (self->_isPreProcessing)
     {
       v10 = 23;
@@ -122,8 +122,8 @@
       v10 = 25;
     }
 
-    self->_disparityInputDescriptor = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:v10 width:-[BWInferenceVideoFormat width](v8 height:"width") mipmapped:-[BWInferenceVideoFormat height](v8, "height"), 0];
-    v11 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:25 width:-[BWInferenceVideoFormat width](v9 height:"width") mipmapped:-[BWInferenceVideoFormat height](v9, "height"), 0];
+    self->_disparityInputDescriptor = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:v10 width:-[BWInferenceVideoFormat width](videoFormat height:"width") mipmapped:-[BWInferenceVideoFormat height](videoFormat, "height"), 0];
+    v11 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:25 width:-[BWInferenceVideoFormat width](videoFormat2 height:"width") mipmapped:-[BWInferenceVideoFormat height](videoFormat2, "height"), 0];
     result = 0;
     self->_disparityOutputDescriptor = v11;
     if (self->_requiresCroppingOfDepthBuffer)
@@ -143,7 +143,7 @@
   return result;
 }
 
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler
 {
   if (self->_isPreProcessing)
   {
@@ -160,23 +160,23 @@
     kdebug_trace();
   }
 
-  v12 = [a4 pixelBufferForRequirement:self->_disparityInputRequirement];
+  v12 = [storage pixelBufferForRequirement:self->_disparityInputRequirement];
   if (v12)
   {
     v13 = v12;
-    v14 = [objc_msgSend(a4 pixelBufferPoolForRequirement:{self->_outputRequirement), "newPixelBuffer"}];
+    v14 = [objc_msgSend(storage pixelBufferPoolForRequirement:{self->_outputRequirement), "newPixelBuffer"}];
     if (v14)
     {
-      [a4 setPixelBuffer:v14 forRequirement:self->_outputRequirement];
-      v15 = [(BWMetalInferenceContext *)self->_metalInferenceContext commandQueue];
-      v16 = [-[MTLCommandQueue device](v15 "device")];
-      v17 = [-[MTLCommandQueue device](v15 "device")];
-      v18 = [(MTLCommandQueue *)v15 commandBuffer];
-      [a4 setPixelBuffer:v14 forRequirement:self->_outputRequirement];
+      [storage setPixelBuffer:v14 forRequirement:self->_outputRequirement];
+      commandQueue = [(BWMetalInferenceContext *)self->_metalInferenceContext commandQueue];
+      v16 = [-[MTLCommandQueue device](commandQueue "device")];
+      v17 = [-[MTLCommandQueue device](commandQueue "device")];
+      commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+      [storage setPixelBuffer:v14 forRequirement:self->_outputRequirement];
       if (self->_isPreProcessing)
       {
         v19 = [objc_msgSend(CVPixelBufferGetAttributes() objectForKeyedSubscript:{*MEMORY[0x1E69660A8]), "shortValue"}];
-        AttachedMedia = BWSampleBufferGetAttachedMedia(a3, [(BWInferenceMediaRequirement *)self->_disparityInputRequirement attachedMediaKey]);
+        AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, [(BWInferenceMediaRequirement *)self->_disparityInputRequirement attachedMediaKey]);
         v21 = CMGetAttachment(AttachedMedia, *off_1E798A328, 0);
         [objc_msgSend(v21 objectForKeyedSubscript:{*off_1E798ABB8), "floatValue"}];
         v23 = v22;
@@ -184,7 +184,7 @@
         v26 = LODWORD(v24);
         if (self->_requiresCroppingOfDepthBuffer)
         {
-          v45 = a7;
+          handlerCopy = handler;
           v27 = *(MEMORY[0x1E695F050] + 16);
           rect.origin = *MEMORY[0x1E695F050];
           rect.size = v27;
@@ -208,26 +208,26 @@
 
           v53 = v31;
           requiresVerticalFlipOfDepthBuffer = self->_requiresVerticalFlipOfDepthBuffer;
-          v38 = [v18 computeCommandEncoder];
-          [v38 setTexture:v16 atIndex:0];
-          [v38 setTexture:self->_disparitySourceTextureCroppedUpscaledAndMirrored atIndex:1];
-          [v38 setBytes:&v53 length:16 atIndex:0];
-          [v38 setBytes:&requiresVerticalFlipOfDepthBuffer length:1 atIndex:1];
-          [v38 setComputePipelineState:self->_cropPipelineState];
-          v39 = [(MTLComputePipelineState *)self->_cropPipelineState threadExecutionWidth];
-          v40 = [(MTLComputePipelineState *)self->_cropPipelineState maxTotalThreadsPerThreadgroup]/ v39;
-          v41 = [(MTLTexture *)self->_disparitySourceTextureCroppedUpscaledAndMirrored width];
-          v42 = [(MTLTexture *)self->_disparitySourceTextureCroppedUpscaledAndMirrored height];
-          v51[0] = v41;
-          v51[1] = v42;
+          computeCommandEncoder = [commandBuffer computeCommandEncoder];
+          [computeCommandEncoder setTexture:v16 atIndex:0];
+          [computeCommandEncoder setTexture:self->_disparitySourceTextureCroppedUpscaledAndMirrored atIndex:1];
+          [computeCommandEncoder setBytes:&v53 length:16 atIndex:0];
+          [computeCommandEncoder setBytes:&requiresVerticalFlipOfDepthBuffer length:1 atIndex:1];
+          [computeCommandEncoder setComputePipelineState:self->_cropPipelineState];
+          threadExecutionWidth = [(MTLComputePipelineState *)self->_cropPipelineState threadExecutionWidth];
+          v40 = [(MTLComputePipelineState *)self->_cropPipelineState maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+          width = [(MTLTexture *)self->_disparitySourceTextureCroppedUpscaledAndMirrored width];
+          height = [(MTLTexture *)self->_disparitySourceTextureCroppedUpscaledAndMirrored height];
+          v51[0] = width;
+          v51[1] = height;
           v51[2] = 1;
-          v50[0] = v39;
+          v50[0] = threadExecutionWidth;
           v50[1] = v40;
           v50[2] = 1;
-          [v38 dispatchThreads:v51 threadsPerThreadgroup:v50];
-          [v38 endEncoding];
+          [computeCommandEncoder dispatchThreads:v51 threadsPerThreadgroup:v50];
+          [computeCommandEncoder endEncoding];
           disparitySourceTextureCroppedUpscaledAndMirrored = self->_disparitySourceTextureCroppedUpscaledAndMirrored;
-          a7 = v45;
+          handler = handlerCopy;
           v19 = v44;
         }
 
@@ -239,7 +239,7 @@
 
         LODWORD(v24) = v23;
         LODWORD(v25) = v26;
-        if (![(ADPCEDisparityColorPipeline *)self->_stereoPipeline encodeDisparityPreprocessingToCommandBuffer:v18 input:disparitySourceTextureCroppedUpscaledAndMirrored normalizationMultiplier:v19 normalizationOffset:self->_requestedRotation invalidValue:v17 rotation:v24 output:v25])
+        if (![(ADPCEDisparityColorPipeline *)self->_stereoPipeline encodeDisparityPreprocessingToCommandBuffer:commandBuffer input:disparitySourceTextureCroppedUpscaledAndMirrored normalizationMultiplier:v19 normalizationOffset:self->_requestedRotation invalidValue:v17 rotation:v24 output:v25])
         {
           goto LABEL_19;
         }
@@ -249,7 +249,7 @@
 
       else
       {
-        if (![(ADPCEDisparityColorPipeline *)self->_stereoPipeline encodeDisparityPostprocessingToCommandBuffer:v18 input:v16 output:v17])
+        if (![(ADPCEDisparityColorPipeline *)self->_stereoPipeline encodeDisparityPostprocessingToCommandBuffer:commandBuffer input:v16 output:v17])
         {
 LABEL_19:
           v48[0] = MEMORY[0x1E69E9820];
@@ -258,16 +258,16 @@ LABEL_19:
           v48[3] = &unk_1E798FB70;
           v49 = 0;
           v48[4] = self;
-          v48[5] = a7;
-          [v18 addScheduledHandler:v48];
+          v48[5] = handler;
+          [commandBuffer addScheduledHandler:v48];
           v46[0] = MEMORY[0x1E69E9820];
           v46[1] = 3221225472;
           v46[2] = __123__BWDisparityFilteringInferenceProvider_submitForSampleBuffer_usingStorage_withSubmissionTime_workQueue_completionHandler___block_invoke_2;
           v46[3] = &__block_descriptor_36_e28_v16__0___MTLCommandBuffer__8l;
           v47 = v11;
-          [v18 addCompletedHandler:v46];
-          [v18 commit];
-          LODWORD(v18) = 0;
+          [commandBuffer addCompletedHandler:v46];
+          [commandBuffer commit];
+          LODWORD(commandBuffer) = 0;
 LABEL_20:
           CFRelease(v14);
           goto LABEL_21;
@@ -276,7 +276,7 @@ LABEL_20:
         [BWDisparityFilteringInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
       }
 
-      v18 = 4294935586;
+      commandBuffer = 4294935586;
     }
 
     else
@@ -284,7 +284,7 @@ LABEL_20:
       [BWDisparityFilteringInferenceProvider submitForSampleBuffer:usingStorage:withSubmissionTime:workQueue:completionHandler:];
       v17 = 0;
       v16 = 0;
-      v18 = 4294935578;
+      commandBuffer = 4294935578;
     }
   }
 
@@ -294,17 +294,17 @@ LABEL_20:
     v17 = 0;
     v16 = 0;
     v14 = 0;
-    v18 = 4294935584;
+    commandBuffer = 4294935584;
   }
 
-  if (a7)
+  if (handler)
   {
     if (*MEMORY[0x1E695FF58] == 1)
     {
       kdebug_trace();
     }
 
-    (*(a7 + 2))(a7, v18, self);
+    (*(handler + 2))(handler, commandBuffer, self);
   }
 
   if (v14)
@@ -314,7 +314,7 @@ LABEL_20:
 
 LABEL_21:
 
-  return v18;
+  return commandBuffer;
 }
 
 uint64_t __123__BWDisparityFilteringInferenceProvider_submitForSampleBuffer_usingStorage_withSubmissionTime_workQueue_completionHandler___block_invoke(uint64_t a1)
@@ -338,13 +338,13 @@ uint64_t __123__BWDisparityFilteringInferenceProvider_submitForSampleBuffer_usin
   return result;
 }
 
-- (void)setCustomInferenceIdentifier:(id)a3
+- (void)setCustomInferenceIdentifier:(id)identifier
 {
   customInferenceIdentifier = self->_customInferenceIdentifier;
-  if (customInferenceIdentifier != a3)
+  if (customInferenceIdentifier != identifier)
   {
 
-    self->_customInferenceIdentifier = a3;
+    self->_customInferenceIdentifier = identifier;
   }
 }
 
@@ -378,10 +378,10 @@ uint64_t __123__BWDisparityFilteringInferenceProvider_submitForSampleBuffer_usin
   return -[BWInferenceProviderStorage initWithRequirementsNeedingPixelBuffers:requirementsNeedingPixelBufferPools:](v6, "initWithRequirementsNeedingPixelBuffers:requirementsNeedingPixelBufferPools:", [MEMORY[0x1E695DEC8] arrayWithObjects:&disparityInputRequirement count:1], v4);
 }
 
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer
 {
   cf = 0;
-  v8 = [a4 pixelBufferForRequirement:self->_outputRequirement];
+  v8 = [storage pixelBufferForRequirement:self->_outputRequirement];
   if (v8)
   {
     v10 = *MEMORY[0x1E6960C70];
@@ -393,8 +393,8 @@ uint64_t __123__BWDisparityFilteringInferenceProvider_submitForSampleBuffer_usin
 
     else
     {
-      v9 = [(BWInferenceMediaRequirement *)self->_outputRequirement attachedMediaKey];
-      BWSampleBufferSetAttachedMedia(a6, v9, cf);
+      attachedMediaKey = [(BWInferenceMediaRequirement *)self->_outputRequirement attachedMediaKey];
+      BWSampleBufferSetAttachedMedia(sampleBuffer, attachedMediaKey, cf);
     }
   }
 

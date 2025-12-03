@@ -1,20 +1,20 @@
 @interface ATXSettingsAction
-+ (BOOL)isActionEligibleForAnySettingsSuggestions:(id)a3;
-+ (BOOL)isActionEligibleForAnySettingsSuggestionsWithBundleIdentifier:(id)a3 actionIdentifier:(id)a4;
-+ (BOOL)isActionEligibleForSettingsSuggestions:(id)a3;
-+ (BOOL)isActionEligibleForWatchAppSettingsSuggestions:(id)a3;
-- (ATXSettingsAction)initWithCoder:(id)a3;
-- (ATXSettingsAction)initWithProactiveSuggestion:(id)a3;
-- (ATXSettingsAction)initWithProactiveSuggestion:(id)a3 action:(id)a4 date:(id)a5 navigationLink:(id)a6;
++ (BOOL)isActionEligibleForAnySettingsSuggestions:(id)suggestions;
++ (BOOL)isActionEligibleForAnySettingsSuggestionsWithBundleIdentifier:(id)identifier actionIdentifier:(id)actionIdentifier;
++ (BOOL)isActionEligibleForSettingsSuggestions:(id)suggestions;
++ (BOOL)isActionEligibleForWatchAppSettingsSuggestions:(id)suggestions;
+- (ATXSettingsAction)initWithCoder:(id)coder;
+- (ATXSettingsAction)initWithProactiveSuggestion:(id)suggestion;
+- (ATXSettingsAction)initWithProactiveSuggestion:(id)suggestion action:(id)action date:(id)date navigationLink:(id)link;
 - (BOOL)bundleIdentifierIsHiddenForSettingsAction;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXSettingsAction:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXSettingsAction:(id)action;
 - (NSString)associatedBundleId;
 - (NSURL)navigationLink;
 - (id)description;
 - (unint64_t)hash;
 - (void)associatedBundleId;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)navigationLink;
 @end
 
@@ -22,8 +22,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(ATXSettingsAction *)self navigationLink];
-  v3 = [v2 hash];
+  navigationLink = [(ATXSettingsAction *)self navigationLink];
+  v3 = [navigationLink hash];
 
   return v3;
 }
@@ -38,17 +38,17 @@
 
   else
   {
-    v4 = [(LNAction *)self->_linkAction parameters];
-    v5 = [v4 _pas_filteredArrayWithTest:&__block_literal_global_59];
+    parameters = [(LNAction *)self->_linkAction parameters];
+    v5 = [parameters _pas_filteredArrayWithTest:&__block_literal_global_59];
 
-    v6 = [v5 firstObject];
-    v7 = v6;
-    if (v6)
+    firstObject = [v5 firstObject];
+    v7 = firstObject;
+    if (firstObject)
     {
-      v8 = [v6 value];
-      v9 = [v8 value];
+      value = [firstObject value];
+      v8Value = [value value];
       v10 = NSClassFromString(&cfstr_Lnentity.isa);
-      v11 = v9;
+      v11 = v8Value;
       if (v10)
       {
         if (objc_opt_isKindOfClass())
@@ -71,17 +71,17 @@
 
       if (v13)
       {
-        v14 = [v13 properties];
-        v15 = [v14 _pas_filteredArrayWithTest:&__block_literal_global_53_1];
+        properties = [v13 properties];
+        v15 = [properties _pas_filteredArrayWithTest:&__block_literal_global_53_1];
 
-        v16 = [v15 firstObject];
-        v17 = v16;
-        if (v16)
+        firstObject2 = [v15 firstObject];
+        v17 = firstObject2;
+        if (firstObject2)
         {
-          v18 = [v16 value];
-          v19 = [v18 value];
+          value2 = [firstObject2 value];
+          v18Value = [value2 value];
           v20 = NSClassFromString(&cfstr_Nsurl.isa);
-          v21 = v19;
+          v21 = v18Value;
           if (v20)
           {
             if (objc_opt_isKindOfClass())
@@ -159,13 +159,13 @@
   return v3;
 }
 
-- (ATXSettingsAction)initWithProactiveSuggestion:(id)a3
+- (ATXSettingsAction)initWithProactiveSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 executableSpecification];
-  v6 = [v5 executableObject];
+  suggestionCopy = suggestion;
+  executableSpecification = [suggestionCopy executableSpecification];
+  executableObject = [executableSpecification executableObject];
   v7 = NSClassFromString(&cfstr_Atxaction_0.isa);
-  v8 = v6;
+  v8 = executableObject;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -188,9 +188,9 @@
 
   if (v10)
   {
-    v11 = [v10 intent];
+    intent = [v10 intent];
     v12 = NSClassFromString(&cfstr_Inappintent.isa);
-    v13 = v11;
+    v13 = intent;
     if (v12)
     {
       if (objc_opt_isKindOfClass())
@@ -213,40 +213,40 @@
 
     if (v16)
     {
-      v17 = [v16 linkAction];
-      if (v17)
+      linkAction = [v16 linkAction];
+      if (linkAction)
       {
-        self = [(ATXSettingsAction *)self initWithProactiveSuggestion:v4 action:v17 date:0 navigationLink:0];
-        v15 = self;
+        self = [(ATXSettingsAction *)self initWithProactiveSuggestion:suggestionCopy action:linkAction date:0 navigationLink:0];
+        selfCopy = self;
       }
 
       else
       {
-        v15 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v15 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (ATXSettingsAction)initWithProactiveSuggestion:(id)a3 action:(id)a4 date:(id)a5 navigationLink:(id)a6
+- (ATXSettingsAction)initWithProactiveSuggestion:(id)suggestion action:(id)action date:(id)date navigationLink:(id)link
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!(v13 | v15))
+  suggestionCopy = suggestion;
+  actionCopy = action;
+  dateCopy = date;
+  linkCopy = link;
+  if (!(actionCopy | linkCopy))
   {
     [ATXSettingsAction initWithProactiveSuggestion:a2 action:self date:? navigationLink:?];
   }
@@ -257,10 +257,10 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_proactiveSuggestion, a3);
-    objc_storeStrong(&v17->_linkAction, a4);
-    objc_storeStrong(&v17->_date, a5);
-    objc_storeStrong(&v17->_navigationLink, a6);
+    objc_storeStrong(&v16->_proactiveSuggestion, suggestion);
+    objc_storeStrong(&v17->_linkAction, action);
+    objc_storeStrong(&v17->_date, date);
+    objc_storeStrong(&v17->_navigationLink, link);
   }
 
   return v17;
@@ -271,8 +271,8 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [(LNAction *)self->_linkAction description];
   date = self->_date;
-  v6 = [(ATXProactiveSuggestion *)self->_proactiveSuggestion scoreSpecification];
-  [v6 rawScore];
+  scoreSpecification = [(ATXProactiveSuggestion *)self->_proactiveSuggestion scoreSpecification];
+  [scoreSpecification rawScore];
   v8 = [v3 initWithFormat:@"Action: %@; Date: %@; Score: %f", v4, date, v7];
 
   return v8;
@@ -294,87 +294,70 @@ uint64_t __35__ATXSettingsAction_navigationLink__block_invoke_51(uint64_t a1, vo
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSettingsAction *)self isEqualToATXSettingsAction:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXSettingsAction *)self isEqualToATXSettingsAction:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXSettingsAction:(id)a3
+- (BOOL)isEqualToATXSettingsAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ATXSettingsAction *)self navigationLink];
-  v6 = [v4 navigationLink];
+  actionCopy = action;
+  navigationLink = [(ATXSettingsAction *)self navigationLink];
+  navigationLink2 = [actionCopy navigationLink];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(actionCopy) = [navigationLink isEqual:navigationLink2];
+  return actionCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   proactiveSuggestion = self->_proactiveSuggestion;
-  v5 = a3;
-  [v5 encodeObject:proactiveSuggestion forKey:@"proactiveSuggestion"];
-  [v5 encodeObject:self->_linkAction forKey:@"action"];
-  [v5 encodeObject:self->_date forKey:@"date"];
+  coderCopy = coder;
+  [coderCopy encodeObject:proactiveSuggestion forKey:@"proactiveSuggestion"];
+  [coderCopy encodeObject:self->_linkAction forKey:@"action"];
+  [coderCopy encodeObject:self->_date forKey:@"date"];
 }
 
-- (ATXSettingsAction)initWithCoder:(id)a3
+- (ATXSettingsAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proactiveSuggestion"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proactiveSuggestion"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     self = [(ATXSettingsAction *)self initWithProactiveSuggestion:v6 action:v5 date:v7 navigationLink:0];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-+ (BOOL)isActionEligibleForSettingsSuggestions:(id)a3
++ (BOOL)isActionEligibleForSettingsSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [v4 bundleId];
-  if ([v5 isEqualToString:@"com.apple.Preferences"])
+  suggestionsCopy = suggestions;
+  bundleId = [suggestionsCopy bundleId];
+  if ([bundleId isEqualToString:@"com.apple.Preferences"])
   {
-    v6 = [a1 isActionEligibleForAnySettingsSuggestions:v4];
-  }
-
-  else
-  {
-    v6 = 0;
-  }
-
-  return v6;
-}
-
-+ (BOOL)isActionEligibleForWatchAppSettingsSuggestions:(id)a3
-{
-  v4 = a3;
-  v5 = [v4 bundleId];
-  if ([v5 isEqualToString:@"com.apple.Bridge"])
-  {
-    v6 = [a1 isActionEligibleForAnySettingsSuggestions:v4];
+    v6 = [self isActionEligibleForAnySettingsSuggestions:suggestionsCopy];
   }
 
   else
@@ -385,12 +368,29 @@ uint64_t __35__ATXSettingsAction_navigationLink__block_invoke_51(uint64_t a1, vo
   return v6;
 }
 
-+ (BOOL)isActionEligibleForAnySettingsSuggestions:(id)a3
++ (BOOL)isActionEligibleForWatchAppSettingsSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [v4 intent];
+  suggestionsCopy = suggestions;
+  bundleId = [suggestionsCopy bundleId];
+  if ([bundleId isEqualToString:@"com.apple.Bridge"])
+  {
+    v6 = [self isActionEligibleForAnySettingsSuggestions:suggestionsCopy];
+  }
+
+  else
+  {
+    v6 = 0;
+  }
+
+  return v6;
+}
+
++ (BOOL)isActionEligibleForAnySettingsSuggestions:(id)suggestions
+{
+  suggestionsCopy = suggestions;
+  intent = [suggestionsCopy intent];
   v6 = NSClassFromString(&cfstr_Inappintent.isa);
-  v7 = v5;
+  v7 = intent;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -413,9 +413,9 @@ uint64_t __35__ATXSettingsAction_navigationLink__block_invoke_51(uint64_t a1, vo
 
   if (v9)
   {
-    v10 = [v4 bundleId];
-    v11 = [v9 appIntentIdentifier];
-    v12 = [a1 isActionEligibleForAnySettingsSuggestionsWithBundleIdentifier:v10 actionIdentifier:v11];
+    bundleId = [suggestionsCopy bundleId];
+    appIntentIdentifier = [v9 appIntentIdentifier];
+    v12 = [self isActionEligibleForAnySettingsSuggestionsWithBundleIdentifier:bundleId actionIdentifier:appIntentIdentifier];
   }
 
   else
@@ -426,13 +426,13 @@ uint64_t __35__ATXSettingsAction_navigationLink__block_invoke_51(uint64_t a1, vo
   return v12;
 }
 
-+ (BOOL)isActionEligibleForAnySettingsSuggestionsWithBundleIdentifier:(id)a3 actionIdentifier:(id)a4
++ (BOOL)isActionEligibleForAnySettingsSuggestionsWithBundleIdentifier:(id)identifier actionIdentifier:(id)actionIdentifier
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasPrefix:@"com.apple."])
+  identifierCopy = identifier;
+  actionIdentifierCopy = actionIdentifier;
+  if ([identifierCopy hasPrefix:@"com.apple."])
   {
-    v7 = [v6 isEqualToString:@"SettingsNavigationEventDonationIntent"];
+    v7 = [actionIdentifierCopy isEqualToString:@"SettingsNavigationEventDonationIntent"];
   }
 
   else
@@ -440,7 +440,7 @@ uint64_t __35__ATXSettingsAction_navigationLink__block_invoke_51(uint64_t a1, vo
     v7 = 0;
   }
 
-  v8 = [v5 isEqualToString:@"com.apple.DEC.PredictionAnalyzer"];
+  v8 = [identifierCopy isEqualToString:@"com.apple.DEC.PredictionAnalyzer"];
   if ([MEMORY[0x1E69C5CF8] isInternalBuild])
   {
     keyExistsAndHasValidFormat = 0;
@@ -460,14 +460,14 @@ uint64_t __35__ATXSettingsAction_navigationLink__block_invoke_51(uint64_t a1, vo
 - (BOOL)bundleIdentifierIsHiddenForSettingsAction
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [(ATXSettingsAction *)self associatedBundleId];
-  if (v2 && (v3 = objc_opt_new(), v4 = [v3 bundleIdIsHiddenByUserPreference:v2], v3, v4))
+  associatedBundleId = [(ATXSettingsAction *)self associatedBundleId];
+  if (associatedBundleId && (v3 = objc_opt_new(), v4 = [v3 bundleIdIsHiddenByUserPreference:associatedBundleId], v3, v4))
   {
     v5 = __atxlog_handle_settings_actions();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v2;
+      v9 = associatedBundleId;
       _os_log_impl(&dword_1BF549000, v5, OS_LOG_TYPE_DEFAULT, "Bundle identifier is hidden for Settings action: %@", &v8, 0xCu);
     }
 
@@ -484,17 +484,17 @@ uint64_t __35__ATXSettingsAction_navigationLink__block_invoke_51(uint64_t a1, vo
 
 - (NSString)associatedBundleId
 {
-  v2 = [(LNAction *)self->_linkAction parameters];
-  v3 = [v2 _pas_filteredArrayWithTest:&__block_literal_global_81];
+  parameters = [(LNAction *)self->_linkAction parameters];
+  v3 = [parameters _pas_filteredArrayWithTest:&__block_literal_global_81];
 
-  v4 = [v3 firstObject];
-  v5 = v4;
-  if (v4)
+  firstObject = [v3 firstObject];
+  v5 = firstObject;
+  if (firstObject)
   {
-    v6 = [v4 value];
-    v7 = [v6 value];
+    value = [firstObject value];
+    v6Value = [value value];
     v8 = NSClassFromString(&cfstr_Lnentity.isa);
-    v9 = v7;
+    v9 = v6Value;
     if (v8)
     {
       if (objc_opt_isKindOfClass())
@@ -517,17 +517,17 @@ uint64_t __35__ATXSettingsAction_navigationLink__block_invoke_51(uint64_t a1, vo
 
     if (v11)
     {
-      v13 = [v11 properties];
-      v14 = [v13 _pas_filteredArrayWithTest:&__block_literal_global_84];
+      properties = [v11 properties];
+      v14 = [properties _pas_filteredArrayWithTest:&__block_literal_global_84];
 
-      v15 = [v14 firstObject];
-      v16 = v15;
-      if (v15)
+      firstObject2 = [v14 firstObject];
+      v16 = firstObject2;
+      if (firstObject2)
       {
-        v17 = [v15 value];
-        v18 = [v17 value];
+        value2 = [firstObject2 value];
+        v17Value = [value2 value];
         v19 = NSClassFromString(&cfstr_Nsstring.isa);
-        v20 = v18;
+        v20 = v17Value;
         if (v19)
         {
           if (objc_opt_isKindOfClass())
@@ -628,8 +628,8 @@ uint64_t __39__ATXSettingsAction_associatedBundleId__block_invoke_82(uint64_t a1
 
 - (void)navigationLink
 {
-  v1 = [a1 value];
-  v2 = [v1 value];
+  value = [self value];
+  v1Value = [value value];
   v3 = objc_opt_class();
   v4 = OUTLINED_FUNCTION_3_6(v3);
   OUTLINED_FUNCTION_0(&dword_1BF549000, v5, v6, "Settings action does not have a target property containing an entity anymore; actual: %@", v7, v8, v9, v10, v11);
@@ -637,8 +637,8 @@ uint64_t __39__ATXSettingsAction_associatedBundleId__block_invoke_82(uint64_t a1
 
 - (void)associatedBundleId
 {
-  v1 = [a1 value];
-  v2 = [v1 value];
+  value = [self value];
+  v1Value = [value value];
   v3 = objc_opt_class();
   v4 = OUTLINED_FUNCTION_3_6(v3);
   OUTLINED_FUNCTION_0(&dword_1BF549000, v5, v6, "Settings action does not have an associated bundle id containing a string anymore; actual: %@", v7, v8, v9, v10, v11);

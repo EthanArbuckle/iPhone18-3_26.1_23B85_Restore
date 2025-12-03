@@ -2,12 +2,12 @@
 - (NFCCCameraMonitor)init;
 - (NFCCCameraMonitorDelegate)delegate;
 - (unsigned)_service;
-- (void)_capturingCameraTypesDidChange:(int64_t)a3;
+- (void)_capturingCameraTypesDidChange:(int64_t)change;
 - (void)_notifyDelegateIfNeeded;
 - (void)_registerForCameraNotifications;
 - (void)_unregisterForCameraNotifications;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation NFCCCameraMonitor
@@ -51,17 +51,17 @@
   [(NFCCCameraMonitor *)&v5 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1A0C;
   v7[3] = &unk_C320;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -92,11 +92,11 @@
   if (v3)
   {
     IONotificationPortSetDispatchQueue(v3, self->_queue);
-    v4 = [(NFCCCameraMonitor *)self _service];
-    if (v4)
+    _service = [(NFCCCameraMonitor *)self _service];
+    if (_service)
     {
-      v5 = v4;
-      sub_1C2C(self, v4, -536870608);
+      v5 = _service;
+      sub_1C2C(self, _service, -536870608);
       if (IOServiceAddInterestNotification(self->_ioNotificationPort, v5, "IOGeneralInterest", sub_1C2C, self, &self->_notificationObject))
       {
         if (qword_11B18 != -1)
@@ -169,7 +169,7 @@
   return result;
 }
 
-- (void)_capturingCameraTypesDidChange:(int64_t)a3
+- (void)_capturingCameraTypesDidChange:(int64_t)change
 {
   dispatch_assert_queue_V2(self->_queue);
   if (qword_11B18 != -1)
@@ -181,11 +181,11 @@
   if (os_log_type_enabled(qword_11B10, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = a3;
+    HIDWORD(buf) = change;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "Capturing camera types did change: %d", &buf, 8u);
   }
 
-  self->_cameraCapturing = a3 != 0;
+  self->_cameraCapturing = change != 0;
   objc_initWeak(&buf, self);
   v6 = dispatch_time(0, 100000000);
   queue = self->_queue;

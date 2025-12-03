@@ -1,16 +1,16 @@
 @interface PPLocalQuickTypeBroker
 + (id)sharedInstance;
 - (PPLocalQuickTypeBroker)init;
-- (id)_cacheEntryWithRecipients:(uint64_t)a1;
-- (id)_recipientItemCacheKeyForRecipients:(void *)a1;
-- (id)filterFeedback:(id)a3;
-- (void)hibernateWithCompletion:(id)a3;
-- (void)processFeedback:(id)a3;
-- (void)quickTypeItemsWithLanguageModelingTokens:(id)a3 localeIdentifier:(id)a4 recipients:(id)a5 bundleIdentifier:(id)a6 limit:(unint64_t)a7 completion:(id)a8;
-- (void)quickTypeItemsWithQuery:(id)a3 limit:(unint64_t)a4 completion:(id)a5;
-- (void)recentQuickTypeItemsForRecipients:(id)a3 completion:(id)a4;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
-- (void)warmUpWithCompletion:(id)a3;
+- (id)_cacheEntryWithRecipients:(uint64_t)recipients;
+- (id)_recipientItemCacheKeyForRecipients:(void *)recipients;
+- (id)filterFeedback:(id)feedback;
+- (void)hibernateWithCompletion:(id)completion;
+- (void)processFeedback:(id)feedback;
+- (void)quickTypeItemsWithLanguageModelingTokens:(id)tokens localeIdentifier:(id)identifier recipients:(id)recipients bundleIdentifier:(id)bundleIdentifier limit:(unint64_t)limit completion:(id)completion;
+- (void)quickTypeItemsWithQuery:(id)query limit:(unint64_t)limit completion:(id)completion;
+- (void)recentQuickTypeItemsForRecipients:(id)recipients completion:(id)completion;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
+- (void)warmUpWithCompletion:(id)completion;
 @end
 
 @implementation PPLocalQuickTypeBroker
@@ -27,10 +27,10 @@
   return v3;
 }
 
-- (id)filterFeedback:(id)a3
+- (id)filterFeedback:(id)feedback
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  feedbackCopy = feedback;
   context = objc_autoreleasePoolPush();
   v5 = objc_opt_new();
   v6 = objc_opt_new();
@@ -38,8 +38,8 @@
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v7 = [v4 feedbackItems];
-  v8 = [v7 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  feedbackItems = [feedbackCopy feedbackItems];
+  v8 = [feedbackItems countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v8)
   {
     v9 = v8;
@@ -50,14 +50,14 @@
       {
         if (*v35 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(feedbackItems);
         }
 
-        v12 = [*(*(&v34 + 1) + 8 * i) itemString];
-        [v5 addObject:v12];
+        itemString = [*(*(&v34 + 1) + 8 * i) itemString];
+        [v5 addObject:itemString];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v9 = [feedbackItems countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v9);
@@ -73,22 +73,22 @@
   v33 = v14;
   v15 = v5;
   [(_PASLock *)cacheLock runWithLockAcquired:v31];
-  v16 = [v4 feedbackItems];
+  feedbackItems2 = [feedbackCopy feedbackItems];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __41__PPLocalQuickTypeBroker_filterFeedback___block_invoke_3;
   v29[3] = &unk_278974B78;
   v30 = v14;
   v17 = v14;
-  v18 = [v16 _pas_mappedArrayWithTransform:v29];
+  v18 = [feedbackItems2 _pas_mappedArrayWithTransform:v29];
 
   v19 = [PPInternalFeedback alloc];
-  v20 = [v4 timestamp];
-  v21 = [v4 clientIdentifier];
-  v22 = [v4 clientBundleId];
-  v23 = [v4 mappingId];
-  v24 = [v4 build];
-  v25 = [(PPInternalFeedback *)v19 initWithFeedbackItems:v18 timestamp:v20 clientIdentifier:v21 clientBundleId:v22 mappingId:v23 storeType:7 build:v24];
+  timestamp = [feedbackCopy timestamp];
+  clientIdentifier = [feedbackCopy clientIdentifier];
+  clientBundleId = [feedbackCopy clientBundleId];
+  mappingId = [feedbackCopy mappingId];
+  build = [feedbackCopy build];
+  v25 = [(PPInternalFeedback *)v19 initWithFeedbackItems:v18 timestamp:timestamp clientIdentifier:clientIdentifier clientBundleId:clientBundleId mappingId:mappingId storeType:7 build:build];
 
   objc_autoreleasePoolPop(context);
   v26 = *MEMORY[0x277D85DE8];
@@ -186,12 +186,12 @@ LABEL_3:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processFeedback:(id)a3
+- (void)processFeedback:(id)feedback
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 feedbackItems];
-  v5 = [v4 count];
+  feedbackCopy = feedback;
+  feedbackItems = [feedbackCopy feedbackItems];
+  v5 = [feedbackItems count];
 
   if (v5)
   {
@@ -201,8 +201,8 @@ LABEL_3:
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v8 = [v3 feedbackItems];
-    v9 = [v8 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    feedbackItems2 = [feedbackCopy feedbackItems];
+    v9 = [feedbackItems2 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v9)
     {
       v10 = v9;
@@ -213,12 +213,12 @@ LABEL_3:
         {
           if (*v34 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(feedbackItems2);
           }
 
           v13 = *(*(&v33 + 1) + 8 * i);
-          v14 = [v13 itemString];
-          v15 = [v14 length];
+          itemString = [v13 itemString];
+          v15 = [itemString length];
 
           if (v15)
           {
@@ -233,7 +233,7 @@ LABEL_3:
           [v16 addObject:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v10 = [feedbackItems2 countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v10);
@@ -242,27 +242,27 @@ LABEL_3:
     if ([v6 count])
     {
       v17 = objc_alloc(MEMORY[0x277D3A328]);
-      v18 = [v3 timestamp];
-      v19 = [v3 clientIdentifier];
-      v20 = [v3 clientBundleId];
-      v21 = [v3 mappingId];
-      v22 = [v17 initWithFeedbackItems:v6 timestamp:v18 clientIdentifier:v19 clientBundleId:v20 mappingId:v21];
+      timestamp = [feedbackCopy timestamp];
+      clientIdentifier = [feedbackCopy clientIdentifier];
+      clientBundleId = [feedbackCopy clientBundleId];
+      mappingId = [feedbackCopy mappingId];
+      v22 = [v17 initWithFeedbackItems:v6 timestamp:timestamp clientIdentifier:clientIdentifier clientBundleId:clientBundleId mappingId:mappingId];
 
       [PPFeedbackStorage logFeedback:v22 domain:6 domainStatus:2 inBackground:1];
-      v23 = [v22 feedbackItems];
-      v24 = [v3 clientBundleId];
-      v25 = [v3 clientIdentifier];
-      [PPFeedbackUtils recordUserEventsFromFeedback:v3 matchingFeedbackItems:v23 clientBundleId:v24 clientIdentifier:v25 domain:6];
+      feedbackItems3 = [v22 feedbackItems];
+      clientBundleId2 = [feedbackCopy clientBundleId];
+      clientIdentifier2 = [feedbackCopy clientIdentifier];
+      [PPFeedbackUtils recordUserEventsFromFeedback:feedbackCopy matchingFeedbackItems:feedbackItems3 clientBundleId:clientBundleId2 clientIdentifier:clientIdentifier2 domain:6];
     }
 
     if ([v7 count])
     {
       v26 = objc_alloc(MEMORY[0x277D3A328]);
-      v27 = [v3 timestamp];
-      v28 = [v3 clientIdentifier];
-      v29 = [v3 clientBundleId];
-      v30 = [v3 mappingId];
-      v31 = [v26 initWithFeedbackItems:v7 timestamp:v27 clientIdentifier:v28 clientBundleId:v29 mappingId:v30];
+      timestamp2 = [feedbackCopy timestamp];
+      clientIdentifier3 = [feedbackCopy clientIdentifier];
+      clientBundleId3 = [feedbackCopy clientBundleId];
+      mappingId2 = [feedbackCopy mappingId];
+      v31 = [v26 initWithFeedbackItems:v7 timestamp:timestamp2 clientIdentifier:clientIdentifier3 clientBundleId:clientBundleId3 mappingId:mappingId2];
 
       [PPFeedbackStorage logFeedback:v31 domain:6 domainStatus:1 inBackground:1];
     }
@@ -271,59 +271,59 @@ LABEL_3:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  feedbackCopy = feedback;
+  completionCopy = completion;
   v8 = pp_quicktype_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138739971;
-    v20 = v6;
+    v20 = feedbackCopy;
     _os_log_impl(&dword_23224A000, v8, OS_LOG_TYPE_DEFAULT, "QuickType feedback received: %{sensitive}@", &v19, 0xCu);
   }
 
   contactsServant = self->_contactsServant;
   if (objc_opt_respondsToSelector())
   {
-    [(PPQuickTypeContactsServant *)self->_contactsServant registerFeedback:v6];
+    [(PPQuickTypeContactsServant *)self->_contactsServant registerFeedback:feedbackCopy];
   }
 
   eventsServant = self->_eventsServant;
   if (objc_opt_respondsToSelector())
   {
-    [(PPQuickTypeEventsServant *)self->_eventsServant registerFeedback:v6];
+    [(PPQuickTypeEventsServant *)self->_eventsServant registerFeedback:feedbackCopy];
   }
 
   connectionsServant = self->_connectionsServant;
   if (objc_opt_respondsToSelector())
   {
-    [(PPQuickTypeConnectionsServant *)self->_connectionsServant registerFeedback:v6];
+    [(PPQuickTypeConnectionsServant *)self->_connectionsServant registerFeedback:feedbackCopy];
   }
 
   navigationServant = self->_navigationServant;
   if (objc_opt_respondsToSelector())
   {
-    [(PPQuickTypeNavigationServant *)self->_navigationServant registerFeedback:v6];
+    [(PPQuickTypeNavigationServant *)self->_navigationServant registerFeedback:feedbackCopy];
   }
 
   urlServant = self->_urlServant;
   if (objc_opt_respondsToSelector())
   {
-    [(PPQuickTypeURLServant *)self->_urlServant registerFeedback:v6];
+    [(PPQuickTypeURLServant *)self->_urlServant registerFeedback:feedbackCopy];
   }
 
-  v14 = [PPInternalFeedback fromBaseFeedback:v6 storeType:7];
+  v14 = [PPInternalFeedback fromBaseFeedback:feedbackCopy storeType:7];
   v15 = [(PPLocalQuickTypeBroker *)self filterFeedback:v14];
 
   if (v15)
   {
     v16 = objc_opt_new();
     [v16 storePendingFeedback:v15 storeType:7 error:0];
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
@@ -336,18 +336,18 @@ LABEL_3:
       _os_log_impl(&dword_23224A000, v17, OS_LOG_TYPE_DEFAULT, "registerFeedback had no matches after filtering", &v19, 2u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hibernateWithCompletion:(id)a3
+- (void)hibernateWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = pp_quicktype_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -355,15 +355,15 @@ LABEL_3:
     _os_log_impl(&dword_23224A000, v4, OS_LOG_TYPE_INFO, "PPLocalQuickTypeBroker: hibernate", v5, 2u);
   }
 
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)warmUpWithCompletion:(id)a3
+- (void)warmUpWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = pp_quicktype_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -371,18 +371,18 @@ LABEL_3:
     _os_log_impl(&dword_23224A000, v4, OS_LOG_TYPE_INFO, "PPLocalQuickTypeBroker: warmUp", v5, 2u);
   }
 
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)recentQuickTypeItemsForRecipients:(id)a3 completion:(id)a4
+- (void)recentQuickTypeItemsForRecipients:(id)recipients completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (self)
   {
-    v7 = [(PPLocalQuickTypeBroker *)self _cacheEntryWithRecipients:a3];
+    v7 = [(PPLocalQuickTypeBroker *)self _cacheEntryWithRecipients:recipients];
     v8 = v7;
     if (v7)
     {
@@ -394,17 +394,17 @@ LABEL_3:
       v9 = 0;
     }
 
-    v6[2](v6, v9);
+    completionCopy[2](completionCopy, v9);
   }
 
   else
   {
     v9 = 0;
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (id)_cacheEntryWithRecipients:(uint64_t)a1
+- (id)_cacheEntryWithRecipients:(uint64_t)recipients
 {
   v3 = a2;
   v4 = [PPLocalQuickTypeBroker _recipientItemCacheKeyForRecipients:v3];
@@ -417,7 +417,7 @@ LABEL_3:
     v15 = __Block_byref_object_copy__11835;
     v16 = __Block_byref_object_dispose__11836;
     v17 = 0;
-    v6 = *(a1 + 48);
+    v6 = *(recipients + 48);
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __52__PPLocalQuickTypeBroker__cacheEntryWithRecipients___block_invoke;
@@ -438,9 +438,9 @@ LABEL_3:
   return v7;
 }
 
-- (id)_recipientItemCacheKeyForRecipients:(void *)a1
+- (id)_recipientItemCacheKeyForRecipients:(void *)recipients
 {
-  v1 = [a1 sortedArrayUsingSelector:sel_compare_];
+  v1 = [recipients sortedArrayUsingSelector:sel_compare_];
   v2 = [v1 _pas_componentsJoinedByString:@":"];
 
   return v2;
@@ -476,26 +476,26 @@ void __52__PPLocalQuickTypeBroker__cacheEntryWithRecipients___block_invoke(uint6
   *(v7 + 40) = v5;
 }
 
-- (void)quickTypeItemsWithLanguageModelingTokens:(id)a3 localeIdentifier:(id)a4 recipients:(id)a5 bundleIdentifier:(id)a6 limit:(unint64_t)a7 completion:(id)a8
+- (void)quickTypeItemsWithLanguageModelingTokens:(id)tokens localeIdentifier:(id)identifier recipients:(id)recipients bundleIdentifier:(id)bundleIdentifier limit:(unint64_t)limit completion:(id)completion
 {
   v14 = MEMORY[0x277D3A480];
-  v15 = a8;
-  v16 = [v14 quickTypeQueryFromLMTokens:a3 localeIdentifier:a4 recipients:a5 bundleIdentifier:a6];
-  [(PPLocalQuickTypeBroker *)self quickTypeItemsWithQuery:v16 limit:a7 completion:v15];
+  completionCopy = completion;
+  v16 = [v14 quickTypeQueryFromLMTokens:tokens localeIdentifier:identifier recipients:recipients bundleIdentifier:bundleIdentifier];
+  [(PPLocalQuickTypeBroker *)self quickTypeItemsWithQuery:v16 limit:limit completion:completionCopy];
 }
 
-- (void)quickTypeItemsWithQuery:(id)a3 limit:(unint64_t)a4 completion:(id)a5
+- (void)quickTypeItemsWithQuery:(id)query limit:(unint64_t)limit completion:(id)completion
 {
   v114 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  queryCopy = query;
+  completionCopy = completion;
   v10 = pp_quicktype_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    *&buf[4] = a4;
+    *&buf[4] = limit;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = queryCopy;
     _os_log_impl(&dword_23224A000, v10, OS_LOG_TYPE_DEFAULT, "PPQuickTypeBroker quickTypeItemsForQuery limit: %lu query: %@", buf, 0x16u);
   }
 
@@ -512,7 +512,7 @@ void __52__PPLocalQuickTypeBroker__cacheEntryWithRecipients___block_invoke(uint6
   }
 
   v16 = objc_opt_new();
-  v17 = v8;
+  v17 = queryCopy;
   v18 = v17;
   if (!self)
   {
@@ -520,8 +520,8 @@ void __52__PPLocalQuickTypeBroker__cacheEntryWithRecipients___block_invoke(uint6
     goto LABEL_18;
   }
 
-  v19 = [v17 recipients];
-  v20 = [(PPLocalQuickTypeBroker *)self _cacheEntryWithRecipients:v19];
+  recipients = [v17 recipients];
+  v20 = [(PPLocalQuickTypeBroker *)self _cacheEntryWithRecipients:recipients];
 
   if (!v20 || ![v18 isResultEquivelentToQuickTypeQuery:v20[2]])
   {
@@ -530,8 +530,8 @@ void __52__PPLocalQuickTypeBroker__cacheEntryWithRecipients___block_invoke(uint6
 
   v21 = v20;
   v22 = v18;
-  v23 = [v22 type];
-  if (v23 == 2)
+  type = [v22 type];
+  if (type == 2)
   {
     [v21[3] timeIntervalSinceNow];
     v25 = v27;
@@ -548,7 +548,7 @@ LABEL_82:
     goto LABEL_17;
   }
 
-  if (v23 == 4)
+  if (type == 4)
   {
     [v21[3] timeIntervalSinceNow];
     v25 = v24;
@@ -557,7 +557,7 @@ LABEL_82:
     goto LABEL_15;
   }
 
-  if (v23 != 5)
+  if (type != 5)
   {
 
     goto LABEL_82;
@@ -568,9 +568,9 @@ LABEL_16:
 LABEL_17:
 
 LABEL_18:
-  v29 = [v28 mutableCopy];
+  selfCopy = [v28 mutableCopy];
 
-  if (!v29 || ![(PPLocalQuickTypeBroker *)v29 count])
+  if (!selfCopy || ![(PPLocalQuickTypeBroker *)selfCopy count])
   {
     v95 = v12 - 1;
     v96 = v12;
@@ -584,8 +584,8 @@ LABEL_74:
       v15 = v95;
       v12 = v96;
 
-      p_super = &v29->super;
-      v29 = self;
+      p_super = &selfCopy->super;
+      selfCopy = self;
       goto LABEL_75;
     }
 
@@ -597,16 +597,16 @@ LABEL_74:
     v109 = &unk_278974AB0;
     v36 = v32;
     v110 = v36;
-    v113 = a4;
+    limitCopy = limit;
     v111 = v34;
     v92 = v35;
     v37 = v35;
     v112 = v37;
     v98 = _Block_copy(buf);
-    v38 = [v36 type];
-    if (v38 > 2)
+    type2 = [v36 type];
+    if (type2 > 2)
     {
-      switch(v38)
+      switch(type2)
       {
         case 3:
           v58 = pp_quicktype_signpost_handle();
@@ -688,7 +688,7 @@ LABEL_74:
 
     else
     {
-      switch(v38)
+      switch(type2)
       {
         case 0:
           spida = v16;
@@ -789,13 +789,13 @@ LABEL_68:
       [v37 removeObjectsAtIndexes:v78];
     }
 
-    v80 = [v36 recipients];
-    v81 = [PPLocalQuickTypeBroker _recipientItemCacheKeyForRecipients:v80];
+    recipients2 = [v36 recipients];
+    v81 = [PPLocalQuickTypeBroker _recipientItemCacheKeyForRecipients:recipients2];
 
     if (v81)
     {
       v82 = objc_opt_new();
-      objc_storeStrong((v82 + 16), a3);
+      objc_storeStrong((v82 + 16), query);
       objc_storeStrong((v82 + 8), v92);
       v83 = objc_opt_new();
       v84 = *(v82 + 24);
@@ -820,7 +820,7 @@ LABEL_68:
   p_super = pp_quicktype_log_handle();
   if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [(PPLocalQuickTypeBroker *)v29 count];
+    v31 = [(PPLocalQuickTypeBroker *)selfCopy count];
     *buf = 134217984;
     *&buf[4] = v31;
     _os_log_impl(&dword_23224A000, p_super, OS_LOG_TYPE_DEFAULT, "PQT item cache hit with %tu items", buf, 0xCu);
@@ -828,9 +828,9 @@ LABEL_68:
 
 LABEL_75:
 
-  if ([(PPLocalQuickTypeBroker *)v29 count]> a4)
+  if ([(PPLocalQuickTypeBroker *)selfCopy count]> limit)
   {
-    [(PPLocalQuickTypeBroker *)v29 removeObjectsInRange:a4, [(PPLocalQuickTypeBroker *)v29 count]- a4];
+    [(PPLocalQuickTypeBroker *)selfCopy removeObjectsInRange:limit, [(PPLocalQuickTypeBroker *)selfCopy count]- limit];
   }
 
   v87 = pp_quicktype_signpost_handle();
@@ -841,7 +841,7 @@ LABEL_75:
     _os_signpost_emit_with_name_impl(&dword_23224A000, v88, OS_SIGNPOST_INTERVAL_END, v12, "PPLocalQuickTypeBroker.quickTypeItemsWithQuery", "", buf, 2u);
   }
 
-  v9[2](v9, v29, v16);
+  completionCopy[2](completionCopy, selfCopy, v16);
   v89 = *MEMORY[0x277D85DE8];
 }
 

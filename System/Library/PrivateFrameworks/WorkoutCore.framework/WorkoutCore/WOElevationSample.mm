@@ -2,7 +2,7 @@
 - (HKQuantity)value;
 - (NSDate)date;
 - (WOElevationSample)init;
-- (WOElevationSample)initWithDate:(id)a3 value:(id)a4;
+- (WOElevationSample)initWithDate:(id)date value:(id)value;
 @end
 
 @implementation WOElevationSample
@@ -29,7 +29,7 @@
   return v3;
 }
 
-- (WOElevationSample)initWithDate:(id)a3 value:(id)a4
+- (WOElevationSample)initWithDate:(id)date value:(id)value
 {
   v6 = type metadata accessor for Date();
   v7 = *(v6 - 8);
@@ -39,11 +39,11 @@
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = self + OBJC_IVAR___WOElevationSample_bridgedValue;
   (*(v7 + 16))(self + OBJC_IVAR___WOElevationSample_bridgedValue, v10, v6);
-  *&v11[*(type metadata accessor for ElevationSample() + 20)] = a4;
+  *&v11[*(type metadata accessor for ElevationSample() + 20)] = value;
   v12 = type metadata accessor for ElevationSampleBridge();
   v16.receiver = self;
   v16.super_class = v12;
-  v13 = a4;
+  valueCopy = value;
   v14 = [(WOElevationSample *)&v16 init];
   (*(v7 + 8))(v10, v6);
   return v14;

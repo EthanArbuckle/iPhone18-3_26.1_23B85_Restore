@@ -1,7 +1,7 @@
 @interface NTFeedTransformationIncrementalPersonalizedDiversifiedLimit
 - (NTFeedTransformationIncrementalPersonalizedDiversifiedLimit)init;
-- (NTFeedTransformationIncrementalPersonalizedDiversifiedLimit)initWithFunctionProvider:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5;
-- (id)transformFeedItems:(id)a3;
+- (NTFeedTransformationIncrementalPersonalizedDiversifiedLimit)initWithFunctionProvider:(id)provider limit:(unint64_t)limit priorFeedItems:(id)items;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation NTFeedTransformationIncrementalPersonalizedDiversifiedLimit
@@ -32,20 +32,20 @@
   objc_exception_throw(v6);
 }
 
-- (NTFeedTransformationIncrementalPersonalizedDiversifiedLimit)initWithFunctionProvider:(id)a3 limit:(unint64_t)a4 priorFeedItems:(id)a5
+- (NTFeedTransformationIncrementalPersonalizedDiversifiedLimit)initWithFunctionProvider:(id)provider limit:(unint64_t)limit priorFeedItems:(id)items
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  providerCopy = provider;
+  itemsCopy = items;
+  if (!providerCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTFeedTransformationIncrementalPersonalizedDiversifiedLimit initWithFunctionProvider:limit:priorFeedItems:];
-    if (v9)
+    if (itemsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (itemsCopy)
   {
     goto LABEL_6;
   }
@@ -61,38 +61,38 @@ LABEL_6:
   v10 = [(NTFeedTransformationIncrementalPersonalizedDiversifiedLimit *)&v17 init];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [itemsCopy copy];
     priorFeedItems = v10->_priorFeedItems;
     v10->_priorFeedItems = v11;
 
-    v13 = [v9 count];
-    v14 = [MEMORY[0x277D31030] transformationWithFunctionProvider:v8 limit:v13 + a4];
+    v13 = [itemsCopy count];
+    limit = [MEMORY[0x277D31030] transformationWithFunctionProvider:providerCopy limit:v13 + limit];
     privateLimitTransformation = v10->_privateLimitTransformation;
-    v10->_privateLimitTransformation = v14;
+    v10->_privateLimitTransformation = limit;
   }
 
   return v10;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTFeedTransformationIncrementalPersonalizedDiversifiedLimit transformFeedItems:];
   }
 
-  v5 = [(NTFeedTransformationIncrementalPersonalizedDiversifiedLimit *)self priorFeedItems];
-  v6 = [MEMORY[0x277CBEA60] fc_arrayByAddingObjectsFromArray:v4 toArray:v5];
-  v7 = [(NTFeedTransformationIncrementalPersonalizedDiversifiedLimit *)self privateLimitTransformation];
-  v8 = [v7 transformFeedItems:v6];
+  priorFeedItems = [(NTFeedTransformationIncrementalPersonalizedDiversifiedLimit *)self priorFeedItems];
+  v6 = [MEMORY[0x277CBEA60] fc_arrayByAddingObjectsFromArray:itemsCopy toArray:priorFeedItems];
+  privateLimitTransformation = [(NTFeedTransformationIncrementalPersonalizedDiversifiedLimit *)self privateLimitTransformation];
+  v8 = [privateLimitTransformation transformFeedItems:v6];
 
-  if (([v8 fc_containsObjectsAtFront:v5] & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (([v8 fc_containsObjectsAtFront:priorFeedItems] & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTFeedTransformationIncrementalPersonalizedDiversifiedLimit transformFeedItems:];
   }
 
-  v9 = [v8 fc_arrayByRemovingObjectsInArray:v5];
+  v9 = [v8 fc_arrayByRemovingObjectsInArray:priorFeedItems];
 
   return v9;
 }

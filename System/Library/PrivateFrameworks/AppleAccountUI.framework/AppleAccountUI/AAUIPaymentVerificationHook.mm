@@ -1,62 +1,62 @@
 @interface AAUIPaymentVerificationHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_validatePaymentVerificationWithServerAttributes:(id)a3 objectModel:(id)a4 completion:(id)a5;
-- (void)_validatePaymentVerificationWithTokenFetchTask:(id)a3 objectModel:(id)a4 completion:(id)a5;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (void)_validatePaymentVerificationWithServerAttributes:(id)attributes objectModel:(id)model completion:(id)completion;
+- (void)_validatePaymentVerificationWithTokenFetchTask:(id)task objectModel:(id)model completion:(id)completion;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUIPaymentVerificationHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"ams:paymentVerification"];
+  name = [element name];
+  v4 = [name isEqualToString:@"ams:paymentVerification"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKey:*MEMORY[0x1E69C7058]];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKey:*MEMORY[0x1E69C7058]];
   v5 = [v4 isEqualToString:@"ams:paymentVerification"];
 
   return v5;
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 clientInfo];
-  [(AAUIPaymentVerificationHook *)self _validatePaymentVerificationWithServerAttributes:v8 objectModel:v7 completion:v6];
+  completionCopy = completion;
+  modelCopy = model;
+  clientInfo = [modelCopy clientInfo];
+  [(AAUIPaymentVerificationHook *)self _validatePaymentVerificationWithServerAttributes:clientInfo objectModel:modelCopy completion:completionCopy];
 }
 
-- (void)_validatePaymentVerificationWithServerAttributes:(id)a3 objectModel:(id)a4 completion:(id)a5
+- (void)_validatePaymentVerificationWithServerAttributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  attributesCopy = attributes;
+  completionCopy = completion;
+  modelCopy = model;
   v11 = _AAUILogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v8;
+    v13 = attributesCopy;
     _os_log_impl(&dword_1C5355000, v11, OS_LOG_TYPE_DEFAULT, "Payment Verification invoked : %@", &v12, 0xCu);
   }
 
-  [(AAUIPaymentVerificationHook *)self _validatePaymentVerificationWithTokenFetchTask:v8 objectModel:v10 completion:v9];
+  [(AAUIPaymentVerificationHook *)self _validatePaymentVerificationWithTokenFetchTask:attributesCopy objectModel:modelCopy completion:completionCopy];
 }
 
-- (void)_validatePaymentVerificationWithTokenFetchTask:(id)a3 objectModel:(id)a4 completion:(id)a5
+- (void)_validatePaymentVerificationWithTokenFetchTask:(id)task objectModel:(id)model completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  modelCopy = model;
+  completionCopy = completion;
   v11 = _AAUILogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -68,9 +68,9 @@
   block[1] = 3221225472;
   block[2] = __101__AAUIPaymentVerificationHook__validatePaymentVerificationWithTokenFetchTask_objectModel_completion___block_invoke;
   block[3] = &unk_1E820BEB8;
-  v12 = v9;
+  v12 = modelCopy;
   v38 = v12;
-  v13 = v8;
+  v13 = taskCopy;
   v39 = v13;
   dispatch_async(MEMORY[0x1E69E96A0], block);
   v14 = _AAUILogSystem();
@@ -85,18 +85,18 @@
   v16 = [WeakRetained presentationContextForHook:self];
 
   v17 = MEMORY[0x1E698C7D8];
-  v18 = [getAMSUIPaymentVerificationTokenFetchTaskClass() bagSubProfile];
-  v19 = [getAMSUIPaymentVerificationTokenFetchTaskClass() bagSubProfileVersion];
-  v20 = [v17 bagForProfile:v18 profileVersion:v19];
+  bagSubProfile = [getAMSUIPaymentVerificationTokenFetchTaskClass() bagSubProfile];
+  bagSubProfileVersion = [getAMSUIPaymentVerificationTokenFetchTaskClass() bagSubProfileVersion];
+  v20 = [v17 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   v21 = objc_alloc(getAMSUIPaymentVerificationTokenFetchTaskClass());
   v22 = [v13 objectForKeyedSubscript:@"verificationMode"];
-  v23 = [v22 integerValue];
+  integerValue = [v22 integerValue];
   v24 = [v13 objectForKeyedSubscript:@"accountName"];
-  v25 = [v21 initWithMode:v23 accountParameters:v13 viewController:v16 bag:v20 displayName:v24];
+  v25 = [v21 initWithMode:integerValue accountParameters:v13 viewController:v16 bag:v20 displayName:v24];
 
-  v26 = [v25 performTask];
-  if (v26)
+  performTask = [v25 performTask];
+  if (performTask)
   {
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
@@ -105,8 +105,8 @@
     v27 = v32;
     v32[0] = v12;
     v32[1] = self;
-    v33 = v10;
-    [v26 addFinishBlock:v31];
+    v33 = completionCopy;
+    [performTask addFinishBlock:v31];
     v28 = v33;
   }
 
@@ -124,7 +124,7 @@
     v34[3] = &unk_1E820B780;
     v27 = &v35;
     v35 = v12;
-    v36 = v10;
+    v36 = completionCopy;
     v30 = MEMORY[0x1E69E96A0];
     dispatch_async(MEMORY[0x1E69E96A0], v34);
 

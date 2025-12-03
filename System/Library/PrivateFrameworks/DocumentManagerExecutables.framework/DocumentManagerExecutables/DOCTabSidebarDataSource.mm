@@ -1,12 +1,12 @@
 @interface DOCTabSidebarDataSource
 - (DOCPickerContext)pickerContext;
 - (_TtC26DocumentManagerExecutables23DOCTabSidebarDataSource)init;
-- (_TtC26DocumentManagerExecutables23DOCTabSidebarDataSource)initWithConfiguration:(id)a3 sourceObserver:(id)a4 delegate:(id)a5;
+- (_TtC26DocumentManagerExecutables23DOCTabSidebarDataSource)initWithConfiguration:(id)configuration sourceObserver:(id)observer delegate:(id)delegate;
 - (void)dealloc;
-- (void)displayOrderDidChangeFor:(id)a3;
-- (void)fistNewlyAddedSourceWith:(id)a3 completion:(id)a4;
-- (void)setPickerContext:(id)a3;
-- (void)updateSelectionToMatchBrowsedLocation:(id)a3 animated:(BOOL)a4;
+- (void)displayOrderDidChangeFor:(id)for;
+- (void)fistNewlyAddedSourceWith:(id)with completion:(id)completion;
+- (void)setPickerContext:(id)context;
+- (void)updateSelectionToMatchBrowsedLocation:(id)location animated:(BOOL)animated;
 @end
 
 @implementation DOCTabSidebarDataSource
@@ -18,28 +18,28 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setPickerContext:(id)a3
+- (void)setPickerContext:(id)context
 {
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables23DOCTabSidebarDataSource_pickerContext;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = context;
+  contextCopy = context;
 }
 
-- (_TtC26DocumentManagerExecutables23DOCTabSidebarDataSource)initWithConfiguration:(id)a3 sourceObserver:(id)a4 delegate:(id)a5
+- (_TtC26DocumentManagerExecutables23DOCTabSidebarDataSource)initWithConfiguration:(id)configuration sourceObserver:(id)observer delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  observerCopy = observer;
   swift_unknownObjectRetain();
-  return DOCTabSidebarDataSource.init(configuration:sourceObserver:delegate:)(v6, v7);
+  return DOCTabSidebarDataSource.init(configuration:sourceObserver:delegate:)(configurationCopy, observerCopy);
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   DOCTabSidebarDataSource.stopObserving()();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for DOCTabSidebarDataSource();
   [(DOCTabSidebarDataSource *)&v3 dealloc];
 }
@@ -51,14 +51,14 @@
   return result;
 }
 
-- (void)fistNewlyAddedSourceWith:(id)a3 completion:(id)a4
+- (void)fistNewlyAddedSourceWith:(id)with completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = v6;
-  if (a3)
+  if (with)
   {
     v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v9;
+    with = v9;
     if (!v7)
     {
       goto LABEL_5;
@@ -76,27 +76,27 @@ LABEL_3:
   }
 
 LABEL_5:
-  v10 = self;
-  DOCTabSidebarDataSource.fistNewlyAddedSource(with:completion:)(v8, a3, v7);
+  selfCopy = self;
+  DOCTabSidebarDataSource.fistNewlyAddedSource(with:completion:)(v8, with, v7);
   outlined consume of (@escaping @callee_guaranteed () -> (@owned DOCCopyableBarButtonItem))?(v7);
 }
 
-- (void)updateSelectionToMatchBrowsedLocation:(id)a3 animated:(BOOL)a4
+- (void)updateSelectionToMatchBrowsedLocation:(id)location animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  specialized DOCTabSidebarDataSource.updateSelectionToMatchBrowsedLocation(_:animated:)(a3);
+  locationCopy = location;
+  selfCopy = self;
+  specialized DOCTabSidebarDataSource.updateSelectionToMatchBrowsedLocation(_:animated:)(location);
 }
 
-- (void)displayOrderDidChangeFor:(id)a3
+- (void)displayOrderDidChangeFor:(id)for
 {
-  v4 = a3;
-  v10 = self;
-  if (DOCTabSidebarDataSource.sectionManager(for:)(v4))
+  forCopy = for;
+  selfCopy = self;
+  if (DOCTabSidebarDataSource.sectionManager(for:)(forCopy))
   {
     v6 = v5;
     ObjectType = swift_getObjectType();
-    v8 = [v4 children];
+    children = [forCopy children];
     type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for UITab);
     v9 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 

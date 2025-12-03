@@ -1,15 +1,15 @@
 @interface CMDiagramShapeHierarchyMapper
-- (CGRect)boundsForNode:(id)a3;
-- (CGRect)mapLogicalBoundsWithXRanges:(const void *)a3;
-- (CGSize)sizeForNode:(id)a3 atIndex:(unint64_t)a4;
-- (CMDiagramShapeHierarchyMapper)initWithOddDiagram:(id)a3 drawingContext:(id)a4 orientedBounds:(id)a5 identifier:(id)a6 parent:(id)a7;
-- (id)infoForNode:(id)a3;
-- (void)copyInfoForNode:(id)a3 depth:(int)a4;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapLayerNodes:(id)a3 at:(id)a4 scale:(float)a5 offsetX:(float)a6 offsetY:(float)a7 withState:(id)a8;
-- (void)mapNode:(id)a3 at:(id)a4 scale:(float)a5 offsetX:(float)a6 offsetY:(float)a7 withState:(id)a8;
-- (void)mapRangesForNode:(id)a3;
-- (void)setAbsolutePositionOfNode:(id)a3 parentRow:(int)a4 parentXOffset:(float)a5 index:(unint64_t)a6;
+- (CGRect)boundsForNode:(id)node;
+- (CGRect)mapLogicalBoundsWithXRanges:(const void *)ranges;
+- (CGSize)sizeForNode:(id)node atIndex:(unint64_t)index;
+- (CMDiagramShapeHierarchyMapper)initWithOddDiagram:(id)diagram drawingContext:(id)context orientedBounds:(id)bounds identifier:(id)identifier parent:(id)parent;
+- (id)infoForNode:(id)node;
+- (void)copyInfoForNode:(id)node depth:(int)depth;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapLayerNodes:(id)nodes at:(id)at scale:(float)scale offsetX:(float)x offsetY:(float)y withState:(id)state;
+- (void)mapNode:(id)node at:(id)at scale:(float)scale offsetX:(float)x offsetY:(float)y withState:(id)state;
+- (void)mapRangesForNode:(id)node;
+- (void)setAbsolutePositionOfNode:(id)node parentRow:(int)row parentXOffset:(float)offset index:(unint64_t)index;
 - (void)setUpLayers;
 @end
 
@@ -23,16 +23,16 @@
   }
 }
 
-- (CMDiagramShapeHierarchyMapper)initWithOddDiagram:(id)a3 drawingContext:(id)a4 orientedBounds:(id)a5 identifier:(id)a6 parent:(id)a7
+- (CMDiagramShapeHierarchyMapper)initWithOddDiagram:(id)diagram drawingContext:(id)context orientedBounds:(id)bounds identifier:(id)identifier parent:(id)parent
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  diagramCopy = diagram;
+  contextCopy = context;
+  boundsCopy = bounds;
+  identifierCopy = identifier;
+  parentCopy = parent;
   v22.receiver = self;
   v22.super_class = CMDiagramShapeHierarchyMapper;
-  v17 = [(CMDiagramShapeMapper *)&v22 initWithOddDiagram:v12 drawingContext:v13 orientedBounds:v14 identifier:v15 parent:v16];
+  v17 = [(CMDiagramShapeMapper *)&v22 initWithOddDiagram:diagramCopy drawingContext:contextCopy orientedBounds:boundsCopy identifier:identifierCopy parent:parentCopy];
   if (v17)
   {
     v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -49,13 +49,13 @@
   return v17;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v46 = a3;
-  v6 = a4;
-  v7 = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
-  [(CMDiagramShapeHierarchyMapper *)self copyInfoForNode:v7 depth:0xFFFFFFFFLL];
-  v8 = [(CMDiagramShapeHierarchyMapper *)self mapRangesForNode:v7];
+  atCopy = at;
+  stateCopy = state;
+  documentPoint = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
+  [(CMDiagramShapeHierarchyMapper *)self copyInfoForNode:documentPoint depth:0xFFFFFFFFLL];
+  v8 = [(CMDiagramShapeHierarchyMapper *)self mapRangesForNode:documentPoint];
   v9 = v8;
   v11 = *v8;
   v10 = v8[1];
@@ -94,7 +94,7 @@
   v49.size.height = v20;
   v26 = Width / CGRectGetWidth(v49);
   self->super.mDefaultScale = v26;
-  [(CMDiagramShapeHierarchyMapper *)self setAbsolutePositionOfNode:v7 parentRow:4294967294 parentXOffset:0 index:0.0];
+  [(CMDiagramShapeHierarchyMapper *)self setAbsolutePositionOfNode:documentPoint parentRow:4294967294 parentXOffset:0 index:0.0];
   [(CMDiagramShapeMapper *)self setDefaultFonSize];
   v27 = v16;
   v28 = -v27;
@@ -109,12 +109,12 @@
     v30 = v28;
   }
 
-  v31 = [MEMORY[0x277CCA878] transform];
+  transform = [MEMORY[0x277CCA878] transform];
   [(OADOrientedBounds *)self->super.super.super.mOrientedBounds bounds];
   v33 = v32;
   [(OADOrientedBounds *)self->super.super.super.mOrientedBounds bounds];
-  [v31 translateXBy:v33 yBy:?];
-  [(CMDrawingContext *)self->super.super.mDrawingContext addTransform:v31];
+  [transform translateXBy:v33 yBy:?];
+  [(CMDrawingContext *)self->super.super.mDrawingContext addTransform:transform];
   if (self->mIsLayered)
   {
     [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
@@ -125,7 +125,7 @@
     *&v38 = v37;
     *&v37 = v26;
     *&v36 = v35;
-    [(CMDiagramShapeHierarchyMapper *)self mapLayerNodes:v7 at:v46 scale:v6 offsetX:v37 offsetY:v36 withState:v38];
+    [(CMDiagramShapeHierarchyMapper *)self mapLayerNodes:documentPoint at:atCopy scale:stateCopy offsetX:v37 offsetY:v36 withState:v38];
   }
 
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
@@ -138,29 +138,29 @@
   *&v42 = v45;
   *&v45 = v26;
   *&v44 = v43;
-  [(CMDiagramShapeHierarchyMapper *)self mapNode:v7 at:v46 scale:v6 offsetX:v45 offsetY:v44 withState:v42];
-  [(CMDiagramShapeHierarchyMapper *)self mapChildrenAt:v46 withState:v6];
+  [(CMDiagramShapeHierarchyMapper *)self mapNode:documentPoint at:atCopy scale:stateCopy offsetX:v45 offsetY:v44 withState:v42];
+  [(CMDiagramShapeHierarchyMapper *)self mapChildrenAt:atCopy withState:stateCopy];
   [(CMDrawingContext *)self->super.super.mDrawingContext restoreLastTransform];
 }
 
-- (void)mapLayerNodes:(id)a3 at:(id)a4 scale:(float)a5 offsetX:(float)a6 offsetY:(float)a7 withState:(id)a8
+- (void)mapLayerNodes:(id)nodes at:(id)at scale:(float)scale offsetX:(float)x offsetY:(float)y withState:(id)state
 {
-  v25 = a4;
-  v14 = a8;
-  v15 = [a3 children];
-  v16 = [v15 count];
+  atCopy = at;
+  stateCopy = state;
+  children = [nodes children];
+  v16 = [children count];
   if (v16 >= 2)
   {
-    v17 = a6;
+    xCopy = x;
     v18 = 2;
     v19 = 1;
     do
     {
-      v20 = [v15 objectAtIndex:v19];
+      v20 = [children objectAtIndex:v19];
       v21 = [(CMDiagramShapeHierarchyMapper *)self infoForNode:v20];
-      v22 = -[OADOrientedBounds initWithBounds:]([OADOrientedBounds alloc], "initWithBounds:", 0.0, (a7 + (([v21 row] * 0.6) * a5)), v17, (a5 * 0.4));
+      v22 = -[OADOrientedBounds initWithBounds:]([OADOrientedBounds alloc], "initWithBounds:", 0.0, (y + (([v21 row] * 0.6) * scale)), xCopy, (scale * 0.4));
       v23 = [(CMDiagramPointMapper *)[CMDiagramPointRoundedRectMapper alloc] initWithPoint:v20 drawingContext:self->super.super.mDrawingContext orientedBounds:v22 parent:self];
-      [(CMDiagramPointRoundedRectMapper *)v23 mapAt:v25 withState:v14];
+      [(CMDiagramPointRoundedRectMapper *)v23 mapAt:atCopy withState:stateCopy];
 
       v19 = v18;
     }
@@ -169,32 +169,32 @@
   }
 }
 
-- (void)mapNode:(id)a3 at:(id)a4 scale:(float)a5 offsetX:(float)a6 offsetY:(float)a7 withState:(id)a8
+- (void)mapNode:(id)node at:(id)at scale:(float)scale offsetX:(float)x offsetY:(float)y withState:(id)state
 {
-  v79 = a3;
-  v14 = a4;
-  v15 = a8;
-  v16 = [(CMDiagramShapeHierarchyMapper *)self infoForNode:v79];
-  v17 = [v16 treeDepth];
+  nodeCopy = node;
+  atCopy = at;
+  stateCopy = state;
+  v16 = [(CMDiagramShapeHierarchyMapper *)self infoForNode:nodeCopy];
+  treeDepth = [v16 treeDepth];
 
-  if (v17 <= self->super.mMaxMappableTreeDepth)
+  if (treeDepth <= self->super.mMaxMappableTreeDepth)
   {
-    if ((v17 & 0x80000000) == 0)
+    if ((treeDepth & 0x80000000) == 0)
     {
-      [(CMDiagramShapeHierarchyMapper *)self boundsForNode:v79];
+      [(CMDiagramShapeHierarchyMapper *)self boundsForNode:nodeCopy];
       [CMShapeUtils transformRect:"transformRect:scale:offsetX:offsetY:" scale:? offsetX:? offsetY:?];
       v78.origin.x = v18;
       v78.origin.y = v19;
       v78.size.width = v20;
       v78.size.height = v21;
       v77 = [[OADOrientedBounds alloc] initWithBounds:v18, v19, v20, v21];
-      v22 = [(CMDiagramPointMapper *)[CMDiagramPointRoundedRectMapper alloc] initWithPoint:v79 drawingContext:self->super.super.mDrawingContext orientedBounds:v77 parent:self];
-      [(CMDiagramPointRoundedRectMapper *)v22 mapAt:v14 withState:v15];
-      if (v17)
+      v22 = [(CMDiagramPointMapper *)[CMDiagramPointRoundedRectMapper alloc] initWithPoint:nodeCopy drawingContext:self->super.super.mDrawingContext orientedBounds:v77 parent:self];
+      [(CMDiagramPointRoundedRectMapper *)v22 mapAt:atCopy withState:stateCopy];
+      if (treeDepth)
       {
         v76 = v22;
-        v23 = [v79 parent];
-        [(CMDiagramShapeHierarchyMapper *)self boundsForNode:v23];
+        parent = [nodeCopy parent];
+        [(CMDiagramShapeHierarchyMapper *)self boundsForNode:parent];
         [CMShapeUtils transformRect:"transformRect:scale:offsetX:offsetY:" scale:? offsetX:? offsetY:?];
         v25 = v24;
         v27 = v26;
@@ -202,10 +202,10 @@
         v31 = v30;
 
         v32 = objc_alloc_init(OADPath);
-        v33 = [(CMDiagramShapeHierarchyMapper *)self infoForNode:v79];
-        v34 = [v33 connectToVerticalSide];
+        v33 = [(CMDiagramShapeHierarchyMapper *)self infoForNode:nodeCopy];
+        connectToVerticalSide = [v33 connectToVerticalSide];
 
-        if (v34)
+        if (connectToVerticalSide)
         {
           v81.origin.x = v25;
           v81.origin.y = v27;
@@ -297,15 +297,15 @@
         }
 
         v53 = [CMDiagramPointMapper alloc];
-        v54 = [v79 parentTransition];
-        v55 = [(CMDiagramPointMapper *)v53 initWithPoint:v54 drawingContext:self->super.super.mDrawingContext orientedBounds:v77 parent:self];
+        parentTransition = [nodeCopy parentTransition];
+        v55 = [(CMDiagramPointMapper *)v53 initWithPoint:parentTransition drawingContext:self->super.super.mDrawingContext orientedBounds:v77 parent:self];
 
         [(CMDiagramPointMapper *)v55 applyDiagramStyleToShapeProperties];
-        v56 = [(CMDiagramPointMapper *)v55 stroke];
-        v57 = [(CMDiagramPointMapper *)v76 fill];
-        if (v56 && ([(OADStroke *)v56 fill], v58 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v58, (isKindOfClass & 1) == 0))
+        stroke = [(CMDiagramPointMapper *)v55 stroke];
+        fill = [(CMDiagramPointMapper *)v76 fill];
+        if (stroke && ([(OADStroke *)stroke fill], v58 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v58, (isKindOfClass & 1) == 0))
         {
-          v60 = v56;
+          v60 = stroke;
         }
 
         else
@@ -315,7 +315,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [(OADStroke *)v60 setFill:v57];
+            [(OADStroke *)v60 setFill:fill];
           }
 
           else
@@ -323,15 +323,15 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v62 = [v57 stops];
-              v63 = [v62 objectAtIndexedSubscript:0];
+              stops = [fill stops];
+              v63 = [stops objectAtIndexedSubscript:0];
 
               v64 = objc_alloc_init(OADSolidFill);
-              v65 = [v63 color];
-              [(OADSolidFill *)v64 setColor:v65];
+              color = [v63 color];
+              [(OADSolidFill *)v64 setColor:color];
 
               [(OADStroke *)v60 setFill:v64];
-              v57 = v64;
+              fill = v64;
             }
           }
 
@@ -339,32 +339,32 @@
           [(OADStroke *)v60 setWidth:v61, *&MinX];
         }
 
-        [CMShapeRenderer renderDiagramPath:v32 fill:0 stroke:v60 state:v15 drawingContext:self->super.super.mDrawingContext, *&MinX];
+        [CMShapeRenderer renderDiagramPath:v32 fill:0 stroke:v60 state:stateCopy drawingContext:self->super.super.mDrawingContext, *&MinX];
 
         v22 = v76;
       }
     }
 
-    v66 = [v79 children];
-    v67 = [v66 count];
+    children = [nodeCopy children];
+    v67 = [children count];
     if (v67)
     {
       for (i = 0; i != v67; ++i)
       {
-        v69 = [v66 objectAtIndex:i];
-        *&v70 = a5;
-        *&v71 = a6;
-        *&v72 = a7;
-        [(CMDiagramShapeHierarchyMapper *)self mapNode:v69 at:v14 scale:v15 offsetX:v70 offsetY:v71 withState:v72];
+        v69 = [children objectAtIndex:i];
+        *&v70 = scale;
+        *&v71 = x;
+        *&v72 = y;
+        [(CMDiagramShapeHierarchyMapper *)self mapNode:v69 at:atCopy scale:stateCopy offsetX:v70 offsetY:v71 withState:v72];
       }
     }
   }
 }
 
-- (CGSize)sizeForNode:(id)a3 atIndex:(unint64_t)a4
+- (CGSize)sizeForNode:(id)node atIndex:(unint64_t)index
 {
-  v5 = a3;
-  [(CMDiagramShapeHierarchyMapper *)self boundsForNode:v5];
+  nodeCopy = node;
+  [(CMDiagramShapeHierarchyMapper *)self boundsForNode:nodeCopy];
   x = v16.origin.x;
   y = v16.origin.y;
   width = v16.size.width;
@@ -384,18 +384,18 @@
   return result;
 }
 
-- (id)infoForNode:(id)a3
+- (id)infoForNode:(id)node
 {
   mNodeInfoMap = self->mNodeInfoMap;
-  v4 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:a3];
+  v4 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:node];
   v5 = [(NSMutableDictionary *)mNodeInfoMap objectForKey:v4];
 
   return v5;
 }
 
-- (CGRect)boundsForNode:(id)a3
+- (CGRect)boundsForNode:(id)node
 {
-  v3 = [(CMDiagramShapeHierarchyMapper *)self infoForNode:a3];
+  v3 = [(CMDiagramShapeHierarchyMapper *)self infoForNode:node];
   v4 = [v3 row];
   [v3 xRange];
   v6 = TSURectWithCenterAndSize(v5, (v4 * 0.6), 0.800000012);
@@ -414,12 +414,12 @@
   return result;
 }
 
-- (CGRect)mapLogicalBoundsWithXRanges:(const void *)a3
+- (CGRect)mapLogicalBoundsWithXRanges:(const void *)ranges
 {
-  v4 = ODIHRangeVector::boundingRange(a3);
+  v4 = ODIHRangeVector::boundingRange(ranges);
   v6 = (v4 + (v5 * -0.5));
   v7 = v5;
-  v8 = ((((*(a3 + 1) - *a3) >> 3) * 0.6) + -0.2);
+  v8 = ((((*(ranges + 1) - *ranges) >> 3) * 0.6) + -0.2);
   v9 = 0.0;
   result.size.height = v8;
   result.size.width = v7;
@@ -428,25 +428,25 @@
   return result;
 }
 
-- (void)copyInfoForNode:(id)a3 depth:(int)a4
+- (void)copyInfoForNode:(id)node depth:(int)depth
 {
-  v4 = *&a4;
-  v15 = a3;
+  v4 = *&depth;
+  nodeCopy = node;
   v6 = objc_alloc_init(CMDiagramNodeInfo);
   mNodeInfoMap = self->mNodeInfoMap;
-  v8 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v15];
+  v8 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:nodeCopy];
   [(NSMutableDictionary *)mNodeInfoMap setObject:v6 forKey:v8];
 
   [(CMDiagramNodeInfo *)v6 setTreeDepth:v4];
-  v9 = [v15 children];
-  v10 = [v9 count];
+  children = [nodeCopy children];
+  v10 = [children count];
   if (v10)
   {
     v11 = 0;
     v12 = 1;
     do
     {
-      v13 = [v9 objectAtIndex:v11];
+      v13 = [children objectAtIndex:v11];
       [(CMDiagramShapeHierarchyMapper *)self copyInfoForNode:v13 depth:(v4 + 1)];
 
       v11 = v12;
@@ -456,58 +456,58 @@
   }
 }
 
-- (void)setAbsolutePositionOfNode:(id)a3 parentRow:(int)a4 parentXOffset:(float)a5 index:(unint64_t)a6
+- (void)setAbsolutePositionOfNode:(id)node parentRow:(int)row parentXOffset:(float)offset index:(unint64_t)index
 {
-  v24 = a3;
+  nodeCopy = node;
   v9 = [(CMDiagramShapeHierarchyMapper *)self infoForNode:?];
   [v9 xRange];
   v11 = v10;
   v13 = v12;
-  v14 = a4 + [v9 extraRowsBetweenParentAndSelf];
+  v14 = row + [v9 extraRowsBetweenParentAndSelf];
   [v9 setRow:(v14 + 1)];
   [v9 xOffsetRelativeToParent];
-  v16 = v15 + a5;
+  v16 = v15 + offset;
   *&v17 = v11 + v16;
   LODWORD(v18) = v13;
   [v9 setXRange:{v17, v18}];
-  v19 = [v24 children];
-  v20 = [v19 count];
+  children = [nodeCopy children];
+  v20 = [children count];
   if (v20)
   {
     for (i = 0; i != v20; ++i)
     {
-      v22 = [v19 objectAtIndex:i];
+      v22 = [children objectAtIndex:i];
       *&v23 = v16;
       [(CMDiagramShapeHierarchyMapper *)self setAbsolutePositionOfNode:v22 parentRow:(v14 + 1) parentXOffset:i index:v23];
     }
   }
 }
 
-- (void)mapRangesForNode:(id)a3
+- (void)mapRangesForNode:(id)node
 {
-  v4 = a3;
-  v5 = [(CMDiagramShapeHierarchyMapper *)self infoForNode:v4];
-  v6 = [v5 xRanges];
-  if (((v6[1] - *v6) & 0x7FFFFFFF8) != 0)
+  nodeCopy = node;
+  v5 = [(CMDiagramShapeHierarchyMapper *)self infoForNode:nodeCopy];
+  xRanges = [v5 xRanges];
+  if (((xRanges[1] - *xRanges) & 0x7FFFFFFF8) != 0)
   {
     goto LABEL_67;
   }
 
-  v7 = [v4 children];
-  v8 = [v7 count];
+  children = [nodeCopy children];
+  v8 = [children count];
   if (!v8)
   {
     goto LABEL_66;
   }
 
-  v75 = v4;
+  v75 = nodeCopy;
   v10 = 0;
   v11 = 1;
   v12 = 0.0;
   v13 = 1;
   do
   {
-    v14 = [v7 objectAtIndex:v10];
+    v14 = [children objectAtIndex:v10];
     if (![v14 type])
     {
       if (v13)
@@ -534,14 +534,14 @@
   v20 = -v12;
   do
   {
-    v21 = [v7 objectAtIndex:v17];
+    v21 = [children objectAtIndex:v17];
     v22 = [(CMDiagramShapeHierarchyMapper *)self infoForNode:v21];
     if ([v21 type])
     {
       goto LABEL_42;
     }
 
-    [v22 setExtraRowsBetweenParentAndSelf:((v6[1] - *v6) >> 3) - v18];
+    [v22 setExtraRowsBetweenParentAndSelf:((xRanges[1] - *xRanges) >> 3) - v18];
     [v22 setConnectToVerticalSide:1];
     v23 = [(CMDiagramShapeHierarchyMapper *)self mapRangesForNode:v21];
     *&v24 = ODIHRangeVector::boundingRange(v23);
@@ -579,7 +579,7 @@
           LODWORD(v32) = v18;
         }
 
-        v33 = *v6;
+        v33 = *xRanges;
         if (v32 <= 1)
         {
           v32 = 1;
@@ -590,7 +590,7 @@
           v32 = v32;
         }
 
-        v34 = ((v6[1] - *v6) >> 3) - v18;
+        v34 = ((xRanges[1] - *xRanges) >> 3) - v18;
         v35 = (v27 + 4);
         do
         {
@@ -609,7 +609,7 @@
 
       if (v18 < v31)
       {
-        v39 = v6[1];
+        v39 = xRanges[1];
         v40 = 8 * v18;
         v18 = v18;
         do
@@ -617,9 +617,9 @@
           v41 = *(v27 + v40) + (*(v27 + v40 + 4) * 0.5);
           *&v77 = (v41 + 0.0) * 0.5;
           *(&v77 + 1) = v41;
-          if (v39 >= v6[2])
+          if (v39 >= xRanges[2])
           {
-            v39 = std::vector<ODIHRange,ChAllocator<ODIHRange>>::__emplace_back_slow_path<ODIHRange>(v6, &v77);
+            v39 = std::vector<ODIHRange,ChAllocator<ODIHRange>>::__emplace_back_slow_path<ODIHRange>(xRanges, &v77);
           }
 
           else
@@ -628,7 +628,7 @@
             v39 += 8;
           }
 
-          v6[1] = v39;
+          xRanges[1] = v39;
           ++v18;
           v27 = *v23;
           v40 += 8;
@@ -664,15 +664,15 @@ LABEL_41:
     while (v45);
     v47 = 0;
     v48 = 0;
-    v49 = v6[1];
+    v49 = xRanges[1];
     do
     {
       v50 = *(v43 + v47) - (*(v43 + v47 + 4) * 0.5);
       *&v77 = (v50 + 0.0) * 0.5;
       *(&v77 + 1) = 0.0 - v50;
-      if (v49 >= v6[2])
+      if (v49 >= xRanges[2])
       {
-        v49 = std::vector<ODIHRange,ChAllocator<ODIHRange>>::__emplace_back_slow_path<ODIHRange>(v6, &v77);
+        v49 = std::vector<ODIHRange,ChAllocator<ODIHRange>>::__emplace_back_slow_path<ODIHRange>(xRanges, &v77);
       }
 
       else
@@ -681,7 +681,7 @@ LABEL_41:
         v49 += 8;
       }
 
-      v6[1] = v49;
+      xRanges[1] = v49;
       ++v48;
       v43 = *v23;
       v47 += 8;
@@ -703,11 +703,11 @@ LABEL_42:
   v5 = v76;
   do
   {
-    v53 = [v7 objectAtIndex:v51];
+    v53 = [children objectAtIndex:v51];
     v54 = [(CMDiagramShapeHierarchyMapper *)self infoForNode:v53];
     if ([v53 type] == 2)
     {
-      [v54 setExtraRowsBetweenParentAndSelf:(v6[1] - *v6) >> 3];
+      [v54 setExtraRowsBetweenParentAndSelf:(xRanges[1] - *xRanges) >> 3];
       v55 = [(CMDiagramShapeHierarchyMapper *)self mapRangesForNode:v53];
       v56 = ODIHRangeVector::minDistanceTo(&v77, v55);
       v57 = *&v56;
@@ -753,7 +753,7 @@ LABEL_42:
     v67 = 1;
     do
     {
-      v68 = [v7 objectAtIndex:v65];
+      v68 = [children objectAtIndex:v65];
       v69 = [(CMDiagramShapeHierarchyMapper *)self infoForNode:v68];
       if ([v68 type] == 2)
       {
@@ -771,12 +771,12 @@ LABEL_42:
     {
       v71 = 0;
       v72 = 0;
-      v73 = v6[1];
+      v73 = xRanges[1];
       do
       {
-        if (v73 >= v6[2])
+        if (v73 >= xRanges[2])
         {
-          v73 = std::vector<ODIHRange,ChAllocator<ODIHRange>>::__emplace_back_slow_path<ODIHRange const&>(v6, &v62[v71]);
+          v73 = std::vector<ODIHRange,ChAllocator<ODIHRange>>::__emplace_back_slow_path<ODIHRange const&>(xRanges, &v62[v71]);
         }
 
         else
@@ -785,7 +785,7 @@ LABEL_42:
           v73 += 8;
         }
 
-        v6[1] = v73;
+        xRanges[1] = v73;
         ++v72;
         v62 = v77;
         v71 += 2;
@@ -801,15 +801,15 @@ LABEL_42:
     operator delete(v62);
   }
 
-  v4 = v75;
+  nodeCopy = v75;
 LABEL_66:
   v77 = 0x3F80000000000000;
   LODWORD(v9) = 1.0;
   [v5 setXRange:{0.0, v9}];
-  std::vector<ODIHRange,ChAllocator<ODIHRange>>::insert(v6, *v6, &v77);
+  std::vector<ODIHRange,ChAllocator<ODIHRange>>::insert(xRanges, *xRanges, &v77);
 
 LABEL_67:
-  return v6;
+  return xRanges;
 }
 
 @end

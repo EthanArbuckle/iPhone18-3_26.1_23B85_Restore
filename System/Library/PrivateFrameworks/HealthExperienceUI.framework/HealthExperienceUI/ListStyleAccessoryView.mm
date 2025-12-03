@@ -1,10 +1,10 @@
 @interface ListStyleAccessoryView
-- (_TtC18HealthExperienceUI22ListStyleAccessoryView)initWithCoder:(id)a3;
+- (_TtC18HealthExperienceUI22ListStyleAccessoryView)initWithCoder:(id)coder;
 @end
 
 @implementation ListStyleAccessoryView
 
-- (_TtC18HealthExperienceUI22ListStyleAccessoryView)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI22ListStyleAccessoryView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI22ListStyleAccessoryView_baseIdentifier);
   *v3 = 0;

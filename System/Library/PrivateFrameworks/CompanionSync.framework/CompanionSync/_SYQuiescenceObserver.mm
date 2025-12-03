@@ -1,35 +1,35 @@
 @interface _SYQuiescenceObserver
-- (BOOL)waitForDeallocationCompleteWithTimeout:(double)a3;
-- (BOOL)waitForQuiescenceWithTimeout:(double)a3;
-- (void)decrementAllocationCount:(id)a3;
-- (void)incrementAllocationCount:(id)a3;
-- (void)notifyOnDeallocationComplete:(id)a3;
-- (void)notifyOnQuiescence:(id)a3;
-- (void)registerQueue:(id)a3;
+- (BOOL)waitForDeallocationCompleteWithTimeout:(double)timeout;
+- (BOOL)waitForQuiescenceWithTimeout:(double)timeout;
+- (void)decrementAllocationCount:(id)count;
+- (void)incrementAllocationCount:(id)count;
+- (void)notifyOnDeallocationComplete:(id)complete;
+- (void)notifyOnQuiescence:(id)quiescence;
+- (void)registerQueue:(id)queue;
 @end
 
 @implementation _SYQuiescenceObserver
 
-- (void)registerQueue:(id)a3
+- (void)registerQueue:(id)queue
 {
-  v4 = a3;
-  if (v4)
+  queueCopy = queue;
+  if (queueCopy)
   {
-    v6 = v4;
+    v6 = queueCopy;
     v5 = self->_quiescenceQueues;
     objc_sync_enter(v5);
     [(NSPointerArray *)self->_quiescenceQueues addPointer:v6];
     objc_sync_exit(v5);
 
-    v4 = v6;
+    queueCopy = v6;
   }
 }
 
-- (BOOL)waitForQuiescenceWithTimeout:(double)a3
+- (BOOL)waitForQuiescenceWithTimeout:(double)timeout
 {
-  if (a3 >= 0.0)
+  if (timeout >= 0.0)
   {
-    v5 = dispatch_time(0, (a3 * 1000000000.0));
+    v5 = dispatch_time(0, (timeout * 1000000000.0));
   }
 
   else
@@ -38,25 +38,25 @@
   }
 
   v6 = _EnqueueOnNewGroup(self->_quiescenceQueues);
-  v7 = _dispatch_group_wait_off_main_thread(v6, v5, a3) == 0;
+  v7 = _dispatch_group_wait_off_main_thread(v6, v5, timeout) == 0;
 
   return v7;
 }
 
-- (void)notifyOnQuiescence:(id)a3
+- (void)notifyOnQuiescence:(id)quiescence
 {
   quiescenceQueues = self->_quiescenceQueues;
-  v4 = a3;
+  quiescenceCopy = quiescence;
   group = _EnqueueOnNewGroup(quiescenceQueues);
   v5 = dispatch_get_global_queue(21, 0);
-  dispatch_group_notify(group, v5, v4);
+  dispatch_group_notify(group, v5, quiescenceCopy);
 }
 
-- (void)incrementAllocationCount:(id)a3
+- (void)incrementAllocationCount:(id)count
 {
-  v7 = a3;
+  countCopy = count;
   v5 = objc_opt_new();
-  [v5 setObject:v7];
+  [v5 setObject:countCopy];
   [v5 setReturnAddress:v3];
   v6 = self->_allocations;
   objc_sync_enter(v6);
@@ -66,9 +66,9 @@
   dispatch_group_enter(self->_allocationGroup);
 }
 
-- (void)decrementAllocationCount:(id)a3
+- (void)decrementAllocationCount:(id)count
 {
-  v5 = a3;
+  countCopy = count;
   v4 = self->_allocations;
   objc_sync_enter(v4);
   _CleanupAllocations(self->_allocations);
@@ -77,11 +77,11 @@
   dispatch_group_leave(self->_allocationGroup);
 }
 
-- (BOOL)waitForDeallocationCompleteWithTimeout:(double)a3
+- (BOOL)waitForDeallocationCompleteWithTimeout:(double)timeout
 {
-  if (a3 >= 0.0)
+  if (timeout >= 0.0)
   {
-    v5 = dispatch_time(0, (a3 * 1000000000.0));
+    v5 = dispatch_time(0, (timeout * 1000000000.0));
   }
 
   else
@@ -89,7 +89,7 @@
     v5 = -1;
   }
 
-  v6 = _dispatch_group_wait_off_main_thread(self->_allocationGroup, v5, a3);
+  v6 = _dispatch_group_wait_off_main_thread(self->_allocationGroup, v5, timeout);
   v7 = self->_allocations;
   objc_sync_enter(v7);
   _CleanupAllocations(self->_allocations);
@@ -103,9 +103,9 @@
   return v6 == 0;
 }
 
-- (void)notifyOnDeallocationComplete:(id)a3
+- (void)notifyOnDeallocationComplete:(id)complete
 {
-  v4 = [a3 copy];
+  v4 = [complete copy];
   allocationGroup = self->_allocationGroup;
   v6 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x1E69E9820];

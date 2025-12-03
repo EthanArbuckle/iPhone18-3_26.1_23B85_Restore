@@ -1,23 +1,23 @@
 @interface ICStoreRadioStreamAssetInfo
 - (BOOL)isiTunesStoreStream;
-- (ICStoreRadioStreamAssetInfo)initWithItemResponseDictionary:(id)a3;
+- (ICStoreRadioStreamAssetInfo)initWithItemResponseDictionary:(id)dictionary;
 - (NSURL)keyCertificateURL;
 - (NSURL)keyServerURL;
 - (NSURL)streamURL;
-- (int64_t)ICStoreRadioStreamFlavorWithString:(id)a3;
-- (int64_t)ICStoreRadioStreamProtocolWithString:(id)a3;
+- (int64_t)ICStoreRadioStreamFlavorWithString:(id)string;
+- (int64_t)ICStoreRadioStreamProtocolWithString:(id)string;
 - (int64_t)flavor;
 - (int64_t)streamProtocol;
 @end
 
 @implementation ICStoreRadioStreamAssetInfo
 
-- (int64_t)ICStoreRadioStreamProtocolWithString:(id)a3
+- (int64_t)ICStoreRadioStreamProtocolWithString:(id)string
 {
-  v3 = a3;
-  if ([v3 caseInsensitiveCompare:@"HLS"])
+  stringCopy = string;
+  if ([stringCopy caseInsensitiveCompare:@"HLS"])
   {
-    v4 = 2 * ([v3 caseInsensitiveCompare:@"SHOUTCAST"] == 0);
+    v4 = 2 * ([stringCopy caseInsensitiveCompare:@"SHOUTCAST"] == 0);
   }
 
   else
@@ -28,12 +28,12 @@
   return v4;
 }
 
-- (int64_t)ICStoreRadioStreamFlavorWithString:(id)a3
+- (int64_t)ICStoreRadioStreamFlavorWithString:(id)string
 {
-  v3 = a3;
-  if ([v3 caseInsensitiveCompare:@"LWHQ"])
+  stringCopy = string;
+  if ([stringCopy caseInsensitiveCompare:@"LWHQ"])
   {
-    v4 = [v3 caseInsensitiveCompare:@"SLW"] == 0;
+    v4 = [stringCopy caseInsensitiveCompare:@"SLW"] == 0;
   }
 
   else
@@ -49,15 +49,15 @@
   v2 = [(NSDictionary *)self->_itemResponseDictionary objectForKey:@"is-itunes-stream"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSURL)keyServerURL
@@ -140,15 +140,15 @@
   return v4;
 }
 
-- (ICStoreRadioStreamAssetInfo)initWithItemResponseDictionary:(id)a3
+- (ICStoreRadioStreamAssetInfo)initWithItemResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICStoreRadioStreamAssetInfo;
   v5 = [(ICStoreRadioStreamAssetInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     itemResponseDictionary = v5->_itemResponseDictionary;
     v5->_itemResponseDictionary = v6;
   }

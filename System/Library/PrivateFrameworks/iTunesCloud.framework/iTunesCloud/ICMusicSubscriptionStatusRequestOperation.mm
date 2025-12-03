@@ -1,8 +1,8 @@
 @interface ICMusicSubscriptionStatusRequestOperation
-- (BOOL)_carrierBundleStatusIsValidForCachedSubscriptionStatus:(id)a3;
-- (ICMusicSubscriptionStatusRequestOperation)initWithRequest:(id)a3;
-- (void)_cacheAccountEligibilityWithStatus:(id)a3 requestContext:(id)a4;
-- (void)_performSubscriptionStatusURLRequestWithRequestContext:(id)a3 subscriptionStatusURL:(id)a4 allowsAuthentication:(BOOL)a5 completion:(id)a6;
+- (BOOL)_carrierBundleStatusIsValidForCachedSubscriptionStatus:(id)status;
+- (ICMusicSubscriptionStatusRequestOperation)initWithRequest:(id)request;
+- (void)_cacheAccountEligibilityWithStatus:(id)status requestContext:(id)context;
+- (void)_performSubscriptionStatusURLRequestWithRequestContext:(id)context subscriptionStatusURL:(id)l allowsAuthentication:(BOOL)authentication completion:(id)completion;
 - (void)execute;
 @end
 
@@ -14,13 +14,13 @@
   v3 = self->_request;
   v4 = MEMORY[0x1B8C781E0](self->_responseHandler);
   shouldRequestLightweightStatus = self->_shouldRequestLightweightStatus;
-  v6 = [(ICMusicSubscriptionStatusRequest *)v3 shouldIgnoreCache];
+  shouldIgnoreCache = [(ICMusicSubscriptionStatusRequest *)v3 shouldIgnoreCache];
   if (self->_allowsFuseHeaderEnrichment && !shouldRequestLightweightStatus)
   {
     v8 = +[ICDeviceInfo currentDeviceInfo];
-    v9 = [v8 isPhoneNumberAccessRestricted];
+    isPhoneNumberAccessRestricted = [v8 isPhoneNumberAccessRestricted];
 
-    if (!v9)
+    if (!isPhoneNumberAccessRestricted)
     {
       v11 = 1;
       goto LABEL_11;
@@ -30,14 +30,14 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v40 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Loading carrier bundling status is not allowed because phone number access is restricted.", buf, 0xCu);
     }
   }
 
   v11 = 0;
 LABEL_11:
-  v12 = !v6;
+  v12 = !shouldIgnoreCache;
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __52__ICMusicSubscriptionStatusRequestOperation_execute__block_invoke;
@@ -45,14 +45,14 @@ LABEL_11:
   v13 = v4;
   v38 = v13;
   v14 = MEMORY[0x1B8C781E0](v37);
-  v15 = [(ICMusicSubscriptionStatusRequest *)v3 storeRequestContext];
+  storeRequestContext = [(ICMusicSubscriptionStatusRequest *)v3 storeRequestContext];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __52__ICMusicSubscriptionStatusRequestOperation_execute__block_invoke_2;
   v35[3] = &unk_1E7BF91F0;
   v16 = v3;
   v36 = v16;
-  v17 = [v15 copyWithBlock:v35];
+  v17 = [storeRequestContext copyWithBlock:v35];
 
   v18 = +[ICMusicSubscriptionStatusCache sharedCache];
   v24[0] = MEMORY[0x1E69E9820];
@@ -60,7 +60,7 @@ LABEL_11:
   v24[2] = __52__ICMusicSubscriptionStatusRequestOperation_execute__block_invoke_3;
   v24[3] = &unk_1E7BF4C90;
   v25 = v16;
-  v26 = self;
+  selfCopy2 = self;
   v27 = v17;
   v28 = v14;
   v31 = v12;
@@ -215,19 +215,19 @@ void __52__ICMusicSubscriptionStatusRequestOperation_execute__block_invoke(uint6
   }
 }
 
-- (BOOL)_carrierBundleStatusIsValidForCachedSubscriptionStatus:(id)a3
+- (BOOL)_carrierBundleStatusIsValidForCachedSubscriptionStatus:(id)status
 {
-  v5 = a3;
+  statusCopy = status;
   v6 = +[ICDeviceInfo currentDeviceInfo];
-  v7 = [v6 isPhoneNumberAccessRestricted];
+  isPhoneNumberAccessRestricted = [v6 isPhoneNumberAccessRestricted];
 
-  if (v7)
+  if (isPhoneNumberAccessRestricted)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"ICMusicSubscriptionStatusRequestOperation.m" lineNumber:417 description:@"Phone number access is restricted."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicSubscriptionStatusRequestOperation.m" lineNumber:417 description:@"Phone number access is restricted."];
   }
 
-  if (([v5 carrierBundlingStatusType] - 1) > 2)
+  if (([statusCopy carrierBundlingStatusType] - 1) > 2)
   {
     v11 = 0;
   }
@@ -235,54 +235,54 @@ void __52__ICMusicSubscriptionStatusRequestOperation_execute__block_invoke(uint6
   else
   {
     v8 = +[ICTelephonyController sharedController];
-    v9 = [v8 phoneNumber];
+    phoneNumber = [v8 phoneNumber];
 
-    v10 = [v5 phoneNumber];
-    if (v9 == v10)
+    phoneNumber2 = [statusCopy phoneNumber];
+    if (phoneNumber == phoneNumber2)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = [v9 isEqualToString:v10];
+      v11 = [phoneNumber isEqualToString:phoneNumber2];
     }
   }
 
   return v11;
 }
 
-- (void)_cacheAccountEligibilityWithStatus:(id)a3 requestContext:(id)a4
+- (void)_cacheAccountEligibilityWithStatus:(id)status requestContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 identityStore];
-  v8 = [v5 identity];
+  contextCopy = context;
+  statusCopy = status;
+  identityStore = [contextCopy identityStore];
+  identity = [contextCopy identity];
   v17 = 0;
-  v9 = [v7 getPropertiesForUserIdentity:v8 error:&v17];
+  v9 = [identityStore getPropertiesForUserIdentity:identity error:&v17];
   v10 = v17;
 
-  v11 = [v6 statusType];
-  v12 = v11 == 1;
+  statusType = [statusCopy statusType];
+  v12 = statusType == 1;
   if (v10 || v12 != [v9 isSubscriptionStatusEnabled])
   {
     v13 = +[ICUserIdentityStore defaultIdentityStore];
-    v14 = [v5 identity];
+    identity2 = [contextCopy identity];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __95__ICMusicSubscriptionStatusRequestOperation__cacheAccountEligibilityWithStatus_requestContext___block_invoke;
     v15[3] = &__block_descriptor_33_e41_v16__0__ICMutableUserIdentityProperties_8l;
     v16 = v12;
-    [v13 updatePropertiesForUserIdentity:v14 usingBlock:v15];
+    [v13 updatePropertiesForUserIdentity:identity2 usingBlock:v15];
   }
 }
 
-- (void)_performSubscriptionStatusURLRequestWithRequestContext:(id)a3 subscriptionStatusURL:(id)a4 allowsAuthentication:(BOOL)a5 completion:(id)a6
+- (void)_performSubscriptionStatusURLRequestWithRequestContext:(id)context subscriptionStatusURL:(id)l allowsAuthentication:(BOOL)authentication completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [[ICStoreURLRequest alloc] initWithURL:v11 requestContext:v10];
+  contextCopy = context;
+  lCopy = l;
+  completionCopy = completion;
+  v13 = [[ICStoreURLRequest alloc] initWithURL:lCopy requestContext:contextCopy];
   [(ICURLRequest *)v13 setMaxRetryCount:0];
   v14 = +[ICURLSessionManager defaultSession];
   v18[0] = MEMORY[0x1E69E9820];
@@ -290,13 +290,13 @@ void __52__ICMusicSubscriptionStatusRequestOperation_execute__block_invoke(uint6
   v18[2] = __154__ICMusicSubscriptionStatusRequestOperation__performSubscriptionStatusURLRequestWithRequestContext_subscriptionStatusURL_allowsAuthentication_completion___block_invoke;
   v18[3] = &unk_1E7BF4CB8;
   v18[4] = self;
-  v19 = v10;
-  v22 = a5;
-  v20 = v11;
-  v21 = v12;
-  v15 = v11;
-  v16 = v12;
-  v17 = v10;
+  v19 = contextCopy;
+  authenticationCopy = authentication;
+  v20 = lCopy;
+  v21 = completionCopy;
+  v15 = lCopy;
+  v16 = completionCopy;
+  v17 = contextCopy;
   [v14 enqueueDataRequest:v13 withCompletionHandler:v18];
 }
 
@@ -982,15 +982,15 @@ LABEL_31:
   [*(a1 + 56) finishWithError:*(a1 + 64)];
 }
 
-- (ICMusicSubscriptionStatusRequestOperation)initWithRequest:(id)a3
+- (ICMusicSubscriptionStatusRequestOperation)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = ICMusicSubscriptionStatusRequestOperation;
   v5 = [(ICAsyncOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [requestCopy copy];
     request = v5->_request;
     v5->_request = v6;
   }

@@ -1,10 +1,10 @@
 @interface SFReaderThemePickerControl
-- (_TtC12MobileSafari26SFReaderThemePickerControl)initWithCoder:(id)a3;
+- (_TtC12MobileSafari26SFReaderThemePickerControl)initWithCoder:(id)coder;
 @end
 
 @implementation SFReaderThemePickerControl
 
-- (_TtC12MobileSafari26SFReaderThemePickerControl)initWithCoder:(id)a3
+- (_TtC12MobileSafari26SFReaderThemePickerControl)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12MobileSafari26SFReaderThemePickerControl__clientIsChangingSelection) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12MobileSafari26SFReaderThemePickerControl___selectedTheme) = 0;

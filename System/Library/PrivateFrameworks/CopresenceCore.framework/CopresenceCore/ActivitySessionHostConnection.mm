@@ -1,66 +1,66 @@
 @interface ActivitySessionHostConnection
-- (void)addAnalyticsReport:(id)a3;
+- (void)addAnalyticsReport:(id)report;
 - (void)end;
-- (void)joinWithAudioSessionID:(id)a3 completion:(id)a4;
-- (void)leaveWithCompletion:(id)a3;
-- (void)logAttachmentEventWithReport:(id)a3 reportEvent:(id)a4;
-- (void)postEventWithEvent:(id)a3;
-- (void)presentSessionDismissalAlertWithAllowingCancellation:(BOOL)a3 completion:(id)a4;
-- (void)requestEncryptionKeysFor:(id)a3;
-- (void)requestEndpointWith:(id)a3 completion:(id)a4;
+- (void)joinWithAudioSessionID:(id)d completion:(id)completion;
+- (void)leaveWithCompletion:(id)completion;
+- (void)logAttachmentEventWithReport:(id)report reportEvent:(id)event;
+- (void)postEventWithEvent:(id)event;
+- (void)presentSessionDismissalAlertWithAllowingCancellation:(BOOL)cancellation completion:(id)completion;
+- (void)requestEncryptionKeysFor:(id)for;
+- (void)requestEndpointWith:(id)with completion:(id)completion;
 - (void)requestForegroundPresentation;
-- (void)requestParticipantTranslationsFor:(id)a3 completion:(id)a4;
-- (void)sendResourceAtURL:(id)a3 to:(id)a4 metadata:(id)a5 completion:(id)a6;
-- (void)updateActivityWithActivity:(id)a3;
-- (void)updateCapabilitiesWithCapabilities:(int64_t)a3;
+- (void)requestParticipantTranslationsFor:(id)for completion:(id)completion;
+- (void)sendResourceAtURL:(id)l to:(id)to metadata:(id)metadata completion:(id)completion;
+- (void)updateActivityWithActivity:(id)activity;
+- (void)updateCapabilitiesWithCapabilities:(int64_t)capabilities;
 @end
 
 @implementation ActivitySessionHostConnection
 
-- (void)joinWithAudioSessionID:(id)a3 completion:(id)a4
+- (void)joinWithAudioSessionID:(id)d completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  ActivitySessionHostConnection.join(audioSessionID:completion:)(a3, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned PresenceSessionConnectionInfo?, @unowned NSError?) -> (), v7);
+  dCopy = d;
+  selfCopy = self;
+  ActivitySessionHostConnection.join(audioSessionID:completion:)(d, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned PresenceSessionConnectionInfo?, @unowned NSError?) -> (), v7);
 }
 
-- (void)leaveWithCompletion:(id)a3
+- (void)leaveWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   ActivitySessionHostConnection.leave(completion:)(thunk for @escaping @callee_unowned @convention(block) (@unowned NSError?) -> ()partial apply, v5);
 }
 
 - (void)end
 {
-  v2 = self;
+  selfCopy = self;
   ActivitySessionHostConnection.end()();
 }
 
-- (void)postEventWithEvent:(id)a3
+- (void)postEventWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  ActivitySessionHostConnection.postEvent(event:)(v4);
+  eventCopy = event;
+  selfCopy = self;
+  ActivitySessionHostConnection.postEvent(event:)(eventCopy);
 }
 
-- (void)logAttachmentEventWithReport:(id)a3 reportEvent:(id)a4
+- (void)logAttachmentEventWithReport:(id)report reportEvent:(id)event
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  ActivitySessionHostConnection.logAttachmentEvent(report:reportEvent:)(v9, v6, v8);
+  reportCopy = report;
+  selfCopy = self;
+  ActivitySessionHostConnection.logAttachmentEvent(report:reportEvent:)(reportCopy, v6, v8);
 }
 
-- (void)requestEncryptionKeysFor:(id)a3
+- (void)requestEncryptionKeysFor:(id)for
 {
-  if (a3)
+  if (for)
   {
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -70,83 +70,83 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v7.value._rawValue = v4;
   ActivitySessionHostConnection.requestEncryptionKeys(for:)(v7);
 }
 
-- (void)requestParticipantTranslationsFor:(id)a3 completion:(id)a4
+- (void)requestParticipantTranslationsFor:(id)for completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   type metadata accessor for ParticipantTranslationRequest();
   _s8Dispatch0A13WorkItemFlagsVACs10SetAlgebraAAWlTm_6(&lazy protocol witness table cache variable for type ParticipantTranslationRequest and conformance NSObject, type metadata accessor for ParticipantTranslationRequest);
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = swift_allocObject();
   *(v7 + 16) = v5;
-  v8 = self;
+  selfCopy = self;
   ActivitySessionHostConnection.requestParticipantTranslations(for:completion:)(v6, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned NSSet) -> (), v7);
 }
 
-- (void)updateActivityWithActivity:(id)a3
+- (void)updateActivityWithActivity:(id)activity
 {
-  v4 = a3;
-  v5 = self;
-  ActivitySessionHostConnection.updateActivity(activity:)(v4);
+  activityCopy = activity;
+  selfCopy = self;
+  ActivitySessionHostConnection.updateActivity(activity:)(activityCopy);
 }
 
-- (void)presentSessionDismissalAlertWithAllowingCancellation:(BOOL)a3 completion:(id)a4
+- (void)presentSessionDismissalAlertWithAllowingCancellation:(BOOL)cancellation completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = self;
-  ActivitySessionHostConnection.presentSessionDismissalAlert(allowingCancellation:completion:)(a3, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned ObjCBool) -> (), v7);
+  selfCopy = self;
+  ActivitySessionHostConnection.presentSessionDismissalAlert(allowingCancellation:completion:)(cancellation, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned ObjCBool) -> (), v7);
 }
 
 - (void)requestForegroundPresentation
 {
-  v2 = self;
+  selfCopy = self;
   ActivitySessionHostConnection.requestForegroundPresentation()();
 }
 
-- (void)sendResourceAtURL:(id)a3 to:(id)a4 metadata:(id)a5 completion:(id)a6
+- (void)sendResourceAtURL:(id)l to:(id)to metadata:(id)metadata completion:(id)completion
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(completion);
   v10 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = a5;
-  v13 = self;
+  lCopy = l;
+  metadataCopy = metadata;
+  selfCopy = self;
   v14 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
 
   v17 = swift_allocObject();
   *(v17 + 16) = v9;
-  ActivitySessionHostConnection.sendResource(atURL:to:metadata:completion:)(v11, v10, v14, v16, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned NSError?) -> (), v17);
+  ActivitySessionHostConnection.sendResource(atURL:to:metadata:completion:)(lCopy, v10, v14, v16, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned NSError?) -> (), v17);
 
   outlined consume of Data._Representation(v14, v16);
 }
 
-- (void)requestEndpointWith:(id)a3 completion:(id)a4
+- (void)requestEndpointWith:(id)with completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   ActivitySessionHostConnection.requestEndpoint(with:completion:)(v6, v8, partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned NSXPCListenerEndpoint?) -> (), v9);
 }
 
-- (void)updateCapabilitiesWithCapabilities:(int64_t)a3
+- (void)updateCapabilitiesWithCapabilities:(int64_t)capabilities
 {
-  v4 = self;
-  ActivitySessionHostConnection.updateCapabilities(capabilities:)(a3);
+  selfCopy = self;
+  ActivitySessionHostConnection.updateCapabilities(capabilities:)(capabilities);
 }
 
-- (void)addAnalyticsReport:(id)a3
+- (void)addAnalyticsReport:(id)report
 {
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   ActivitySessionHostConnection.addAnalyticsReport(_:)(v4);
 }
 

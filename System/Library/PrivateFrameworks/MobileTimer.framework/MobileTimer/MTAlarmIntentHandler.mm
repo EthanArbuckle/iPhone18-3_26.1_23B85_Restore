@@ -1,51 +1,51 @@
 @interface MTAlarmIntentHandler
-+ (id)createUserInfoWithIntentName:(id)a3 alarmIDString:(id)a4 time:(id)a5 label:(id)a6;
-- (MTAlarmIntentHandler)initWithAlarmManager:(id)a3;
++ (id)createUserInfoWithIntentName:(id)name alarmIDString:(id)string time:(id)time label:(id)label;
+- (MTAlarmIntentHandler)initWithAlarmManager:(id)manager;
 @end
 
 @implementation MTAlarmIntentHandler
 
-- (MTAlarmIntentHandler)initWithAlarmManager:(id)a3
+- (MTAlarmIntentHandler)initWithAlarmManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = MTAlarmIntentHandler;
   v6 = [(MTAlarmIntentHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_alarmManager, a3);
+    objc_storeStrong(&v6->_alarmManager, manager);
   }
 
   return v7;
 }
 
-+ (id)createUserInfoWithIntentName:(id)a3 alarmIDString:(id)a4 time:(id)a5 label:(id)a6
++ (id)createUserInfoWithIntentName:(id)name alarmIDString:(id)string time:(id)time label:(id)label
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v9 length])
+  nameCopy = name;
+  stringCopy = string;
+  timeCopy = time;
+  labelCopy = label;
+  if ([nameCopy length])
   {
-    v13 = [MEMORY[0x1E695DF90] dictionary];
-    [v13 setObject:v9 forKeyedSubscript:@"identifier"];
-    if (v10)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:nameCopy forKeyedSubscript:@"identifier"];
+    if (stringCopy)
     {
-      [v13 setObject:v10 forKeyedSubscript:@"alarmID"];
+      [dictionary setObject:stringCopy forKeyedSubscript:@"alarmID"];
     }
 
-    if (v11)
+    if (timeCopy)
     {
-      [v13 setObject:v11 forKeyedSubscript:@"time"];
+      [dictionary setObject:timeCopy forKeyedSubscript:@"time"];
     }
 
-    if (v12)
+    if (labelCopy)
     {
-      [v13 setObject:v12 forKeyedSubscript:@"label"];
+      [dictionary setObject:labelCopy forKeyedSubscript:@"label"];
     }
 
-    v14 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v13];
+    v14 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
   }
 
   else

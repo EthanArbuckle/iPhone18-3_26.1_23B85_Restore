@@ -1,24 +1,24 @@
 @interface TSCHChartReferenceLineLabelsLayoutItem
 - (CGRect)calcDrawingRect;
-- (CGRect)p_drawingRectForModel:(id)a3;
+- (CGRect)p_drawingRectForModel:(id)model;
 - (CGSize)calcMinSize;
-- (TSCHChartReferenceLineLabelsLayoutItem)initWithParent:(id)a3 axisID:(id)a4;
+- (TSCHChartReferenceLineLabelsLayoutItem)initWithParent:(id)parent axisID:(id)d;
 - (id)p_areaLayoutItem;
-- (id)subselectionKnobPositionsForSelection:(id)a3;
-- (void)iterateHitChartElements:(CGPoint)a3 withBlock:(id)a4;
+- (id)subselectionKnobPositionsForSelection:(id)selection;
+- (void)iterateHitChartElements:(CGPoint)elements withBlock:(id)block;
 @end
 
 @implementation TSCHChartReferenceLineLabelsLayoutItem
 
-- (TSCHChartReferenceLineLabelsLayoutItem)initWithParent:(id)a3 axisID:(id)a4
+- (TSCHChartReferenceLineLabelsLayoutItem)initWithParent:(id)parent axisID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v29.receiver = self;
   v29.super_class = TSCHChartReferenceLineLabelsLayoutItem;
-  v9 = [(TSCHChartLayoutItem *)&v29 initWithParent:a3];
+  v9 = [(TSCHChartLayoutItem *)&v29 initWithParent:parent];
   if (v9)
   {
-    if (!a3)
+    if (!parent)
     {
       v13 = MEMORY[0x277D81150];
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v10, v11, v12, "[TSCHChartReferenceLineLabelsLayoutItem initWithParent:axisID:]");
@@ -28,7 +28,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25, v26, v27);
     }
 
-    objc_storeStrong(&v9->_axisID, a4);
+    objc_storeStrong(&v9->_axisID, d);
   }
 
   return v9;
@@ -243,17 +243,17 @@
   return result;
 }
 
-- (CGRect)p_drawingRectForModel:(id)a3
+- (CGRect)p_drawingRectForModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   objc_msgSend_rootedLayoutRect(self, v5, v6, v7, v8);
   x = v9;
   y = v11;
   width = v13;
   height = v15;
-  if (objc_msgSend_numberOfSeries(v4, v17, v9, v11, v13))
+  if (objc_msgSend_numberOfSeries(modelCopy, v17, v9, v11, v13))
   {
-    v22 = objc_msgSend_seriesAtIndex_(v4, v18, v19, v20, v21, 0);
+    v22 = objc_msgSend_seriesAtIndex_(modelCopy, v18, v19, v20, v21, 0);
     v27 = objc_msgSend_seriesType(v22, v23, v24, v25, v26);
   }
 
@@ -267,7 +267,7 @@
   v41 = objc_msgSend_elementBuilder(v27, v37, v38, v39, v40);
   v69 = 0;
   v70 = 0;
-  v45 = objc_msgSend_countOfReferenceLineLabelsForAxisID_model_forRefLineLabelsLayout_outNewTransforms_outNewElementSizes_outNewClipRects_outNewParagraphStyles_outNewStrings_outNewLabelTypes_outReferenceLines_includeOutsideChartBodyBounds_outOutsideChartBodyBounds_(v41, v42, 0.0, v43, v44, self->_axisID, v4, self, &v70, 0, &v69, 0, 0, 0, 0, 0, 0);
+  v45 = objc_msgSend_countOfReferenceLineLabelsForAxisID_model_forRefLineLabelsLayout_outNewTransforms_outNewElementSizes_outNewClipRects_outNewParagraphStyles_outNewStrings_outNewLabelTypes_outReferenceLines_includeOutsideChartBodyBounds_outOutsideChartBodyBounds_(v41, v42, 0.0, v43, v44, self->_axisID, modelCopy, self, &v70, 0, &v69, 0, 0, 0, 0, 0, 0);
   if (v45)
   {
     v46 = v45;
@@ -341,13 +341,13 @@
   return result;
 }
 
-- (void)iterateHitChartElements:(CGPoint)a3 withBlock:(id)a4
+- (void)iterateHitChartElements:(CGPoint)elements withBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
+  y = elements.y;
+  x = elements.x;
   v97[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (v8)
+  blockCopy = block;
+  if (blockCopy)
   {
     v12 = objc_msgSend_model(self, v7, v9, v10, v11);
     if (objc_msgSend_numberOfSeries(v12, v13, v14, v15, v16))
@@ -419,7 +419,7 @@
             v83 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v79, v80, v81, v82, v97, 1);
             v88 = objc_msgSend_selectionPathWithPathType_arguments_(TSCHSelectionPath, v84, v85, v86, v87, v73, v83);
 
-            v8[2](v8, v88, &v93);
+            blockCopy[2](blockCopy, v88, &v93);
           }
 
           if (v93)
@@ -447,13 +447,13 @@
   }
 }
 
-- (id)subselectionKnobPositionsForSelection:(id)a3
+- (id)subselectionKnobPositionsForSelection:(id)selection
 {
   v182 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  selectionCopy = selection;
   v180.receiver = self;
   v180.super_class = TSCHChartReferenceLineLabelsLayoutItem;
-  v5 = [(TSCHChartLayoutItem *)&v180 subselectionKnobPositionsForSelection:v4];
+  v5 = [(TSCHChartLayoutItem *)&v180 subselectionKnobPositionsForSelection:selectionCopy];
   v164 = v5;
   if (v5)
   {
@@ -470,13 +470,13 @@
   v179 = 0u;
   v176 = 0u;
   v177 = 0u;
-  obj = v4;
+  obj = selectionCopy;
   v170 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, v12, v13, v14, &v176, v181, 16);
   if (v170)
   {
     p_vtable = TSCHMultiDataChartRepAnimationDictionaryEntry.vtable;
     v169 = *v177;
-    v165 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v170; ++i)
@@ -619,7 +619,7 @@ LABEL_27:
           free(v172);
         }
 
-        self = v165;
+        self = selfCopy;
         p_vtable = (TSCHMultiDataChartRepAnimationDictionaryEntry + 24);
 LABEL_36:
 

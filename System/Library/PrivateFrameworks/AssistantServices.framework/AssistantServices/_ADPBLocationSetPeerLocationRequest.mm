@@ -1,44 +1,44 @@
 @interface _ADPBLocationSetPeerLocationRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
 - (id)ad_location;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)_ad_performForPeerLocationWithCompletion:(id)a3;
-- (void)ad_setLocation:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)_ad_performForPeerLocationWithCompletion:(id)completion;
+- (void)ad_setLocation:(id)location;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ADPBLocationSetPeerLocationRequest
 
-- (void)_ad_performForPeerLocationWithCompletion:(id)a3
+- (void)_ad_performForPeerLocationWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v5 = a3;
-    v6 = [(_ADPBLocationSetPeerLocationRequest *)self ad_location];
-    (*(a3 + 2))(v5, v6);
+    completionCopy = completion;
+    ad_location = [(_ADPBLocationSetPeerLocationRequest *)self ad_location];
+    (*(completion + 2))(completionCopy, ad_location);
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(_ADPBLocationSetPeerLocationRequest *)self setCodedLocation:?];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     codedLocation = self->_codedLocation;
-    if (codedLocation | v4[1])
+    if (codedLocation | equalCopy[1])
     {
       v6 = [(NSData *)codedLocation isEqual:?];
     }
@@ -57,26 +57,26 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_codedLocation copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_codedLocation copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   codedLocation = self->_codedLocation;
   if (codedLocation)
   {
-    [a3 setCodedLocation:codedLocation];
+    [to setCodedLocation:codedLocation];
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_codedLocation)
   {
@@ -84,14 +84,14 @@
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -102,18 +102,18 @@
       while (1)
       {
         v19 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v19 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v19 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v19 & 0x7F) << v6;
@@ -130,9 +130,9 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -153,13 +153,13 @@ LABEL_15:
         }
       }
 
-      v17 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v17 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v16) = [a3 hasError] ^ 1;
+  LOBYTE(v16) = [from hasError] ^ 1;
   return v16;
 }
 
@@ -181,22 +181,22 @@ LABEL_15:
   v7.receiver = self;
   v7.super_class = _ADPBLocationSetPeerLocationRequest;
   v3 = [(_ADPBLocationSetPeerLocationRequest *)&v7 description];
-  v4 = [(_ADPBLocationSetPeerLocationRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(_ADPBLocationSetPeerLocationRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)ad_setLocation:(id)a3
+- (void)ad_setLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
-    v4 = a3;
+    locationCopy = location;
     v5 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-    [v5 encodeObject:v4 forKey:@"Location"];
+    [v5 encodeObject:locationCopy forKey:@"Location"];
 
-    v6 = [v5 encodedData];
-    v7 = [v6 copy];
+    encodedData = [v5 encodedData];
+    v7 = [encodedData copy];
   }
 
   else
@@ -209,10 +209,10 @@ LABEL_15:
 
 - (id)ad_location
 {
-  v2 = [(_ADPBLocationSetPeerLocationRequest *)self codedLocation];
-  if (v2)
+  codedLocation = [(_ADPBLocationSetPeerLocationRequest *)self codedLocation];
+  if (codedLocation)
   {
-    v3 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v2 error:0];
+    v3 = [[NSKeyedUnarchiver alloc] initForReadingFromData:codedLocation error:0];
     v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"Location"];
     [v3 finishDecoding];
   }

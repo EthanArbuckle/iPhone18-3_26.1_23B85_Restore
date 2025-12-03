@@ -3,19 +3,19 @@
 - (NSString)headerTitle;
 - (NSString)title;
 - (PXContextualMemoriesTimeSetting)init;
-- (id)_forceMiddayDateForDate:(id)a3;
+- (id)_forceMiddayDateForDate:(id)date;
 - (void)resetToDefault;
-- (void)setDate:(id)a3;
+- (void)setDate:(id)date;
 @end
 
 @implementation PXContextualMemoriesTimeSetting
 
-- (id)_forceMiddayDateForDate:(id)a3
+- (id)_forceMiddayDateForDate:(id)date
 {
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:28 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:28 fromDate:dateCopy];
 
   [v6 setHour:12];
   [v6 setMinute:0];
@@ -24,7 +24,7 @@
   v7 = [MEMORY[0x1E695DFE8] timeZoneWithAbbreviation:@"GMT"];
   [v6 setTimeZone:v7];
 
-  v8 = [v5 dateFromComponents:v6];
+  v8 = [currentCalendar dateFromComponents:v6];
 
   return v8;
 }
@@ -39,16 +39,16 @@
 
   else
   {
-    v5 = [MEMORY[0x1E695DF00] date];
-    v3 = [(PXContextualMemoriesTimeSetting *)self _forceMiddayDateForDate:v5];
+    date = [MEMORY[0x1E695DF00] date];
+    v3 = [(PXContextualMemoriesTimeSetting *)self _forceMiddayDateForDate:date];
   }
 
   return v3;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  if (self->_date != a3)
+  if (self->_date != date)
   {
     v5 = [(PXContextualMemoriesTimeSetting *)self _forceMiddayDateForDate:?];
     date = self->_date;
@@ -67,12 +67,12 @@
 
 - (NSString)title
 {
-  v3 = [(PXContextualMemoriesTimeSetting *)self date];
-  if (v3)
+  date = [(PXContextualMemoriesTimeSetting *)self date];
+  if (date)
   {
-    v4 = [(PXContextualMemoriesTimeSetting *)self dateFormatter];
-    v5 = [(PXContextualMemoriesTimeSetting *)self date];
-    v6 = [v4 stringFromDate:v5];
+    dateFormatter = [(PXContextualMemoriesTimeSetting *)self dateFormatter];
+    date2 = [(PXContextualMemoriesTimeSetting *)self date];
+    v6 = [dateFormatter stringFromDate:date2];
   }
 
   else
@@ -85,8 +85,8 @@
 
 - (NSString)headerTitle
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"Time" value:&stru_1F1741150 table:0];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"Time" value:&stru_1F1741150 table:0];
 
   return v3;
 }

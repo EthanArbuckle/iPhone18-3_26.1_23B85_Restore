@@ -1,14 +1,14 @@
 @interface SKUIReviewListTitleViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation SKUIReviewListTitleViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIReviewListTitleView" hasInstanceMethod:@"titleView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIReviewListTitleView" hasInstanceMethod:@"dateView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIReviewListTitleView" hasInstanceMethod:@"titleView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIReviewListTitleView" hasInstanceMethod:@"dateView" withFullSignature:{"@", 0}];
 }
 
 @end

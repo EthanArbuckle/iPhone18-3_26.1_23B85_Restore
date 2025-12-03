@@ -7,52 +7,52 @@
 - (NSUUID)_groupID;
 - (NSUUID)_renderGroupID;
 - (PKInk)ink;
-- (PKStrokeCoherence)initWithInk:(id)a3 strokePath:(id)a4 transform:(CGAffineTransform *)a5 mask:(id)a6;
+- (PKStrokeCoherence)initWithInk:(id)ink strokePath:(id)path transform:(CGAffineTransform *)transform mask:(id)mask;
 - (PKStrokeMask)_strokeMask;
 - (PKStrokePath)path;
 - (_PKStrokeClipPlane)_clipPlane;
-- (id)_substrokesInDrawing:(id)a3;
-- (id)mutableCopyWithZone:(void *)a3;
-- (id)parentStrokeForInsertionInDrawing:(id)a3;
-- (id)sliceIdentifierForTStart:(double)a3 tEnd:(double)a4;
+- (id)_substrokesInDrawing:(id)drawing;
+- (id)mutableCopyWithZone:(void *)zone;
+- (id)parentStrokeForInsertionInDrawing:(id)drawing;
+- (id)sliceIdentifierForTStart:(double)start tEnd:(double)end;
 - (int64_t)_shapeType;
-- (int64_t)compareToStroke:(id)a3;
-- (void)_setClipPlane:(id)a3;
-- (void)_setFlags:(id)a3;
-- (void)_setGroupID:(id)a3;
-- (void)_setRenderGroupID:(id)a3;
-- (void)_setShapeType:(int64_t)a3;
-- (void)_setStrokeMask:(id)a3;
-- (void)_setStrokeUUID:(id)a3;
-- (void)_setTransform:(CGAffineTransform *)a3;
-- (void)set_bounds:(CGRect)a3;
-- (void)set_transform:(CGAffineTransform *)a3;
+- (int64_t)compareToStroke:(id)stroke;
+- (void)_setClipPlane:(id)plane;
+- (void)_setFlags:(id)flags;
+- (void)_setGroupID:(id)d;
+- (void)_setRenderGroupID:(id)d;
+- (void)_setShapeType:(int64_t)type;
+- (void)_setStrokeMask:(id)mask;
+- (void)_setStrokeUUID:(id)d;
+- (void)_setTransform:(CGAffineTransform *)transform;
+- (void)set_bounds:(CGRect)set_bounds;
+- (void)set_transform:(CGAffineTransform *)set_transform;
 @end
 
 @implementation PKStrokeCoherence
 
-- (PKStrokeCoherence)initWithInk:(id)a3 strokePath:(id)a4 transform:(CGAffineTransform *)a5 mask:(id)a6
+- (PKStrokeCoherence)initWithInk:(id)ink strokePath:(id)path transform:(CGAffineTransform *)transform mask:(id)mask
 {
-  v9 = *&a5->c;
-  v20[0] = *&a5->a;
+  v9 = *&transform->c;
+  v20[0] = *&transform->a;
   v20[1] = v9;
-  v20[2] = *&a5->tx;
+  v20[2] = *&transform->tx;
   v10 = type metadata accessor for PKStrokePath();
   MEMORY[0x1EEE9AC00](v10 - 8);
   v12 = v20 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   v13 = type metadata accessor for PKInk();
   MEMORY[0x1EEE9AC00](v13 - 8);
   v15 = v20 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
+  inkCopy = ink;
+  pathCopy = path;
+  maskCopy = mask;
   static PKInk._unconditionallyBridgeFromObjectiveC(_:)();
 
   static PKStrokePath._unconditionallyBridgeFromObjectiveC(_:)();
-  return PKStrokeCoherence.init(ink:strokePath:transform:mask:)(v15, v12, v20, a6);
+  return PKStrokeCoherence.init(ink:strokePath:transform:mask:)(v15, v12, v20, mask);
 }
 
-- (id)parentStrokeForInsertionInDrawing:(id)a3
+- (id)parentStrokeForInsertionInDrawing:(id)drawing
 {
   v5 = type metadata accessor for PKDrawing();
   v6 = *(v5 - 8);
@@ -62,8 +62,8 @@
   v10 = *(v9 - 8);
   MEMORY[0x1EEE9AC00](v9);
   v12 = &v17 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v13 = a3;
-  v14 = self;
+  drawingCopy = drawing;
+  selfCopy = self;
   static PKDrawing._unconditionallyBridgeFromObjectiveC(_:)();
 
   PKStrokeCoherence.parentStrokeForInsertion(in:)(v12);
@@ -74,9 +74,9 @@
   return v15.super.isa;
 }
 
-- (id)mutableCopyWithZone:(void *)a3
+- (id)mutableCopyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   PKStrokeCoherence.mutableCopy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);
@@ -85,10 +85,10 @@
   return v4;
 }
 
-- (id)sliceIdentifierForTStart:(double)a3 tEnd:(double)a4
+- (id)sliceIdentifierForTStart:(double)start tEnd:(double)end
 {
-  v6 = self;
-  v7 = PKStrokeCoherence.sliceIdentifier(forTStart:tEnd:)(a3, a4);
+  selfCopy = self;
+  v7 = PKStrokeCoherence.sliceIdentifier(forTStart:tEnd:)(start, end);
 
   return v7;
 }
@@ -105,7 +105,7 @@
   v10 = OBJC_IVAR___PKStrokeCoherence_resolvedProperties;
   swift_beginAccess();
   outlined init with copy of PKStrokeStruct(self + v10, v5, type metadata accessor for PKStrokeInheritedProperties);
-  v11 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&_s9Coherence10CRRegisterVySo5PKInkCSgAfA7CRValueHpAeaG8PaperKityHC_HCg_GMd);
   CRRegister.wrappedValue.getter();
   result = _s8PaperKit12TaggedStrokeOWOhTm_1(v5, type metadata accessor for PKStrokeInheritedProperties);
@@ -232,12 +232,12 @@
   return result;
 }
 
-- (void)_setFlags:(id)a3
+- (void)_setFlags:(id)flags
 {
-  var1 = a3.var0.var1;
+  var1 = flags.var0.var1;
   swift_beginAccess();
   type metadata accessor for PKStrokeStruct(0);
-  v5 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&_s9Coherence10CRRegisterVy8PaperKit18PKStrokePropertiesVGMd);
   v6 = CRRegister.wrappedValue.modify();
   *v7 = var1;
@@ -279,12 +279,12 @@
   return v17;
 }
 
-- (void)_setGroupID:(id)a3
+- (void)_setGroupID:(id)d
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4UUIDVSgMd);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v16[-v6 - 8];
-  if (a3)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for UUID();
@@ -299,7 +299,7 @@
 
   swift_beginAccess();
   type metadata accessor for PKStrokeStruct(0);
-  v10 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&_s9Coherence10CRRegisterVy8PaperKit18PKStrokePropertiesVGMd);
   v11 = CRRegister.wrappedValue.modify();
   v13 = v12;
@@ -345,12 +345,12 @@
   return v17;
 }
 
-- (void)_setRenderGroupID:(id)a3
+- (void)_setRenderGroupID:(id)d
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4UUIDVSgMd);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v16[-v6 - 8];
-  if (a3)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = type metadata accessor for UUID();
@@ -365,7 +365,7 @@
 
   swift_beginAccess();
   type metadata accessor for PKStrokeStruct(0);
-  v10 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&_s9Coherence10CRRegisterVy8PaperKit18PKStrokePropertiesVGMd);
   v11 = CRRegister.wrappedValue.modify();
   v13 = v12;
@@ -397,56 +397,56 @@
   return v11;
 }
 
-- (void)_setShapeType:(int64_t)a3
+- (void)_setShapeType:(int64_t)type
 {
   swift_beginAccess();
   type metadata accessor for PKStrokeStruct(0);
-  v5 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&_s9Coherence10CRRegisterVy8PaperKit18PKStrokePropertiesVGMd);
   v6 = CRRegister.wrappedValue.modify();
-  *(v7 + *(type metadata accessor for PKStrokeProperties(0) + 28)) = a3;
+  *(v7 + *(type metadata accessor for PKStrokeProperties(0) + 28)) = type;
   v6(v8, 0);
   swift_endAccess();
 }
 
 - (PKStrokeMask)_strokeMask
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKStrokeCoherence._strokeMask.getter();
 
   return v3;
 }
 
-- (void)_setStrokeMask:(id)a3
+- (void)_setStrokeMask:(id)mask
 {
-  v6 = a3;
-  v5 = self;
-  specialized PKStrokeCoherence._strokeMask.setter(a3);
+  maskCopy = mask;
+  selfCopy = self;
+  specialized PKStrokeCoherence._strokeMask.setter(mask);
 }
 
-- (void)_setStrokeUUID:(id)a3
+- (void)_setStrokeUUID:(id)d
 {
   v4 = type metadata accessor for UUID();
   MEMORY[0x1EEE9AC00](v4 - 8);
   v6 = &v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = self;
+  selfCopy = self;
   PKStrokeCoherence._strokeUUID.setter(v6);
 }
 
 - (_PKStrokeClipPlane)_clipPlane
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKStrokeCoherence._clipPlane.getter();
 
   return v3;
 }
 
-- (void)_setClipPlane:(id)a3
+- (void)_setClipPlane:(id)plane
 {
-  v5 = a3;
-  v6 = self;
-  PKStrokeCoherence._clipPlane.setter(a3);
+  planeCopy = plane;
+  selfCopy = self;
+  PKStrokeCoherence._clipPlane.setter(plane);
 }
 
 - (CGAffineTransform)_transform
@@ -468,32 +468,32 @@
   return result;
 }
 
-- (void)set_transform:(CGAffineTransform *)a3
+- (void)set_transform:(CGAffineTransform *)set_transform
 {
-  v3 = *&a3->c;
-  v5[0] = *&a3->a;
+  v3 = *&set_transform->c;
+  v5[0] = *&set_transform->a;
   v5[1] = v3;
-  v5[2] = *&a3->tx;
-  v4 = self;
+  v5[2] = *&set_transform->tx;
+  selfCopy = self;
   PKStrokeCoherence._transform.setter(v5);
 }
 
-- (void)_setTransform:(CGAffineTransform *)a3
+- (void)_setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v4[0] = *&a3->a;
+  v3 = *&transform->c;
+  v4[0] = *&transform->a;
   v4[1] = v3;
-  v4[2] = *&a3->tx;
+  v4[2] = *&transform->tx;
   [(PKStrokeCoherence *)self set_transform:v4];
 }
 
-- (id)_substrokesInDrawing:(id)a3
+- (id)_substrokesInDrawing:(id)drawing
 {
   v4 = type metadata accessor for PKDrawing();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = a3;
+  drawingCopy = drawing;
   static PKDrawing._unconditionallyBridgeFromObjectiveC(_:)();
 
   (*(v5 + 8))(v7, v4);
@@ -513,19 +513,19 @@
   return result;
 }
 
-- (void)set_bounds:(CGRect)a3
+- (void)set_bounds:(CGRect)set_bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = set_bounds.size.height;
+  width = set_bounds.size.width;
+  y = set_bounds.origin.y;
+  x = set_bounds.origin.x;
+  selfCopy = self;
   PKStrokeCoherence._bounds.setter(x, y, width, height);
 }
 
 - (CGRect)renderBounds
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKStrokeCoherence.renderBounds.getter();
   v5 = v4;
   v7 = v6;
@@ -542,14 +542,14 @@
   return result;
 }
 
-- (int64_t)compareToStroke:(id)a3
+- (int64_t)compareToStroke:(id)stroke
 {
   v5 = type metadata accessor for PKStroke();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
-  v10 = self;
+  strokeCopy = stroke;
+  selfCopy = self;
   static PKStroke._unconditionallyBridgeFromObjectiveC(_:)();
 
   v11 = PKStrokeCoherence.compare(to:)();

@@ -1,27 +1,27 @@
 @interface WidgetTimelineRefresherDataSource
 - (_TtC19HomeKitDaemonLegacy33WidgetTimelineRefresherDataSource)init;
-- (id)darwinNotificationProviderForTimelineRefresher:(id)a3;
-- (id)widgetConfigurationReaderForTimelineRefresher:(id)a3;
-- (id)widgetTimelineControllerForTimelineRefresher:(id)a3;
+- (id)darwinNotificationProviderForTimelineRefresher:(id)refresher;
+- (id)widgetConfigurationReaderForTimelineRefresher:(id)refresher;
+- (id)widgetTimelineControllerForTimelineRefresher:(id)refresher;
 @end
 
 @implementation WidgetTimelineRefresherDataSource
 
-- (id)darwinNotificationProviderForTimelineRefresher:(id)a3
+- (id)darwinNotificationProviderForTimelineRefresher:(id)refresher
 {
   v3 = [objc_allocWithZone(MEMORY[0x277CD19C0]) init];
 
   return v3;
 }
 
-- (id)widgetConfigurationReaderForTimelineRefresher:(id)a3
+- (id)widgetConfigurationReaderForTimelineRefresher:(id)refresher
 {
   v3 = [objc_allocWithZone(HMDWidgetConfigurationReader) init];
 
   return v3;
 }
 
-- (id)widgetTimelineControllerForTimelineRefresher:(id)a3
+- (id)widgetTimelineControllerForTimelineRefresher:(id)refresher
 {
   v3 = [objc_allocWithZone(HMDWidgetTimelineController) init];
 

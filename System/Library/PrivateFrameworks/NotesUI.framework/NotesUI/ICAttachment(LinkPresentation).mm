@@ -39,7 +39,7 @@
   v21 = __Block_byref_object_copy__51;
   v22 = __Block_byref_object_dispose__51;
   v23 = 0;
-  v2 = [val managedObjectContext];
+  managedObjectContext = [val managedObjectContext];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __54__ICAttachment_LinkPresentation__retrieveLinkMetadata__block_invoke;
@@ -48,7 +48,7 @@
   v16[4] = val;
   v16[5] = &v24;
   v16[6] = &v18;
-  [v2 performBlockAndWait:v16];
+  [managedObjectContext performBlockAndWait:v16];
 
   if (v25[5])
   {
@@ -68,15 +68,15 @@
       }
     }
 
-    v10 = [v7 specialization];
+    specialization = [v7 specialization];
     gotLoadHelper_x8__OBJC_CLASS___LPFileMetadata(v11);
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v13 = [v7 specialization];
-      [v13 setName:v19[5]];
+      specialization2 = [v7 specialization];
+      [specialization2 setName:v19[5]];
     }
   }
 
@@ -96,16 +96,16 @@
 
 - (void)persistLinkMetadata:()LinkPresentation
 {
-  v2 = [a1 archiveLinkmetadata:?];
-  v3 = [a1 managedObjectContext];
+  v2 = [self archiveLinkmetadata:?];
+  managedObjectContext = [self managedObjectContext];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__ICAttachment_LinkPresentation__persistLinkMetadata___block_invoke;
   v5[3] = &unk_1E8468F80;
-  v5[4] = a1;
+  v5[4] = self;
   v6 = v2;
   v4 = v2;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 }
 
 - (uint64_t)metadataExists
@@ -115,14 +115,14 @@
   v10 = 0x2020000000;
   v11 = 0;
   objc_initWeak(&location, val);
-  v2 = [val managedObjectContext];
+  managedObjectContext = [val managedObjectContext];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __48__ICAttachment_LinkPresentation__metadataExists__block_invoke;
   v5[3] = &unk_1E846AAB8;
   objc_copyWeak(&v6, &location);
   v5[4] = &v8;
-  [v2 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
   v3 = *(v9 + 24);
   objc_destroyWeak(&v6);
@@ -133,21 +133,21 @@
 
 - (BOOL)usesLinkPresentation
 {
-  v2 = [a1 attachmentType];
+  attachmentType = [self attachmentType];
   result = 1;
-  if (v2 <= 0xF)
+  if (attachmentType <= 0xF)
   {
-    if (((1 << v2) & 0x362B) != 0)
+    if (((1 << attachmentType) & 0x362B) != 0)
     {
       return 0;
     }
 
     else
     {
-      v4 = 1 << v2;
+      v4 = 1 << attachmentType;
       if ((v4 & 0x840) != 0)
       {
-        return [a1 preferredViewSize] == 1;
+        return [self preferredViewSize] == 1;
       }
 
       else
@@ -165,10 +165,10 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 attachmentPreviewImageWithMinSize:192.0 scale:{192.0, 1.0}];
+    v5 = [self attachmentPreviewImageWithMinSize:192.0 scale:{192.0, 1.0}];
     if (v5)
     {
-      v6 = [a1 lpImageFromPreviewImage:v5];
+      v6 = [self lpImageFromPreviewImage:v5];
       [v4 setImage:v6];
     }
   }
@@ -187,29 +187,29 @@
 {
   gotLoadHelper_x8__OBJC_CLASS___LPLinkMetadata(a2);
   v4 = objc_alloc_init(*(v3 + 3232));
-  [a1 addPreviewImageToMetadata:v4];
+  [self addPreviewImageToMetadata:v4];
   v5 = __ICLocalizedFrameworkString_impl(@"%lu scans", @"%lu scans", 0, 1);
   objc_opt_class();
-  v6 = [a1 attachmentModel];
+  attachmentModel = [self attachmentModel];
   v7 = ICDynamicCast();
 
   if (v7)
   {
-    v8 = [v7 subAttachmentCount];
+    subAttachmentCount = [v7 subAttachmentCount];
   }
 
   else
   {
     objc_opt_class();
-    v9 = [a1 attachmentModel];
+    attachmentModel2 = [self attachmentModel];
     v10 = ICDynamicCast();
-    v8 = [v10 paperPageCount];
+    subAttachmentCount = [v10 paperPageCount];
   }
 
-  v11 = [a1 title];
-  [v4 setTitle:v11];
+  title = [self title];
+  [v4 setTitle:title];
 
-  v12 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v5, v8];
+  v12 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v5, subAttachmentCount];
   [v4 setSummary:v12];
 
   return v4;
@@ -221,16 +221,16 @@
   v4 = objc_alloc_init(*(v3 + 3232));
   gotLoadHelper_x8__OBJC_CLASS___LPFileMetadata(v5);
   v7 = objc_alloc_init(*(v6 + 3160));
-  if ([a1 hasFallbackPDF])
+  if ([self hasFallbackPDF])
   {
-    v8 = [a1 lpImageFromFallbackPDF];
-    [v7 setThumbnail:v8];
-    v9 = [MEMORY[0x1E69B7680] fallbackPDFUTI];
-    [v7 setType:v9];
+    lpImageFromFallbackPDF = [self lpImageFromFallbackPDF];
+    [v7 setThumbnail:lpImageFromFallbackPDF];
+    fallbackPDFUTI = [MEMORY[0x1E69B7680] fallbackPDFUTI];
+    [v7 setType:fallbackPDFUTI];
 
-    v10 = [a1 fallbackPDFURL];
+    fallbackPDFURL = [self fallbackPDFURL];
     v40 = 0;
-    v11 = [v10 getResourceValue:&v40 forKey:*MEMORY[0x1E695DB50] error:0];
+    v11 = [fallbackPDFURL getResourceValue:&v40 forKey:*MEMORY[0x1E695DB50] error:0];
     v12 = v40;
 
     if (v11 && ([v12 floatValue], v13 != 0.0))
@@ -241,8 +241,8 @@
     else
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = [a1 fallbackPDFData];
-      v16 = [v15 length];
+      fallbackPDFData = [self fallbackPDFData];
+      v16 = [fallbackPDFData length];
 
       objc_autoreleasePoolPop(v14);
     }
@@ -252,50 +252,50 @@
 
   else
   {
-    v17 = [a1 previewImages];
+    previewImages = [self previewImages];
 
-    if (v17)
+    if (previewImages)
     {
-      v18 = [a1 attachmentPreviewImageWithMinSize:*MEMORY[0x1E695F060] scale:{*(MEMORY[0x1E695F060] + 8), 1.0}];
-      v19 = [a1 lpImageFromPreviewImage:v18];
+      v18 = [self attachmentPreviewImageWithMinSize:*MEMORY[0x1E695F060] scale:{*(MEMORY[0x1E695F060] + 8), 1.0}];
+      v19 = [self lpImageFromPreviewImage:v18];
       [v7 setThumbnail:v19];
     }
 
-    v20 = [a1 typeUTI];
-    [v7 setType:v20];
+    typeUTI = [self typeUTI];
+    [v7 setType:typeUTI];
 
-    [v7 setSize:{objc_msgSend(a1, "fileSize")}];
+    [v7 setSize:{objc_msgSend(self, "fileSize")}];
   }
 
-  v21 = [a1 title];
-  [v7 setName:v21];
+  title = [self title];
+  [v7 setName:title];
 
-  v22 = [a1 creationDate];
-  [v7 setCreationDate:v22];
+  creationDate = [self creationDate];
+  [v7 setCreationDate:creationDate];
 
   [v4 setSpecialization:v7];
-  if ([a1 attachmentType] == 4)
+  if ([self attachmentType] == 4)
   {
-    v23 = [a1 typeUTI];
-    if (v23)
+    typeUTI2 = [self typeUTI];
+    if (typeUTI2)
     {
-      v24 = v23;
-      v25 = [a1 media];
-      v26 = [v25 mediaURL];
+      v24 = typeUTI2;
+      media = [self media];
+      mediaURL = [media mediaURL];
 
-      if (v26)
+      if (mediaURL)
       {
         v27 = MEMORY[0x1E69B7680];
-        v28 = [a1 typeUTI];
-        v29 = [v27 mimeTypeFromUTI:v28];
+        typeUTI3 = [self typeUTI];
+        v29 = [v27 mimeTypeFromUTI:typeUTI3];
 
         gotLoadHelper_x8__OBJC_CLASS___LPAudioProperties(v30);
         v32 = objc_alloc_init(*(v31 + 3136));
         gotLoadHelper_x8__OBJC_CLASS___LPAudio(v33);
         v35 = objc_alloc(*(v34 + 3128));
-        v36 = [a1 media];
-        v37 = [v36 mediaURL];
-        v38 = [v35 initByReferencingFileURL:v37 MIMEType:v29 properties:v32];
+        media2 = [self media];
+        mediaURL2 = [media2 mediaURL];
+        v38 = [v35 initByReferencingFileURL:mediaURL2 MIMEType:v29 properties:v32];
 
         [v4 setAudio:v38];
       }
@@ -307,14 +307,14 @@
 
 - (id)fallbackRemoteAttachmentMetadata
 {
-  if ([a1 attachmentType] == 7)
+  if ([self attachmentType] == 7)
   {
-    [a1 fallbackMapMetadata];
+    [self fallbackMapMetadata];
   }
 
   else
   {
-    [a1 fallbackWebMetadata];
+    [self fallbackWebMetadata];
   }
   v2 = ;
 
@@ -325,7 +325,7 @@
 {
   gotLoadHelper_x8__OBJC_CLASS___LPLinkMetadata(a2);
   v4 = objc_alloc_init(*(v3 + 3232));
-  v5 = [a1 URL];
+  v5 = [self URL];
   [v4 setURL:v5];
 
   return v4;
@@ -333,17 +333,17 @@
 
 - (void)requestRemoteMetadata
 {
-  if ([a1 attachmentType] == 7)
+  if ([self attachmentType] == 7)
   {
-    [a1 mapPreviewGenerationQueue];
+    [self mapPreviewGenerationQueue];
   }
 
   else
   {
-    [a1 webPreviewGenerationQueue];
+    [self webPreviewGenerationQueue];
   }
   v2 = ;
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __55__ICAttachment_LinkPresentation__requestRemoteMetadata__block_invoke;
@@ -356,7 +356,7 @@
 
 - (id)loadingAttachmentsMetadata
 {
-  gotLoadHelper_x8__OBJC_CLASS___LPLinkMetadata(a1);
+  gotLoadHelper_x8__OBJC_CLASS___LPLinkMetadata(self);
   v2 = objc_alloc_init(*(v1 + 3232));
   v3 = __ICLocalizedFrameworkString_impl(@"Loading…", @"Loading…", 0, 1);
   [v2 setTitle:v3];
@@ -366,18 +366,18 @@
 
 - (void)requestFileMetadataIfNecessary
 {
-  if ([a1 attachmentType] != 14 && objc_msgSend(a1, "attachmentType") != 15 && objc_msgSend(a1, "attachmentType") != 4)
+  if ([self attachmentType] != 14 && objc_msgSend(self, "attachmentType") != 15 && objc_msgSend(self, "attachmentType") != 4)
   {
-    v2 = [a1 attachmentModel];
-    if ([v2 needToGeneratePreviews])
+    attachmentModel = [self attachmentModel];
+    if ([attachmentModel needToGeneratePreviews])
     {
-      v3 = [a1 filePreviewGenerationQueue];
+      filePreviewGenerationQueue = [self filePreviewGenerationQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __64__ICAttachment_LinkPresentation__requestFileMetadataIfNecessary__block_invoke;
       block[3] = &unk_1E8468BA0;
-      v5 = v2;
-      dispatch_async(v3, block);
+      v5 = attachmentModel;
+      dispatch_async(filePreviewGenerationQueue, block);
     }
   }
 }
@@ -385,22 +385,22 @@
 - (id)lpImageFromPreviewImage:()LinkPresentation
 {
   v4 = a3;
-  if (![a1 isPasswordProtected])
+  if (![self isPasswordProtected])
   {
-    v5 = [v4 previewImageURL];
+    previewImageURL = [v4 previewImageURL];
     v10 = MEMORY[0x1E69B7680];
-    v11 = [a1 attachmentModel];
-    v12 = [v11 previewImageTypeUTI];
-    v6 = [v10 mimeTypeFromUTI:v12];
+    attachmentModel = [self attachmentModel];
+    previewImageTypeUTI = [attachmentModel previewImageTypeUTI];
+    v6 = [v10 mimeTypeFromUTI:previewImageTypeUTI];
 
     v14 = 0;
-    if (!v5 || !v6)
+    if (!previewImageURL || !v6)
     {
       goto LABEL_10;
     }
 
     gotLoadHelper_x8__OBJC_CLASS___LPImage(v13);
-    v9 = [objc_alloc(*(v15 + 3176)) initByReferencingFileURL:v5 MIMEType:v6];
+    v9 = [objc_alloc(*(v15 + 3176)) initByReferencingFileURL:previewImageURL MIMEType:v6];
 LABEL_9:
     v14 = v9;
 LABEL_10:
@@ -408,15 +408,15 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if ([a1 isAuthenticated])
+  if ([self isAuthenticated])
   {
-    v5 = [v4 decryptedImageData];
-    if (!v5)
+    previewImageURL = [v4 decryptedImageData];
+    if (!previewImageURL)
     {
       [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"((decryptedImageData) != nil)" functionName:"-[ICAttachment(LinkPresentation) lpImageFromPreviewImage:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "decryptedImageData"}];
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithData:previewImageURL];
     gotLoadHelper_x8__OBJC_CLASS___LPImage(v7);
     v9 = [objc_alloc(*(v8 + 3176)) initWithPlatformImage:v6];
     goto LABEL_9;
@@ -431,8 +431,8 @@ LABEL_12:
 - (id)lpImageFromFallbackPDF
 {
   v2 = objc_alloc(MEMORY[0x1E6978028]);
-  v3 = [a1 fallbackPDFData];
-  v4 = [v2 initWithData:v3];
+  fallbackPDFData = [self fallbackPDFData];
+  v4 = [v2 initWithData:fallbackPDFData];
 
   v5 = [v4 pageAtIndex:0];
   [v5 boundsForBox:0];
@@ -457,11 +457,11 @@ LABEL_12:
     v8 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v10 = [a1 identifier];
+      identifier = [self identifier];
       *buf = 138412802;
       v13 = v4;
       v14 = 2112;
-      v15 = v10;
+      v15 = identifier;
       v16 = 2112;
       v17 = v7;
       _os_log_error_impl(&dword_1D4171000, v8, OS_LOG_TYPE_ERROR, "Converting metadata %@ for attachment with identifier: %@ failed with error: %@", buf, 0x20u);
@@ -518,14 +518,14 @@ LABEL_12:
 {
   gotLoadHelper_x8__OBJC_CLASS___LPLinkMetadata(a2);
   v4 = objc_alloc_init(*(v3 + 3232));
-  v5 = [a1 URL];
+  v5 = [self URL];
   [v4 setURL:v5];
 
-  v6 = [a1 title];
-  [v4 setTitle:v6];
+  title = [self title];
+  [v4 setTitle:title];
 
-  v7 = [a1 summary];
-  [v4 setSummary:v7];
+  summary = [self summary];
+  [v4 setSummary:summary];
 
   return v4;
 }
@@ -534,16 +534,16 @@ LABEL_12:
 {
   gotLoadHelper_x8__OBJC_CLASS___LPMapMetadata(a2);
   v4 = objc_alloc_init(*(v3 + 3280));
-  v5 = [a1 title];
-  [v4 setName:v5];
+  title = [self title];
+  [v4 setName:title];
 
-  v6 = [a1 summary];
-  [v4 setAddress:v6];
+  summary = [self summary];
+  [v4 setAddress:summary];
 
   gotLoadHelper_x8__OBJC_CLASS___LPLinkMetadata(v7);
   v9 = objc_alloc_init(*(v8 + 3232));
   [v9 setSpecialization:v4];
-  v10 = [a1 URL];
+  v10 = [self URL];
   [v9 setURL:v10];
 
   [v9 URL];
@@ -555,7 +555,7 @@ LABEL_12:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1D4171000, a2, OS_LOG_TYPE_ERROR, "LPLinkMetadata unarchiving error: %@", &v2, 0xCu);
 }
 

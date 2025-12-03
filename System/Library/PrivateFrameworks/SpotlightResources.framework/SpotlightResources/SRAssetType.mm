@@ -7,9 +7,9 @@
 - (id)contentTypes
 {
   v3 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v4 = [(SRAssetType *)self deliveryTypeMap];
-  v5 = [v4 allKeys];
-  v6 = [v3 initWithArray:v5];
+  deliveryTypeMap = [(SRAssetType *)self deliveryTypeMap];
+  allKeys = [deliveryTypeMap allKeys];
+  v6 = [v3 initWithArray:allKeys];
 
   return v6;
 }

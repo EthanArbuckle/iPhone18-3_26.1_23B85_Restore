@@ -1,17 +1,17 @@
 @interface IMDReplayController
 + (IMDReplayController)sharedInstance;
 - (IMDReplayController)init;
-- (IMDReplayController)initWithStorageController:(id)a3;
+- (IMDReplayController)initWithStorageController:(id)controller;
 - (void)_fetchNexBatchOfMessagesAndReplay;
-- (void)_processBatch:(id)a3;
+- (void)_processBatch:(id)batch;
 - (void)dealloc;
 - (void)deleteReplayDBIfNotUnderFirstUnlock;
 - (void)endRecordingReplayDatabase;
-- (void)overrideStorageControllerWithDatabaseFromPath:(id)a3;
+- (void)overrideStorageControllerWithDatabaseFromPath:(id)path;
 - (void)replayMessages;
-- (void)replayMessagesWithCompletion:(id)a3;
+- (void)replayMessagesWithCompletion:(id)completion;
 - (void)restoreDefaultStoreControllerInstance;
-- (void)scheduleSyncTaskForServices:(id)a3;
+- (void)scheduleSyncTaskForServices:(id)services;
 - (void)startRecordingReplayDatabase;
 @end
 
@@ -40,14 +40,14 @@
   return v2;
 }
 
-- (IMDReplayController)initWithStorageController:(id)a3
+- (IMDReplayController)initWithStorageController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = IMDReplayController;
   v4 = [(IMDReplayController *)&v6 init];
   if (v4)
   {
-    v4->_storageController = a3;
+    v4->_storageController = controller;
   }
 
   return v4;
@@ -60,16 +60,16 @@
   [(IMDReplayController *)&v3 dealloc];
 }
 
-- (void)_processBatch:(id)a3
+- (void)_processBatch:(id)batch
 {
   v31 = *MEMORY[0x277D85DE8];
-  v21 = [MEMORY[0x277CBEB18] array];
-  v22 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  v4 = [batch countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v4)
   {
     v5 = *v25;
@@ -79,7 +79,7 @@
       {
         if (*v25 != v5)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(batch);
         }
 
         v7 = *(*(&v24 + 1) + 8 * i);
@@ -119,13 +119,13 @@
 
             else
             {
-              [v21 addObject:v12];
+              [array addObject:v12];
             }
           }
 
           else
           {
-            [v22 addObject:v12];
+            [array2 addObject:v12];
           }
         }
 
@@ -145,7 +145,7 @@
         objc_autoreleasePoolPop(v8);
       }
 
-      v4 = [a3 countByEnumeratingWithState:&v24 objects:v30 count:16];
+      v4 = [batch countByEnumeratingWithState:&v24 objects:v30 count:16];
     }
 
     while (v4);
@@ -155,12 +155,12 @@
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v29 = 0;
-  if ([v21 count])
+  if ([array count])
   {
     ++*(*&buf[8] + 24);
   }
 
-  if ([v22 count])
+  if ([array2 count])
   {
     ++*(*&buf[8] + 24);
   }
@@ -172,17 +172,17 @@
   v23[4] = self;
   v23[5] = buf;
   v15 = [(NSDictionary *)self->_syncTaskByServiceName valueForKey:*MEMORY[0x277D1A620]];
-  v16 = [v15 batchProcessingBlock];
-  if ([v21 count] && v15 && objc_msgSend(v15, "batchProcessingBlock") && v16)
+  batchProcessingBlock = [v15 batchProcessingBlock];
+  if ([array count] && v15 && objc_msgSend(v15, "batchProcessingBlock") && batchProcessingBlock)
   {
-    (*(v16 + 16))(v16, v21, v23);
+    (*(batchProcessingBlock + 16))(batchProcessingBlock, array, v23);
   }
 
   v17 = [(NSDictionary *)self->_syncTaskByServiceName valueForKey:*MEMORY[0x277D1A610]];
-  v18 = [v17 batchProcessingBlock];
-  if ([v22 count] && v17 && objc_msgSend(v17, "batchProcessingBlock") && v18)
+  batchProcessingBlock2 = [v17 batchProcessingBlock];
+  if ([array2 count] && v17 && objc_msgSend(v17, "batchProcessingBlock") && batchProcessingBlock2)
   {
-    (*(v18 + 16))(v18, v22, v23);
+    (*(batchProcessingBlock2 + 16))(batchProcessingBlock2, array2, v23);
   }
 
   _Block_object_dispose(buf, 8);
@@ -201,14 +201,14 @@
     }
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:IMDMessageHistorySyncNotifyReplayControllerWantsSync object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:IMDMessageHistorySyncNotifyReplayControllerWantsSync object:0];
 }
 
-- (void)scheduleSyncTaskForServices:(id)a3
+- (void)scheduleSyncTaskForServices:(id)services
 {
   [(IMDReplayController *)self setHeldDeletionContext:0];
-  [(IMDReplayController *)self setSyncTaskByServiceName:a3];
+  [(IMDReplayController *)self setSyncTaskByServiceName:services];
 
   MEMORY[0x2821F9670](self, sel__fetchNexBatchOfMessagesAndReplay);
 }
@@ -216,11 +216,11 @@
 - (void)_fetchNexBatchOfMessagesAndReplay
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDReplayController *)self heldDeletionContext];
+  heldDeletionContext = [(IMDReplayController *)self heldDeletionContext];
   v4 = objc_autoreleasePoolPush();
-  v18 = v3;
+  v18 = heldDeletionContext;
   v5 = [(IMDReplayStorageController *)self->_storageController copyNextBatchWithSize:200 iterationContext:&v18];
-  if (v3 != v18)
+  if (heldDeletionContext != v18)
   {
     [(IMDReplayController *)self setHeldDeletionContext:?];
   }
@@ -236,8 +236,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(NSDictionary *)self->_syncTaskByServiceName allKeys];
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    allKeys = [(NSDictionary *)self->_syncTaskByServiceName allKeys];
+    v7 = [(NSArray *)allKeys countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
       v8 = *v15;
@@ -248,7 +248,7 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v10 = [-[NSDictionary valueForKey:](self->_syncTaskByServiceName valueForKey:{*(*(&v14 + 1) + 8 * v9)), "completionBlock"}];
@@ -261,7 +261,7 @@
         }
 
         while (v7 != v9);
-        v7 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v7 = [(NSArray *)allKeys countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v7);
@@ -344,7 +344,7 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)overrideStorageControllerWithDatabaseFromPath:(id)a3
+- (void)overrideStorageControllerWithDatabaseFromPath:(id)path
 {
   v13 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -353,12 +353,12 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = a3;
+      pathCopy = path;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Setting up new replay database at path: %@", &v11, 0xCu);
     }
   }
 
-  v6 = [[IMDReplayStorageController alloc] initWithFilePath:a3];
+  v6 = [[IMDReplayStorageController alloc] initWithFilePath:path];
   if (v6)
   {
     if (self->_suspendedStorageController)
@@ -387,9 +387,9 @@
     v8 = OSLogHandleForIMEventCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(IMDReplayStorageController *)self->_storageController filePath];
+      filePath = [(IMDReplayStorageController *)self->_storageController filePath];
       v11 = 138412290;
-      v12 = v9;
+      pathCopy = filePath;
       _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Unable to setup replayStorageController, previous store controller with database at path %@ remains active", &v11, 0xCu);
     }
   }
@@ -469,9 +469,9 @@
   }
 }
 
-- (void)replayMessagesWithCompletion:(id)a3
+- (void)replayMessagesWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
     [(IMDReplayController *)self setAutomationCompletionBlock:?];
   }

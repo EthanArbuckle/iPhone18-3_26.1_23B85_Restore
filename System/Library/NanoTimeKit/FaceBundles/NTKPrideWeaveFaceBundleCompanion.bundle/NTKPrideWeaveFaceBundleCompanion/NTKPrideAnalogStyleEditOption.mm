@@ -1,12 +1,12 @@
 @interface NTKPrideAnalogStyleEditOption
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device;
 @end
 
 @implementation NTKPrideAnalogStyleEditOption
 
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 == 1)
+  if (value == 1)
   {
     v6 = @"EDIT_OPTION_LABEL_PRIDE_STYLE_BANDED";
 LABEL_5:
@@ -15,7 +15,7 @@ LABEL_5:
     return v7;
   }
 
-  if (a3 == 2)
+  if (value == 2)
   {
     v6 = @"EDIT_OPTION_LABEL_PRIDE_STYLE_FABRIC";
     goto LABEL_5;

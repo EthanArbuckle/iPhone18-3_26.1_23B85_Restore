@@ -9,71 +9,71 @@
 - (NSArray)tracks;
 - (NSArray)tracksWithMediaCharacteristic:(AVMediaCharacteristic)mediaCharacteristic;
 - (NSArray)tracksWithMediaType:(AVMediaType)mediaType;
-- (id)_addMutableTrackWithMediaType:(id)a3 preferredTrackID:(int)a4 fireKVO:(BOOL)a5;
-- (id)_initWithComposition:(id)a3;
-- (id)_newTrackForIndex:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_notifyTracksThatSegmentsDidChange:(id)a3 successfully:(BOOL)a4;
-- (void)_notifyTracksThatSegmentsWillChange:(id)a3;
-- (void)_removeTrack:(id)a3 fireKVO:(BOOL)a4;
+- (id)_addMutableTrackWithMediaType:(id)type preferredTrackID:(int)d fireKVO:(BOOL)o;
+- (id)_initWithComposition:(id)composition;
+- (id)_newTrackForIndex:(int64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_notifyTracksThatSegmentsDidChange:(id)change successfully:(BOOL)successfully;
+- (void)_notifyTracksThatSegmentsWillChange:(id)change;
+- (void)_removeTrack:(id)track fireKVO:(BOOL)o;
 - (void)insertEmptyTimeRange:(CMTimeRange *)timeRange;
 - (void)insertTimeRange:(CMTimeRange *)timeRange ofAsset:(AVAsset *)asset atTime:(CMTime *)startTime completionHandler:(void *)completionHandler;
 - (void)removeTimeRange:(CMTimeRange *)timeRange;
 - (void)removeTrack:(AVCompositionTrack *)track;
 - (void)scaleTimeRange:(CMTimeRange *)timeRange toDuration:(CMTime *)duration;
-- (void)setMetadata:(id)a3;
+- (void)setMetadata:(id)metadata;
 @end
 
 @implementation AVMutableComposition
 
 + (AVMutableComposition)composition
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 + (AVMutableComposition)compositionWithURLAssetInitializationOptions:(NSDictionary *)URLAssetInitializationOptions
 {
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   v18 = 0;
   if (!-[AVComposition _setURLAssetInitializationOptions:error:](v6, "_setURLAssetInitializationOptions:error:", URLAssetInitializationOptions, &v18) && [v18 code] == -11999)
   {
     v8 = [objc_msgSend(v18 "userInfo")];
-    v9 = [v8 reason];
+    reason = [v8 reason];
     v10 = MEMORY[0x1E695DF30];
-    v16 = [v8 name];
-    if (v9)
+    name = [v8 name];
+    if (reason)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@": %@", v9];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@": %@", reason];
     }
 
-    v17 = [v10 exceptionWithName:v16 reason:AVMethodExceptionReasonWithObjectAndSelector(a1 userInfo:{a2, @"Cannot honor specified AVURLAsset initialization options for AVMutableComposition <%p>%@", v11, v12, v13, v14, v15, a1), 0}];
+    v17 = [v10 exceptionWithName:name reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"Cannot honor specified AVURLAsset initialization options for AVMutableComposition <%p>%@", v11, v12, v13, v14, v15, self), 0}];
     objc_exception_throw(v17);
   }
 
   return v6;
 }
 
-- (id)_initWithComposition:(id)a3
+- (id)_initWithComposition:(id)composition
 {
   v4.receiver = self;
   v4.super_class = AVMutableComposition;
-  return [(AVComposition *)&v4 _initWithComposition:a3];
+  return [(AVComposition *)&v4 _initWithComposition:composition];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [AVComposition allocWithZone:a3];
+  v4 = [AVComposition allocWithZone:zone];
 
   return [(AVComposition *)v4 _initWithComposition:self];
 }
 
-- (id)_newTrackForIndex:(int64_t)a3
+- (id)_newTrackForIndex:(int64_t)index
 {
   v5 = [AVMutableCompositionTrack alloc];
 
-  return [(AVAssetTrack *)v5 _initWithAsset:self trackIndex:a3];
+  return [(AVAssetTrack *)v5 _initWithAsset:self trackIndex:index];
 }
 
 - (NSArray)tracks
@@ -114,10 +114,10 @@
   return result;
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
   v8 = [[AVTelemetryInterval alloc] initAndStartWith:25];
-  v5 = [AVMetadataItem _figMetadataPropertyFromMetadataItems:a3];
+  v5 = [AVMetadataItem _figMetadataPropertyFromMetadataItems:metadata];
   [(AVComposition *)self _mutableComposition];
   FigBaseObject = FigMutableCompositionGetFigBaseObject();
   v7 = *(*(CMBaseObjectGetVTable() + 8) + 56);
@@ -131,14 +131,14 @@
 
 - (BOOL)insertTimeRange:(CMTimeRange *)timeRange ofAsset:(AVAsset *)asset atTime:(CMTime *)startTime error:(NSError *)outError
 {
-  v10 = [(AVComposition *)self _mutableComposition];
-  v11 = [(AVComposition *)self _copyFormatReader];
-  v12 = [(AVAsset *)asset _absoluteURL];
-  v13 = [(AVAsset *)asset _mutableComposition];
+  _mutableComposition = [(AVComposition *)self _mutableComposition];
+  _copyFormatReader = [(AVComposition *)self _copyFormatReader];
+  _absoluteURL = [(AVAsset *)asset _absoluteURL];
+  _mutableComposition2 = [(AVAsset *)asset _mutableComposition];
   v43 = 0;
   v44 = 0;
-  v14 = [(AVComposition *)self _mutableTracks];
-  v15 = [v14 copy];
+  _mutableTracks = [(AVComposition *)self _mutableTracks];
+  v15 = [_mutableTracks copy];
   [(AVMutableComposition *)self willChangeValueForKey:@"duration"];
   [(AVMutableComposition *)self willChangeValueForKey:@"tracks"];
   [(AVMutableComposition *)self _notifyTracksThatSegmentsWillChange:v15];
@@ -148,15 +148,15 @@
     goto LABEL_20;
   }
 
-  v17 = v16(v11, &v44);
+  v17 = v16(_copyFormatReader, &v44);
   if (v17)
   {
     goto LABEL_21;
   }
 
-  if (!v12)
+  if (!_absoluteURL)
   {
-    if (v10)
+    if (_mutableComposition)
     {
       v38 = *&timeRange->start.value;
       epoch = timeRange->start.epoch;
@@ -173,7 +173,7 @@
         v48 = v36;
         v45 = v30;
         v46 = v32;
-        v17 = v21(v10, v13, &v49, &v47, &v45);
+        v17 = v21(_mutableComposition, _mutableComposition2, &v49, &v47, &v45);
         if (v17)
         {
           goto LABEL_21;
@@ -213,14 +213,14 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v18 = [(AVAsset *)asset _figAsset];
+  _figAsset = [(AVAsset *)asset _figAsset];
   v19 = *(*(CMBaseObjectGetVTable() + 16) + 176);
   if (!v19)
   {
     goto LABEL_20;
   }
 
-  v17 = v19(v10, v12, v18);
+  v17 = v19(_mutableComposition, _absoluteURL, _figAsset);
   if (v17)
   {
     goto LABEL_21;
@@ -244,7 +244,7 @@ LABEL_21:
   v48 = v35;
   v45 = v29;
   v46 = v31;
-  v17 = v20(v10, v12, &v49, &v47, &v45);
+  v17 = v20(_mutableComposition, _absoluteURL, &v49, &v47, &v45);
   if (v17)
   {
     goto LABEL_21;
@@ -257,7 +257,7 @@ LABEL_15:
     goto LABEL_20;
   }
 
-  v17 = v23(v11, &v43);
+  v17 = v23(_copyFormatReader, &v43);
   if (v17)
   {
     goto LABEL_21;
@@ -265,7 +265,7 @@ LABEL_15:
 
   for (i = v44; i < v43; ++i)
   {
-    [v14 addObject:{-[AVMutableComposition _newTrackForIndex:](self, "_newTrackForIndex:", i)}];
+    [_mutableTracks addObject:{-[AVMutableComposition _newTrackForIndex:](self, "_newTrackForIndex:", i)}];
   }
 
   [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
@@ -280,9 +280,9 @@ LABEL_22:
     *outError = v25;
   }
 
-  if (v11)
+  if (_copyFormatReader)
   {
-    CFRelease(v11);
+    CFRelease(_copyFormatReader);
   }
 
   return v26;
@@ -308,15 +308,15 @@ LABEL_22:
 - (void)insertEmptyTimeRange:(CMTimeRange *)timeRange
 {
   v12 = [[AVTelemetryInterval alloc] initAndStartWith:26];
-  v5 = [(AVComposition *)self _mutableComposition];
-  v6 = [(AVMutableComposition *)self tracks];
+  _mutableComposition = [(AVComposition *)self _mutableComposition];
+  tracks = [(AVMutableComposition *)self tracks];
   [(AVMutableComposition *)self willChangeValueForKey:@"duration"];
-  [(AVMutableComposition *)self _notifyTracksThatSegmentsWillChange:v6];
+  [(AVMutableComposition *)self _notifyTracksThatSegmentsWillChange:tracks];
   v10 = *&timeRange->start.value;
   epoch = timeRange->start.epoch;
   duration = timeRange->duration;
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 112);
-  if (!v7 || (v14 = v10, v15 = epoch, v13 = duration, v7(v5, &v14, &v13)))
+  if (!v7 || (v14 = v10, v15 = epoch, v13 = duration, v7(_mutableComposition, &v14, &v13)))
   {
     v8 = 0;
   }
@@ -328,22 +328,22 @@ LABEL_22:
   }
 
   [(AVMutableComposition *)self didChangeValueForKey:@"duration", *&duration.value, duration.epoch];
-  [(AVMutableComposition *)self _notifyTracksThatSegmentsDidChange:v6 successfully:v8];
+  [(AVMutableComposition *)self _notifyTracksThatSegmentsDidChange:tracks successfully:v8];
   AVTelemetryIntervalEnd(&v12);
 }
 
 - (void)removeTimeRange:(CMTimeRange *)timeRange
 {
   v12 = [[AVTelemetryInterval alloc] initAndStartWith:27];
-  v5 = [(AVComposition *)self _mutableComposition];
-  v6 = [(AVMutableComposition *)self tracks];
+  _mutableComposition = [(AVComposition *)self _mutableComposition];
+  tracks = [(AVMutableComposition *)self tracks];
   [(AVMutableComposition *)self willChangeValueForKey:@"duration"];
-  [(AVMutableComposition *)self _notifyTracksThatSegmentsWillChange:v6];
+  [(AVMutableComposition *)self _notifyTracksThatSegmentsWillChange:tracks];
   v10 = *&timeRange->start.value;
   epoch = timeRange->start.epoch;
   duration = timeRange->duration;
   v7 = *(*(CMBaseObjectGetVTable() + 16) + 128);
-  if (!v7 || (v14 = v10, v15 = epoch, v13 = duration, v7(v5, &v14, &v13)))
+  if (!v7 || (v14 = v10, v15 = epoch, v13 = duration, v7(_mutableComposition, &v14, &v13)))
   {
     v8 = 0;
   }
@@ -355,23 +355,23 @@ LABEL_22:
   }
 
   [(AVMutableComposition *)self didChangeValueForKey:@"duration", *&duration.value, duration.epoch];
-  [(AVMutableComposition *)self _notifyTracksThatSegmentsDidChange:v6 successfully:v8];
+  [(AVMutableComposition *)self _notifyTracksThatSegmentsDidChange:tracks successfully:v8];
   AVTelemetryIntervalEnd(&v12);
 }
 
 - (void)scaleTimeRange:(CMTimeRange *)timeRange toDuration:(CMTime *)duration
 {
   v15 = [[AVTelemetryInterval alloc] initAndStartWith:28];
-  v7 = [(AVComposition *)self _mutableComposition];
-  v8 = [(AVMutableComposition *)self tracks];
+  _mutableComposition = [(AVComposition *)self _mutableComposition];
+  tracks = [(AVMutableComposition *)self tracks];
   [(AVMutableComposition *)self willChangeValueForKey:@"duration"];
-  [(AVMutableComposition *)self _notifyTracksThatSegmentsWillChange:v8];
+  [(AVMutableComposition *)self _notifyTracksThatSegmentsWillChange:tracks];
   v13 = *&timeRange->start.value;
   epoch = timeRange->start.epoch;
   v12 = timeRange->duration;
   v11 = *duration;
   v9 = *(*(CMBaseObjectGetVTable() + 16) + 144);
-  if (!v9 || (v18 = v13, v19 = epoch, v17 = v12, v16 = v11, v9(v7, &v18, &v17, &v16)))
+  if (!v9 || (v18 = v13, v19 = epoch, v17 = v12, v16 = v11, v9(_mutableComposition, &v18, &v17, &v16)))
   {
     v10 = 0;
   }
@@ -383,7 +383,7 @@ LABEL_22:
   }
 
   [(AVMutableComposition *)self didChangeValueForKey:@"duration", *&v11.value, v11.epoch];
-  [(AVMutableComposition *)self _notifyTracksThatSegmentsDidChange:v8 successfully:v10];
+  [(AVMutableComposition *)self _notifyTracksThatSegmentsDidChange:tracks successfully:v10];
   AVTelemetryIntervalEnd(&v15);
 }
 
@@ -406,56 +406,56 @@ LABEL_22:
 - (AVMutableCompositionTrack)mutableTrackCompatibleWithTrack:(AVAssetTrack *)track
 {
   v20 = [[AVTelemetryInterval alloc] initAndStartWith:31];
-  v5 = [(AVComposition *)self _mutableComposition];
+  _mutableComposition = [(AVComposition *)self _mutableComposition];
   v19 = 0;
-  v6 = [(AVAssetTrack *)track asset];
-  v7 = [(AVAsset *)v6 _absoluteURL];
-  v8 = [(AVAsset *)v6 _mutableComposition];
+  asset = [(AVAssetTrack *)track asset];
+  _absoluteURL = [(AVAsset *)asset _absoluteURL];
+  _mutableComposition2 = [(AVAsset *)asset _mutableComposition];
   if (!track)
   {
     goto LABEL_12;
   }
 
-  if (v7)
+  if (_absoluteURL)
   {
-    v9 = [(AVAsset *)v6 _figAsset];
+    _figAsset = [(AVAsset *)asset _figAsset];
     v10 = *(*(CMBaseObjectGetVTable() + 16) + 176);
     if (!v10)
     {
       goto LABEL_12;
     }
 
-    if (v10(v5, v7, v9))
+    if (v10(_mutableComposition, _absoluteURL, _figAsset))
     {
       goto LABEL_12;
     }
 
-    v11 = [(AVAssetTrack *)track trackID];
+    trackID = [(AVAssetTrack *)track trackID];
     v12 = *(*(CMBaseObjectGetVTable() + 16) + 24);
     if (!v12)
     {
       goto LABEL_12;
     }
 
-    v13 = v12(v5, v7, v11, &v19);
+    v13 = v12(_mutableComposition, _absoluteURL, trackID, &v19);
   }
 
   else
   {
-    v14 = v8;
-    if (!v8)
+    v14 = _mutableComposition2;
+    if (!_mutableComposition2)
     {
       goto LABEL_12;
     }
 
-    v15 = [(AVAssetTrack *)track trackID];
+    trackID2 = [(AVAssetTrack *)track trackID];
     v16 = *(*(CMBaseObjectGetVTable() + 16) + 200);
     if (!v16)
     {
       goto LABEL_12;
     }
 
-    v13 = v16(v5, v14, v15, &v19);
+    v13 = v16(_mutableComposition, v14, trackID2, &v19);
   }
 
   if (v13)
@@ -471,14 +471,14 @@ LABEL_13:
   return v17;
 }
 
-- (void)_notifyTracksThatSegmentsWillChange:(id)a3
+- (void)_notifyTracksThatSegmentsWillChange:(id)change
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [change countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -490,29 +490,29 @@ LABEL_13:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(change);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) willChangeValueForKey:@"segments"];
       }
 
       while (v5 != v7);
-      v5 = [a3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [change countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_notifyTracksThatSegmentsDidChange:(id)a3 successfully:(BOOL)a4
+- (void)_notifyTracksThatSegmentsDidChange:(id)change successfully:(BOOL)successfully
 {
-  v4 = a4;
+  successfullyCopy = successfully;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [change countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -523,19 +523,19 @@ LABEL_13:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(change);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         [v10 didChangeValueForKey:@"segments"];
-        if (v4)
+        if (successfullyCopy)
         {
           [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
           [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [change countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -561,14 +561,14 @@ uint64_t __73__AVMutableComposition_insertTimeRange_ofAsset_atTime_completionHan
   return (*(*(a1 + 48) + 16))();
 }
 
-- (id)_addMutableTrackWithMediaType:(id)a3 preferredTrackID:(int)a4 fireKVO:(BOOL)a5
+- (id)_addMutableTrackWithMediaType:(id)type preferredTrackID:(int)d fireKVO:(BOOL)o
 {
-  v5 = a5;
-  v6 = *&a4;
-  v9 = [(AVComposition *)self _mutableComposition];
+  oCopy = o;
+  v6 = *&d;
+  _mutableComposition = [(AVComposition *)self _mutableComposition];
   v18 = 0;
-  v10 = [(AVComposition *)self _mutableTracks];
-  v11 = [a3 getCString:v19 maxLength:5 encoding:1];
+  _mutableTracks = [(AVComposition *)self _mutableTracks];
+  v11 = [type getCString:v19 maxLength:5 encoding:1];
   v12 = bswap32(v19[0]);
   if (v11)
   {
@@ -581,12 +581,12 @@ uint64_t __73__AVMutableComposition_insertTimeRange_ofAsset_atTime_completionHan
   }
 
   v14 = *(*(CMBaseObjectGetVTable() + 16) + 32);
-  if (!v14 || v14(v9, v13, 0, v6, &v18))
+  if (!v14 || v14(_mutableComposition, v13, 0, v6, &v18))
   {
     return 0;
   }
 
-  if (v5)
+  if (oCopy)
   {
     [(AVMutableComposition *)self willChangeValueForKey:@"tracks"];
   }
@@ -595,10 +595,10 @@ uint64_t __73__AVMutableComposition_insertTimeRange_ofAsset_atTime_completionHan
   v16 = [(AVAssetTrack *)v15 _initWithAsset:self trackID:v18];
   if (v16)
   {
-    [v10 addObject:v16];
+    [_mutableTracks addObject:v16];
   }
 
-  if (v5)
+  if (oCopy)
   {
     [(AVMutableComposition *)self didChangeValueForKey:@"tracks"];
   }
@@ -606,38 +606,38 @@ uint64_t __73__AVMutableComposition_insertTimeRange_ofAsset_atTime_completionHan
   return v16;
 }
 
-- (void)_removeTrack:(id)a3 fireKVO:(BOOL)a4
+- (void)_removeTrack:(id)track fireKVO:(BOOL)o
 {
-  v4 = a4;
-  v7 = [(AVComposition *)self _mutableComposition];
-  v8 = [(AVComposition *)self _mutableTracks];
-  v9 = [v8 indexOfObject:a3];
-  if (a3)
+  oCopy = o;
+  _mutableComposition = [(AVComposition *)self _mutableComposition];
+  _mutableTracks = [(AVComposition *)self _mutableTracks];
+  v9 = [_mutableTracks indexOfObject:track];
+  if (track)
   {
-    if (v8)
+    if (_mutableTracks)
     {
       v10 = v9;
-      if (v9 != 0x7FFFFFFFFFFFFFFFLL && [a3 asset] == self)
+      if (v9 != 0x7FFFFFFFFFFFFFFFLL && [track asset] == self)
       {
-        if (v4)
+        if (oCopy)
         {
           [(AVMutableComposition *)self willChangeValueForKey:@"duration"];
         }
 
-        v11 = [a3 trackID];
+        trackID = [track trackID];
         v12 = *(*(CMBaseObjectGetVTable() + 16) + 40);
-        if (v12 && !v12(v7, v11))
+        if (v12 && !v12(_mutableComposition, trackID))
         {
-          if (v4)
+          if (oCopy)
           {
             [(AVMutableComposition *)self willChangeValueForKey:@"tracks"];
-            [v8 removeObjectAtIndex:v10];
+            [_mutableTracks removeObjectAtIndex:v10];
             [(AVMutableComposition *)self didChangeValueForKey:@"tracks"];
           }
 
           else
           {
-            [v8 removeObjectAtIndex:v10];
+            [_mutableTracks removeObjectAtIndex:v10];
           }
 
           [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
@@ -646,7 +646,7 @@ uint64_t __73__AVMutableComposition_insertTimeRange_ofAsset_atTime_completionHan
     }
   }
 
-  if (v4)
+  if (oCopy)
   {
 
     [(AVMutableComposition *)self didChangeValueForKey:@"duration"];

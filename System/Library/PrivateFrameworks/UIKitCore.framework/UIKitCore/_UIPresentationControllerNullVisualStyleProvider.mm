@@ -1,33 +1,33 @@
 @interface _UIPresentationControllerNullVisualStyleProvider
-- (Class)presentationControllerClassForModalPresentationStyle:(int64_t)a3 inIdiom:(int64_t)a4;
-- (id)defaultStyleForPresentationController:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3;
-- (id)presentationControllerForPresentedViewController:(id)a3 inIdiom:(int64_t)a4;
-- (id)styleForRootPresentationController:(id)a3;
-- (int64_t)defaultConcretePresentationStyleForViewController:(id)a3;
+- (Class)presentationControllerClassForModalPresentationStyle:(int64_t)style inIdiom:(int64_t)idiom;
+- (id)defaultStyleForPresentationController:(id)controller;
+- (id)presentationControllerForPresentedViewController:(id)controller;
+- (id)presentationControllerForPresentedViewController:(id)controller inIdiom:(int64_t)idiom;
+- (id)styleForRootPresentationController:(id)controller;
+- (int64_t)defaultConcretePresentationStyleForViewController:(id)controller;
 @end
 
 @implementation _UIPresentationControllerNullVisualStyleProvider
 
-- (id)defaultStyleForPresentationController:(id)a3
+- (id)defaultStyleForPresentationController:(id)controller
 {
-  v3 = a3;
-  v4 = [[_UIPresentationControllerVisualStyle alloc] initWithPresentationController:v3];
+  controllerCopy = controller;
+  v4 = [[_UIPresentationControllerVisualStyle alloc] initWithPresentationController:controllerCopy];
 
   return v4;
 }
 
-- (id)styleForRootPresentationController:(id)a3
+- (id)styleForRootPresentationController:(id)controller
 {
-  v3 = a3;
-  v4 = [[_UIPresentationControllerVisualStyle alloc] initWithPresentationController:v3];
+  controllerCopy = controller;
+  v4 = [[_UIPresentationControllerVisualStyle alloc] initWithPresentationController:controllerCopy];
 
   return v4;
 }
 
-- (int64_t)defaultConcretePresentationStyleForViewController:(id)a3
+- (int64_t)defaultConcretePresentationStyleForViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (qword_1ED49F698 != -1)
   {
     dispatch_once(&qword_1ED49F698, &__block_literal_global_419);
@@ -40,7 +40,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 topViewController];
+      topViewController = [controllerCopy topViewController];
       NSClassFromString(&cfstr_Cnvisualidenti.isa);
       v7 = objc_opt_isKindOfClass();
 
@@ -106,8 +106,8 @@ LABEL_14:
   else
   {
 LABEL_21:
-    v12 = [(_UIPresentationControllerNullVisualStyleProvider *)self defaultSheetMetrics];
-    if ([v12 defaultMode])
+    defaultSheetMetrics = [(_UIPresentationControllerNullVisualStyleProvider *)self defaultSheetMetrics];
+    if ([defaultSheetMetrics defaultMode])
     {
       v10 = 2;
     }
@@ -123,37 +123,37 @@ LABEL_25:
   return v10;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 inIdiom:(int64_t)a4
+- (id)presentationControllerForPresentedViewController:(id)controller inIdiom:(int64_t)idiom
 {
-  v6 = a3;
-  v7 = [objc_alloc(-[_UIPresentationControllerNullVisualStyleProvider presentationControllerClassForModalPresentationStyle:inIdiom:](self presentationControllerClassForModalPresentationStyle:objc_msgSend(v6 inIdiom:{"modalPresentationStyle"), a4)), "initWithPresentedViewController:presentingViewController:", v6, 0}];
+  controllerCopy = controller;
+  v7 = [objc_alloc(-[_UIPresentationControllerNullVisualStyleProvider presentationControllerClassForModalPresentationStyle:inIdiom:](self presentationControllerClassForModalPresentationStyle:objc_msgSend(controllerCopy inIdiom:{"modalPresentationStyle"), idiom)), "initWithPresentedViewController:presentingViewController:", controllerCopy, 0}];
 
   return v7;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3
+- (id)presentationControllerForPresentedViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 traitCollection];
-  v6 = -[_UIPresentationControllerNullVisualStyleProvider presentationControllerForPresentedViewController:inIdiom:](self, "presentationControllerForPresentedViewController:inIdiom:", v4, [v5 userInterfaceIdiom]);
+  controllerCopy = controller;
+  traitCollection = [controllerCopy traitCollection];
+  v6 = -[_UIPresentationControllerNullVisualStyleProvider presentationControllerForPresentedViewController:inIdiom:](self, "presentationControllerForPresentedViewController:inIdiom:", controllerCopy, [traitCollection userInterfaceIdiom]);
 
   return v6;
 }
 
-- (Class)presentationControllerClassForModalPresentationStyle:(int64_t)a3 inIdiom:(int64_t)a4
+- (Class)presentationControllerClassForModalPresentationStyle:(int64_t)style inIdiom:(int64_t)idiom
 {
   v5 = 0;
-  if (a3 > 6)
+  if (style > 6)
   {
-    if (a3 > 16)
+    if (style > 16)
     {
-      if (a3 == 17 || a3 == 18 || a3 == 100)
+      if (style == 17 || style == 18 || style == 100)
       {
         goto LABEL_17;
       }
     }
 
-    else if (a3 == 7 || a3 == 8 || a3 == 16)
+    else if (style == 7 || style == 8 || style == 16)
     {
       goto LABEL_17;
     }
@@ -161,9 +161,9 @@ LABEL_25:
 
   else
   {
-    if (a3 <= 2)
+    if (style <= 2)
     {
-      if (a3 > 2)
+      if (style > 2)
       {
         goto LABEL_18;
       }
@@ -173,7 +173,7 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    if (a3 == 3 || a3 == 5 || a3 == 6)
+    if (style == 3 || style == 5 || style == 6)
     {
       goto LABEL_17;
     }

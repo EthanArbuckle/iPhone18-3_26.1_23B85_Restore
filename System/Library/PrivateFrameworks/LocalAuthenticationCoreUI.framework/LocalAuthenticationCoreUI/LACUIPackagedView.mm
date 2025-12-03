@@ -1,9 +1,9 @@
 @interface LACUIPackagedView
 - (BOOL)_isRendered;
-- (CGPoint)convertPointToSublayerCoordinates:(CGPoint)a3;
-- (CGRect)convertRectFromSublayerCoordinates:(CGRect)a3;
-- (LACUIPackagedView)initWithURL:(id)a3 error:(id *)a4;
-- (void)_setState:(int)a3 animated:(int)a4 allowRetry:(void *)a5 completion:;
+- (CGPoint)convertPointToSublayerCoordinates:(CGPoint)coordinates;
+- (CGRect)convertRectFromSublayerCoordinates:(CGRect)coordinates;
+- (LACUIPackagedView)initWithURL:(id)l error:(id *)error;
+- (void)_setState:(int)state animated:(int)animated allowRetry:(void *)retry completion:;
 - (void)_updateRootLayer;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
@@ -11,9 +11,9 @@
 
 @implementation LACUIPackagedView
 
-- (LACUIPackagedView)initWithURL:(id)a3 error:(id *)a4
+- (LACUIPackagedView)initWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v23.receiver = self;
   v23.super_class = LACUIPackagedView;
   v7 = [(LACUIPackagedView *)&v23 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -24,27 +24,27 @@
 
   v8 = *MEMORY[0x277CDA7F8];
   v22 = 0;
-  v9 = [MEMORY[0x277CD9F28] packageWithContentsOfURL:v6 type:v8 options:0 error:&v22];
+  v9 = [MEMORY[0x277CD9F28] packageWithContentsOfURL:lCopy type:v8 options:0 error:&v22];
   v10 = v22;
   v11 = v10;
-  if (a4)
+  if (error)
   {
     v12 = v10;
-    *a4 = v11;
+    *error = v11;
   }
 
   if (v9)
   {
-    v13 = [v9 rootLayer];
+    rootLayer = [v9 rootLayer];
     rootLayer = v7->_rootLayer;
-    v7->_rootLayer = v13;
+    v7->_rootLayer = rootLayer;
 
     -[CALayer setGeometryFlipped:](v7->_rootLayer, "setGeometryFlipped:", [v9 isGeometryFlipped]);
-    v15 = [(LACUIPackagedView *)v7 layer];
-    [v15 setMasksToBounds:0];
+    layer = [(LACUIPackagedView *)v7 layer];
+    [layer setMasksToBounds:0];
 
-    v16 = [(LACUIPackagedView *)v7 layer];
-    [v16 addSublayer:v7->_rootLayer];
+    layer2 = [(LACUIPackagedView *)v7 layer];
+    [layer2 addSublayer:v7->_rootLayer];
 
     v17 = [[LACUIPackagedViewStateController alloc] initWithLayer:v7->_rootLayer];
     stateController = v7->_stateController;
@@ -58,7 +58,7 @@ LABEL_6:
   v20 = LA_LOG_LACUIPackagedView();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    [(LACUIPackagedView *)v6 initWithURL:v11 error:v20];
+    [(LACUIPackagedView *)lCopy initWithURL:v11 error:v20];
   }
 
   v19 = 0;
@@ -67,12 +67,12 @@ LABEL_10:
   return v19;
 }
 
-- (CGRect)convertRectFromSublayerCoordinates:(CGRect)a3
+- (CGRect)convertRectFromSublayerCoordinates:(CGRect)coordinates
 {
   rootLayer = self->_rootLayer;
   if (rootLayer)
   {
-    [(CALayer *)rootLayer transform:a3.origin.x];
+    [(CALayer *)rootLayer transform:coordinates.origin.x];
   }
 
   CA_CGRectApplyTransform();
@@ -83,12 +83,12 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)convertPointToSublayerCoordinates:(CGPoint)a3
+- (CGPoint)convertPointToSublayerCoordinates:(CGPoint)coordinates
 {
   rootLayer = self->_rootLayer;
   if (rootLayer)
   {
-    [(CALayer *)rootLayer transform:a3.x];
+    [(CALayer *)rootLayer transform:coordinates.x];
   }
 
   else
@@ -122,22 +122,22 @@ LABEL_10:
   }
 }
 
-- (void)_setState:(int)a3 animated:(int)a4 allowRetry:(void *)a5 completion:
+- (void)_setState:(int)state animated:(int)animated allowRetry:(void *)retry completion:
 {
   v27 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a5;
-  if (a1)
+  retryCopy = retry;
+  if (self)
   {
-    if (a3)
+    if (state)
     {
-      v11 = [a1 window];
+      window = [self window];
 
-      if (!v11)
+      if (!window)
       {
-        if (a4)
+        if (animated)
         {
-          objc_initWeak(location, a1);
+          objc_initWeak(location, self);
           v12 = dispatch_time(0, 10000000);
           v19[0] = MEMORY[0x277D85DD0];
           v19[1] = 3221225472;
@@ -145,8 +145,8 @@ LABEL_10:
           v19[3] = &unk_27981EB70;
           objc_copyWeak(&v22, location);
           v20 = v9;
-          v23 = a3;
-          v21 = v10;
+          stateCopy = state;
+          v21 = retryCopy;
           dispatch_after(v12, MEMORY[0x277D85CD0], v19);
 
           objc_destroyWeak(&v22);
@@ -158,27 +158,27 @@ LABEL_10:
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
           *location = 138412546;
-          *&location[4] = a1;
+          *&location[4] = self;
           v25 = 2112;
           v26 = v9;
           _os_log_error_impl(&dword_256063000, v15, OS_LOG_TYPE_ERROR, "%@ animated transition to '%@' state will be skipped because view is not rendered", location, 0x16u);
         }
       }
 
-      v14 = a1[51];
-      v16 = [a1 window];
-      v13 = v16 != 0;
+      v14 = self[51];
+      window2 = [self window];
+      v13 = window2 != 0;
     }
 
     else
     {
       v13 = 0;
-      v14 = a1[51];
+      v14 = self[51];
     }
 
-    if (v10)
+    if (retryCopy)
     {
-      v17 = v10;
+      v17 = retryCopy;
     }
 
     else
@@ -196,10 +196,10 @@ LABEL_15:
 
 - (void)_updateRootLayer
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1[53];
-    [a1 bounds];
+    v1 = self[53];
+    [self bounds];
 
     LACUILayerScaleToFitInRect(v1, v2, v3, v4, v5);
   }
@@ -207,13 +207,13 @@ LABEL_15:
 
 - (BOOL)_isRendered
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 window];
-  v2 = v1 != 0;
+  window = [self window];
+  v2 = window != 0;
 
   return v2;
 }

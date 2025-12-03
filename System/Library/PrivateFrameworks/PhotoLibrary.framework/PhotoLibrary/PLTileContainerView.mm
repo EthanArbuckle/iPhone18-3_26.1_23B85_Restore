@@ -1,28 +1,28 @@
 @interface PLTileContainerView
-- (PLTileContainerView)initWithFrame:(CGRect)a3 photoTileController:(id)a4;
-- (void)willMoveToSuperview:(id)a3;
+- (PLTileContainerView)initWithFrame:(CGRect)frame photoTileController:(id)controller;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation PLTileContainerView
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   v5.receiver = self;
   v5.super_class = PLTileContainerView;
   [(PLTileContainerView *)&v5 willMoveToSuperview:?];
-  [(PLPhotoTileViewController *)self->_photoTileController _viewWillMoveToSuperView:a3];
+  [(PLPhotoTileViewController *)self->_photoTileController _viewWillMoveToSuperView:superview];
 }
 
-- (PLTileContainerView)initWithFrame:(CGRect)a3 photoTileController:(id)a4
+- (PLTileContainerView)initWithFrame:(CGRect)frame photoTileController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = PLTileContainerView;
-  v5 = [(PLTileContainerView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PLTileContainerView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     [-[PLTileContainerView layer](v5 "layer")];
-    v6->_photoTileController = a4;
+    v6->_photoTileController = controller;
   }
 
   return v6;

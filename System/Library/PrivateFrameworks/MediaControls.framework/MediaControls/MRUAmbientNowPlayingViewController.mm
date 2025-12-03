@@ -1,17 +1,17 @@
 @interface MRUAmbientNowPlayingViewController
-- (MRUAmbientNowPlayingViewController)initWithNowPlayingController:(id)a3;
-- (void)artworkView:(id)a3 didChangeArtworkImage:(id)a4;
+- (MRUAmbientNowPlayingViewController)initWithNowPlayingController:(id)controller;
+- (void)artworkView:(id)view didChangeArtworkImage:(id)image;
 - (void)embedBackdropViewController;
 - (void)launchNowPlayingApp;
 - (void)loadView;
-- (void)nowPlayingController:(id)a3 endpointController:(id)a4 didChangeRoute:(id)a5;
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeArtwork:(id)a5;
-- (void)presentRoutingControlsFromSourceView:(id)a3;
+- (void)nowPlayingController:(id)controller endpointController:(id)endpointController didChangeRoute:(id)route;
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeArtwork:(id)artwork;
+- (void)presentRoutingControlsFromSourceView:(id)view;
 - (void)removeBackdropViewController;
-- (void)setArtworkTransitionDirection:(int64_t)a3;
-- (void)setBackdropViewController:(id)a3;
-- (void)setOnScreen:(BOOL)a3;
-- (void)transportButtonTap:(id)a3;
+- (void)setArtworkTransitionDirection:(int64_t)direction;
+- (void)setBackdropViewController:(id)controller;
+- (void)setOnScreen:(BOOL)screen;
+- (void)transportButtonTap:(id)tap;
 - (void)updateArtwork;
 - (void)updateEverything;
 - (void)updateNowPlayingInfo;
@@ -20,23 +20,23 @@
 - (void)updateTimeControls;
 - (void)updateTransportControls;
 - (void)updateVolumeControls;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MRUAmbientNowPlayingViewController
 
-- (MRUAmbientNowPlayingViewController)initWithNowPlayingController:(id)a3
+- (MRUAmbientNowPlayingViewController)initWithNowPlayingController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = MRUAmbientNowPlayingViewController;
   v6 = [(MRUAmbientNowPlayingViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
+    objc_storeStrong(&v6->_controller, controller);
   }
 
   return v7;
@@ -53,64 +53,64 @@
   v14.receiver = self;
   v14.super_class = MRUAmbientNowPlayingViewController;
   [(MRUAmbientNowPlayingViewController *)&v14 viewDidLoad];
-  v3 = [(MRUAmbientNowPlayingViewController *)self view];
-  [v3 setOverrideUserInterfaceStyle:2];
+  view = [(MRUAmbientNowPlayingViewController *)self view];
+  [view setOverrideUserInterfaceStyle:2];
 
   [(MRUNowPlayingController *)self->_controller addObserver:self];
-  v4 = [(MRUAmbientNowPlayingViewController *)self view];
-  v5 = [v4 artworkView];
-  [v5 addObserver:self];
+  view2 = [(MRUAmbientNowPlayingViewController *)self view];
+  artworkView = [view2 artworkView];
+  [artworkView addObserver:self];
 
-  v6 = [(MRUAmbientNowPlayingViewController *)self view];
-  v7 = [v6 routingButton];
-  [v7 addTarget:self action:sel_didSelectRoutingButton_ forControlEvents:64];
+  view3 = [(MRUAmbientNowPlayingViewController *)self view];
+  routingButton = [view3 routingButton];
+  [routingButton addTarget:self action:sel_didSelectRoutingButton_ forControlEvents:64];
 
-  v8 = [(MRUAmbientNowPlayingViewController *)self view];
-  v9 = [v8 leftButton];
-  [v9 addTarget:self action:sel_transportButtonTap_ forControlEvents:64];
+  view4 = [(MRUAmbientNowPlayingViewController *)self view];
+  leftButton = [view4 leftButton];
+  [leftButton addTarget:self action:sel_transportButtonTap_ forControlEvents:64];
 
-  v10 = [(MRUAmbientNowPlayingViewController *)self view];
-  v11 = [v10 rightButton];
-  [v11 addTarget:self action:sel_transportButtonTap_ forControlEvents:64];
+  view5 = [(MRUAmbientNowPlayingViewController *)self view];
+  rightButton = [view5 rightButton];
+  [rightButton addTarget:self action:sel_transportButtonTap_ forControlEvents:64];
 
-  v12 = [(MRUAmbientNowPlayingViewController *)self view];
-  v13 = [v12 labelView];
-  [v13 addTarget:self action:sel_didSelectLabelView_ forControlEvents:64];
+  view6 = [(MRUAmbientNowPlayingViewController *)self view];
+  labelView = [view6 labelView];
+  [labelView addTarget:self action:sel_didSelectLabelView_ forControlEvents:64];
 
   [(MRUAmbientNowPlayingViewController *)self updateEverything];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = MRUAmbientNowPlayingViewController;
-  [(MRUAmbientNowPlayingViewController *)&v7 viewWillAppear:a3];
+  [(MRUAmbientNowPlayingViewController *)&v7 viewWillAppear:appear];
   v4 = [MEMORY[0x1E69AE170] _visualStylingProviderForRecipe:101 andCategory:1];
   v5 = [[MRUVisualStylingProvider alloc] initWithVisualStylingProvider:v4];
-  v6 = [(MRUAmbientNowPlayingViewController *)self view];
-  [v6 setStylingProvider:v5];
+  view = [(MRUAmbientNowPlayingViewController *)self view];
+  [view setStylingProvider:v5];
 
   [(MRUAmbientNowPlayingViewController *)self updateEverything];
   [(MRUAmbientNowPlayingViewController *)self setOnScreen:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = MRUAmbientNowPlayingViewController;
-  [(MRUAmbientNowPlayingViewController *)&v4 viewDidDisappear:a3];
+  [(MRUAmbientNowPlayingViewController *)&v4 viewDidDisappear:disappear];
   [(MRUAmbientNowPlayingViewController *)self setOnScreen:0];
   [(MRUAmbientNowPlayingViewController *)self removeBackdropViewController];
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
-    v4 = a3;
-    self->_onScreen = a3;
-    v6 = [(MRUAmbientNowPlayingViewController *)self view];
-    [v6 setOnScreen:v4];
+    screenCopy = screen;
+    self->_onScreen = screen;
+    view = [(MRUAmbientNowPlayingViewController *)self view];
+    [view setOnScreen:screenCopy];
 
     controller = self->_controller;
 
@@ -118,21 +118,21 @@
   }
 }
 
-- (void)setBackdropViewController:(id)a3
+- (void)setBackdropViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_backdropViewController != v5)
+  controllerCopy = controller;
+  if (self->_backdropViewController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backdropViewController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_backdropViewController, controller);
     [(MRUAmbientNowPlayingViewController *)self embedBackdropViewController];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
-- (void)setArtworkTransitionDirection:(int64_t)a3
+- (void)setArtworkTransitionDirection:(int64_t)direction
 {
-  self->_artworkTransitionDirection = a3;
+  self->_artworkTransitionDirection = direction;
   [(MSVTimer *)self->_artworkTransitionDirectionTimer invalidate];
   if (self->_artworkTransitionDirection == 1)
   {
@@ -147,7 +147,7 @@
   }
 }
 
-- (void)nowPlayingController:(id)a3 metadataController:(id)a4 didChangeArtwork:(id)a5
+- (void)nowPlayingController:(id)controller metadataController:(id)metadataController didChangeArtwork:(id)artwork
 {
   v12 = *MEMORY[0x1E69E9840];
   v6 = MCLogCategoryDefault();
@@ -155,7 +155,7 @@
   {
     v7 = MRUFlippingArtworkTransitionDirectionDescription([(MRUAmbientNowPlayingViewController *)self artworkTransitionDirection]);
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
     v11 = v7;
     _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "%@ updateArtwork direction:%@", &v8, 0x16u);
@@ -165,76 +165,76 @@
   [(MRUAmbientNowPlayingViewController *)self setArtworkTransitionDirection:0];
 }
 
-- (void)nowPlayingController:(id)a3 endpointController:(id)a4 didChangeRoute:(id)a5
+- (void)nowPlayingController:(id)controller endpointController:(id)endpointController didChangeRoute:(id)route
 {
-  [(MRUAmbientNowPlayingViewController *)self updateRoute:a3];
+  [(MRUAmbientNowPlayingViewController *)self updateRoute:controller];
   [(MRUAmbientNowPlayingViewController *)self updateVolumeControls];
 
   [(MRUAmbientNowPlayingViewController *)self updateRoutingButton];
 }
 
-- (void)artworkView:(id)a3 didChangeArtworkImage:(id)a4
+- (void)artworkView:(id)view didChangeArtworkImage:(id)image
 {
-  v5 = a4;
-  v6 = [(MRUAmbientNowPlayingViewController *)self backdropViewController];
-  [v6 updateImage:v5 animated:1];
+  imageCopy = image;
+  backdropViewController = [(MRUAmbientNowPlayingViewController *)self backdropViewController];
+  [backdropViewController updateImage:imageCopy animated:1];
 }
 
-- (void)transportButtonTap:(id)a3
+- (void)transportButtonTap:(id)tap
 {
-  v4 = a3;
-  v6 = [(MRUAmbientNowPlayingViewController *)self view];
-  v5 = [v6 leftButton];
+  tapCopy = tap;
+  view = [(MRUAmbientNowPlayingViewController *)self view];
+  leftButton = [view leftButton];
 
-  [(MRUAmbientNowPlayingViewController *)self setArtworkTransitionDirection:v5 == v4];
+  [(MRUAmbientNowPlayingViewController *)self setArtworkTransitionDirection:leftButton == tapCopy];
 }
 
 - (void)updateVolumeControls
 {
-  v3 = [(MRUAmbientNowPlayingViewController *)self view];
-  v4 = [v3 volumeControlsView];
+  view = [(MRUAmbientNowPlayingViewController *)self view];
+  volumeControlsView = [view volumeControlsView];
 
-  v5 = [(MRUNowPlayingController *)self->_controller endpointController];
-  v6 = [v5 route];
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  route = [endpointController route];
 
-  v7 = [v4 dataSource];
+  dataSource = [volumeControlsView dataSource];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v4 dataSource];
+    dataSource2 = [volumeControlsView dataSource];
   }
 
   else
   {
-    v8 = 0;
+    dataSource2 = 0;
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__MRUAmbientNowPlayingViewController_updateVolumeControls__block_invoke;
   aBlock[3] = &unk_1E7665D30;
-  v9 = v6;
+  v9 = route;
   v18 = v9;
   v10 = _Block_copy(aBlock);
-  v11 = [v4 volumeController];
+  volumeController = [volumeControlsView volumeController];
 
-  if (!v11)
+  if (!volumeController)
   {
     v15 = [MRUVolumeController alloc];
     v14 = v10[2](v10);
     v16 = [(MPVolumeController *)v15 initWithDataSource:v14];
-    [v4 setVolumeController:v16];
+    [volumeControlsView setVolumeController:v16];
 
     goto LABEL_8;
   }
 
-  v12 = [v8 groupRoute];
-  v13 = [v12 isEqual:v9];
+  groupRoute = [dataSource2 groupRoute];
+  v13 = [groupRoute isEqual:v9];
 
   if ((v13 & 1) == 0)
   {
     v14 = v10[2](v10);
-    [v4 setDataSource:v14];
+    [volumeControlsView setDataSource:v14];
 LABEL_8:
   }
 }
@@ -248,22 +248,22 @@ id __58__MRUAmbientNowPlayingViewController_updateVolumeControls__block_invoke(u
 
 - (void)updateRoute
 {
-  v3 = [(MRUAmbientNowPlayingViewController *)self view];
-  v5 = [v3 artworkView];
+  view = [(MRUAmbientNowPlayingViewController *)self view];
+  artworkView = [view artworkView];
 
-  v4 = [(MRUNowPlayingController *)self->_controller deviceSymbolName];
-  [v5 setPlaceholderSymbolName:v4];
+  deviceSymbolName = [(MRUNowPlayingController *)self->_controller deviceSymbolName];
+  [artworkView setPlaceholderSymbolName:deviceSymbolName];
 }
 
 - (void)updateRoutingButton
 {
-  v3 = [(MRUAmbientNowPlayingViewController *)self controller];
+  controller = [(MRUAmbientNowPlayingViewController *)self controller];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __57__MRUAmbientNowPlayingViewController_updateRoutingButton__block_invoke;
   v4[3] = &unk_1E7664290;
   v4[4] = self;
-  [v3 routingDeviceImage:v4];
+  [controller routingDeviceImage:v4];
 }
 
 void __57__MRUAmbientNowPlayingViewController_updateRoutingButton__block_invoke(uint64_t a1, void *a2)
@@ -276,36 +276,36 @@ void __57__MRUAmbientNowPlayingViewController_updateRoutingButton__block_invoke(
 
 - (void)updateNowPlayingInfo
 {
-  v5 = [(MRUNowPlayingController *)self->_controller metadataController];
-  v3 = [v5 nowPlayingInfo];
-  v4 = [(MRUAmbientNowPlayingViewController *)self view];
-  [v4 setNowPlayingInfo:v3];
+  metadataController = [(MRUNowPlayingController *)self->_controller metadataController];
+  nowPlayingInfo = [metadataController nowPlayingInfo];
+  view = [(MRUAmbientNowPlayingViewController *)self view];
+  [view setNowPlayingInfo:nowPlayingInfo];
 }
 
 - (void)updateArtwork
 {
-  v6 = [(MRUAmbientNowPlayingViewController *)self view];
-  v3 = [v6 artworkView];
-  v4 = [(MRUNowPlayingController *)self->_controller metadataController];
-  v5 = [v4 artwork];
-  [v3 setArtwork:v5 transitionDirection:{-[MRUAmbientNowPlayingViewController artworkTransitionDirection](self, "artworkTransitionDirection")}];
+  view = [(MRUAmbientNowPlayingViewController *)self view];
+  artworkView = [view artworkView];
+  metadataController = [(MRUNowPlayingController *)self->_controller metadataController];
+  artwork = [metadataController artwork];
+  [artworkView setArtwork:artwork transitionDirection:{-[MRUAmbientNowPlayingViewController artworkTransitionDirection](self, "artworkTransitionDirection")}];
 }
 
 - (void)updateTimeControls
 {
-  v6 = [(MRUNowPlayingController *)self->_controller metadataController];
-  v3 = [v6 timeControls];
-  v4 = [(MRUAmbientNowPlayingViewController *)self view];
-  v5 = [v4 timeControlsView];
-  [v5 setTimeControls:v3];
+  metadataController = [(MRUNowPlayingController *)self->_controller metadataController];
+  timeControls = [metadataController timeControls];
+  view = [(MRUAmbientNowPlayingViewController *)self view];
+  timeControlsView = [view timeControlsView];
+  [timeControlsView setTimeControls:timeControls];
 }
 
 - (void)updateTransportControls
 {
-  v5 = [(MRUNowPlayingController *)self->_controller metadataController];
-  v3 = [v5 transportControls];
-  v4 = [(MRUAmbientNowPlayingViewController *)self view];
-  [v4 setTransportControls:v3];
+  metadataController = [(MRUNowPlayingController *)self->_controller metadataController];
+  transportControls = [metadataController transportControls];
+  view = [(MRUAmbientNowPlayingViewController *)self view];
+  [view setTransportControls:transportControls];
 }
 
 - (void)updateEverything
@@ -320,15 +320,15 @@ void __57__MRUAmbientNowPlayingViewController_updateRoutingButton__block_invoke(
   [(MRUAmbientNowPlayingViewController *)self updateTransportControls];
 }
 
-- (void)presentRoutingControlsFromSourceView:(id)a3
+- (void)presentRoutingControlsFromSourceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(MEMORY[0x1E69705B8]);
   if (!+[MRUFeatureFlagProvider isCayenneEnabled])
   {
-    v6 = [MEMORY[0x1E696AAE8] mainBundle];
-    v7 = [v6 bundleIdentifier];
-    [v5 setPresentingAppBundleID:v7];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [v5 setPresentingAppBundleID:bundleIdentifier];
   }
 
   [v5 setSurface:8];
@@ -365,15 +365,15 @@ void __75__MRUAmbientNowPlayingViewController_presentRoutingControlsFromSourceVi
 {
   [(MRUAmbientNowPlayingViewController *)self addChildViewController:self->_backdropViewController];
   backdropViewController = self->_backdropViewController;
-  v4 = [(MRUAmbientNowPlayingViewController *)self view];
-  v5 = [v4 artworkView];
-  v6 = [v5 artworkImage];
-  [(MRUBackdropControllerProtocol *)backdropViewController updateImage:v6 animated:0];
+  view = [(MRUAmbientNowPlayingViewController *)self view];
+  artworkView = [view artworkView];
+  artworkImage = [artworkView artworkImage];
+  [(MRUBackdropControllerProtocol *)backdropViewController updateImage:artworkImage animated:0];
 
   [(MRUBackdropControllerProtocol *)self->_backdropViewController beginAppearanceTransition:1 animated:self->_onScreen];
-  v7 = [(MRUBackdropControllerProtocol *)self->_backdropViewController view];
-  v8 = [(MRUAmbientNowPlayingViewController *)self view];
-  [v8 setBackgroundView:v7];
+  view2 = [(MRUBackdropControllerProtocol *)self->_backdropViewController view];
+  view3 = [(MRUAmbientNowPlayingViewController *)self view];
+  [view3 setBackgroundView:view2];
 
   [(MRUBackdropControllerProtocol *)self->_backdropViewController didMoveToParentViewController:self];
   v9 = self->_backdropViewController;
@@ -385,8 +385,8 @@ void __75__MRUAmbientNowPlayingViewController_presentRoutingControlsFromSourceVi
 {
   [(MRUBackdropControllerProtocol *)self->_backdropViewController willMoveToParentViewController:0];
   [(MRUBackdropControllerProtocol *)self->_backdropViewController beginAppearanceTransition:0 animated:self->_onScreen];
-  v3 = [(MRUAmbientNowPlayingViewController *)self view];
-  [v3 setBackgroundView:0];
+  view = [(MRUAmbientNowPlayingViewController *)self view];
+  [view setBackgroundView:0];
 
   [(MRUBackdropControllerProtocol *)self->_backdropViewController removeFromParentViewController];
   backdropViewController = self->_backdropViewController;
@@ -396,8 +396,8 @@ void __75__MRUAmbientNowPlayingViewController_presentRoutingControlsFromSourceVi
 
 - (void)launchNowPlayingApp
 {
-  v2 = [(MRUNowPlayingController *)self->_controller endpointController];
-  [v2 launchNowPlayingApp];
+  endpointController = [(MRUNowPlayingController *)self->_controller endpointController];
+  [endpointController launchNowPlayingApp];
 }
 
 @end

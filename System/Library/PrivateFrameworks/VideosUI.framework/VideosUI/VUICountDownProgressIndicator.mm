@@ -2,33 +2,33 @@
 - (UIEdgeInsets)backgroundImageInset;
 - (UIEdgeInsets)centerImageInset;
 - (UIEdgeInsets)progressInset;
-- (VUICountDownProgressIndicator)initWithFrame:(CGRect)a3 duration:(double)a4;
-- (void)_animateValueOnDisplayLink:(id)a3;
+- (VUICountDownProgressIndicator)initWithFrame:(CGRect)frame duration:(double)duration;
+- (void)_animateValueOnDisplayLink:(id)link;
 - (void)_configureBackground;
 - (void)_configureProgressLayer;
-- (void)_setProgress:(double)a3 animated:(BOOL)a4;
+- (void)_setProgress:(double)progress animated:(BOOL)animated;
 - (void)_stopAutoAnimation;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)setBackgroundTintColor:(id)a3;
-- (void)setCenterImage:(id)a3;
-- (void)setCenterImageInset:(UIEdgeInsets)a3;
-- (void)setProgressTintColor:(id)a3;
-- (void)setTintColor:(id)a3;
+- (void)setBackgroundTintColor:(id)color;
+- (void)setCenterImage:(id)image;
+- (void)setCenterImageInset:(UIEdgeInsets)inset;
+- (void)setProgressTintColor:(id)color;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation VUICountDownProgressIndicator
 
-- (VUICountDownProgressIndicator)initWithFrame:(CGRect)a3 duration:(double)a4
+- (VUICountDownProgressIndicator)initWithFrame:(CGRect)frame duration:(double)duration
 {
   v17.receiver = self;
   v17.super_class = VUICountDownProgressIndicator;
-  v5 = [(VUICountDownProgressIndicator *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(VUICountDownProgressIndicator *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    *(v5 + 52) = a4;
+    *(v5 + 52) = duration;
     *(v5 + 70) = 0xBFF0000000000000;
     *(v5 + 67) = 0;
     *(v5 + 54) = 0x4008000000000000;
@@ -54,9 +54,9 @@
   v4.receiver = self;
   v4.super_class = VUICountDownProgressIndicator;
   [(VUICountDownProgressIndicator *)&v4 didMoveToSuperview];
-  v3 = [(VUICountDownProgressIndicator *)self superview];
+  superview = [(VUICountDownProgressIndicator *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(VUICountDownProgressIndicator *)self _configureProgressLayer];
     [(VUICountDownProgressIndicator *)self restartWithAnimation:1];
@@ -83,8 +83,8 @@
   v14 = v6 + v13;
   v16 = v8 - (v11 + v15);
   v18 = v10 - (v13 + v17);
-  v19 = [(VUICountDownProgressIndicator *)self progressLayer];
-  [v19 setFrame:{v12, v14, v16, v18}];
+  progressLayer = [(VUICountDownProgressIndicator *)self progressLayer];
+  [progressLayer setFrame:{v12, v14, v16, v18}];
 
   [(VUICountDownProgressIndicator *)self bounds];
   v21 = v20;
@@ -96,19 +96,19 @@
   v31 = v23 + v30;
   v33 = v25 - (v28 + v32);
   v35 = v27 - (v30 + v34);
-  v36 = [(VUICountDownProgressIndicator *)self centerImageView];
-  [v36 setFrame:{v29, v31, v33, v35}];
+  centerImageView = [(VUICountDownProgressIndicator *)self centerImageView];
+  [centerImageView setFrame:{v29, v31, v33, v35}];
 
   [(VUICountDownProgressIndicator *)self bounds];
   v38 = v37 * 0.5;
-  v39 = [(VUICountDownProgressIndicator *)self layer];
-  [v39 setCornerRadius:v38];
+  layer = [(VUICountDownProgressIndicator *)self layer];
+  [layer setCornerRadius:v38];
 }
 
 - (void)dealloc
 {
-  v3 = [(VUICountDownProgressIndicator *)self displayLink];
-  [v3 invalidate];
+  displayLink = [(VUICountDownProgressIndicator *)self displayLink];
+  [displayLink invalidate];
 
   [(VUICountDownProgressIndicator *)self setDisplayLink:0];
   v4.receiver = self;
@@ -116,83 +116,83 @@
   [(VUICountDownProgressIndicator *)&v4 dealloc];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = VUICountDownProgressIndicator;
-  v3 = [(VUICountDownProgressIndicator *)&v4 tintColor];
+  tintColor = [(VUICountDownProgressIndicator *)&v4 tintColor];
 }
 
-- (void)setProgressTintColor:(id)a3
+- (void)setProgressTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_progressTintColor != v5)
+  colorCopy = color;
+  if (self->_progressTintColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_progressTintColor, a3);
-    v6 = [(VUICountDownProgressIndicator *)self progressLayer];
+    v8 = colorCopy;
+    objc_storeStrong(&self->_progressTintColor, color);
+    progressLayer = [(VUICountDownProgressIndicator *)self progressLayer];
     v7 = v8;
-    [v6 setStrokeColor:{-[UIColor CGColor](v8, "CGColor")}];
+    [progressLayer setStrokeColor:{-[UIColor CGColor](v8, "CGColor")}];
 
     [(VUICountDownProgressIndicator *)self setNeedsDisplay];
-    v5 = v8;
+    colorCopy = v8;
   }
 }
 
-- (void)setCenterImageInset:(UIEdgeInsets)a3
+- (void)setCenterImageInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_centerImageInset.top, v3), vceqq_f64(*&self->_centerImageInset.bottom, v4)))) & 1) == 0)
   {
-    self->_centerImageInset = a3;
+    self->_centerImageInset = inset;
     [(VUICountDownProgressIndicator *)self setNeedsDisplay];
   }
 }
 
-- (void)setCenterImage:(id)a3
+- (void)setCenterImage:(id)image
 {
-  v5 = a3;
-  if (self->_centerImage != v5)
+  imageCopy = image;
+  if (self->_centerImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_centerImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_centerImage, image);
     [(VUICountDownProgressIndicator *)self _configureBackground];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setBackgroundTintColor:(id)a3
+- (void)setBackgroundTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_backgroundTintColor != v5)
+  colorCopy = color;
+  if (self->_backgroundTintColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backgroundTintColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_backgroundTintColor, color);
     [(VUICountDownProgressIndicator *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
 - (void)_configureProgressLayer
 {
-  v3 = [(VUICountDownProgressIndicator *)self progressLayer];
+  progressLayer = [(VUICountDownProgressIndicator *)self progressLayer];
 
-  if (!v3)
+  if (!progressLayer)
   {
     v7 = objc_opt_new();
-    v4 = [(VUICountDownProgressIndicator *)self progressTintColor];
-    [v7 setStrokeColor:{objc_msgSend(v4, "CGColor")}];
+    progressTintColor = [(VUICountDownProgressIndicator *)self progressTintColor];
+    [v7 setStrokeColor:{objc_msgSend(progressTintColor, "CGColor")}];
 
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [v7 setFillColor:{objc_msgSend(v5, "CGColor")}];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v7 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
     [(VUICountDownProgressIndicator *)self progressWidth];
     [v7 setLineWidth:?];
-    v6 = [(VUICountDownProgressIndicator *)self layer];
-    [v6 addSublayer:v7];
+    layer = [(VUICountDownProgressIndicator *)self layer];
+    [layer addSublayer:v7];
 
     [(VUICountDownProgressIndicator *)self setProgressLayer:v7];
   }
@@ -200,53 +200,53 @@
 
 - (void)_configureBackground
 {
-  v3 = [(VUICountDownProgressIndicator *)self backgroundTintColor];
+  backgroundTintColor = [(VUICountDownProgressIndicator *)self backgroundTintColor];
 
-  if (v3)
+  if (backgroundTintColor)
   {
-    v4 = [(VUICountDownProgressIndicator *)self backgroundTintColor];
-    [(VUICountDownProgressIndicator *)self setBackgroundColor:v4];
+    backgroundTintColor2 = [(VUICountDownProgressIndicator *)self backgroundTintColor];
+    [(VUICountDownProgressIndicator *)self setBackgroundColor:backgroundTintColor2];
   }
 
-  v5 = [(VUICountDownProgressIndicator *)self centerImage];
+  centerImage = [(VUICountDownProgressIndicator *)self centerImage];
 
-  if (v5)
+  if (centerImage)
   {
-    v6 = [(VUICountDownProgressIndicator *)self centerImageView];
-    v7 = [v6 superview];
+    centerImageView = [(VUICountDownProgressIndicator *)self centerImageView];
+    superview = [centerImageView superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
-      v8 = [(VUICountDownProgressIndicator *)self centerImageView];
-      [v8 removeFromSuperview];
+      centerImageView2 = [(VUICountDownProgressIndicator *)self centerImageView];
+      [centerImageView2 removeFromSuperview];
     }
 
     v9 = objc_alloc(MEMORY[0x1E69DCAE0]);
-    v10 = [(VUICountDownProgressIndicator *)self centerImage];
-    v11 = [v9 initWithImage:v10];
+    centerImage2 = [(VUICountDownProgressIndicator *)self centerImage];
+    v11 = [v9 initWithImage:centerImage2];
     [(VUICountDownProgressIndicator *)self setCenterImageView:v11];
 
-    v12 = [(VUICountDownProgressIndicator *)self centerImageView];
-    [(VUICountDownProgressIndicator *)self addSubview:v12];
+    centerImageView3 = [(VUICountDownProgressIndicator *)self centerImageView];
+    [(VUICountDownProgressIndicator *)self addSubview:centerImageView3];
   }
 }
 
-- (void)_setProgress:(double)a3 animated:(BOOL)a4
+- (void)_setProgress:(double)progress animated:(BOOL)animated
 {
-  if (a3 != 0.0 && self->_progress != a3)
+  if (progress != 0.0 && self->_progress != progress)
   {
-    if (a4)
+    if (animated)
     {
       [(VUICountDownProgressIndicator *)self setAnimating:1];
-      v6 = [(VUICountDownProgressIndicator *)self displayLink];
+      displayLink = [(VUICountDownProgressIndicator *)self displayLink];
 
-      if (!v6)
+      if (!displayLink)
       {
-        v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-        v8 = [v7 displayLinkWithTarget:self selector:sel__animateValueOnDisplayLink_];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        v8 = [mainScreen displayLinkWithTarget:self selector:sel__animateValueOnDisplayLink_];
 
-        v9 = [MEMORY[0x1E695DFD0] currentRunLoop];
-        [v8 addToRunLoop:v9 forMode:*MEMORY[0x1E695DA28]];
+        currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+        [v8 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
 
         [(VUICountDownProgressIndicator *)self setDisplayLink:v8];
       }
@@ -255,13 +255,13 @@
     else
     {
       [(VUICountDownProgressIndicator *)self setAnimating:0];
-      v10 = [(VUICountDownProgressIndicator *)self displayLink];
-      [v10 invalidate];
+      displayLink2 = [(VUICountDownProgressIndicator *)self displayLink];
+      [displayLink2 invalidate];
 
       [(VUICountDownProgressIndicator *)self setDisplayLink:0];
     }
 
-    [(VUICountDownProgressIndicator *)self setProgress:a3];
+    [(VUICountDownProgressIndicator *)self setProgress:progress];
 
     [(VUICountDownProgressIndicator *)self setNeedsDisplay];
   }
@@ -270,19 +270,19 @@
 - (void)_stopAutoAnimation
 {
   [(VUICountDownProgressIndicator *)self setAnimating:0];
-  v3 = [(VUICountDownProgressIndicator *)self displayLink];
-  [v3 invalidate];
+  displayLink = [(VUICountDownProgressIndicator *)self displayLink];
+  [displayLink invalidate];
 
   [(VUICountDownProgressIndicator *)self setDisplayLink:0];
 }
 
-- (void)_animateValueOnDisplayLink:(id)a3
+- (void)_animateValueOnDisplayLink:(id)link
 {
-  v22 = a3;
+  linkCopy = link;
   [(VUICountDownProgressIndicator *)self autoFillDelta];
   if (v4 == 0.0)
   {
-    [v22 duration];
+    [linkCopy duration];
     v6 = v5;
     [(VUICountDownProgressIndicator *)self duration];
     [(VUICountDownProgressIndicator *)self setAutoFillDelta:v6 / v7];
@@ -300,8 +300,8 @@
 
   if ([(VUICountDownProgressIndicator *)self isAnimating])
   {
-    v12 = [(VUICountDownProgressIndicator *)self progressLayer];
-    [v12 frame];
+    progressLayer = [(VUICountDownProgressIndicator *)self progressLayer];
+    [progressLayer frame];
     v14 = v13;
     v16 = v15;
 
@@ -312,8 +312,8 @@
     }
 
     v18 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:1 radius:v14 * 0.5 startAngle:v16 * 0.5 endAngle:v16 * 0.5 clockwise:{-1.57079633, v17}];
-    v19 = [(VUICountDownProgressIndicator *)self progressLayer];
-    [v19 setPath:{objc_msgSend(v18, "CGPath")}];
+    progressLayer2 = [(VUICountDownProgressIndicator *)self progressLayer];
+    [progressLayer2 setPath:{objc_msgSend(v18, "CGPath")}];
 
     [(VUICountDownProgressIndicator *)self setNeedsDisplay];
   }
@@ -321,12 +321,12 @@
   if (v8 >= 1.0)
   {
     [(VUICountDownProgressIndicator *)self _stopAutoAnimation];
-    v20 = [(VUICountDownProgressIndicator *)self completion];
+    completion = [(VUICountDownProgressIndicator *)self completion];
 
-    if (v20)
+    if (completion)
     {
-      v21 = [(VUICountDownProgressIndicator *)self completion];
-      v21[2]();
+      completion2 = [(VUICountDownProgressIndicator *)self completion];
+      completion2[2]();
     }
   }
 }

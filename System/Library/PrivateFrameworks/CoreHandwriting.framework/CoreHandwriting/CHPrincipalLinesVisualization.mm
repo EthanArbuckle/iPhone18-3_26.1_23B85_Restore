@@ -1,13 +1,13 @@
 @interface CHPrincipalLinesVisualization
-- (CGRect)dirtyRectForStrokeGroup:(id)a3;
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5;
+- (CGRect)dirtyRectForStrokeGroup:(id)group;
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds;
 @end
 
 @implementation CHPrincipalLinesVisualization
 
-- (CGRect)dirtyRectForStrokeGroup:(id)a3
+- (CGRect)dirtyRectForStrokeGroup:(id)group
 {
-  objc_msgSend_bounds(a3, a2, a3, v3, v4, v5);
+  objc_msgSend_bounds(group, a2, group, v3, v4, v5);
   result = CGRectInset(v8, -22.0, -22.0);
   v6 = result.size.height + 13.0;
   v7 = result.size.width + 7.0;
@@ -16,16 +16,16 @@
   return result;
 }
 
-- (void)drawVisualizationInRect:(CGRect)a3 context:(CGContext *)a4 viewBounds:(CGRect)a5
+- (void)drawVisualizationInRect:(CGRect)rect context:(CGContext *)context viewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v91 = *MEMORY[0x1E69E9840];
   v89.receiver = self;
   v89.super_class = CHPrincipalLinesVisualization;
-  [(CHStrokeGroupBasedVisualization *)&v89 drawVisualizationInRect:a3.origin.x context:a3.origin.y viewBounds:a3.size.width, a3.size.height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  [(CHStrokeGroupBasedVisualization *)&v89 drawVisualizationInRect:rect.origin.x context:rect.origin.y viewBounds:rect.size.width, rect.size.height, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v17 = objc_msgSend_resultDrawn(self, v12, v13, v14, v15, v16);
   v23 = objc_msgSend_autoRefineResults(v17, v18, v19, v20, v21, v22);
@@ -35,7 +35,7 @@
   v88[1] = 3221225472;
   v88[2] = sub_183827698;
   v88[3] = &unk_1E6DDED38;
-  v88[4] = a4;
+  v88[4] = context;
   v35 = MEMORY[0x1865E6810](v88);
   if (v29)
   {
@@ -47,11 +47,11 @@
     v93.size.height = height;
     if (CGRectIntersectsRect(v92, v93))
     {
-      CGContextSaveGState(a4);
+      CGContextSaveGState(context);
       *lengths = xmmword_1839CE6F0;
-      CGContextSetLineWidth(a4, 2.0);
-      CGContextSetLineDash(a4, 0.0, lengths, 2uLL);
-      CGContextSetAlpha(a4, 0.8);
+      CGContextSetLineWidth(context, 2.0);
+      CGContextSetLineDash(context, 0.0, lengths, 2uLL);
+      CGContextSetAlpha(context, 0.8);
       v46 = objc_msgSend_textResult(v29, v41, v42, v43, v44, v45);
       v71 = *MEMORY[0x1E695EFF8];
       v51 = objc_msgSend_newColorForPrincipalLineType_(CHVisualizationManager, v47, 1, v48, v49, v50);
@@ -83,7 +83,7 @@
       CGColorRelease(v61);
       CGColorRelease(v66);
 
-      CGContextRestoreGState(a4);
+      CGContextRestoreGState(context);
     }
   }
 

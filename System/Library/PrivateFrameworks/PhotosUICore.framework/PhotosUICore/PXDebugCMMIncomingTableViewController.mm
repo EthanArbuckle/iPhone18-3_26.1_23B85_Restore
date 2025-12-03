@@ -1,42 +1,42 @@
 @interface PXDebugCMMIncomingTableViewController
-- (PXDebugCMMIncomingTableViewController)initWithDataSourceManager:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (PXDebugCMMIncomingTableViewController)initWithDataSourceManager:(id)manager;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)viewDidLoad;
 @end
 
 @implementation PXDebugCMMIncomingTableViewController
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (PXDataSourceManagerObservationContext == a5)
+  if (PXDataSourceManagerObservationContext == context)
   {
     v27 = v8;
     v28 = v7;
     v29 = v5;
     v30 = v6;
-    v10 = [(PXDebugCMMIncomingTableViewController *)self tableView:a3];
-    v11 = [(PXDebugCMMIncomingTableViewController *)self dataSource];
-    v12 = [(PXDebugCMMIncomingTableViewController *)self dataSourceManager];
-    v13 = [v12 dataSource];
+    v10 = [(PXDebugCMMIncomingTableViewController *)self tableView:observable];
+    dataSource = [(PXDebugCMMIncomingTableViewController *)self dataSource];
+    dataSourceManager = [(PXDebugCMMIncomingTableViewController *)self dataSourceManager];
+    dataSource2 = [dataSourceManager dataSource];
 
-    v14 = [(PXDebugCMMIncomingTableViewController *)self dataSourceManager];
-    v15 = [v14 changeHistory];
-    v16 = [v15 changeDetailsFromDataSourceIdentifier:objc_msgSend(v11 toDataSourceIdentifier:{"identifier"), objc_msgSend(v13, "identifier")}];
+    dataSourceManager2 = [(PXDebugCMMIncomingTableViewController *)self dataSourceManager];
+    changeHistory = [dataSourceManager2 changeHistory];
+    v16 = [changeHistory changeDetailsFromDataSourceIdentifier:objc_msgSend(dataSource toDataSourceIdentifier:{"identifier"), objc_msgSend(dataSource2, "identifier")}];
 
     if ([v16 count] == 1)
     {
-      v17 = [v16 firstObject];
+      firstObject = [v16 firstObject];
     }
 
     else
     {
-      v17 = 0;
+      firstObject = 0;
     }
 
-    v18 = [v17 itemChangesInSection:0];
+    v18 = [firstObject itemChangesInSection:0];
     v19 = v18;
     if (v18 && [v18 hasIncrementalChanges])
     {
@@ -45,7 +45,7 @@
       v23[2] = __70__PXDebugCMMIncomingTableViewController_observable_didChange_context___block_invoke;
       v23[3] = &unk_1E7744F50;
       v23[4] = self;
-      v24 = v13;
+      v24 = dataSource2;
       v25 = v19;
       v26 = v10;
       v20[0] = MEMORY[0x1E69E9820];
@@ -59,7 +59,7 @@
 
     else
     {
-      [(PXDebugCMMIncomingTableViewController *)self setDataSource:v13];
+      [(PXDebugCMMIncomingTableViewController *)self setDataSource:dataSource2];
       [v10 reloadData];
     }
   }
@@ -96,9 +96,9 @@ void __70__PXDebugCMMIncomingTableViewController_observable_didChange_context___
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  [a3 dequeueReusableCellWithIdentifier:@"PXDebugCMMIncomingTableViewCellReuseIdentifier" forIndexPath:a4];
+  [view dequeueReusableCellWithIdentifier:@"PXDebugCMMIncomingTableViewCellReuseIdentifier" forIndexPath:path];
   objc_claimAutoreleasedReturnValue();
   [(PXDebugCMMIncomingTableViewController *)self dataSource];
   objc_claimAutoreleasedReturnValue();
@@ -107,20 +107,20 @@ void __70__PXDebugCMMIncomingTableViewController_observable_didChange_context___
   PXSimpleIndexPathFromIndexPath();
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PXDebugCMMIncomingTableViewController *)self dataSource];
-  v6 = [v5 numberOfItemsInSection:a4];
+  dataSource = [(PXDebugCMMIncomingTableViewController *)self dataSource];
+  v6 = [dataSource numberOfItemsInSection:section];
 
   return v6;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(PXDebugCMMIncomingTableViewController *)self dataSource];
-  v4 = [v3 numberOfSections];
+  dataSource = [(PXDebugCMMIncomingTableViewController *)self dataSource];
+  numberOfSections = [dataSource numberOfSections];
 
-  return v4;
+  return numberOfSections;
 }
 
 - (void)viewDidLoad
@@ -128,27 +128,27 @@ void __70__PXDebugCMMIncomingTableViewController_observable_didChange_context___
   v5.receiver = self;
   v5.super_class = PXDebugCMMIncomingTableViewController;
   [(PXDebugCMMIncomingTableViewController *)&v5 viewDidLoad];
-  v3 = [(PXDebugCMMIncomingTableViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"PXDebugCMMIncomingTableViewCellReuseIdentifier"];
+  tableView = [(PXDebugCMMIncomingTableViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"PXDebugCMMIncomingTableViewCellReuseIdentifier"];
 
-  v4 = [(PXDebugCMMIncomingTableViewController *)self px_extendedTraitCollection];
-  [v4 registerChangeObserver:self context:PXExtendedTraitCollectionObservationContext_61744];
+  px_extendedTraitCollection = [(PXDebugCMMIncomingTableViewController *)self px_extendedTraitCollection];
+  [px_extendedTraitCollection registerChangeObserver:self context:PXExtendedTraitCollectionObservationContext_61744];
 }
 
-- (PXDebugCMMIncomingTableViewController)initWithDataSourceManager:(id)a3
+- (PXDebugCMMIncomingTableViewController)initWithDataSourceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = PXDebugCMMIncomingTableViewController;
   v6 = [(PXDebugCMMIncomingTableViewController *)&v11 initWithStyle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSourceManager, a3);
+    objc_storeStrong(&v6->_dataSourceManager, manager);
     [(PXSectionedDataSourceManager *)v7->_dataSourceManager registerChangeObserver:v7 context:PXDataSourceManagerObservationContext];
-    v8 = [v5 dataSource];
+    dataSource = [managerCopy dataSource];
     dataSource = v7->_dataSource;
-    v7->_dataSource = v8;
+    v7->_dataSource = dataSource;
 
     [(PXDebugCMMIncomingTableViewController *)v7 px_enableExtendedTraitCollection];
   }

@@ -1,42 +1,42 @@
 @interface FreezeFramePageFlippingController
-- (_TtC16MagnifierSupport33FreezeFramePageFlippingController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
-- (void)didTapPageControl:(id)a3;
+- (_TtC16MagnifierSupport33FreezeFramePageFlippingController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
+- (void)didTapPageControl:(id)control;
 - (void)handleNoTextDetected;
-- (void)handleShareFreezeFrameMenuItemActionWithMenuLocation:(CGRect)a3;
+- (void)handleShareFreezeFrameMenuItemActionWithMenuLocation:(CGRect)location;
 - (void)loadView;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4;
-- (void)singleTap:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers;
+- (void)singleTap:(id)tap;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation FreezeFramePageFlippingController
 
-- (void)singleTap:(id)a3
+- (void)singleTap:(id)tap
 {
   v4 = objc_opt_self();
-  v6 = self;
-  v5 = [v4 defaultCenter];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
   if (qword_281543EE0 != -1)
   {
     swift_once();
   }
 
-  [v5 postNotificationName:qword_281548090 object:0];
+  [defaultCenter postNotificationName:qword_281548090 object:0];
 
   sub_257BDB830();
 }
 
-- (void)didTapPageControl:(id)a3
+- (void)didTapPageControl:(id)control
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_257ED0160();
   swift_unknownObjectRelease();
   sub_257BDD5C0(v5);
@@ -46,86 +46,86 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_257BDD7E0();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_257BDD954();
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_257BDDC34(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_257BDDC34(controller);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(FreezeFramePageFlippingController *)&v5 viewDidAppear:v3];
+  [(FreezeFramePageFlippingController *)&v5 viewDidAppear:appearCopy];
   sub_257BDDE4C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_257BDE770(a3);
+  selfCopy = self;
+  sub_257BDE770(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(FreezeFramePageFlippingController *)&v5 viewWillDisappear:v3];
+  [(FreezeFramePageFlippingController *)&v5 viewWillDisappear:disappearCopy];
   sub_257DF5CD8(0, 0xE000000000000000);
 }
 
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers
 {
   sub_257BD2C2C(0, &unk_281543F40);
   v6 = sub_257ECF810();
-  v7 = a3;
-  v8 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_257BE331C(v6);
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
-  v9 = a3;
-  v10 = self;
-  sub_257BE3668(v9, a4, a6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_257BE3668(controllerCopy, animating, completed);
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_257BE3960(v7);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  v9 = sub_257BE3960(viewControllerCopy);
 
   return v9;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_257BE3AF4(v7);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  v9 = sub_257BE3AF4(viewControllerCopy);
 
   return v9;
 }
 
-- (_TtC16MagnifierSupport33FreezeFramePageFlippingController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MagnifierSupport33FreezeFramePageFlippingController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -136,19 +136,19 @@
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v3 = self;
+    selfCopy = self;
     sub_257E1BA40();
     swift_unknownObjectRelease();
   }
 }
 
-- (void)handleShareFreezeFrameMenuItemActionWithMenuLocation:(CGRect)a3
+- (void)handleShareFreezeFrameMenuItemActionWithMenuLocation:(CGRect)location
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = location.size.height;
+  width = location.size.width;
+  y = location.origin.y;
+  x = location.origin.x;
+  selfCopy = self;
   sub_257BDF858(x, y, width, height);
 }
 

@@ -1,24 +1,24 @@
 @interface MFNanoBridgeSettingsSharedMailbox
-- (BOOL)isEqual:(id)a3;
-- (MFNanoBridgeSettingsSharedMailbox)initWithCoder:(id)a3;
-- (MFNanoBridgeSettingsSharedMailbox)initWithType:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (MFNanoBridgeSettingsSharedMailbox)initWithCoder:(id)coder;
+- (MFNanoBridgeSettingsSharedMailbox)initWithType:(unint64_t)type;
 - (id)_includesMeIconImage;
 - (id)displayName;
 - (id)icon;
 - (unint64_t)mailboxFilterType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MFNanoBridgeSettingsSharedMailbox
 
-- (MFNanoBridgeSettingsSharedMailbox)initWithType:(unint64_t)a3
+- (MFNanoBridgeSettingsSharedMailbox)initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = MFNanoBridgeSettingsSharedMailbox;
   result = [(MFNanoBridgeSettingsSharedMailbox *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -54,20 +54,20 @@
   return ([(MFNanoBridgeSettingsSharedMailbox *)self type]== &dword_4 + 3) << 6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = [NSNumber numberWithUnsignedInteger:self->_type];
-  [v5 encodeObject:v4 forKey:@"kNSCodingKeyType"];
+  [coderCopy encodeObject:v4 forKey:@"kNSCodingKeyType"];
 }
 
-- (MFNanoBridgeSettingsSharedMailbox)initWithCoder:(id)a3
+- (MFNanoBridgeSettingsSharedMailbox)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyType"];
-  v6 = [v5 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyType"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [(MFNanoBridgeSettingsSharedMailbox *)self initWithType:v6];
+  v7 = [(MFNanoBridgeSettingsSharedMailbox *)self initWithType:unsignedIntegerValue];
   return v7;
 }
 
@@ -133,8 +133,8 @@ LABEL_15:
     switch(type)
     {
       case 4:
-        v5 = [(MFNanoBridgeSettingsSharedMailbox *)self _includesMeIconImage];
-        v2 = [v5 imageWithRenderingMode:2];
+        _includesMeIconImage = [(MFNanoBridgeSettingsSharedMailbox *)self _includesMeIconImage];
+        v2 = [_includesMeIconImage imageWithRenderingMode:2];
 
         goto LABEL_15;
       case 6:
@@ -172,14 +172,14 @@ LABEL_15:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = MFNanoBridgeSettingsSharedMailbox;
-  if ([(MFNanoBridgeSettingsMailbox *)&v7 isEqual:v4])
+  if ([(MFNanoBridgeSettingsMailbox *)&v7 isEqual:equalCopy])
   {
-    v5 = [v4 type] == self->_type;
+    v5 = [equalCopy type] == self->_type;
   }
 
   else

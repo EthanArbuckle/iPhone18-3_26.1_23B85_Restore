@@ -1,23 +1,23 @@
 @interface TSCEFunction_EXACT
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_EXACT
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v33 = 0;
-  v10 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 0, &v33);
+  v10 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 0, &v33);
   v11 = v33;
-  v12 = *(*a5 + 8);
+  v12 = *(*arguments + 8);
   v32 = v11;
-  v14 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v12, v13, a3, a4, 1, &v32);
+  v14 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v12, v13, context, spec, 1, &v32);
   v15 = v32;
 
   if (v15)
   {
-    v20 = objc_msgSend_raiseErrorOrConvert_(a3, v16, v15, v18, v19);
+    v20 = objc_msgSend_raiseErrorOrConvert_(context, v16, v15, v18, v19);
     goto LABEL_9;
   }
 
@@ -34,14 +34,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  objc_msgSend_formatWithContext_(v8, v16, a3, v18, v19);
+  objc_msgSend_formatWithContext_(v8, v16, context, v18, v19);
   if (!v12)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  objc_msgSend_formatWithContext_(v12, v16, a3, v18, v19);
+  objc_msgSend_formatWithContext_(v12, v16, context, v18, v19);
 LABEL_8:
   TSCEFormat::formatByMergingWithFormat(&v30, &v29, v17, v18, v19, v31);
   isEqualToString = objc_msgSend_isEqualToString_(v10, v21, v14, v22, v23);

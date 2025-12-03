@@ -1,9 +1,9 @@
 @interface RCPlaybackSettingSliderCell
-- (RCPlaybackSettingSliderCell)initWithFrame:(CGRect)a3;
+- (RCPlaybackSettingSliderCell)initWithFrame:(CGRect)frame;
 - (void)_classSpecificInit;
 - (void)_updateSliderValue;
 - (void)layoutMarginsDidChange;
-- (void)setSliderValue:(double)a3;
+- (void)setSliderValue:(double)value;
 - (void)updateConstraints;
 @end
 
@@ -13,55 +13,55 @@
 {
   [(RCPlaybackSettingSliderCell *)self addSubview:self->_slider];
   [(UISlider *)self->_slider setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(RCPlaybackSettingSliderCell *)self contentView];
-  [v3 directionalLayoutMargins];
+  contentView = [(RCPlaybackSettingSliderCell *)self contentView];
+  [contentView directionalLayoutMargins];
   v5 = v4;
 
-  v6 = [(UISlider *)self->_slider leadingAnchor];
-  v7 = [(RCPlaybackSettingSliderCell *)self safeAreaLayoutGuide];
-  v8 = [v7 leadingAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8 constant:v5];
+  leadingAnchor = [(UISlider *)self->_slider leadingAnchor];
+  safeAreaLayoutGuide = [(RCPlaybackSettingSliderCell *)self safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v5];
   contentLeadingConstraint = self->_contentLeadingConstraint;
   self->_contentLeadingConstraint = v9;
 
-  v11 = [(UISlider *)self->_slider trailingAnchor];
-  v12 = [(RCPlaybackSettingSliderCell *)self safeAreaLayoutGuide];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:-v5];
+  trailingAnchor = [(UISlider *)self->_slider trailingAnchor];
+  safeAreaLayoutGuide2 = [(RCPlaybackSettingSliderCell *)self safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v5];
   contentTrailingConstraint = self->_contentTrailingConstraint;
   self->_contentTrailingConstraint = v14;
 
   v16 = self->_contentTrailingConstraint;
   v26[0] = self->_contentLeadingConstraint;
   v26[1] = v16;
-  v17 = [(UISlider *)self->_slider topAnchor];
-  v18 = [(RCPlaybackSettingSliderCell *)self safeAreaLayoutGuide];
-  v19 = [v18 topAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  topAnchor = [(UISlider *)self->_slider topAnchor];
+  safeAreaLayoutGuide3 = [(RCPlaybackSettingSliderCell *)self safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v26[2] = v20;
-  v21 = [(UISlider *)self->_slider bottomAnchor];
-  v22 = [(RCPlaybackSettingSliderCell *)self safeAreaLayoutGuide];
-  v23 = [v22 bottomAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  bottomAnchor = [(UISlider *)self->_slider bottomAnchor];
+  safeAreaLayoutGuide4 = [(RCPlaybackSettingSliderCell *)self safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[3] = v24;
   v25 = [NSArray arrayWithObjects:v26 count:4];
   [NSLayoutConstraint activateConstraints:v25];
 }
 
-- (RCPlaybackSettingSliderCell)initWithFrame:(CGRect)a3
+- (RCPlaybackSettingSliderCell)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = RCPlaybackSettingSliderCell;
-  v3 = [(RCPlaybackSettingSliderCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RCPlaybackSettingSliderCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIListContentConfiguration cellConfiguration];
     [(RCPlaybackSettingSliderCell *)v3 setContentConfiguration:v4];
-    v5 = [objc_opt_class() createSlider];
-    [(RCPlaybackSettingSliderCell *)v3 setSlider:v5];
+    createSlider = [objc_opt_class() createSlider];
+    [(RCPlaybackSettingSliderCell *)v3 setSlider:createSlider];
 
-    v6 = [(RCPlaybackSettingSliderCell *)v3 slider];
-    [v6 addTarget:v3 action:"_updateSliderValue" forControlEvents:4096];
+    slider = [(RCPlaybackSettingSliderCell *)v3 slider];
+    [slider addTarget:v3 action:"_updateSliderValue" forControlEvents:4096];
 
     [(RCPlaybackSettingSliderCell *)v3 _classSpecificInit];
   }
@@ -82,20 +82,20 @@
   v6.receiver = self;
   v6.super_class = RCPlaybackSettingSliderCell;
   [(RCPlaybackSettingSliderCell *)&v6 updateConstraints];
-  v3 = [(RCPlaybackSettingSliderCell *)self contentView];
-  [v3 directionalLayoutMargins];
+  contentView = [(RCPlaybackSettingSliderCell *)self contentView];
+  [contentView directionalLayoutMargins];
   v5 = v4;
 
   [(NSLayoutConstraint *)self->_contentLeadingConstraint setConstant:v5];
   [(NSLayoutConstraint *)self->_contentTrailingConstraint setConstant:-v5];
 }
 
-- (void)setSliderValue:(double)a3
+- (void)setSliderValue:(double)value
 {
-  v4 = a3;
-  *&a3 = v4;
-  [(UISlider *)self->_slider setValue:a3];
-  self->_currentSliderValue = v4;
+  valueCopy = value;
+  *&value = valueCopy;
+  [(UISlider *)self->_slider setValue:value];
+  self->_currentSliderValue = valueCopy;
 }
 
 - (void)_updateSliderValue
@@ -104,8 +104,8 @@
   v4 = v3;
   if (self->_currentSliderValue != v3)
   {
-    v5 = [(RCPlaybackSettingCell *)self cellActionsDelegate];
-    [v5 didUpdateSlider:self toValue:v4];
+    cellActionsDelegate = [(RCPlaybackSettingCell *)self cellActionsDelegate];
+    [cellActionsDelegate didUpdateSlider:self toValue:v4];
 
     self->_currentSliderValue = v4;
   }

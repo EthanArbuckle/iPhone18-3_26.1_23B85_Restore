@@ -1,13 +1,13 @@
 @interface OKWidgetContentCompositeFilter
-+ (id)filterWithInputFilters:(id)a3 inputBackgroundFilters:(id)a4 inputCompositionFilterName:(id)a5;
++ (id)filterWithInputFilters:(id)filters inputBackgroundFilters:(id)backgroundFilters inputCompositionFilterName:(id)name;
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (id)inputKeys;
 - (id)outputImage;
 - (void)dealloc;
-- (void)setSettingInputBackgroundFilters:(id)a3;
-- (void)setSettingInputCompositionFilterName:(id)a3;
-- (void)setSettingInputFilters:(id)a3;
+- (void)setSettingInputBackgroundFilters:(id)filters;
+- (void)setSettingInputCompositionFilterName:(id)name;
+- (void)setSettingInputFilters:(id)filters;
 @end
 
 @implementation OKWidgetContentCompositeFilter
@@ -24,7 +24,7 @@
 - (id)outputImage
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(OKWidgetBasicFilter *)self inputImage];
+  inputImage = [(OKWidgetBasicFilter *)self inputImage];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -48,8 +48,8 @@
 
         v11 = *(*(&v24 + 1) + 8 * i);
         [v11 setInputPresentation:{-[OKWidgetBasicFilter inputPresentation](self, "inputPresentation")}];
-        [v11 setValue:v3 forKey:v6];
-        v3 = [v11 valueForKey:v7];
+        [v11 setValue:inputImage forKey:v6];
+        inputImage = [v11 valueForKey:v7];
       }
 
       v8 = [(NSArray *)inputFilters countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -58,7 +58,7 @@
     while (v8);
   }
 
-  v12 = [(OKWidgetBasicFilter *)self inputImage];
+  inputImage2 = [(OKWidgetBasicFilter *)self inputImage];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -80,8 +80,8 @@
 
         v18 = *(*(&v20 + 1) + 8 * j);
         [v18 setInputPresentation:{-[OKWidgetBasicFilter inputPresentation](self, "inputPresentation")}];
-        [v18 setValue:v12 forKey:v6];
-        v12 = [v18 valueForKey:v7];
+        [v18 setValue:inputImage2 forKey:v6];
+        inputImage2 = [v18 valueForKey:v7];
       }
 
       v15 = [(NSArray *)inputBackgroundFilters countByEnumeratingWithState:&v20 objects:v28 count:16];
@@ -90,7 +90,7 @@
     while (v15);
   }
 
-  return [objc_msgSend(MEMORY[0x277CBF750] filterWithName:self->_inputCompositionFilterName keysAndValues:{v6, v3, *MEMORY[0x277CBFAB8], v12, 0), "valueForKey:", v7}];
+  return [objc_msgSend(MEMORY[0x277CBF750] filterWithName:self->_inputCompositionFilterName keysAndValues:{v6, inputImage, *MEMORY[0x277CBFAB8], inputImage2, 0), "valueForKey:", v7}];
 }
 
 - (void)dealloc
@@ -124,7 +124,7 @@
 + (id)supportedSettings
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v10[0] = @"inputCompositionFilterName";
   v8 = @"type";
   v9 = &unk_287AF0608;
@@ -137,11 +137,11 @@
   v4 = @"type";
   v5 = &unk_287AF0620;
   v11[2] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v5 forKeys:&v4 count:1];
-  [v2 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v11, v10, 3)}];
-  return v2;
+  [dictionary addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v11, v10, 3)}];
+  return dictionary;
 }
 
-- (void)setSettingInputCompositionFilterName:(id)a3
+- (void)setSettingInputCompositionFilterName:(id)name
 {
   inputCompositionFilterName = self->_inputCompositionFilterName;
   if (inputCompositionFilterName)
@@ -150,10 +150,10 @@
     self->_inputCompositionFilterName = 0;
   }
 
-  self->_inputCompositionFilterName = a3;
+  self->_inputCompositionFilterName = name;
 }
 
-- (void)setSettingInputFilters:(id)a3
+- (void)setSettingInputFilters:(id)filters
 {
   inputFilters = self->_inputFilters;
   if (inputFilters)
@@ -162,10 +162,10 @@
     self->_inputFilters = 0;
   }
 
-  self->_inputFilters = a3;
+  self->_inputFilters = filters;
 }
 
-- (void)setSettingInputBackgroundFilters:(id)a3
+- (void)setSettingInputBackgroundFilters:(id)filters
 {
   inputBackgroundFilters = self->_inputBackgroundFilters;
   if (inputBackgroundFilters)
@@ -174,23 +174,23 @@
     self->_inputBackgroundFilters = 0;
   }
 
-  self->_inputBackgroundFilters = a3;
+  self->_inputBackgroundFilters = filters;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentCompositeFilter"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentCompositeFilter"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
-+ (id)filterWithInputFilters:(id)a3 inputBackgroundFilters:(id)a4 inputCompositionFilterName:(id)a5
++ (id)filterWithInputFilters:(id)filters inputBackgroundFilters:(id)backgroundFilters inputCompositionFilterName:(id)name
 {
   v8 = objc_alloc_init(OKWidgetContentCompositeFilter);
-  [(OKWidgetContentCompositeFilter *)v8 setInputCompositionFilterName:a5];
-  [(OKWidgetContentCompositeFilter *)v8 setInputBackgroundFilters:a4];
-  [(OKWidgetContentCompositeFilter *)v8 setInputFilters:a3];
+  [(OKWidgetContentCompositeFilter *)v8 setInputCompositionFilterName:name];
+  [(OKWidgetContentCompositeFilter *)v8 setInputBackgroundFilters:backgroundFilters];
+  [(OKWidgetContentCompositeFilter *)v8 setInputFilters:filters];
 
   return v8;
 }

@@ -1,18 +1,18 @@
 @interface WISSystemStatusSimulacrum
-+ (id)WISSSDataConnectionTypeToString:(unint64_t)a3;
-+ (unint64_t)deriveConnectionTypeForDataStatus:(id)a3;
-+ (unint64_t)deriveWISSSDataConnectionTypeForIndicator:(int)a3 andRadioTechnology:(int)a4;
++ (id)WISSSDataConnectionTypeToString:(unint64_t)string;
++ (unint64_t)deriveConnectionTypeForDataStatus:(id)status;
++ (unint64_t)deriveWISSSDataConnectionTypeForIndicator:(int)indicator andRadioTechnology:(int)technology;
 @end
 
 @implementation WISSystemStatusSimulacrum
 
-+ (unint64_t)deriveWISSSDataConnectionTypeForIndicator:(int)a3 andRadioTechnology:(int)a4
++ (unint64_t)deriveWISSSDataConnectionTypeForIndicator:(int)indicator andRadioTechnology:(int)technology
 {
-  if (a3 > 12)
+  if (indicator > 12)
   {
-    if (a3 > 15)
+    if (indicator > 15)
     {
-      switch(a3)
+      switch(indicator)
       {
         case 16:
           return 12;
@@ -25,12 +25,12 @@
       return 0;
     }
 
-    if (a3 == 13)
+    if (indicator == 13)
     {
       return 10;
     }
 
-    else if (a3 == 14)
+    else if (indicator == 14)
     {
       return 8;
     }
@@ -43,19 +43,19 @@
 
   else
   {
-    if (a3 > 3)
+    if (indicator > 3)
     {
-      if ((a3 - 4) < 2)
+      if ((indicator - 4) < 2)
       {
         return 5;
       }
 
-      if (a3 == 7)
+      if (indicator == 7)
       {
         return 7;
       }
 
-      if (a3 == 8)
+      if (indicator == 8)
       {
         return 11;
       }
@@ -63,14 +63,14 @@
       return 0;
     }
 
-    if (a3 != 1)
+    if (indicator != 1)
     {
-      if (a3 == 2)
+      if (indicator == 2)
       {
         return 3;
       }
 
-      if (a3 == 3)
+      if (indicator == 3)
       {
         return 4;
       }
@@ -78,7 +78,7 @@
       return 0;
     }
 
-    if ((a4 - 3) < 3)
+    if ((technology - 3) < 3)
     {
       return 1;
     }
@@ -90,11 +90,11 @@
   }
 }
 
-+ (unint64_t)deriveConnectionTypeForDataStatus:(id)a3
++ (unint64_t)deriveConnectionTypeForDataStatus:(id)status
 {
-  v3 = a3;
-  v4 = +[WISSystemStatusSimulacrum deriveWISSSDataConnectionTypeForIndicator:andRadioTechnology:](WISSystemStatusSimulacrum, "deriveWISSSDataConnectionTypeForIndicator:andRadioTechnology:", [v3 indicator], objc_msgSend(v3, "radioTechnology"));
-  v5 = +[WISSystemStatusSimulacrum deriveWISSSDataConnectionTypeForIndicator:andRadioTechnology:](WISSystemStatusSimulacrum, "deriveWISSSDataConnectionTypeForIndicator:andRadioTechnology:", [v3 indicatorOverride], objc_msgSend(v3, "radioTechnology"));
+  statusCopy = status;
+  v4 = +[WISSystemStatusSimulacrum deriveWISSSDataConnectionTypeForIndicator:andRadioTechnology:](WISSystemStatusSimulacrum, "deriveWISSSDataConnectionTypeForIndicator:andRadioTechnology:", [statusCopy indicator], objc_msgSend(statusCopy, "radioTechnology"));
+  v5 = +[WISSystemStatusSimulacrum deriveWISSSDataConnectionTypeForIndicator:andRadioTechnology:](WISSystemStatusSimulacrum, "deriveWISSSDataConnectionTypeForIndicator:andRadioTechnology:", [statusCopy indicatorOverride], objc_msgSend(statusCopy, "radioTechnology"));
   if (![WISSystemStatusSimulacrum WISSSDataConnectionTypeIs5G:v5])
   {
     if (v4 == 7)
@@ -110,7 +110,7 @@
       v5 = v4;
       if ((v4 & 0xFFFFFFFFFFFFFFFELL) == 4)
       {
-        if ([v3 indicatorOverride] == 7)
+        if ([statusCopy indicatorOverride] == 7)
         {
           v5 = 6;
         }
@@ -126,16 +126,16 @@
   return v5;
 }
 
-+ (id)WISSSDataConnectionTypeToString:(unint64_t)a3
++ (id)WISSSDataConnectionTypeToString:(unint64_t)string
 {
-  if (a3 > 0xF)
+  if (string > 0xF)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1002AF0D0[a3];
+    return off_1002AF0D0[string];
   }
 }
 

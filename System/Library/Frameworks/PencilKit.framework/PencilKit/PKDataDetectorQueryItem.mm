@@ -1,19 +1,19 @@
 @interface PKDataDetectorQueryItem
-- (BOOL)isEqual:(id)a3;
-- (PKDataDetectorQueryItem)initWithCoreHandwritingDataDetectorQueryItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKDataDetectorQueryItem)initWithCoreHandwritingDataDetectorQueryItem:(id)item;
 - (id)baselinePath;
 @end
 
 @implementation PKDataDetectorQueryItem
 
-- (PKDataDetectorQueryItem)initWithCoreHandwritingDataDetectorQueryItem:(id)a3
+- (PKDataDetectorQueryItem)initWithCoreHandwritingDataDetectorQueryItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = PKDataDetectorQueryItem;
   v5 = [(PKDataDetectorQueryItem *)&v8 init];
   coreHandwritingDataDetectorQueryItem = v5->_coreHandwritingDataDetectorQueryItem;
-  v5->_coreHandwritingDataDetectorQueryItem = v4;
+  v5->_coreHandwritingDataDetectorQueryItem = itemCopy;
 
   return v5;
 }
@@ -21,15 +21,15 @@
 - (id)baselinePath
 {
   v2 = MEMORY[0x1E69DC728];
-  v3 = [(CHDataDetectorQueryItem *)self->_coreHandwritingDataDetectorQueryItem estimatedBaseline];
+  estimatedBaseline = [(CHDataDetectorQueryItem *)self->_coreHandwritingDataDetectorQueryItem estimatedBaseline];
 
-  return [v2 bezierPathWithCGPath:v3];
+  return [v2 bezierPathWithCGPath:estimatedBaseline];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -40,8 +40,8 @@
     if (objc_opt_isKindOfClass())
     {
       coreHandwritingDataDetectorQueryItem = self->_coreHandwritingDataDetectorQueryItem;
-      v6 = [(PKDataDetectorQueryItem *)v4 coreHandwritingDataDetectorQueryItem];
-      v7 = [(CHDataDetectorQueryItem *)coreHandwritingDataDetectorQueryItem isEqualToDataDetectorQueryItem:v6];
+      coreHandwritingDataDetectorQueryItem = [(PKDataDetectorQueryItem *)equalCopy coreHandwritingDataDetectorQueryItem];
+      v7 = [(CHDataDetectorQueryItem *)coreHandwritingDataDetectorQueryItem isEqualToDataDetectorQueryItem:coreHandwritingDataDetectorQueryItem];
     }
 
     else

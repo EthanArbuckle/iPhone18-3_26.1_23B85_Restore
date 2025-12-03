@@ -1,23 +1,23 @@
 @interface OBLanguageConfigurationProvider
 + (id)defaultConfiguration;
-- (OBLanguageConfigurationProvider)initWithBundle:(id)a3 andTable:(id)a4;
+- (OBLanguageConfigurationProvider)initWithBundle:(id)bundle andTable:(id)table;
 - (unint64_t)spansAllLines;
 @end
 
 @implementation OBLanguageConfigurationProvider
 
-- (OBLanguageConfigurationProvider)initWithBundle:(id)a3 andTable:(id)a4
+- (OBLanguageConfigurationProvider)initWithBundle:(id)bundle andTable:(id)table
 {
-  v7 = a3;
-  v8 = a4;
+  bundleCopy = bundle;
+  tableCopy = table;
   v12.receiver = self;
   v12.super_class = OBLanguageConfigurationProvider;
   v9 = [(OBLanguageConfigurationProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_tableName, a4);
-    objc_storeStrong(&v10->_bundle, a3);
+    objc_storeStrong(&v9->_tableName, table);
+    objc_storeStrong(&v10->_bundle, bundle);
   }
 
   return v10;
@@ -34,17 +34,17 @@
 
 - (unint64_t)spansAllLines
 {
-  v3 = [(OBLanguageConfigurationProvider *)self tableName];
-  v4 = [(OBLanguageConfigurationProvider *)self bundle];
-  v5 = [(OBLanguageConfigurationProvider *)self displayLanguage];
-  v6 = [OBUtilities localizedString:@"spansAllLines" forTable:v3 inBundle:v4 forLanguage:v5];
+  tableName = [(OBLanguageConfigurationProvider *)self tableName];
+  bundle = [(OBLanguageConfigurationProvider *)self bundle];
+  displayLanguage = [(OBLanguageConfigurationProvider *)self displayLanguage];
+  v6 = [OBUtilities localizedString:@"spansAllLines" forTable:tableName inBundle:bundle forLanguage:displayLanguage];
 
-  v7 = [v6 lowercaseString];
+  lowercaseString = [v6 lowercaseString];
 
-  v8 = [&unk_1F2CF8708 objectForKeyedSubscript:v7];
-  v9 = [v8 intValue];
+  v8 = [&unk_1F2CF8708 objectForKeyedSubscript:lowercaseString];
+  intValue = [v8 intValue];
 
-  return v9;
+  return intValue;
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface NTKPoodleWorldClockComplicationView
-- (CGRect)padContentFrame:(CGRect)a3;
-- (NTKPoodleWorldClockComplicationView)initWithBackgroundView:(id)a3;
+- (CGRect)padContentFrame:(CGRect)frame;
+- (NTKPoodleWorldClockComplicationView)initWithBackgroundView:(id)view;
 @end
 
 @implementation NTKPoodleWorldClockComplicationView
 
-- (NTKPoodleWorldClockComplicationView)initWithBackgroundView:(id)a3
+- (NTKPoodleWorldClockComplicationView)initWithBackgroundView:(id)view
 {
   v4.receiver = self;
   v4.super_class = NTKPoodleWorldClockComplicationView;
-  return [(NTKZeusWorldClockComplicationView *)&v4 initWithBackgroundView:a3];
+  return [(NTKZeusWorldClockComplicationView *)&v4 initWithBackgroundView:view];
 }
 
-- (CGRect)padContentFrame:(CGRect)a3
+- (CGRect)padContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(NTKZeusComplicationView *)self device];
-  v8 = sub_1EDA8(v7, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  device = [(NTKZeusComplicationView *)self device];
+  v8 = sub_1EDA8(device, x, y, width, height);
   v10 = v9;
   v12 = v11;
   v14 = v13;

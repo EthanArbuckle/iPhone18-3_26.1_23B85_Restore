@@ -1,51 +1,51 @@
 @interface AAUIGenericTermsRemoteUI
-- (AAUIGenericTermsRemoteUI)initWithAccount:(id)a3 inStore:(id)a4;
-- (AAUIGenericTermsRemoteUI)initWithAccount:(id)a3 inStore:(id)a4 termsEntries:(id)a5;
+- (AAUIGenericTermsRemoteUI)initWithAccount:(id)account inStore:(id)store;
+- (AAUIGenericTermsRemoteUI)initWithAccount:(id)account inStore:(id)store termsEntries:(id)entries;
 - (AAUIGenericTermsRemoteUIDelegate)delegate;
-- (BOOL)_isUnauthorizedError:(id)a3;
+- (BOOL)_isUnauthorizedError:(id)error;
 - (UIViewController)originatingViewController;
 - (id)_authContextForRenewCredentials;
 - (id)_sessionConfiguration;
 - (id)_viewControllerForAlertPresentation;
-- (void)_addHeadersToRequest:(id)a3;
-- (void)_agreeToTermsWithURLString:(id)a3 serverInfo:(id)a4 preferPassword:(BOOL)a5 completion:(id)a6;
-- (void)_cleanUpAndDismissWithSuccess:(BOOL)a3 agreeURL:(id)a4 serverInfo:(id)a5;
+- (void)_addHeadersToRequest:(id)request;
+- (void)_agreeToTermsWithURLString:(id)string serverInfo:(id)info preferPassword:(BOOL)password completion:(id)completion;
+- (void)_cleanUpAndDismissWithSuccess:(BOOL)success agreeURL:(id)l serverInfo:(id)info;
 - (void)_cleanupRUILoader;
-- (void)_disagreeToTermsWithURLString:(id)a3 serverInfo:(id)a4;
+- (void)_disagreeToTermsWithURLString:(id)string serverInfo:(id)info;
 - (void)_displayConnectionErrorAndDismiss;
-- (void)_loadRequestPreferringPassword:(BOOL)a3;
-- (void)_renewCredentialsWithCompletion:(id)a3;
-- (void)_reportTermsUserAction:(id)a3 agreeUrl:(id)a4;
-- (void)_sendAcceptedTermsInfo:(id)a3;
+- (void)_loadRequestPreferringPassword:(BOOL)password;
+- (void)_renewCredentialsWithCompletion:(id)completion;
+- (void)_reportTermsUserAction:(id)action agreeUrl:(id)url;
+- (void)_sendAcceptedTermsInfo:(id)info;
 - (void)_setupActionForButtons;
-- (void)presentFromViewController:(id)a3 modal:(BOOL)a4;
-- (void)remoteUIController:(id)a3 didPresentObjectModel:(id)a4 modally:(BOOL)a5;
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5;
-- (void)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5 withCompletionHandler:(id)a6;
+- (void)presentFromViewController:(id)controller modal:(BOOL)modal;
+- (void)remoteUIController:(id)controller didPresentObjectModel:(id)model modally:(BOOL)modally;
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal;
+- (void)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation AAUIGenericTermsRemoteUI
 
-- (AAUIGenericTermsRemoteUI)initWithAccount:(id)a3 inStore:(id)a4
+- (AAUIGenericTermsRemoteUI)initWithAccount:(id)account inStore:(id)store
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  storeCopy = store;
   v28.receiver = self;
   v28.super_class = AAUIGenericTermsRemoteUI;
   v9 = [(AAUIGenericTermsRemoteUI *)&v28 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_accountStore, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_accountStore, store);
     v11 = objc_alloc_init(MEMORY[0x1E69C7048]);
     remoteUIController = v10->_remoteUIController;
     v10->_remoteUIController = v11;
 
     [(RemoteUIController *)v10->_remoteUIController setDelegate:v10];
-    v13 = [(AAUIGenericTermsRemoteUI *)v10 _sessionConfiguration];
-    [(RemoteUIController *)v10->_remoteUIController setSessionConfiguration:v13];
+    _sessionConfiguration = [(AAUIGenericTermsRemoteUI *)v10 _sessionConfiguration];
+    [(RemoteUIController *)v10->_remoteUIController setSessionConfiguration:_sessionConfiguration];
 
     v14 = objc_alloc(MEMORY[0x1E69C7030]);
     v15 = v10->_remoteUIController;
@@ -87,8 +87,8 @@
 
     v20 = v19;
     _Block_object_dispose(&v34, 8);
-    v21 = [v19 expressParentalControlHook];
-    v38[1] = v21;
+    expressParentalControlHook = [v19 expressParentalControlHook];
+    v38[1] = expressParentalControlHook;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
     v23 = [v14 initWithRemoteUIController:v15 hooks:v22];
     serverHookHandler = v10->_serverHookHandler;
@@ -105,36 +105,36 @@
   return v10;
 }
 
-- (AAUIGenericTermsRemoteUI)initWithAccount:(id)a3 inStore:(id)a4 termsEntries:(id)a5
+- (AAUIGenericTermsRemoteUI)initWithAccount:(id)account inStore:(id)store termsEntries:(id)entries
 {
-  v9 = a5;
-  v10 = [(AAUIGenericTermsRemoteUI *)self initWithAccount:a3 inStore:a4];
+  entriesCopy = entries;
+  v10 = [(AAUIGenericTermsRemoteUI *)self initWithAccount:account inStore:store];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_termsEntries, a5);
+    objc_storeStrong(&v10->_termsEntries, entries);
   }
 
   return v11;
 }
 
-- (void)presentFromViewController:(id)a3 modal:(BOOL)a4
+- (void)presentFromViewController:(id)controller modal:(BOOL)modal
 {
-  v4 = a4;
+  modalCopy = modal;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  objc_storeWeak(&self->_originatingViewController, v6);
-  v7 = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
-  [v7 setHostViewController:v6];
+  controllerCopy = controller;
+  objc_storeWeak(&self->_originatingViewController, controllerCopy);
+  remoteUIController = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
+  [remoteUIController setHostViewController:controllerCopy];
 
-  v8 = [v6 navigationController];
-  objc_storeWeak(&self->_parentNavController, v8);
+  navigationController = [controllerCopy navigationController];
+  objc_storeWeak(&self->_parentNavController, navigationController);
 
-  self->_isModal = v4;
+  self->_isModal = modalCopy;
   v9 = _AAUILogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (modalCopy)
     {
       v10 = @"YES";
     }
@@ -145,69 +145,69 @@
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_parentNavController);
-    v12 = [WeakRetained viewControllers];
+    viewControllers = [WeakRetained viewControllers];
     v13 = 138412802;
     v14 = v10;
     v15 = 2112;
-    v16 = v6;
+    v16 = controllerCopy;
     v17 = 2112;
-    v18 = v12;
+    v18 = viewControllers;
     _os_log_impl(&dword_1C5355000, v9, OS_LOG_TYPE_DEFAULT, "Terms: Attempting to show terms UI modally: %@ on parent: %@ with children: %@", &v13, 0x20u);
   }
 
   [(AAUIGenericTermsRemoteUI *)self _loadRequestPreferringPassword:1];
 }
 
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal
 {
   v15 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  modelCopy = model;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x1E69C7010] signalWithType:*a5];
+    v9 = [MEMORY[0x1E69C7010] signalWithType:*signal];
     v13 = 138412290;
     v14 = v9;
     _os_log_impl(&dword_1C5355000, v8, OS_LOG_TYPE_DEFAULT, "Terms: Got object model with signal: %@", &v13, 0xCu);
   }
 
-  if (*a5 == 1)
+  if (*signal == 1)
   {
     [(AAUIGenericTermsRemoteUI *)self _cleanUpAndDismissWithSuccess:0 agreeURL:0 serverInfo:0];
-    v10 = [v7 clientInfo];
+    clientInfo = [modelCopy clientInfo];
     v11 = _AAUILogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       [AAUIGenericTermsRemoteUI remoteUIController:didReceiveObjectModel:actionSignal:];
     }
 
-    v12 = [v10 objectForKeyedSubscript:@"agreeUrl"];
+    v12 = [clientInfo objectForKeyedSubscript:@"agreeUrl"];
     [(AAUIGenericTermsRemoteUI *)self _reportTermsUserAction:@"Dismiss" agreeUrl:v12];
   }
 }
 
-- (void)remoteUIController:(id)a3 didPresentObjectModel:(id)a4 modally:(BOOL)a5
+- (void)remoteUIController:(id)controller didPresentObjectModel:(id)model modally:(BOOL)modally
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [(AAUIGenericTermsRemoteUI *)self serverHookHandler];
-  [v8 processObjectModel:v7 isModal:v5];
+  modallyCopy = modally;
+  modelCopy = model;
+  serverHookHandler = [(AAUIGenericTermsRemoteUI *)self serverHookHandler];
+  [serverHookHandler processObjectModel:modelCopy isModal:modallyCopy];
 }
 
-- (void)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5 withCompletionHandler:(id)a6
+- (void)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response withCompletionHandler:(id)handler
 {
-  v8 = a6;
-  [(AAUIGenericTermsRemoteUI *)self _addHeadersToRequest:a4];
-  v8[2](v8, 1, 0);
+  handlerCopy = handler;
+  [(AAUIGenericTermsRemoteUI *)self _addHeadersToRequest:request];
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
-- (BOOL)_isUnauthorizedError:(id)a3
+- (BOOL)_isUnauthorizedError:(id)error
 {
-  v3 = a3;
-  if ([v3 code] == -1012)
+  errorCopy = error;
+  if ([errorCopy code] == -1012)
   {
-    v4 = [v3 domain];
-    v5 = [v4 isEqualToString:*MEMORY[0x1E696A978]];
+    domain = [errorCopy domain];
+    v5 = [domain isEqualToString:*MEMORY[0x1E696A978]];
 
     if (v5)
     {
@@ -215,14 +215,14 @@
     }
   }
 
-  v6 = [v3 domain];
-  if ([v6 isEqualToString:*MEMORY[0x1E69C7060]])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:*MEMORY[0x1E69C7060]])
   {
-    v7 = [v3 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"statusCode"];
-    v9 = [v8 integerValue];
+    userInfo = [errorCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:@"statusCode"];
+    integerValue = [v8 integerValue];
 
-    if (v9 == 401)
+    if (integerValue == 401)
     {
 LABEL_5:
       v10 = 1;
@@ -234,11 +234,11 @@ LABEL_5:
   {
   }
 
-  v11 = [v3 domain];
-  if ([v11 isEqualToString:*MEMORY[0x1E69C7070]])
+  domain3 = [errorCopy domain];
+  if ([domain3 isEqualToString:*MEMORY[0x1E69C7070]])
   {
-    v12 = [v3 userInfo];
-    v13 = [v12 objectForKeyedSubscript:@"statusCode"];
+    userInfo2 = [errorCopy userInfo];
+    v13 = [userInfo2 objectForKeyedSubscript:@"statusCode"];
     v10 = [v13 integerValue] == 401;
   }
 
@@ -254,30 +254,30 @@ LABEL_11:
 - (void)_setupActionForButtons
 {
   objc_initWeak(&location, self);
-  v3 = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
+  remoteUIController = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__AAUIGenericTermsRemoteUI__setupActionForButtons__block_invoke;
   v10[3] = &unk_1E820D080;
   objc_copyWeak(&v11, &location);
   v10[4] = self;
-  [v3 setHandlerForButtonName:@"agree" handler:v10];
+  [remoteUIController setHandlerForButtonName:@"agree" handler:v10];
 
-  v4 = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
+  remoteUIController2 = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__AAUIGenericTermsRemoteUI__setupActionForButtons__block_invoke_90;
   v8[3] = &unk_1E820D0A8;
   objc_copyWeak(&v9, &location);
-  [v4 setHandlerForButtonName:@"defer" handler:v8];
+  [remoteUIController2 setHandlerForButtonName:@"defer" handler:v8];
 
-  v5 = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
+  remoteUIController3 = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__AAUIGenericTermsRemoteUI__setupActionForButtons__block_invoke_94;
   v6[3] = &unk_1E820D0A8;
   objc_copyWeak(&v7, &location);
-  [v5 setHandlerForButtonName:@"disagree" handler:v6];
+  [remoteUIController3 setHandlerForButtonName:@"disagree" handler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v9);
@@ -444,9 +444,9 @@ void __50__AAUIGenericTermsRemoteUI__setupActionForButtons__block_invoke_94(uint
   }
 }
 
-- (void)_loadRequestPreferringPassword:(BOOL)a3
+- (void)_loadRequestPreferringPassword:(BOOL)password
 {
-  self->_isPreferringPassword = a3;
+  self->_isPreferringPassword = password;
   termsEntries = self->_termsEntries;
   if (termsEntries)
   {
@@ -461,24 +461,24 @@ void __50__AAUIGenericTermsRemoteUI__setupActionForButtons__block_invoke_94(uint
   v6 = v5;
   v7 = [objc_alloc(MEMORY[0x1E698B8C8]) initWithAccount:self->_account termsEntries:v5];
   [v7 setPreferPassword:self->_isPreferringPassword];
-  v8 = [(AAUIGenericTermsRemoteUI *)self additionalHeaders];
-  [v7 setAdditionalHeaders:v8];
+  additionalHeaders = [(AAUIGenericTermsRemoteUI *)self additionalHeaders];
+  [v7 setAdditionalHeaders:additionalHeaders];
 
-  v9 = [(ACAccount *)self->_account _aa_termsServerInfo];
-  [v7 setServerInfo:v9];
+  _aa_termsServerInfo = [(ACAccount *)self->_account _aa_termsServerInfo];
+  [v7 setServerInfo:_aa_termsServerInfo];
 
   [(ACAccount *)self->_account _aa_setTermsServerInfo:0];
-  v10 = [v7 urlRequest];
-  v11 = [v10 mutableCopy];
+  urlRequest = [v7 urlRequest];
+  v11 = [urlRequest mutableCopy];
 
   [(AAUIGenericTermsRemoteUI *)self _addHeadersToRequest:v11];
-  v12 = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
+  remoteUIController = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__AAUIGenericTermsRemoteUI__loadRequestPreferringPassword___block_invoke;
   v13[3] = &unk_1E820C1A8;
   v13[4] = self;
-  [v12 loadRequest:v11 completion:v13];
+  [remoteUIController loadRequest:v11 completion:v13];
 }
 
 void __59__AAUIGenericTermsRemoteUI__loadRequestPreferringPassword___block_invoke(uint64_t a1, char a2, void *a3)
@@ -601,23 +601,23 @@ uint64_t __59__AAUIGenericTermsRemoteUI__loadRequestPreferringPassword___block_i
 
 - (id)_viewControllerForAlertPresentation
 {
-  v3 = [(AAUIGenericTermsRemoteUI *)self delegate];
+  delegate = [(AAUIGenericTermsRemoteUI *)self delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(AAUIGenericTermsRemoteUI *)self delegate];
-    v5 = [v4 parentViewControllerPresentsErrorAlert];
+    delegate2 = [(AAUIGenericTermsRemoteUI *)self delegate];
+    parentViewControllerPresentsErrorAlert = [delegate2 parentViewControllerPresentsErrorAlert];
 
-    if (v5)
+    if (parentViewControllerPresentsErrorAlert)
     {
-      v6 = _AAUILogSystem();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      remoteUIController = _AAUILogSystem();
+      if (os_log_type_enabled(remoteUIController, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_1C5355000, v6, OS_LOG_TYPE_DEFAULT, "Sign in controller supports displaying it's own error", buf, 2u);
+        _os_log_impl(&dword_1C5355000, remoteUIController, OS_LOG_TYPE_DEFAULT, "Sign in controller supports displaying it's own error", buf, 2u);
       }
 
-      v7 = 0;
+      currentPresentationContext = 0;
       goto LABEL_10;
     }
   }
@@ -633,27 +633,27 @@ uint64_t __59__AAUIGenericTermsRemoteUI__loadRequestPreferringPassword___block_i
     _os_log_impl(&dword_1C5355000, v8, OS_LOG_TYPE_DEFAULT, "Presenting alert on remoteUIController currentPresentationContext", v10, 2u);
   }
 
-  v6 = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
-  v7 = [v6 currentPresentationContext];
+  remoteUIController = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
+  currentPresentationContext = [remoteUIController currentPresentationContext];
 LABEL_10:
 
-  return v7;
+  return currentPresentationContext;
 }
 
-- (void)_agreeToTermsWithURLString:(id)a3 serverInfo:(id)a4 preferPassword:(BOOL)a5 completion:(id)a6
+- (void)_agreeToTermsWithURLString:(id)string serverInfo:(id)info preferPassword:(BOOL)password completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
+  passwordCopy = password;
+  completionCopy = completion;
   v11 = MEMORY[0x1E698B9E8];
-  v12 = a4;
-  v13 = a3;
-  v14 = [[v11 alloc] initWithURLString:v13 account:self->_account];
+  infoCopy = info;
+  stringCopy = string;
+  v14 = [[v11 alloc] initWithURLString:stringCopy account:self->_account];
 
-  v15 = [(AAUIGenericTermsRemoteUI *)self additionalHeaders];
-  [v14 setAdditionalHeaders:v15];
+  additionalHeaders = [(AAUIGenericTermsRemoteUI *)self additionalHeaders];
+  [v14 setAdditionalHeaders:additionalHeaders];
 
-  [v14 setPreferPassword:v6];
-  [v14 setServerInfo:v12];
+  [v14 setPreferPassword:passwordCopy];
+  [v14 setServerInfo:infoCopy];
 
   if (self->_slaVersion)
   {
@@ -671,8 +671,8 @@ LABEL_10:
   v18[2] = __92__AAUIGenericTermsRemoteUI__agreeToTermsWithURLString_serverInfo_preferPassword_completion___block_invoke;
   v18[3] = &unk_1E820D0D0;
   v18[4] = self;
-  v19 = v10;
-  v17 = v10;
+  v19 = completionCopy;
+  v17 = completionCopy;
   [v14 performRequestWithHandler:v18];
 }
 
@@ -727,17 +727,17 @@ void __92__AAUIGenericTermsRemoteUI__agreeToTermsWithURLString_serverInfo_prefer
   }
 }
 
-- (void)_disagreeToTermsWithURLString:(id)a3 serverInfo:(id)a4
+- (void)_disagreeToTermsWithURLString:(id)string serverInfo:(id)info
 {
   v6 = MEMORY[0x1E698B9F0];
-  v7 = a4;
-  v8 = a3;
-  v10 = [[v6 alloc] initWithURLString:v8 account:self->_account];
+  infoCopy = info;
+  stringCopy = string;
+  v10 = [[v6 alloc] initWithURLString:stringCopy account:self->_account];
 
-  v9 = [(AAUIGenericTermsRemoteUI *)self additionalHeaders];
-  [v10 setAdditionalHeaders:v9];
+  additionalHeaders = [(AAUIGenericTermsRemoteUI *)self additionalHeaders];
+  [v10 setAdditionalHeaders:additionalHeaders];
 
-  [v10 setServerInfo:v7];
+  [v10 setServerInfo:infoCopy];
   [v10 performRequestWithHandler:&__block_literal_global_15];
 }
 
@@ -775,29 +775,29 @@ void __69__AAUIGenericTermsRemoteUI__disagreeToTermsWithURLString_serverInfo___b
   }
 }
 
-- (void)_sendAcceptedTermsInfo:(id)a3
+- (void)_sendAcceptedTermsInfo:(id)info
 {
-  v7 = a3;
-  if ([v7 count])
+  infoCopy = info;
+  if ([infoCopy count])
   {
-    v4 = [(AAUIGenericTermsRemoteUI *)self delegate];
+    delegate = [(AAUIGenericTermsRemoteUI *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(AAUIGenericTermsRemoteUI *)self delegate];
-      [v6 genericTermsRemoteUI:self acceptedTermsInfo:v7];
+      delegate2 = [(AAUIGenericTermsRemoteUI *)self delegate];
+      [delegate2 genericTermsRemoteUI:self acceptedTermsInfo:infoCopy];
     }
   }
 }
 
-- (void)_cleanUpAndDismissWithSuccess:(BOOL)a3 agreeURL:(id)a4 serverInfo:(id)a5
+- (void)_cleanUpAndDismissWithSuccess:(BOOL)success agreeURL:(id)l serverInfo:(id)info
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
-  v11 = [v10 currentPresentationContext];
+  successCopy = success;
+  lCopy = l;
+  infoCopy = info;
+  remoteUIController = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
+  currentPresentationContext = [remoteUIController currentPresentationContext];
 
   [(AAUIGenericTermsRemoteUI *)self _cleanupRUILoader];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -805,11 +805,11 @@ void __69__AAUIGenericTermsRemoteUI__disagreeToTermsWithURLString_serverInfo___b
   aBlock[2] = __78__AAUIGenericTermsRemoteUI__cleanUpAndDismissWithSuccess_agreeURL_serverInfo___block_invoke;
   aBlock[3] = &unk_1E820D168;
   aBlock[4] = self;
-  v12 = v11;
+  v12 = currentPresentationContext;
   v21 = v12;
   v13 = _Block_copy(aBlock);
   v14 = v13;
-  if (v8 && v6)
+  if (lCopy && successCopy)
   {
     v15 = _AAUILogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -825,11 +825,11 @@ void __69__AAUIGenericTermsRemoteUI__disagreeToTermsWithURLString_serverInfo___b
     v16[3] = &unk_1E820D190;
     v18 = v14;
     v16[4] = self;
-    v17 = v8;
-    [(AAUIGenericTermsRemoteUI *)self _agreeToTermsWithURLString:v17 serverInfo:v9 preferPassword:1 completion:v16];
+    v17 = lCopy;
+    [(AAUIGenericTermsRemoteUI *)self _agreeToTermsWithURLString:v17 serverInfo:infoCopy preferPassword:1 completion:v16];
   }
 
-  else if (v6)
+  else if (successCopy)
   {
     (*(v13 + 2))(v13, 1, 0);
   }
@@ -979,19 +979,19 @@ void __78__AAUIGenericTermsRemoteUI__cleanUpAndDismissWithSuccess_agreeURL_serve
 
 - (id)_sessionConfiguration
 {
-  v2 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+  defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
   v3 = objc_alloc_init(MEMORY[0x1E698DCC8]);
-  [v2 set_appleIDContext:v3];
+  [defaultSessionConfiguration set_appleIDContext:v3];
 
-  return v2;
+  return defaultSessionConfiguration;
 }
 
 - (void)_displayConnectionErrorAndDismiss
 {
-  v3 = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
-  v4 = [v3 currentPresentationContext];
+  remoteUIController = [(AAUIGenericTermsRemoteUI *)self remoteUIController];
+  currentPresentationContext = [remoteUIController currentPresentationContext];
 
-  if (v4)
+  if (currentPresentationContext)
   {
     v5 = MEMORY[0x1E69DC650];
     v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -1005,7 +1005,7 @@ void __78__AAUIGenericTermsRemoteUI__cleanUpAndDismissWithSuccess_agreeURL_serve
     v11[4] = self;
     v10 = [v5 alertWithTitle:v7 message:0 buttonTitle:v9 actionHandler:v11];
 
-    [v4 presentViewController:v10 animated:1 completion:0];
+    [currentPresentationContext presentViewController:v10 animated:1 completion:0];
   }
 
   else
@@ -1014,55 +1014,55 @@ void __78__AAUIGenericTermsRemoteUI__cleanUpAndDismissWithSuccess_agreeURL_serve
   }
 }
 
-- (void)_addHeadersToRequest:(id)a3
+- (void)_addHeadersToRequest:(id)request
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 aa_addClientInfoHeaders];
-  [v4 aa_addAuthTokenOrBasicAuthHeaderWithAccount:self->_account preferUsingPassword:self->_isPreferringPassword];
-  v5 = [(AAUIGenericTermsRemoteUI *)self additionalHeaders];
+  requestCopy = request;
+  [requestCopy aa_addClientInfoHeaders];
+  [requestCopy aa_addAuthTokenOrBasicAuthHeaderWithAccount:self->_account preferUsingPassword:self->_isPreferringPassword];
+  additionalHeaders = [(AAUIGenericTermsRemoteUI *)self additionalHeaders];
 
-  if (v5)
+  if (additionalHeaders)
   {
-    v6 = [(AAUIGenericTermsRemoteUI *)self additionalHeaders];
+    additionalHeaders2 = [(AAUIGenericTermsRemoteUI *)self additionalHeaders];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __49__AAUIGenericTermsRemoteUI__addHeadersToRequest___block_invoke;
     v9[3] = &unk_1E820D1B8;
-    v10 = v4;
-    [v6 enumerateKeysAndObjectsUsingBlock:v9];
+    v10 = requestCopy;
+    [additionalHeaders2 enumerateKeysAndObjectsUsingBlock:v9];
   }
 
   v7 = _AAUILogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 allHTTPHeaderFields];
+    allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
     *buf = 138412290;
-    v12 = v8;
+    v12 = allHTTPHeaderFields;
     _os_log_impl(&dword_1C5355000, v7, OS_LOG_TYPE_DEFAULT, "Terms Secondary Request Headers: %@", buf, 0xCu);
   }
 }
 
-- (void)_renewCredentialsWithCompletion:(id)a3
+- (void)_renewCredentialsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_account)
   {
     v6 = objc_alloc_init(MEMORY[0x1E698DCC0]);
-    v7 = [(AAUIGenericTermsRemoteUI *)self _authContextForRenewCredentials];
+    _authContextForRenewCredentials = [(AAUIGenericTermsRemoteUI *)self _authContextForRenewCredentials];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __60__AAUIGenericTermsRemoteUI__renewCredentialsWithCompletion___block_invoke;
     v8[3] = &unk_1E820D1E0;
     v8[4] = self;
     v9 = v5;
-    [v6 authenticateWithContext:v7 completion:v8];
+    [v6 authenticateWithContext:_authContextForRenewCredentials completion:v8];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1086,8 +1086,8 @@ void __60__AAUIGenericTermsRemoteUI__renewCredentialsWithCompletion___block_invo
 - (id)_authContextForRenewCredentials
 {
   v3 = objc_alloc_init(MEMORY[0x1E698DE80]);
-  v4 = [(ACAccount *)self->_account username];
-  [v3 setUsername:v4];
+  username = [(ACAccount *)self->_account username];
+  [v3 setUsername:username];
 
   [v3 setIsUsernameEditable:0];
   WeakRetained = objc_loadWeakRetained(&self->_originatingViewController);
@@ -1103,27 +1103,27 @@ void __60__AAUIGenericTermsRemoteUI__renewCredentialsWithCompletion___block_invo
   v8 = MEMORY[0x1E696AEC0];
   v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"RENEW_FOR_TERMS_AND_CONDITIONS_MESSAGE" value:&stru_1F447F790 table:@"Localizable"];
-  v11 = [(ACAccount *)self->_account username];
-  v12 = [v8 stringWithFormat:v10, v11];
+  username2 = [(ACAccount *)self->_account username];
+  v12 = [v8 stringWithFormat:v10, username2];
   [v3 setReason:v12];
 
   return v3;
 }
 
-- (void)_reportTermsUserAction:(id)a3 agreeUrl:(id)a4
+- (void)_reportTermsUserAction:(id)action agreeUrl:(id)url
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  urlCopy = url;
   v8 = objc_alloc(MEMORY[0x1E695DF90]);
   v12 = *MEMORY[0x1E698BA08];
-  v13[0] = v6;
+  v13[0] = actionCopy;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v10 = [v8 initWithDictionary:v9];
 
-  if (v7)
+  if (urlCopy)
   {
-    [v10 setObject:v7 forKeyedSubscript:@"agreeUrl"];
+    [v10 setObject:urlCopy forKeyedSubscript:@"agreeUrl"];
   }
 
   v11 = [objc_alloc(MEMORY[0x1E698B998]) initWithAccount:self->_account parameters:v10];

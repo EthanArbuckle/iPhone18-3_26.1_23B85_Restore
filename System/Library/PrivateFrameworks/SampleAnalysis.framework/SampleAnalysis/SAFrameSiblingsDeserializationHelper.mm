@@ -1,10 +1,10 @@
 @interface SAFrameSiblingsDeserializationHelper
-- (SAFrameSiblingsDeserializationHelper)initWithFrameHelpers:(id)a3;
+- (SAFrameSiblingsDeserializationHelper)initWithFrameHelpers:(id)helpers;
 @end
 
 @implementation SAFrameSiblingsDeserializationHelper
 
-- (SAFrameSiblingsDeserializationHelper)initWithFrameHelpers:(id)a3
+- (SAFrameSiblingsDeserializationHelper)initWithFrameHelpers:(id)helpers
 {
   v8.receiver = self;
   v8.super_class = SAFrameSiblingsDeserializationHelper;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_frameHelpers, a3);
+    objc_storeStrong(&v4->_frameHelpers, helpers);
     v6 = v5;
   }
 

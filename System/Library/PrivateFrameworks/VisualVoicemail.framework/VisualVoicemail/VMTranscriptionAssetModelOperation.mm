@@ -1,12 +1,12 @@
 @interface VMTranscriptionAssetModelOperation
-- (VMTranscriptionAssetModelOperation)initWithSpeechRecognizer:(id)a3;
+- (VMTranscriptionAssetModelOperation)initWithSpeechRecognizer:(id)recognizer;
 - (void)cancel;
 - (void)dealloc;
-- (void)downloadAsset:(id)a3;
+- (void)downloadAsset:(id)asset;
 - (void)downloadAssetCatalog;
-- (void)downloadAssetCatalogComplete:(BOOL)a3;
-- (void)downloadAssetCatalogWithCompletion:(id)a3;
-- (void)downloadComplete:(BOOL)a3;
+- (void)downloadAssetCatalogComplete:(BOOL)complete;
+- (void)downloadAssetCatalogWithCompletion:(id)completion;
+- (void)downloadComplete:(BOOL)complete;
 - (void)install;
 - (void)installAssetCatalogAndLanguages;
 - (void)installAssetLanguages;
@@ -16,9 +16,9 @@
 
 @implementation VMTranscriptionAssetModelOperation
 
-- (VMTranscriptionAssetModelOperation)initWithSpeechRecognizer:(id)a3
+- (VMTranscriptionAssetModelOperation)initWithSpeechRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   v5 = vm_vmd_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -28,7 +28,7 @@
 
   v8.receiver = self;
   v8.super_class = VMTranscriptionAssetModelOperation;
-  v6 = [(VMSpeechRecognizerOperation *)&v8 initWithSpeechRecognizer:v4];
+  v6 = [(VMSpeechRecognizerOperation *)&v8 initWithSpeechRecognizer:recognizerCopy];
 
   if (v6)
   {
@@ -109,7 +109,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Cancelled transcription model install operation %@.", buf, 0xCu);
   }
 }
@@ -123,15 +123,15 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Starting transcription model install operation.", buf, 2u);
   }
 
-  v4 = [(VMSpeechRecognizerOperation *)self speechRecognizer];
-  if (v4 || (v5 = [SFSpeechRecognizer alloc], -[VMSpeechRecognizerOperation locale](self, "locale"), v6 = objc_claimAutoreleasedReturnValue(), v4 = [v5 initWithLocale:v6], v6, v4))
+  speechRecognizer = [(VMSpeechRecognizerOperation *)self speechRecognizer];
+  if (speechRecognizer || (v5 = [SFSpeechRecognizer alloc], -[VMSpeechRecognizerOperation locale](self, "locale"), v6 = objc_claimAutoreleasedReturnValue(), speechRecognizer = [v5 initWithLocale:v6], v6, speechRecognizer))
   {
     v7 = vm_vmd_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 supportsOnDeviceRecognition];
+      supportsOnDeviceRecognition = [speechRecognizer supportsOnDeviceRecognition];
       v9 = @"NO";
-      if (v8)
+      if (supportsOnDeviceRecognition)
       {
         v9 = @"YES";
       }
@@ -141,7 +141,7 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "supportsOnDeviceRecognition %@", buf, 0xCu);
     }
 
-    if ([v4 supportsOnDeviceRecognition])
+    if ([speechRecognizer supportsOnDeviceRecognition])
     {
       v10 = vm_vmd_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -150,12 +150,12 @@
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Speech dictation model is available already.", buf, 2u);
       }
 
-      v11 = [(VMTranscriptionAssetModelOperation *)self operationCompletion];
+      operationCompletion = [(VMTranscriptionAssetModelOperation *)self operationCompletion];
 
-      if (v11)
+      if (operationCompletion)
       {
-        v12 = [(VMTranscriptionAssetModelOperation *)self operationCompletion];
-        v12[2](v12, 1, 0);
+        operationCompletion2 = [(VMTranscriptionAssetModelOperation *)self operationCompletion];
+        operationCompletion2[2](operationCompletion2, 1, 0);
       }
     }
 
@@ -172,21 +172,21 @@
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "VMTranscriptionAssetModelOperation.install: Flag lvmExpansionLiveOnEnabled enabled", buf, 2u);
         }
 
-        v15 = [(VMSpeechRecognizerOperation *)self speechRecognizer];
-        v16 = [v15 locale];
-        v17 = [v16 languageIdentifier];
+        speechRecognizer2 = [(VMSpeechRecognizerOperation *)self speechRecognizer];
+        locale = [speechRecognizer2 locale];
+        languageIdentifier = [locale languageIdentifier];
       }
 
       else
       {
-        v17 = @"en-US";
+        languageIdentifier = @"en-US";
       }
 
       v18 = vm_vmd_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v32 = v17;
+        v32 = languageIdentifier;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "VMTranscriptionAssetModelOperation.install: Fetching assets for %@", buf, 0xCu);
       }
 
@@ -194,7 +194,7 @@
       v28[1] = 3221225472;
       v28[2] = sub_100047F54;
       v28[3] = &unk_1000EDEF0;
-      v29 = v17;
+      v29 = languageIdentifier;
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_100048014;
@@ -202,7 +202,7 @@
       v19 = v29;
       v24 = v19;
       objc_copyWeak(&v27, &location);
-      v25 = self;
+      selfCopy = self;
       v20 = v13;
       v26 = v20;
       [SFSpeechAssetManager fetchAssetsForLanguage:v19 progress:v28 completion:v23];
@@ -215,14 +215,14 @@
 
   else
   {
-    v4 = [(VMTranscriptionAssetModelOperation *)self operationCompletion];
+    speechRecognizer = [(VMTranscriptionAssetModelOperation *)self operationCompletion];
 
-    if (v4)
+    if (speechRecognizer)
     {
-      v22 = [(VMTranscriptionAssetModelOperation *)self operationCompletion];
-      v22[2](v22, 0, 0);
+      operationCompletion3 = [(VMTranscriptionAssetModelOperation *)self operationCompletion];
+      operationCompletion3[2](operationCompletion3, 0, 0);
 
-      v4 = 0;
+      speechRecognizer = 0;
     }
   }
 
@@ -273,14 +273,14 @@
   objc_destroyWeak(&location);
 }
 
-- (void)downloadComplete:(BOOL)a3
+- (void)downloadComplete:(BOOL)complete
 {
-  v3 = a3;
+  completeCopy = complete;
   v5 = vm_vmd_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (completeCopy)
     {
       v6 = @"YES";
     }
@@ -303,33 +303,33 @@
   v3 = [[MAAssetQuery alloc] initWithType:@"com.apple.MobileAsset.EmbeddedSpeech"];
   [v3 returnTypes:2];
   [v3 addKeyValuePair:@"Language" with:@"en-US"];
-  v4 = [v3 queryMetaDataSync];
+  queryMetaDataSync = [v3 queryMetaDataSync];
   v5 = vm_vmd_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v3 results];
+    results = [v3 results];
     *buf = 134218242;
-    v27 = v4;
+    v27 = queryMetaDataSync;
     v28 = 2112;
-    v29 = v6;
+    v29 = results;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "installAssetLanguages query result %ld, assets %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (queryMetaDataSync)
   {
     [(VMTranscriptionAssetModelOperation *)self downloadComplete:0];
   }
 
   else
   {
-    v20 = self;
+    selfCopy = self;
     v21 = v3;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = [v3 results];
-    v8 = [v7 countByEnumeratingWithState:&v22 objects:v34 count:16];
+    results2 = [v3 results];
+    v8 = [results2 countByEnumeratingWithState:&v22 objects:v34 count:16];
     if (v8)
     {
       v9 = v8;
@@ -340,16 +340,16 @@
         {
           if (*v23 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(results2);
           }
 
           v12 = *(*(&v22 + 1) + 8 * i);
-          v13 = [v12 assetId];
-          v14 = [v12 attributes];
-          v15 = [v14 objectForKey:@"Language"];
+          assetId = [v12 assetId];
+          attributes = [v12 attributes];
+          v15 = [attributes objectForKey:@"Language"];
 
-          v16 = [v12 state];
-          v17 = v16 & 0xFFFFFFFFFFFFFFFELL;
+          state = [v12 state];
+          v17 = state & 0xFFFFFFFFFFFFFFFELL;
           v18 = vm_vmd_log();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
@@ -360,11 +360,11 @@
               v19 = @"YES";
             }
 
-            v27 = v13;
+            v27 = assetId;
             v28 = 2112;
             v29 = v15;
             v30 = 2048;
-            v31 = v16;
+            v31 = state;
             v32 = 2112;
             v33 = v19;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Asset %@, language %@, state %ld, installed %@", buf, 0x2Au);
@@ -372,13 +372,13 @@
 
           if (v17 != 2)
           {
-            [(VMTranscriptionAssetModelOperation *)v20 downloadAsset:v12];
+            [(VMTranscriptionAssetModelOperation *)selfCopy downloadAsset:v12];
 
             goto LABEL_19;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v22 objects:v34 count:16];
+        v9 = [results2 countByEnumeratingWithState:&v22 objects:v34 count:16];
         if (v9)
         {
           continue;
@@ -388,7 +388,7 @@
       }
     }
 
-    [(VMTranscriptionAssetModelOperation *)v20 downloadComplete:1];
+    [(VMTranscriptionAssetModelOperation *)selfCopy downloadComplete:1];
 LABEL_19:
     v3 = v21;
   }
@@ -398,16 +398,16 @@ LABEL_19:
 {
   v3 = [[MAAssetQuery alloc] initWithType:@"com.apple.MobileAsset.EmbeddedSpeech"];
   [v3 returnTypes:4];
-  v4 = [v3 queryMetaDataSync];
+  queryMetaDataSync = [v3 queryMetaDataSync];
   v5 = vm_vmd_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = v4;
+    v7 = queryMetaDataSync;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "installAssetCatalogAndLanguages query result %ld", &v6, 0xCu);
   }
 
-  if (v4 == 2)
+  if (queryMetaDataSync == 2)
   {
     [(VMTranscriptionAssetModelOperation *)self downloadAssetCatalog];
   }
@@ -418,9 +418,9 @@ LABEL_19:
   }
 }
 
-- (void)downloadAssetCatalogWithCompletion:(id)a3
+- (void)downloadAssetCatalogWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = vm_vmd_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -432,19 +432,19 @@ LABEL_19:
   v6[1] = 3221225472;
   v6[2] = sub_100048B8C;
   v6[3] = &unk_1000EE860;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [MAAsset startCatalogDownload:@"com.apple.MobileAsset.EmbeddedSpeech" then:v6];
 }
 
-- (void)downloadAssetCatalogComplete:(BOOL)a3
+- (void)downloadAssetCatalogComplete:(BOOL)complete
 {
-  v3 = a3;
+  completeCopy = complete;
   v5 = vm_vmd_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (completeCopy)
     {
       v6 = @"YES";
     }
@@ -454,7 +454,7 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Download Asset catalog complete, success %@", &v7, 0xCu);
   }
 
-  if (v3)
+  if (completeCopy)
   {
     [(VMTranscriptionAssetModelOperation *)self installAssetLanguages];
   }
@@ -475,24 +475,24 @@ LABEL_19:
   [(VMTranscriptionAssetModelOperation *)self downloadAssetCatalogWithCompletion:v2];
 }
 
-- (void)downloadAsset:(id)a3
+- (void)downloadAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = vm_vmd_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = assetCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Downloading asset %@", buf, 0xCu);
   }
 
-  [v4 attachProgressCallBack:&stru_1000EE8C8];
+  [assetCopy attachProgressCallBack:&stru_1000EE8C8];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100049098;
   v6[3] = &unk_1000EE8F0;
   v6[4] = self;
-  [v4 startDownload:v6];
+  [assetCopy startDownload:v6];
 }
 
 @end

@@ -1,82 +1,82 @@
 @interface BCSWebPresentmentItemResolver
-- (id)cachedItemMatching:(id)a3;
-- (id)initWithMetadataEnvironment:(void *)a3 permissionsEnvironment:(void *)a4 itemCache:(void *)a5 cacheSkipper:(void *)a6 metricFactory:;
-- (void)_metadataMatching:(id)a3 metric:(id)a4 completion:(id)a5;
-- (void)_permissionsMatching:(id)a3 metric:(id)a4 completion:(id)a5;
-- (void)itemMatching:(id)a3 metric:(id)a4 completion:(id)a5;
+- (id)cachedItemMatching:(id)matching;
+- (id)initWithMetadataEnvironment:(void *)environment permissionsEnvironment:(void *)permissionsEnvironment itemCache:(void *)cache cacheSkipper:(void *)skipper metricFactory:;
+- (void)_metadataMatching:(id)matching metric:(id)metric completion:(id)completion;
+- (void)_permissionsMatching:(id)matching metric:(id)metric completion:(id)completion;
+- (void)itemMatching:(id)matching metric:(id)metric completion:(id)completion;
 @end
 
 @implementation BCSWebPresentmentItemResolver
 
-- (id)initWithMetadataEnvironment:(void *)a3 permissionsEnvironment:(void *)a4 itemCache:(void *)a5 cacheSkipper:(void *)a6 metricFactory:
+- (id)initWithMetadataEnvironment:(void *)environment permissionsEnvironment:(void *)permissionsEnvironment itemCache:(void *)cache cacheSkipper:(void *)skipper metricFactory:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v11 = a6;
-  v30 = a5;
-  v12 = a5;
-  obj = a4;
-  v13 = a4;
-  v33 = a3;
-  v14 = a3;
+  skipperCopy = skipper;
+  cacheCopy = cache;
+  cacheCopy2 = cache;
+  obj = permissionsEnvironment;
+  permissionsEnvironmentCopy = permissionsEnvironment;
+  environmentCopy = environment;
+  environmentCopy2 = environment;
   v32 = a2;
   v15 = a2;
-  v16 = [[BCSRemoteFetchPIR alloc] initWithEnvironment:v15 metricFactory:v11];
-  v17 = [[BCSRemoteFetchPIR alloc] initWithEnvironment:v14 metricFactory:v11];
+  v16 = [[BCSRemoteFetchPIR alloc] initWithEnvironment:v15 metricFactory:skipperCopy];
+  v17 = [[BCSRemoteFetchPIR alloc] initWithEnvironment:environmentCopy2 metricFactory:skipperCopy];
   v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
+  v19 = environmentCopy2;
+  v20 = permissionsEnvironmentCopy;
+  v21 = cacheCopy2;
   v22 = v16;
   v23 = v17;
-  v24 = v11;
-  v34.receiver = a1;
+  v24 = skipperCopy;
+  v34.receiver = self;
   v34.super_class = BCSWebPresentmentItemResolver;
   v25 = objc_msgSendSuper2(&v34, sel_init);
   v26 = v25;
   if (v25)
   {
     objc_storeStrong(v25 + 1, obj);
-    objc_storeStrong(v26 + 2, v30);
-    objc_storeStrong(v26 + 3, a6);
+    objc_storeStrong(v26 + 2, cacheCopy);
+    objc_storeStrong(v26 + 3, skipper);
     objc_storeStrong(v26 + 4, v16);
     objc_storeStrong(v26 + 5, v17);
     objc_storeStrong(v26 + 6, v32);
-    objc_storeStrong(v26 + 7, v33);
+    objc_storeStrong(v26 + 7, environmentCopy);
   }
 
   v27 = v26;
   return v27;
 }
 
-- (id)cachedItemMatching:(id)a3
+- (id)cachedItemMatching:(id)matching
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 type] != 5 || !objc_msgSend(v4, "conformsToProtocol:", &unk_285466B38))
+  matchingCopy = matching;
+  if ([matchingCopy type] != 5 || !objc_msgSend(matchingCopy, "conformsToProtocol:", &unk_285466B38))
   {
     v9 = 0;
     goto LABEL_27;
   }
 
-  v5 = v4;
-  v6 = [v5 serverType];
-  if ((v6 - 1) >= 2)
+  v5 = matchingCopy;
+  serverType = [v5 serverType];
+  if ((serverType - 1) >= 2)
   {
-    if (v6 == 3)
+    if (serverType == 3)
     {
       v9 = ABSLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v5 serverType];
+        serverType2 = [v5 serverType];
         v22 = NSStringFromBCSType([v5 type]);
         v23 = 136315650;
         v24 = "[BCSWebPresentmentItemResolver cachedItemMatching:]";
         v25 = 2048;
-        v26 = v21;
+        v26 = serverType2;
         v27 = 2112;
         v28 = v22;
         _os_log_error_impl(&dword_242072000, v9, OS_LOG_TYPE_ERROR, "%s - Invalid server type (Logos (%ld)) for type: %@", &v23, 0x20u);
@@ -85,21 +85,21 @@
       goto LABEL_25;
     }
 
-    if (v6 == 4)
+    if (serverType == 4)
     {
-      v7 = [(BCSWebPresentmentItemResolver *)self permissionsEnvironment];
-      v8 = [v7 disableCaching];
+      permissionsEnvironment = [(BCSWebPresentmentItemResolver *)self permissionsEnvironment];
+      disableCaching = [permissionsEnvironment disableCaching];
 
-      if (v8)
+      if (disableCaching)
       {
         v9 = ABSLogCommon();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
-          v10 = NSStringFromBCSType([v5 type]);
+          itemCache2 = NSStringFromBCSType([v5 type]);
           v23 = 136315394;
           v24 = "[BCSWebPresentmentItemResolver cachedItemMatching:]";
           v25 = 2112;
-          v26 = v10;
+          v26 = itemCache2;
           v11 = "%s - Caching disabled for web presentment permissions type: %@";
 LABEL_13:
           _os_log_debug_impl(&dword_242072000, v9, OS_LOG_TYPE_DEBUG, v11, &v23, 0x16u);
@@ -113,8 +113,8 @@ LABEL_22:
     }
 
 LABEL_14:
-    v14 = [(BCSWebPresentmentItemResolver *)self itemCacheSkipper];
-    v15 = [v14 shouldSkipCacheForItemOfType:{objc_msgSend(v5, "type")}];
+    itemCacheSkipper = [(BCSWebPresentmentItemResolver *)self itemCacheSkipper];
+    v15 = [itemCacheSkipper shouldSkipCacheForItemOfType:{objc_msgSend(v5, "type")}];
 
     if (v15)
     {
@@ -123,8 +123,8 @@ LABEL_14:
 
     else
     {
-      v16 = [(BCSWebPresentmentItemResolver *)self itemCache];
-      v9 = [v16 itemMatching:v5];
+      itemCache = [(BCSWebPresentmentItemResolver *)self itemCache];
+      v9 = [itemCache itemMatching:v5];
     }
 
     if (![v9 isExpired]|| [v9 type]== 5)
@@ -143,15 +143,15 @@ LABEL_14:
       _os_log_impl(&dword_242072000, v17, OS_LOG_TYPE_DEFAULT, "%s - Cached item found but expired - type: %@ --> deleting", &v23, 0x16u);
     }
 
-    v10 = [(BCSWebPresentmentItemResolver *)self itemCache];
-    [v10 deleteItemMatching:v5];
+    itemCache2 = [(BCSWebPresentmentItemResolver *)self itemCache];
+    [itemCache2 deleteItemMatching:v5];
     goto LABEL_22;
   }
 
-  v12 = [(BCSWebPresentmentItemResolver *)self metadataEnvironment];
-  v13 = [v12 disableCaching];
+  metadataEnvironment = [(BCSWebPresentmentItemResolver *)self metadataEnvironment];
+  disableCaching2 = [metadataEnvironment disableCaching];
 
-  if (!v13)
+  if (!disableCaching2)
   {
     goto LABEL_14;
   }
@@ -159,11 +159,11 @@ LABEL_14:
   v9 = ABSLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = NSStringFromBCSType([v5 type]);
+    itemCache2 = NSStringFromBCSType([v5 type]);
     v23 = 136315394;
     v24 = "[BCSWebPresentmentItemResolver cachedItemMatching:]";
     v25 = 2112;
-    v26 = v10;
+    v26 = itemCache2;
     v11 = "%s - Caching disabled for web presentment item type: %@";
     goto LABEL_13;
   }
@@ -179,12 +179,12 @@ LABEL_27:
   return v9;
 }
 
-- (void)itemMatching:(id)a3 metric:(id)a4 completion:(id)a5
+- (void)itemMatching:(id)matching metric:(id)metric completion:(id)completion
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  matchingCopy = matching;
+  metricCopy = metric;
+  completionCopy = completion;
   v11 = ABSLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -193,31 +193,31 @@ LABEL_27:
     _os_log_impl(&dword_242072000, v11, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v12 = [v8 itemIdentifier];
-  v13 = [v12 type];
+  itemIdentifier = [matchingCopy itemIdentifier];
+  type = [itemIdentifier type];
 
-  if (v13 != 5)
+  if (type != 5)
   {
     v48 = *MEMORY[0x277CCA450];
     v49[0] = @"Invalid type";
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:&v48 count:1];
     v15 = [BCSError errorWithDomain:@"com.apple.businessservices" code:42 userInfo:v25];
 
-    v10[2](v10, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
     goto LABEL_9;
   }
 
-  v14 = [v8 itemIdentifier];
-  v15 = [(BCSWebPresentmentItemResolver *)self cachedItemMatching:v14];
+  itemIdentifier2 = [matchingCopy itemIdentifier];
+  v15 = [(BCSWebPresentmentItemResolver *)self cachedItemMatching:itemIdentifier2];
 
-  v16 = [(BCSWebPresentmentItemResolver *)self metricFactory];
-  v17 = [v16 measurementFactory];
-  v18 = [v8 itemIdentifier];
-  v19 = [v17 itemCacheHitMeasurementForItemIdentifier:v18];
-  [v9 setCacheHitMeasurement:v19];
+  metricFactory = [(BCSWebPresentmentItemResolver *)self metricFactory];
+  measurementFactory = [metricFactory measurementFactory];
+  itemIdentifier3 = [matchingCopy itemIdentifier];
+  v19 = [measurementFactory itemCacheHitMeasurementForItemIdentifier:itemIdentifier3];
+  [metricCopy setCacheHitMeasurement:v19];
 
-  v20 = [v9 cacheHitMeasurement];
-  [v20 setFlag:v15 != 0];
+  cacheHitMeasurement = [metricCopy cacheHitMeasurement];
+  [cacheHitMeasurement setFlag:v15 != 0];
 
   v21 = ABSLogCommon();
   v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
@@ -225,8 +225,8 @@ LABEL_27:
   {
     if (v22)
     {
-      v27 = [v8 itemIdentifier];
-      v28 = NSStringFromBCSType([v27 type]);
+      itemIdentifier4 = [matchingCopy itemIdentifier];
+      v28 = NSStringFromBCSType([itemIdentifier4 type]);
       *buf = 136315394;
       v45 = "[BCSWebPresentmentItemResolver itemMatching:metric:completion:]";
       v46 = 2112;
@@ -234,13 +234,13 @@ LABEL_27:
       _os_log_impl(&dword_242072000, v21, OS_LOG_TYPE_DEFAULT, "%s - Item not found in cache for - type: %@", buf, 0x16u);
     }
 
-    if ([v8 cacheOnly])
+    if ([matchingCopy cacheOnly])
     {
       v29 = ABSLogCommon();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [v8 itemIdentifier];
-        v31 = NSStringFromBCSType([v30 type]);
+        itemIdentifier5 = [matchingCopy itemIdentifier];
+        v31 = NSStringFromBCSType([itemIdentifier5 type]);
         *buf = 136315394;
         v45 = "[BCSWebPresentmentItemResolver itemMatching:metric:completion:]";
         v46 = 2112;
@@ -253,18 +253,18 @@ LABEL_27:
 
     else
     {
-      v33 = [v8 itemIdentifier];
-      v34 = [v33 conformsToProtocol:&unk_285466B38];
+      itemIdentifier6 = [matchingCopy itemIdentifier];
+      v34 = [itemIdentifier6 conformsToProtocol:&unk_285466B38];
 
       if (v34)
       {
-        v35 = [v8 itemIdentifier];
-        v36 = [v35 serverType];
-        if ((v36 - 1) >= 2)
+        itemIdentifier7 = [matchingCopy itemIdentifier];
+        serverType = [itemIdentifier7 serverType];
+        if ((serverType - 1) >= 2)
         {
-          if (v36 == 4)
+          if (serverType == 4)
           {
-            [(BCSWebPresentmentItemResolver *)self _permissionsMatching:v8 metric:v9 completion:v10];
+            [(BCSWebPresentmentItemResolver *)self _permissionsMatching:matchingCopy metric:metricCopy completion:completionCopy];
           }
 
           else
@@ -274,13 +274,13 @@ LABEL_27:
             v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
             v39 = [BCSError errorWithDomain:@"com.apple.businessservices" code:42 userInfo:v38];
 
-            v10[2](v10, 0, v39);
+            completionCopy[2](completionCopy, 0, v39);
           }
         }
 
         else
         {
-          [(BCSWebPresentmentItemResolver *)self _metadataMatching:v8 metric:v9 completion:v10];
+          [(BCSWebPresentmentItemResolver *)self _metadataMatching:matchingCopy metric:metricCopy completion:completionCopy];
         }
 
         goto LABEL_25;
@@ -292,7 +292,7 @@ LABEL_27:
       v32 = [BCSError errorWithDomain:@"com.apple.businessservices" code:42 userInfo:v37];
     }
 
-    v10[2](v10, 0, v32);
+    completionCopy[2](completionCopy, 0, v32);
 
 LABEL_25:
     v15 = 0;
@@ -301,8 +301,8 @@ LABEL_25:
 
   if (v22)
   {
-    v23 = [v8 itemIdentifier];
-    v24 = NSStringFromBCSType([v23 type]);
+    itemIdentifier8 = [matchingCopy itemIdentifier];
+    v24 = NSStringFromBCSType([itemIdentifier8 type]);
     *buf = 136315394;
     v45 = "[BCSWebPresentmentItemResolver itemMatching:metric:completion:]";
     v46 = 2112;
@@ -310,35 +310,35 @@ LABEL_25:
     _os_log_impl(&dword_242072000, v21, OS_LOG_TYPE_DEFAULT, "%s - Item found in cache for - type: %@", buf, 0x16u);
   }
 
-  (v10)[2](v10, v15, 0);
+  (completionCopy)[2](completionCopy, v15, 0);
 LABEL_9:
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_metadataMatching:(id)a3 metric:(id)a4 completion:(id)a5
+- (void)_metadataMatching:(id)matching metric:(id)metric completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(BCSWebPresentmentItemResolver *)self metricFactory];
-  v10 = [v9 measurementFactory];
-  v11 = [v7 itemIdentifier];
-  v12 = [v10 businessEmailFetchTimingMeasurementForItemIdentifier:v11];
+  matchingCopy = matching;
+  completionCopy = completion;
+  metricFactory = [(BCSWebPresentmentItemResolver *)self metricFactory];
+  measurementFactory = [metricFactory measurementFactory];
+  itemIdentifier = [matchingCopy itemIdentifier];
+  v12 = [measurementFactory businessEmailFetchTimingMeasurementForItemIdentifier:itemIdentifier];
 
   [v12 begin];
-  v13 = [(BCSWebPresentmentItemResolver *)self pirFetchMetadata];
+  pirFetchMetadata = [(BCSWebPresentmentItemResolver *)self pirFetchMetadata];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __69__BCSWebPresentmentItemResolver__metadataMatching_metric_completion___block_invoke;
   v17[3] = &unk_278D38C78;
   v18 = v12;
-  v19 = v7;
-  v20 = self;
-  v21 = v8;
-  v14 = v8;
-  v15 = v7;
+  v19 = matchingCopy;
+  selfCopy = self;
+  v21 = completionCopy;
+  v14 = completionCopy;
+  v15 = matchingCopy;
   v16 = v12;
-  [v13 fetchDataMatching:v15 timeout:30000000000 completion:v17];
+  [pirFetchMetadata fetchDataMatching:v15 timeout:30000000000 completion:v17];
 }
 
 void __69__BCSWebPresentmentItemResolver__metadataMatching_metric_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -463,29 +463,29 @@ LABEL_20:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_permissionsMatching:(id)a3 metric:(id)a4 completion:(id)a5
+- (void)_permissionsMatching:(id)matching metric:(id)metric completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(BCSWebPresentmentItemResolver *)self metricFactory];
-  v10 = [v9 measurementFactory];
-  v11 = [v7 itemIdentifier];
-  v12 = [v10 businessEmailFetchTimingMeasurementForItemIdentifier:v11];
+  matchingCopy = matching;
+  completionCopy = completion;
+  metricFactory = [(BCSWebPresentmentItemResolver *)self metricFactory];
+  measurementFactory = [metricFactory measurementFactory];
+  itemIdentifier = [matchingCopy itemIdentifier];
+  v12 = [measurementFactory businessEmailFetchTimingMeasurementForItemIdentifier:itemIdentifier];
 
   [v12 begin];
-  v13 = [(BCSWebPresentmentItemResolver *)self pirFetchPermissions];
+  pirFetchPermissions = [(BCSWebPresentmentItemResolver *)self pirFetchPermissions];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __72__BCSWebPresentmentItemResolver__permissionsMatching_metric_completion___block_invoke;
   v17[3] = &unk_278D38C78;
   v18 = v12;
-  v19 = v7;
-  v20 = self;
-  v21 = v8;
-  v14 = v8;
-  v15 = v7;
+  v19 = matchingCopy;
+  selfCopy = self;
+  v21 = completionCopy;
+  v14 = completionCopy;
+  v15 = matchingCopy;
   v16 = v12;
-  [v13 fetchDataMatching:v15 timeout:30000000000 completion:v17];
+  [pirFetchPermissions fetchDataMatching:v15 timeout:30000000000 completion:v17];
 }
 
 void __72__BCSWebPresentmentItemResolver__permissionsMatching_metric_completion___block_invoke(uint64_t a1, void *a2, void *a3)

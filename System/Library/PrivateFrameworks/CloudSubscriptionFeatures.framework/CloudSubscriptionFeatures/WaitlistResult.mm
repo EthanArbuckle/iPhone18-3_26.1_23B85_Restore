@@ -2,8 +2,8 @@
 - (NSArray)featureIDs;
 - (NSString)ticket;
 - (_TtC25CloudSubscriptionFeatures14WaitlistResult)init;
-- (_TtC25CloudSubscriptionFeatures14WaitlistResult)initWithTicket:(id)a3 status:(id)a4 featureIDs:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC25CloudSubscriptionFeatures14WaitlistResult)initWithTicket:(id)ticket status:(id)status featureIDs:(id)ds;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WaitlistResult
@@ -35,9 +35,9 @@
   return v3;
 }
 
-- (_TtC25CloudSubscriptionFeatures14WaitlistResult)initWithTicket:(id)a3 status:(id)a4 featureIDs:(id)a5
+- (_TtC25CloudSubscriptionFeatures14WaitlistResult)initWithTicket:(id)ticket status:(id)status featureIDs:(id)ds
 {
-  if (a3)
+  if (ticket)
   {
     v7 = sub_1DF564944();
     v9 = v8;
@@ -53,19 +53,19 @@
   v11 = (self + OBJC_IVAR____TtC25CloudSubscriptionFeatures14WaitlistResult_ticket);
   *v11 = v7;
   v11[1] = v9;
-  *(self + OBJC_IVAR____TtC25CloudSubscriptionFeatures14WaitlistResult_status) = a4;
+  *(self + OBJC_IVAR____TtC25CloudSubscriptionFeatures14WaitlistResult_status) = status;
   *(self + OBJC_IVAR____TtC25CloudSubscriptionFeatures14WaitlistResult_featureIDs) = v10;
   v14.receiver = self;
   v14.super_class = type metadata accessor for WaitlistResult();
-  v12 = a4;
+  statusCopy = status;
   return [(WaitlistResult *)&v14 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1DF4BC154(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1DF4BC154(coderCopy);
 }
 
 - (_TtC25CloudSubscriptionFeatures14WaitlistResult)init

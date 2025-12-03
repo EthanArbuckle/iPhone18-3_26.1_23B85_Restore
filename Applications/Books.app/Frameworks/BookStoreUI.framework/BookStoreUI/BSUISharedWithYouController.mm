@@ -1,7 +1,7 @@
 @interface BSUISharedWithYouController
 + (_TtC11BookStoreUI27BSUISharedWithYouController)shared;
-- (id)createHighlightAttributionViewFor:(id)a3 viewController:(id)a4;
-- (void)highlightCenterHighlightsDidChange:(id)a3;
+- (id)createHighlightAttributionViewFor:(id)for viewController:(id)controller;
+- (void)highlightCenterHighlightsDidChange:(id)change;
 @end
 
 @implementation BSUISharedWithYouController
@@ -18,20 +18,20 @@
   return v3;
 }
 
-- (id)createHighlightAttributionViewFor:(id)a3 viewController:(id)a4
+- (id)createHighlightAttributionViewFor:(id)for viewController:(id)controller
 {
   v6 = sub_2C58C8();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
-  v11 = sub_59A6C(v6, v8, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v11 = sub_59A6C(v6, v8, controller);
 
   return v11;
 }
 
-- (void)highlightCenterHighlightsDidChange:(id)a3
+- (void)highlightCenterHighlightsDidChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   _s11BookStoreUI27BSUISharedWithYouControllerC34highlightCenterHighlightsDidChangeyySo011SWHighlightI0CF_0();
 }
 

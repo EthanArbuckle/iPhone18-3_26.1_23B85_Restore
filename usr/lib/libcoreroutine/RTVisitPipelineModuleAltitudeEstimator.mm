@@ -1,19 +1,19 @@
 @interface RTVisitPipelineModuleAltitudeEstimator
-- (BOOL)isValidForAltitudeUpdate:(id)a3;
-- (RTVisitPipelineModuleAltitudeEstimator)initWithMaxHorizontalAccuracy:(double)a3 locationManager:(id)a4;
-- (id)dateIntervalForAltitudeEstimation:(id)a3;
-- (id)process:(id)a3;
-- (id)updateAltitudeforVisit:(id)a3;
-- (void)updateAltitudeForCentroid:(id)a3 locations:(id)a4;
+- (BOOL)isValidForAltitudeUpdate:(id)update;
+- (RTVisitPipelineModuleAltitudeEstimator)initWithMaxHorizontalAccuracy:(double)accuracy locationManager:(id)manager;
+- (id)dateIntervalForAltitudeEstimation:(id)estimation;
+- (id)process:(id)process;
+- (id)updateAltitudeforVisit:(id)visit;
+- (void)updateAltitudeForCentroid:(id)centroid locations:(id)locations;
 @end
 
 @implementation RTVisitPipelineModuleAltitudeEstimator
 
-- (RTVisitPipelineModuleAltitudeEstimator)initWithMaxHorizontalAccuracy:(double)a3 locationManager:(id)a4
+- (RTVisitPipelineModuleAltitudeEstimator)initWithMaxHorizontalAccuracy:(double)accuracy locationManager:(id)manager
 {
-  v7 = a4;
-  v8 = v7;
-  if (a3 < 0.0)
+  managerCopy = manager;
+  v8 = managerCopy;
+  if (accuracy < 0.0)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -28,7 +28,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!managerCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -40,7 +40,7 @@ LABEL_12:
 
 LABEL_9:
 
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -50,23 +50,23 @@ LABEL_9:
   v12 = v11;
   if (v11)
   {
-    v11->_maxHorizontalAccuracy = a3;
-    objc_storeStrong(&v11->_locationManager, a4);
+    v11->_maxHorizontalAccuracy = accuracy;
+    objc_storeStrong(&v11->_locationManager, manager);
     [(RTVisitPipelineModuleAltitudeEstimator *)v12 initializeZAxisParameters];
   }
 
   self = v12;
-  v13 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v13;
+  return selfCopy;
 }
 
-- (BOOL)isValidForAltitudeUpdate:(id)a3
+- (BOOL)isValidForAltitudeUpdate:(id)update
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  updateCopy = update;
+  v4 = updateCopy;
+  if (!updateCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -78,7 +78,7 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  if ([v3 type] == 1 || (objc_msgSend(v4, "verticalAccuracy"), v5 < 0.0))
+  if ([updateCopy type] == 1 || (objc_msgSend(v4, "verticalAccuracy"), v5 < 0.0))
   {
 LABEL_8:
     v7 = 0;
@@ -92,16 +92,16 @@ LABEL_9:
   return v7;
 }
 
-- (void)updateAltitudeForCentroid:(id)a3 locations:(id)a4
+- (void)updateAltitudeForCentroid:(id)centroid locations:(id)locations
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  centroidCopy = centroid;
+  locationsCopy = locations;
+  v8 = locationsCopy;
   estimatedVerticalUncertainty = self->_estimatedVerticalUncertainty;
   if (estimatedVerticalUncertainty == -1.0 || estimatedVerticalUncertainty > 0.0)
   {
-    if ([v7 count])
+    if ([locationsCopy count])
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -225,28 +225,28 @@ void __78__RTVisitPipelineModuleAltitudeEstimator_updateAltitudeForCentroid_loca
   }
 }
 
-- (id)dateIntervalForAltitudeEstimation:(id)a3
+- (id)dateIntervalForAltitudeEstimation:(id)estimation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 exit];
-  v5 = v4;
-  if (v4)
+  estimationCopy = estimation;
+  exit = [estimationCopy exit];
+  v5 = exit;
+  if (exit)
   {
-    v6 = v4;
+    v6 = exit;
   }
 
   else
   {
-    v7 = [v3 date];
+    date = [estimationCopy date];
     v8 = MEMORY[0x277CBEAA8];
-    v9 = [v3 entry];
-    v10 = [v8 dateWithTimeInterval:v9 sinceDate:900.0];
-    v6 = [v7 earlierDate:v10];
+    entry = [estimationCopy entry];
+    v10 = [v8 dateWithTimeInterval:entry sinceDate:900.0];
+    v6 = [date earlierDate:v10];
   }
 
-  v11 = [v3 entry];
-  v12 = [v6 isBeforeDate:v11];
+  entry2 = [estimationCopy entry];
+  v12 = [v6 isBeforeDate:entry2];
 
   if (v12)
   {
@@ -254,41 +254,41 @@ void __78__RTVisitPipelineModuleAltitudeEstimator_updateAltitudeForCentroid_loca
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
       v21 = 138412290;
-      v22 = v3;
+      v22 = estimationCopy;
       _os_log_fault_impl(&dword_2304B3000, v13, OS_LOG_TYPE_FAULT, "Invalid visit for altitude update, %@", &v21, 0xCu);
     }
 
     v14 = MEMORY[0x277CBEAA8];
-    v15 = [v3 entry];
-    v16 = [v14 dateWithTimeInterval:v15 sinceDate:900.0];
+    entry3 = [estimationCopy entry];
+    v16 = [v14 dateWithTimeInterval:entry3 sinceDate:900.0];
 
     v6 = v16;
   }
 
   v17 = objc_alloc(MEMORY[0x277CCA970]);
-  v18 = [v3 entry];
-  v19 = [v17 initWithStartDate:v18 endDate:v6];
+  entry4 = [estimationCopy entry];
+  v19 = [v17 initWithStartDate:entry4 endDate:v6];
 
   return v19;
 }
 
-- (id)updateAltitudeforVisit:(id)a3
+- (id)updateAltitudeforVisit:(id)visit
 {
   v109[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  visitCopy = visit;
   [(RTVisitPipelineModuleAltitudeEstimator *)self initializeZAxisParameters];
-  v90 = v4;
-  v91 = self;
-  v89 = [(RTVisitPipelineModuleAltitudeEstimator *)self dateIntervalForAltitudeEstimation:v4];
+  v90 = visitCopy;
+  selfCopy = self;
+  v89 = [(RTVisitPipelineModuleAltitudeEstimator *)self dateIntervalForAltitudeEstimation:visitCopy];
   v5 = objc_alloc(MEMORY[0x277CE41F8]);
-  v6 = [v4 location];
-  [v6 latitude];
+  location = [visitCopy location];
+  [location latitude];
   v8 = v7;
-  v9 = [v90 location];
-  [v9 longitude];
+  location2 = [v90 location];
+  [location2 longitude];
   v11 = CLLocationCoordinate2DMake(v8, v10);
-  v12 = [v90 location];
-  [v12 horizontalUncertainty];
+  location3 = [v90 location];
+  [location3 horizontalUncertainty];
   v14 = v13;
 
   if (v14 < 5.0)
@@ -296,16 +296,16 @@ void __78__RTVisitPipelineModuleAltitudeEstimator_updateAltitudeForCentroid_loca
     v14 = 5.0;
   }
 
-  v15 = [v90 location];
-  v16 = [v15 date];
-  v88 = [v5 initWithCoordinate:v16 altitude:v11.latitude horizontalAccuracy:v11.longitude verticalAccuracy:0.0 timestamp:{v14, 0.0}];
+  location4 = [v90 location];
+  date = [location4 date];
+  v88 = [v5 initWithCoordinate:date altitude:v11.latitude horizontalAccuracy:v11.longitude verticalAccuracy:0.0 timestamp:{v14, 0.0}];
 
   v86 = *MEMORY[0x277D01448];
   v87 = *MEMORY[0x277CCA450];
   do
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = [objc_alloc(MEMORY[0x277D01320]) initWithDateInterval:v89 horizontalAccuracy:200 batchSize:v88 boundingBoxLocation:v91->_maxHorizontalAccuracy];
+    v18 = [objc_alloc(MEMORY[0x277D01320]) initWithDateInterval:v89 horizontalAccuracy:200 batchSize:v88 boundingBoxLocation:selfCopy->_maxHorizontalAccuracy];
     v102 = 0;
     v103 = &v102;
     v104 = 0x3032000000;
@@ -319,17 +319,17 @@ void __78__RTVisitPipelineModuleAltitudeEstimator_updateAltitudeForCentroid_loca
     v100 = __Block_byref_object_dispose__151;
     v101 = 0;
     v19 = dispatch_semaphore_create(0);
-    v20 = [(RTVisitPipelineModuleAltitudeEstimator *)v91 locationManager];
+    locationManager = [(RTVisitPipelineModuleAltitudeEstimator *)selfCopy locationManager];
     v92[0] = MEMORY[0x277D85DD0];
     v92[1] = 3221225472;
     v92[2] = __65__RTVisitPipelineModuleAltitudeEstimator_updateAltitudeforVisit___block_invoke;
     v92[3] = &unk_2788D0228;
     v94 = &v102;
     v95 = &v96;
-    v92[4] = v91;
+    v92[4] = selfCopy;
     v21 = v19;
     v93 = v21;
-    [v20 fetchStoredLocationsWithOptions:v18 handler:v92];
+    [locationManager fetchStoredLocationsWithOptions:v18 handler:v92];
 
     v22 = v21;
     v23 = [MEMORY[0x277CBEAA8] now];
@@ -341,11 +341,11 @@ void __78__RTVisitPipelineModuleAltitudeEstimator_updateAltitudeForCentroid_loca
       v27 = v26;
       v28 = objc_opt_new();
       v29 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_124];
-      v30 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v31 = [v30 filteredArrayUsingPredicate:v29];
-      v32 = [v31 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v31 = [callStackSymbols filteredArrayUsingPredicate:v29];
+      firstObject = [v31 firstObject];
 
-      [v28 submitToCoreAnalytics:v32 type:1 duration:v27];
+      [v28 submitToCoreAnalytics:firstObject type:1 duration:v27];
       v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
       {
@@ -384,19 +384,19 @@ LABEL_11:
 
     if (!v103[5])
     {
-      v46 = [v90 location];
-      [(RTVisitPipelineModuleAltitudeEstimator *)v91 updateAltitudeForCentroid:v46 locations:v97[5]];
+      location5 = [v90 location];
+      [(RTVisitPipelineModuleAltitudeEstimator *)selfCopy updateAltitudeForCentroid:location5 locations:v97[5]];
 
-      v47 = [v97[5] lastObject];
-      v48 = [v47 date];
-      v43 = [v48 dateByAddingTimeInterval:1.0];
+      lastObject = [v97[5] lastObject];
+      date2 = [lastObject date];
+      location7 = [date2 dateByAddingTimeInterval:1.0];
 
-      v49 = [v89 endDate];
-      if ([v97[5] count] && objc_msgSend(v43, "compare:", v49) == -1)
+      endDate = [v89 endDate];
+      if ([v97[5] count] && objc_msgSend(location7, "compare:", endDate) == -1)
       {
         v51 = objc_alloc(MEMORY[0x277CCA970]);
-        v50 = [v43 earlierDate:v49];
-        v52 = [v51 initWithStartDate:v50 endDate:v49];
+        v50 = [location7 earlierDate:endDate];
+        v52 = [v51 initWithStartDate:v50 endDate:endDate];
 
         v44 = 1;
         v89 = v52;
@@ -437,14 +437,14 @@ LABEL_28:
       }
     }
 
-    v41 = [v90 location];
-    [v41 altitude];
-    v91->_estimatedAltitude = v42;
+    location6 = [v90 location];
+    [location6 altitude];
+    selfCopy->_estimatedAltitude = v42;
 
-    v43 = [v90 location];
-    [v43 verticalUncertainty];
+    location7 = [v90 location];
+    [location7 verticalUncertainty];
     v44 = 0;
-    v91->_estimatedVerticalUncertainty = v45;
+    selfCopy->_estimatedVerticalUncertainty = v45;
 LABEL_29:
 
     _Block_object_dispose(&v96, 8);
@@ -455,37 +455,37 @@ LABEL_29:
 
   while ((v44 & 1) != 0);
   v54 = objc_alloc(MEMORY[0x277D01160]);
-  v55 = [v90 location];
-  [v55 latitude];
+  location8 = [v90 location];
+  [location8 latitude];
   v57 = v56;
-  v58 = [v90 location];
-  [v58 longitude];
+  location9 = [v90 location];
+  [location9 longitude];
   v60 = v59;
-  v61 = [v90 location];
-  [v61 horizontalUncertainty];
+  location10 = [v90 location];
+  [location10 horizontalUncertainty];
   v63 = v62;
-  estimatedAltitude = v91->_estimatedAltitude;
-  estimatedVerticalUncertainty = v91->_estimatedVerticalUncertainty;
-  v66 = [v90 location];
-  v67 = [v66 date];
-  v68 = [v90 location];
-  v69 = [v68 referenceFrame];
-  v70 = [v90 location];
-  [v70 speed];
+  estimatedAltitude = selfCopy->_estimatedAltitude;
+  estimatedVerticalUncertainty = selfCopy->_estimatedVerticalUncertainty;
+  location11 = [v90 location];
+  date3 = [location11 date];
+  location12 = [v90 location];
+  referenceFrame = [location12 referenceFrame];
+  location13 = [v90 location];
+  [location13 speed];
   v72 = v71;
-  v73 = [v90 location];
-  v74 = [v54 initWithLatitude:v67 longitude:v69 horizontalUncertainty:objc_msgSend(v73 altitude:"sourceAccuracy") verticalUncertainty:v57 date:v60 referenceFrame:v63 speed:estimatedAltitude sourceAccuracy:{estimatedVerticalUncertainty, v72}];
+  location14 = [v90 location];
+  v74 = [v54 initWithLatitude:date3 longitude:referenceFrame horizontalUncertainty:objc_msgSend(location14 altitude:"sourceAccuracy") verticalUncertainty:v57 date:v60 referenceFrame:v63 speed:estimatedAltitude sourceAccuracy:{estimatedVerticalUncertainty, v72}];
 
   v75 = objc_alloc(MEMORY[0x277D01428]);
-  v76 = [v90 date];
-  v77 = [v90 type];
-  v78 = [v90 entry];
-  v79 = [v90 exit];
-  v80 = [v90 dataPointCount];
+  date4 = [v90 date];
+  type = [v90 type];
+  entry = [v90 entry];
+  exit = [v90 exit];
+  dataPointCount = [v90 dataPointCount];
   [v90 confidence];
   v82 = v81;
-  v83 = [v90 placeInference];
-  v84 = [v75 initWithDate:v76 type:v77 location:v74 entry:v78 exit:v79 dataPointCount:v80 confidence:v82 placeInference:v83];
+  placeInference = [v90 placeInference];
+  v84 = [v75 initWithDate:date4 type:type location:v74 entry:entry exit:exit dataPointCount:dataPointCount confidence:v82 placeInference:placeInference];
 
   return v84;
 }
@@ -526,23 +526,23 @@ id __65__RTVisitPipelineModuleAltitudeEstimator_updateAltitudeforVisit___block_i
   return v4;
 }
 
-- (id)process:(id)a3
+- (id)process:(id)process
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  processCopy = process;
+  if ([processCopy count])
   {
     v5 = objc_opt_new();
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = v4;
+    obj = processCopy;
     v6 = [obj countByEnumeratingWithState:&v33 objects:v41 count:16];
     if (v6)
     {
       v7 = v6;
-      v31 = v4;
+      v31 = processCopy;
       v8 = *v34;
       v9 = MEMORY[0x277D86220];
       do
@@ -555,11 +555,11 @@ id __65__RTVisitPipelineModuleAltitudeEstimator_updateAltitudeforVisit___block_i
           }
 
           v11 = *(*(&v33 + 1) + 8 * i);
-          v12 = [v11 visit];
-          v13 = [v12 entry];
+          visit = [v11 visit];
+          entry = [visit entry];
 
           v14 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
-          if (v13)
+          if (entry)
           {
             if (v14)
             {
@@ -576,14 +576,14 @@ id __65__RTVisitPipelineModuleAltitudeEstimator_updateAltitudeforVisit___block_i
               }
             }
 
-            v16 = [v11 visit];
-            v17 = [(RTVisitPipelineModuleAltitudeEstimator *)self updateAltitudeforVisit:v16];
+            visit2 = [v11 visit];
+            points2 = [(RTVisitPipelineModuleAltitudeEstimator *)self updateAltitudeforVisit:visit2];
 
             v18 = [RTVisitCluster alloc];
-            v19 = [v11 points];
+            points = [v11 points];
             v20 = v18;
-            v21 = v19;
-            v22 = v17;
+            v21 = points;
+            v22 = points2;
           }
 
           else
@@ -604,11 +604,11 @@ id __65__RTVisitPipelineModuleAltitudeEstimator_updateAltitudeforVisit___block_i
             }
 
             v24 = [RTVisitCluster alloc];
-            v17 = [v11 points];
-            v19 = [v11 visit];
+            points2 = [v11 points];
+            points = [v11 visit];
             v20 = v24;
-            v21 = v17;
-            v22 = v19;
+            v21 = points2;
+            v22 = points;
           }
 
           v25 = [(RTVisitCluster *)v20 initWithPoints:v21 visit:v22];
@@ -620,7 +620,7 @@ id __65__RTVisitPipelineModuleAltitudeEstimator_updateAltitudeforVisit___block_i
       }
 
       while (v7);
-      v4 = v31;
+      processCopy = v31;
     }
   }
 

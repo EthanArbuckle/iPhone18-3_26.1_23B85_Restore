@@ -1,37 +1,37 @@
 @interface PBItemRepresentation
-- (PBItemRepresentation)initWithNSItemRepresentation:(id)a3;
-- (PBItemRepresentation)initWithType:(id)a3 preferredRepresentation:(unint64_t)a4 loader:(id)a5;
-- (PBItemRepresentation)initWithType:(id)a3 preferredRepresentation:(unint64_t)a4 v2_loader:(id)a5;
-- (PBItemRepresentation)initWithType:(id)a3 preferredRepresentation:(unint64_t)a4 v3_loader:(id)a5;
+- (PBItemRepresentation)initWithNSItemRepresentation:(id)representation;
+- (PBItemRepresentation)initWithType:(id)type preferredRepresentation:(unint64_t)representation loader:(id)loader;
+- (PBItemRepresentation)initWithType:(id)type preferredRepresentation:(unint64_t)representation v2_loader:(id)v2_loader;
+- (PBItemRepresentation)initWithType:(id)type preferredRepresentation:(unint64_t)representation v3_loader:(id)v3_loader;
 - (PBItemRepresentationDataTransferDelegate)dataTransferDelegate;
-- (id)_loadWithContext:(id)a3 completionBlock:(id)a4;
+- (id)_loadWithContext:(id)context completionBlock:(id)block;
 - (id)copyWithDoNothingLoaderBlock;
-- (id)loadDataWithCompletion:(id)a3;
-- (id)loadDataWithContext:(id)a3 completion:(id)a4;
-- (id)loadFileCopyWithCompletion:(id)a3;
-- (id)loadFileCopyWithContext:(id)a3 completion:(id)a4;
-- (id)loadOpenInPlaceWithCompletion:(id)a3;
-- (id)loadOpenInPlaceWithContext:(id)a3 completion:(id)a4;
-- (id)loadWithCompletionHandler:(id)a3;
-- (id)loadWithContext:(id)a3 completionHandler:(id)a4;
-- (id)performProgressTrackingWithLoaderBlock:(id)a3 onCancelCallback:(id)a4;
-- (void)setLoaderBlock:(id)a3;
+- (id)loadDataWithCompletion:(id)completion;
+- (id)loadDataWithContext:(id)context completion:(id)completion;
+- (id)loadFileCopyWithCompletion:(id)completion;
+- (id)loadFileCopyWithContext:(id)context completion:(id)completion;
+- (id)loadOpenInPlaceWithCompletion:(id)completion;
+- (id)loadOpenInPlaceWithContext:(id)context completion:(id)completion;
+- (id)loadWithCompletionHandler:(id)handler;
+- (id)loadWithContext:(id)context completionHandler:(id)handler;
+- (id)performProgressTrackingWithLoaderBlock:(id)block onCancelCallback:(id)callback;
+- (void)setLoaderBlock:(id)block;
 @end
 
 @implementation PBItemRepresentation
 
-- (PBItemRepresentation)initWithType:(id)a3 preferredRepresentation:(unint64_t)a4 loader:(id)a5
+- (PBItemRepresentation)initWithType:(id)type preferredRepresentation:(unint64_t)representation loader:(id)loader
 {
-  v8 = a5;
+  loaderCopy = loader;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __68__PBItemRepresentation_initWithType_preferredRepresentation_loader___block_invoke;
   v14[3] = &unk_279A06260;
-  v15 = v8;
-  v9 = v8;
-  v10 = a3;
+  v15 = loaderCopy;
+  v9 = loaderCopy;
+  typeCopy = type;
   v11 = MEMORY[0x25F8AC430](v14);
-  v12 = [(PBItemRepresentation *)self initWithType:v10 preferredRepresentation:a4 v2_loader:v11];
+  v12 = [(PBItemRepresentation *)self initWithType:typeCopy preferredRepresentation:representation v2_loader:v11];
 
   return v12;
 }
@@ -51,63 +51,63 @@ id __68__PBItemRepresentation_initWithType_preferredRepresentation_loader___bloc
   return v6;
 }
 
-- (PBItemRepresentation)initWithType:(id)a3 preferredRepresentation:(unint64_t)a4 v2_loader:(id)a5
+- (PBItemRepresentation)initWithType:(id)type preferredRepresentation:(unint64_t)representation v2_loader:(id)v2_loader
 {
-  v8 = a5;
+  v2_loaderCopy = v2_loader;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __71__PBItemRepresentation_initWithType_preferredRepresentation_v2_loader___block_invoke;
   v12[3] = &unk_279A06288;
-  v13 = v8;
-  v9 = v8;
-  v10 = [(PBItemRepresentation *)self initWithType:a3 preferredRepresentation:a4 v3_loader:v12];
+  v13 = v2_loaderCopy;
+  v9 = v2_loaderCopy;
+  v10 = [(PBItemRepresentation *)self initWithType:type preferredRepresentation:representation v3_loader:v12];
 
   return v10;
 }
 
-- (PBItemRepresentation)initWithType:(id)a3 preferredRepresentation:(unint64_t)a4 v3_loader:(id)a5
+- (PBItemRepresentation)initWithType:(id)type preferredRepresentation:(unint64_t)representation v3_loader:(id)v3_loader
 {
-  v9 = a3;
-  v10 = a5;
+  typeCopy = type;
+  v3_loaderCopy = v3_loader;
   v16.receiver = self;
   v16.super_class = PBItemRepresentation;
   v11 = [(PBItemRepresentation *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_typeIdentifier, a3);
-    v13 = MEMORY[0x25F8AC430](v10);
+    objc_storeStrong(&v11->_typeIdentifier, type);
+    v13 = MEMORY[0x25F8AC430](v3_loaderCopy);
     loader = v12->_loader;
     v12->_loader = v13;
 
-    v12->_preferredRepresentation = a4;
+    v12->_preferredRepresentation = representation;
   }
 
   return v12;
 }
 
-- (PBItemRepresentation)initWithNSItemRepresentation:(id)a3
+- (PBItemRepresentation)initWithNSItemRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 typeIdentifier];
-  v6 = [v4 preferredRepresentation];
-  if (v6 == 2)
+  representationCopy = representation;
+  typeIdentifier = [representationCopy typeIdentifier];
+  preferredRepresentation = [representationCopy preferredRepresentation];
+  if (preferredRepresentation == 2)
   {
     v7 = 2;
   }
 
   else
   {
-    v7 = v6 == 1;
+    v7 = preferredRepresentation == 1;
   }
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__PBItemRepresentation_initWithNSItemRepresentation___block_invoke;
   v11[3] = &unk_279A062D8;
-  v8 = v4;
+  v8 = representationCopy;
   v12 = v8;
-  v9 = [(PBItemRepresentation *)self initWithType:v5 preferredRepresentation:v7 v2_loader:v11];
+  v9 = [(PBItemRepresentation *)self initWithType:typeIdentifier preferredRepresentation:v7 v2_loader:v11];
 
   if (v9)
   {
@@ -158,13 +158,13 @@ void __53__PBItemRepresentation_initWithNSItemRepresentation___block_invoke_2(ui
 {
   v3 = objc_alloc(objc_opt_class());
   typeIdentifier = self->_typeIdentifier;
-  v5 = [(PBItemRepresentation *)self preferredRepresentation];
+  preferredRepresentation = [(PBItemRepresentation *)self preferredRepresentation];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__PBItemRepresentation_copyWithDoNothingLoaderBlock__block_invoke;
   v7[3] = &unk_279A062D8;
   v7[4] = self;
-  result = [v3 initWithType:typeIdentifier preferredRepresentation:v5 v2_loader:v7];
+  result = [v3 initWithType:typeIdentifier preferredRepresentation:preferredRepresentation v2_loader:v7];
   *(result + 4) = self->_preferredRepresentation;
   *(result + 5) = self->_visibility;
   *(result + 16) = self->_isDataAvailableImmediately;
@@ -181,10 +181,10 @@ uint64_t __52__PBItemRepresentation_copyWithDoNothingLoaderBlock__block_invoke(u
   return 0;
 }
 
-- (id)performProgressTrackingWithLoaderBlock:(id)a3 onCancelCallback:(id)a4
+- (id)performProgressTrackingWithLoaderBlock:(id)block onCancelCallback:(id)callback
 {
-  v5 = a3;
-  v6 = a4;
+  blockCopy = block;
+  callbackCopy = callback;
   v7 = [MEMORY[0x277CCAC48] discreteProgressWithTotalUnitCount:100];
   v31[0] = 0;
   v31[1] = v31;
@@ -195,7 +195,7 @@ uint64_t __52__PBItemRepresentation_copyWithDoNothingLoaderBlock__block_invoke(u
   v28[2] = __80__PBItemRepresentation_performProgressTrackingWithLoaderBlock_onCancelCallback___block_invoke;
   v28[3] = &unk_279A06300;
   v30 = v31;
-  v8 = v6;
+  v8 = callbackCopy;
   v29 = v8;
   [v7 setCancellationHandler:v28];
   v9 = [MEMORY[0x277CCAC48] discreteProgressWithTotalUnitCount:100];
@@ -210,7 +210,7 @@ uint64_t __52__PBItemRepresentation_copyWithDoNothingLoaderBlock__block_invoke(u
   v16 = __80__PBItemRepresentation_performProgressTrackingWithLoaderBlock_onCancelCallback___block_invoke_8;
   v17 = &unk_279A06378;
   v20 = &v22;
-  v10 = v5;
+  v10 = blockCopy;
   v19 = v10;
   v11 = v9;
   v18 = v11;
@@ -313,10 +313,10 @@ uint64_t __80__PBItemRepresentation_performProgressTrackingWithLoaderBlock_onCan
   return result;
 }
 
-- (id)_loadWithContext:(id)a3 completionBlock:(id)a4
+- (id)_loadWithContext:(id)context completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  blockCopy = block;
   v8 = objc_alloc_init(PBCallbackSerialization);
   v36[0] = 0;
   v36[1] = v36;
@@ -337,7 +337,7 @@ uint64_t __80__PBItemRepresentation_performProgressTrackingWithLoaderBlock_onCan
   v32 = v34;
   v9 = v8;
   v30 = v9;
-  v31 = self;
+  selfCopy = self;
   v33 = v36;
   v10 = MEMORY[0x25F8AC430](v29);
   v24[0] = MEMORY[0x277D85DD0];
@@ -345,10 +345,10 @@ uint64_t __80__PBItemRepresentation_performProgressTrackingWithLoaderBlock_onCan
   v24[2] = __57__PBItemRepresentation__loadWithContext_completionBlock___block_invoke_3;
   v24[3] = &unk_279A06490;
   v24[4] = self;
-  v11 = v6;
+  v11 = contextCopy;
   v25 = v11;
   v28 = v36;
-  v26 = v7;
+  v26 = blockCopy;
   v27 = v10;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -561,30 +561,30 @@ void __57__PBItemRepresentation__loadWithContext_completionBlock___block_invoke_
   [v2 itemRepresentation:*(a1 + 32) beganDataTransferWithProgress:*(a1 + 40)];
 }
 
-- (id)loadWithCompletionHandler:(id)a3
+- (id)loadWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__PBItemRepresentation_loadWithCompletionHandler___block_invoke;
   v8[3] = &unk_279A06508;
-  v9 = v4;
-  v5 = v4;
+  v9 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [(PBItemRepresentation *)self loadWithContext:0 completionHandler:v8];
 
   return v6;
 }
 
-- (id)loadWithContext:(id)a3 completionHandler:(id)a4
+- (id)loadWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __58__PBItemRepresentation_loadWithContext_completionHandler___block_invoke;
   v10[3] = &unk_279A06508;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(PBItemRepresentation *)self _loadWithContext:a3 completionBlock:v10];
+  v11 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = [(PBItemRepresentation *)self _loadWithContext:context completionBlock:v10];
 
   return v8;
 }
@@ -613,38 +613,38 @@ void __58__PBItemRepresentation_loadWithContext_completionHandler___block_invoke
   }
 }
 
-- (void)setLoaderBlock:(id)a3
+- (void)setLoaderBlock:(id)block
 {
-  v4 = MEMORY[0x25F8AC430](a3, a2);
+  v4 = MEMORY[0x25F8AC430](block, a2);
   loader = self->_loader;
   self->_loader = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)loadDataWithCompletion:(id)a3
+- (id)loadDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__PBItemRepresentation_loadDataWithCompletion___block_invoke;
   v8[3] = &unk_279A06530;
-  v9 = v4;
-  v5 = v4;
+  v9 = completionCopy;
+  v5 = completionCopy;
   v6 = [(PBItemRepresentation *)self loadDataWithDetailedCompletion:v8];
 
   return v6;
 }
 
-- (id)loadDataWithContext:(id)a3 completion:(id)a4
+- (id)loadDataWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = [MEMORY[0x277CCAC48] discreteProgressWithTotalUnitCount:100];
-  v9 = [(PBItemRepresentation *)self preferredRepresentation];
-  if (v9)
+  preferredRepresentation = [(PBItemRepresentation *)self preferredRepresentation];
+  if (preferredRepresentation)
   {
-    v9 = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:100];
+    preferredRepresentation = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:100];
   }
 
   v17[0] = MEMORY[0x277D85DD0];
@@ -652,11 +652,11 @@ void __58__PBItemRepresentation_loadWithContext_completionHandler___block_invoke
   v17[2] = __55__PBItemRepresentation_loadDataWithContext_completion___block_invoke;
   v17[3] = &unk_279A065D0;
   v17[4] = self;
-  v19 = v7;
-  v10 = v9;
+  v19 = completionCopy;
+  v10 = preferredRepresentation;
   v18 = v10;
-  v11 = v7;
-  v12 = [(PBItemRepresentation *)self _loadWithContext:v6 completionBlock:v17];
+  v11 = completionCopy;
+  v12 = [(PBItemRepresentation *)self _loadWithContext:contextCopy completionBlock:v17];
   if (v10)
   {
     if ([(PBItemRepresentation *)self preferredRepresentation]== 2)
@@ -882,29 +882,29 @@ uint64_t __55__PBItemRepresentation_loadDataWithContext_completion___block_invok
   return result;
 }
 
-- (id)loadFileCopyWithCompletion:(id)a3
+- (id)loadFileCopyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__PBItemRepresentation_loadFileCopyWithCompletion___block_invoke;
   v8[3] = &unk_279A065F8;
-  v9 = v4;
-  v5 = v4;
+  v9 = completionCopy;
+  v5 = completionCopy;
   v6 = [(PBItemRepresentation *)self loadFileCopyWithDetailedCompletion:v8];
 
   return v6;
 }
 
-- (id)loadFileCopyWithContext:(id)a3 completion:(id)a4
+- (id)loadFileCopyWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = [MEMORY[0x277CCAC48] discreteProgressWithTotalUnitCount:100];
-  v9 = [(PBItemRepresentation *)self preferredRepresentation];
-  if (v9)
+  preferredRepresentation = [(PBItemRepresentation *)self preferredRepresentation];
+  if (preferredRepresentation)
   {
-    v9 = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:100];
+    preferredRepresentation = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:100];
   }
 
   v17[0] = MEMORY[0x277D85DD0];
@@ -912,11 +912,11 @@ uint64_t __55__PBItemRepresentation_loadDataWithContext_completion___block_invok
   v17[2] = __59__PBItemRepresentation_loadFileCopyWithContext_completion___block_invoke;
   v17[3] = &unk_279A065D0;
   v17[4] = self;
-  v19 = v7;
-  v10 = v9;
+  v19 = completionCopy;
+  v10 = preferredRepresentation;
   v18 = v10;
-  v11 = v7;
-  v12 = [(PBItemRepresentation *)self _loadWithContext:v6 completionBlock:v17];
+  v11 = completionCopy;
+  v12 = [(PBItemRepresentation *)self _loadWithContext:contextCopy completionBlock:v17];
   if (v10)
   {
     if ([(PBItemRepresentation *)self preferredRepresentation]== 2)
@@ -1162,31 +1162,31 @@ uint64_t __59__PBItemRepresentation_loadFileCopyWithContext_completion___block_i
   return result;
 }
 
-- (id)loadOpenInPlaceWithCompletion:(id)a3
+- (id)loadOpenInPlaceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__PBItemRepresentation_loadOpenInPlaceWithCompletion___block_invoke;
   v8[3] = &unk_279A06648;
-  v9 = v4;
-  v5 = v4;
+  v9 = completionCopy;
+  v5 = completionCopy;
   v6 = [(PBItemRepresentation *)self loadOpenInPlaceWithDetailedCompletion:v8];
 
   return v6;
 }
 
-- (id)loadOpenInPlaceWithContext:(id)a3 completion:(id)a4
+- (id)loadOpenInPlaceWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__PBItemRepresentation_loadOpenInPlaceWithContext_completion___block_invoke;
   v10[3] = &unk_279A066C0;
   v10[4] = self;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(PBItemRepresentation *)self _loadWithContext:a3 completionBlock:v10];
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = [(PBItemRepresentation *)self _loadWithContext:context completionBlock:v10];
 
   return v8;
 }

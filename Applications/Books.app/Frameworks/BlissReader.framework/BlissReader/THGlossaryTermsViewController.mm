@@ -1,43 +1,43 @@
 @interface THGlossaryTermsViewController
 + (id)newViewController;
-- (BOOL)shouldHighlightWord:(id)a3;
-- (CGRect)tableView:(id)a3 frameForSectionIndexGivenProposedFrame:(CGRect)a4;
+- (BOOL)shouldHighlightWord:(id)word;
+- (CGRect)tableView:(id)view frameForSectionIndexGivenProposedFrame:(CGRect)frame;
 - (THGlossaryIndex)glossaryIndex;
-- (THGlossaryTermsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)layerForFloatingHeaderAtIndex:(unint64_t)a3 forController:(id)a4;
+- (THGlossaryTermsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)layerForFloatingHeaderAtIndex:(unint64_t)index forController:(id)controller;
 - (id)p_activeTableView;
-- (id)p_constraintsOfSeparatorInCell:(id)a3 tableView:(id)a4 indexPath:(id)a5;
-- (id)p_previousCellForTableView:(id)a3 indexPath:(id)a4;
-- (id)sectionIndexTitlesForTableView:(id)a3;
+- (id)p_constraintsOfSeparatorInCell:(id)cell tableView:(id)view indexPath:(id)path;
+- (id)p_previousCellForTableView:(id)view indexPath:(id)path;
+- (id)sectionIndexTitlesForTableView:(id)view;
 - (id)selectedEntry;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (int64_t)overrideUserInterfaceStyle;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5;
-- (unint64_t)numberOfFloatingHeaders:(id)a3;
-- (unint64_t)numberOfRowsForFloatingHeaderAtIndex:(unint64_t)a3 forController:(id)a4;
-- (unint64_t)rowNumberForFloatingHeaderAtIndex:(unint64_t)a3 forController:(id)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index;
+- (unint64_t)numberOfFloatingHeaders:(id)headers;
+- (unint64_t)numberOfRowsForFloatingHeaderAtIndex:(unint64_t)index forController:(id)controller;
+- (unint64_t)rowNumberForFloatingHeaderAtIndex:(unint64_t)index forController:(id)controller;
 - (void)_styleForTheme;
 - (void)clearSearch;
 - (void)dealloc;
-- (void)glossaryTermTableCell:(id)a3 selected:(BOOL)a4;
-- (void)scrollToEntry:(id)a3 scrollPosition:(int64_t)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)selectEntry:(id)a3 scrollPosition:(int64_t)a4 animated:(BOOL)a5;
-- (void)setSearchString:(id)a3;
-- (void)setTheme:(id)a3;
-- (void)tableView:(id)a3 didHighlightRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didUnhighlightRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)glossaryTermTableCell:(id)cell selected:(BOOL)selected;
+- (void)scrollToEntry:(id)entry scrollPosition:(int64_t)position;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)selectEntry:(id)entry scrollPosition:(int64_t)position animated:(BOOL)animated;
+- (void)setSearchString:(id)string;
+- (void)setTheme:(id)theme;
+- (void)tableView:(id)view didHighlightRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didUnhighlightRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation THGlossaryTermsViewController
@@ -49,12 +49,12 @@
   return [(THGlossaryTermsViewController *)v2 initWithNibName:0 bundle:0];
 }
 
-- (THGlossaryTermsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (THGlossaryTermsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6 = THBundle();
   v9.receiver = self;
   v9.super_class = THGlossaryTermsViewController;
-  v7 = [(THGlossaryTermsViewController *)&v9 initWithNibName:a3 bundle:v6];
+  v7 = [(THGlossaryTermsViewController *)&v9 initWithNibName:name bundle:v6];
   if (v7)
   {
     [(THGlossaryTermsViewController *)v7 setTheme:[IMTheme themeWithIdentifier:kIMThemeIdentifierDynamicTheme]];
@@ -94,11 +94,11 @@
   }
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   v4.receiver = self;
   v4.super_class = THGlossaryTermsViewController;
-  [(THGlossaryTermsViewController *)&v4 setTheme:a3];
+  [(THGlossaryTermsViewController *)&v4 setTheme:theme];
   [(THGlossaryTermsViewController *)self _styleForTheme];
 }
 
@@ -109,9 +109,9 @@
   [(UITableView *)[(THGlossaryTermsViewController *)self tableView] setBackgroundColor:v3];
   [-[THGlossaryTermsViewController view](self "view")];
   [(UITableView *)[(THGlossaryTermsViewController *)self tableView] reloadData];
-  v4 = [(THGlossaryTermsViewController *)self floatingHeaderController];
+  floatingHeaderController = [(THGlossaryTermsViewController *)self floatingHeaderController];
 
-  [(THFloatingHeaderController *)v4 reloadData];
+  [(THFloatingHeaderController *)floatingHeaderController reloadData];
 }
 
 - (THGlossaryIndex)glossaryIndex
@@ -121,30 +121,30 @@
   {
     if ([(THGlossaryTermsViewController *)self isSearching])
     {
-      v4 = [THGlossaryIndex alphabeticalIndexForGlossary:[(THGlossaryController *)[(THGlossaryTermsViewController *)self glossaryController] model] withPrefix:self->_searchString];
+      alphabeticalTermIndex = [THGlossaryIndex alphabeticalIndexForGlossary:[(THGlossaryController *)[(THGlossaryTermsViewController *)self glossaryController] model] withPrefix:self->_searchString];
     }
 
     else
     {
-      v4 = [(THGlossaryController *)[(THGlossaryTermsViewController *)self glossaryController] alphabeticalTermIndex];
+      alphabeticalTermIndex = [(THGlossaryController *)[(THGlossaryTermsViewController *)self glossaryController] alphabeticalTermIndex];
     }
 
-    result = v4;
+    result = alphabeticalTermIndex;
     self->_glossaryIndex = result;
   }
 
   return result;
 }
 
-- (BOOL)shouldHighlightWord:(id)a3
+- (BOOL)shouldHighlightWord:(id)word
 {
   v5 = [(NSString *)self->_searchString length];
   if (v5)
   {
-    v6 = [a3 normalizedStringForSearch];
-    v7 = [(NSString *)self->_searchString normalizedStringForSearch];
+    normalizedStringForSearch = [word normalizedStringForSearch];
+    normalizedStringForSearch2 = [(NSString *)self->_searchString normalizedStringForSearch];
 
-    LOBYTE(v5) = [v6 hasPrefix:v7];
+    LOBYTE(v5) = [normalizedStringForSearch hasPrefix:normalizedStringForSearch2];
   }
 
   return v5;
@@ -177,11 +177,11 @@
   [(NSNotificationCenter *)v4 addObserver:self selector:"dismissSearchKeyboard:" name:kTHGlossaryDismissSearchNotification object:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = THGlossaryTermsViewController;
-  [(THGlossaryTermsViewController *)&v4 viewWillDisappear:a3];
+  [(THGlossaryTermsViewController *)&v4 viewWillDisappear:disappear];
   [(UISearchBar *)[(THGlossaryTermsViewController *)self searchBar] resignFirstResponder];
 }
 
@@ -193,21 +193,21 @@
   [(THFloatingHeaderController *)[(THGlossaryTermsViewController *)self floatingHeaderController] layoutHeaders];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = [(THGlossaryTermsViewController *)self floatingHeaderController];
+  floatingHeaderController = [(THGlossaryTermsViewController *)self floatingHeaderController];
 
-  [(THFloatingHeaderController *)v3 layoutHeaders];
+  [(THFloatingHeaderController *)floatingHeaderController layoutHeaders];
 }
 
-- (id)p_previousCellForTableView:(id)a3 indexPath:(id)a4
+- (id)p_previousCellForTableView:(id)view indexPath:(id)path
 {
-  result = [a3 indexPathForRowPreceedingIndexPath:a4];
+  result = [view indexPathForRowPreceedingIndexPath:path];
   if (result)
   {
     v6 = result;
     objc_opt_class();
-    [a3 cellForRowAtIndexPath:v6];
+    [view cellForRowAtIndexPath:v6];
 
     return TSUDynamicCast();
   }
@@ -215,37 +215,37 @@
   return result;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
   [(THGlossaryTermsViewController *)self dismissSearchKeyboard:self];
-  [(THGlossaryNavigationDelegate *)[(THGlossaryTermsViewController *)self navigationDelegate] displayEntry:[(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] entryForRowAtIndexPath:a4] whenCollapsed:1];
-  return a4;
+  [(THGlossaryNavigationDelegate *)[(THGlossaryTermsViewController *)self navigationDelegate] displayEntry:[(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] entryForRowAtIndexPath:path] whenCollapsed:1];
+  return path;
 }
 
-- (void)tableView:(id)a3 didHighlightRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didHighlightRowAtIndexPath:(id)path
 {
-  v4 = [(THGlossaryTermsViewController *)self p_previousCellForTableView:a3 indexPath:a4];
+  v4 = [(THGlossaryTermsViewController *)self p_previousCellForTableView:view indexPath:path];
 
   [v4 setFollowingCellHighlighted:1];
 }
 
-- (void)tableView:(id)a3 didUnhighlightRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didUnhighlightRowAtIndexPath:(id)path
 {
-  v4 = [(THGlossaryTermsViewController *)self p_previousCellForTableView:a3 indexPath:a4];
+  v4 = [(THGlossaryTermsViewController *)self p_previousCellForTableView:view indexPath:path];
 
   [v4 setFollowingCellHighlighted:0];
 }
 
-- (CGRect)tableView:(id)a3 frameForSectionIndexGivenProposedFrame:(CGRect)a4
+- (CGRect)tableView:(id)view frameForSectionIndexGivenProposedFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [a3 _shouldReverseLayoutDirection];
-  [a3 safeAreaInsets];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _shouldReverseLayoutDirection = [view _shouldReverseLayoutDirection];
+  [view safeAreaInsets];
   v12 = -v11;
-  if (v9)
+  if (_shouldReverseLayoutDirection)
   {
     v12 = v10;
   }
@@ -261,25 +261,25 @@
   return result;
 }
 
-- (void)glossaryTermTableCell:(id)a3 selected:(BOOL)a4
+- (void)glossaryTermTableCell:(id)cell selected:(BOOL)selected
 {
-  v4 = a4;
-  v7 = [(THGlossaryTermsViewController *)self tableView];
-  v8 = [(THGlossaryTermsViewController *)self p_previousCellForTableView:v7 indexPath:[(UITableView *)v7 indexPathForCell:a3]];
+  selectedCopy = selected;
+  tableView = [(THGlossaryTermsViewController *)self tableView];
+  v8 = [(THGlossaryTermsViewController *)self p_previousCellForTableView:tableView indexPath:[(UITableView *)tableView indexPathForCell:cell]];
 
-  [v8 setFollowingCellSelected:v4];
+  [v8 setFollowingCellSelected:selectedCopy];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(THGlossaryTermsViewController *)self glossaryIndex];
+  glossaryIndex = [(THGlossaryTermsViewController *)self glossaryIndex];
 
-  return [(THGlossaryIndex *)v3 numberOfSections];
+  return [(THGlossaryIndex *)glossaryIndex numberOfSections];
 }
 
-- (id)p_constraintsOfSeparatorInCell:(id)a3 tableView:(id)a4 indexPath:(id)a5
+- (id)p_constraintsOfSeparatorInCell:(id)cell tableView:(id)view indexPath:(id)path
 {
-  v7 = [(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex:a3] isLastInSection:a5];
+  v7 = [(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex:cell] isLastInSection:path];
   v8 = +[NSMutableArray array];
   TSUScreenScale();
   v10 = [NSNumber numberWithDouble:1.0 / v9];
@@ -293,17 +293,17 @@
     v11 = &off_49CF50;
   }
 
-  v12 = [a3 separatorView];
+  separatorView = [cell separatorView];
   v13 = _NSDictionaryOfVariableBindings(@"leftIndent", v11, 0);
-  [v8 addObjectsFromArray:{+[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-leftIndent-[separatorView]|", 0, v13, _NSDictionaryOfVariableBindings(@"separatorView", v12, 0))}];
+  [v8 addObjectsFromArray:{+[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-leftIndent-[separatorView]|", 0, v13, _NSDictionaryOfVariableBindings(@"separatorView", separatorView, 0))}];
   v14 = _NSDictionaryOfVariableBindings(@"separatorHeight", v10, 0);
-  [v8 addObjectsFromArray:{+[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:[separatorView(==separatorHeight)]|", 0, v14, _NSDictionaryOfVariableBindings(@"separatorView", v12, 0))}];
+  [v8 addObjectsFromArray:{+[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:[separatorView(==separatorHeight)]|", 0, v14, _NSDictionaryOfVariableBindings(@"separatorView", separatorView, 0))}];
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"THGlossaryTermTableViewCell"];
+  v7 = [view dequeueReusableCellWithIdentifier:@"THGlossaryTermTableViewCell"];
   if (!v7)
   {
     v7 = [[THGlossaryTermTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"THGlossaryTermTableViewCell"];
@@ -317,11 +317,11 @@
     [(THGlossaryTermTableViewCell *)v7 setDelegate:self];
   }
 
-  v8 = [(THGlossaryTermsViewController *)self themePage];
+  themePage = [(THGlossaryTermsViewController *)self themePage];
   [-[THGlossaryTermTableViewCell contentView](v7 "contentView")];
-  -[THLabelWithWordHighlights setTextColor:](-[THGlossaryTermTableViewCell labelWithHighlights](v7, "labelWithHighlights"), "setTextColor:", [v8 primaryTextColor]);
-  -[THLabelWithWordHighlights setHighlightedTextColor:](-[THGlossaryTermTableViewCell labelWithHighlights](v7, "labelWithHighlights"), "setHighlightedTextColor:", [v8 primaryTextColor]);
-  -[UIView setBackgroundColor:](-[THGlossaryTermTableViewCell separatorView](v7, "separatorView"), "setBackgroundColor:", [v8 separatorColor]);
+  -[THLabelWithWordHighlights setTextColor:](-[THGlossaryTermTableViewCell labelWithHighlights](v7, "labelWithHighlights"), "setTextColor:", [themePage primaryTextColor]);
+  -[THLabelWithWordHighlights setHighlightedTextColor:](-[THGlossaryTermTableViewCell labelWithHighlights](v7, "labelWithHighlights"), "setHighlightedTextColor:", [themePage primaryTextColor]);
+  -[UIView setBackgroundColor:](-[THGlossaryTermTableViewCell separatorView](v7, "separatorView"), "setBackgroundColor:", [themePage separatorColor]);
   [-[THGlossaryTermTableViewCell selectedBackgroundView](v7 "selectedBackgroundView")];
   -[THLabelWithWordHighlights setText:](-[THGlossaryTermTableViewCell labelWithHighlights](v7, "labelWithHighlights"), "setText:", [-[THGlossaryIndex entryForRowAtIndexPath:](-[THGlossaryTermsViewController glossaryIndex](self "glossaryIndex")]);
   v9 = +[NSMutableArray array];
@@ -329,13 +329,13 @@
   v11 = _NSDictionaryOfVariableBindings(@"glossaryTermIndent", &off_49CF50, 0);
   [v9 addObjectsFromArray:{+[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-glossaryTermIndent-[labelWithHighlights]|", 0x10000, v11, v10)}];
   [v9 addObjectsFromArray:{+[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|[labelWithHighlights]|", 0, v11, v10)}];
-  [v9 addObjectsFromArray:{-[THGlossaryTermsViewController p_constraintsOfSeparatorInCell:tableView:indexPath:](self, "p_constraintsOfSeparatorInCell:tableView:indexPath:", v7, a3, a4)}];
+  [v9 addObjectsFromArray:{-[THGlossaryTermsViewController p_constraintsOfSeparatorInCell:tableView:indexPath:](self, "p_constraintsOfSeparatorInCell:tableView:indexPath:", v7, view, path)}];
   [(THGlossaryTermTableViewCell *)v7 removeConstraints:[(THGlossaryTermTableViewCell *)v7 constraints]];
   [(THGlossaryTermTableViewCell *)v7 addConstraints:v9];
   return v7;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   objc_opt_class();
   v7 = TSUDynamicCast();
@@ -343,41 +343,41 @@
   {
     v8 = v7;
     v9 = [-[THGlossaryIndex entryForRowAtIndexPath:](-[THGlossaryTermsViewController glossaryIndex](self "glossaryIndex")];
-    v10 = [v8 labelWithHighlights];
+    labelWithHighlights = [v8 labelWithHighlights];
 
-    [v10 setText:v9];
+    [labelWithHighlights setText:v9];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(THGlossaryTermsViewController *)self glossaryIndex];
+  glossaryIndex = [(THGlossaryTermsViewController *)self glossaryIndex];
 
-  return [(THGlossaryIndex *)v5 numberOfRowsInSection:a4];
+  return [(THGlossaryIndex *)glossaryIndex numberOfRowsInSection:section];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(THGlossaryTermsViewController *)self glossaryIndex];
+  glossaryIndex = [(THGlossaryTermsViewController *)self glossaryIndex];
 
-  return [(THGlossaryIndex *)v5 titleForHeaderInSection:a4];
+  return [(THGlossaryIndex *)glossaryIndex titleForHeaderInSection:section];
 }
 
-- (id)sectionIndexTitlesForTableView:(id)a3
+- (id)sectionIndexTitlesForTableView:(id)view
 {
   if ([(THGlossaryTermsViewController *)self isSearching])
   {
     return 0;
   }
 
-  v4 = [+[UILocalizedIndexedCollation currentCollation](UILocalizedIndexedCollation sectionIndexTitles];
+  sectionIndexTitles = [+[UILocalizedIndexedCollation currentCollation](UILocalizedIndexedCollation sectionIndexTitles];
 
-  return [NSMutableArray arrayWithArray:v4];
+  return [NSMutableArray arrayWithArray:sectionIndexTitles];
 }
 
-- (int64_t)tableView:(id)a3 sectionForSectionIndexTitle:(id)a4 atIndex:(int64_t)a5
+- (int64_t)tableView:(id)view sectionForSectionIndexTitle:(id)title atIndex:(int64_t)index
 {
-  if (a5)
+  if (index)
   {
     if ([(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] numberOfEntries]< 1)
     {
@@ -386,15 +386,15 @@
 
     else
     {
-      v8 = [(THGlossaryTermsViewController *)self glossaryIndex];
+      glossaryIndex = [(THGlossaryTermsViewController *)self glossaryIndex];
 
-      return [(THGlossaryIndex *)v8 sectionForSectionIndexTitle:a4 atIndex:a5];
+      return [(THGlossaryIndex *)glossaryIndex sectionForSectionIndexTitle:title atIndex:index];
     }
   }
 
   else
   {
-    [a3 scrollToRowAtIndexPath:+[NSIndexPath indexPathForRow:inSection:](NSIndexPath atScrollPosition:"indexPathForRow:inSection:" animated:{0, 0), 3, 0}];
+    [view scrollToRowAtIndexPath:+[NSIndexPath indexPathForRow:inSection:](NSIndexPath atScrollPosition:"indexPathForRow:inSection:" animated:{0, 0), 3, 0}];
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 }
@@ -403,9 +403,9 @@
 {
   if ([(THGlossaryTermsViewController *)self isSearching]&& [(THGlossaryTermsViewController *)self searchDisplayController])
   {
-    v3 = [(THGlossaryTermsViewController *)self searchDisplayController];
+    searchDisplayController = [(THGlossaryTermsViewController *)self searchDisplayController];
 
-    return [v3 searchResultsTableView];
+    return [searchDisplayController searchResultsTableView];
   }
 
   else
@@ -415,25 +415,25 @@
   }
 }
 
-- (void)selectEntry:(id)a3 scrollPosition:(int64_t)a4 animated:(BOOL)a5
+- (void)selectEntry:(id)entry scrollPosition:(int64_t)position animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   if ([(THGlossaryTermsViewController *)self hasDoneLayout])
   {
-    v9 = [(THGlossaryTermsViewController *)self p_activeTableView];
-    if ([(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] indexForEntry:a3]== 0x7FFFFFFFFFFFFFFFLL)
+    p_activeTableView = [(THGlossaryTermsViewController *)self p_activeTableView];
+    if ([(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] indexForEntry:entry]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [v9 indexPathForSelectedRow];
+      indexPathForSelectedRow = [p_activeTableView indexPathForSelectedRow];
 
-      [v9 deselectRowAtIndexPath:v10 animated:0];
+      [p_activeTableView deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
     }
 
     else
     {
-      v11 = [(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] indexPathForEntry:a3];
-      [v9 selectRowAtIndexPath:v11 animated:v5 scrollPosition:a4];
+      v11 = [(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] indexPathForEntry:entry];
+      [p_activeTableView selectRowAtIndexPath:v11 animated:animatedCopy scrollPosition:position];
 
-      [v9 scrollToRowAtIndexPath:v11 atScrollPosition:a4 animated:v5];
+      [p_activeTableView scrollToRowAtIndexPath:v11 atScrollPosition:position animated:animatedCopy];
     }
   }
 
@@ -449,50 +449,50 @@
     v12[1] = 3221225472;
     v12[2] = sub_BB6DC;
     v12[3] = &unk_45CF30;
-    v12[4] = a3;
+    v12[4] = entry;
     v12[5] = v13;
-    v12[6] = a4;
+    v12[6] = position;
     [(THGlossaryTermsViewController *)self setDidLayoutBlock:v12];
     _Block_object_dispose(v13, 8);
   }
 }
 
-- (void)scrollToEntry:(id)a3 scrollPosition:(int64_t)a4
+- (void)scrollToEntry:(id)entry scrollPosition:(int64_t)position
 {
-  if (a3 && [(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] indexForEntry:a3]!= 0x7FFFFFFFFFFFFFFFLL)
+  if (entry && [(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] indexForEntry:entry]!= 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [(THGlossaryTermsViewController *)self p_activeTableView];
-    v8 = [(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] indexPathForEntry:a3];
+    p_activeTableView = [(THGlossaryTermsViewController *)self p_activeTableView];
+    v8 = [(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] indexPathForEntry:entry];
 
-    [v7 scrollToRowAtIndexPath:v8 atScrollPosition:a4 animated:1];
+    [p_activeTableView scrollToRowAtIndexPath:v8 atScrollPosition:position animated:1];
   }
 }
 
 - (id)selectedEntry
 {
   v3 = [-[THGlossaryTermsViewController p_activeTableView](self "p_activeTableView")];
-  v4 = [(THGlossaryTermsViewController *)self glossaryIndex];
+  glossaryIndex = [(THGlossaryTermsViewController *)self glossaryIndex];
 
-  return [(THGlossaryIndex *)v4 entryForRowAtIndexPath:v3];
+  return [(THGlossaryIndex *)glossaryIndex entryForRowAtIndexPath:v3];
 }
 
-- (void)setSearchString:(id)a3
+- (void)setSearchString:(id)string
 {
-  if ([NSString normalizedCompare:a3 with:self->_searchString])
+  if ([NSString normalizedCompare:string with:self->_searchString])
   {
-    v5 = [(THGlossaryNavigationDelegate *)[(THGlossaryTermsViewController *)self navigationDelegate] displayedEntry];
+    displayedEntry = [(THGlossaryNavigationDelegate *)[(THGlossaryTermsViewController *)self navigationDelegate] displayedEntry];
 
-    self->_searchString = [a3 copy];
+    self->_searchString = [string copy];
     self->_glossaryIndex = 0;
     [(UITableView *)[(THGlossaryTermsViewController *)self tableView] reloadData];
-    if ([(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] numberOfEntries]>= 1 && [(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] indexForEntry:v5]!= 0x7FFFFFFFFFFFFFFFLL)
+    if ([(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] numberOfEntries]>= 1 && [(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] indexForEntry:displayedEntry]!= 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(THGlossaryTermsViewController *)self selectEntry:v5 scrollPosition:1 animated:1];
+      [(THGlossaryTermsViewController *)self selectEntry:displayedEntry scrollPosition:1 animated:1];
     }
 
-    v6 = [(THGlossaryTermsViewController *)self navigationDelegate];
+    navigationDelegate = [(THGlossaryTermsViewController *)self navigationDelegate];
 
-    [(THGlossaryNavigationDelegate *)v6 displayEntry:v5 whenCollapsed:0];
+    [(THGlossaryNavigationDelegate *)navigationDelegate displayEntry:displayedEntry whenCollapsed:0];
   }
 }
 
@@ -507,18 +507,18 @@
   return result;
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  -[THGlossaryTermsViewController setSearchString:](self, "setSearchString:", [a3 text]);
-  v6 = [(THGlossaryTermsViewController *)self floatingHeaderController];
-  v7 = [a4 length] != 0;
+  -[THGlossaryTermsViewController setSearchString:](self, "setSearchString:", [bar text]);
+  floatingHeaderController = [(THGlossaryTermsViewController *)self floatingHeaderController];
+  v7 = [change length] != 0;
 
-  [(THFloatingHeaderController *)v6 setHeaderHidden:v7];
+  [(THFloatingHeaderController *)floatingHeaderController setHeaderHidden:v7];
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  [a3 setText:0];
+  [clicked setText:0];
 
   [(THGlossaryTermsViewController *)self clearSearch];
 }
@@ -531,14 +531,14 @@
   [(THGlossaryTermsViewController *)self setSearchString:v3];
 }
 
-- (unint64_t)numberOfFloatingHeaders:(id)a3
+- (unint64_t)numberOfFloatingHeaders:(id)headers
 {
-  v3 = [(THGlossaryTermsViewController *)self glossaryIndex];
+  glossaryIndex = [(THGlossaryTermsViewController *)self glossaryIndex];
 
-  return [(THGlossaryIndex *)v3 numberOfSections];
+  return [(THGlossaryIndex *)glossaryIndex numberOfSections];
 }
 
-- (id)layerForFloatingHeaderAtIndex:(unint64_t)a3 forController:(id)a4
+- (id)layerForFloatingHeaderAtIndex:(unint64_t)index forController:(id)controller
 {
   v15 = *&CATransform3DIdentity.m33;
   v16 = *&CATransform3DIdentity.m31;
@@ -556,7 +556,7 @@
   v10 = *&CATransform3DIdentity.m21;
   *&v19.m21 = v10;
   *&v19.m23 = v9;
-  if ([objc_msgSend(a4 "tableView")])
+  if ([objc_msgSend(controller "tableView")])
   {
     *&v18.m31 = v16;
     *&v18.m33 = v15;
@@ -585,7 +585,7 @@
   v17[5] = self;
   [-[THGlossaryTermsViewController traitCollection](self "traitCollection")];
   [v6 setBackgroundColor:{-[UIColor CGColor](+[UIColor clearColor](UIColor, "clearColor"), "CGColor")}];
-  [v6 setString:{-[THGlossaryIndex titleForHeaderInSection:](-[THGlossaryTermsViewController glossaryIndex](self, "glossaryIndex"), "titleForHeaderInSection:", a3)}];
+  [v6 setString:{-[THGlossaryIndex titleForHeaderInSection:](-[THGlossaryTermsViewController glossaryIndex](self, "glossaryIndex"), "titleForHeaderInSection:", index)}];
   [+[UIScreen mainScreen](UIScreen scale];
   [v6 setContentsScale:?];
   v7 = +[CALayer layer];
@@ -596,15 +596,15 @@
   return v7;
 }
 
-- (unint64_t)rowNumberForFloatingHeaderAtIndex:(unint64_t)a3 forController:(id)a4
+- (unint64_t)rowNumberForFloatingHeaderAtIndex:(unint64_t)index forController:(id)controller
 {
-  if (!a3)
+  if (!index)
   {
     return 0;
   }
 
   v5 = 0;
-  v6 = a3 - 1;
+  v6 = index - 1;
   do
   {
     v5 += [(THGlossaryIndex *)[(THGlossaryTermsViewController *)self glossaryIndex] numberOfRowsInSection:v6--];
@@ -614,11 +614,11 @@
   return v5;
 }
 
-- (unint64_t)numberOfRowsForFloatingHeaderAtIndex:(unint64_t)a3 forController:(id)a4
+- (unint64_t)numberOfRowsForFloatingHeaderAtIndex:(unint64_t)index forController:(id)controller
 {
-  v5 = [(THGlossaryTermsViewController *)self glossaryIndex:a3];
+  v5 = [(THGlossaryTermsViewController *)self glossaryIndex:index];
 
-  return [(THGlossaryIndex *)v5 numberOfRowsInSection:a3];
+  return [(THGlossaryIndex *)v5 numberOfRowsInSection:index];
 }
 
 @end

@@ -1,136 +1,136 @@
 @interface CXCall
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isEqualToCall:(CXCall *)call;
-- (CXCall)initWithCoder:(id)a3;
-- (CXCall)initWithUUID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)sanitizedCopyWithZone:(_NSZone *)a3;
+- (CXCall)initWithCoder:(id)coder;
+- (CXCall)initWithUUID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)sanitizedCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4;
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone;
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXCall
 
-- (CXCall)initWithUUID:(id)a3
+- (CXCall)initWithUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = CXCall;
   v6 = [(CXCall *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_UUID, a3);
+    objc_storeStrong(&v6->_UUID, d);
   }
 
   return v7;
 }
 
-- (CXCall)initWithCoder:(id)a3
+- (CXCall)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_UUID);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
   v8 = [(CXCall *)self initWithUUID:v7];
 
   if (v8)
   {
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(sel_localMemberIdentity);
-    v11 = [v4 decodeObjectOfClass:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
     localMemberIdentity = v8->_localMemberIdentity;
     v8->_localMemberIdentity = v11;
 
     v13 = objc_opt_class();
     v14 = NSStringFromSelector(sel_providerIdentifier);
-    v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+    v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
     providerIdentifier = v8->_providerIdentifier;
     v8->_providerIdentifier = v15;
 
     v17 = NSStringFromSelector(sel_isOutgoing);
-    v8->_outgoing = [v4 decodeBoolForKey:v17];
+    v8->_outgoing = [coderCopy decodeBoolForKey:v17];
 
     v18 = NSStringFromSelector(sel_isOnHold);
-    v8->_onHold = [v4 decodeBoolForKey:v18];
+    v8->_onHold = [coderCopy decodeBoolForKey:v18];
 
     v19 = NSStringFromSelector(sel_hasConnected);
-    v8->_hasConnected = [v4 decodeBoolForKey:v19];
+    v8->_hasConnected = [coderCopy decodeBoolForKey:v19];
 
     v20 = NSStringFromSelector(sel_hasEnded);
-    v8->_hasEnded = [v4 decodeBoolForKey:v20];
+    v8->_hasEnded = [coderCopy decodeBoolForKey:v20];
 
     v21 = NSStringFromSelector(sel_isEndpointOnCurrentDevice);
-    v8->_endpointOnCurrentDevice = [v4 decodeBoolForKey:v21];
+    v8->_endpointOnCurrentDevice = [coderCopy decodeBoolForKey:v21];
 
     v22 = NSStringFromSelector(sel_isHostedOnCurrentDevice);
-    v8->_hostedOnCurrentDevice = [v4 decodeBoolForKey:v22];
+    v8->_hostedOnCurrentDevice = [coderCopy decodeBoolForKey:v22];
 
     v23 = NSStringFromSelector(sel_isVideo);
-    v8->_video = [v4 decodeBoolForKey:v23];
+    v8->_video = [coderCopy decodeBoolForKey:v23];
 
     v24 = NSStringFromSelector(sel_isScreening);
-    v8->_screening = [v4 decodeBoolForKey:v24];
+    v8->_screening = [coderCopy decodeBoolForKey:v24];
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CXCall *)self UUID];
+  coderCopy = coder;
+  uUID = [(CXCall *)self UUID];
   v6 = NSStringFromSelector(sel_UUID);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:uUID forKey:v6];
 
-  v7 = [(CXCall *)self localMemberIdentity];
+  localMemberIdentity = [(CXCall *)self localMemberIdentity];
   v8 = NSStringFromSelector(sel_localMemberIdentity);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:localMemberIdentity forKey:v8];
 
-  v9 = [(CXCall *)self providerIdentifier];
+  providerIdentifier = [(CXCall *)self providerIdentifier];
   v10 = NSStringFromSelector(sel_providerIdentifier);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:providerIdentifier forKey:v10];
 
-  v11 = [(CXCall *)self isOutgoing];
+  isOutgoing = [(CXCall *)self isOutgoing];
   v12 = NSStringFromSelector(sel_isOutgoing);
-  [v4 encodeBool:v11 forKey:v12];
+  [coderCopy encodeBool:isOutgoing forKey:v12];
 
-  v13 = [(CXCall *)self isOnHold];
+  isOnHold = [(CXCall *)self isOnHold];
   v14 = NSStringFromSelector(sel_isOnHold);
-  [v4 encodeBool:v13 forKey:v14];
+  [coderCopy encodeBool:isOnHold forKey:v14];
 
-  v15 = [(CXCall *)self hasConnected];
+  hasConnected = [(CXCall *)self hasConnected];
   v16 = NSStringFromSelector(sel_hasConnected);
-  [v4 encodeBool:v15 forKey:v16];
+  [coderCopy encodeBool:hasConnected forKey:v16];
 
-  v17 = [(CXCall *)self hasEnded];
+  hasEnded = [(CXCall *)self hasEnded];
   v18 = NSStringFromSelector(sel_hasEnded);
-  [v4 encodeBool:v17 forKey:v18];
+  [coderCopy encodeBool:hasEnded forKey:v18];
 
-  v19 = [(CXCall *)self isEndpointOnCurrentDevice];
+  isEndpointOnCurrentDevice = [(CXCall *)self isEndpointOnCurrentDevice];
   v20 = NSStringFromSelector(sel_isEndpointOnCurrentDevice);
-  [v4 encodeBool:v19 forKey:v20];
+  [coderCopy encodeBool:isEndpointOnCurrentDevice forKey:v20];
 
-  v21 = [(CXCall *)self isHostedOnCurrentDevice];
+  isHostedOnCurrentDevice = [(CXCall *)self isHostedOnCurrentDevice];
   v22 = NSStringFromSelector(sel_isHostedOnCurrentDevice);
-  [v4 encodeBool:v21 forKey:v22];
+  [coderCopy encodeBool:isHostedOnCurrentDevice forKey:v22];
 
-  v23 = [(CXCall *)self isVideo];
+  isVideo = [(CXCall *)self isVideo];
   v24 = NSStringFromSelector(sel_isVideo);
-  [v4 encodeBool:v23 forKey:v24];
+  [coderCopy encodeBool:isVideo forKey:v24];
 
-  v25 = [(CXCall *)self isScreening];
+  isScreening = [(CXCall *)self isScreening];
   v26 = NSStringFromSelector(sel_isScreening);
-  [v4 encodeBool:v25 forKey:v26];
+  [coderCopy encodeBool:isScreening forKey:v26];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXCall *)self isEqualToCall:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXCall *)self isEqualToCall:equalCopy];
 
   return v5;
 }
@@ -138,30 +138,30 @@
 - (BOOL)isEqualToCall:(CXCall *)call
 {
   v4 = call;
-  v5 = [(CXCall *)self UUID];
-  v6 = [(CXCall *)v4 UUID];
-  if (v5 | v6 && ![v5 isEqual:v6])
+  uUID = [(CXCall *)self UUID];
+  uUID2 = [(CXCall *)v4 UUID];
+  if (uUID | uUID2 && ![uUID isEqual:uUID2])
   {
     LOBYTE(v18) = 0;
   }
 
   else
   {
-    v7 = [(CXCall *)self localMemberIdentity];
-    v8 = [(CXCall *)v4 localMemberIdentity];
-    if (v7 | v8 && ![v7 isEqualToData:v8])
+    localMemberIdentity = [(CXCall *)self localMemberIdentity];
+    localMemberIdentity2 = [(CXCall *)v4 localMemberIdentity];
+    if (localMemberIdentity | localMemberIdentity2 && ![localMemberIdentity isEqualToData:localMemberIdentity2])
     {
       LOBYTE(v18) = 0;
     }
 
     else
     {
-      v9 = [(CXCall *)self providerIdentifier];
-      v10 = [(CXCall *)v4 providerIdentifier];
-      if ((!(v9 | v10) || [v9 isEqual:v10]) && (v11 = -[CXCall isOutgoing](self, "isOutgoing"), v11 == -[CXCall isOutgoing](v4, "isOutgoing")) && (v12 = -[CXCall isVideo](self, "isVideo"), v12 == -[CXCall isVideo](v4, "isVideo")) && (v13 = -[CXCall isOnHold](self, "isOnHold"), v13 == -[CXCall isOnHold](v4, "isOnHold")) && (v14 = -[CXCall hasConnected](self, "hasConnected"), v14 == -[CXCall hasConnected](v4, "hasConnected")) && (v15 = -[CXCall hasEnded](self, "hasEnded"), v15 == -[CXCall hasEnded](v4, "hasEnded")) && (v16 = -[CXCall isEndpointOnCurrentDevice](self, "isEndpointOnCurrentDevice"), v16 == -[CXCall isEndpointOnCurrentDevice](v4, "isEndpointOnCurrentDevice")) && (v17 = -[CXCall isHostedOnCurrentDevice](self, "isHostedOnCurrentDevice"), v17 == -[CXCall isHostedOnCurrentDevice](v4, "isHostedOnCurrentDevice")))
+      providerIdentifier = [(CXCall *)self providerIdentifier];
+      providerIdentifier2 = [(CXCall *)v4 providerIdentifier];
+      if ((!(providerIdentifier | providerIdentifier2) || [providerIdentifier isEqual:providerIdentifier2]) && (v11 = -[CXCall isOutgoing](self, "isOutgoing"), v11 == -[CXCall isOutgoing](v4, "isOutgoing")) && (v12 = -[CXCall isVideo](self, "isVideo"), v12 == -[CXCall isVideo](v4, "isVideo")) && (v13 = -[CXCall isOnHold](self, "isOnHold"), v13 == -[CXCall isOnHold](v4, "isOnHold")) && (v14 = -[CXCall hasConnected](self, "hasConnected"), v14 == -[CXCall hasConnected](v4, "hasConnected")) && (v15 = -[CXCall hasEnded](self, "hasEnded"), v15 == -[CXCall hasEnded](v4, "hasEnded")) && (v16 = -[CXCall isEndpointOnCurrentDevice](self, "isEndpointOnCurrentDevice"), v16 == -[CXCall isEndpointOnCurrentDevice](v4, "isEndpointOnCurrentDevice")) && (v17 = -[CXCall isHostedOnCurrentDevice](self, "isHostedOnCurrentDevice"), v17 == -[CXCall isHostedOnCurrentDevice](v4, "isHostedOnCurrentDevice")))
       {
-        v20 = [(CXCall *)self isScreening];
-        v18 = v20 ^ [(CXCall *)v4 isScreening]^ 1;
+        isScreening = [(CXCall *)self isScreening];
+        v18 = isScreening ^ [(CXCall *)v4 isScreening]^ 1;
       }
 
       else
@@ -176,12 +176,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CXCall *)self UUID];
-  v4 = [v3 hash];
-  v5 = [(CXCall *)self localMemberIdentity];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CXCall *)self providerIdentifier];
-  v8 = v6 ^ [v7 hash];
+  uUID = [(CXCall *)self UUID];
+  v4 = [uUID hash];
+  localMemberIdentity = [(CXCall *)self localMemberIdentity];
+  v6 = [localMemberIdentity hash] ^ v4;
+  providerIdentifier = [(CXCall *)self providerIdentifier];
+  v8 = v6 ^ [providerIdentifier hash];
   if ([(CXCall *)self isOutgoing])
   {
     v9 = 1231;
@@ -271,49 +271,49 @@
   return v16 ^ v21;
 }
 
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone
 {
-  v5 = a3;
-  [v5 setOutgoing:{-[CXCall isOutgoing](self, "isOutgoing")}];
-  [v5 setOnHold:{-[CXCall isOnHold](self, "isOnHold")}];
-  [v5 setHasConnected:{-[CXCall hasConnected](self, "hasConnected")}];
-  [v5 setHasEnded:{-[CXCall hasEnded](self, "hasEnded")}];
+  copyCopy = copy;
+  [copyCopy setOutgoing:{-[CXCall isOutgoing](self, "isOutgoing")}];
+  [copyCopy setOnHold:{-[CXCall isOnHold](self, "isOnHold")}];
+  [copyCopy setHasConnected:{-[CXCall hasConnected](self, "hasConnected")}];
+  [copyCopy setHasEnded:{-[CXCall hasEnded](self, "hasEnded")}];
 }
 
-- (id)sanitizedCopyWithZone:(_NSZone *)a3
+- (id)sanitizedCopyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(CXCall *)self UUID];
-  v7 = [v5 initWithUUID:v6];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  uUID = [(CXCall *)self UUID];
+  v7 = [v5 initWithUUID:uUID];
 
-  [(CXCall *)self updateSanitizedCopy:v7 withZone:a3];
+  [(CXCall *)self updateSanitizedCopy:v7 withZone:zone];
 
   return v7;
 }
 
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone
 {
-  v8 = a3;
-  [(CXCall *)self updateSanitizedCopy:v8 withZone:a4];
-  v6 = [(CXCall *)self localMemberIdentity];
-  [v8 setLocalMemberIdentity:v6];
+  copyCopy = copy;
+  [(CXCall *)self updateSanitizedCopy:copyCopy withZone:zone];
+  localMemberIdentity = [(CXCall *)self localMemberIdentity];
+  [copyCopy setLocalMemberIdentity:localMemberIdentity];
 
-  v7 = [(CXCall *)self providerIdentifier];
-  [v8 setProviderIdentifier:v7];
+  providerIdentifier = [(CXCall *)self providerIdentifier];
+  [copyCopy setProviderIdentifier:providerIdentifier];
 
-  [v8 setEndpointOnCurrentDevice:{-[CXCall isEndpointOnCurrentDevice](self, "isEndpointOnCurrentDevice")}];
-  [v8 setHostedOnCurrentDevice:{-[CXCall isHostedOnCurrentDevice](self, "isHostedOnCurrentDevice")}];
-  [v8 setVideo:{-[CXCall isVideo](self, "isVideo")}];
-  [v8 setScreening:{-[CXCall isScreening](self, "isScreening")}];
+  [copyCopy setEndpointOnCurrentDevice:{-[CXCall isEndpointOnCurrentDevice](self, "isEndpointOnCurrentDevice")}];
+  [copyCopy setHostedOnCurrentDevice:{-[CXCall isHostedOnCurrentDevice](self, "isHostedOnCurrentDevice")}];
+  [copyCopy setVideo:{-[CXCall isVideo](self, "isVideo")}];
+  [copyCopy setScreening:{-[CXCall isScreening](self, "isScreening")}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(CXCall *)self UUID];
-  v7 = [v5 initWithUUID:v6];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  uUID = [(CXCall *)self UUID];
+  v7 = [v5 initWithUUID:uUID];
 
-  [(CXCall *)self updateCopy:v7 withZone:a3];
+  [(CXCall *)self updateCopy:v7 withZone:zone];
   return v7;
 }
 

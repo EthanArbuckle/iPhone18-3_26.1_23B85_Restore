@@ -1,26 +1,26 @@
 @interface WindowSceneDelegate
 - (_TtC18ActivityProgressUI19WindowSceneDelegate)init;
-- (void)eventResultReceivedForActivity:(id)a3 event:(id)a4 result:(id)a5;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)setWindow:(id)a3;
+- (void)eventResultReceivedForActivity:(id)activity event:(id)event result:(id)result;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)setWindow:(id)window;
 @end
 
 @implementation WindowSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC18ActivityProgressUI19WindowSceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR____TtC18ActivityProgressUI19WindowSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC18ActivityProgressUI19WindowSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100030204(v8);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100030204(sceneCopy);
 }
 
 - (_TtC18ActivityProgressUI19WindowSceneDelegate)init
@@ -32,7 +32,7 @@
   return [(WindowSceneDelegate *)&v3 init];
 }
 
-- (void)eventResultReceivedForActivity:(id)a3 event:(id)a4 result:(id)a5
+- (void)eventResultReceivedForActivity:(id)activity event:(id)event result:(id)result
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);

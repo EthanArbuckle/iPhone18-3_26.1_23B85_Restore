@@ -1,15 +1,15 @@
 @interface DOCFastLabel
 - (BOOL)_enableMonochromaticTreatment;
-- (CGRect)textRectForBounds:(CGRect)a3 limitedToNumberOfLines:(int64_t)a4;
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(int64_t)lines;
 - (CGSize)doc_effectiveContentSize;
 - (NSAttributedString)attributedText;
 - (NSString)text;
 - (double)contentScaleFactor;
-- (void)_setEnableMonochromaticTreatment:(BOOL)a3;
+- (void)_setEnableMonochromaticTreatment:(BOOL)treatment;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setContentScaleFactor:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setContentScaleFactor:(double)factor;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DOCFastLabel
@@ -28,16 +28,16 @@
   return [(DOCFastLabel *)&v5 _enableMonochromaticTreatment];
 }
 
-- (void)_setEnableMonochromaticTreatment:(BOOL)a3
+- (void)_setEnableMonochromaticTreatment:(BOOL)treatment
 {
   if (*(&self->super.super.super.super.isa + OBJC_IVAR____TtC26DocumentManagerExecutables12DOCFastLabel_disableWorkaroundFor160718780) == 1)
   {
     v7 = v3;
     v8 = v4;
-    v5 = a3;
+    treatmentCopy = treatment;
     v6.receiver = self;
     v6.super_class = type metadata accessor for DOCFastLabel();
-    [(DOCFastLabel *)&v6 _setEnableMonochromaticTreatment:v5];
+    [(DOCFastLabel *)&v6 _setEnableMonochromaticTreatment:treatmentCopy];
   }
 }
 
@@ -46,10 +46,10 @@
   v10.receiver = self;
   v10.super_class = type metadata accessor for DOCFastLabel();
   v2 = v10.receiver;
-  v3 = [(DOCFastLabel *)&v10 text];
-  if (v3)
+  text = [(DOCFastLabel *)&v10 text];
+  if (text)
   {
-    v4 = v3;
+    v4 = text;
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
 
@@ -67,7 +67,7 @@
 
 - (NSAttributedString)attributedText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOCFastLabel.attributedText.getter();
 
   return v3;
@@ -81,28 +81,28 @@
   return result;
 }
 
-- (void)setContentScaleFactor:(double)a3
+- (void)setContentScaleFactor:(double)factor
 {
   v12.receiver = self;
   v12.super_class = type metadata accessor for DOCFastLabel();
   v4 = v12.receiver;
-  [(DOCFastLabel *)&v12 setContentScaleFactor:a3];
+  [(DOCFastLabel *)&v12 setContentScaleFactor:factor];
   v5 = *&v4[OBJC_IVAR____TtC26DocumentManagerExecutables12DOCFastLabel_textLayer];
-  v6 = [v4 layer];
-  [v6 contentsScale];
+  layer = [v4 layer];
+  [layer contentsScale];
   v8 = v7;
 
   [v5 setContentsScale_];
-  v9 = [v4 layer];
-  [v9 rasterizationScale];
+  layer2 = [v4 layer];
+  [layer2 rasterizationScale];
   v11 = v10;
 
   [v5 setRasterizationScale_];
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3 limitedToNumberOfLines:(int64_t)a4
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(int64_t)lines
 {
-  v4 = self;
+  selfCopy = self;
   v5 = specialized DOCFastLabel.textRect(forBounds:limitedToNumberOfLines:)();
   v7 = v6;
   v9 = v8;
@@ -121,7 +121,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DOCFastLabel.layoutSubviews()();
 }
 
@@ -131,21 +131,21 @@
   v4.super_class = type metadata accessor for DOCFastLabel();
   v2 = v4.receiver;
   [(DOCFastLabel *)&v4 didMoveToWindow];
-  v3 = [v2 window];
-  if (v3)
+  window = [v2 window];
+  if (window)
   {
 
     DOCFastLabel.FastLabelLayer.traitCollection.setter([v2 traitCollection]);
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for DOCFastLabel();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(DOCFastLabel *)&v6 traitCollectionDidChange:v4];
+  [(DOCFastLabel *)&v6 traitCollectionDidChange:changeCopy];
   DOCFastLabel.FastLabelLayer.traitCollection.setter([v5 traitCollection]);
 }
 

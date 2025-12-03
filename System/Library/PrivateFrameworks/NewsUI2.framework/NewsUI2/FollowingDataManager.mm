@@ -1,6 +1,6 @@
 @interface FollowingDataManager
 - (_TtC7NewsUI220FollowingDataManager)init;
-- (void)bundleSubscriptionDidChange:(id)a3 previousBundleSubscription:(id)a4;
+- (void)bundleSubscriptionDidChange:(id)change previousBundleSubscription:(id)subscription;
 - (void)dealloc;
 @end
 
@@ -13,11 +13,11 @@
   v4 = v8[4];
   __swift_project_boxed_opaque_existential_1(v8, v8[3]);
   v5 = *(v4 + 56);
-  v6 = self;
+  selfCopy = self;
   v5();
 
   __swift_destroy_boxed_opaque_existential_1(v8);
-  v7.receiver = v6;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(FollowingDataManager *)&v7 dealloc];
 }
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (void)bundleSubscriptionDidChange:(id)a3 previousBundleSubscription:(id)a4
+- (void)bundleSubscriptionDidChange:(id)change previousBundleSubscription:(id)subscription
 {
   v5 = self + OBJC_IVAR____TtC7NewsUI220FollowingDataManager_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -37,7 +37,7 @@
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 88);
-    v8 = self;
+    selfCopy = self;
     v7();
     swift_unknownObjectRelease();
   }

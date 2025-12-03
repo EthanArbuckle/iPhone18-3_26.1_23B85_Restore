@@ -1,34 +1,34 @@
 @interface HAPOperatingStateWrapper
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPOperatingStateWrapper)init;
-- (HAPOperatingStateWrapper)initWithValue:(int64_t)a3;
+- (HAPOperatingStateWrapper)initWithValue:(int64_t)value;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPOperatingStateWrapper
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPOperatingStateWrapper);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPOperatingStateWrapper *)v6 parseFromData:v5 error:&v11];
+    [(HAPOperatingStateWrapper *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -54,25 +54,25 @@
   return result;
 }
 
-- (HAPOperatingStateWrapper)initWithValue:(int64_t)a3
+- (HAPOperatingStateWrapper)initWithValue:(int64_t)value
 {
   v5.receiver = self;
   v5.super_class = HAPOperatingStateWrapper;
   result = [(HAPOperatingStateWrapper *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = value;
   }
 
   return result;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  if (![v6 length])
+  dataCopy = data;
+  if (![dataCopy length])
   {
-    if (!a4)
+    if (!error)
     {
       v8 = 0;
       goto LABEL_10;
@@ -84,7 +84,7 @@
   }
 
   v11 = 0;
-  v7 = sub_100021790([v6 bytes], objc_msgSend(v6, "length"), &v11);
+  v7 = sub_100021790([dataCopy bytes], objc_msgSend(dataCopy, "length"), &v11);
   v8 = v11 == 0;
   if (!v11)
   {
@@ -92,11 +92,11 @@
     goto LABEL_10;
   }
 
-  if (a4)
+  if (error)
   {
     v9 = sub_100041618(v11);
 LABEL_7:
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_10:
@@ -104,25 +104,25 @@ LABEL_10:
   return v8;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
-  v3 = [(HAPOperatingStateWrapper *)self value];
+  value = [(HAPOperatingStateWrapper *)self value];
 
-  return sub_100021858(v3);
+  return sub_100021858(value);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPOperatingStateWrapper allocWithZone:a3];
-  v5 = [(HAPOperatingStateWrapper *)self value];
+  v4 = [HAPOperatingStateWrapper allocWithZone:zone];
+  value = [(HAPOperatingStateWrapper *)self value];
 
-  return [(HAPOperatingStateWrapper *)v4 initWithValue:v5];
+  return [(HAPOperatingStateWrapper *)v4 initWithValue:value];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -132,11 +132,11 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HAPOperatingStateWrapper *)self value];
-      v7 = [(HAPOperatingStateWrapper *)v5 value];
+      v5 = equalCopy;
+      value = [(HAPOperatingStateWrapper *)self value];
+      value2 = [(HAPOperatingStateWrapper *)v5 value];
 
-      v8 = v6 == v7;
+      v8 = value == value2;
     }
 
     else

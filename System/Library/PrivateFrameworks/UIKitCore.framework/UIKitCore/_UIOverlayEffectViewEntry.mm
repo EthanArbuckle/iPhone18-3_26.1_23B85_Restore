@@ -1,44 +1,44 @@
 @interface _UIOverlayEffectViewEntry
-+ (id)newEntryWithFilterType:(id)a3 color:(id)a4 alpha:(double)a5;
-+ (id)newEntryWithFilterType:(id)a3 image:(id)a4 alpha:(double)a5;
-- (BOOL)canTransitionToEffect:(id)a3;
++ (id)newEntryWithFilterType:(id)type color:(id)color alpha:(double)alpha;
++ (id)newEntryWithFilterType:(id)type image:(id)image alpha:(double)alpha;
+- (BOOL)canTransitionToEffect:(id)effect;
 - (id)description;
-- (void)addEffectToView:(id)a3;
-- (void)removeEffectFromView:(id)a3;
-- (void)setImage:(id)a3;
+- (void)addEffectToView:(id)view;
+- (void)removeEffectFromView:(id)view;
+- (void)setImage:(id)image;
 @end
 
 @implementation _UIOverlayEffectViewEntry
 
-+ (id)newEntryWithFilterType:(id)a3 color:(id)a4 alpha:(double)a5
++ (id)newEntryWithFilterType:(id)type color:(id)color alpha:(double)alpha
 {
-  v7 = a4;
-  v8 = a3;
+  colorCopy = color;
+  typeCopy = type;
   v9 = objc_opt_new();
   [v9 setRequirements:0];
-  v10 = [v8 copy];
+  v10 = [typeCopy copy];
 
   v11 = *(v9 + 16);
   *(v9 + 16) = v10;
 
-  v12 = [v7 copy];
+  v12 = [colorCopy copy];
   v13 = *(v9 + 24);
   *(v9 + 24) = v12;
 
   v14 = *(v9 + 32);
   *(v9 + 32) = 0;
 
-  *(v9 + 40) = a5;
+  *(v9 + 40) = alpha;
   return v9;
 }
 
-+ (id)newEntryWithFilterType:(id)a3 image:(id)a4 alpha:(double)a5
++ (id)newEntryWithFilterType:(id)type image:(id)image alpha:(double)alpha
 {
-  v7 = a4;
-  v8 = a3;
+  imageCopy = image;
+  typeCopy = type;
   v9 = objc_opt_new();
-  [v9 setRequirements:v7 != 0];
-  v10 = [v8 copy];
+  [v9 setRequirements:imageCopy != 0];
+  v10 = [typeCopy copy];
 
   v11 = *(v9 + 16);
   *(v9 + 16) = v10;
@@ -47,38 +47,38 @@
   *(v9 + 24) = 0;
 
   v13 = *(v9 + 32);
-  *(v9 + 32) = v7;
+  *(v9 + 32) = imageCopy;
 
-  *(v9 + 40) = a5;
+  *(v9 + 40) = alpha;
   return v9;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(_UIVisualEffectViewEntry *)self setRequirements:self->_image != 0];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)addEffectToView:(id)a3
+- (void)addEffectToView:(id)view
 {
   v4 = MEMORY[0x1E6979378];
-  v5 = a3;
+  viewCopy = view;
   v9 = [[v4 alloc] initWithType:self->_filterType];
-  v6 = [v5 layer];
-  [v6 setCompositingFilter:v9];
+  layer = [viewCopy layer];
+  [layer setCompositingFilter:v9];
 
-  [v5 setBackgroundColor:self->_color];
+  [viewCopy setBackgroundColor:self->_color];
   image = self->_image;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v5;
+    v8 = viewCopy;
   }
 
   else
@@ -89,19 +89,19 @@
   [v8 setImage:image];
 }
 
-- (void)removeEffectFromView:(id)a3
+- (void)removeEffectFromView:(id)view
 {
-  v7 = a3;
-  v3 = [v7 layer];
-  [v3 setCompositingFilter:0];
+  viewCopy = view;
+  layer = [viewCopy layer];
+  [layer setCompositingFilter:0];
 
-  [v7 setAlpha:1.0];
-  v4 = [v7 _nilBackgroundColor];
-  [v7 setBackgroundColor:v4];
+  [viewCopy setAlpha:1.0];
+  _nilBackgroundColor = [viewCopy _nilBackgroundColor];
+  [viewCopy setBackgroundColor:_nilBackgroundColor];
 
   objc_opt_class();
   v5 = (objc_opt_isKindOfClass() & 1) == 0;
-  v6 = v7;
+  v6 = viewCopy;
   if (v5)
   {
     v6 = 0;
@@ -110,11 +110,11 @@
   [v6 setImage:0];
 }
 
-- (BOOL)canTransitionToEffect:(id)a3
+- (BOOL)canTransitionToEffect:(id)effect
 {
   filterType = self->_filterType;
-  v4 = [a3 filterType];
-  LOBYTE(filterType) = [(NSString *)filterType isEqualToString:v4];
+  filterType = [effect filterType];
+  LOBYTE(filterType) = [(NSString *)filterType isEqualToString:filterType];
 
   return filterType;
 }

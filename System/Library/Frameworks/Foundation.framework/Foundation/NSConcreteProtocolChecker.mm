@@ -1,5 +1,5 @@
 @interface NSConcreteProtocolChecker
-- (NSConcreteProtocolChecker)initWithTarget:(id)a3 protocol:(id)a4;
+- (NSConcreteProtocolChecker)initWithTarget:(id)target protocol:(id)protocol;
 - (id)protocol;
 - (id)target;
 - (void)dealloc;
@@ -30,10 +30,10 @@
   [(NSProxy *)&v3 dealloc];
 }
 
-- (NSConcreteProtocolChecker)initWithTarget:(id)a3 protocol:(id)a4
+- (NSConcreteProtocolChecker)initWithTarget:(id)target protocol:(id)protocol
 {
-  self->_target = a3;
-  self->_protocol = a4;
+  self->_target = target;
+  self->_protocol = protocol;
   return self;
 }
 

@@ -2,9 +2,9 @@
 - (MAIHistoricalAnalyzer)init;
 - (MAIHistoricalAnalyzerOutput)analyze;
 - (id).cxx_construct;
-- (id)phaseStringFromNumber:(id)a3;
-- (unsigned)watchNumericIdentifierFromString:(id)a3;
-- (void)appendDay:(id)a3;
+- (id)phaseStringFromNumber:(id)number;
+- (unsigned)watchNumericIdentifierFromString:(id)string;
+- (void)appendDay:(id)day;
 @end
 
 @implementation MAIHistoricalAnalyzer
@@ -26,14 +26,14 @@
   return 0;
 }
 
-- (void)appendDay:(id)a3
+- (void)appendDay:(id)day
 {
-  v4 = a3;
-  v5 = [v4 wristTemperature];
-  v6 = [v5 watchIdentifier];
-  v7 = [(MAIHistoricalAnalyzer *)self watchNumericIdentifierFromString:v6];
+  dayCopy = day;
+  wristTemperature = [dayCopy wristTemperature];
+  watchIdentifier = [wristTemperature watchIdentifier];
+  v7 = [(MAIHistoricalAnalyzer *)self watchNumericIdentifierFromString:watchIdentifier];
 
-  if (self->_julianDayOfLastInput.__engaged_ && (val = self->_julianDayOfLastInput.var0.__val_, val >= [v4 julianDay]))
+  if (self->_julianDayOfLastInput.__engaged_ && (val = self->_julianDayOfLastInput.var0.__val_, val >= [dayCopy julianDay]))
   {
     v23 = ha_get_log();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
@@ -44,15 +44,15 @@
 
   else
   {
-    self->_julianDayOfLastInput.var0.__val_ = [v4 julianDay];
+    self->_julianDayOfLastInput.var0.__val_ = [dayCopy julianDay];
     self->_julianDayOfLastInput.__engaged_ = 1;
-    v9 = v4;
+    v9 = dayCopy;
     v27 = 0;
     LOBYTE(v28) = 0;
     v29 = 0;
-    LOBYTE(v30) = 0;
+    LOBYTE(sampleCount) = 0;
     v31 = 0;
-    LOBYTE(v32) = 0;
+    LOBYTE(sampleCount2) = 0;
     v33 = 0;
     LOBYTE(v34) = 0;
     v36 = 0;
@@ -62,52 +62,52 @@
     DWORD1(v24) = [v9 flow];
     BYTE8(v24) = [v9 spotting];
     HIDWORD(v24) = [v9 ovulationTestResult];
-    v10 = [v9 sedentaryHeartRateStatistics];
-    v11 = [v10 lowerPercentile];
+    sedentaryHeartRateStatistics = [v9 sedentaryHeartRateStatistics];
+    lowerPercentile = [sedentaryHeartRateStatistics lowerPercentile];
 
-    if (v11)
+    if (lowerPercentile)
     {
-      v12 = [v10 lowerPercentile];
-      [v12 floatValue];
+      lowerPercentile2 = [sedentaryHeartRateStatistics lowerPercentile];
+      [lowerPercentile2 floatValue];
       v26 = v13;
       v27 = 1;
 
       v31 = 1;
-      v30 = [v10 sampleCount];
+      sampleCount = [sedentaryHeartRateStatistics sampleCount];
     }
 
     else
     {
-      v30 = 0;
+      sampleCount = 0;
       v31 = 1;
     }
 
-    v14 = [v9 sleepHeartRateStatistics];
-    v15 = [v14 lowerPercentile];
+    sleepHeartRateStatistics = [v9 sleepHeartRateStatistics];
+    lowerPercentile3 = [sleepHeartRateStatistics lowerPercentile];
 
-    if (v15)
+    if (lowerPercentile3)
     {
-      v16 = [v14 lowerPercentile];
-      [v16 floatValue];
+      lowerPercentile4 = [sleepHeartRateStatistics lowerPercentile];
+      [lowerPercentile4 floatValue];
       v28 = v17;
       v29 = 1;
 
       v33 = 1;
-      v32 = [v14 sampleCount];
+      sampleCount2 = [sleepHeartRateStatistics sampleCount];
     }
 
     else
     {
-      v32 = 0;
+      sampleCount2 = 0;
       v33 = 1;
     }
 
-    v18 = [v9 wristTemperature];
+    wristTemperature2 = [v9 wristTemperature];
 
-    if (v18)
+    if (wristTemperature2)
     {
-      v19 = [v9 wristTemperature];
-      [v19 temperatureCelsius];
+      wristTemperature3 = [v9 wristTemperature];
+      [wristTemperature3 temperatureCelsius];
       v21 = v20;
 
       v22 = v21;
@@ -120,37 +120,37 @@
   }
 }
 
-- (unsigned)watchNumericIdentifierFromString:(id)a3
+- (unsigned)watchNumericIdentifierFromString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [(MAIHistoricalAnalyzer *)self watchIdentifiers];
-    v6 = [v5 indexOfObject:v4];
+    watchIdentifiers = [(MAIHistoricalAnalyzer *)self watchIdentifiers];
+    watchIdentifiers2 = [watchIdentifiers indexOfObject:stringCopy];
 
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL)
+    if (watchIdentifiers2 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [(MAIHistoricalAnalyzer *)self watchIdentifiers];
-      [v6 addObject:v4];
+      watchIdentifiers2 = [(MAIHistoricalAnalyzer *)self watchIdentifiers];
+      [watchIdentifiers2 addObject:stringCopy];
 
-      v7 = [(MAIHistoricalAnalyzer *)self watchIdentifiers];
-      LOBYTE(v6) = [v7 count] - 1;
+      watchIdentifiers3 = [(MAIHistoricalAnalyzer *)self watchIdentifiers];
+      LOBYTE(watchIdentifiers2) = [watchIdentifiers3 count] - 1;
     }
   }
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(watchIdentifiers2) = 0;
   }
 
-  return v6;
+  return watchIdentifiers2;
 }
 
-- (id)phaseStringFromNumber:(id)a3
+- (id)phaseStringFromNumber:(id)number
 {
   v9[9] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  numberCopy = number;
+  if (numberCopy)
   {
     v8[0] = &unk_2869C9C58;
     v8[1] = &unk_2869C9C70;
@@ -171,7 +171,7 @@
     v8[8] = &unk_2869C9D18;
     v9[8] = @"ContraceptiveUnspecified";
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:9];
-    v5 = [v4 objectForKeyedSubscript:v3];
+    v5 = [v4 objectForKeyedSubscript:numberCopy];
   }
 
   else

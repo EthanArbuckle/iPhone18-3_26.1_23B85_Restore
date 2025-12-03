@@ -3,7 +3,7 @@
 - (NSString)title;
 - (UIActivityIndicatorView)activityIndicator;
 - (UILabel)label;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 - (void)updateForChangedTraitsAffectingFonts;
 @end
 
@@ -43,35 +43,35 @@
 
 - (void)updateForChangedTraitsAffectingFonts
 {
-  v9 = [(FPUIAuthenticationNavigationBarTitleView *)self label];
-  [v9 setAdjustsFontForContentSizeCategory:1];
+  label = [(FPUIAuthenticationNavigationBarTitleView *)self label];
+  [label setAdjustsFontForContentSizeCategory:1];
   v3 = objc_opt_new();
-  v4 = [(FPUIAuthenticationNavigationBarTitleView *)self traitCollection];
-  v5 = [v4 verticalSizeClass];
+  traitCollection = [(FPUIAuthenticationNavigationBarTitleView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  if (v5 != 1 || ([v3 compactAppearance], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (verticalSizeClass != 1 || ([v3 compactAppearance], (standardAppearance = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v6 = [v3 standardAppearance];
+    standardAppearance = [v3 standardAppearance];
   }
 
-  v7 = [v6 titleTextAttributes];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
-  [v9 setFont:v8];
+  titleTextAttributes = [standardAppearance titleTextAttributes];
+  v8 = [titleTextAttributes objectForKeyedSubscript:*MEMORY[0x277D740A8]];
+  [label setFont:v8];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   WeakRetained = objc_loadWeakRetained(&self->_label);
-  [WeakRetained setText:v4];
+  [WeakRetained setText:titleCopy];
 }
 
 - (NSString)title
 {
   WeakRetained = objc_loadWeakRetained(&self->_label);
-  v3 = [WeakRetained text];
+  text = [WeakRetained text];
 
-  return v3;
+  return text;
 }
 
 - (UIActivityIndicatorView)activityIndicator

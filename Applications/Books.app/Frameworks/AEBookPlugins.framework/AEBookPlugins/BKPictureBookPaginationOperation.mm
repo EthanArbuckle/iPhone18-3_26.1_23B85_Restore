@@ -1,61 +1,61 @@
 @interface BKPictureBookPaginationOperation
-- (BOOL)_needsFullReparseForRecordedChapterPageCountForDocumentInfos:(id)a3 context:(id)a4;
-- (id)copyDocumentArray:(id)a3;
-- (id)copyNavigationInfos:(id)a3;
+- (BOOL)_needsFullReparseForRecordedChapterPageCountForDocumentInfos:(id)infos context:(id)context;
+- (id)copyDocumentArray:(id)array;
+- (id)copyNavigationInfos:(id)infos;
 - (id)unpaginatedAnnotations;
-- (unint64_t)countPaginatedChapters:(id)a3;
-- (unint64_t)countPaginatedDocuments:(id)a3;
-- (void)_clearAllChapterPageCountEntities:(id)a3;
+- (unint64_t)countPaginatedChapters:(id)chapters;
+- (unint64_t)countPaginatedDocuments:(id)documents;
+- (void)_clearAllChapterPageCountEntities:(id)entities;
 - (void)execute;
-- (void)recordAnnotationPageNumbers:(id)a3;
-- (void)recordDocumentPageCountForDocumentInfos:(id)a3 context:(id)a4;
+- (void)recordAnnotationPageNumbers:(id)numbers;
+- (void)recordDocumentPageCountForDocumentInfos:(id)infos context:(id)context;
 @end
 
 @implementation BKPictureBookPaginationOperation
 
-- (id)copyDocumentArray:(id)a3
+- (id)copyDocumentArray:(id)array
 {
-  v4 = a3;
-  v5 = [(BKPictureBookPaginationOperation *)self batchJob];
-  v6 = [v5 bookDatabaseKey];
-  v7 = [AEBookInfo linearDocumentPredicateForDatabaseKey:v6];
+  arrayCopy = array;
+  batchJob = [(BKPictureBookPaginationOperation *)self batchJob];
+  bookDatabaseKey = [batchJob bookDatabaseKey];
+  v7 = [AEBookInfo linearDocumentPredicateForDatabaseKey:bookDatabaseKey];
 
   v8 = [NSArray arrayWithObjects:@"href", @"documentOrdinal", 0];
-  v9 = [v4 copyEntityPropertiesArray:v8 fromEntityName:@"BKDocument" withPredicate:v7 sortBy:@"documentOrdinal" ascending:1];
+  v9 = [arrayCopy copyEntityPropertiesArray:v8 fromEntityName:@"BKDocument" withPredicate:v7 sortBy:@"documentOrdinal" ascending:1];
 
   return v9;
 }
 
-- (unint64_t)countPaginatedDocuments:(id)a3
+- (unint64_t)countPaginatedDocuments:(id)documents
 {
-  v4 = a3;
-  v5 = [(BKPictureBookPaginationOperation *)self batchJob];
-  v6 = [v5 lookupKey];
-  v7 = [NSPredicate predicateWithFormat:@"lookupKey ==[n] %@", v6];
+  documentsCopy = documents;
+  batchJob = [(BKPictureBookPaginationOperation *)self batchJob];
+  lookupKey = [batchJob lookupKey];
+  v7 = [NSPredicate predicateWithFormat:@"lookupKey ==[n] %@", lookupKey];
 
-  v8 = [v4 countEntity:@"BKDocumentPageCount" withPredicate:v7];
+  v8 = [documentsCopy countEntity:@"BKDocumentPageCount" withPredicate:v7];
   return v8;
 }
 
-- (void)recordDocumentPageCountForDocumentInfos:(id)a3 context:(id)a4
+- (void)recordDocumentPageCountForDocumentInfos:(id)infos context:(id)context
 {
-  v6 = a3;
-  v26 = a4;
+  infosCopy = infos;
+  contextCopy = context;
   v7 = [(BKPictureBookPaginationOperation *)self countPaginatedDocuments:?];
-  if (v7 < [v6 count])
+  if (v7 < [infosCopy count])
   {
     v25 = [[NSNumber alloc] initWithInt:1];
-    v8 = [(BKPaginationOperation *)self paginationOperationController];
-    v24 = [v8 paginationRevision];
+    paginationOperationController = [(BKPaginationOperation *)self paginationOperationController];
+    paginationRevision = [paginationOperationController paginationRevision];
 
-    v9 = [(BKPictureBookPaginationOperation *)self batchJob];
-    v10 = [v9 bookDatabaseKey];
+    batchJob = [(BKPictureBookPaginationOperation *)self batchJob];
+    bookDatabaseKey = [batchJob bookDatabaseKey];
 
-    v11 = [(BKPictureBookPaginationOperation *)self batchJob];
-    v12 = [v11 lookupKey];
+    batchJob2 = [(BKPictureBookPaginationOperation *)self batchJob];
+    lookupKey = [batchJob2 lookupKey];
 
-    v22 = v6;
-    [v6 subarrayWithRange:{v7, objc_msgSend(v6, "count") - v7}];
+    v22 = infosCopy;
+    [infosCopy subarrayWithRange:{v7, objc_msgSend(infosCopy, "count") - v7}];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -82,16 +82,16 @@ LABEL_4:
 
         v18 = [v17 valueForKey:@"documentOrdinal"];
         v19 = [[NSNumber alloc] initWithInt:{objc_msgSend(v18, "intValue") + 1}];
-        v20 = [BKDocumentPageCount newEmptyDocumentPageCount:v26];
+        v20 = [BKDocumentPageCount newEmptyDocumentPageCount:contextCopy];
         [v20 setDocumentOrdinal:v18];
         v21 = [v17 valueForKey:@"href"];
         [v20 setHref:v21];
 
-        [v20 setLookupKey:v12];
+        [v20 setLookupKey:lookupKey];
         [v20 setPageCount:v25];
         [v20 setPageNumber:v19];
-        [v20 setBookDatabaseKey:v10];
-        [v20 setPaginationRevision:v24];
+        [v20 setBookDatabaseKey:bookDatabaseKey];
+        [v20 setPaginationRevision:paginationRevision];
 
         if (v14 == ++v16)
         {
@@ -106,7 +106,7 @@ LABEL_4:
       }
     }
 
-    v6 = v22;
+    infosCopy = v22;
   }
 }
 
@@ -118,9 +118,9 @@ LABEL_4:
   v30 = sub_89F2C;
   v31 = sub_89F3C;
   v32 = 0;
-  v3 = [(BKPictureBookPaginationOperation *)self batchJob];
-  v4 = [v3 bookDatabaseKey];
-  v5 = [AEAnnotation predicateForUserAnnotationsWithAssetID:v4 includingDeleted:0];
+  batchJob = [(BKPictureBookPaginationOperation *)self batchJob];
+  bookDatabaseKey = [batchJob bookDatabaseKey];
+  v5 = [AEAnnotation predicateForUserAnnotationsWithAssetID:bookDatabaseKey includingDeleted:0];
 
   v23 = 0;
   v24 = &v23;
@@ -172,26 +172,26 @@ LABEL_4:
   return v7;
 }
 
-- (void)recordAnnotationPageNumbers:(id)a3
+- (void)recordAnnotationPageNumbers:(id)numbers
 {
-  v4 = a3;
+  numbersCopy = numbers;
   if (([(BKPictureBookPaginationOperation *)self isCancelled]& 1) == 0)
   {
-    v5 = [(BKPictureBookPaginationOperation *)self unpaginatedAnnotations];
-    if ([v5 count])
+    unpaginatedAnnotations = [(BKPictureBookPaginationOperation *)self unpaginatedAnnotations];
+    if ([unpaginatedAnnotations count])
     {
-      v6 = [(BKPaginationOperation *)self paginationOperationController];
-      v7 = [v6 paginationRevision];
+      paginationOperationController = [(BKPaginationOperation *)self paginationOperationController];
+      paginationRevision = [paginationOperationController paginationRevision];
 
-      v8 = [(BKPictureBookPaginationOperation *)self batchJob];
-      v9 = [v8 lookupKey];
+      batchJob = [(BKPictureBookPaginationOperation *)self batchJob];
+      lookupKey = [batchJob lookupKey];
 
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v18 = v5;
-      obj = v5;
+      v18 = unpaginatedAnnotations;
+      obj = unpaginatedAnnotations;
       v10 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v10)
       {
@@ -212,14 +212,14 @@ LABEL_5:
             break;
           }
 
-          v15 = [v4 newByClass:objc_opt_class()];
-          [v15 setLookupKey:v9];
+          v15 = [numbersCopy newByClass:objc_opt_class()];
+          [v15 setLookupKey:lookupKey];
           v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v14 ordinal] + 1);
           [v15 setPageNumber:v16];
 
-          [v15 setPaginationRevision:v7];
-          v17 = [v14 annotationUuid];
-          [v15 setAnnotationUuid:v17];
+          [v15 setPaginationRevision:paginationRevision];
+          annotationUuid = [v14 annotationUuid];
+          [v15 setAnnotationUuid:annotationUuid];
 
           if (v11 == ++v13)
           {
@@ -234,45 +234,45 @@ LABEL_5:
         }
       }
 
-      v5 = v18;
+      unpaginatedAnnotations = v18;
     }
   }
 }
 
-- (id)copyNavigationInfos:(id)a3
+- (id)copyNavigationInfos:(id)infos
 {
-  v4 = a3;
-  v5 = [(BKPaginationOperation *)self bookObjectID];
-  v6 = [NSPredicate predicateWithFormat:@"bookInfo == %@", v5];
+  infosCopy = infos;
+  bookObjectID = [(BKPaginationOperation *)self bookObjectID];
+  v6 = [NSPredicate predicateWithFormat:@"bookInfo == %@", bookObjectID];
 
   v7 = [[NSArray alloc] initWithObjects:{@"baseHref", @"href", @"name", 0}];
-  v8 = [v4 copyEntityPropertiesArray:v7 fromEntityName:@"BKNavigationInfo" withPredicate:v6 sortBy:0 ascending:0];
+  v8 = [infosCopy copyEntityPropertiesArray:v7 fromEntityName:@"BKNavigationInfo" withPredicate:v6 sortBy:0 ascending:0];
 
   return v8;
 }
 
-- (unint64_t)countPaginatedChapters:(id)a3
+- (unint64_t)countPaginatedChapters:(id)chapters
 {
-  v4 = a3;
-  v5 = [(BKPictureBookPaginationOperation *)self batchJob];
-  v6 = [v5 lookupKey];
-  v7 = [NSPredicate predicateWithFormat:@"lookupKey ==[n] %@", v6];
+  chaptersCopy = chapters;
+  batchJob = [(BKPictureBookPaginationOperation *)self batchJob];
+  lookupKey = [batchJob lookupKey];
+  v7 = [NSPredicate predicateWithFormat:@"lookupKey ==[n] %@", lookupKey];
 
-  v8 = [v4 countEntity:@"BKChapterPageCount" withPredicate:v7];
+  v8 = [chaptersCopy countEntity:@"BKChapterPageCount" withPredicate:v7];
   return v8;
 }
 
-- (void)_clearAllChapterPageCountEntities:(id)a3
+- (void)_clearAllChapterPageCountEntities:(id)entities
 {
-  v3 = a3;
+  entitiesCopy = entities;
   v4 = [NSPredicate predicateWithValue:1];
-  [v3 batchDeleteEntity:@"BKChapterPageCount" matching:v4 prefetchRelationships:0];
+  [entitiesCopy batchDeleteEntity:@"BKChapterPageCount" matching:v4 prefetchRelationships:0];
 }
 
-- (BOOL)_needsFullReparseForRecordedChapterPageCountForDocumentInfos:(id)a3 context:(id)a4
+- (BOOL)_needsFullReparseForRecordedChapterPageCountForDocumentInfos:(id)infos context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  infosCopy = infos;
+  contextCopy = context;
   if (([(BKPictureBookPaginationOperation *)self isCancelled]& 1) != 0)
   {
     v8 = 0;
@@ -280,33 +280,33 @@ LABEL_5:
 
   else
   {
-    v9 = [(BKPictureBookPaginationOperation *)self copyNavigationInfos:v7];
-    v10 = [(BKPictureBookPaginationOperation *)self countPaginatedChapters:v7];
+    v9 = [(BKPictureBookPaginationOperation *)self copyNavigationInfos:contextCopy];
+    v10 = [(BKPictureBookPaginationOperation *)self countPaginatedChapters:contextCopy];
     v11 = [v9 count];
     v8 = v10 > v11;
     if (v10 > v11)
     {
-      [(BKPictureBookPaginationOperation *)self _clearAllChapterPageCountEntities:v7];
+      [(BKPictureBookPaginationOperation *)self _clearAllChapterPageCountEntities:contextCopy];
       v10 = 0;
     }
 
     if (v10 < [v9 count])
     {
       v31 = v8;
-      v38 = v7;
+      v38 = contextCopy;
       v37 = [[NSNumber alloc] initWithInt:0];
-      v12 = [(BKPaginationOperation *)self paginationOperationController];
-      v36 = [v12 paginationRevision];
+      paginationOperationController = [(BKPaginationOperation *)self paginationOperationController];
+      paginationRevision = [paginationOperationController paginationRevision];
 
-      v13 = [(BKPictureBookPaginationOperation *)self batchJob];
-      v35 = [v13 bookDatabaseKey];
+      batchJob = [(BKPictureBookPaginationOperation *)self batchJob];
+      bookDatabaseKey = [batchJob bookDatabaseKey];
 
-      v14 = [(BKPictureBookPaginationOperation *)self batchJob];
-      v34 = [v14 lookupKey];
+      batchJob2 = [(BKPictureBookPaginationOperation *)self batchJob];
+      lookupKey = [batchJob2 lookupKey];
 
-      v15 = [v6 valueForKey:@"href"];
-      v32 = v6;
-      v28 = [v6 valueForKey:@"documentOrdinal"];
+      v15 = [infosCopy valueForKey:@"href"];
+      v32 = infosCopy;
+      v28 = [infosCopy valueForKey:@"documentOrdinal"];
       v29 = v15;
       v39 = [[NSDictionary alloc] initWithObjects:v28 forKeys:v15];
       v30 = v9;
@@ -349,9 +349,9 @@ LABEL_8:
 
             [v24 setDocumentPageOffset:v37];
             [v24 setPageNumber:v23];
-            [v24 setLookupKey:v34];
-            [v24 setBookDatabaseKey:v35];
-            [v24 setPaginationRevision:v36];
+            [v24 setLookupKey:lookupKey];
+            [v24 setBookDatabaseKey:bookDatabaseKey];
+            [v24 setPaginationRevision:paginationRevision];
           }
 
           if (v17 == ++v19)
@@ -367,8 +367,8 @@ LABEL_8:
         }
       }
 
-      v6 = v32;
-      v7 = v38;
+      infosCopy = v32;
+      contextCopy = v38;
       v8 = v31;
       v9 = v30;
     }
@@ -389,8 +389,8 @@ LABEL_8:
     [(BKPaginationOperation *)self performBlockAndWait:v4];
   }
 
-  v3 = [(BKPaginationOperation *)self paginationOperationController];
-  [v3 batchEnded:{-[BKPaginationOperation isJobGenerationValid](self, "isJobGenerationValid")}];
+  paginationOperationController = [(BKPaginationOperation *)self paginationOperationController];
+  [paginationOperationController batchEnded:{-[BKPaginationOperation isJobGenerationValid](self, "isJobGenerationValid")}];
 }
 
 @end

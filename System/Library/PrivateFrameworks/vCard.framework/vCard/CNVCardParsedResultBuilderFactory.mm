@@ -1,13 +1,13 @@
 @interface CNVCardParsedResultBuilderFactory
-+ (id)factoryWithBlock:(id)a3;
++ (id)factoryWithBlock:(id)block;
 @end
 
 @implementation CNVCardParsedResultBuilderFactory
 
-+ (id)factoryWithBlock:(id)a3
++ (id)factoryWithBlock:(id)block
 {
-  v3 = a3;
-  v4 = [[_CNVCardParsedResultBuilderBlockFactory alloc] initWithBlock:v3];
+  blockCopy = block;
+  v4 = [[_CNVCardParsedResultBuilderBlockFactory alloc] initWithBlock:blockCopy];
 
   return v4;
 }

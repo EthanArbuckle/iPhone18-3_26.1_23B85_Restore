@@ -1,21 +1,21 @@
 @interface HDSPSimulatorReadyProvider
 - (HDSPEnvironment)environment;
-- (HDSPSimulatorReadyProvider)initWithEnvironment:(id)a3;
+- (HDSPSimulatorReadyProvider)initWithEnvironment:(id)environment;
 - (HDSPSystemReadyDelegate)delegate;
 @end
 
 @implementation HDSPSimulatorReadyProvider
 
-- (HDSPSimulatorReadyProvider)initWithEnvironment:(id)a3
+- (HDSPSimulatorReadyProvider)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = HDSPSimulatorReadyProvider;
   v5 = [(HDSPSimulatorReadyProvider *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = v6;
   }
 

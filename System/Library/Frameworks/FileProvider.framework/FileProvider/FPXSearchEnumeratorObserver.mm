@@ -1,13 +1,13 @@
 @interface FPXSearchEnumeratorObserver
-- (FPXSearchEnumeratorObserver)initWithMaximumNumberOfResultsPerPage:(int64_t)a3 completionHandler:(id)a4;
-- (void)didEnumerateSearchResults:(id)a3;
+- (FPXSearchEnumeratorObserver)initWithMaximumNumberOfResultsPerPage:(int64_t)page completionHandler:(id)handler;
+- (void)didEnumerateSearchResults:(id)results;
 @end
 
 @implementation FPXSearchEnumeratorObserver
 
-- (FPXSearchEnumeratorObserver)initWithMaximumNumberOfResultsPerPage:(int64_t)a3 completionHandler:(id)a4
+- (FPXSearchEnumeratorObserver)initWithMaximumNumberOfResultsPerPage:(int64_t)page completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = FPXSearchEnumeratorObserver;
   v7 = [(FPXSearchEnumeratorObserver *)&v13 init];
@@ -17,8 +17,8 @@
     resultsBuffer = v7->_resultsBuffer;
     v7->_resultsBuffer = v8;
 
-    v7->_maximumNumberOfResultsPerPage = a3;
-    v10 = _Block_copy(v6);
+    v7->_maximumNumberOfResultsPerPage = page;
+    v10 = _Block_copy(handlerCopy);
     completionHandler = v7->_completionHandler;
     v7->_completionHandler = v10;
   }
@@ -26,9 +26,9 @@
   return v7;
 }
 
-- (void)didEnumerateSearchResults:(id)a3
+- (void)didEnumerateSearchResults:(id)results
 {
-  v6 = a3;
+  resultsCopy = results;
   [(NSMutableArray *)self->_resultsBuffer addObjectsFromArray:?];
   v4 = [(NSMutableArray *)self->_resultsBuffer count];
   maximumNumberOfResultsPerPage = self->_maximumNumberOfResultsPerPage;

@@ -1,20 +1,20 @@
 @interface CMIColourConstancyCommon
-+ (int)calculateEIT:(id)a3 result:(float *)a4;
-+ (int)getLensShadingCorrectionMaxGain:(id)a3 outputMaxGain:(float *)a4;
-+ (int)getStrobeColourCorrectionMatrix:(id)a3 outputMatrix:(id *)a4;
-+ (int)getStrobeWhiteBalanceGains:(id)a3 metadata:(id)a4 outputVector:;
-+ (int)getWhiteBalanceGains:(id)a3 outputVector:;
++ (int)calculateEIT:(id)t result:(float *)result;
++ (int)getLensShadingCorrectionMaxGain:(id)gain outputMaxGain:(float *)maxGain;
++ (int)getStrobeColourCorrectionMatrix:(id)matrix outputMatrix:(id *)outputMatrix;
++ (int)getStrobeWhiteBalanceGains:(id)gains metadata:(id)metadata outputVector:;
++ (int)getWhiteBalanceGains:(id)gains outputVector:;
 @end
 
 @implementation CMIColourConstancyCommon
 
-+ (int)getWhiteBalanceGains:(id)a3 outputVector:
++ (int)getWhiteBalanceGains:(id)gains outputVector:
 {
   v4 = v3;
-  v5 = a3;
-  v6 = v5;
+  gainsCopy = gains;
+  v6 = gainsCopy;
   v19 = 0;
-  if (!v5)
+  if (!gainsCopy)
   {
     sub_14250();
 LABEL_10:
@@ -28,7 +28,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  [v5 cmi_floatValueForKey:kFigCaptureStreamMetadata_AWBComboRGain defaultValue:&v19 found:0.0];
+  [gainsCopy cmi_floatValueForKey:kFigCaptureStreamMetadata_AWBComboRGain defaultValue:&v19 found:0.0];
   if ((v19 & 1) == 0)
   {
     sub_140D0();
@@ -64,13 +64,13 @@ LABEL_7:
   return v12;
 }
 
-+ (int)getStrobeWhiteBalanceGains:(id)a3 metadata:(id)a4 outputVector:
++ (int)getStrobeWhiteBalanceGains:(id)gains metadata:(id)metadata outputVector:
 {
   v5 = v4;
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  gainsCopy = gains;
+  metadataCopy = metadata;
+  v9 = metadataCopy;
+  if (!gainsCopy)
   {
     sub_14568();
 LABEL_16:
@@ -78,7 +78,7 @@ LABEL_16:
     goto LABEL_12;
   }
 
-  if (!v8)
+  if (!metadataCopy)
   {
     sub_14508();
     goto LABEL_16;
@@ -90,7 +90,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v10 = [v8 objectForKeyedSubscript:kFigCaptureStreamMetadata_PortType];
+  v10 = [metadataCopy objectForKeyedSubscript:kFigCaptureStreamMetadata_PortType];
   if (!v10)
   {
     sub_14448();
@@ -99,7 +99,7 @@ LABEL_16:
   }
 
   v11 = v10;
-  v12 = [v7 objectForKeyedSubscript:v10];
+  v12 = [gainsCopy objectForKeyedSubscript:v10];
   if (!v12)
   {
     sub_143D0(v11);
@@ -117,14 +117,14 @@ LABEL_21:
   }
 
   v15 = v14;
-  v16 = [v14 bytes];
-  if (!v16)
+  bytes = [v14 bytes];
+  if (!bytes)
   {
     sub_142B0(v15, v13, v11);
     goto LABEL_21;
   }
 
-  if ((*v16 - 1) > 1)
+  if ((*bytes - 1) > 1)
   {
     v23 = xmmword_21880;
   }
@@ -133,7 +133,7 @@ LABEL_21:
   {
     __asm { FMOV            V1.2S, #1.0 }
 
-    *v17.i8 = vdiv_f32(_D1, *(v16 + 4));
+    *v17.i8 = vdiv_f32(_D1, *(bytes + 4));
     v23 = vzip1q_s32(v17, v17);
     v23.i32[1] = 1.0;
   }
@@ -146,12 +146,12 @@ LABEL_12:
   return v24;
 }
 
-+ (int)calculateEIT:(id)a3 result:(float *)a4
++ (int)calculateEIT:(id)t result:(float *)result
 {
-  v5 = a3;
-  v6 = v5;
+  tCopy = t;
+  v6 = tCopy;
   v13 = 0;
-  if (!v5)
+  if (!tCopy)
   {
     sub_146F0();
 LABEL_9:
@@ -159,13 +159,13 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!result)
   {
     sub_14690();
     goto LABEL_9;
   }
 
-  v7 = [v5 cmi_intValueForKey:kFigCaptureStreamMetadata_AGC defaultValue:0 found:&v13];
+  v7 = [tCopy cmi_intValueForKey:kFigCaptureStreamMetadata_AGC defaultValue:0 found:&v13];
   if ((v13 & 1) == 0)
   {
     sub_145C8();
@@ -184,18 +184,18 @@ LABEL_12:
 
   v10 = 0;
   v11 = v9 * vcvts_n_f32_s32(v8, 8uLL) / vcvts_n_f32_s32([v6 cmi_intValueForKey:kFigCaptureStreamMetadata_HRGainDownRatio defaultValue:4096 found:0], 0xCuLL);
-  *a4 = v11;
+  *result = v11;
 LABEL_6:
 
   return v10;
 }
 
-+ (int)getLensShadingCorrectionMaxGain:(id)a3 outputMaxGain:(float *)a4
++ (int)getLensShadingCorrectionMaxGain:(id)gain outputMaxGain:(float *)maxGain
 {
-  v5 = a3;
-  v7 = v5;
+  gainCopy = gain;
+  v7 = gainCopy;
   v11 = 0;
-  if (!v5)
+  if (!gainCopy)
   {
     sub_14810();
 LABEL_8:
@@ -203,18 +203,18 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!maxGain)
   {
     sub_147B0();
     goto LABEL_8;
   }
 
   LODWORD(v6) = 1.0;
-  [v5 cmi_floatValueForKey:kLensShadingCorrectionGainMapParametersKey_GridMaxGain defaultValue:&v11 found:v6];
+  [gainCopy cmi_floatValueForKey:kLensShadingCorrectionGainMapParametersKey_GridMaxGain defaultValue:&v11 found:v6];
   if (v11)
   {
     v9 = 0;
-    *a4 = v8;
+    *maxGain = v8;
   }
 
   else
@@ -228,11 +228,11 @@ LABEL_5:
   return v9;
 }
 
-+ (int)getStrobeColourCorrectionMatrix:(id)a3 outputMatrix:(id *)a4
++ (int)getStrobeColourCorrectionMatrix:(id)matrix outputMatrix:(id *)outputMatrix
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  matrixCopy = matrix;
+  v6 = matrixCopy;
+  if (!matrixCopy)
   {
     sub_149AC();
 LABEL_11:
@@ -240,13 +240,13 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!outputMatrix)
   {
     sub_1494C();
     goto LABEL_11;
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"AwbOutputMetadata"];
+  v7 = [matrixCopy objectForKeyedSubscript:@"AwbOutputMetadata"];
   v8 = [v7 objectForKeyedSubscript:@"StrobeWhitePointCCM"];
 
   if (!v8)
@@ -263,25 +263,25 @@ LABEL_14:
     v8 = v9;
   }
 
-  v10 = [v8 bytes];
-  if (!v10)
+  bytes = [v8 bytes];
+  if (!bytes)
   {
     sub_14870(v8);
     goto LABEL_14;
   }
 
-  LODWORD(v11) = *v10;
-  LODWORD(v12) = v10[1];
-  DWORD1(v11) = v10[3];
-  DWORD2(v11) = v10[6];
-  DWORD1(v12) = v10[4];
-  DWORD2(v12) = v10[7];
-  LODWORD(v13) = v10[2];
-  DWORD1(v13) = v10[5];
-  DWORD2(v13) = v10[8];
-  *a4 = v11;
-  *(a4 + 1) = v12;
-  *(a4 + 2) = v13;
+  LODWORD(v11) = *bytes;
+  LODWORD(v12) = bytes[1];
+  DWORD1(v11) = bytes[3];
+  DWORD2(v11) = bytes[6];
+  DWORD1(v12) = bytes[4];
+  DWORD2(v12) = bytes[7];
+  LODWORD(v13) = bytes[2];
+  DWORD1(v13) = bytes[5];
+  DWORD2(v13) = bytes[8];
+  *outputMatrix = v11;
+  *(outputMatrix + 1) = v12;
+  *(outputMatrix + 2) = v13;
 
   v14 = 0;
 LABEL_8:

@@ -30,12 +30,12 @@
   v14 = &v46 - v13;
   static NDOConstants.ndoDirPath.getter();
   v51 = objc_opt_self();
-  v15 = [v51 defaultManager];
+  defaultManager = [v51 defaultManager];
   v50 = v14;
   URL._bridgeToObjectiveC()(v16);
   v18 = v17;
   v53 = 0;
-  v19 = [v15 contentsOfDirectoryAtURL:v17 includingPropertiesForKeys:0 options:4 error:&v53];
+  v19 = [defaultManager contentsOfDirectoryAtURL:v17 includingPropertiesForKeys:0 options:4 error:&v53];
 
   v20 = v53;
   v52 = v7;
@@ -80,12 +80,12 @@ LABEL_7:
 
       v25 = v52;
       (*(v8 + 16))(v12, v21 + ((*(v8 + 80) + 32) & ~*(v8 + 80)) + *(v8 + 72) * v24, v52);
-      v26 = [v51 defaultManager];
+      defaultManager2 = [v51 defaultManager];
       URL._bridgeToObjectiveC()(v27);
       v29 = v28;
       (*(v8 + 8))(v12, v25);
       v53 = 0;
-      LODWORD(v25) = [v26 removeItemAtURL:v29 error:&v53];
+      LODWORD(v25) = [defaultManager2 removeItemAtURL:v29 error:&v53];
 
       if (!v25)
       {

@@ -1,45 +1,45 @@
 @interface CLKUIAtlasBacking
-+ (id)atlasBackingWithArt:(id)a3 uuid:(id)a4;
-+ (id)atlasBackingWithBytes:(const void *)a3 length:(unint64_t)a4 mmapFile:(id)a5 uuid:(id)a6;
-+ (id)atlasBackingWithImage:(id)a3 uuid:(id)a4 mipmap:(BOOL)a5;
-+ (id)atlasBackingWithUuid:(id)a3 structure:(CLKUIAtlasBackingStructure *)a4 data:(id)a5;
-- (BOOL)writeToFile:(id)a3 error:(id *)a4;
-- (CLKUIAtlasBacking)initWithUuid:(id)a3 structure:(CLKUIAtlasBackingStructure *)a4 data:(id)a5;
-- (CLKUIAtlasBacking)initWithUuid:(id)a3 structure:(CLKUIAtlasBackingStructure *)a4 mmapFile:(id)a5;
++ (id)atlasBackingWithArt:(id)art uuid:(id)uuid;
++ (id)atlasBackingWithBytes:(const void *)bytes length:(unint64_t)length mmapFile:(id)file uuid:(id)uuid;
++ (id)atlasBackingWithImage:(id)image uuid:(id)uuid mipmap:(BOOL)mipmap;
++ (id)atlasBackingWithUuid:(id)uuid structure:(CLKUIAtlasBackingStructure *)structure data:(id)data;
+- (BOOL)writeToFile:(id)file error:(id *)error;
+- (CLKUIAtlasBacking)initWithUuid:(id)uuid structure:(CLKUIAtlasBackingStructure *)structure data:(id)data;
+- (CLKUIAtlasBacking)initWithUuid:(id)uuid structure:(CLKUIAtlasBackingStructure *)structure mmapFile:(id)file;
 - (CLKUIAtlasBackingStructure)structure;
 @end
 
 @implementation CLKUIAtlasBacking
 
-+ (id)atlasBackingWithImage:(id)a3 uuid:(id)a4 mipmap:(BOOL)a5
++ (id)atlasBackingWithImage:(id)image uuid:(id)uuid mipmap:(BOOL)mipmap
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  mipmapCopy = mipmap;
+  imageCopy = image;
+  uuidCopy = uuid;
+  if (!imageCopy)
   {
     v12 = 0;
     goto LABEL_43;
   }
 
-  v9 = [v7 CGImage];
-  Width = CGImageGetWidth(v9);
-  Height = CGImageGetHeight(v9);
+  cGImage = [imageCopy CGImage];
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   v12 = 0;
   if (Width - 8193 >= 0xFFFFE000)
   {
     v13 = Height;
     if (Height - 8193 >= 0xFFFFE000)
     {
-      v14 = [v7 imageOrientation];
+      imageOrientation = [imageCopy imageOrientation];
       v15 = xmmword_1BCE3A870;
       v16 = xmmword_1BCE3A880;
       v17 = 0.0;
-      if (v14 > 3)
+      if (imageOrientation > 3)
       {
-        if (v14 > 5)
+        if (imageOrientation > 5)
         {
-          if (v14 == 6)
+          if (imageOrientation == 6)
           {
             v18 = v13;
             v15 = xmmword_1BCE3A890;
@@ -48,7 +48,7 @@
             goto LABEL_23;
           }
 
-          if (v14 != 7)
+          if (imageOrientation != 7)
           {
             goto LABEL_22;
           }
@@ -59,7 +59,7 @@
 
         else
         {
-          if (v14 == 4)
+          if (imageOrientation == 4)
           {
             v16 = xmmword_1BCE3A890;
             v18 = Width;
@@ -73,10 +73,10 @@
 
       else
       {
-        if (v14 <= 1)
+        if (imageOrientation <= 1)
         {
           v18 = 0.0;
-          if (!v14)
+          if (!imageOrientation)
           {
 LABEL_23:
             v34 = v16;
@@ -84,7 +84,7 @@ LABEL_23:
             v32 = Width;
             v33 = v13;
             v19 = vmovn_s64(vcvtq_u64_f64(vrndaq_f64(vabsq_f64(vmlaq_n_f64(vmulq_n_f64(v15, v13), v16, Width)))));
-            if (v5)
+            if (mipmapCopy)
             {
               v20 = v19.i32[0];
               if (v19.i32[1] >= 1 && v19.i32[0] >= 1 && (v19.i32[1] != 1 || v19.i32[0] != 1))
@@ -122,8 +122,8 @@ LABEL_23:
 
             v25 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1C0]);
             v26 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v23];
-            v27 = [v26 mutableBytes];
-            v28 = CGBitmapContextCreate(v27, v36.i32[0], v36.i32[1], 8uLL, 4 * v36.i32[0], v25, 0x4001u);
+            mutableBytes = [v26 mutableBytes];
+            v28 = CGBitmapContextCreate(mutableBytes, v36.i32[0], v36.i32[1], 8uLL, 4 * v36.i32[0], v25, 0x4001u);
             CGColorSpaceRelease(v25);
             CGContextTranslateCTM(v28, 0.0, v36.i32[1]);
             CGContextScaleCTM(v28, 1.0, -1.0);
@@ -136,15 +136,15 @@ LABEL_23:
             v39.origin.y = 0.0;
             v39.size.width = v32;
             v39.size.height = v33;
-            CGContextDrawImage(v28, v39, v9);
+            CGContextDrawImage(v28, v39, cGImage);
             CGContextRelease(v28);
-            if (v5)
+            if (mipmapCopy)
             {
-              _CLKUIRawImageGenerateMipmapsSRGB8(v27, v36.i32[0]);
+              _CLKUIRawImageGenerateMipmapsSRGB8(mutableBytes, v36.i32[0]);
             }
 
             v29 = [CLKUIAtlasBacking alloc];
-            *&transform.a = v27;
+            *&transform.a = mutableBytes;
             LODWORD(transform.b) = v23;
             *(&transform.b + 4) = v36;
             HIDWORD(transform.c) = 1;
@@ -152,13 +152,13 @@ LABEL_23:
             *(&transform.d + 4) = 4;
             WORD2(transform.tx) = 2;
             BYTE6(transform.tx) = 0;
-            HIBYTE(transform.tx) = v5;
-            v12 = [(CLKUIAtlasBacking *)v29 initWithUuid:v8 structure:&transform data:v26];
+            HIBYTE(transform.tx) = mipmapCopy;
+            v12 = [(CLKUIAtlasBacking *)v29 initWithUuid:uuidCopy structure:&transform data:v26];
 
             goto LABEL_43;
           }
 
-          if (v14 == 1)
+          if (imageOrientation == 1)
           {
             v18 = Width;
             v15 = xmmword_1BCE3A8A0;
@@ -175,7 +175,7 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        if (v14 == 2)
+        if (imageOrientation == 2)
         {
           v15 = xmmword_1BCE3A890;
           v16 = xmmword_1BCE3A870;
@@ -198,16 +198,16 @@ LABEL_43:
   return v12;
 }
 
-+ (id)atlasBackingWithArt:(id)a3 uuid:(id)a4
++ (id)atlasBackingWithArt:(id)art uuid:(id)uuid
 {
-  v5 = a4;
-  if (a3)
+  uuidCopy = uuid;
+  if (art)
   {
-    v6 = [CLKUIMmapFile mmapFileWithPath:a3];
+    v6 = [CLKUIMmapFile mmapFileWithPath:art];
     v7 = v6;
     if (v6)
     {
-      v8 = +[CLKUIAtlasBacking atlasBackingWithBytes:length:mmapFile:uuid:](CLKUIAtlasBacking, "atlasBackingWithBytes:length:mmapFile:uuid:", [v6 bytes], objc_msgSend(v6, "length"), v6, v5);
+      v8 = +[CLKUIAtlasBacking atlasBackingWithBytes:length:mmapFile:uuid:](CLKUIAtlasBacking, "atlasBackingWithBytes:length:mmapFile:uuid:", [v6 bytes], objc_msgSend(v6, "length"), v6, uuidCopy);
     }
 
     else
@@ -224,9 +224,9 @@ LABEL_43:
   return v8;
 }
 
-+ (id)atlasBackingWithBytes:(const void *)a3 length:(unint64_t)a4 mmapFile:(id)a5 uuid:(id)a6
++ (id)atlasBackingWithBytes:(const void *)bytes length:(unint64_t)length mmapFile:(id)file uuid:(id)uuid
 {
-  MEMORY[0x1EEE9AC00](a1);
+  MEMORY[0x1EEE9AC00](self);
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -434,10 +434,10 @@ LABEL_78:
     v37 = [v35 length];
     if (v44 == v37)
     {
-      v38 = [v35 mutableBytes];
+      mutableBytes = [v35 mutableBytes];
       v39 = v35;
       v40 = [CLKUIAtlasBacking alloc];
-      *v51 = v38;
+      *v51 = mutableBytes;
       *&v51[8] = v44;
       v52 = __PAIR64__(v18, v17);
       v53 = v16 & 7;
@@ -509,12 +509,12 @@ LABEL_34:
   return v28;
 }
 
-+ (id)atlasBackingWithUuid:(id)a3 structure:(CLKUIAtlasBackingStructure *)a4 data:(id)a5
++ (id)atlasBackingWithUuid:(id)uuid structure:(CLKUIAtlasBackingStructure *)structure data:(id)data
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = a4->width - 8193;
+  uuidCopy = uuid;
+  dataCopy = data;
+  v9 = structure->width - 8193;
   v10 = v9 < 0xFFFFE000;
   if (v9 <= 0xFFFFDFFF)
   {
@@ -525,7 +525,7 @@ LABEL_34:
     }
   }
 
-  if (a4->height - 8193 <= 0xFFFFDFFF)
+  if (structure->height - 8193 <= 0xFFFFDFFF)
   {
     v12 = CLKLoggingObjectForDomain();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -536,7 +536,7 @@ LABEL_34:
     v10 = 1;
   }
 
-  planes = a4->planes;
+  planes = structure->planes;
   if (planes != 1 && planes != 6)
   {
     v14 = CLKLoggingObjectForDomain();
@@ -548,7 +548,7 @@ LABEL_34:
     v10 = 1;
   }
 
-  if (a4->format >= 0x43u)
+  if (structure->format >= 0x43u)
   {
     v15 = CLKLoggingObjectForDomain();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -559,7 +559,7 @@ LABEL_34:
     v10 = 1;
   }
 
-  if (a4->wrap >= 3u)
+  if (structure->wrap >= 3u)
   {
     v16 = CLKLoggingObjectForDomain();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -570,7 +570,7 @@ LABEL_34:
     v10 = 1;
   }
 
-  if (a4->filter >= 4u)
+  if (structure->filter >= 4u)
   {
     v17 = CLKLoggingObjectForDomain();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -581,11 +581,11 @@ LABEL_34:
     v10 = 1;
   }
 
-  if (v8)
+  if (dataCopy)
   {
-    v18 = [v8 bytes];
-    v19 = [v8 length];
-    if (a4->bytes < v18 || a4->bytes + a4->bytesLength > &v18[v19])
+    bytes = [dataCopy bytes];
+    v19 = [dataCopy length];
+    if (structure->bytes < bytes || structure->bytes + structure->bytesLength > &bytes[v19])
     {
       v20 = CLKLoggingObjectForDomain();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -597,8 +597,8 @@ LABEL_34:
     }
   }
 
-  bytesPerPixel = a4->bytesPerPixel;
-  if (bytesPerPixel != s_artFormatsBpp[a4->format])
+  bytesPerPixel = structure->bytesPerPixel;
+  if (bytesPerPixel != s_artFormatsBpp[structure->format])
   {
     v22 = CLKLoggingObjectForDomain();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -606,21 +606,21 @@ LABEL_34:
       +[CLKUIAtlasBacking atlasBackingWithUuid:structure:data:];
     }
 
-    bytesPerPixel = a4->bytesPerPixel;
+    bytesPerPixel = structure->bytesPerPixel;
     v10 = 1;
   }
 
-  if (bytesPerPixel && a4->planeLength != a4->width * bytesPerPixel * a4->height)
+  if (bytesPerPixel && structure->planeLength != structure->width * bytesPerPixel * structure->height)
   {
     v26 = CLKLoggingObjectForDomain();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      width = a4->width;
-      height = a4->height;
-      planeLength = a4->planeLength;
-      v31 = a4->bytesPerPixel;
+      width = structure->width;
+      height = structure->height;
+      planeLength = structure->planeLength;
+      v31 = structure->bytesPerPixel;
       *buf = 138413314;
-      *&buf[4] = v7;
+      *&buf[4] = uuidCopy;
       *&buf[12] = 1024;
       *&buf[14] = planeLength;
       *&buf[18] = 1024;
@@ -635,15 +635,15 @@ LABEL_34:
 
   else if (!v10)
   {
-    v23 = *&a4->height;
-    *buf = *&a4->bytes;
+    v23 = *&structure->height;
+    *buf = *&structure->bytes;
     *&buf[16] = v23;
-    v35 = *&a4->mipCount;
-    v24 = v8;
+    v35 = *&structure->mipCount;
+    v24 = dataCopy;
     v32[0] = *buf;
     v32[1] = *&buf[16];
     v33 = v35;
-    v25 = [[CLKUIAtlasBacking alloc] initWithUuid:v7 structure:v32 data:v24];
+    v25 = [[CLKUIAtlasBacking alloc] initWithUuid:uuidCopy structure:v32 data:v24];
 
     goto LABEL_44;
   }
@@ -654,59 +654,59 @@ LABEL_44:
   return v25;
 }
 
-- (CLKUIAtlasBacking)initWithUuid:(id)a3 structure:(CLKUIAtlasBackingStructure *)a4 data:(id)a5
+- (CLKUIAtlasBacking)initWithUuid:(id)uuid structure:(CLKUIAtlasBackingStructure *)structure data:(id)data
 {
-  v9 = a3;
-  v10 = a5;
+  uuidCopy = uuid;
+  dataCopy = data;
   v16.receiver = self;
   v16.super_class = CLKUIAtlasBacking;
   v11 = [(CLKUIAtlasBacking *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_uuid, a3);
-    v13 = *&a4->bytes;
-    v14 = *&a4->height;
-    *&v12->_structure.mipCount = *&a4->mipCount;
+    objc_storeStrong(&v11->_uuid, uuid);
+    v13 = *&structure->bytes;
+    v14 = *&structure->height;
+    *&v12->_structure.mipCount = *&structure->mipCount;
     *&v12->_structure.bytes = v13;
     *&v12->_structure.height = v14;
-    objc_storeStrong(&v12->_data, a5);
+    objc_storeStrong(&v12->_data, data);
   }
 
   return v12;
 }
 
-- (CLKUIAtlasBacking)initWithUuid:(id)a3 structure:(CLKUIAtlasBackingStructure *)a4 mmapFile:(id)a5
+- (CLKUIAtlasBacking)initWithUuid:(id)uuid structure:(CLKUIAtlasBackingStructure *)structure mmapFile:(id)file
 {
-  v9 = a3;
-  v10 = a5;
+  uuidCopy = uuid;
+  fileCopy = file;
   v16.receiver = self;
   v16.super_class = CLKUIAtlasBacking;
   v11 = [(CLKUIAtlasBacking *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_uuid, a3);
-    v13 = *&a4->bytes;
-    v14 = *&a4->height;
-    *&v12->_structure.mipCount = *&a4->mipCount;
+    objc_storeStrong(&v11->_uuid, uuid);
+    v13 = *&structure->bytes;
+    v14 = *&structure->height;
+    *&v12->_structure.mipCount = *&structure->mipCount;
     *&v12->_structure.bytes = v13;
     *&v12->_structure.height = v14;
-    objc_storeStrong(&v12->_mmapFile, a5);
+    objc_storeStrong(&v12->_mmapFile, file);
   }
 
   return v12;
 }
 
-- (BOOL)writeToFile:(id)a3 error:(id *)a4
+- (BOOL)writeToFile:(id)file error:(id *)error
 {
   v6 = MEMORY[0x1E695DF88];
-  v7 = a3;
+  fileCopy = file;
   v8 = [[v6 alloc] initWithLength:{-[CLKUIAtlasBacking bytesLength](self, "bytesLength") + 8}];
-  v9 = [v8 mutableBytes];
-  *v9 = [(CLKUIAtlasBacking *)self format];
-  *(v9 + 1) = [(CLKUIAtlasBacking *)self filter];
-  *(v9 + 2) = *(v9 + 2) & 0xFFF8 | [(CLKUIAtlasBacking *)self planes]& 7;
+  mutableBytes = [v8 mutableBytes];
+  *mutableBytes = [(CLKUIAtlasBacking *)self format];
+  *(mutableBytes + 1) = [(CLKUIAtlasBacking *)self filter];
+  *(mutableBytes + 2) = *(mutableBytes + 2) & 0xFFF8 | [(CLKUIAtlasBacking *)self planes]& 7;
   if ([(CLKUIAtlasBacking *)self mipmaps])
   {
     v10 = 8;
@@ -717,13 +717,13 @@ LABEL_44:
     v10 = 0;
   }
 
-  *(v9 + 2) = *(v9 + 2) & 0xFF07 | v10;
-  *(v9 + 2) = (([(CLKUIAtlasBacking *)self mipCount]& 0x3F) << 8) | *(v9 + 2) & 0xC0FF;
-  *(v9 + 2) = *(v9 + 2) & 0x3FFF | ([(CLKUIAtlasBacking *)self wrap]<< 14);
-  *(v9 + 4) = [(CLKUIAtlasBacking *)self width];
-  *(v9 + 6) = [(CLKUIAtlasBacking *)self height];
-  memcpy((v9 + 8), [(CLKUIAtlasBacking *)self bytes], [(CLKUIAtlasBacking *)self bytesLength]);
-  v11 = [v8 writeToFile:v7 options:1 error:a4];
+  *(mutableBytes + 2) = *(mutableBytes + 2) & 0xFF07 | v10;
+  *(mutableBytes + 2) = (([(CLKUIAtlasBacking *)self mipCount]& 0x3F) << 8) | *(mutableBytes + 2) & 0xC0FF;
+  *(mutableBytes + 2) = *(mutableBytes + 2) & 0x3FFF | ([(CLKUIAtlasBacking *)self wrap]<< 14);
+  *(mutableBytes + 4) = [(CLKUIAtlasBacking *)self width];
+  *(mutableBytes + 6) = [(CLKUIAtlasBacking *)self height];
+  memcpy((mutableBytes + 8), [(CLKUIAtlasBacking *)self bytes], [(CLKUIAtlasBacking *)self bytesLength]);
+  v11 = [v8 writeToFile:fileCopy options:1 error:error];
 
   return v11;
 }

@@ -1,6 +1,6 @@
 @interface FigCaptureCameraSourcePipelineConfiguration
-- (__n128)setMaxExposureDurationClientOverride:(uint64_t)a1;
-- (__n128)setMaxExposureDurationFrameworkOverride:(__n128 *)a1;
+- (__n128)setMaxExposureDurationClientOverride:(uint64_t)override;
+- (__n128)setMaxExposureDurationFrameworkOverride:(__n128 *)override;
 - (uint64_t)RGBIRStereoFusionEnabled;
 - (uint64_t)cameraConfiguration;
 - (uint64_t)configureForSIFRStillImageCaptureIfAvailable;
@@ -92,28 +92,28 @@
 - (uint64_t)softISPEnabled;
 - (uint64_t)stereoVideoCaptureEnabled;
 - (void)dealloc;
-- (void)setCameraConfiguration:(void *)a1;
-- (void)setConnectionConfigurations:(void *)a1;
-- (void)setDepthDataConnectionConfiguration:(void *)a1;
-- (void)setMetadataObjectConnectionConfigurations:(void *)a1;
-- (void)setMovieFileDetectedObjectMetadataConnectionConfigurations:(void *)a1;
-- (void)setPointCloudDataConnectionConfigurations:(void *)a1;
-- (void)setPreferredMasterPortType:(void *)a1;
-- (void)setPreviewDerivedConnectionConfigurations:(void *)a1;
-- (void)setSmartStyle:(void *)a1;
-- (void)setStillImageConnectionConfiguration:(void *)a1;
-- (void)setVideoCaptureConnectionConfigurations:(void *)a1;
-- (void)setVideoPreviewSinkConnectionConfiguration:(void *)a1;
-- (void)setVisionDataConnectionConfigurations:(void *)a1;
+- (void)setCameraConfiguration:(void *)configuration;
+- (void)setConnectionConfigurations:(void *)configurations;
+- (void)setDepthDataConnectionConfiguration:(void *)configuration;
+- (void)setMetadataObjectConnectionConfigurations:(void *)configurations;
+- (void)setMovieFileDetectedObjectMetadataConnectionConfigurations:(void *)configurations;
+- (void)setPointCloudDataConnectionConfigurations:(void *)configurations;
+- (void)setPreferredMasterPortType:(void *)type;
+- (void)setPreviewDerivedConnectionConfigurations:(void *)configurations;
+- (void)setSmartStyle:(void *)style;
+- (void)setStillImageConnectionConfiguration:(void *)configuration;
+- (void)setVideoCaptureConnectionConfigurations:(void *)configurations;
+- (void)setVideoPreviewSinkConnectionConfiguration:(void *)configuration;
+- (void)setVisionDataConnectionConfigurations:(void *)configurations;
 @end
 
 @implementation FigCaptureCameraSourcePipelineConfiguration
 
 - (uint64_t)softISPEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 132));
+    return OUTLINED_FUNCTION_5_27(*(self + 132));
   }
 
   else
@@ -124,9 +124,9 @@
 
 - (uint64_t)configureForSIFRStillImageCaptureIfAvailable
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 131));
+    return OUTLINED_FUNCTION_5_27(*(self + 131));
   }
 
   else
@@ -137,9 +137,9 @@
 
 - (uint64_t)RGBIRStereoFusionEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 68));
+    return OUTLINED_FUNCTION_5_27(*(self + 68));
   }
 
   else
@@ -150,9 +150,9 @@
 
 - (uint64_t)stereoVideoCaptureEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 354));
+    return OUTLINED_FUNCTION_5_27(*(self + 354));
   }
 
   else
@@ -163,9 +163,9 @@
 
 - (uint64_t)smartStyleLearningEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 320));
+    return OUTLINED_FUNCTION_5_27(*(self + 320));
   }
 
   else
@@ -311,25 +311,25 @@
   return result;
 }
 
-- (__n128)setMaxExposureDurationClientOverride:(uint64_t)a1
+- (__n128)setMaxExposureDurationClientOverride:(uint64_t)override
 {
-  if (a1)
+  if (override)
   {
     result = *a2;
-    *(a1 + 88) = a2[1].n128_u64[0];
-    *(a1 + 72) = result;
+    *(override + 88) = a2[1].n128_u64[0];
+    *(override + 72) = result;
   }
 
   return result;
 }
 
-- (__n128)setMaxExposureDurationFrameworkOverride:(__n128 *)a1
+- (__n128)setMaxExposureDurationFrameworkOverride:(__n128 *)override
 {
-  if (a1)
+  if (override)
   {
     result = *a2;
-    a1[7].n128_u64[0] = a2[1].n128_u64[0];
-    a1[6] = result;
+    override[7].n128_u64[0] = a2[1].n128_u64[0];
+    override[6] = result;
   }
 
   return result;
@@ -537,9 +537,9 @@
 
 - (uint64_t)midFrameSynchronizationEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 147));
+    return OUTLINED_FUNCTION_5_27(*(self + 147));
   }
 
   else
@@ -648,91 +648,91 @@
   return result;
 }
 
-- (void)setCameraConfiguration:(void *)a1
+- (void)setCameraConfiguration:(void *)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 176);
+    objc_setProperty_nonatomic(configuration, newValue, newValue, 176);
   }
 }
 
-- (void)setConnectionConfigurations:(void *)a1
+- (void)setConnectionConfigurations:(void *)configurations
 {
-  if (a1)
+  if (configurations)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 184);
+    objc_setProperty_nonatomic(configurations, newValue, newValue, 184);
   }
 }
 
-- (void)setVideoPreviewSinkConnectionConfiguration:(void *)a1
+- (void)setVideoPreviewSinkConnectionConfiguration:(void *)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 192);
+    objc_setProperty_nonatomic(configuration, newValue, newValue, 192);
   }
 }
 
-- (void)setPreviewDerivedConnectionConfigurations:(void *)a1
+- (void)setPreviewDerivedConnectionConfigurations:(void *)configurations
 {
-  if (a1)
+  if (configurations)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 200);
+    objc_setProperty_nonatomic(configurations, newValue, newValue, 200);
   }
 }
 
-- (void)setVideoCaptureConnectionConfigurations:(void *)a1
+- (void)setVideoCaptureConnectionConfigurations:(void *)configurations
 {
-  if (a1)
+  if (configurations)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 208);
+    objc_setProperty_nonatomic(configurations, newValue, newValue, 208);
   }
 }
 
-- (void)setStillImageConnectionConfiguration:(void *)a1
+- (void)setStillImageConnectionConfiguration:(void *)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 216);
+    objc_setProperty_nonatomic(configuration, newValue, newValue, 216);
   }
 }
 
-- (void)setDepthDataConnectionConfiguration:(void *)a1
+- (void)setDepthDataConnectionConfiguration:(void *)configuration
 {
-  if (a1)
+  if (configuration)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 224);
+    objc_setProperty_nonatomic(configuration, newValue, newValue, 224);
   }
 }
 
-- (void)setVisionDataConnectionConfigurations:(void *)a1
+- (void)setVisionDataConnectionConfigurations:(void *)configurations
 {
-  if (a1)
+  if (configurations)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 232);
+    objc_setProperty_nonatomic(configurations, newValue, newValue, 232);
   }
 }
 
-- (void)setMetadataObjectConnectionConfigurations:(void *)a1
+- (void)setMetadataObjectConnectionConfigurations:(void *)configurations
 {
-  if (a1)
+  if (configurations)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 240);
+    objc_setProperty_nonatomic(configurations, newValue, newValue, 240);
   }
 }
 
-- (void)setMovieFileDetectedObjectMetadataConnectionConfigurations:(void *)a1
+- (void)setMovieFileDetectedObjectMetadataConnectionConfigurations:(void *)configurations
 {
-  if (a1)
+  if (configurations)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 248);
+    objc_setProperty_nonatomic(configurations, newValue, newValue, 248);
   }
 }
 
-- (void)setPointCloudDataConnectionConfigurations:(void *)a1
+- (void)setPointCloudDataConnectionConfigurations:(void *)configurations
 {
-  if (a1)
+  if (configurations)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 256);
+    objc_setProperty_nonatomic(configurations, newValue, newValue, 256);
   }
 }
 
@@ -916,11 +916,11 @@
   return result;
 }
 
-- (void)setPreferredMasterPortType:(void *)a1
+- (void)setPreferredMasterPortType:(void *)type
 {
-  if (a1)
+  if (type)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 312);
+    objc_setProperty_nonatomic(type, newValue, newValue, 312);
   }
 }
 
@@ -944,11 +944,11 @@
   return result;
 }
 
-- (void)setSmartStyle:(void *)a1
+- (void)setSmartStyle:(void *)style
 {
-  if (a1)
+  if (style)
   {
-    objc_setProperty_nonatomic(a1, newValue, newValue, 328);
+    objc_setProperty_nonatomic(style, newValue, newValue, 328);
   }
 }
 
@@ -984,9 +984,9 @@
 
 - (uint64_t)preLTMThumbnailEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 348));
+    return OUTLINED_FUNCTION_5_27(*(self + 348));
   }
 
   else
@@ -1087,9 +1087,9 @@
 
 - (uint64_t)lowLatencyStabilizationEnabledInSourcePipeline
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 353));
+    return OUTLINED_FUNCTION_5_27(*(self + 353));
   }
 
   else

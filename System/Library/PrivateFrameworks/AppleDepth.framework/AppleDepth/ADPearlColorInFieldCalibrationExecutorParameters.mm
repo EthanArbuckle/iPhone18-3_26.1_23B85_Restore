@@ -1,22 +1,22 @@
 @interface ADPearlColorInFieldCalibrationExecutorParameters
 - (ADPearlColorInFieldCalibrationExecutorParameters)init;
-- (ADPearlColorInFieldCalibrationExecutorParameters)initWithPipelineParameters:(id)a3;
-- (id)initForPipeline:(id)a3;
+- (ADPearlColorInFieldCalibrationExecutorParameters)initWithPipelineParameters:(id)parameters;
+- (id)initForPipeline:(id)pipeline;
 @end
 
 @implementation ADPearlColorInFieldCalibrationExecutorParameters
 
-- (id)initForPipeline:(id)a3
+- (id)initForPipeline:(id)pipeline
 {
-  v4 = a3;
+  pipelineCopy = pipeline;
   v9.receiver = self;
   v9.super_class = ADPearlColorInFieldCalibrationExecutorParameters;
   v5 = [(ADExecutorParameters *)&v9 init];
   if (v5)
   {
-    v6 = [v4 pipelineParameters];
+    pipelineParameters = [pipelineCopy pipelineParameters];
     pipelineParameters = v5->_pipelineParameters;
-    v5->_pipelineParameters = v6;
+    v5->_pipelineParameters = pipelineParameters;
   }
 
   v5->_reportTelemetry = 1;
@@ -24,16 +24,16 @@
   return v5;
 }
 
-- (ADPearlColorInFieldCalibrationExecutorParameters)initWithPipelineParameters:(id)a3
+- (ADPearlColorInFieldCalibrationExecutorParameters)initWithPipelineParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   v9.receiver = self;
   v9.super_class = ADPearlColorInFieldCalibrationExecutorParameters;
   v6 = [(ADExecutorParameters *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pipelineParameters, a3);
+    objc_storeStrong(&v6->_pipelineParameters, parameters);
   }
 
   v7->_reportTelemetry = 1;

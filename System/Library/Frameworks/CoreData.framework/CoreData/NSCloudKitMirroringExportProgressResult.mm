@@ -1,18 +1,18 @@
 @interface NSCloudKitMirroringExportProgressResult
-- (NSCloudKitMirroringExportProgressResult)initWithRequest:(id)a3 storeIdentifier:(id)a4 objectIDToLastExportedToken:(id)a5 error:(id)a6;
+- (NSCloudKitMirroringExportProgressResult)initWithRequest:(id)request storeIdentifier:(id)identifier objectIDToLastExportedToken:(id)token error:(id)error;
 - (void)dealloc;
 @end
 
 @implementation NSCloudKitMirroringExportProgressResult
 
-- (NSCloudKitMirroringExportProgressResult)initWithRequest:(id)a3 storeIdentifier:(id)a4 objectIDToLastExportedToken:(id)a5 error:(id)a6
+- (NSCloudKitMirroringExportProgressResult)initWithRequest:(id)request storeIdentifier:(id)identifier objectIDToLastExportedToken:(id)token error:(id)error
 {
   v9.receiver = self;
   v9.super_class = NSCloudKitMirroringExportProgressResult;
-  v7 = [(NSCloudKitMirroringResult *)&v9 initWithRequest:a3 storeIdentifier:a4 success:a5 != 0 madeChanges:0 error:a6];
+  v7 = [(NSCloudKitMirroringResult *)&v9 initWithRequest:request storeIdentifier:identifier success:token != 0 madeChanges:0 error:error];
   if (v7)
   {
-    v7->_objectIDToLastExportedToken = a5;
+    v7->_objectIDToLastExportedToken = token;
   }
 
   return v7;

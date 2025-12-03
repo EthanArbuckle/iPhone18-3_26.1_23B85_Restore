@@ -1,17 +1,17 @@
 @interface OSADefaults
-+ (BOOL)BOOLForKey:(id)a3;
++ (BOOL)BOOLForKey:(id)key;
 + (id)dictionaryRepresentation;
-+ (id)objectForKey:(id)a3;
-+ (void)sendOperation:(unint64_t)a3 forKey:(id)a4 withBlock:(id)a5;
-+ (void)setBool:(BOOL)a3 forKey:(id)a4;
-+ (void)setObject:(id)a3 forKey:(id)a4;
++ (id)objectForKey:(id)key;
++ (void)sendOperation:(unint64_t)operation forKey:(id)key withBlock:(id)block;
++ (void)setBool:(BOOL)bool forKey:(id)key;
++ (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation OSADefaults
 
-+ (BOOL)BOOLForKey:(id)a3
++ (BOOL)BOOLForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -21,7 +21,7 @@
   v6[2] = __26__OSADefaults_BOOLForKey___block_invoke;
   v6[3] = &unk_1E7A27258;
   v6[4] = &v7;
-  [OSADefaults sendOperation:0 forKey:v3 withBlock:v6];
+  [OSADefaults sendOperation:0 forKey:keyCopy withBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -35,19 +35,19 @@ BOOL __26__OSADefaults_BOOLForKey___block_invoke(uint64_t a1, xpc_object_t xdict
   return result;
 }
 
-+ (void)setBool:(BOOL)a3 forKey:(id)a4
++ (void)setBool:(BOOL)bool forKey:(id)key
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __30__OSADefaults_setBool_forKey___block_invoke;
   v4[3] = &__block_descriptor_33_e33_v16__0__NSObject_OS_xpc_object__8l;
-  v5 = a3;
-  [OSADefaults sendOperation:1 forKey:a4 withBlock:v4];
+  boolCopy = bool;
+  [OSADefaults sendOperation:1 forKey:key withBlock:v4];
 }
 
-+ (id)objectForKey:(id)a3
++ (id)objectForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -59,7 +59,7 @@ BOOL __26__OSADefaults_BOOLForKey___block_invoke(uint64_t a1, xpc_object_t xdict
   v6[2] = __28__OSADefaults_objectForKey___block_invoke;
   v6[3] = &unk_1E7A27258;
   v6[4] = &v7;
-  [OSADefaults sendOperation:2 forKey:v3 withBlock:v6];
+  [OSADefaults sendOperation:2 forKey:keyCopy withBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -81,13 +81,13 @@ void __28__OSADefaults_objectForKey___block_invoke(uint64_t a1, xpc_object_t xdi
   }
 }
 
-+ (void)setObject:(id)a3 forKey:(id)a4
++ (void)setObject:(id)object forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy)
   {
-    v7 = ns2xpc(v5);
+    v7 = ns2xpc(objectCopy);
     v8 = v7;
     if (v7)
     {
@@ -96,18 +96,18 @@ void __28__OSADefaults_objectForKey___block_invoke(uint64_t a1, xpc_object_t xdi
       v9[2] = __32__OSADefaults_setObject_forKey___block_invoke;
       v9[3] = &unk_1E7A272A0;
       v10 = v7;
-      [OSADefaults sendOperation:3 forKey:v6 withBlock:v9];
+      [OSADefaults sendOperation:3 forKey:keyCopy withBlock:v9];
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      [OSADefaults setObject:v5 forKey:?];
+      [OSADefaults setObject:objectCopy forKey:?];
     }
   }
 
   else
   {
-    [OSADefaults sendOperation:3 forKey:v6 withBlock:&__block_literal_global_1];
+    [OSADefaults sendOperation:3 forKey:keyCopy withBlock:&__block_literal_global_1];
   }
 }
 
@@ -146,24 +146,24 @@ void __39__OSADefaults_dictionaryRepresentation__block_invoke(uint64_t a1, xpc_o
   }
 }
 
-+ (void)sendOperation:(unint64_t)a3 forKey:(id)a4 withBlock:(id)a5
++ (void)sendOperation:(unint64_t)operation forKey:(id)key withBlock:(id)block
 {
-  v7 = a4;
-  v8 = a5;
+  keyCopy = key;
+  blockCopy = block;
   v9 = OSAnalyticsHelperServiceConnection();
   if (v9)
   {
     empty = xpc_dictionary_create_empty();
     xpc_dictionary_set_uint64(empty, "operation", 7uLL);
-    xpc_dictionary_set_uint64(empty, "defaults_operation", a3);
-    if (v7)
+    xpc_dictionary_set_uint64(empty, "defaults_operation", operation);
+    if (keyCopy)
     {
-      xpc_dictionary_set_string(empty, "defaults_key", [v7 UTF8String]);
+      xpc_dictionary_set_string(empty, "defaults_key", [keyCopy UTF8String]);
     }
 
-    if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+    if ((operation & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
-      v8[2](v8, empty);
+      blockCopy[2](blockCopy, empty);
     }
 
     else
@@ -183,7 +183,7 @@ void __39__OSADefaults_dictionaryRepresentation__block_invoke(uint64_t a1, xpc_o
 
         else if (v13 == MEMORY[0x1E69E9E80])
         {
-          v8[2](v8, v12);
+          blockCopy[2](blockCopy, v12);
         }
       }
     }

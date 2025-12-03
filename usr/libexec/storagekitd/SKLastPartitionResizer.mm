@@ -1,7 +1,7 @@
 @interface SKLastPartitionResizer
-- (id)fsResize:(id *)a3;
-- (id)partResize:(id *)a3;
-- (id)resizeStateMachine:(id *)a3;
+- (id)fsResize:(id *)resize;
+- (id)partResize:(id *)resize;
+- (id)resizeStateMachine:(id *)machine;
 - (unint64_t)currentSize;
 @end
 
@@ -10,167 +10,167 @@
 - (unint64_t)currentSize
 {
   v3 = [SKLastPartitions alloc];
-  v4 = [(SKDiskResizerBase *)self disk];
-  v5 = [(SKLastPartitions *)v3 initWithDisk:v4];
+  disk = [(SKDiskResizerBase *)self disk];
+  v5 = [(SKLastPartitions *)v3 initWithDisk:disk];
 
-  v6 = [(SKLastPartitions *)v5 resizablePart];
-  v7 = [v6 unformattedSize];
+  resizablePart = [(SKLastPartitions *)v5 resizablePart];
+  unformattedSize = [resizablePart unformattedSize];
 
-  v18 = v7;
-  v8 = [(SKLastPartitions *)v5 resizablePart];
+  v18 = unformattedSize;
+  resizablePart2 = [(SKLastPartitions *)v5 resizablePart];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v10 = [(SKLastPartitions *)v5 resizablePart];
-  v11 = v10;
+  resizablePart3 = [(SKLastPartitions *)v5 resizablePart];
+  v11 = resizablePart3;
   if (isKindOfClass)
   {
-    v12 = [v10 container];
+    container = [resizablePart3 container];
 
-    if (v12)
+    if (container)
     {
-      v7 = [v12 totalSpace];
-      v18 = v7;
+      unformattedSize = [container totalSpace];
+      v18 = unformattedSize;
     }
   }
 
   else
   {
-    v13 = [v10 type];
-    v14 = [v13 isEqualToString:kSKDiskTypeHFS];
+    type = [resizablePart3 type];
+    v14 = [type isEqualToString:kSKDiskTypeHFS];
 
     if (v14)
     {
-      v15 = [(SKLastPartitions *)v5 resizablePart];
-      [SKLastPartitions hfsMinimalSizeForDisk:v15 currentSize:&v18];
+      resizablePart4 = [(SKLastPartitions *)v5 resizablePart];
+      [SKLastPartitions hfsMinimalSizeForDisk:resizablePart4 currentSize:&v18];
 
-      v7 = v18;
+      unformattedSize = v18;
     }
   }
 
-  v16 = [(SKLastPartitions *)v5 nonResizableSize];
+  nonResizableSize = [(SKLastPartitions *)v5 nonResizableSize];
 
-  return v7 + v16;
+  return unformattedSize + nonResizableSize;
 }
 
-- (id)partResize:(id *)a3
+- (id)partResize:(id *)resize
 {
   v5 = [SKLastPartitions alloc];
-  v6 = [(SKDiskResizerBase *)self disk];
-  v7 = [(SKLastPartitions *)v5 initWithDisk:v6];
+  disk = [(SKDiskResizerBase *)self disk];
+  v7 = [(SKLastPartitions *)v5 initWithDisk:disk];
 
-  v8 = [(SKLastPartitions *)v7 resizablePart];
-  if (!v8)
+  resizablePart = [(SKLastPartitions *)v7 resizablePart];
+  if (!resizablePart)
   {
     goto LABEL_3;
   }
 
-  v9 = v8;
-  v10 = [(SKLastPartitions *)v7 resizablePart];
-  v11 = [v10 isWholeDisk];
+  v9 = resizablePart;
+  resizablePart2 = [(SKLastPartitions *)v7 resizablePart];
+  isWholeDisk = [resizablePart2 isWholeDisk];
 
-  if (v11)
+  if (isWholeDisk)
   {
     goto LABEL_3;
   }
 
   v15 = +[SKError frameworkBundle];
   v16 = [v15 localizedStringForKey:@"Resizing partition..." value:&stru_10004A890 table:0];
-  v17 = [(SKDiskResizerBase *)self progress];
-  [v17 setLocalizedAdditionalDescription:v16];
+  progress = [(SKDiskResizerBase *)self progress];
+  [progress setLocalizedAdditionalDescription:v16];
 
-  v18 = [(SKDiskResizerBase *)self requestedSize];
-  v19 = v18 - [(SKLastPartitions *)v7 nonResizableSize];
+  requestedSize = [(SKDiskResizerBase *)self requestedSize];
+  v19 = requestedSize - [(SKLastPartitions *)v7 nonResizableSize];
   v20 = sub_10000BFD0();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(SKLastPartitions *)v7 resizablePart];
+    resizablePart3 = [(SKLastPartitions *)v7 resizablePart];
     v28 = 136315650;
     v29 = "[SKLastPartitionResizer partResize:]";
     v30 = 2112;
-    v31 = v21;
+    v31 = resizablePart3;
     v32 = 2048;
     v33 = v19;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%s: Resizing partition %@ to %lld bytes", &v28, 0x20u);
   }
 
   v22 = [SKPartitionTable alloc];
-  v23 = [(SKDiskResizerBase *)self disk];
-  v24 = [(SKPartitionTable *)v22 initWithDisk:v23 error:a3];
+  disk2 = [(SKDiskResizerBase *)self disk];
+  v24 = [(SKPartitionTable *)v22 initWithDisk:disk2 error:resize];
 
   if (!v24)
   {
-    v12 = [(SKDiskResizerBase *)self rollbackResize:a3];
+    eventFromSize = [(SKDiskResizerBase *)self rollbackResize:resize];
     goto LABEL_4;
   }
 
-  v25 = [(SKLastPartitions *)v7 resizablePart];
-  v26 = [SKPartitionTable partitionIDFromDisk:v25];
+  resizablePart4 = [(SKLastPartitions *)v7 resizablePart];
+  v26 = [SKPartitionTable partitionIDFromDisk:resizablePart4];
 
   if (v26)
   {
-    if ([(SKPartitionTable *)v24 resizePartitionID:v26 size:v19 offset:0 error:a3])
+    if ([(SKPartitionTable *)v24 resizePartitionID:v26 size:v19 offset:0 error:resize])
     {
 
 LABEL_3:
       [(SKDiskResizerBase *)self setCompletedUnitCount:[(SKDiskResizerBase *)self completedUnitCount]+ 10];
-      v12 = [(SKDiskResizerBase *)self eventFromSize];
+      eventFromSize = [(SKDiskResizerBase *)self eventFromSize];
 LABEL_4:
-      v13 = v12;
+      v13 = eventFromSize;
       goto LABEL_5;
     }
   }
 
   else
   {
-    v27 = [SKError errorWithCode:117 debugDescription:@"Failed to get the ID of the resized partition" error:a3];
+    v27 = [SKError errorWithCode:117 debugDescription:@"Failed to get the ID of the resized partition" error:resize];
   }
 
-  v13 = [(SKDiskResizerBase *)self rollbackResize:a3];
+  v13 = [(SKDiskResizerBase *)self rollbackResize:resize];
 
 LABEL_5:
 
   return v13;
 }
 
-- (id)fsResize:(id *)a3
+- (id)fsResize:(id *)resize
 {
   v5 = +[SKError frameworkBundle];
   v6 = [v5 localizedStringForKey:@"Resizing file system..." value:&stru_10004A890 table:0];
-  v7 = [(SKDiskResizerBase *)self progress];
-  [v7 setLocalizedAdditionalDescription:v6];
+  progress = [(SKDiskResizerBase *)self progress];
+  [progress setLocalizedAdditionalDescription:v6];
 
   v8 = [SKLastPartitions alloc];
-  v9 = [(SKDiskResizerBase *)self disk];
-  v10 = [(SKLastPartitions *)v8 initWithDisk:v9];
+  disk = [(SKDiskResizerBase *)self disk];
+  v10 = [(SKLastPartitions *)v8 initWithDisk:disk];
 
-  v11 = [(SKDiskResizerBase *)self requestedSize];
-  v12 = v11 - [(SKLastPartitions *)v10 nonResizableSize];
+  requestedSize = [(SKDiskResizerBase *)self requestedSize];
+  v12 = requestedSize - [(SKLastPartitions *)v10 nonResizableSize];
   v13 = sub_10000BFD0();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(SKLastPartitions *)v10 resizablePart];
+    resizablePart = [(SKLastPartitions *)v10 resizablePart];
     *buf = 136315650;
     v42 = "[SKLastPartitionResizer fsResize:]";
     v43 = 2112;
-    v44 = v14;
+    v44 = resizablePart;
     v45 = 2048;
     v46 = v12;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s: Resizing filesystem on %@ to %lld", buf, 0x20u);
   }
 
-  v15 = [(SKLastPartitions *)v10 resizablePart];
+  resizablePart2 = [(SKLastPartitions *)v10 resizablePart];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v17 = [(SKDiskResizerBase *)self progress];
-    if ([v17 isCancelled])
+    progress2 = [(SKDiskResizerBase *)self progress];
+    if ([progress2 isCancelled])
     {
-      v18 = [(SKDiskResizerBase *)self resizeError];
+      resizeError = [(SKDiskResizerBase *)self resizeError];
 
-      if (!v18)
+      if (!resizeError)
       {
         v19 = sub_10000BFD0();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -180,7 +180,7 @@ LABEL_5:
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%s: Cancelling resize before it starts", buf, 0xCu);
         }
 
-        v20 = [(SKDiskResizerBase *)self cancelWithError:a3];
+        eventFromSize = [(SKDiskResizerBase *)self cancelWithError:resize];
         goto LABEL_22;
       }
     }
@@ -195,20 +195,20 @@ LABEL_5:
     v39[3] = &unk_100048BB0;
     v29 = v10;
     v40 = v29;
-    v30 = [(SKDiskResizerBase *)self progress];
-    [v30 setCancellationHandler:v39];
+    progress3 = [(SKDiskResizerBase *)self progress];
+    [progress3 setCancellationHandler:v39];
 
-    v31 = [(SKLastPartitions *)v29 resizablePart];
-    v32 = [v31 diskIdentifier];
-    [v32 UTF8String];
+    resizablePart3 = [(SKLastPartitions *)v29 resizablePart];
+    diskIdentifier = [resizablePart3 diskIdentifier];
+    [diskIdentifier UTF8String];
     v33 = APFSContainerResize();
 
-    v34 = [(SKDiskResizerBase *)self progress];
-    LODWORD(v32) = [v34 isCancelled];
+    progress4 = [(SKDiskResizerBase *)self progress];
+    LODWORD(diskIdentifier) = [progress4 isCancelled];
 
-    if (v32)
+    if (diskIdentifier)
     {
-      v35 = [(SKDiskResizerBase *)self cancelWithError:a3];
+      v35 = [(SKDiskResizerBase *)self cancelWithError:resize];
 LABEL_19:
       v37 = v35;
 
@@ -217,55 +217,55 @@ LABEL_19:
 
     if (v33)
     {
-      v36 = [SKError nilWithOSStatus:v33 debugDescription:@"APFS container resize failed" error:a3];
-      v35 = [(SKDiskResizerBase *)self rollbackResize:a3];
+      v36 = [SKError nilWithOSStatus:v33 debugDescription:@"APFS container resize failed" error:resize];
+      v35 = [(SKDiskResizerBase *)self rollbackResize:resize];
       goto LABEL_19;
     }
 
     goto LABEL_21;
   }
 
-  v21 = [(SKLastPartitions *)v10 resizablePart];
-  v22 = [v21 type];
-  v23 = [v22 isEqualToString:kSKDiskTypeHFS];
+  resizablePart4 = [(SKLastPartitions *)v10 resizablePart];
+  type = [resizablePart4 type];
+  v23 = [type isEqualToString:kSKDiskTypeHFS];
 
   if (!v23)
   {
     goto LABEL_21;
   }
 
-  v24 = [(SKLastPartitions *)v10 resizablePart];
-  v25 = [SKPartitionTable createMediaRefWithDisk:v24 error:a3];
+  resizablePart5 = [(SKLastPartitions *)v10 resizablePart];
+  v25 = [SKPartitionTable createMediaRefWithDisk:resizablePart5 error:resize];
 
   if (v25)
   {
-    v26 = [(SKLastPartitions *)v10 resizablePart];
-    [v26 getSectorSize];
+    resizablePart6 = [(SKLastPartitions *)v10 resizablePart];
+    [resizablePart6 getSectorSize];
 
     v27 = MKHFSResizeVolume();
     CFRelease(v25);
     if (v27)
     {
-      v28 = [SKError errorWithOSStatus:v27 error:a3];
+      v28 = [SKError errorWithOSStatus:v27 error:resize];
       goto LABEL_13;
     }
 
 LABEL_21:
     [(SKDiskResizerBase *)self setCompletedUnitCount:[(SKDiskResizerBase *)self completedUnitCount]+ 80];
-    v20 = [(SKDiskResizerBase *)self eventFromSize];
+    eventFromSize = [(SKDiskResizerBase *)self eventFromSize];
     goto LABEL_22;
   }
 
 LABEL_13:
-  v20 = [(SKDiskResizerBase *)self rollbackResize:a3];
+  eventFromSize = [(SKDiskResizerBase *)self rollbackResize:resize];
 LABEL_22:
-  v37 = v20;
+  v37 = eventFromSize;
 LABEL_23:
 
   return v37;
 }
 
-- (id)resizeStateMachine:(id *)a3
+- (id)resizeStateMachine:(id *)machine
 {
   v18 = sub_10000A5D4(@"kPartitionResize", off_100059118, "partResize:", @"kFSResize");
   v19[0] = v18;
@@ -286,8 +286,8 @@ LABEL_23:
   v11 = [NSArray arrayWithObjects:v19 count:8];
   v12 = [SKStateTransitionTable tableWithTransitionEntries:v11 selectorTarget:self];
 
-  v13 = [(SKDiskResizerBase *)self eventFromSize];
-  if ([v13 isEqualToString:off_100059118])
+  eventFromSize = [(SKDiskResizerBase *)self eventFromSize];
+  if ([eventFromSize isEqualToString:off_100059118])
   {
     v14 = @"kPartitionResize";
   }
@@ -297,8 +297,8 @@ LABEL_23:
     v14 = @"kFSResize";
   }
 
-  v15 = [(SKDiskResizerBase *)self eventFromSize];
-  v16 = [SKStateMachine machineWithStateTransitionTable:v12 startState:v14 startEvent:v15];
+  eventFromSize2 = [(SKDiskResizerBase *)self eventFromSize];
+  v16 = [SKStateMachine machineWithStateTransitionTable:v12 startState:v14 startEvent:eventFromSize2];
 
   return v16;
 }

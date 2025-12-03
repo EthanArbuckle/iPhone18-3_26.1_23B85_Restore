@@ -1,16 +1,16 @@
 @interface CTFeatureSetting
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDictionary:(id)dictionary;
 - (BOOL)isEqualToFeatureSetting:(_BOOL8)result;
-- (CTFeatureSetting)initWithDictionary:(id)a3;
+- (CTFeatureSetting)initWithDictionary:(id)dictionary;
 - (uint64_t)selector;
 - (uint64_t)tag;
 - (uint64_t)type;
 - (uint64_t)value;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)initWithNormalizedDictionary:(void *)a1;
-- (void)initWithType:(uint64_t)a3 selector:(uint64_t)a4 tag:(NSNumber *)a5 value:;
+- (void)initWithNormalizedDictionary:(void *)dictionary;
+- (void)initWithType:(uint64_t)type selector:(uint64_t)selector tag:(NSNumber *)tag value:;
 @end
 
 @implementation CTFeatureSetting
@@ -22,8 +22,8 @@
     v3 = [(NSDictionary *)self->_dictionary objectForKey:@"CTFeatureTypeIdentifier"];
     if (v3)
     {
-      v4 = [v3 unsignedShortValue];
-      return ([-[NSDictionary objectForKey:](self->_dictionary objectForKey:{@"CTFeatureSelectorIdentifier", "unsignedShortValue"}] | (v4 << 16));
+      unsignedShortValue = [v3 unsignedShortValue];
+      return ([-[NSDictionary objectForKey:](self->_dictionary objectForKey:{@"CTFeatureSelectorIdentifier", "unsignedShortValue"}] | (unsignedShortValue << 16));
     }
 
     v6 = [-[NSDictionary objectForKey:](self->_dictionary objectForKey:{@"CTFeatureOpenTypeTag", "hash"}];
@@ -76,14 +76,14 @@
   [(CTFeatureSetting *)&v3 dealloc];
 }
 
-- (void)initWithNormalizedDictionary:(void *)a1
+- (void)initWithNormalizedDictionary:(void *)dictionary
 {
-  if (!a1)
+  if (!dictionary)
   {
     return 0;
   }
 
-  v5.receiver = a1;
+  v5.receiver = dictionary;
   v5.super_class = CTFeatureSetting;
   v3 = objc_msgSendSuper2(&v5, sel_init);
   if (v3)
@@ -94,47 +94,47 @@
   return v3;
 }
 
-- (CTFeatureSetting)initWithDictionary:(id)a3
+- (CTFeatureSetting)initWithDictionary:(id)dictionary
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return [(CTFeatureSetting *)self initWithNormalizedDictionary:a3];
+    return [(CTFeatureSetting *)self initWithNormalizedDictionary:dictionary];
   }
 
   v9 = -21846;
-  if (GetSettingValue<__CFNumber const*,unsigned short>([a3 objectForKey:@"CTFeatureTypeIdentifier"], &v9) && v9)
+  if (GetSettingValue<__CFNumber const*,unsigned short>([dictionary objectForKey:@"CTFeatureTypeIdentifier"], &v9) && v9)
   {
-    if (GetSettingValue<__CFNumber const*,unsigned short>([a3 objectForKey:@"CTFeatureSelectorIdentifier"], 0))
+    if (GetSettingValue<__CFNumber const*,unsigned short>([dictionary objectForKey:@"CTFeatureSelectorIdentifier"], 0))
     {
-      return [(CTFeatureSetting *)self initWithNormalizedDictionary:a3];
+      return [(CTFeatureSetting *)self initWithNormalizedDictionary:dictionary];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      return [(CTFeatureSetting *)self initWithNormalizedDictionary:a3];
+      return [(CTFeatureSetting *)self initWithNormalizedDictionary:dictionary];
     }
   }
 
   else
   {
-    [a3 objectForKey:@"CTFeatureOpenTypeTag"];
+    [dictionary objectForKey:@"CTFeatureOpenTypeTag"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [a3 objectForKey:@"CTFeatureOpenTypeValue"];
+      v6 = [dictionary objectForKey:@"CTFeatureOpenTypeValue"];
       v7 = ValidatedValue(v6);
       if (v7)
       {
         v8 = v7;
         if (v7 != v6)
         {
-          a3 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a3];
-          [a3 setObject:v8 forKey:@"CTFeatureOpenTypeValue"];
+          dictionary = [MEMORY[0x1E695DF90] dictionaryWithDictionary:dictionary];
+          [dictionary setObject:v8 forKey:@"CTFeatureOpenTypeValue"];
         }
 
-        return [(CTFeatureSetting *)self initWithNormalizedDictionary:a3];
+        return [(CTFeatureSetting *)self initWithNormalizedDictionary:dictionary];
       }
     }
   }
@@ -142,18 +142,18 @@
   return 0;
 }
 
-- (void)initWithType:(uint64_t)a3 selector:(uint64_t)a4 tag:(NSNumber *)a5 value:
+- (void)initWithType:(uint64_t)type selector:(uint64_t)selector tag:(NSNumber *)tag value:
 {
-  if (a1)
+  if (self)
   {
-    v9 = ValidatedValue(a5);
+    v9 = ValidatedValue(tag);
     if (v9)
     {
       v10 = v9;
       if (a2)
       {
-        v11 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{a2, @"CTFeatureTypeIdentifier", a3, @"CTFeatureSelectorIdentifier", a4, @"CTFeatureOpenTypeTag", v9, @"CTFeatureOpenTypeValue", 0}];
-        v12 = [a1 initWithDictionary:v11];
+        v11 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{a2, @"CTFeatureTypeIdentifier", type, @"CTFeatureSelectorIdentifier", selector, @"CTFeatureOpenTypeTag", v9, @"CTFeatureOpenTypeValue", 0}];
+        v12 = [self initWithDictionary:v11];
 LABEL_7:
         v13 = v12;
 
@@ -163,8 +163,8 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{a4, @"CTFeatureOpenTypeTag", v10, @"CTFeatureOpenTypeValue", 0}];
-        v12 = [(CTFeatureSetting *)a1 initWithNormalizedDictionary:v11];
+        v11 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{selector, @"CTFeatureOpenTypeTag", v10, @"CTFeatureOpenTypeValue", 0}];
+        v12 = [(CTFeatureSetting *)self initWithNormalizedDictionary:v11];
         goto LABEL_7;
       }
     }
@@ -183,20 +183,20 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqualToDictionary:(id)a3
+- (BOOL)isEqualToDictionary:(id)dictionary
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
 
-    return [(CTFeatureSetting *)self isEqualToFeatureSetting:a3];
+    return [(CTFeatureSetting *)self isEqualToFeatureSetting:dictionary];
   }
 
   else
   {
     dictionary = self->_dictionary;
 
-    return [(NSDictionary *)dictionary isEqualToDictionary:a3];
+    return [(NSDictionary *)dictionary isEqualToDictionary:dictionary];
   }
 }
 
@@ -243,9 +243,9 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -254,7 +254,7 @@ LABEL_7:
   if (objc_opt_isKindOfClass())
   {
 
-    return [(CTFeatureSetting *)self isEqualToFeatureSetting:a3];
+    return [(CTFeatureSetting *)self isEqualToFeatureSetting:equal];
   }
 
   else
@@ -264,7 +264,7 @@ LABEL_7:
     {
       dictionary = self->_dictionary;
 
-      return [(NSDictionary *)dictionary isEqualToDictionary:a3];
+      return [(NSDictionary *)dictionary isEqualToDictionary:equal];
     }
 
     else

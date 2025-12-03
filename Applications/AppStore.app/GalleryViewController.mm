@@ -1,23 +1,23 @@
 @interface GalleryViewController
 - (BOOL)prefersStatusBarHidden;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (_TtC8AppStore21GalleryViewController)initWithCoder:(id)a3;
-- (_TtC8AppStore21GalleryViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC8AppStore21GalleryViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (_TtC8AppStore21GalleryViewController)initWithCoder:(id)coder;
+- (_TtC8AppStore21GalleryViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC8AppStore21GalleryViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)swipeStateChangedOn:(id)a3;
-- (void)tapStateChangedOn:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)swipeStateChangedOn:(id)on;
+- (void)tapStateChangedOn:(id)on;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation GalleryViewController
 
-- (_TtC8AppStore21GalleryViewController)initWithCoder:(id)a3
+- (_TtC8AppStore21GalleryViewController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -26,44 +26,44 @@
 
 - (void)dealloc
 {
-  v2 = self;
-  v3 = [(GalleryViewController *)v2 navigationController];
-  if (v3)
+  selfCopy = self;
+  navigationController = [(GalleryViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v4 = v3;
-    v5 = [v3 barHideOnTapGestureRecognizer];
+    v4 = navigationController;
+    barHideOnTapGestureRecognizer = [navigationController barHideOnTapGestureRecognizer];
 
-    [v5 removeTarget:v2 action:0];
+    [barHideOnTapGestureRecognizer removeTarget:selfCopy action:0];
   }
 
-  v6.receiver = v2;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for GalleryViewController();
   [(GalleryViewController *)&v6 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10062E16C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_10062E4A0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_10062E4A0(change);
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-  v2 = self;
-  v3 = [(GalleryViewController *)v2 navigationController];
-  if (v3)
+  selfCopy = self;
+  navigationController = [(GalleryViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v4 = v3;
-    v5 = [v3 isNavigationBarHidden];
+    v4 = navigationController;
+    isNavigationBarHidden = [navigationController isNavigationBarHidden];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(navigationController) = isNavigationBarHidden;
   }
 
   else
@@ -71,27 +71,27 @@
     __break(1u);
   }
 
-  return v3;
+  return navigationController;
 }
 
-- (void)tapStateChangedOn:(id)a3
+- (void)tapStateChangedOn:(id)on
 {
-  v4 = a3;
-  v5 = self;
-  sub_10062E63C(v4);
+  onCopy = on;
+  selfCopy = self;
+  sub_10062E63C(onCopy);
 }
 
-- (void)swipeStateChangedOn:(id)a3
+- (void)swipeStateChangedOn:(id)on
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 state] == 3)
+  onCopy = on;
+  selfCopy = self;
+  if ([onCopy state] == 3)
   {
-    [(GalleryViewController *)v5 dismissViewControllerAnimated:1 completion:0];
+    [(GalleryViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore21GalleryViewController_artwork);
   if (v4 >> 62)
@@ -105,30 +105,30 @@
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_10062EBFC(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_10062EBFC(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  [a3 frame];
+  [view frame];
   v11 = v10;
   v13 = v12;
   (*(v7 + 8))(v9, v6);
@@ -139,7 +139,7 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
@@ -150,26 +150,26 @@
   swift_dynamicCastClassUnconditional();
   type metadata accessor for ArtworkView();
   sub_10009A098();
-  v11 = a4;
-  v12 = self;
+  cellCopy = cell;
+  selfCopy = self;
   ArtworkLoader.forgetFetch<A>(forView:deprioritizingFetch:)();
   (*(v8 + 8))(v10, v7);
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v3 = self;
+  selfCopy = self;
   sub_10062E910();
 }
 
-- (_TtC8AppStore21GalleryViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC8AppStore21GalleryViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC8AppStore21GalleryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8AppStore21GalleryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

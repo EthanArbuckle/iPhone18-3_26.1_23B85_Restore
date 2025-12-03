@@ -1,17 +1,17 @@
 @interface CRLShapeRep
 - (BOOL)canBeUsedForImageMask;
 - (BOOL)canBeginEditing;
-- (BOOL)canDrawShadowInOneStepWithChildren:(BOOL)a3;
-- (BOOL)canDrawWithOtherShapeRep:(id)a3;
-- (BOOL)canUseSpecializedHitRegionForKnob:(id)a3;
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4;
+- (BOOL)canDrawShadowInOneStepWithChildren:(BOOL)children;
+- (BOOL)canDrawWithOtherShapeRep:(id)rep;
+- (BOOL)canUseSpecializedHitRegionForKnob:(id)knob;
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision;
 - (BOOL)directlyManagesLayerContent;
-- (BOOL)directlyManagesVisibilityOfKnob:(id)a3;
-- (BOOL)handleDragOperation:(unint64_t)a3 withDragInfo:(id)a4 atUnscaledPoint:(CGPoint)a5;
-- (BOOL)i_beginApplyOpacity:(CGContext *)a3 forDrawingInOneStep:(BOOL)a4;
+- (BOOL)directlyManagesVisibilityOfKnob:(id)knob;
+- (BOOL)handleDragOperation:(unint64_t)operation withDragInfo:(id)info atUnscaledPoint:(CGPoint)point;
+- (BOOL)i_beginApplyOpacity:(CGContext *)opacity forDrawingInOneStep:(BOOL)step;
 - (BOOL)i_editMenuOverlapsEndKnobs;
 - (BOOL)i_targetsDropsToStroke;
-- (BOOL)intersectsUnscaledRect:(CGRect)a3;
+- (BOOL)intersectsUnscaledRect:(CGRect)rect;
 - (BOOL)isEditingPath;
 - (BOOL)isInvisible;
 - (BOOL)isMoreOptimalToDrawWithOtherShapeRepsIfPossible;
@@ -19,11 +19,11 @@
 - (BOOL)p_canApplyFillToRenderable;
 - (BOOL)p_canApplyStrokeToRenderable;
 - (BOOL)p_currentlyDrawingSomeOtherShape;
-- (BOOL)p_hitCacheGetCachedValue:(BOOL *)a3 forPoint:(CGPoint)a4 withPrecision:(BOOL)a5;
+- (BOOL)p_hitCacheGetCachedValue:(BOOL *)value forPoint:(CGPoint)point withPrecision:(BOOL)precision;
 - (BOOL)p_parentFreehandDrawingIsSelected;
 - (BOOL)p_pathIsAxisAlignedRect;
-- (BOOL)p_shouldDrawStrokeWide:(id)a3;
-- (BOOL)p_shouldUpgradeStrokeForPlayback:(id)a3;
+- (BOOL)p_shouldDrawStrokeWide:(id)wide;
+- (BOOL)p_shouldUpgradeStrokeForPlayback:(id)playback;
 - (BOOL)selectionIsAppropriateToShowInvisiblePathHighlight;
 - (BOOL)shouldExpandHitRegionWhenSmall;
 - (BOOL)shouldHideSelectionHighlightDueToRectangularPath;
@@ -47,116 +47,116 @@
 - (CGRect)frameInUnscaledCanvas;
 - (CGRect)layerFrameInScaledCanvas;
 - (CGRect)layerFrameInScaledCanvasRelativeToParent;
-- (CGRect)p_layerFrameInScaledCanvasForDirectlyManagedLayer:(BOOL)a3;
+- (CGRect)p_layerFrameInScaledCanvasForDirectlyManagedLayer:(BOOL)layer;
 - (CGRect)p_scaledCanvasScrollViewBounds;
-- (CGRect)strokeBoundsWithOptions:(unint64_t)a3 fallbackBounds:(CGRect)a4;
+- (CGRect)strokeBoundsWithOptions:(unint64_t)options fallbackBounds:(CGRect)bounds;
 - (CGRect)targetRectForEditMenu;
-- (CGSize)p_sizeForDirectlyManagedImageFromRenderableSize:(CGSize)a3;
+- (CGSize)p_sizeForDirectlyManagedImageFromRenderableSize:(CGSize)size;
 - (CRLEditableBezierPathSource)editablePathSource;
 - (CRLShapeLayout)shapeLayout;
-- (CRLShapeRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (CRLShapeRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (CRLShapeRepFreehandDrawingDynamicFillErasingDelegate)freehandDrawingDynamicFillErasingDelegate;
 - (Class)layerClass;
 - (_NSRange)i_commitAvailableFreehandDrawingPointsIfPossible;
 - (_NSRange)i_uncommittedFreehandDrawingPointRange;
 - (_TtC8Freeform12CRLShapeItem)shapeInfo;
 - (double)opacity;
-- (double)shortestDistanceToPoint:(CGPoint)a3 countAsHit:(BOOL *)a4;
+- (double)shortestDistanceToPoint:(CGPoint)point countAsHit:(BOOL *)hit;
 - (double)strokeEnd;
 - (id)additionalRenderablesOverRenderable;
-- (id)colorBehindLayer:(id)a3;
-- (id)cursorAtPoint:(CGPoint)a3 forKnob:(id)a4 withCursorPlatformObject:(id)a5;
+- (id)colorBehindLayer:(id)layer;
+- (id)cursorAtPoint:(CGPoint)point forKnob:(id)knob withCursorPlatformObject:(id)object;
 - (id)dataForUpdateUploadIndicator;
 - (id)dynamicMoveLineSegmentDidBegin;
 - (id)dynamicMoveSmartShapeKnobDidBegin;
 - (id)dynamicResizeDidBegin;
-- (id)i_brushStrokeFromStroke:(id)a3;
-- (id)i_strokeForRenderingIncludingPlaybackFromStroke:(id)a3;
-- (id)imageOfStroke:(CGRect *)a3;
-- (id)newCommandToApplyGeometry:(id)a3 toInfo:(id)a4;
-- (id)newTrackerForKnob:(id)a3;
+- (id)i_brushStrokeFromStroke:(id)stroke;
+- (id)i_strokeForRenderingIncludingPlaybackFromStroke:(id)stroke;
+- (id)imageOfStroke:(CGRect *)stroke;
+- (id)newCommandToApplyGeometry:(id)geometry toInfo:(id)info;
+- (id)newTrackerForKnob:(id)knob;
 - (id)overlayRenderables;
 - (id)p_pathEditor;
 - (id)pathSourceForSelectionHighlightBehavior;
-- (id)repToHighlightForDragInfo:(id)a3 atUnscaledPoint:(CGPoint)a4;
-- (unint64_t)dragOperationForDragInfo:(id)a3 atUnscaledPoint:(CGPoint)a4;
+- (id)repToHighlightForDragInfo:(id)info atUnscaledPoint:(CGPoint)point;
+- (unint64_t)dragOperationForDragInfo:(id)info atUnscaledPoint:(CGPoint)point;
 - (unint64_t)enabledKnobMask;
-- (unint64_t)p_bitmapContextOptionsForDrawingStroke:(id)a3;
+- (unint64_t)p_bitmapContextOptionsForDrawingStroke:(id)stroke;
 - (unint64_t)p_renderingDestination;
-- (void)addSelectionKnobsToArray:(id)a3;
+- (void)addSelectionKnobsToArray:(id)array;
 - (void)beginEditing;
-- (void)beginEditingWithString:(id)a3;
-- (void)didUpdateRenderable:(id)a3;
+- (void)beginEditingWithString:(id)string;
+- (void)didUpdateRenderable:(id)renderable;
 - (void)documentModeDidChange;
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8 keepingChildrenPassingTest:(id)a9;
-- (void)drawInLayerContext:(CGContext *)a3;
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children keepingChildrenPassingTest:(id)test;
+- (void)drawInLayerContext:(CGContext *)context;
 - (void)dynamicDragDidBegin;
-- (void)dynamicDragDidEndAt:(CGPoint)a3;
-- (void)dynamicFreeTransformDidBeginWithTracker:(id)a3;
-- (void)dynamicFreeTransformDidEndWithTracker:(id)a3;
-- (void)dynamicMoveLineSegmentDidEndWithTracker:(id)a3;
+- (void)dynamicDragDidEndAt:(CGPoint)at;
+- (void)dynamicFreeTransformDidBeginWithTracker:(id)tracker;
+- (void)dynamicFreeTransformDidEndWithTracker:(id)tracker;
+- (void)dynamicMoveLineSegmentDidEndWithTracker:(id)tracker;
 - (void)dynamicMovePathKnobDidBegin;
-- (void)dynamicMovePathKnobDidEndWithTracker:(id)a3;
-- (void)dynamicMoveSmartShapeKnobDidEndWithTracker:(id)a3;
-- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)a3;
+- (void)dynamicMovePathKnobDidEndWithTracker:(id)tracker;
+- (void)dynamicMoveSmartShapeKnobDidEndWithTracker:(id)tracker;
+- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)commands;
 - (void)dynamicOperationDidEnd;
-- (void)dynamicResizeDidEndWithTracker:(id)a3;
-- (void)dynamicallyFreeTransformingWithTracker:(id)a3;
-- (void)dynamicallyMovedPathKnobTo:(CGPoint)a3 withTracker:(id)a4;
-- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)a3 withTracker:(id)a4;
-- (void)dynamicallyMovingLineSegmentWithTracker:(id)a3;
-- (void)dynamicallyResizingWithTracker:(id)a3;
-- (void)dynamicallyRotatingWithTracker:(id)a3;
-- (void)dynamicallySetBezierPathSource:(id)a3 atUnscaledOrigin:(CGPoint)a4 withCommittedPointRange:(_NSRange)a5;
+- (void)dynamicResizeDidEndWithTracker:(id)tracker;
+- (void)dynamicallyFreeTransformingWithTracker:(id)tracker;
+- (void)dynamicallyMovedPathKnobTo:(CGPoint)to withTracker:(id)tracker;
+- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)to withTracker:(id)tracker;
+- (void)dynamicallyMovingLineSegmentWithTracker:(id)tracker;
+- (void)dynamicallyResizingWithTracker:(id)tracker;
+- (void)dynamicallyRotatingWithTracker:(id)tracker;
+- (void)dynamicallySetBezierPathSource:(id)source atUnscaledOrigin:(CGPoint)origin withCommittedPointRange:(_NSRange)range;
 - (void)enqueuePathSourceChanges;
-- (void)i_drawLineEndForHead:(BOOL)a3 withDelta:(CGPoint)a4 andStroke:(id)a5 inContext:(CGContext *)a6 useFastDrawing:(BOOL)a7;
-- (void)i_endApplyOpacity:(CGContext *)a3 appliedTransparencyLayer:(BOOL)a4;
+- (void)i_drawLineEndForHead:(BOOL)head withDelta:(CGPoint)delta andStroke:(id)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing;
+- (void)i_endApplyOpacity:(CGContext *)opacity appliedTransparencyLayer:(BOOL)layer;
 - (void)i_forceInvalidateLayerFrame;
-- (void)i_setIsCurrentlyBeingFreehandDrawn:(BOOL)a3;
+- (void)i_setIsCurrentlyBeingFreehandDrawn:(BOOL)drawn;
 - (void)invalidateEffectLayersForChildren;
 - (void)invalidateExteriorWrap;
-- (void)layoutInRootChangedFrom:(id)a3 to:(id)a4 translatedOnly:(BOOL)a5;
+- (void)layoutInRootChangedFrom:(id)from to:(id)to translatedOnly:(BOOL)only;
 - (void)p_beginDynamicallyResizingOrMovingLineEnd;
-- (void)p_drawChildrenWithoutOpacityInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4;
+- (void)p_drawChildrenWithoutOpacityInContext:(CGContext *)context keepingChildrenPassingTest:(id)test;
 - (void)p_endDynamicallyResizingOrMovingLineEnd;
-- (void)p_forDragAndDropSetColor:(id)a3;
+- (void)p_forDragAndDropSetColor:(id)color;
 - (void)p_forceSetNeedsDisplay;
-- (void)p_forceSetNeedsDisplayInRect:(CGRect)a3;
+- (void)p_forceSetNeedsDisplayInRect:(CGRect)rect;
 - (void)p_handleAssetPreparationCompletion;
-- (void)p_hitCacheSetCachedValue:(BOOL)a3 forPoint:(CGPoint)a4 withPrecision:(BOOL)a5;
+- (void)p_hitCacheSetCachedValue:(BOOL)value forPoint:(CGPoint)point withPrecision:(BOOL)precision;
 - (void)p_listenForAssetChangesIfAppropriate;
-- (void)processChangedProperty:(unint64_t)a3;
-- (void)recursivelyDrawChildrenInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4;
+- (void)processChangedProperty:(unint64_t)property;
+- (void)recursivelyDrawChildrenInContext:(CGContext *)context keepingChildrenPassingTest:(id)test;
 - (void)setNeedsDisplay;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setParentRep:(id)a3;
-- (void)setShadowOnChildrenDisabled:(BOOL)a3;
-- (void)updatePositionsOfKnobs:(id)a3;
-- (void)updateRenderableGeometryFromLayout:(id)a3;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setParentRep:(id)rep;
+- (void)setShadowOnChildrenDisabled:(BOOL)disabled;
+- (void)updatePositionsOfKnobs:(id)knobs;
+- (void)updateRenderableGeometryFromLayout:(id)layout;
 - (void)viewScaleDidChange;
 - (void)willBeRemoved;
-- (void)willUpdateRenderable:(id)a3;
+- (void)willUpdateRenderable:(id)renderable;
 @end
 
 @implementation CRLShapeRep
 
-- (CRLShapeRep)initWithLayout:(id)a3 canvas:(id)a4
+- (CRLShapeRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v6 = a4;
+  canvasCopy = canvas;
   v21.receiver = self;
   v21.super_class = CRLShapeRep;
-  v7 = [(CRLCanvasRep *)&v21 initWithLayout:a3 canvas:v6];
+  v7 = [(CRLCanvasRep *)&v21 initWithLayout:layout canvas:canvasCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [(CRLShapeRep *)v7 shapeInfo];
-    if (v9 && ([(CRLShapeRep *)v8 shapeLayout], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+    shapeInfo = [(CRLShapeRep *)v7 shapeInfo];
+    if (shapeInfo && ([(CRLShapeRep *)v8 shapeLayout], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
     {
       v11 = objc_alloc_init(NSUUID);
       mDownloadObserverIdentifier = v8->mDownloadObserverIdentifier;
       v8->mDownloadObserverIdentifier = v11;
 
-      if ([v6 isCanvasInteractive])
+      if ([canvasCopy isCanvasInteractive])
       {
         [(CRLShapeRep *)v8 p_listenForAssetChangesIfAppropriate];
       }
@@ -170,14 +170,14 @@
       v8->mLastDynamicInvalidRect.size = size;
       v8->mShouldForceRenderableGeometryUpdate = 1;
       v8->mAllowsSimultaneousDrawing = 0;
-      v16 = [v9 isFreehandDrawingShape];
+      isFreehandDrawingShape = [shapeInfo isFreehandDrawingShape];
       v17 = off_10182F988;
-      if (v16)
+      if (isFreehandDrawingShape)
       {
         v17 = off_10182F990;
       }
 
-      v8->mIsFreehandDrawingShape = v16;
+      v8->mIsFreehandDrawingShape = isFreehandDrawingShape;
       v18 = [objc_alloc(*v17) initWithShapeRep:v8];
       mHelper = v8->mHelper;
       v8->mHelper = v18;
@@ -196,8 +196,8 @@
 - (_TtC8Freeform12CRLShapeItem)shapeInfo
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasRep *)self info];
+  v5 = sub_100014370(v3, info);
 
   return v5;
 }
@@ -205,23 +205,23 @@
 - (CRLShapeLayout)shapeLayout
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self layout];
-  v5 = sub_100014370(v3, v4);
+  layout = [(CRLCanvasRep *)self layout];
+  v5 = sub_100014370(v3, layout);
 
   return v5;
 }
 
-- (void)setParentRep:(id)a3
+- (void)setParentRep:(id)rep
 {
-  v4 = a3;
-  v5 = [(CRLCanvasRep *)self parentRep];
+  repCopy = rep;
+  parentRep = [(CRLCanvasRep *)self parentRep];
   v19.receiver = self;
   v19.super_class = CRLShapeRep;
-  [(CRLCanvasRep *)&v19 setParentRep:v4];
-  if (v5 != v4)
+  [(CRLCanvasRep *)&v19 setParentRep:repCopy];
+  if (parentRep != repCopy)
   {
-    v6 = [(CRLCanvasRep *)self canvas];
-    if (![v6 isCanvasInteractive])
+    canvas = [(CRLCanvasRep *)self canvas];
+    if (![canvas isCanvasInteractive])
     {
 LABEL_14:
 
@@ -233,14 +233,14 @@ LABEL_14:
     if (mIsFreehandDrawingShape)
     {
       v8 = objc_opt_class();
-      v9 = [(CRLCanvasRep *)self layout];
-      v10 = [v9 stroke];
-      v6 = sub_100014370(v8, v10);
+      layout = [(CRLCanvasRep *)self layout];
+      stroke = [layout stroke];
+      canvas = sub_100014370(v8, stroke);
 
-      if (v6)
+      if (canvas)
       {
-        v11 = [v6 inkType];
-        v12 = ![PKInk crl_isSixChannelBlendingUsedByInkType:v11];
+        inkType = [canvas inkType];
+        v12 = ![PKInk crl_isSixChannelBlendingUsedByInkType:inkType];
       }
 
       else
@@ -248,22 +248,22 @@ LABEL_14:
         v12 = 1;
       }
 
-      v13 = [(CRLShapeRep *)self shapeInfo];
-      v14 = [v13 isTreatedAsFillForFreehandDrawing];
+      shapeInfo = [(CRLShapeRep *)self shapeInfo];
+      isTreatedAsFillForFreehandDrawing = [shapeInfo isTreatedAsFillForFreehandDrawing];
 
-      if (!v12 || v14)
+      if (!v12 || isTreatedAsFillForFreehandDrawing)
       {
         v15 = objc_opt_class();
-        v16 = sub_100013F00(v15, v5);
+        v16 = sub_100013F00(v15, parentRep);
         v17 = objc_opt_class();
-        v18 = sub_100013F00(v17, v4);
+        v18 = sub_100013F00(v17, repCopy);
         if ((v12 & 1) == 0)
         {
           [v16 didRemoveSixChannelEnabledChildRep:self];
           [v18 didAddSixChannelEnabledChildRep:self];
         }
 
-        if (v14)
+        if (isTreatedAsFillForFreehandDrawing)
         {
           [v16 didRemoveSixChannelSuppressingChildRep:self];
           [v18 didAddSixChannelSuppressingChildRep:self];
@@ -286,11 +286,11 @@ LABEL_15:
   v6 = v5;
   if (!self->mFrameInUnscaledCanvasIsValid)
   {
-    v7 = [(CRLShapeRep *)self shapeLayout];
-    v8 = v7;
-    if (v7)
+    shapeLayout = [(CRLShapeRep *)self shapeLayout];
+    v8 = shapeLayout;
+    if (shapeLayout)
     {
-      [v7 transformInRoot];
+      [shapeLayout transformInRoot];
     }
 
     else
@@ -323,7 +323,7 @@ LABEL_15:
   return CGRectInset(*&v2, -1.0, -1.0);
 }
 
-- (BOOL)i_beginApplyOpacity:(CGContext *)a3 forDrawingInOneStep:(BOOL)a4
+- (BOOL)i_beginApplyOpacity:(CGContext *)opacity forDrawingInOneStep:(BOOL)step
 {
   [(CRLShapeRep *)self opacity];
   if (v7 >= 1.0)
@@ -331,8 +331,8 @@ LABEL_15:
     return 0;
   }
 
-  CGContextSetAlpha(a3, v7);
-  if (a4)
+  CGContextSetAlpha(opacity, v7);
+  if (step)
   {
     return 0;
   }
@@ -377,7 +377,7 @@ LABEL_15:
       [CRLAssertionHandler handleFailureInFunction:v14 file:v15 lineNumber:277 isFatal:0 description:"Clip rects should never be null."];
     }
 
-    CGContextBeginTransparencyLayer(a3, 0);
+    CGContextBeginTransparencyLayer(opacity, 0);
   }
 
   else
@@ -386,45 +386,45 @@ LABEL_15:
     v19.origin.y = y;
     v19.size.width = width;
     v19.size.height = height;
-    CGContextBeginTransparencyLayerWithRect(a3, v19, 0);
+    CGContextBeginTransparencyLayerWithRect(opacity, v19, 0);
   }
 
   return 1;
 }
 
-- (void)i_endApplyOpacity:(CGContext *)a3 appliedTransparencyLayer:(BOOL)a4
+- (void)i_endApplyOpacity:(CGContext *)opacity appliedTransparencyLayer:(BOOL)layer
 {
-  if (a4)
+  if (layer)
   {
-    CGContextEndTransparencyLayer(a3);
+    CGContextEndTransparencyLayer(opacity);
   }
 }
 
-- (id)colorBehindLayer:(id)a3
+- (id)colorBehindLayer:(id)layer
 {
   v4 = objc_opt_class();
-  v5 = [(CRLShapeRep *)self shapeLayout];
-  v6 = [v5 fill];
-  v7 = sub_100014370(v4, v6);
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  fill = [shapeLayout fill];
+  v7 = sub_100014370(v4, fill);
 
   if (v7 && [v7 isOpaque])
   {
-    v8 = [v7 color];
+    color = [v7 color];
   }
 
   else
   {
-    v8 = 0;
+    color = 0;
   }
 
-  return v8;
+  return color;
 }
 
-- (void)recursivelyDrawChildrenInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4
+- (void)recursivelyDrawChildrenInContext:(CGContext *)context keepingChildrenPassingTest:(id)test
 {
-  v6 = a4;
-  v7 = [(CRLCanvasRep *)self childReps];
-  v8 = [v7 count];
+  testCopy = test;
+  childReps = [(CRLCanvasRep *)self childReps];
+  v8 = [childReps count];
 
   if (v8)
   {
@@ -432,7 +432,7 @@ LABEL_15:
     v18[1] = 3221225472;
     v18[2] = sub_10019497C;
     v18[3] = &unk_101843720;
-    v9 = v6;
+    v9 = testCopy;
     v19 = v9;
     v10 = objc_retainBlock(v18);
     v16[0] = _NSConcreteStackBlock;
@@ -441,75 +441,75 @@ LABEL_15:
     v16[3] = &unk_101843720;
     v17 = v9;
     v11 = objc_retainBlock(v16);
-    CGContextSaveGState(a3);
-    v12 = [(CRLShapeRep *)self i_beginApplyOpacity:a3 forDrawingInOneStep:0];
+    CGContextSaveGState(context);
+    v12 = [(CRLShapeRep *)self i_beginApplyOpacity:context forDrawingInOneStep:0];
     v15.receiver = self;
     v15.super_class = CRLShapeRep;
-    [(CRLCanvasRep *)&v15 recursivelyDrawChildrenInContext:a3 keepingChildrenPassingTest:v10];
-    [(CRLShapeRep *)self i_endApplyOpacity:a3 appliedTransparencyLayer:v12];
-    CGContextRestoreGState(a3);
+    [(CRLCanvasRep *)&v15 recursivelyDrawChildrenInContext:context keepingChildrenPassingTest:v10];
+    [(CRLShapeRep *)self i_endApplyOpacity:context appliedTransparencyLayer:v12];
+    CGContextRestoreGState(context);
     v14.receiver = self;
     v14.super_class = CRLShapeRep;
-    [(CRLCanvasRep *)&v14 recursivelyDrawChildrenInContext:a3 keepingChildrenPassingTest:v11];
+    [(CRLCanvasRep *)&v14 recursivelyDrawChildrenInContext:context keepingChildrenPassingTest:v11];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = CRLShapeRep;
-    [(CRLCanvasRep *)&v13 recursivelyDrawChildrenInContext:a3 keepingChildrenPassingTest:v6];
+    [(CRLCanvasRep *)&v13 recursivelyDrawChildrenInContext:context keepingChildrenPassingTest:testCopy];
   }
 }
 
-- (void)p_drawChildrenWithoutOpacityInContext:(CGContext *)a3 keepingChildrenPassingTest:(id)a4
+- (void)p_drawChildrenWithoutOpacityInContext:(CGContext *)context keepingChildrenPassingTest:(id)test
 {
   v4.receiver = self;
   v4.super_class = CRLShapeRep;
-  [(CRLCanvasRep *)&v4 recursivelyDrawChildrenInContext:a3 keepingChildrenPassingTest:a4];
+  [(CRLCanvasRep *)&v4 recursivelyDrawChildrenInContext:context keepingChildrenPassingTest:test];
 }
 
-- (void)drawInLayerContext:(CGContext *)a3
+- (void)drawInLayerContext:(CGContext *)context
 {
   if (![(CRLShapeRep *)self p_renderingDestination])
   {
 
-    [(CRLShapeRep *)self p_drawInContext:a3 withContent:1 strokeDrawOptions:7 withOpacity:0];
+    [(CRLShapeRep *)self p_drawInContext:context withContent:1 strokeDrawOptions:7 withOpacity:0];
   }
 }
 
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8 keepingChildrenPassingTest:(id)a9
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children keepingChildrenPassingTest:(id)test
 {
-  v9 = a8;
-  v11 = a6;
-  v13 = a4;
-  v17 = a9;
-  if (![(CRLShapeRep *)self isInvisible]|| !v11 && ([(CRLShapeRep *)self opacity], v16 == 0.0))
+  childrenCopy = children;
+  opacityCopy = opacity;
+  contentCopy = content;
+  testCopy = test;
+  if (![(CRLShapeRep *)self isInvisible]|| !opacityCopy && ([(CRLShapeRep *)self opacity], v16 == 0.0))
   {
-    [(CRLShapeRep *)self p_drawInContext:a3 withContent:v13 strokeDrawOptions:a5 withOpacity:v11];
+    [(CRLShapeRep *)self p_drawInContext:effects withContent:contentCopy strokeDrawOptions:options withOpacity:opacityCopy];
   }
 
-  if (v9 && (!self->mShadowOnChildrenDisabled || !a7))
+  if (childrenCopy && (!self->mShadowOnChildrenDisabled || !only))
   {
-    if (v11)
+    if (opacityCopy)
     {
-      [(CRLShapeRep *)self recursivelyDrawChildrenInContext:a3 keepingChildrenPassingTest:v17];
+      [(CRLShapeRep *)self recursivelyDrawChildrenInContext:effects keepingChildrenPassingTest:testCopy];
     }
 
     else
     {
-      [(CRLShapeRep *)self p_drawChildrenWithoutOpacityInContext:a3 keepingChildrenPassingTest:v17];
+      [(CRLShapeRep *)self p_drawChildrenWithoutOpacityInContext:effects keepingChildrenPassingTest:testCopy];
     }
   }
 }
 
-- (CGRect)strokeBoundsWithOptions:(unint64_t)a3 fallbackBounds:(CGRect)a4
+- (CGRect)strokeBoundsWithOptions:(unint64_t)options fallbackBounds:(CGRect)bounds
 {
-  v5 = [(CRLShapeRep *)self shapeLayout:a4.origin.x];
+  v5 = [(CRLShapeRep *)self shapeLayout:bounds.origin.x];
   v6 = *&CGAffineTransformIdentity.c;
   v19[0] = *&CGAffineTransformIdentity.a;
   v19[1] = v6;
   v19[2] = *&CGAffineTransformIdentity.tx;
-  [v5 shapeFrameWithTransform:v19 strokeDrawOptions:a3];
+  [v5 shapeFrameWithTransform:v19 strokeDrawOptions:options];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -526,19 +526,19 @@ LABEL_15:
   return result;
 }
 
-- (id)imageOfStroke:(CGRect *)a3
+- (id)imageOfStroke:(CGRect *)stroke
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v9 = [(CRLCanvasRep *)self layout];
-  v10 = [v9 stroke];
+  layout = [(CRLCanvasRep *)self layout];
+  stroke = [layout stroke];
 
-  if (v10 && [v10 shouldRender])
+  if (stroke && [stroke shouldRender])
   {
-    v11 = [(CRLShapeRep *)self shapeLayout];
-    [v11 frame];
+    shapeLayout = [(CRLShapeRep *)self shapeLayout];
+    [shapeLayout frame];
     x = v14;
     y = v15;
     width = v12;
@@ -546,7 +546,7 @@ LABEL_15:
     v16 = 0;
     if (v12 > 0.0 && v13 > 0.0)
     {
-      v17 = sub_10050DF80([(CRLShapeRep *)self p_bitmapContextOptionsForDrawingStroke:v10]| 8u, v12, v13);
+      v17 = sub_10050DF80([(CRLShapeRep *)self p_bitmapContextOptionsForDrawingStroke:stroke]| 8u, v12, v13);
       [(CRLShapeRep *)self p_drawInContext:v17 withContent:0 strokeDrawOptions:7 withOpacity:0];
       Image = CGBitmapContextCreateImage(v17);
       v16 = [CRLImage imageWithCGImage:Image];
@@ -560,10 +560,10 @@ LABEL_15:
     v16 = 0;
   }
 
-  a3->origin.x = x;
-  a3->origin.y = y;
-  a3->size.width = width;
-  a3->size.height = height;
+  stroke->origin.x = x;
+  stroke->origin.y = y;
+  stroke->size.width = width;
+  stroke->size.height = height;
 
   return v16;
 }
@@ -572,33 +572,33 @@ LABEL_15:
 {
   if (!self->mIsInvisibleCacheValid)
   {
-    v3 = [(CRLCanvasRep *)self layout];
-    v4 = [v3 stroke];
+    layout = [(CRLCanvasRep *)self layout];
+    stroke = [layout stroke];
 
-    v5 = [(CRLShapeRep *)self shapeLayout];
-    v6 = [v5 fill];
+    shapeLayout = [(CRLShapeRep *)self shapeLayout];
+    fill = [shapeLayout fill];
 
     [(CRLShapeRep *)self opacity];
-    v7 = 1;
+    isClear = 1;
     if (v8 != 0.0)
     {
-      if (v4 && ([v4 shouldRender] & 1) != 0)
+      if (stroke && ([stroke shouldRender] & 1) != 0)
       {
-        v7 = 0;
+        isClear = 0;
       }
 
-      else if (v6)
+      else if (fill)
       {
-        v7 = [v6 isClear];
+        isClear = [fill isClear];
       }
 
       else
       {
-        v7 = 1;
+        isClear = 1;
       }
     }
 
-    self->mIsInvisibleCache = v7;
+    self->mIsInvisibleCache = isClear;
     self->mIsInvisibleCacheValid = 1;
   }
 
@@ -607,45 +607,45 @@ LABEL_15:
     return 1;
   }
 
-  v10 = [(CRLShapeRep *)self shapeLayout];
-  v11 = [v10 isInvisible];
+  shapeLayout2 = [(CRLShapeRep *)self shapeLayout];
+  isInvisible = [shapeLayout2 isInvisible];
 
-  return v11;
+  return isInvisible;
 }
 
 - (BOOL)isMoreOptimalToDrawWithOtherShapeRepsIfPossible
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  v3 = [v2 stroke];
+  layout = [(CRLCanvasRep *)self layout];
+  stroke = [layout stroke];
 
-  if (v3)
+  if (stroke)
   {
-    v4 = [objc_opt_class() isMoreOptimalToDrawWithOtherStrokesIfPossible];
+    isMoreOptimalToDrawWithOtherStrokesIfPossible = [objc_opt_class() isMoreOptimalToDrawWithOtherStrokesIfPossible];
   }
 
   else
   {
-    v4 = 0;
+    isMoreOptimalToDrawWithOtherStrokesIfPossible = 0;
   }
 
-  return v4;
+  return isMoreOptimalToDrawWithOtherStrokesIfPossible;
 }
 
-- (BOOL)canDrawWithOtherShapeRep:(id)a3
+- (BOOL)canDrawWithOtherShapeRep:(id)rep
 {
-  v4 = a3;
-  if (!-[CRLShapeRep isPartiallyAnimated](self, "isPartiallyAnimated") && ([v4 isPartiallyAnimated] & 1) == 0)
+  repCopy = rep;
+  if (!-[CRLShapeRep isPartiallyAnimated](self, "isPartiallyAnimated") && ([repCopy isPartiallyAnimated] & 1) == 0)
   {
-    v7 = [(CRLCanvasRep *)self childReps];
-    if ([v7 count])
+    childReps = [(CRLCanvasRep *)self childReps];
+    if ([childReps count])
     {
       v5 = 0;
     }
 
     else
     {
-      v8 = [v4 childReps];
-      v9 = [v8 count];
+      childReps2 = [repCopy childReps];
+      v9 = [childReps2 count];
 
       if (v9)
       {
@@ -654,7 +654,7 @@ LABEL_15:
 
       [(CRLShapeRep *)self opacity];
       v11 = v10;
-      [v4 opacity];
+      [repCopy opacity];
       if (v11 != v12 && vabdd_f64(v11, v12) >= fabs(v12 * 0.000000999999997))
       {
         goto LABEL_3;
@@ -666,18 +666,18 @@ LABEL_15:
         goto LABEL_3;
       }
 
-      [v4 strokeEnd];
+      [repCopy strokeEnd];
       if (v14 < 1.0)
       {
         goto LABEL_3;
       }
 
-      v7 = [(CRLShapeRep *)self shapeLayout];
-      v15 = [v4 shapeLayout];
-      v16 = [v7 fill];
-      if (v16)
+      childReps = [(CRLShapeRep *)self shapeLayout];
+      shapeLayout = [repCopy shapeLayout];
+      fill = [childReps fill];
+      if (fill)
       {
-        v17 = [v7 fill];
+        fill2 = [childReps fill];
         objc_opt_class();
         v18 = objc_opt_isKindOfClass() ^ 1;
       }
@@ -687,10 +687,10 @@ LABEL_15:
         v18 = 0;
       }
 
-      v19 = [v15 fill];
-      if (v19)
+      fill3 = [shapeLayout fill];
+      if (fill3)
       {
-        v20 = [v15 fill];
+        fill4 = [shapeLayout fill];
         objc_opt_class();
         v21 = objc_opt_isKindOfClass() ^ 1;
       }
@@ -707,9 +707,9 @@ LABEL_15:
 
       else
       {
-        v22 = [v7 stroke];
-        v23 = [v15 stroke];
-        v5 = [v22 canDrawWithOtherStroke:v23];
+        stroke = [childReps stroke];
+        stroke2 = [shapeLayout stroke];
+        v5 = [stroke canDrawWithOtherStroke:stroke2];
       }
     }
 
@@ -747,16 +747,16 @@ LABEL_4:
   v4 = v3;
   if ([(CRLShapeRep *)self i_isCurrentlyBeingFreehandDrawn])
   {
-    v5 = [(CRLShapeRep *)self shapeInfo];
-    v6 = [v5 isTreatedAsFillForFreehandDrawing];
+    shapeInfo = [(CRLShapeRep *)self shapeInfo];
+    isTreatedAsFillForFreehandDrawing = [shapeInfo isTreatedAsFillForFreehandDrawing];
 
-    if (v6)
+    if (isTreatedAsFillForFreehandDrawing)
     {
       v7 = objc_opt_class();
-      v8 = [(CRLCanvasRep *)self interactiveCanvasController];
-      v9 = [v8 freehandDrawingToolkit];
-      v10 = [v9 currentTool];
-      v11 = sub_100013F00(v7, v10);
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+      currentTool = [freehandDrawingToolkit currentTool];
+      v11 = sub_100013F00(v7, currentTool);
 
       if (v11)
       {
@@ -798,23 +798,23 @@ LABEL_4:
   return v4;
 }
 
-- (void)i_drawLineEndForHead:(BOOL)a3 withDelta:(CGPoint)a4 andStroke:(id)a5 inContext:(CGContext *)a6 useFastDrawing:(BOOL)a7
+- (void)i_drawLineEndForHead:(BOOL)head withDelta:(CGPoint)delta andStroke:(id)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing
 {
-  v7 = a7;
-  x = a4.x;
-  v10 = a3;
-  v31 = a5;
-  v12 = [(CRLShapeRep *)self shapeLayout];
-  v13 = v12;
-  if (v10)
+  drawingCopy = drawing;
+  x = delta.x;
+  headCopy = head;
+  strokeCopy = stroke;
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  v13 = shapeLayout;
+  if (headCopy)
   {
-    v14 = [v12 strokeHeadLineEnd];
-    if (!v14)
+    strokeHeadLineEnd = [shapeLayout strokeHeadLineEnd];
+    if (!strokeHeadLineEnd)
     {
       goto LABEL_7;
     }
 
-    v15 = v14;
+    v15 = strokeHeadLineEnd;
     [v13 headLineEndPoint];
     v17 = v16;
     v19 = v18;
@@ -823,13 +823,13 @@ LABEL_4:
 
   else
   {
-    v21 = [v12 strokeTailLineEnd];
-    if (!v21)
+    strokeTailLineEnd = [shapeLayout strokeTailLineEnd];
+    if (!strokeTailLineEnd)
     {
       goto LABEL_7;
     }
 
-    v15 = v21;
+    v15 = strokeTailLineEnd;
     [v13 tailLineEndPoint];
     v17 = v22;
     v19 = v23;
@@ -839,35 +839,35 @@ LABEL_4:
   v24 = v20;
   v25 = sub_10011F334(v17, v19, x);
   v27 = v26;
-  v28 = [v13 stroke];
-  [v28 width];
+  stroke = [v13 stroke];
+  [stroke width];
   [v15 scaleForStrokeWidth:?];
   v30 = v29;
 
-  [v31 paintLineEnd:v15 atPoint:a6 atAngle:v7 withScale:v25 inContext:v27 useFastDrawing:{v24, v30}];
+  [strokeCopy paintLineEnd:v15 atPoint:context atAngle:drawingCopy withScale:v25 inContext:v27 useFastDrawing:{v24, v30}];
 LABEL_7:
 }
 
-- (BOOL)p_shouldDrawStrokeWide:(id)a3
+- (BOOL)p_shouldDrawStrokeWide:(id)wide
 {
-  v4 = [a3 color];
-  if ([v4 colorRGBSpace] == 1)
+  color = [wide color];
+  if ([color colorRGBSpace] == 1)
   {
-    v5 = [(CRLCanvasRep *)self canvas];
-    v6 = [v5 canvasIsWideGamut];
+    canvas = [(CRLCanvasRep *)self canvas];
+    canvasIsWideGamut = [canvas canvasIsWideGamut];
   }
 
   else
   {
-    v6 = 0;
+    canvasIsWideGamut = 0;
   }
 
-  return v6;
+  return canvasIsWideGamut;
 }
 
-- (unint64_t)p_bitmapContextOptionsForDrawingStroke:(id)a3
+- (unint64_t)p_bitmapContextOptionsForDrawingStroke:(id)stroke
 {
-  if ([(CRLShapeRep *)self p_shouldDrawStrokeWide:a3])
+  if ([(CRLShapeRep *)self p_shouldDrawStrokeWide:stroke])
   {
     return 35;
   }
@@ -890,14 +890,14 @@ LABEL_7:
   return result;
 }
 
-- (id)i_brushStrokeFromStroke:(id)a3
+- (id)i_brushStrokeFromStroke:(id)stroke
 {
-  v3 = a3;
+  strokeCopy = stroke;
   v4 = objc_opt_class();
-  v5 = sub_100014370(v4, v3);
+  v5 = sub_100014370(v4, strokeCopy);
   if (!v5)
   {
-    v6 = [v3 cap];
+    v6 = [strokeCopy cap];
     v7 = &off_101852288;
     if (v6 != 1)
     {
@@ -906,31 +906,31 @@ LABEL_7:
 
     v8 = *v7;
     v9 = [CRLBrushStroke alloc];
-    v10 = [v3 color];
-    [v3 width];
+    color = [strokeCopy color];
+    [strokeCopy width];
     v12 = v11;
-    v13 = [v3 cap];
-    v14 = [v3 join];
-    v15 = [v3 pattern];
-    [v3 miterLimit];
-    v5 = [(CRLBrushStroke *)v9 initWithName:v8 color:v10 width:v13 cap:v14 join:v15 pattern:v12 miterLimit:v16];
+    v13 = [strokeCopy cap];
+    join = [strokeCopy join];
+    pattern = [strokeCopy pattern];
+    [strokeCopy miterLimit];
+    v5 = [(CRLBrushStroke *)v9 initWithName:v8 color:color width:v13 cap:join join:pattern pattern:v12 miterLimit:v16];
   }
 
   return v5;
 }
 
-- (BOOL)canDrawShadowInOneStepWithChildren:(BOOL)a3
+- (BOOL)canDrawShadowInOneStepWithChildren:(BOOL)children
 {
-  v3 = a3;
+  childrenCopy = children;
   if (![(CRLShapeRepHelperProtocol *)self->mHelper drawsInOneStep])
   {
     return 0;
   }
 
   v5 = objc_opt_class();
-  v6 = [(CRLShapeRep *)self shapeLayout];
-  v7 = [v6 fill];
-  v8 = sub_100014370(v5, v7);
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  fill = [shapeLayout fill];
+  v8 = sub_100014370(v5, fill);
 
   v9 = v8 == 0;
   if (v8)
@@ -940,13 +940,13 @@ LABEL_7:
 
   else
   {
-    v10 = !v3;
+    v10 = !childrenCopy;
   }
 
   if (!v10)
   {
-    v11 = [(CRLCanvasRep *)self childReps];
-    v9 = [v11 count] == 0;
+    childReps = [(CRLCanvasRep *)self childReps];
+    v9 = [childReps count] == 0;
   }
 
   return v9;
@@ -956,35 +956,35 @@ LABEL_7:
 {
   v7.receiver = self;
   v7.super_class = CRLShapeRep;
-  v3 = [(CRLStyledRep *)&v7 shouldShowShadow];
-  if (v3)
+  shouldShowShadow = [(CRLStyledRep *)&v7 shouldShowShadow];
+  if (shouldShowShadow)
   {
-    v4 = [(CRLCanvasRep *)self canvas];
-    v5 = [v4 shouldSuppressBackgrounds];
+    canvas = [(CRLCanvasRep *)self canvas];
+    shouldSuppressBackgrounds = [canvas shouldSuppressBackgrounds];
 
-    if (v5)
+    if (shouldSuppressBackgrounds)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(shouldShowShadow) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(CRLShapeRep *)self shadowOnChildrenDisabled];
+      LOBYTE(shouldShowShadow) = ![(CRLShapeRep *)self shadowOnChildrenDisabled];
     }
   }
 
-  return v3;
+  return shouldShowShadow;
 }
 
-- (BOOL)p_shouldUpgradeStrokeForPlayback:(id)a3
+- (BOOL)p_shouldUpgradeStrokeForPlayback:(id)playback
 {
-  v4 = a3;
+  playbackCopy = playback;
   if ((*(self + 344) & 3) == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    [v4 width];
+    [playbackCopy width];
     v7 = v6;
-    v8 = [(CRLCanvasRep *)self canvas];
-    [v8 viewScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas viewScale];
     v5 = v7 * v9 < 5.0;
   }
 
@@ -996,13 +996,13 @@ LABEL_7:
   return v5;
 }
 
-- (id)i_strokeForRenderingIncludingPlaybackFromStroke:(id)a3
+- (id)i_strokeForRenderingIncludingPlaybackFromStroke:(id)stroke
 {
-  v4 = a3;
-  v5 = v4;
-  if ([(CRLShapeRep *)self p_shouldUpgradeStrokeForPlayback:v4])
+  strokeCopy = stroke;
+  v5 = strokeCopy;
+  if ([(CRLShapeRep *)self p_shouldUpgradeStrokeForPlayback:strokeCopy])
   {
-    v5 = [(CRLShapeRep *)self i_brushStrokeFromStroke:v4];
+    v5 = [(CRLShapeRep *)self i_brushStrokeFromStroke:strokeCopy];
   }
 
   return v5;
@@ -1010,22 +1010,22 @@ LABEL_7:
 
 - (void)setNeedsDisplay
 {
-  v3 = [(CRLShapeRep *)self shapeLayout];
-  v4 = [v3 i_isInsideResizingFreehandDrawing];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  i_isInsideResizingFreehandDrawing = [shapeLayout i_isInsideResizingFreehandDrawing];
 
-  if (![(CRLShapeRep *)self i_isCurrentlyBeingFreehandDrawn]&& (v4 & 1) == 0)
+  if (![(CRLShapeRep *)self i_isCurrentlyBeingFreehandDrawn]&& (i_isInsideResizingFreehandDrawing & 1) == 0)
   {
 
     [(CRLShapeRep *)self p_forceSetNeedsDisplay];
   }
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (![(CRLShapeRep *)self i_isCurrentlyBeingFreehandDrawn])
   {
 
@@ -1041,12 +1041,12 @@ LABEL_7:
   self->mNeedsDisplay = 1;
 }
 
-- (void)p_forceSetNeedsDisplayInRect:(CGRect)a3
+- (void)p_forceSetNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8.receiver = self;
   v8.super_class = CRLShapeRep;
   [(CRLCanvasRep *)&v8 setNeedsDisplayInRect:?];
@@ -1060,10 +1060,10 @@ LABEL_7:
   }
 }
 
-- (CGRect)p_layerFrameInScaledCanvasForDirectlyManagedLayer:(BOOL)a3
+- (CGRect)p_layerFrameInScaledCanvasForDirectlyManagedLayer:(BOOL)layer
 {
-  v3 = a3;
-  if ([(CRLCanvasRep *)self isBeingRotated]|| !v3)
+  layerCopy = layer;
+  if ([(CRLCanvasRep *)self isBeingRotated]|| !layerCopy)
   {
     v44.receiver = self;
     v44.super_class = CRLShapeRep;
@@ -1076,15 +1076,15 @@ LABEL_7:
 
   else
   {
-    v5 = [(CRLCanvasRep *)self canvas];
+    canvas = [(CRLCanvasRep *)self canvas];
     [(CRLShapeRep *)self frameInUnscaledCanvas];
-    [v5 convertUnscaledToBoundsRect:?];
+    [canvas convertUnscaledToBoundsRect:?];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(CRLCanvasRep *)self canvas];
-    [v14 contentsScale];
+    canvas2 = [(CRLCanvasRep *)self canvas];
+    [canvas2 contentsScale];
     v16 = sub_1001224A4(v7, v9, v11, v13, v15);
     v18 = v17;
     v20 = v19;
@@ -1107,8 +1107,8 @@ LABEL_7:
     y = v46.origin.y;
     width = v46.size.width;
     height = v46.size.height;
-    v35 = [(CRLCanvasRep *)self canvas];
-    [v35 contentsScale];
+    canvas3 = [(CRLCanvasRep *)self canvas];
+    [canvas3 contentsScale];
     v16 = sub_1001224A4(x, y, width, height, v36);
     v18 = v37;
     v20 = v38;
@@ -1128,9 +1128,9 @@ LABEL_7:
 
 - (CGRect)layerFrameInScaledCanvas
 {
-  v3 = [(CRLShapeRep *)self directlyManagesLayerContent];
+  directlyManagesLayerContent = [(CRLShapeRep *)self directlyManagesLayerContent];
 
-  [(CRLShapeRep *)self p_layerFrameInScaledCanvasForDirectlyManagedLayer:v3];
+  [(CRLShapeRep *)self p_layerFrameInScaledCanvasForDirectlyManagedLayer:directlyManagesLayerContent];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -1168,13 +1168,13 @@ LABEL_7:
 
 - (BOOL)skipsRerenderForTranslation
 {
-  v3 = [(CRLCanvasRep *)self canvas];
-  v4 = [v3 canvasController];
-  v5 = [v4 shouldSupportedDynamicOperationsEnqueueCommandsInRealTime];
+  canvas = [(CRLCanvasRep *)self canvas];
+  canvasController = [canvas canvasController];
+  shouldSupportedDynamicOperationsEnqueueCommandsInRealTime = [canvasController shouldSupportedDynamicOperationsEnqueueCommandsInRealTime];
 
-  if (v5)
+  if (shouldSupportedDynamicOperationsEnqueueCommandsInRealTime)
   {
-    v6 = [(CRLCanvasRep *)self parentRep];
+    parentRep = [(CRLCanvasRep *)self parentRep];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -1187,12 +1187,12 @@ LABEL_7:
   return isKindOfClass & 1;
 }
 
-- (void)layoutInRootChangedFrom:(id)a3 to:(id)a4 translatedOnly:(BOOL)a5
+- (void)layoutInRootChangedFrom:(id)from to:(id)to translatedOnly:(BOOL)only
 {
   v8.receiver = self;
   v8.super_class = CRLShapeRep;
-  [(CRLCanvasRep *)&v8 layoutInRootChangedFrom:a3 to:a4 translatedOnly:?];
-  if (!a5)
+  [(CRLCanvasRep *)&v8 layoutInRootChangedFrom:from to:to translatedOnly:?];
+  if (!only)
   {
     self->mFrameInUnscaledCanvasIsValid = 0;
   }
@@ -1205,9 +1205,9 @@ LABEL_7:
 {
   if (([(CRLShapeRepHelperProtocol *)self->mHelper hasLegacyFreehandDrawingBrushStroke]& 1) == 0)
   {
-    v3 = [(CRLCanvasRep *)self layout];
-    v4 = [v3 stroke];
-    v5 = [(CRLShapeRep *)self p_shouldUpgradeStrokeForPlayback:v4];
+    layout = [(CRLCanvasRep *)self layout];
+    stroke = [layout stroke];
+    v5 = [(CRLShapeRep *)self p_shouldUpgradeStrokeForPlayback:stroke];
 
     if (!v5)
     {
@@ -1224,10 +1224,10 @@ LABEL_7:
   v14 = v13;
   if (v12)
   {
-    v15 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v16 = [v15 canvasView];
-    v17 = [v16 metalDeviceForScreenWithCanvas];
-    [v14 maximumMetalTextureSizeForDevice:v17];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    canvasView = [interactiveCanvasController canvasView];
+    metalDeviceForScreenWithCanvas = [canvasView metalDeviceForScreenWithCanvas];
+    [v14 maximumMetalTextureSizeForDevice:metalDeviceForScreenWithCanvas];
     v19 = v18;
     v21 = v20;
   }
@@ -1289,22 +1289,22 @@ LABEL_7:
     if ([(CRLShapeRep *)self isInvisible]|| [(CRLShapeRep *)self p_canApplyStrokeToRenderable]&& [(CRLShapeRep *)self p_canApplyFillToRenderable])
     {
 LABEL_3:
-      v4 = 1;
+      directlyManagesLayerContent = 1;
     }
 
     else
     {
       v8.receiver = self;
       v8.super_class = CRLShapeRep;
-      v4 = [(CRLCanvasRep *)&v8 directlyManagesLayerContent];
+      directlyManagesLayerContent = [(CRLCanvasRep *)&v8 directlyManagesLayerContent];
     }
 
-    self->mDirectlyManagesLayerContent = v4;
-    if (mDirectlyManagesLayerContent && !v4)
+    self->mDirectlyManagesLayerContent = directlyManagesLayerContent;
+    if (mDirectlyManagesLayerContent && !directlyManagesLayerContent)
     {
 LABEL_6:
-      v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-      v6 = [v5 renderableForRep:self];
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      v6 = [interactiveCanvasController renderableForRep:self];
 
       [v6 setContents:0];
       [v6 setBackgroundColor:0];
@@ -1319,14 +1319,14 @@ LABEL_6:
 
 - (BOOL)wantsRenderableToBeDescendedFromParentRepRenderable
 {
-  v2 = [(CRLCanvasRep *)self info];
+  info = [(CRLCanvasRep *)self info];
   v3 = objc_opt_class();
-  v4 = [v2 parentInfo];
-  v5 = sub_100014370(v3, v4);
+  parentInfo = [info parentInfo];
+  v5 = sub_100014370(v3, parentInfo);
 
   if (v5)
   {
-    v6 = [v5 isNonGroupedChild:v2] ^ 1;
+    v6 = [v5 isNonGroupedChild:info] ^ 1;
   }
 
   else
@@ -1341,40 +1341,40 @@ LABEL_6:
 {
   v6.receiver = self;
   v6.super_class = CRLShapeRep;
-  v3 = [(CRLCanvasRep *)&v6 layerClass];
-  v4 = [(CRLShapeRep *)self p_renderingDestination];
-  if (v4 == 1 || v4 == 2)
+  layerClass = [(CRLCanvasRep *)&v6 layerClass];
+  p_renderingDestination = [(CRLShapeRep *)self p_renderingDestination];
+  if (p_renderingDestination == 1 || p_renderingDestination == 2)
   {
-    v3 = objc_opt_class();
+    layerClass = objc_opt_class();
   }
 
-  return v3;
+  return layerClass;
 }
 
 - (void)i_forceInvalidateLayerFrame
 {
   self->mShouldForceRenderableGeometryUpdate = 1;
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v3 invalidateContentLayersForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController invalidateContentLayersForRep:self];
 }
 
 - (BOOL)p_currentlyDrawingSomeOtherShape
 {
-  v3 = [(CRLCanvasRep *)self parentRep];
+  parentRep = [(CRLCanvasRep *)self parentRep];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v6 = [v5 freehandDrawingToolkit];
-    if ([v6 isInDrawingMode] && !-[CRLCanvasRep isInDynamicOperation](self, "isInDynamicOperation") && objc_msgSend(v5, "isInDynamicOperation") && (objc_msgSend(v6, "currentTool"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "type"), v7, (v8 - 11) <= 0xFFFFFFFFFFFFFFFDLL))
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
+    if ([freehandDrawingToolkit isInDrawingMode] && !-[CRLCanvasRep isInDynamicOperation](self, "isInDynamicOperation") && objc_msgSend(interactiveCanvasController, "isInDynamicOperation") && (objc_msgSend(freehandDrawingToolkit, "currentTool"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "type"), v7, (v8 - 11) <= 0xFFFFFFFFFFFFFFFDLL))
     {
-      v9 = [v5 tmCoordinator];
-      v10 = [v9 controllingTM];
-      v11 = [v10 tracker];
+      tmCoordinator = [interactiveCanvasController tmCoordinator];
+      controllingTM = [tmCoordinator controllingTM];
+      tracker = [controllingTM tracker];
 
-      if (v11)
+      if (tracker)
       {
         objc_opt_class();
         v12 = objc_opt_isKindOfClass();
@@ -1400,12 +1400,12 @@ LABEL_6:
   return v12 & 1;
 }
 
-- (CGSize)p_sizeForDirectlyManagedImageFromRenderableSize:(CGSize)a3
+- (CGSize)p_sizeForDirectlyManagedImageFromRenderableSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CRLCanvasRep *)self canvas];
-  [v5 contentsScale];
+  height = size.height;
+  width = size.width;
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas contentsScale];
   v7 = sub_10011F340(width, height, v6);
   v8 = sub_10012211C(v7);
   v10 = v9;
@@ -1425,29 +1425,29 @@ LABEL_6:
   self->mShouldForceRenderableGeometryUpdate = 1;
 }
 
-- (void)updateRenderableGeometryFromLayout:(id)a3
+- (void)updateRenderableGeometryFromLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   if (![(CRLShapeRep *)self p_shouldSkipRenderableRecalculations])
   {
     v7.receiver = self;
     v7.super_class = CRLShapeRep;
-    [(CRLCanvasRep *)&v7 updateRenderableGeometryFromLayout:v4];
-    v5 = [(CRLCanvasRep *)self canvas];
+    [(CRLCanvasRep *)&v7 updateRenderableGeometryFromLayout:layoutCopy];
+    canvas = [(CRLCanvasRep *)self canvas];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100196738;
     v6[3] = &unk_10183AB38;
     v6[4] = self;
-    [v5 performBlockAfterLayoutIfNecessary:v6];
+    [canvas performBlockAfterLayoutIfNecessary:v6];
   }
 
   [(CRLShapeRep *)self p_invalidateHitTestCache];
 }
 
-- (void)willUpdateRenderable:(id)a3
+- (void)willUpdateRenderable:(id)renderable
 {
-  v4 = a3;
+  renderableCopy = renderable;
   if (self->mDirectlyManagesLayerContentCacheValid)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1481,31 +1481,31 @@ LABEL_6:
   self->mDirectlyManagesLayerContentCacheValid = 1;
   v8.receiver = self;
   v8.super_class = CRLShapeRep;
-  [(CRLCanvasRep *)&v8 willUpdateRenderable:v4];
+  [(CRLCanvasRep *)&v8 willUpdateRenderable:renderableCopy];
 }
 
-- (void)didUpdateRenderable:(id)a3
+- (void)didUpdateRenderable:(id)renderable
 {
-  v4 = a3;
+  renderableCopy = renderable;
   v157.receiver = self;
   v157.super_class = CRLShapeRep;
-  [(CRLCanvasRep *)&v157 didUpdateRenderable:v4];
+  [(CRLCanvasRep *)&v157 didUpdateRenderable:renderableCopy];
   if (![(CRLShapeRep *)self p_shouldSkipRenderableRecalculations])
   {
     [(CRLShapeRep *)self opacity];
     v6 = v5;
-    [v4 opacity];
+    [renderableCopy opacity];
     v8 = v7;
     if (v6 != v8)
     {
       *&v8 = v6;
-      [v4 setOpacity:v8];
+      [renderableCopy setOpacity:v8];
     }
 
     if ((*(self + 344) & 3) != 0)
     {
-      v9 = [v4 contents];
-      v10 = v9 != 0;
+      contents = [renderableCopy contents];
+      v10 = contents != 0;
     }
 
     else
@@ -1515,29 +1515,29 @@ LABEL_6:
 
     if (![(CRLShapeRep *)self isInvisible]|| v10)
     {
-      if (!-[CRLShapeRep directlyManagesLayerContent](self, "directlyManagesLayerContent") && ([v4 crl_tilingSafeHasContents] & 1) == 0)
+      if (!-[CRLShapeRep directlyManagesLayerContent](self, "directlyManagesLayerContent") && ([renderableCopy crl_tilingSafeHasContents] & 1) == 0)
       {
-        v11 = [(CRLCanvasRep *)self interactiveCanvasController];
-        v12 = [v4 layer];
-        [v11 setNeedsDisplayOnLayer:v12];
+        interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+        layer = [renderableCopy layer];
+        [interactiveCanvasController setNeedsDisplayOnLayer:layer];
       }
     }
 
     else
     {
-      [v4 setContents:0];
+      [renderableCopy setContents:0];
     }
 
     if (self->mIsFreehandDrawingShape)
     {
-      v13 = [(CRLCanvasRep *)self canvas];
-      v14 = [v13 allReps];
-      v15 = [v14 count];
+      canvas = [(CRLCanvasRep *)self canvas];
+      allReps = [canvas allReps];
+      v15 = [allReps count];
 
       if (v15 >= 0x5DD)
       {
         v16 = objc_opt_class();
-        v17 = sub_100014370(v16, v4);
+        v17 = sub_100014370(v16, renderableCopy);
         v18 = v17;
         if (v17 && ([v17 forceTiled] & 1) == 0)
         {
@@ -1551,7 +1551,7 @@ LABEL_6:
       v19 = ![(CRLShapeRep *)self directlyManagesLayerContent];
       if (self->mFillChanged)
       {
-        v20 = [(CRLShapeRep *)self directlyManagesLayerContent];
+        directlyManagesLayerContent = [(CRLShapeRep *)self directlyManagesLayerContent];
         goto LABEL_25;
       }
     }
@@ -1561,24 +1561,24 @@ LABEL_6:
       v19 = 0;
     }
 
-    v20 = 0;
+    directlyManagesLayerContent = 0;
 LABEL_25:
     v139 = v19;
     mNeedsDisplay = self->mNeedsDisplay;
-    v140 = v4;
+    v140 = renderableCopy;
     if (!(v10 | ![(CRLShapeRep *)self directlyManagesLayerContent]))
     {
       self->mNeedsDisplay = 0;
-      v22 = [(CRLShapeRep *)self p_renderingDestination];
-      if (v22 - 1 <= 1)
+      p_renderingDestination = [(CRLShapeRep *)self p_renderingDestination];
+      if (p_renderingDestination - 1 <= 1)
       {
-        v23 = v22;
-        v24 = [(CRLCanvasRep *)self layout];
-        v25 = [v24 stroke];
-        v26 = [(CRLShapeRep *)self i_strokeForRenderingIncludingPlaybackFromStroke:v25];
+        v23 = p_renderingDestination;
+        layout = [(CRLCanvasRep *)self layout];
+        stroke = [layout stroke];
+        stroke2 = [(CRLShapeRep *)self i_strokeForRenderingIncludingPlaybackFromStroke:stroke];
 
         v27 = objc_opt_class();
-        v28 = sub_100014370(v27, v26);
+        v28 = sub_100014370(v27, stroke2);
         if (v28)
         {
           if (mNeedsDisplay)
@@ -1588,11 +1588,11 @@ LABEL_25:
             *&v156.c = *v135;
             *&v156.tx = *&CGAffineTransformIdentity.tx;
             tx = v156.tx;
-            v29 = [(CRLCanvasRep *)self canvas];
-            [v29 contentsScale];
+            canvas2 = [(CRLCanvasRep *)self canvas];
+            [canvas2 contentsScale];
             v31 = v30;
-            v32 = [(CRLCanvasRep *)self canvas];
-            [v32 contentsScale];
+            canvas3 = [(CRLCanvasRep *)self canvas];
+            [canvas3 contentsScale];
             *&v155.a = *&v156.a;
             *&v155.c = *v135;
             *&v155.tx = *&v156.tx;
@@ -1602,21 +1602,21 @@ LABEL_25:
             t2 = v156;
             CGAffineTransformConcat(&v155, &t1, &t2);
             v156 = v155;
-            v34 = [(CRLShapeRep *)self shapeLayout];
-            [v34 pathBounds];
+            shapeLayout = [(CRLShapeRep *)self shapeLayout];
+            [shapeLayout pathBounds];
             v36 = v35;
             v38 = v37;
 
             t1 = v156;
             CGAffineTransformTranslate(&v155, &t1, -v36, -v38);
             v156 = v155;
-            [v4 frame];
+            [renderableCopy frame];
             [(CRLShapeRep *)self p_sizeForDirectlyManagedImageFromRenderableSize:v39, v40];
             if (v41 <= 0.0 || (v43 = v42, v42 <= 0.0) || (v44 = v41, [(CRLShapeRep *)self strokeEnd], v45 <= 0.0) || [(CRLShapeRep *)self isInvisible]&& (*(self + 344) & 3) == 0)
             {
               if (v23 == 1)
               {
-                [v4 setContents:0];
+                [renderableCopy setContents:0];
               }
 
               else
@@ -1652,37 +1652,37 @@ LABEL_25:
             else
             {
               v137 = [v28 copy];
-              v46 = [(CRLShapeRep *)self shapeLayout];
-              v47 = [v46 pathSource];
-              v48 = [v47 bezierPath];
-              v136 = [v48 copy];
+              shapeLayout2 = [(CRLShapeRep *)self shapeLayout];
+              pathSource = [shapeLayout2 pathSource];
+              bezierPath = [pathSource bezierPath];
+              v136 = [bezierPath copy];
 
               *&v49 = COERCE_DOUBLE(objc_alloc_init(CRLBrushStrokeLayoutOptions));
               if ([(CRLShapeRepHelperProtocol *)self->mHelper hasLegacyFreehandDrawingBrushStroke])
               {
-                v50 = [(CRLShapeRep *)self shapeLayout];
-                v51 = [v50 dynamicPatternOffsetsBySubpath];
+                shapeLayout3 = [(CRLShapeRep *)self shapeLayout];
+                dynamicPatternOffsetsBySubpath = [shapeLayout3 dynamicPatternOffsetsBySubpath];
 
-                if (v51)
+                if (dynamicPatternOffsetsBySubpath)
                 {
-                  v52 = [(CRLShapeRep *)self shapeLayout];
-                  v53 = [v52 dynamicPatternOffsetsBySubpath];
-                  v54 = [v53 copy];
+                  shapeLayout4 = [(CRLShapeRep *)self shapeLayout];
+                  dynamicPatternOffsetsBySubpath2 = [shapeLayout4 dynamicPatternOffsetsBySubpath];
+                  v54 = [dynamicPatternOffsetsBySubpath2 copy];
                 }
 
                 else
                 {
-                  v52 = [(CRLShapeRep *)self shapeInfo];
-                  [v52 strokePatternOffsetDistance];
-                  v53 = [NSNumber numberWithDouble:?];
-                  v158 = v53;
+                  shapeLayout4 = [(CRLShapeRep *)self shapeInfo];
+                  [shapeLayout4 strokePatternOffsetDistance];
+                  dynamicPatternOffsetsBySubpath2 = [NSNumber numberWithDouble:?];
+                  v158 = dynamicPatternOffsetsBySubpath2;
                   v54 = [NSArray arrayWithObjects:&v158 count:1];
                 }
 
                 v75 = v54;
                 [(CRLBrushStrokeLayoutOptions *)v49 setPatternOffsetsBySubpath:v54];
 
-                v4 = v140;
+                renderableCopy = v140;
               }
 
               [(CRLShapeRep *)self strokeEnd];
@@ -1690,19 +1690,19 @@ LABEL_25:
               if (v23 == 1)
               {
                 v76 = objc_opt_class();
-                v77 = [(CRLCanvasRep *)self parentRep];
-                sub_100013F00(v76, v77);
+                parentRep = [(CRLCanvasRep *)self parentRep];
+                sub_100013F00(v76, parentRep);
                 v78 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
                 tx = v78;
                 if ([(CRLShapeRep *)self i_isCurrentlyBeingFreehandDrawn])
                 {
-                  v79 = 0;
+                  queueForConcurrentlyDrawingChildrenIntoLayersIfSafe = 0;
                 }
 
                 else
                 {
-                  v79 = [*&v78 queueForConcurrentlyDrawingChildrenIntoLayersIfSafe];
+                  queueForConcurrentlyDrawingChildrenIntoLayersIfSafe = [*&v78 queueForConcurrentlyDrawingChildrenIntoLayersIfSafe];
                 }
 
                 v100 = v136;
@@ -1722,17 +1722,17 @@ LABEL_25:
                 v149 = v102;
                 v103 = objc_retainBlock(v145);
                 v104 = v103;
-                if (v79)
+                if (queueForConcurrentlyDrawingChildrenIntoLayersIfSafe)
                 {
                   v143[0] = _NSConcreteStackBlock;
                   v143[1] = 3221225472;
                   v143[2] = sub_100197AAC;
                   v143[3] = &unk_10183B230;
                   v144 = v103;
-                  [v79 performAsync:v143];
-                  v105 = [(CRLCanvasRep *)self interactiveCanvasController];
-                  v106 = [v102 layer];
-                  [v105 setNeedsDisplayOnLayer:v106];
+                  [queueForConcurrentlyDrawingChildrenIntoLayersIfSafe performAsync:v143];
+                  interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+                  layer2 = [v102 layer];
+                  [interactiveCanvasController2 setNeedsDisplayOnLayer:layer2];
 
                   v101 = *&v49;
                 }
@@ -1762,29 +1762,29 @@ LABEL_25:
                 }
 
                 v83 = objc_opt_class();
-                v84 = [v4 layer];
-                sub_100013F00(v83, v84);
-                v79 = v85 = v4;
+                layer3 = [renderableCopy layer];
+                sub_100013F00(v83, layer3);
+                queueForConcurrentlyDrawingChildrenIntoLayersIfSafe = v85 = renderableCopy;
 
-                [v79 setOpaque:0];
-                [v79 setPresentsWithTransaction:0];
-                [v79 setAllowsNextDrawableTimeout:0];
-                [v79 setMaximumDrawableCount:3];
-                [v79 setDevice:v81];
-                [v79 setPixelFormat:v82];
-                [v79 setColorspace:0];
-                v86 = [v79 nextDrawable];
+                [queueForConcurrentlyDrawingChildrenIntoLayersIfSafe setOpaque:0];
+                [queueForConcurrentlyDrawingChildrenIntoLayersIfSafe setPresentsWithTransaction:0];
+                [queueForConcurrentlyDrawingChildrenIntoLayersIfSafe setAllowsNextDrawableTimeout:0];
+                [queueForConcurrentlyDrawingChildrenIntoLayersIfSafe setMaximumDrawableCount:3];
+                [queueForConcurrentlyDrawingChildrenIntoLayersIfSafe setDevice:v81];
+                [queueForConcurrentlyDrawingChildrenIntoLayersIfSafe setPixelFormat:v82];
+                [queueForConcurrentlyDrawingChildrenIntoLayersIfSafe setColorspace:0];
+                nextDrawable = [queueForConcurrentlyDrawingChildrenIntoLayersIfSafe nextDrawable];
                 v87 = [CRLBrushStrokeDirectMetalRenderingContext alloc];
                 [v85 frame];
                 v89 = v88;
                 v91 = v90;
                 v93 = v92;
                 v95 = v94;
-                v96 = [(CRLCanvasRep *)self canvas];
-                [v96 contentsScale];
+                canvas4 = [(CRLCanvasRep *)self canvas];
+                [canvas4 contentsScale];
                 v155 = v156;
                 v97 = *&v81;
-                v99 = [(CRLBrushStrokeDirectMetalRenderingContext *)v87 initWithMetalDrawable:v86 frame:&v155 transform:0 contentsScale:v81 destinationColorSpaceOverride:v89 metalDeviceOverride:v91, v93, v95, v98];
+                v99 = [(CRLBrushStrokeDirectMetalRenderingContext *)v87 initWithMetalDrawable:nextDrawable frame:&v155 transform:0 contentsScale:v81 destinationColorSpaceOverride:v89 metalDeviceOverride:v91, v93, v95, v98];
 
                 v100 = v136;
                 v101 = tx;
@@ -1828,76 +1828,76 @@ LABEL_25:
         goto LABEL_83;
       }
 
-      v55 = [(CRLCanvasRep *)self canvas];
-      [v55 viewScale];
+      canvas5 = [(CRLCanvasRep *)self canvas];
+      [canvas5 viewScale];
       v57 = v56;
 
       if ([(CRLShapeRep *)self p_canApplyFillToRenderable])
       {
-        v58 = [(CRLShapeRep *)self shapeLayout];
-        v59 = [v58 fill];
+        shapeLayout5 = [(CRLShapeRep *)self shapeLayout];
+        fill = [shapeLayout5 fill];
 
-        if (v59)
+        if (fill)
         {
-          v60 = [(CRLShapeRep *)self shapeLayout];
-          v61 = [v60 fill];
-          [v61 applyToRenderable:v4 withScale:v57];
+          shapeLayout6 = [(CRLShapeRep *)self shapeLayout];
+          fill2 = [shapeLayout6 fill];
+          [fill2 applyToRenderable:renderableCopy withScale:v57];
         }
 
         else
         {
-          [v4 setContents:0];
-          [v4 setBackgroundColor:0];
+          [renderableCopy setContents:0];
+          [renderableCopy setBackgroundColor:0];
         }
       }
 
       if ([(CRLShapeRep *)self p_canApplyStrokeToRenderable])
       {
-        v65 = [(CRLCanvasRep *)self layout];
-        v26 = [v65 stroke];
+        layout2 = [(CRLCanvasRep *)self layout];
+        stroke2 = [layout2 stroke];
 
-        if (v26)
+        if (stroke2)
         {
-          v66 = [(CRLCanvasRep *)self canvas];
-          [v66 contentsScale];
+          canvas6 = [(CRLCanvasRep *)self canvas];
+          [canvas6 contentsScale];
           v68 = v57 * v67;
 
           v156.a = 0.0;
           v156.b = 0.0;
           v155.a = 0.0;
           v155.b = 0.0;
-          v69 = [(CRLShapeRep *)self shapeLayout];
+          shapeLayout7 = [(CRLShapeRep *)self shapeLayout];
           v141 = 0;
           v142 = 0;
-          [v69 aliasPathForScale:&v142 adjustedStroke:&v141 adjustedPath:&v156 startDelta:&v155 endDelta:v68];
+          [shapeLayout7 aliasPathForScale:&v142 adjustedStroke:&v141 adjustedPath:&v156 startDelta:&v155 endDelta:v68];
           v70 = v142;
           v71 = v141;
 
-          [v70 applyToRepRenderable:v4 withScale:v57];
+          [v70 applyToRepRenderable:renderableCopy withScale:v57];
         }
 
         else
         {
-          [v4 setBorderColor:0];
-          [v4 setBorderWidth:0.0];
+          [renderableCopy setBorderColor:0];
+          [renderableCopy setBorderWidth:0.0];
         }
 
 LABEL_83:
       }
     }
 
-    v107 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v108 = [v107 freehandDrawingToolkit];
+    interactiveCanvasController3 = [(CRLCanvasRep *)self interactiveCanvasController];
+    freehandDrawingToolkit = [interactiveCanvasController3 freehandDrawingToolkit];
 
-    v109 = [(CRLShapeRep *)self shapeInfo];
-    v110 = [v109 id];
-    v111 = [v108 wantsToAnimateForObjectUUID:v110 animation:@"CRLFreehandDrawingToolkitAnimationNameOutlineFill"];
+    shapeInfo = [(CRLShapeRep *)self shapeInfo];
+    v110 = [shapeInfo id];
+    v111 = [freehandDrawingToolkit wantsToAnimateForObjectUUID:v110 animation:@"CRLFreehandDrawingToolkitAnimationNameOutlineFill"];
 
-    v112 = [(CRLShapeRep *)self shapeInfo];
-    v113 = [v112 id];
-    v114 = [v108 wantsToAnimateForObjectUUID:v113 animation:@"CRLFreehandDrawingToolkitAnimationNameFloodFill"];
+    shapeInfo2 = [(CRLShapeRep *)self shapeInfo];
+    v113 = [shapeInfo2 id];
+    v114 = [freehandDrawingToolkit wantsToAnimateForObjectUUID:v113 animation:@"CRLFreehandDrawingToolkitAnimationNameFloodFill"];
 
-    v4 = v140;
+    renderableCopy = v140;
     if ((v111 & 1) == 0 && !v114)
     {
 LABEL_103:
@@ -1912,9 +1912,9 @@ LABEL_103:
     LODWORD(v117) = 0.25;
     LODWORD(v118) = 1.0;
     v138 = [CAMediaTimingFunction functionWithControlPoints:v115];
-    if ((v139 | v20))
+    if ((v139 | directlyManagesLayerContent))
     {
-      if (!v20)
+      if (!directlyManagesLayerContent)
       {
         if (!v139)
         {
@@ -1932,8 +1932,8 @@ LABEL_103:
 LABEL_93:
         v129 = 1;
 LABEL_94:
-        v130 = [(CRLShapeRep *)self shapeInfo];
-        v131 = [v130 id];
+        shapeInfo3 = [(CRLShapeRep *)self shapeInfo];
+        v131 = [shapeInfo3 id];
         if (v111)
         {
           v132 = @"CRLFreehandDrawingToolkitAnimationNameOutlineFill";
@@ -1944,12 +1944,12 @@ LABEL_94:
           v132 = @"CRLFreehandDrawingToolkitAnimationNameFloodFill";
         }
 
-        v133 = [v108 animationCompletionHandlerForObjectUUID:v131 animation:v132];
+        v133 = [freehandDrawingToolkit animationCompletionHandlerForObjectUUID:v131 animation:v132];
 
         if (v120 && v129)
         {
           +[CATransaction begin];
-          v4 = v140;
+          renderableCopy = v140;
           [v140 addAnimation:v120 forKey:v119];
           [CATransaction setCompletionBlock:v133];
           +[CATransaction commit];
@@ -1957,7 +1957,7 @@ LABEL_94:
 
         else
         {
-          v4 = v140;
+          renderableCopy = v140;
           if (v133)
           {
             v133[2](v133);
@@ -1971,8 +1971,8 @@ LABEL_94:
       v120 = [CABasicAnimation animationWithKeyPath:@"backgroundColor"];
       [v120 setDuration:0.2];
       [v120 setTimingFunction:v138];
-      v121 = [v140 presentationRenderable];
-      v122 = [v121 backgroundColor];
+      presentationRenderable = [v140 presentationRenderable];
+      backgroundColor = [presentationRenderable backgroundColor];
       v123 = v120;
     }
 
@@ -1982,8 +1982,8 @@ LABEL_94:
       if (v111)
       {
         v125 = objc_opt_class();
-        v126 = [v108 currentTool];
-        v127 = sub_100013F00(v125, v126);
+        currentTool = [freehandDrawingToolkit currentTool];
+        v127 = sub_100013F00(v125, currentTool);
 
         [v127 actualOpacityValueForOutlineFills];
         v124 = v128;
@@ -1993,12 +1993,12 @@ LABEL_94:
       v120 = [CABasicAnimation animationWithKeyPath:@"opacity"];
       [v120 setDuration:0.2];
       [v120 setTimingFunction:v138];
-      v121 = [NSNumber numberWithDouble:v124];
+      presentationRenderable = [NSNumber numberWithDouble:v124];
       v123 = v120;
-      v122 = v121;
+      backgroundColor = presentationRenderable;
     }
 
-    [v123 setFromValue:v122];
+    [v123 setFromValue:backgroundColor];
 
     goto LABEL_93;
   }
@@ -2014,22 +2014,22 @@ LABEL_104:
     return 1;
   }
 
-  v3 = [(CRLCanvasRep *)self canvas];
-  v4 = [v3 canvasController];
-  v5 = [v4 freehandDrawingToolkit];
-  v6 = [v5 isInDrawingMode];
+  canvas = [(CRLCanvasRep *)self canvas];
+  canvasController = [canvas canvasController];
+  freehandDrawingToolkit = [canvasController freehandDrawingToolkit];
+  isInDrawingMode = [freehandDrawingToolkit isInDrawingMode];
 
-  if (!v6)
+  if (!isInDrawingMode)
   {
     return 1;
   }
 
-  v7 = [(CRLShapeRep *)self shapeLayout];
-  v8 = [v7 fill];
-  v9 = v8;
-  if (v8)
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  fill = [shapeLayout fill];
+  v9 = fill;
+  if (fill)
   {
-    v10 = [v8 isClear] ^ 1;
+    v10 = [fill isClear] ^ 1;
   }
 
   else
@@ -2041,11 +2041,11 @@ LABEL_104:
   v11 = 1;
   if (v12 != 0.0 && (v10 & 1) == 0)
   {
-    v13 = [v7 stroke];
-    if ([v13 shouldRender])
+    stroke = [shapeLayout stroke];
+    if ([stroke shouldRender])
     {
-      v14 = [v13 color];
-      [v14 alphaComponent];
+      color = [stroke color];
+      [color alphaComponent];
       v11 = v15 <= 0.0;
     }
   }
@@ -2053,18 +2053,18 @@ LABEL_104:
   return v11;
 }
 
-- (BOOL)p_hitCacheGetCachedValue:(BOOL *)a3 forPoint:(CGPoint)a4 withPrecision:(BOOL)a5
+- (BOOL)p_hitCacheGetCachedValue:(BOOL *)value forPoint:(CGPoint)point withPrecision:(BOOL)precision
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
+  precisionCopy = precision;
+  y = point.y;
+  x = point.x;
   if (![(NSMutableDictionary *)self->mHitTestCache count])
   {
     return 0;
   }
 
   v10 = [NSValue valueWithCGPoint:x, y];
-  v11 = [NSNumber numberWithBool:v5];
+  v11 = [NSNumber numberWithBool:precisionCopy];
   v12 = [CRLPair pairWithFirst:v10 second:v11];
 
   v13 = [(NSMutableDictionary *)self->mHitTestCache objectForKey:v12];
@@ -2072,43 +2072,43 @@ LABEL_104:
   if (v13)
   {
     v15 = v13;
-    *a3 = [v13 BOOLValue];
+    *value = [v13 BOOLValue];
   }
 
   return v14;
 }
 
-- (void)p_hitCacheSetCachedValue:(BOOL)a3 forPoint:(CGPoint)a4 withPrecision:(BOOL)a5
+- (void)p_hitCacheSetCachedValue:(BOOL)value forPoint:(CGPoint)point withPrecision:(BOOL)precision
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = [NSValue valueWithCGPoint:a4.x, a4.y];
-  v9 = [NSNumber numberWithBool:v5];
+  precisionCopy = precision;
+  valueCopy = value;
+  v8 = [NSValue valueWithCGPoint:point.x, point.y];
+  v9 = [NSNumber numberWithBool:precisionCopy];
   v12 = [CRLPair pairWithFirst:v8 second:v9];
 
   mHitTestCache = self->mHitTestCache;
-  v11 = [NSNumber numberWithBool:v6];
+  v11 = [NSNumber numberWithBool:valueCopy];
   [(NSMutableDictionary *)mHitTestCache setObject:v11 forKey:v12];
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  precisionCopy = precision;
+  y = point.y;
+  x = point.x;
   v44 = 0;
-  if (![(CRLShapeRep *)self p_hitCacheGetCachedValue:&v44 forPoint:a4 withPrecision:?])
+  if (![(CRLShapeRep *)self p_hitCacheGetCachedValue:&v44 forPoint:precision withPrecision:?])
   {
-    v9 = [(CRLCanvasRep *)self canvas];
-    v10 = v9;
+    canvas = [(CRLCanvasRep *)self canvas];
+    v10 = canvas;
     v11 = &unk_101466728;
-    if (!v4)
+    if (!precisionCopy)
     {
       v11 = &unk_101466720;
     }
 
     v12 = *v11;
-    [v9 viewScale];
+    [canvas viewScale];
     v14 = v12 / v13;
     [(CRLCanvasRep *)self naturalBounds];
     v47 = CGRectInset(v46, -v14, -v14);
@@ -2122,28 +2122,28 @@ LABEL_40:
       return v8;
     }
 
-    v15 = [(CRLShapeRep *)self shapeLayout];
-    v16 = [v15 path];
-    v17 = [v16 CGPath];
+    shapeLayout = [(CRLShapeRep *)self shapeLayout];
+    path = [shapeLayout path];
+    cGPath = [path CGPath];
 
-    if (!v17)
+    if (!cGPath)
     {
       v8 = 0;
 LABEL_39:
-      [(CRLShapeRep *)self p_hitCacheSetCachedValue:v8 forPoint:v4 withPrecision:x, y];
+      [(CRLShapeRep *)self p_hitCacheSetCachedValue:v8 forPoint:precisionCopy withPrecision:x, y];
 
       goto LABEL_40;
     }
 
     v18 = sub_10050DF80(19, 1.0, 1.0);
     Data = CGBitmapContextGetData(v18);
-    [v15 pathBounds];
+    [shapeLayout pathBounds];
     CGContextTranslateCTM(v18, -v20, -v21);
     CGContextTranslateCTM(v18, -x, -y);
-    if (([v15 pathIsLineSegment] & 1) == 0 && (-[CRLShapeRep shouldHitTestWithFill](self, "shouldHitTestWithFill") || objc_msgSend(v10, "i_shouldIgnoreClickThrough")))
+    if (([shapeLayout pathIsLineSegment] & 1) == 0 && (-[CRLShapeRep shouldHitTestWithFill](self, "shouldHitTestWithFill") || objc_msgSend(v10, "i_shouldIgnoreClickThrough")))
     {
       v31 = +[CRLColor blackColor];
-      [v31 paintPath:v17 inContext:v18];
+      [v31 paintPath:cGPath inContext:v18];
 
       if (*Data)
       {
@@ -2161,10 +2161,10 @@ LABEL_38:
       v22 = 1;
     }
 
-    v23 = [(CRLCanvasRep *)self layout];
-    v24 = [v23 stroke];
+    layout = [(CRLCanvasRep *)self layout];
+    stroke = [layout stroke];
 
-    if ((v22 & 1) == 0 && ![(CRLStroke *)v24 shouldRender])
+    if ((v22 & 1) == 0 && ![(CRLStroke *)stroke shouldRender])
     {
       [(CRLCanvasRep *)self naturalBounds];
       if (v25 >= 1.0)
@@ -2178,27 +2178,27 @@ LABEL_38:
       }
     }
 
-    if (!v24)
+    if (!stroke)
     {
-      v24 = objc_alloc_init(CRLStroke);
+      stroke = objc_alloc_init(CRLStroke);
     }
 
-    [(CRLStroke *)v24 width];
+    [(CRLStroke *)stroke width];
     if (v14 < v27)
     {
       v14 = v27;
     }
 
-    if ([(CRLStroke *)v24 drawsOutsideStrokeBounds])
+    if ([(CRLStroke *)stroke drawsOutsideStrokeBounds])
     {
-      [(CRLStroke *)v24 width];
+      [(CRLStroke *)stroke width];
       if (v28 >= v14)
       {
         goto LABEL_28;
       }
 
       v43 = Data;
-      v29 = [(CRLStroke *)v24 mutableCopy];
+      v29 = [(CRLStroke *)stroke mutableCopy];
       [(CRLStroke *)v29 setWidth:v14];
       v30 = +[CRLColor blackColor];
       [(CRLStroke *)v29 setColor:v30];
@@ -2208,23 +2208,23 @@ LABEL_38:
     {
       v43 = Data;
       v32 = +[CRLColor blackColor];
-      v33 = v17;
-      v34 = [(CRLStroke *)v24 join];
+      v33 = cGPath;
+      join = [(CRLStroke *)stroke join];
       v30 = +[CRLStrokePattern solidPattern];
-      v35 = v34;
-      v17 = v33;
+      v35 = join;
+      cGPath = v33;
       v29 = [CRLStroke strokeWithColor:v32 width:1 cap:v35 join:v30 pattern:v14];
 
-      v24 = v32;
+      stroke = v32;
     }
 
-    v24 = v29;
+    stroke = v29;
     Data = v43;
 LABEL_28:
     v8 = 1;
-    [(CRLStroke *)v24 paintPath:v17 wantsInteriorStroke:0 inContext:v18 useFastDrawing:1 parameterized:0 shouldReverseDrawOrder:0];
+    [(CRLStroke *)stroke paintPath:cGPath wantsInteriorStroke:0 inContext:v18 useFastDrawing:1 parameterized:0 shouldReverseDrawOrder:0];
     v36 = *Data;
-    v37 = [(CRLShapeRep *)self shapeInfo];
+    shapeInfo = [(CRLShapeRep *)self shapeInfo];
     if (v36)
     {
 LABEL_36:
@@ -2233,10 +2233,10 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    if ([v15 pathIsOpen])
+    if ([shapeLayout pathIsOpen])
     {
-      v38 = [v37 headLineEnd];
-      if (v38)
+      headLineEnd = [shapeInfo headLineEnd];
+      if (headLineEnd)
       {
 
 LABEL_34:
@@ -2244,15 +2244,15 @@ LABEL_34:
         CGContextSetStrokeColorWithColor(v18, [v40 CGColor]);
 
         v41 = CGPointZero.y;
-        [(CRLShapeRep *)self i_drawLineEndForHead:1 withDelta:v24 andStroke:v18 inContext:1 useFastDrawing:CGPointZero.x, v41];
-        [(CRLShapeRep *)self i_drawLineEndForHead:0 withDelta:v24 andStroke:v18 inContext:1 useFastDrawing:CGPointZero.x, v41];
+        [(CRLShapeRep *)self i_drawLineEndForHead:1 withDelta:stroke andStroke:v18 inContext:1 useFastDrawing:CGPointZero.x, v41];
+        [(CRLShapeRep *)self i_drawLineEndForHead:0 withDelta:stroke andStroke:v18 inContext:1 useFastDrawing:CGPointZero.x, v41];
         v8 = *Data != 0;
         goto LABEL_36;
       }
 
-      v39 = [v37 tailLineEnd];
+      tailLineEnd = [shapeInfo tailLineEnd];
 
-      if (v39)
+      if (tailLineEnd)
       {
         goto LABEL_34;
       }
@@ -2268,12 +2268,12 @@ LABEL_34:
 
 - (BOOL)shouldExpandHitRegionWhenSmall
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  v3 = [v2 stroke];
+  layout = [(CRLCanvasRep *)self layout];
+  stroke = [layout stroke];
 
-  if (v3)
+  if (stroke)
   {
-    v4 = [v3 shouldRender] ^ 1;
+    v4 = [stroke shouldRender] ^ 1;
   }
 
   else
@@ -2284,16 +2284,16 @@ LABEL_34:
   return v4;
 }
 
-- (double)shortestDistanceToPoint:(CGPoint)a3 countAsHit:(BOOL *)a4
+- (double)shortestDistanceToPoint:(CGPoint)point countAsHit:(BOOL *)hit
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(CRLShapeRep *)self shapeLayout];
-  v9 = [v8 stroke];
+  y = point.y;
+  x = point.x;
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  stroke = [shapeLayout stroke];
 
-  if (v9)
+  if (stroke)
   {
-    [v9 width];
+    [stroke width];
     v11 = v10 * 0.5;
   }
 
@@ -2302,8 +2302,8 @@ LABEL_34:
     v11 = 1.0;
   }
 
-  v12 = [(CRLCanvasRep *)self canvas];
-  [v12 viewScale];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
   v14 = 6.0 / v13;
 
   if (v14 >= v11)
@@ -2311,9 +2311,9 @@ LABEL_34:
     v11 = v14;
   }
 
-  v15 = [(CRLCanvasRep *)self layout];
-  v16 = [v15 geometry];
-  [v16 size];
+  layout = [(CRLCanvasRep *)self layout];
+  geometry = [layout geometry];
+  [geometry size];
   v33.origin.x = sub_10011ECB4();
   v34 = CGRectInset(v33, -v11, -v11);
   v17 = v34.origin.x;
@@ -2329,20 +2329,20 @@ LABEL_34:
   v32.y = y;
   if (CGRectContainsPoint(v35, v32))
   {
-    v21 = [(CRLShapeRep *)self shapeLayout];
-    [v21 pathBounds];
+    shapeLayout2 = [(CRLShapeRep *)self shapeLayout];
+    [shapeLayout2 pathBounds];
     v23 = v22;
 
     v24 = sub_10011F334(x, y, v23);
     v26 = v25;
-    v27 = [(CRLShapeRep *)self shapeLayout];
-    v28 = [v27 path];
-    [v28 distanceToPoint:0 elementIndex:0 tValue:0 threshold:v24 findClosestMatch:{v26, v11}];
+    shapeLayout3 = [(CRLShapeRep *)self shapeLayout];
+    path = [shapeLayout3 path];
+    [path distanceToPoint:0 elementIndex:0 tValue:0 threshold:v24 findClosestMatch:{v26, v11}];
     v30 = v29;
 
-    if (a4 && v30 <= v11)
+    if (hit && v30 <= v11)
     {
-      *a4 = 1;
+      *hit = 1;
     }
   }
 
@@ -2354,14 +2354,14 @@ LABEL_34:
   return v30;
 }
 
-- (BOOL)intersectsUnscaledRect:(CGRect)a3
+- (BOOL)intersectsUnscaledRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CRLShapeRep *)self shapeLayout];
-  [v8 frameInRoot];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  [shapeLayout frameInRoot];
   v27.origin.x = v9;
   v27.origin.y = v10;
   v27.size.width = v11;
@@ -2380,18 +2380,18 @@ LABEL_34:
   mCachedWrapPathInRoot = self->mCachedWrapPathInRoot;
   if (!mCachedWrapPathInRoot)
   {
-    v15 = [(CRLShapeRep *)self shapeLayout];
-    v16 = [v15 i_wrapPath];
-    v17 = [v16 copy];
+    shapeLayout2 = [(CRLShapeRep *)self shapeLayout];
+    i_wrapPath = [shapeLayout2 i_wrapPath];
+    v17 = [i_wrapPath copy];
     v18 = self->mCachedWrapPathInRoot;
     self->mCachedWrapPathInRoot = v17;
 
     v19 = self->mCachedWrapPathInRoot;
-    v20 = [(CRLCanvasRep *)self layout];
-    v21 = v20;
-    if (v20)
+    layout = [(CRLCanvasRep *)self layout];
+    v21 = layout;
+    if (layout)
     {
-      [v20 transformInRoot];
+      [layout transformInRoot];
     }
 
     else
@@ -2409,23 +2409,23 @@ LABEL_34:
   return [(CRLBezierPath *)mCachedWrapPathInRoot intersectsRect:[(CRLShapeRep *)self shouldHitTestWithFill:v23] hasFill:x, y, width, height];
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
   v7.receiver = self;
   v7.super_class = CRLShapeRep;
   [(CRLStyledRep *)&v7 processChangedProperty:?];
-  if (a3 > 0x18 || ((1 << a3) & 0x1E30000) == 0)
+  if (property > 0x18 || ((1 << property) & 0x1E30000) == 0)
   {
     goto LABEL_13;
   }
 
   [(CRLShapeRep *)self setNeedsDisplay];
-  v5 = [(CRLCanvasRep *)self canvas];
-  [v5 canvasInvalidatedForRep:self];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas canvasInvalidatedForRep:self];
 
-  if (a3 > 22)
+  if (property > 22)
   {
-    if (a3 - 23 >= 2)
+    if (property - 23 >= 2)
     {
       goto LABEL_13;
     }
@@ -2433,7 +2433,7 @@ LABEL_34:
     goto LABEL_9;
   }
 
-  switch(a3)
+  switch(property)
   {
     case 0x10uLL:
       self->mIsInvisibleCacheValid = 0;
@@ -2444,7 +2444,7 @@ LABEL_34:
 LABEL_9:
       [(CRLCanvasRep *)self invalidateKnobPositions];
       self->mFrameInUnscaledCanvasIsValid = 0;
-      if (a3 == 21)
+      if (property == 21)
       {
         [(CRLCanvasRep *)self invalidateKnobs];
       }
@@ -2465,15 +2465,15 @@ LABEL_13:
 
 - (CGRect)aliasedAlignmentFrameInLayerFrame
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v4 = [(CRLStyledRep *)self styledLayout];
-  v5 = [(CRLCanvasRep *)self canvas];
-  [v5 contentsScale];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  styledLayout = [(CRLStyledRep *)self styledLayout];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas contentsScale];
   v7 = v6;
-  v8 = [(CRLCanvasRep *)self canvas];
-  [v8 viewScale];
-  [v4 aliasedAlignmentFrameForScale:v7 * v9];
-  [v3 convertUnscaledToBoundsRect:?];
+  canvas2 = [(CRLCanvasRep *)self canvas];
+  [canvas2 viewScale];
+  [styledLayout aliasedAlignmentFrameForScale:v7 * v9];
+  [interactiveCanvasController convertUnscaledToBoundsRect:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -2490,20 +2490,20 @@ LABEL_13:
   return result;
 }
 
-- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)a3
+- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)commands
 {
-  v3 = a3;
+  commandsCopy = commands;
   v9.receiver = self;
   v9.super_class = CRLShapeRep;
   [(CRLCanvasRep *)&v9 dynamicOperationDidBeginWithRealTimeCommands:?];
   if (self->mIsFreehandDrawingShape)
   {
-    v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v6 = [v5 layerHost];
-    v7 = [v6 asiOSCVC];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    layerHost = [interactiveCanvasController layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
 
-    v8 = [v7 smartSelectionManager];
-    [v8 dynamicOperationDidBeginWithRealTimeCommands:v3];
+    smartSelectionManager = [asiOSCVC smartSelectionManager];
+    [smartSelectionManager dynamicOperationDidBeginWithRealTimeCommands:commandsCopy];
   }
 }
 
@@ -2516,12 +2516,12 @@ LABEL_13:
   self->mShouldForceRenderableGeometryUpdate = 1;
   if (self->mIsFreehandDrawingShape)
   {
-    v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v4 = [v3 layerHost];
-    v5 = [v4 asiOSCVC];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    layerHost = [interactiveCanvasController layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
 
-    v6 = [v5 smartSelectionManager];
-    [v6 dynamicOperationDidEnd];
+    smartSelectionManager = [asiOSCVC smartSelectionManager];
+    [smartSelectionManager dynamicOperationDidEnd];
   }
 }
 
@@ -2537,18 +2537,18 @@ LABEL_13:
   }
 
   v7 = objc_opt_class();
-  v8 = [(CRLCanvasRep *)self parentRep];
-  v9 = sub_100014370(v7, v8);
+  parentRep = [(CRLCanvasRep *)self parentRep];
+  v9 = sub_100014370(v7, parentRep);
 
   [v9 beginTrifurcatedRenderForChildRep:self];
   if (self->mIsFreehandDrawingShape)
   {
-    v10 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v11 = [v10 layerHost];
-    v12 = [v11 asiOSCVC];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    layerHost = [interactiveCanvasController layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
 
-    v13 = [v12 smartSelectionManager];
-    [v13 dynamicDragDidBegin];
+    smartSelectionManager = [asiOSCVC smartSelectionManager];
+    [smartSelectionManager dynamicDragDidBegin];
   }
 
   v14.receiver = self;
@@ -2556,14 +2556,14 @@ LABEL_13:
   [(CRLCanvasRep *)&v14 dynamicDragDidBegin];
 }
 
-- (void)dynamicDragDidEndAt:(CGPoint)a3
+- (void)dynamicDragDidEndAt:(CGPoint)at
 {
   v15.receiver = self;
   v15.super_class = CRLShapeRep;
-  [(CRLCanvasRep *)&v15 dynamicDragDidEndAt:a3.x, a3.y];
+  [(CRLCanvasRep *)&v15 dynamicDragDidEndAt:at.x, at.y];
   v4 = objc_opt_class();
-  v5 = [(CRLCanvasRep *)self parentRep];
-  v6 = sub_100014370(v4, v5);
+  parentRep = [(CRLCanvasRep *)self parentRep];
+  v6 = sub_100014370(v4, parentRep);
 
   [v6 endTrifurcatedRenderForChildRep:self];
   if (![(CRLShapeRep *)self directlyManagesLayerContent])
@@ -2571,12 +2571,12 @@ LABEL_13:
     [(CRLShapeRep *)self aliasedAlignmentFrameInLayerFrame];
     if (!sub_10011EE4C(self->mOriginalAliasedAlignmentFrameInLayerFrame.origin.x, self->mOriginalAliasedAlignmentFrameInLayerFrame.origin.y, self->mOriginalAliasedAlignmentFrameInLayerFrame.size.width, self->mOriginalAliasedAlignmentFrameInLayerFrame.size.height, v7, v8, v9, v10))
     {
-      v11 = [(CRLCanvasRep *)self interactiveCanvasController];
-      v12 = [v11 renderableForRep:self];
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      v12 = [interactiveCanvasController renderableForRep:self];
 
-      v13 = [(CRLCanvasRep *)self interactiveCanvasController];
-      v14 = [v12 layer];
-      [v13 setNeedsDisplayOnLayer:v14];
+      interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+      layer = [v12 layer];
+      [interactiveCanvasController2 setNeedsDisplayOnLayer:layer];
     }
   }
 }
@@ -2587,17 +2587,17 @@ LABEL_13:
   y = CGRectNull.origin.y;
   width = CGRectNull.size.width;
   height = CGRectNull.size.height;
-  v7 = [(CRLShapeRep *)self shapeLayout];
-  v8 = [v7 pathIsLineSegment];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  pathIsLineSegment = [shapeLayout pathIsLineSegment];
 
-  if (v8)
+  if (pathIsLineSegment)
   {
-    v9 = [(CRLShapeRep *)self shapeLayout];
-    [v9 headPoint];
+    shapeLayout2 = [(CRLShapeRep *)self shapeLayout];
+    [shapeLayout2 headPoint];
     v11 = v10;
     v13 = v12;
-    v14 = [(CRLShapeRep *)self shapeLayout];
-    [v14 tailPoint];
+    shapeLayout3 = [(CRLShapeRep *)self shapeLayout];
+    [shapeLayout3 tailPoint];
     v16 = v15;
     v18 = v17;
 
@@ -2631,13 +2631,13 @@ LABEL_13:
 
   v11 = v2;
   v12 = v3;
-  v6 = [(CRLShapeRep *)self shapeLayout];
-  if ([v6 pathIsLineSegment])
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  if ([shapeLayout pathIsLineSegment])
   {
-    v7 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v8 = [v7 usesAlternateDrawableSelectionHighlight];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    usesAlternateDrawableSelectionHighlight = [interactiveCanvasController usesAlternateDrawableSelectionHighlight];
 
-    if (!v8)
+    if (!usesAlternateDrawableSelectionHighlight)
     {
       return 0;
     }
@@ -2647,9 +2647,9 @@ LABEL_13:
   {
   }
 
-  v9 = [(CRLShapeRep *)self p_pathEditor];
+  p_pathEditor = [(CRLShapeRep *)self p_pathEditor];
 
-  if (v9)
+  if (p_pathEditor)
   {
     return 0;
   }
@@ -2668,10 +2668,10 @@ LABEL_13:
 
   v9 = v2;
   v10 = v3;
-  v6 = [(CRLShapeRep *)self shapeLayout];
-  v7 = [v6 pathIsLineSegment];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  pathIsLineSegment = [shapeLayout pathIsLineSegment];
 
-  if (v7)
+  if (pathIsLineSegment)
   {
     return 1;
   }
@@ -2685,19 +2685,19 @@ LABEL_13:
 {
   v7.receiver = self;
   v7.super_class = CRLShapeRep;
-  v3 = [(CRLCanvasRep *)&v7 shouldIgnoreICCSuppressSelectionKnobs];
-  v4 = [(CRLShapeRep *)self shapeLayout];
-  v5 = [v4 pathIsLineSegment];
+  shouldIgnoreICCSuppressSelectionKnobs = [(CRLCanvasRep *)&v7 shouldIgnoreICCSuppressSelectionKnobs];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  pathIsLineSegment = [shapeLayout pathIsLineSegment];
 
-  return (v5 | v3) & 1;
+  return (pathIsLineSegment | shouldIgnoreICCSuppressSelectionKnobs) & 1;
 }
 
 - (BOOL)shouldHideSelectionHighlightDueToRectangularPath
 {
-  v3 = [(CRLShapeRep *)self shapeInfo];
-  v4 = [v3 supportsResize];
+  shapeInfo = [(CRLShapeRep *)self shapeInfo];
+  supportsResize = [shapeInfo supportsResize];
 
-  if (!v4 || [(CRLShapeRep *)self isInvisible])
+  if (!supportsResize || [(CRLShapeRep *)self isInvisible])
   {
     return 0;
   }
@@ -2709,33 +2709,33 @@ LABEL_13:
 
 - (id)pathSourceForSelectionHighlightBehavior
 {
-  v2 = [(CRLShapeRep *)self shapeLayout];
-  v3 = [v2 pathSource];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  pathSource = [shapeLayout pathSource];
 
-  return v3;
+  return pathSource;
 }
 
 - (CGPath)newHighlightPathInScaledSpace
 {
-  v3 = [(CRLShapeRep *)self i_targetsDropsToStroke];
-  v4 = [(CRLShapeRep *)self shapeLayout];
-  v5 = [v4 computeWrapPathClosed:v3 ^ 1];
+  i_targetsDropsToStroke = [(CRLShapeRep *)self i_targetsDropsToStroke];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  v5 = [shapeLayout computeWrapPathClosed:i_targetsDropsToStroke ^ 1];
 
   if (!v5 || [v5 elementCount] <= 1)
   {
-    v6 = [(CRLCanvasRep *)self layout];
-    [v6 boundsForStandardKnobs];
+    layout = [(CRLCanvasRep *)self layout];
+    [layout boundsForStandardKnobs];
     v7 = [CRLBezierPath bezierPathWithRect:?];
 
     v5 = v7;
   }
 
   memset(&transform, 0, sizeof(transform));
-  v8 = [(CRLCanvasRep *)self layout];
-  v9 = v8;
-  if (v8)
+  layout2 = [(CRLCanvasRep *)self layout];
+  v9 = layout2;
+  if (layout2)
   {
-    [v8 transformInRoot];
+    [layout2 transformInRoot];
   }
 
   else
@@ -2743,8 +2743,8 @@ LABEL_13:
     memset(&transform, 0, sizeof(transform));
   }
 
-  v10 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v10 viewScale];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController viewScale];
   v12 = v11;
 
   CGAffineTransformMakeScale(&t2, v12, v12);
@@ -2756,16 +2756,16 @@ LABEL_13:
   return v13;
 }
 
-- (id)repToHighlightForDragInfo:(id)a3 atUnscaledPoint:(CGPoint)a4
+- (id)repToHighlightForDragInfo:(id)info atUnscaledPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  infoCopy = info;
   v8 = objc_opt_class();
-  v9 = [(CRLCanvasRep *)self parentRep];
-  v10 = sub_100014370(v8, v9);
+  parentRep = [(CRLCanvasRep *)self parentRep];
+  v10 = sub_100014370(v8, parentRep);
 
-  if ([v10 wantsToHandleDropForChildWithDragInfo:v7 atUnscaledPoint:{x, y}])
+  if ([v10 wantsToHandleDropForChildWithDragInfo:infoCopy atUnscaledPoint:{x, y}])
   {
     v11 = v10;
   }
@@ -2774,7 +2774,7 @@ LABEL_13:
   {
     v14.receiver = self;
     v14.super_class = CRLShapeRep;
-    v11 = [(CRLCanvasRep *)&v14 repToHighlightForDragInfo:v7 atUnscaledPoint:x, y];
+    v11 = [(CRLCanvasRep *)&v14 repToHighlightForDragInfo:infoCopy atUnscaledPoint:x, y];
   }
 
   v12 = v11;
@@ -2782,17 +2782,17 @@ LABEL_13:
   return v12;
 }
 
-- (unint64_t)dragOperationForDragInfo:(id)a3 atUnscaledPoint:(CGPoint)a4
+- (unint64_t)dragOperationForDragInfo:(id)info atUnscaledPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = CRLShapeRep;
-  v8 = [(CRLCanvasRep *)&v13 dragOperationForDragInfo:v7 atUnscaledPoint:x, y];
+  v8 = [(CRLCanvasRep *)&v13 dragOperationForDragInfo:infoCopy atUnscaledPoint:x, y];
   if (![(CRLCanvasRep *)self isLocked])
   {
-    if ([v7 canCreateItemsOfClass:objc_opt_class()] && objc_msgSend(v7, "numberOfDraggingItems") == 1)
+    if ([infoCopy canCreateItemsOfClass:objc_opt_class()] && objc_msgSend(infoCopy, "numberOfDraggingItems") == 1)
     {
       if (![(CRLShapeRep *)self allowsColorDrop])
       {
@@ -2803,14 +2803,14 @@ LABEL_13:
     }
 
     v9 = objc_opt_class();
-    v10 = [(CRLCanvasRep *)self parentRep];
-    v11 = sub_100014370(v9, v10);
+    parentRep = [(CRLCanvasRep *)self parentRep];
+    v11 = sub_100014370(v9, parentRep);
 
-    LODWORD(v10) = [v11 wantsToHandleDropForChildWithDragInfo:v7 atUnscaledPoint:{x, y}];
-    if (v10)
+    LODWORD(parentRep) = [v11 wantsToHandleDropForChildWithDragInfo:infoCopy atUnscaledPoint:{x, y}];
+    if (parentRep)
     {
 LABEL_7:
-      v8 = [v7 dragOperationMask] & 1;
+      v8 = [infoCopy dragOperationMask] & 1;
     }
   }
 
@@ -2821,11 +2821,11 @@ LABEL_8:
 
 - (BOOL)i_targetsDropsToStroke
 {
-  v2 = [(CRLShapeRep *)self shapeLayout];
-  if ([v2 pathIsOpen])
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  if ([shapeLayout pathIsOpen])
   {
-    v3 = [v2 fill];
-    v4 = v3 == 0;
+    fill = [shapeLayout fill];
+    v4 = fill == 0;
   }
 
   else
@@ -2836,41 +2836,41 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)handleDragOperation:(unint64_t)a3 withDragInfo:(id)a4 atUnscaledPoint:(CGPoint)a5
+- (BOOL)handleDragOperation:(unint64_t)operation withDragInfo:(id)info atUnscaledPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
+  y = point.y;
+  x = point.x;
+  infoCopy = info;
   v10 = objc_opt_class();
-  v11 = [(CRLCanvasRep *)self parentRep];
-  v12 = sub_100014370(v10, v11);
+  parentRep = [(CRLCanvasRep *)self parentRep];
+  v12 = sub_100014370(v10, parentRep);
 
-  if ([v12 wantsToHandleDropForChildWithDragInfo:v9 atUnscaledPoint:{x, y}])
+  if ([v12 wantsToHandleDropForChildWithDragInfo:infoCopy atUnscaledPoint:{x, y}])
   {
-    v13 = [v12 handleDragOperation:a3 withDragInfo:v9 atUnscaledPoint:{x, y}];
+    v13 = [v12 handleDragOperation:operation withDragInfo:infoCopy atUnscaledPoint:{x, y}];
   }
 
   else
   {
-    v14 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v15 = [v14 editingCoordinator];
-    [v15 suspendCollaborationWithReason:@"CRLShapeDragAndDrop"];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    editingCoordinator = [interactiveCanvasController editingCoordinator];
+    [editingCoordinator suspendCollaborationWithReason:@"CRLShapeDragAndDrop"];
 
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1001994C8;
     v18[3] = &unk_101843870;
     v18[4] = self;
-    v16 = [v9 createItemsOfClass:objc_opt_class() completion:v18];
+    v16 = [infoCopy createItemsOfClass:objc_opt_class() completion:v18];
     v13 = 1;
   }
 
   return v13;
 }
 
-- (void)p_forDragAndDropSetColor:(id)a3
+- (void)p_forDragAndDropSetColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -2900,33 +2900,33 @@ LABEL_8:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:1686 isFatal:0 description:"This operation must only be performed on the main thread."];
   }
 
-  if (v4)
+  if (colorCopy)
   {
     if ([(CRLShapeRep *)self i_targetsDropsToStroke])
     {
-      v8 = [(CRLShapeRep *)self shapeLayout];
-      v9 = [v8 stroke];
-      v10 = [v9 mutableCopy];
+      shapeLayout = [(CRLShapeRep *)self shapeLayout];
+      stroke = [shapeLayout stroke];
+      shapeInfo2 = [stroke mutableCopy];
 
-      [v10 setColor:v4];
+      [shapeInfo2 setColor:colorCopy];
       v11 = [_TtC8Freeform19CRLCommandSetStroke alloc];
-      v12 = [(CRLShapeRep *)self shapeInfo];
-      v13 = [(CRLCommandSetStroke *)v11 initWithStyledItem:v12 stroke:v10];
+      shapeInfo = [(CRLShapeRep *)self shapeInfo];
+      v13 = [(CRLCommandSetStroke *)v11 initWithStyledItem:shapeInfo stroke:shapeInfo2];
     }
 
     else
     {
       v17 = [_TtC8Freeform17CRLCommandSetFill alloc];
-      v10 = [(CRLShapeRep *)self shapeInfo];
-      v12 = [CRLColorFill colorWithColor:v4];
-      v13 = [(CRLCommandSetFill *)v17 initWithShapeItem:v10 fill:v12];
+      shapeInfo2 = [(CRLShapeRep *)self shapeInfo];
+      shapeInfo = [CRLColorFill colorWithColor:colorCopy];
+      v13 = [(CRLCommandSetFill *)v17 initWithShapeItem:shapeInfo2 fill:shapeInfo];
     }
 
     v15 = v13;
 
-    v16 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v18 = [v16 commandController];
-    [v18 enqueueCommand:v15];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    commandController = [interactiveCanvasController commandController];
+    [commandController enqueueCommand:v15];
   }
 
   else
@@ -2954,16 +2954,16 @@ LABEL_8:
     }
 
     v15 = [NSString stringWithUTF8String:"[CRLShapeRep p_forDragAndDropSetColor:]"];
-    v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLShapeRep.m"];
-    [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:1701 isFatal:0 description:"Unable to drop nil color"];
+    interactiveCanvasController = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLShapeRep.m"];
+    [CRLAssertionHandler handleFailureInFunction:v15 file:interactiveCanvasController lineNumber:1701 isFatal:0 description:"Unable to drop nil color"];
   }
 }
 
 - (BOOL)canBeUsedForImageMask
 {
-  v3 = [(CRLShapeRep *)self shapeLayout];
-  v4 = [v3 path];
-  [v4 bounds];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  path = [shapeLayout path];
+  [path bounds];
   v6 = v5;
   v8 = v7;
 
@@ -2972,17 +2972,17 @@ LABEL_8:
     return 0;
   }
 
-  v10 = [(CRLCanvasRep *)self info];
-  v11 = [v10 geometry];
-  if ([v11 widthValid])
+  info = [(CRLCanvasRep *)self info];
+  geometry = [info geometry];
+  if ([geometry widthValid])
   {
-    v12 = [(CRLCanvasRep *)self info];
-    v13 = [v12 geometry];
-    if ([v13 heightValid] && !-[CRLCanvasRep isPlaceholder](self, "isPlaceholder"))
+    info2 = [(CRLCanvasRep *)self info];
+    geometry2 = [info2 geometry];
+    if ([geometry2 heightValid] && !-[CRLCanvasRep isPlaceholder](self, "isPlaceholder"))
     {
-      v14 = [(CRLShapeRep *)self shapeLayout];
-      v15 = [v14 path];
-      v16 = (v8 > 0.0) & ~[v15 isLineSegment];
+      shapeLayout2 = [(CRLShapeRep *)self shapeLayout];
+      path2 = [shapeLayout2 path];
+      v16 = (v8 > 0.0) & ~[path2 isLineSegment];
       if (v6 > 0.0)
       {
         v9 = v16;
@@ -3012,40 +3012,40 @@ LABEL_8:
 {
   v7.receiver = self;
   v7.super_class = CRLShapeRep;
-  v3 = [(CRLCanvasRep *)&v7 shouldShowKnobs];
+  shouldShowKnobs = [(CRLCanvasRep *)&v7 shouldShowKnobs];
   if (self->mIsFreehandDrawingShape)
   {
-    v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v5 = [v4 freehandDrawingToolkit];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    freehandDrawingToolkit = [interactiveCanvasController freehandDrawingToolkit];
 
-    if ([v5 isInDrawingMode])
+    if ([freehandDrawingToolkit isInDrawingMode])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(shouldShowKnobs) = 0;
     }
 
     else
     {
-      v3 &= ![(CRLShapeRep *)self i_isCurrentlyBeingFreehandDrawn];
+      shouldShowKnobs &= ![(CRLShapeRep *)self i_isCurrentlyBeingFreehandDrawn];
     }
   }
 
-  return v3;
+  return shouldShowKnobs;
 }
 
 - (unint64_t)enabledKnobMask
 {
-  v3 = [(CRLShapeRep *)self shapeLayout];
-  v4 = [v3 pathIsLineSegment];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  pathIsLineSegment = [shapeLayout pathIsLineSegment];
 
-  if (v4)
+  if (pathIsLineSegment)
   {
     return 3072;
   }
 
-  v6 = [(CRLShapeRep *)self shapeInfo];
-  v7 = [v6 supportsResize];
+  shapeInfo = [(CRLShapeRep *)self shapeInfo];
+  supportsResize = [shapeInfo supportsResize];
 
-  if (!v7)
+  if (!supportsResize)
   {
     return 0;
   }
@@ -3058,20 +3058,20 @@ LABEL_8:
 - (BOOL)p_parentFreehandDrawingIsSelected
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v5 = [v4 editorController];
-  v6 = [v5 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
+  v6 = [editorController mostSpecificCurrentEditorOfClass:objc_opt_class()];
   v7 = sub_100014370(v3, v6);
 
   v8 = objc_opt_class();
-  v9 = [(CRLCanvasRep *)self parentRep];
-  v10 = [v9 info];
-  v11 = sub_100014370(v8, v10);
+  parentRep = [(CRLCanvasRep *)self parentRep];
+  info = [parentRep info];
+  v11 = sub_100014370(v8, info);
 
   if (v11)
   {
-    v12 = [v7 boardItems];
-    v13 = [v12 containsObject:v11];
+    boardItems = [v7 boardItems];
+    v13 = [boardItems containsObject:v11];
   }
 
   else
@@ -3082,34 +3082,34 @@ LABEL_8:
   return v13;
 }
 
-- (void)addSelectionKnobsToArray:(id)a3
+- (void)addSelectionKnobsToArray:(id)array
 {
-  v4 = a3;
-  v5 = [(CRLShapeRep *)self p_pathEditor];
-  v6 = v5;
-  if (v5 && [v5 canAddKnobsForRep:self])
+  arrayCopy = array;
+  p_pathEditor = [(CRLShapeRep *)self p_pathEditor];
+  v6 = p_pathEditor;
+  if (p_pathEditor && [p_pathEditor canAddKnobsForRep:self])
   {
-    [v6 addKnobsForRep:self toArray:v4];
+    [v6 addKnobsForRep:self toArray:arrayCopy];
   }
 
   else
   {
-    v7 = [(CRLShapeRep *)self shouldShowSmartShapeKnobs];
-    v8 = [(CRLShapeRep *)self shapeLayout];
-    v9 = v8;
-    if (v7)
+    shouldShowSmartShapeKnobs = [(CRLShapeRep *)self shouldShowSmartShapeKnobs];
+    shapeLayout = [(CRLShapeRep *)self shapeLayout];
+    v9 = shapeLayout;
+    if (shouldShowSmartShapeKnobs)
     {
-      v10 = [v8 numberOfControlKnobs];
-      if (v10)
+      numberOfControlKnobs = [shapeLayout numberOfControlKnobs];
+      if (numberOfControlKnobs)
       {
-        v11 = v10;
+        v11 = numberOfControlKnobs;
         v12 = 12;
         do
         {
           v13 = [CRLCanvasKnob alloc];
           [v9 getControlKnobPosition:v12];
           v14 = [CRLCanvasKnob initWithType:v13 position:"initWithType:position:radius:tag:onRep:" radius:0 tag:v12 onRep:self];
-          [v4 addObject:v14];
+          [arrayCopy addObject:v14];
 
           ++v12;
           --v11;
@@ -3122,44 +3122,44 @@ LABEL_8:
     else
     {
       v15 = objc_opt_class();
-      v16 = [v9 pathSource];
-      v17 = sub_100014370(v15, v16);
+      pathSource = [v9 pathSource];
+      v17 = sub_100014370(v15, pathSource);
 
       if (v17)
       {
         v18 = [CRLCanvasKnob alloc];
         [v9 getControlKnobPosition:12];
         v19 = [CRLCanvasKnob initWithType:v18 position:"initWithType:position:radius:tag:onRep:" radius:0 tag:12 onRep:self];
-        [v4 addObject:v19];
+        [arrayCopy addObject:v19];
       }
     }
 
-    v20 = [(CRLShapeRep *)self shapeLayout];
-    v21 = [v20 pathIsLineSegment];
+    shapeLayout2 = [(CRLShapeRep *)self shapeLayout];
+    pathIsLineSegment = [shapeLayout2 pathIsLineSegment];
 
-    if (v21)
+    if (pathIsLineSegment)
     {
-      v22 = [(CRLShapeRep *)self enabledKnobMask];
+      enabledKnobMask = [(CRLShapeRep *)self enabledKnobMask];
       y = CGPointZero.y;
       for (i = 10; i != 12; ++i)
       {
-        if ((sub_100345928(i) & v22) != 0)
+        if ((sub_100345928(i) & enabledKnobMask) != 0)
         {
           v25 = [[CRLCanvasKnob alloc] initWithType:0 position:i radius:self tag:CGPointZero.x onRep:y, 15.0];
-          [v4 addObject:v25];
+          [arrayCopy addObject:v25];
         }
       }
     }
 
     v35.receiver = self;
     v35.super_class = CRLShapeRep;
-    [(CRLCanvasRep *)&v35 addSelectionKnobsToArray:v4];
+    [(CRLCanvasRep *)&v35 addSelectionKnobsToArray:arrayCopy];
     if ([(CRLShapeRep *)self shouldShowAdvancedGradientKnobs])
     {
       v26 = objc_opt_class();
-      v27 = [(CRLShapeRep *)self shapeLayout];
-      v28 = [v27 fill];
-      v29 = sub_100014370(v26, v28);
+      shapeLayout3 = [(CRLShapeRep *)self shapeLayout];
+      fill = [shapeLayout3 fill];
+      v29 = sub_100014370(v26, fill);
 
       v30 = [CRLCanvasKnob alloc];
       if ([v29 gradientType] == 1)
@@ -3174,9 +3174,9 @@ LABEL_8:
 
       v32 = CGPointZero.y;
       v33 = [(CRLCanvasKnob *)v30 initWithType:0 position:v31 radius:self tag:CGPointZero.x onRep:v32, 15.0];
-      [v4 addObject:v33];
+      [arrayCopy addObject:v33];
       v34 = [[CRLCanvasKnob alloc] initWithType:0 position:27 radius:self tag:CGPointZero.x onRep:v32, 15.0];
-      [v4 addObject:v34];
+      [arrayCopy addObject:v34];
     }
   }
 }
@@ -3186,8 +3186,8 @@ LABEL_8:
   [(CRLCanvasRep *)self boundsForStandardKnobs];
   v4 = v3;
   v6 = v5;
-  v7 = [(CRLCanvasRep *)self canvas];
-  [v7 viewScale];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas viewScale];
   v9 = sub_10011F340(v4, v6, v8);
   v11 = v10;
 
@@ -3212,7 +3212,7 @@ LABEL_8:
 
   if ([(CRLCanvasRep *)self isInDynamicOperation])
   {
-    v4 = [(CRLCanvasRep *)self currentKnobTracker];
+    currentKnobTracker = [(CRLCanvasRep *)self currentKnobTracker];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -3223,17 +3223,17 @@ LABEL_8:
   }
 
   v6 = objc_opt_class();
-  v7 = [(CRLShapeRep *)self shapeLayout];
-  v8 = [v7 fill];
-  v9 = sub_100014370(v6, v8);
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  fill = [shapeLayout fill];
+  v9 = sub_100014370(v6, fill);
 
   if (v9 && [v9 isAdvancedGradient] && !-[CRLCanvasRep isLocked](self, "isLocked"))
   {
-    v11 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v12 = [v11 editorController];
-    v13 = [v12 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    editorController = [interactiveCanvasController editorController];
+    v13 = [editorController mostSpecificCurrentEditorOfClass:objc_opt_class()];
 
-    if (![v13 fillInspectorDisclosed] || -[CRLShapeRep isEditingChildRep](self, "isEditingChildRep") || (objc_msgSend(v11, "documentIsSharedReadOnly") & 1) != 0)
+    if (![v13 fillInspectorDisclosed] || -[CRLShapeRep isEditingChildRep](self, "isEditingChildRep") || (objc_msgSend(interactiveCanvasController, "documentIsSharedReadOnly") & 1) != 0)
     {
       v2 = 0;
     }
@@ -3243,8 +3243,8 @@ LABEL_8:
       [(CRLCanvasRep *)self boundsForStandardKnobs];
       v15 = v14;
       v17 = v16;
-      v18 = [(CRLCanvasRep *)self canvas];
-      [v18 viewScale];
+      canvas = [(CRLCanvasRep *)self canvas];
+      [canvas viewScale];
       v20 = sub_10011F340(v15, v17, v19);
       v22 = v21;
 
@@ -3262,37 +3262,37 @@ LABEL_8:
 
 - (BOOL)shouldShowSmartShapeKnobs
 {
-  v3 = [(CRLShapeRep *)self shapeLayout];
-  if ([v3 numberOfControlKnobs])
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  if ([shapeLayout numberOfControlKnobs])
   {
-    v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-    if ([v4 documentIsSharedReadOnly])
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    if ([interactiveCanvasController documentIsSharedReadOnly])
     {
-      v5 = 0;
+      shouldShowAdditionalKnobs = 0;
     }
 
     else
     {
-      v5 = [(CRLShapeRep *)self shouldShowAdditionalKnobs];
+      shouldShowAdditionalKnobs = [(CRLShapeRep *)self shouldShowAdditionalKnobs];
     }
   }
 
   else
   {
-    v5 = 0;
+    shouldShowAdditionalKnobs = 0;
   }
 
-  return v5;
+  return shouldShowAdditionalKnobs;
 }
 
-- (BOOL)canUseSpecializedHitRegionForKnob:(id)a3
+- (BOOL)canUseSpecializedHitRegionForKnob:(id)knob
 {
-  v4 = a3;
-  if ([v4 tag] < 0xC || objc_msgSend(v4, "tag") >= 0x11)
+  knobCopy = knob;
+  if ([knobCopy tag] < 0xC || objc_msgSend(knobCopy, "tag") >= 0x11)
   {
     v7.receiver = self;
     v7.super_class = CRLShapeRep;
-    v5 = [(CRLCanvasRep *)&v7 canUseSpecializedHitRegionForKnob:v4];
+    v5 = [(CRLCanvasRep *)&v7 canUseSpecializedHitRegionForKnob:knobCopy];
   }
 
   else
@@ -3303,13 +3303,13 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)directlyManagesVisibilityOfKnob:(id)a3
+- (BOOL)directlyManagesVisibilityOfKnob:(id)knob
 {
-  v4 = a3;
-  v5 = [(CRLCanvasRep *)self currentKnobTracker];
-  if ([v5 isMemberOfClass:objc_opt_class()] && objc_msgSend(v4, "tag") >= 0x19)
+  knobCopy = knob;
+  currentKnobTracker = [(CRLCanvasRep *)self currentKnobTracker];
+  if ([currentKnobTracker isMemberOfClass:objc_opt_class()] && objc_msgSend(knobCopy, "tag") >= 0x19)
   {
-    v6 = [v4 tag];
+    v6 = [knobCopy tag];
 
     if (v6 < 0x1C)
     {
@@ -3321,11 +3321,11 @@ LABEL_8:
   {
   }
 
-  if ([v4 tag] != 22)
+  if ([knobCopy tag] != 22)
   {
     v9.receiver = self;
     v9.super_class = CRLShapeRep;
-    v7 = [(CRLCanvasRep *)&v9 directlyManagesVisibilityOfKnob:v4];
+    v7 = [(CRLCanvasRep *)&v9 directlyManagesVisibilityOfKnob:knobCopy];
     goto LABEL_9;
   }
 
@@ -3336,29 +3336,29 @@ LABEL_9:
   return v7;
 }
 
-- (void)updatePositionsOfKnobs:(id)a3
+- (void)updatePositionsOfKnobs:(id)knobs
 {
-  v4 = a3;
+  knobsCopy = knobs;
   v88.receiver = self;
   v88.super_class = CRLShapeRep;
-  [(CRLCanvasRep *)&v88 updatePositionsOfKnobs:v4];
-  v5 = [(CRLShapeRep *)self p_pathEditor];
-  v6 = v5;
-  if (v5)
+  [(CRLCanvasRep *)&v88 updatePositionsOfKnobs:knobsCopy];
+  p_pathEditor = [(CRLShapeRep *)self p_pathEditor];
+  v6 = p_pathEditor;
+  if (p_pathEditor)
   {
-    [v5 updatePositionsOfKnobs:v4 forRep:self];
+    [p_pathEditor updatePositionsOfKnobs:knobsCopy forRep:self];
   }
 
-  v7 = [(CRLShapeRep *)self shapeLayout];
-  if ([v7 pathIsLineSegment])
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  if ([shapeLayout pathIsLineSegment])
   {
-    [v7 pathBounds];
+    [shapeLayout pathBounds];
     v9 = v8;
     v84 = 0u;
     v85 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v10 = v4;
+    v10 = knobsCopy;
     v11 = [v10 countByEnumeratingWithState:&v84 objects:v91 count:16];
     if (v11)
     {
@@ -3380,12 +3380,12 @@ LABEL_9:
           {
             if (v16 == 11)
             {
-              [v7 headPoint];
+              [shapeLayout headPoint];
             }
 
             else
             {
-              [v7 tailPoint];
+              [shapeLayout tailPoint];
             }
 
             [v15 setPosition:{sub_10011F31C(v19, v20, v9)}];
@@ -3399,7 +3399,7 @@ LABEL_9:
     }
   }
 
-  if (-[CRLShapeRep shouldShowSmartShapeKnobs](self, "shouldShowSmartShapeKnobs") || (v21 = objc_opt_class(), [v7 pathSource], v22 = objc_claimAutoreleasedReturnValue(), sub_100014370(v21, v22), v23 = objc_claimAutoreleasedReturnValue(), v23, v22, v23))
+  if (-[CRLShapeRep shouldShowSmartShapeKnobs](self, "shouldShowSmartShapeKnobs") || (v21 = objc_opt_class(), [shapeLayout pathSource], v22 = objc_claimAutoreleasedReturnValue(), sub_100014370(v21, v22), v23 = objc_claimAutoreleasedReturnValue(), v23, v22, v23))
   {
     [(CRLCanvasRep *)self trackingBoundsForStandardKnobs];
     v25 = v24;
@@ -3407,7 +3407,7 @@ LABEL_9:
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v26 = v4;
+    v26 = knobsCopy;
     v27 = [v26 countByEnumeratingWithState:&v80 objects:v90 count:16];
     if (v27)
     {
@@ -3425,7 +3425,7 @@ LABEL_9:
           v31 = *(*(&v80 + 1) + 8 * j);
           if ([v31 tag] >= 0xC && objc_msgSend(v31, "tag") <= 0x10)
           {
-            [v7 getControlKnobPosition:{objc_msgSend(v31, "tag")}];
+            [shapeLayout getControlKnobPosition:{objc_msgSend(v31, "tag")}];
             [v31 setPosition:{sub_10011F334(v32, v33, v25)}];
           }
         }
@@ -3440,26 +3440,26 @@ LABEL_9:
   if ([(CRLShapeRep *)self shouldShowAdvancedGradientKnobs])
   {
     v34 = objc_opt_class();
-    v35 = [(CRLShapeRep *)self shapeLayout];
-    v36 = [v35 fill];
-    v37 = sub_100014370(v34, v36);
+    shapeLayout2 = [(CRLShapeRep *)self shapeLayout];
+    fill = [shapeLayout2 fill];
+    v37 = sub_100014370(v34, fill);
 
-    v38 = [(CRLShapeRep *)self shapeLayout];
-    [v38 boundsForStandardKnobs];
+    shapeLayout3 = [(CRLShapeRep *)self shapeLayout];
+    [shapeLayout3 boundsForStandardKnobs];
     v40 = v39;
     v42 = v41;
     v44 = v43;
     v46 = v45;
 
-    v47 = [(CRLShapeRep *)self shapeLayout];
-    v48 = [v47 path];
-    [v37 startPointForPath:v48 andBounds:{v40, v42, v44, v46}];
+    shapeLayout4 = [(CRLShapeRep *)self shapeLayout];
+    path = [shapeLayout4 path];
+    [v37 startPointForPath:path andBounds:{v40, v42, v44, v46}];
     v50 = v49;
     v52 = v51;
 
-    v53 = [(CRLShapeRep *)self shapeLayout];
-    v54 = [v53 path];
-    [v37 endPointForPath:v54 andBounds:{v40, v42, v44, v46}];
+    shapeLayout5 = [(CRLShapeRep *)self shapeLayout];
+    path2 = [shapeLayout5 path];
+    [v37 endPointForPath:path2 andBounds:{v40, v42, v44, v46}];
     v56 = v55;
     v58 = v57;
 
@@ -3467,7 +3467,7 @@ LABEL_9:
     v79 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v59 = v4;
+    v59 = knobsCopy;
     v60 = [v59 countByEnumeratingWithState:&v76 objects:v89 count:16];
     if (v60)
     {
@@ -3518,27 +3518,27 @@ LABEL_9:
   }
 }
 
-- (id)cursorAtPoint:(CGPoint)a3 forKnob:(id)a4 withCursorPlatformObject:(id)a5
+- (id)cursorAtPoint:(CGPoint)point forKnob:(id)knob withCursorPlatformObject:(id)object
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  y = point.y;
+  x = point.x;
+  knobCopy = knob;
+  objectCopy = object;
+  if (knobCopy)
   {
-    if ([v9 tag] >= 0x19 && objc_msgSend(v9, "tag") <= 0x1B)
+    if ([knobCopy tag] >= 0x19 && objc_msgSend(knobCopy, "tag") <= 0x1B)
     {
-      [v9 cursorActiveScaledRect];
-      v11 = [CRLCursor moveCursorWithActiveScaledRect:?];
+      [knobCopy cursorActiveScaledRect];
+      resizeCursor = [CRLCursor moveCursorWithActiveScaledRect:?];
       goto LABEL_8;
     }
 
-    if ([v9 tag] == 10 || objc_msgSend(v9, "tag") == 11)
+    if ([knobCopy tag] == 10 || objc_msgSend(knobCopy, "tag") == 11)
     {
-      v11 = [v9 resizeCursor];
+      resizeCursor = [knobCopy resizeCursor];
 LABEL_8:
-      v12 = v11;
-      if (v11)
+      v12 = resizeCursor;
+      if (resizeCursor)
       {
         goto LABEL_10;
       }
@@ -3547,16 +3547,16 @@ LABEL_8:
 
   v14.receiver = self;
   v14.super_class = CRLShapeRep;
-  v12 = [(CRLStyledRep *)&v14 cursorAtPoint:v9 forKnob:v10 withCursorPlatformObject:x, y];
+  v12 = [(CRLStyledRep *)&v14 cursorAtPoint:knobCopy forKnob:objectCopy withCursorPlatformObject:x, y];
 LABEL_10:
 
   return v12;
 }
 
-- (id)newTrackerForKnob:(id)a3
+- (id)newTrackerForKnob:(id)knob
 {
-  v4 = a3;
-  if (!v4)
+  knobCopy = knob;
+  if (!knobCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -3588,18 +3588,18 @@ LABEL_10:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [(CRLShapeRep *)self p_pathEditor];
+    p_pathEditor = [(CRLShapeRep *)self p_pathEditor];
     v10 = objc_opt_class();
-    v11 = sub_100014370(v10, v4);
+    v11 = sub_100014370(v10, knobCopy);
     v12 = v11;
-    if (v9 && v11)
+    if (p_pathEditor && v11)
     {
-      v13 = [v9 newTrackerForKnob:v11 forRep:self];
+      v13 = [p_pathEditor newTrackerForKnob:v11 forRep:self];
     }
 
     else
     {
-      v14 = [v4 tag];
+      v14 = [knobCopy tag];
       if (v14 - 12 > 4)
       {
         if ((v14 & 0xFFFFFFFFFFFFFFFELL) == 0xA)
@@ -3613,7 +3613,7 @@ LABEL_10:
           {
             v17.receiver = self;
             v17.super_class = CRLShapeRep;
-            v13 = [(CRLCanvasRep *)&v17 newTrackerForKnob:v4];
+            v13 = [(CRLCanvasRep *)&v17 newTrackerForKnob:knobCopy];
             goto LABEL_23;
           }
 
@@ -3626,7 +3626,7 @@ LABEL_10:
         v15 = CRLShapeControlKnobTracker;
       }
 
-      v13 = [[v15 alloc] initWithRep:self knob:v4];
+      v13 = [[v15 alloc] initWithRep:self knob:knobCopy];
     }
 
 LABEL_23:
@@ -3635,7 +3635,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v8 = [[_TtC8Freeform33CRLShapeConnectionLineKnobTracker alloc] initWithRep:self knob:v4];
+  v8 = [[_TtC8Freeform33CRLShapeConnectionLineKnobTracker alloc] initWithRep:self knob:knobCopy];
 LABEL_24:
 
   return v8;
@@ -3643,27 +3643,27 @@ LABEL_24:
 
 - (BOOL)shouldShowInvisiblePathHighlight
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  v4 = [v3 stroke];
-  if (v4)
+  layout = [(CRLCanvasRep *)self layout];
+  stroke = [layout stroke];
+  if (stroke)
   {
-    v5 = [(CRLCanvasRep *)self layout];
-    v6 = [v5 stroke];
-    v7 = [v6 shouldRender];
+    layout2 = [(CRLCanvasRep *)self layout];
+    stroke2 = [layout2 stroke];
+    shouldRender = [stroke2 shouldRender];
   }
 
   else
   {
-    v7 = 0;
+    shouldRender = 0;
   }
 
-  v8 = [(CRLShapeRep *)self shapeLayout];
-  v9 = [v8 fill];
-  if (v9)
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  fill = [shapeLayout fill];
+  if (fill)
   {
-    v10 = [(CRLShapeRep *)self shapeLayout];
-    v11 = [v10 fill];
-    v12 = [v11 isClear] ^ 1;
+    shapeLayout2 = [(CRLShapeRep *)self shapeLayout];
+    fill2 = [shapeLayout2 fill];
+    v12 = [fill2 isClear] ^ 1;
   }
 
   else
@@ -3671,27 +3671,27 @@ LABEL_24:
     v12 = 0;
   }
 
-  v13 = [(CRLShapeRep *)self shapeLayout];
-  v14 = [v13 path];
-  v15 = [v14 isRectangular];
+  shapeLayout3 = [(CRLShapeRep *)self shapeLayout];
+  path = [shapeLayout3 path];
+  isRectangular = [path isRectangular];
 
-  if ((v7 | v12))
+  if ((shouldRender | v12))
   {
     return 0;
   }
 
-  v17 = [(CRLCanvasRep *)self interactiveCanvasController];
-  if (![v17 shouldEverShowPathHighlightOnInvisibleShapes] || v15 && -[CRLShapeRep shouldShowSelectionHighlight](self, "shouldShowSelectionHighlight"))
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  if (![interactiveCanvasController shouldEverShowPathHighlightOnInvisibleShapes] || isRectangular && -[CRLShapeRep shouldShowSelectionHighlight](self, "shouldShowSelectionHighlight"))
   {
-    v16 = 0;
+    selectionIsAppropriateToShowInvisiblePathHighlight = 0;
   }
 
   else
   {
-    v16 = [(CRLShapeRep *)self selectionIsAppropriateToShowInvisiblePathHighlight];
+    selectionIsAppropriateToShowInvisiblePathHighlight = [(CRLShapeRep *)self selectionIsAppropriateToShowInvisiblePathHighlight];
   }
 
-  return v16;
+  return selectionIsAppropriateToShowInvisiblePathHighlight;
 }
 
 - (BOOL)selectionIsAppropriateToShowInvisiblePathHighlight
@@ -3703,8 +3703,8 @@ LABEL_24:
 
   else if ([(CRLCanvasRep *)self isBeingDragged])
   {
-    v4 = [(CRLCanvasRep *)self layout];
-    v3 = [v4 isInGroup] ^ 1;
+    layout = [(CRLCanvasRep *)self layout];
+    v3 = [layout isInGroup] ^ 1;
   }
 
   else
@@ -3726,25 +3726,25 @@ LABEL_24:
   {
     v32.receiver = self;
     v32.super_class = CRLShapeRep;
-    v4 = [(CRLCanvasRep *)&v32 additionalRenderablesOverRenderable];
-    v2 = [v4 mutableCopy];
+    additionalRenderablesOverRenderable = [(CRLCanvasRep *)&v32 additionalRenderablesOverRenderable];
+    v2 = [additionalRenderablesOverRenderable mutableCopy];
 
     if ([(CRLShapeRep *)self shouldShowInvisiblePathHighlight])
     {
       v5 = +[CRLCanvasShapeRenderable renderable];
       [v5 setFillColor:0];
-      v6 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v5 setDelegate:v6];
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      [v5 setDelegate:interactiveCanvasController];
 
       v7 = [CRLColor colorWithRed:0.596078431 green:0.596078431 blue:0.596078431 alpha:0.45];
       [v5 setStrokeColor:{objc_msgSend(v7, "CGColor")}];
 
-      v8 = [(CRLCanvasRep *)self canvas];
-      [v8 viewScale];
+      canvas = [(CRLCanvasRep *)self canvas];
+      [canvas viewScale];
       v10 = v9;
 
-      v11 = [(CRLCanvasRep *)self canvas];
-      [v11 contentsScale];
+      canvas2 = [(CRLCanvasRep *)self canvas];
+      [canvas2 contentsScale];
       v13 = v10 * v12;
 
       v30 = CGPointZero;
@@ -3752,10 +3752,10 @@ LABEL_24:
       v14 = +[CRLColor blackColor];
       v15 = [CRLStroke strokeWithColor:v14 width:1.0];
 
-      v16 = [(CRLShapeRep *)self shapeLayout];
+      shapeLayout = [(CRLShapeRep *)self shapeLayout];
       v28 = 0;
       v29 = 0;
-      [v16 aliasPathForScale:v15 originalStroke:&v29 adjustedStroke:&v28 adjustedPath:&v31 startDelta:&v30 endDelta:v13];
+      [shapeLayout aliasPathForScale:v15 originalStroke:&v29 adjustedStroke:&v28 adjustedPath:&v31 startDelta:&v30 endDelta:v13];
       v17 = v29;
       v18 = v28;
 
@@ -3789,14 +3789,14 @@ LABEL_24:
 {
   if ([(CRLShapeRep *)self p_shouldSkipRenderableRecalculations])
   {
-    v3 = [CRLCanvasRenderable renderablesFromLayers:&__NSArray0__struct];
+    overlayRenderables = [CRLCanvasRenderable renderablesFromLayers:&__NSArray0__struct];
   }
 
   else
   {
     v49.receiver = self;
     v49.super_class = CRLShapeRep;
-    v3 = [(CRLCanvasRep *)&v49 overlayRenderables];
+    overlayRenderables = [(CRLCanvasRep *)&v49 overlayRenderables];
     if ([(CRLShapeRep *)self shouldShowAdvancedGradientKnobs]&& [(CRLCanvasRep *)self isSelectedIgnoringLocking])
     {
       v4 = +[CRLCanvasShapeRenderable renderable];
@@ -3806,26 +3806,26 @@ LABEL_24:
 
       [v4 setLineWidth:1.0];
       v6 = objc_opt_class();
-      v7 = [(CRLShapeRep *)self shapeLayout];
-      v8 = [v7 fill];
-      v9 = sub_100014370(v6, v8);
+      shapeLayout = [(CRLShapeRep *)self shapeLayout];
+      fill = [shapeLayout fill];
+      v9 = sub_100014370(v6, fill);
 
-      v10 = [(CRLShapeRep *)self shapeLayout];
-      [v10 boundsForStandardKnobs];
+      shapeLayout2 = [(CRLShapeRep *)self shapeLayout];
+      [shapeLayout2 boundsForStandardKnobs];
       v12 = v11;
       v14 = v13;
       v16 = v15;
       v18 = v17;
 
-      v19 = [(CRLShapeRep *)self shapeLayout];
-      v20 = [v19 path];
-      [v9 startPointForPath:v20 andBounds:{v12, v14, v16, v18}];
+      shapeLayout3 = [(CRLShapeRep *)self shapeLayout];
+      path = [shapeLayout3 path];
+      [v9 startPointForPath:path andBounds:{v12, v14, v16, v18}];
       v22 = v21;
       v24 = v23;
 
-      v25 = [(CRLShapeRep *)self shapeLayout];
-      v26 = [v25 path];
-      [v9 endPointForPath:v26 andBounds:{v12, v14, v16, v18}];
+      shapeLayout4 = [(CRLShapeRep *)self shapeLayout];
+      path2 = [shapeLayout4 path];
+      [v9 endPointForPath:path2 andBounds:{v12, v14, v16, v18}];
       v28 = v27;
       v30 = v29;
 
@@ -3834,11 +3834,11 @@ LABEL_24:
       v34 = sub_10011F334(v28, v30, v12);
       v36 = v35;
       memset(&m, 0, sizeof(m));
-      v37 = [(CRLCanvasRep *)self layout];
-      v38 = v37;
-      if (v37)
+      layout = [(CRLCanvasRep *)self layout];
+      v38 = layout;
+      if (layout)
       {
-        [v37 transformInRoot];
+        [layout transformInRoot];
       }
 
       else
@@ -3846,8 +3846,8 @@ LABEL_24:
         memset(&m, 0, sizeof(m));
       }
 
-      v39 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v39 viewScale];
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      [interactiveCanvasController viewScale];
       v41 = v40;
 
       CGAffineTransformMakeScale(&t2, v41, v41);
@@ -3858,44 +3858,44 @@ LABEL_24:
       CGPathMoveToPoint(Mutable, &m, v31, v33);
       CGPathAddLineToPoint(Mutable, &m, v34, v36);
       [v4 setPath:Mutable];
-      v43 = [v3 mutableCopy];
+      v43 = [overlayRenderables mutableCopy];
       [v43 insertObject:v4 atIndex:0];
 
       CGPathRelease(Mutable);
-      v3 = v43;
+      overlayRenderables = v43;
     }
   }
 
-  return v3;
+  return overlayRenderables;
 }
 
 - (id)dynamicResizeDidBegin
 {
   v5.receiver = self;
   v5.super_class = CRLShapeRep;
-  v3 = [(CRLCanvasRep *)&v5 dynamicResizeDidBegin];
+  dynamicResizeDidBegin = [(CRLCanvasRep *)&v5 dynamicResizeDidBegin];
   [(CRLShapeRep *)self p_beginDynamicallyResizingOrMovingLineEnd];
 
-  return v3;
+  return dynamicResizeDidBegin;
 }
 
-- (void)dynamicFreeTransformDidBeginWithTracker:(id)a3
+- (void)dynamicFreeTransformDidBeginWithTracker:(id)tracker
 {
   v4.receiver = self;
   v4.super_class = CRLShapeRep;
-  [(CRLCanvasRep *)&v4 dynamicFreeTransformDidBeginWithTracker:a3];
+  [(CRLCanvasRep *)&v4 dynamicFreeTransformDidBeginWithTracker:tracker];
   [(CRLShapeRep *)self p_beginDynamicallyResizingOrMovingLineEnd];
 }
 
-- (id)newCommandToApplyGeometry:(id)a3 toInfo:(id)a4
+- (id)newCommandToApplyGeometry:(id)geometry toInfo:(id)info
 {
-  v6 = a3;
+  geometryCopy = geometry;
   v63.receiver = self;
   v63.super_class = CRLShapeRep;
-  v7 = a4;
-  v8 = [(CRLCanvasRep *)&v63 newCommandToApplyGeometry:v6 toInfo:v7];
+  infoCopy = info;
+  v8 = [(CRLCanvasRep *)&v63 newCommandToApplyGeometry:geometryCopy toInfo:infoCopy];
   v9 = objc_opt_class();
-  v10 = sub_100013F00(v9, v7);
+  v10 = sub_100013F00(v9, infoCopy);
 
   if (!v10)
   {
@@ -3931,42 +3931,42 @@ LABEL_24:
   if ([(CRLShapeRep *)self shouldSetPathSourceWhenChangingInfoGeometry])
   {
     v15 = [_TtC8Freeform23CRLCommandSetPathSource alloc];
-    v16 = [(CRLShapeRep *)self shapeLayout];
-    v17 = [v16 pathSource];
-    v18 = [(CRLCommandSetPathSource *)v15 initWithShapeItem:v10 pathSource:v17];
+    shapeLayout = [(CRLShapeRep *)self shapeLayout];
+    pathSource = [shapeLayout pathSource];
+    v18 = [(CRLCommandSetPathSource *)v15 initWithShapeItem:v10 pathSource:pathSource];
 
     [(CRLCommandGroup *)v14 addCommand:v18];
   }
 
-  v19 = [(CRLShapeRep *)self shapeLayout];
-  v20 = [v19 i_isInsideResizingFreehandDrawing];
+  shapeLayout2 = [(CRLShapeRep *)self shapeLayout];
+  i_isInsideResizingFreehandDrawing = [shapeLayout2 i_isInsideResizingFreehandDrawing];
 
-  if (v20)
+  if (i_isInsideResizingFreehandDrawing)
   {
-    v21 = [(CRLCanvasRep *)self layout];
-    v22 = [v21 stroke];
-    v23 = [v22 mutableCopy];
+    layout = [(CRLCanvasRep *)self layout];
+    stroke = [layout stroke];
+    v23 = [stroke mutableCopy];
     v24 = objc_opt_class();
     v30 = sub_1003038E0(v23, v24, 1, v25, v26, v27, v28, v29, &OBJC_PROTOCOL___CRLMutableStroke);
 
     v31 = [_TtC8Freeform19CRLCommandSetStroke alloc];
-    v32 = [(CRLShapeRep *)self shapeInfo];
-    v33 = [(CRLCommandSetStroke *)v31 initWithStyledItem:v32 stroke:v30];
+    shapeInfo = [(CRLShapeRep *)self shapeInfo];
+    v33 = [(CRLCommandSetStroke *)v31 initWithStyledItem:shapeInfo stroke:v30];
 
     [(CRLCommandGroup *)v14 addCommand:v33];
   }
 
   v34 = objc_opt_class();
-  v35 = [(CRLShapeRep *)self shapeInfo];
-  v36 = sub_100014370(v34, v35);
+  shapeInfo2 = [(CRLShapeRep *)self shapeInfo];
+  v36 = sub_100014370(v34, shapeInfo2);
 
   if (v36)
   {
-    v37 = [v36 pencilKitStrokePathCompactData];
-    if (v20 && ([v36 isTreatedAsFillForFreehandDrawing] & 1) == 0)
+    pencilKitStrokePathCompactData = [v36 pencilKitStrokePathCompactData];
+    if (i_isInsideResizingFreehandDrawing && ([v36 isTreatedAsFillForFreehandDrawing] & 1) == 0)
     {
-      v38 = [v36 geometry];
-      [v38 size];
+      geometry = [v36 geometry];
+      [geometry size];
       v40 = v39;
       v42 = v41;
 
@@ -3999,7 +3999,7 @@ LABEL_24:
         [CRLAssertionHandler handleFailureInFunction:v44 file:v45 lineNumber:2185 isFatal:0 description:"CRLFreehandDrawingShapeItem has invalid geometry size."];
       }
 
-      [v6 size];
+      [geometryCopy size];
       if (v40 != v46 || v42 != v47)
       {
         if (v40 <= 0.0)
@@ -4059,48 +4059,48 @@ LABEL_24:
           v54 = v51;
         }
 
-        [v37 renderScaleX];
+        [pencilKitStrokePathCompactData renderScaleX];
         v56 = v53 * v55;
         *&v56 = v56;
-        [v37 setRenderScaleX:v56];
-        [v37 renderScaleY];
+        [pencilKitStrokePathCompactData setRenderScaleX:v56];
+        [pencilKitStrokePathCompactData renderScaleY];
         v58 = v54 * v57;
         *&v58 = v58;
-        [v37 setRenderScaleY:v58];
+        [pencilKitStrokePathCompactData setRenderScaleY:v58];
       }
     }
 
-    v59 = [(CRLShapeRep *)self shapeLayout];
-    v60 = [v59 maskPath];
+    shapeLayout3 = [(CRLShapeRep *)self shapeLayout];
+    maskPath = [shapeLayout3 maskPath];
 
-    v61 = [[_TtC8Freeform43CRLCommandSetFreehandDrawingShapeItemPKData alloc] initWithFreehandDrawingShapeItem:v36 strokePathCompactData:v37 maskPath:v60];
+    v61 = [[_TtC8Freeform43CRLCommandSetFreehandDrawingShapeItemPKData alloc] initWithFreehandDrawingShapeItem:v36 strokePathCompactData:pencilKitStrokePathCompactData maskPath:maskPath];
     [(CRLCommandGroup *)v14 addCommand:v61];
   }
 
   return v14;
 }
 
-- (void)dynamicResizeDidEndWithTracker:(id)a3
+- (void)dynamicResizeDidEndWithTracker:(id)tracker
 {
   v4.receiver = self;
   v4.super_class = CRLShapeRep;
-  [(CRLCanvasRep *)&v4 dynamicResizeDidEndWithTracker:a3];
+  [(CRLCanvasRep *)&v4 dynamicResizeDidEndWithTracker:tracker];
   [(CRLShapeRep *)self p_endDynamicallyResizingOrMovingLineEnd];
 }
 
-- (void)dynamicFreeTransformDidEndWithTracker:(id)a3
+- (void)dynamicFreeTransformDidEndWithTracker:(id)tracker
 {
   v4.receiver = self;
   v4.super_class = CRLShapeRep;
-  [(CRLCanvasRep *)&v4 dynamicFreeTransformDidEndWithTracker:a3];
+  [(CRLCanvasRep *)&v4 dynamicFreeTransformDidEndWithTracker:tracker];
   [(CRLShapeRep *)self p_endDynamicallyResizingOrMovingLineEnd];
 }
 
-- (void)setShadowOnChildrenDisabled:(BOOL)a3
+- (void)setShadowOnChildrenDisabled:(BOOL)disabled
 {
-  if (self->mShadowOnChildrenDisabled != a3)
+  if (self->mShadowOnChildrenDisabled != disabled)
   {
-    self->mShadowOnChildrenDisabled = a3;
+    self->mShadowOnChildrenDisabled = disabled;
     [(CRLCanvasRep *)self invalidateShadowRenderable];
   }
 }
@@ -4109,11 +4109,11 @@ LABEL_24:
 {
   if (!self->mShadowOnChildrenDisabled)
   {
-    v3 = [(CRLShapeRep *)self shapeLayout];
-    v4 = [v3 fill];
-    v5 = [v4 isOpaque];
+    shapeLayout = [(CRLShapeRep *)self shapeLayout];
+    fill = [shapeLayout fill];
+    isOpaque = [fill isOpaque];
 
-    if ((v5 & 1) == 0)
+    if ((isOpaque & 1) == 0)
     {
 
       [(CRLCanvasRep *)self invalidateShadowRenderable];
@@ -4127,30 +4127,30 @@ LABEL_24:
   self->mCachedWrapPathInRoot = 0;
 }
 
-- (void)dynamicallyRotatingWithTracker:(id)a3
+- (void)dynamicallyRotatingWithTracker:(id)tracker
 {
   v4.receiver = self;
   v4.super_class = CRLShapeRep;
-  [(CRLCanvasRep *)&v4 dynamicallyRotatingWithTracker:a3];
+  [(CRLCanvasRep *)&v4 dynamicallyRotatingWithTracker:tracker];
   if (self->mIsFreehandDrawingShape)
   {
     [(CRLShapeRep *)self setNeedsDisplay];
   }
 }
 
-- (void)dynamicallyResizingWithTracker:(id)a3
+- (void)dynamicallyResizingWithTracker:(id)tracker
 {
   v4.receiver = self;
   v4.super_class = CRLShapeRep;
-  [(CRLCanvasRep *)&v4 dynamicallyResizingWithTracker:a3];
+  [(CRLCanvasRep *)&v4 dynamicallyResizingWithTracker:tracker];
   [(CRLShapeRep *)self setNeedsDisplay];
 }
 
-- (void)dynamicallyFreeTransformingWithTracker:(id)a3
+- (void)dynamicallyFreeTransformingWithTracker:(id)tracker
 {
   v4.receiver = self;
   v4.super_class = CRLShapeRep;
-  [(CRLCanvasRep *)&v4 dynamicallyFreeTransformingWithTracker:a3];
+  [(CRLCanvasRep *)&v4 dynamicallyFreeTransformingWithTracker:tracker];
   if (self->mIsFreehandDrawingShape)
   {
     [(CRLShapeRep *)self setNeedsDisplay];
@@ -4160,14 +4160,14 @@ LABEL_24:
 - (id)dataForUpdateUploadIndicator
 {
   v3 = objc_opt_class();
-  v4 = [(CRLShapeRep *)self shapeInfo];
-  v5 = [v4 fill];
-  v6 = sub_100014370(v3, v5);
-  v7 = [v6 imageData];
+  shapeInfo = [(CRLShapeRep *)self shapeInfo];
+  fill = [shapeInfo fill];
+  v6 = sub_100014370(v3, fill);
+  imageData = [v6 imageData];
 
-  if (v7)
+  if (imageData)
   {
-    v10 = v7;
+    v10 = imageData;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
   }
 
@@ -4179,9 +4179,9 @@ LABEL_24:
   return v8;
 }
 
-- (void)beginEditingWithString:(id)a3
+- (void)beginEditingWithString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -4301,14 +4301,14 @@ LABEL_24:
 - (BOOL)canBeginEditing
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self info];
-  v5 = [v4 parentInfo];
-  v6 = sub_100014370(v3, v5);
+  info = [(CRLCanvasRep *)self info];
+  parentInfo = [info parentInfo];
+  v6 = sub_100014370(v3, parentInfo);
 
   if (v6)
   {
-    v7 = [(CRLCanvasRep *)self info];
-    v8 = [v6 isNonGroupedChild:v7];
+    info2 = [(CRLCanvasRep *)self info];
+    v8 = [v6 isNonGroupedChild:info2];
   }
 
   else
@@ -4323,8 +4323,8 @@ LABEL_24:
 
   else
   {
-    v10 = [(CRLShapeRep *)self shapeLayout];
-    v11 = [v10 pathIsLineSegment] ^ 1;
+    shapeLayout = [(CRLShapeRep *)self shapeLayout];
+    v11 = [shapeLayout pathIsLineSegment] ^ 1;
   }
 
   return v11;
@@ -4332,19 +4332,19 @@ LABEL_24:
 
 - (BOOL)isPathEditable
 {
-  v2 = [(CRLShapeRep *)self shapeLayout];
-  v3 = [v2 pathSource];
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  pathSource = [shapeLayout pathSource];
+  v4 = [pathSource isMemberOfClass:objc_opt_class()];
 
   return v4;
 }
 
 - (CRLEditableBezierPathSource)editablePathSource
 {
-  v2 = [(CRLShapeRep *)self shapeLayout];
-  v3 = [v2 editablePathSource];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  editablePathSource = [shapeLayout editablePathSource];
 
-  return v3;
+  return editablePathSource;
 }
 
 - (CGAffineTransform)naturalToEditablePathSpaceTransform
@@ -4355,12 +4355,12 @@ LABEL_24:
   *&retstr->a = 0u;
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
-  v9 = [(CRLShapeRep *)self shapeInfo];
-  v10 = [v9 pathSource];
-  v11 = v10;
-  if (v10)
+  shapeInfo = [(CRLShapeRep *)self shapeInfo];
+  pathSource = [shapeInfo pathSource];
+  v11 = pathSource;
+  if (pathSource)
   {
-    [v10 pathFlipTransform];
+    [pathSource pathFlipTransform];
   }
 
   else
@@ -4387,9 +4387,9 @@ LABEL_24:
 {
   if ([(CRLShapeRep *)self canMakePathEditable])
   {
-    v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v4 = [v3 editorController];
-    v5 = [v4 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    editorController = [interactiveCanvasController editorController];
+    v5 = [editorController mostSpecificCurrentEditorOfClass:objc_opt_class()];
   }
 
   else
@@ -4402,42 +4402,42 @@ LABEL_24:
 
 - (BOOL)isEditingPath
 {
-  v2 = [(CRLShapeRep *)self p_pathEditor];
-  v3 = v2 != 0;
+  p_pathEditor = [(CRLShapeRep *)self p_pathEditor];
+  v3 = p_pathEditor != 0;
 
   return v3;
 }
 
 - (void)dynamicMovePathKnobDidBegin
 {
-  v3 = [(CRLShapeRep *)self dynamicResizeDidBegin];
-  v4 = [(CRLShapeRep *)self shapeLayout];
-  [v4 dynamicMovePathKnobDidBegin];
+  dynamicResizeDidBegin = [(CRLShapeRep *)self dynamicResizeDidBegin];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  [shapeLayout dynamicMovePathKnobDidBegin];
 }
 
-- (void)dynamicallyMovedPathKnobTo:(CGPoint)a3 withTracker:(id)a4
+- (void)dynamicallyMovedPathKnobTo:(CGPoint)to withTracker:(id)tracker
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v9 = [(CRLShapeRep *)self shapeLayout];
-  [v9 dynamicallyMovedPathKnobTo:v7 withTracker:{x, y}];
+  y = to.y;
+  x = to.x;
+  trackerCopy = tracker;
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  [shapeLayout dynamicallyMovedPathKnobTo:trackerCopy withTracker:{x, y}];
 
   self->mFrameInUnscaledCanvasIsValid = 0;
-  v8 = [v9 layoutController];
-  [v8 validateLayoutWithDependencies:v9];
+  layoutController = [shapeLayout layoutController];
+  [layoutController validateLayoutWithDependencies:shapeLayout];
 
   [(CRLCanvasRep *)self invalidateKnobPositions];
   [(CRLShapeRep *)self setNeedsDisplay];
 }
 
-- (void)dynamicMovePathKnobDidEndWithTracker:(id)a3
+- (void)dynamicMovePathKnobDidEndWithTracker:(id)tracker
 {
-  v5 = a3;
-  v4 = [(CRLShapeRep *)self shapeLayout];
-  [v4 dynamicMovePathKnobDidEnd];
+  trackerCopy = tracker;
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  [shapeLayout dynamicMovePathKnobDidEnd];
 
-  if (!v5 || ([v5 didDrag] & 1) != 0 || (objc_msgSend(v5, "isCreatingNode") & 1) != 0 || objc_msgSend(v5, "toggleNodeType"))
+  if (!trackerCopy || ([trackerCopy didDrag] & 1) != 0 || (objc_msgSend(trackerCopy, "isCreatingNode") & 1) != 0 || objc_msgSend(trackerCopy, "toggleNodeType"))
   {
     [(CRLShapeRep *)self enqueuePathSourceChanges];
   }
@@ -4449,38 +4449,38 @@ LABEL_24:
 
 - (id)dynamicMoveLineSegmentDidBegin
 {
-  v3 = [(CRLShapeRep *)self dynamicResizeDidBegin];
+  dynamicResizeDidBegin = [(CRLShapeRep *)self dynamicResizeDidBegin];
 
   return [(CRLShapeRep *)self shapeLayout];
 }
 
-- (void)dynamicallyMovingLineSegmentWithTracker:(id)a3
+- (void)dynamicallyMovingLineSegmentWithTracker:(id)tracker
 {
-  v4 = a3;
-  v6 = [(CRLShapeRep *)self shapeLayout];
-  [v6 dynamicallyMovingLineSegmentWithTracker:v4];
+  trackerCopy = tracker;
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  [shapeLayout dynamicallyMovingLineSegmentWithTracker:trackerCopy];
 
-  v5 = [v6 layoutController];
-  [v5 validateLayoutWithDependencies:v6];
+  layoutController = [shapeLayout layoutController];
+  [layoutController validateLayoutWithDependencies:shapeLayout];
 
   [(CRLShapeRep *)self setNeedsDisplay];
 }
 
-- (void)dynamicMoveLineSegmentDidEndWithTracker:(id)a3
+- (void)dynamicMoveLineSegmentDidEndWithTracker:(id)tracker
 {
-  v11 = a3;
+  trackerCopy = tracker;
   [(CRLShapeRep *)self dynamicResizeDidEndWithTracker:0];
-  if (v11 && [v11 didDrag])
+  if (trackerCopy && [trackerCopy didDrag])
   {
     v4 = [_TtC8Freeform23CRLCommandSetPathSource alloc];
-    v5 = [(CRLShapeRep *)self shapeInfo];
-    v6 = [(CRLShapeRep *)self shapeLayout];
-    v7 = [v6 pathSource];
-    v8 = [(CRLCommandSetPathSource *)v4 initWithShapeItem:v5 pathSource:v7];
+    shapeInfo = [(CRLShapeRep *)self shapeInfo];
+    shapeLayout = [(CRLShapeRep *)self shapeLayout];
+    pathSource = [shapeLayout pathSource];
+    v8 = [(CRLCommandSetPathSource *)v4 initWithShapeItem:shapeInfo pathSource:pathSource];
 
-    v9 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v10 = [v9 commandController];
-    [v10 enqueueCommand:v8];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    commandController = [interactiveCanvasController commandController];
+    [commandController enqueueCommand:v8];
   }
 
   [(CRLShapeRep *)self p_endDynamicallyResizingOrMovingLineEnd];
@@ -4489,25 +4489,25 @@ LABEL_24:
 
 - (id)dynamicMoveSmartShapeKnobDidBegin
 {
-  v3 = [(CRLShapeRep *)self dynamicResizeDidBegin];
-  v4 = [(CRLShapeRep *)self shapeLayout];
-  [v4 dynamicMoveSmartShapeKnobDidBegin];
+  dynamicResizeDidBegin = [(CRLShapeRep *)self dynamicResizeDidBegin];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  [shapeLayout dynamicMoveSmartShapeKnobDidBegin];
 
   return [(CRLShapeRep *)self shapeLayout];
 }
 
-- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)a3 withTracker:(id)a4
+- (void)dynamicallyMovedSmartShapeKnobTo:(CGPoint)to withTracker:(id)tracker
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v7 = [(CRLShapeRep *)self shapeLayout];
-  [v7 dynamicallyMovedSmartShapeKnobTo:v9 withTracker:{x, y}];
+  y = to.y;
+  x = to.x;
+  trackerCopy = tracker;
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  [shapeLayout dynamicallyMovedSmartShapeKnobTo:trackerCopy withTracker:{x, y}];
   self->mFrameInUnscaledCanvasIsValid = 0;
-  v8 = [v7 layoutController];
-  [v8 validateLayoutWithDependencies:v7];
+  layoutController = [shapeLayout layoutController];
+  [layoutController validateLayoutWithDependencies:shapeLayout];
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v9 isEnqueueingCommandsInRealTime])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [trackerCopy isEnqueueingCommandsInRealTime])
   {
     [(CRLShapeRep *)self enqueuePathSourceChanges];
   }
@@ -4518,23 +4518,23 @@ LABEL_24:
 
 - (void)enqueuePathSourceChanges
 {
-  v3 = [(CRLShapeRep *)self shapeLayout];
-  v4 = [(CRLShapeRep *)self shapeInfo];
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v6 = [v5 commandController];
-  [v6 openGroup];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  shapeInfo = [(CRLShapeRep *)self shapeInfo];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
+  [commandController openGroup];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"Move" value:0 table:@"UndoStrings"];
-  [v6 setCurrentGroupActionString:v8];
+  [commandController setCurrentGroupActionString:v8];
 
-  v9 = [v3 layoutInfoGeometry];
-  v10 = [v3 layoutInfoGeometry];
-  v11 = [v4 geometry];
-  v12 = [v10 isEqual:v11];
+  layoutInfoGeometry = [shapeLayout layoutInfoGeometry];
+  layoutInfoGeometry2 = [shapeLayout layoutInfoGeometry];
+  geometry = [shapeInfo geometry];
+  v12 = [layoutInfoGeometry2 isEqual:geometry];
 
   if ((v12 & 1) == 0)
   {
-    v13 = [(CRLShapeRep *)self newCommandToApplyGeometry:v9 toInfo:v4];
+    v13 = [(CRLShapeRep *)self newCommandToApplyGeometry:layoutInfoGeometry toInfo:shapeInfo];
     if (!v13)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -4564,21 +4564,21 @@ LABEL_24:
       [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:2450 isFatal:0 description:"invalid nil value for '%{public}s'", "cmd"];
     }
 
-    [v6 enqueueCommand:v13];
+    [commandController enqueueCommand:v13];
   }
 
   v17 = [_TtC8Freeform23CRLCommandSetPathSource alloc];
-  v18 = [v3 pathSource];
-  v19 = [(CRLCommandSetPathSource *)v17 initWithShapeItem:v4 pathSource:v18];
+  pathSource = [shapeLayout pathSource];
+  v19 = [(CRLCommandSetPathSource *)v17 initWithShapeItem:shapeInfo pathSource:pathSource];
 
-  [v6 enqueueCommand:v19];
-  [v6 closeGroup];
+  [commandController enqueueCommand:v19];
+  [commandController closeGroup];
 }
 
-- (void)dynamicMoveSmartShapeKnobDidEndWithTracker:(id)a3
+- (void)dynamicMoveSmartShapeKnobDidEndWithTracker:(id)tracker
 {
-  v4 = a3;
-  if (v4 && [v4 didDrag])
+  trackerCopy = tracker;
+  if (trackerCopy && [trackerCopy didDrag])
   {
     [(CRLShapeRep *)self enqueuePathSourceChanges];
   }
@@ -4588,25 +4588,25 @@ LABEL_24:
   [(CRLCanvasRep *)self invalidateKnobs];
 }
 
-- (void)dynamicallySetBezierPathSource:(id)a3 atUnscaledOrigin:(CGPoint)a4 withCommittedPointRange:(_NSRange)a5
+- (void)dynamicallySetBezierPathSource:(id)source atUnscaledOrigin:(CGPoint)origin withCommittedPointRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
-  v11 = [(CRLShapeRep *)self shapeLayout];
-  [v11 dynamicallySetBezierPathSource:v10 atUnscaledOrigin:{x, y}];
+  length = range.length;
+  location = range.location;
+  y = origin.y;
+  x = origin.x;
+  sourceCopy = source;
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  [shapeLayout dynamicallySetBezierPathSource:sourceCopy atUnscaledOrigin:{x, y}];
 
   self->mAvailableToCommitPointRange.location = location;
   self->mAvailableToCommitPointRange.length = length;
-  v12 = [(CRLCanvasRep *)self interactiveCanvasController];
-  [v12 invalidateContentLayersForRep:self];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  [interactiveCanvasController invalidateContentLayersForRep:self];
 
-  v13 = [v10 bezierPath];
+  bezierPath = [sourceCopy bezierPath];
 
-  v14 = [(CRLShapeRep *)self i_uncommittedFreehandDrawingPointRange];
-  v16 = [v13 copyWithPointsInRange:{v14, v15}];
+  i_uncommittedFreehandDrawingPointRange = [(CRLShapeRep *)self i_uncommittedFreehandDrawingPointRange];
+  v16 = [bezierPath copyWithPointsInRange:{i_uncommittedFreehandDrawingPointRange, v15}];
 
   if ([v16 isEmpty])
   {
@@ -4618,21 +4618,21 @@ LABEL_24:
 
   else
   {
-    v21 = [(CRLCanvasRep *)self layout];
-    v22 = [v21 stroke];
-    [v16 boundsIncludingCRLStroke:v22];
+    layout = [(CRLCanvasRep *)self layout];
+    stroke = [layout stroke];
+    [v16 boundsIncludingCRLStroke:stroke];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
 
-    v31 = [(CRLCanvasRep *)self layout];
-    v32 = [v31 stroke];
-    [v32 renderedWidth];
+    layout2 = [(CRLCanvasRep *)self layout];
+    stroke2 = [layout2 stroke];
+    [stroke2 renderedWidth];
     v34 = v33 * -2.0;
-    v35 = [(CRLCanvasRep *)self layout];
-    v36 = [v35 stroke];
-    [v36 renderedWidth];
+    layout3 = [(CRLCanvasRep *)self layout];
+    stroke3 = [layout3 stroke];
+    [stroke3 renderedWidth];
     v38 = v37 * -2.0;
     v49.origin.x = v24;
     v49.origin.y = v26;
@@ -4687,16 +4687,16 @@ LABEL_24:
   self->mLastDynamicInvalidRect.size.height = height;
 }
 
-- (void)i_setIsCurrentlyBeingFreehandDrawn:(BOOL)a3
+- (void)i_setIsCurrentlyBeingFreehandDrawn:(BOOL)drawn
 {
-  if (self->_isCurrentlyBeingFreehandDrawn != a3)
+  if (self->_isCurrentlyBeingFreehandDrawn != drawn)
   {
-    if (a3)
+    if (drawn)
     {
-      v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v5 i_setNeedsDisplayIfNeededForAncestorRepOf:self];
+      interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+      [interactiveCanvasController i_setNeedsDisplayIfNeededForAncestorRepOf:self];
 
-      self->_isCurrentlyBeingFreehandDrawn = a3;
+      self->_isCurrentlyBeingFreehandDrawn = drawn;
 
       [(CRLShapeRep *)self p_forceSetNeedsDisplay];
     }
@@ -4705,8 +4705,8 @@ LABEL_24:
     {
       self->_isCurrentlyBeingFreehandDrawn = 0;
       [(CRLShapeRep *)self p_forceSetNeedsDisplay];
-      v6 = [(CRLCanvasRep *)self interactiveCanvasController];
-      [v6 i_setNeedsDisplayIfNeededForAncestorRepOf:self];
+      interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+      [interactiveCanvasController2 i_setNeedsDisplayIfNeededForAncestorRepOf:self];
     }
   }
 }
@@ -4742,13 +4742,13 @@ LABEL_24:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:2576 isFatal:0 description:"Only should be checking the uncommitted point range if we are freehand drawing; it is the freehand drawing cache mechanism."];
   }
 
-  v6 = [(CRLShapeRep *)self shapeLayout];
-  v7 = [v6 pathSource];
-  v8 = [v7 bezierPath];
-  v9 = [v8 elementCount];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  pathSource = [shapeLayout pathSource];
+  bezierPath = [pathSource bezierPath];
+  elementCount = [bezierPath elementCount];
 
   length = self->mCommittedPointRange.length;
-  v11 = v9 - length;
+  v11 = elementCount - length;
   v12 = length + self->mCommittedPointRange.location;
   result.length = v11;
   result.location = v12;
@@ -4757,14 +4757,14 @@ LABEL_24:
 
 - (CGRect)p_scaledCanvasScrollViewBounds
 {
-  v2 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v3 = [v2 canvasView];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  canvasView = [interactiveCanvasController canvasView];
 
-  v4 = [v3 enclosingScrollView];
-  v5 = [v3 canvasLayer];
-  v6 = [v4 layer];
-  [v4 bounds];
-  [v6 convertRect:v5 toLayer:?];
+  enclosingScrollView = [canvasView enclosingScrollView];
+  canvasLayer = [canvasView canvasLayer];
+  layer = [enclosingScrollView layer];
+  [enclosingScrollView bounds];
+  [layer convertRect:canvasLayer toLayer:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -4815,10 +4815,10 @@ LABEL_24:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:2607 isFatal:0 description:"invalid nil value for '%{public}s'", "mDownloadObserverIdentifier"];
   }
 
-  v6 = [(CRLShapeRep *)self shapeInfo];
-  v7 = [v6 store];
-  v8 = [v7 assetManager];
-  [v8 removeAllDownloadObserversWithIdentifier:self->mDownloadObserverIdentifier];
+  shapeInfo = [(CRLShapeRep *)self shapeInfo];
+  store = [shapeInfo store];
+  assetManager = [store assetManager];
+  [assetManager removeAllDownloadObserversWithIdentifier:self->mDownloadObserverIdentifier];
 }
 
 - (void)p_listenForAssetChangesIfAppropriate
@@ -4864,11 +4864,11 @@ LABEL_24:
   v7 = mDownloadObserverIdentifier;
   v8 = objc_retainBlock(v14);
   v9 = objc_opt_class();
-  v10 = [(CRLShapeRep *)self shapeInfo];
-  v11 = [v10 fill];
-  v12 = sub_100014370(v9, v11);
-  v13 = [v12 imageData];
-  (v8[2])(v8, v13);
+  shapeInfo = [(CRLShapeRep *)self shapeInfo];
+  fill = [shapeInfo fill];
+  v12 = sub_100014370(v9, fill);
+  imageData = [v12 imageData];
+  (v8[2])(v8, imageData);
 }
 
 - (void)p_handleAssetPreparationCompletion
@@ -4876,17 +4876,17 @@ LABEL_24:
   if (![(CRLCanvasRep *)self hasBeenRemoved])
   {
     [(CRLShapeRep *)self setNeedsDisplay];
-    v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-    [v3 invalidateContentLayersForRep:self];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    [interactiveCanvasController invalidateContentLayersForRep:self];
   }
 }
 
 - (void)p_beginDynamicallyResizingOrMovingLineEnd
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  v4 = [v3 stroke];
+  layout = [(CRLCanvasRep *)self layout];
+  stroke = [layout stroke];
 
-  if ([v4 shouldRender])
+  if ([stroke shouldRender])
   {
     [(CRLShapeRep *)self setNeedsDisplay];
   }
@@ -4894,10 +4894,10 @@ LABEL_24:
 
 - (void)p_endDynamicallyResizingOrMovingLineEnd
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  v4 = [v3 stroke];
+  layout = [(CRLCanvasRep *)self layout];
+  stroke = [layout stroke];
 
-  if ([v4 shouldRender])
+  if ([stroke shouldRender])
   {
     [(CRLShapeRep *)self setNeedsDisplay];
   }
@@ -4907,12 +4907,12 @@ LABEL_24:
 {
   if (!self->mIsFreehandDrawingShape)
   {
-    v4 = [(CRLShapeRep *)self shapeInfo];
-    v5 = [(CRLShapeRep *)self shapeLayout];
-    if ([v5 pathIsOpen])
+    shapeInfo = [(CRLShapeRep *)self shapeInfo];
+    shapeLayout = [(CRLShapeRep *)self shapeLayout];
+    if ([shapeLayout pathIsOpen])
     {
-      v6 = [v4 headLineEnd];
-      if (v6)
+      headLineEnd = [shapeInfo headLineEnd];
+      if (headLineEnd)
       {
 
 LABEL_7:
@@ -4922,25 +4922,25 @@ LABEL_18:
         return v2;
       }
 
-      v7 = [v4 tailLineEnd];
+      tailLineEnd = [shapeInfo tailLineEnd];
 
-      if (v7)
+      if (tailLineEnd)
       {
         goto LABEL_7;
       }
     }
 
-    v8 = [v5 path];
+    path = [shapeLayout path];
     v12 = 0u;
     v13 = 0u;
     v11 = 0u;
     if ([(CRLCanvasRep *)self isInDynamicOperation])
     {
-      if (v5)
+      if (shapeLayout)
       {
-        [v5 originalTransformInRoot];
+        [shapeLayout originalTransformInRoot];
 LABEL_14:
-        if ([v8 isRectangular])
+        if ([path isRectangular])
         {
           v10[0] = v11;
           v10[1] = v12;
@@ -4957,9 +4957,9 @@ LABEL_14:
       }
     }
 
-    else if (v5)
+    else if (shapeLayout)
     {
-      [v5 transformInRoot];
+      [shapeLayout transformInRoot];
       goto LABEL_14;
     }
 
@@ -4976,17 +4976,17 @@ LABEL_14:
 {
   if ([(CRLShapeRep *)self p_pathIsAxisAlignedRect])
   {
-    v3 = [(CRLCanvasRep *)self layout];
-    v4 = [v3 stroke];
+    layout = [(CRLCanvasRep *)self layout];
+    stroke = [layout stroke];
 
-    v5 = [(CRLShapeRep *)self shapeLayout];
-    v6 = [v5 fill];
+    shapeLayout = [(CRLShapeRep *)self shapeLayout];
+    fill = [shapeLayout fill];
 
-    if (v6)
+    if (fill)
     {
       [(CRLShapeRep *)self opacity];
       v8 = v7 == 1.0;
-      if (!v4)
+      if (!stroke)
       {
         goto LABEL_9;
       }
@@ -4995,15 +4995,15 @@ LABEL_14:
     else
     {
       v8 = 1;
-      if (!v4)
+      if (!stroke)
       {
         goto LABEL_9;
       }
     }
 
-    if ([v4 shouldRender])
+    if ([stroke shouldRender])
     {
-      v9 = [v4 canApplyDirectlyToRepRenderable] & v8;
+      v9 = [stroke canApplyDirectlyToRepRenderable] & v8;
 LABEL_10:
 
       return v9;
@@ -5025,20 +5025,20 @@ LABEL_9:
     return 0;
   }
 
-  v3 = [(CRLShapeRep *)self shapeLayout];
-  v4 = [v3 fill];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  fill = [shapeLayout fill];
 
-  if (v4 && ([v4 isClear] & 1) == 0)
+  if (fill && ([fill isClear] & 1) == 0)
   {
-    v5 = [v4 canApplyToRenderable];
+    canApplyToRenderable = [fill canApplyToRenderable];
   }
 
   else
   {
-    v5 = 1;
+    canApplyToRenderable = 1;
   }
 
-  return v5;
+  return canApplyToRenderable;
 }
 
 - (CGRect)boundsForCollaboratorCursorRenderable
@@ -5050,47 +5050,47 @@ LABEL_9:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CRLShapeRep *)self shapeLayout];
-  v12 = [v11 shouldAdjustForStrokeWidthForCollabCursor];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  shouldAdjustForStrokeWidthForCollabCursor = [shapeLayout shouldAdjustForStrokeWidthForCollabCursor];
 
-  if (v12)
+  if (shouldAdjustForStrokeWidthForCollabCursor)
   {
-    v13 = [(CRLCanvasRep *)self info];
-    v14 = [v13 geometry];
-    [v14 size];
+    info = [(CRLCanvasRep *)self info];
+    geometry = [info geometry];
+    [geometry size];
     v16 = v15;
 
     if (v16 == 0.0)
     {
-      v17 = [(CRLShapeRep *)self shapeLayout];
-      v18 = [v17 stroke];
-      [v18 width];
+      shapeLayout2 = [(CRLShapeRep *)self shapeLayout];
+      stroke = [shapeLayout2 stroke];
+      [stroke width];
       v10 = v19;
 
-      v20 = [(CRLShapeRep *)self shapeLayout];
-      v21 = [v20 stroke];
-      [v21 width];
+      shapeLayout3 = [(CRLShapeRep *)self shapeLayout];
+      stroke2 = [shapeLayout3 stroke];
+      [stroke2 width];
       v6 = v6 + v22 * -0.5;
 LABEL_6:
 
       goto LABEL_7;
     }
 
-    v23 = [(CRLCanvasRep *)self info];
-    v24 = [v23 geometry];
-    [v24 size];
+    info2 = [(CRLCanvasRep *)self info];
+    geometry2 = [info2 geometry];
+    [geometry2 size];
     v26 = v25;
 
     if (v26 == 0.0)
     {
-      v27 = [(CRLShapeRep *)self shapeLayout];
-      v28 = [v27 stroke];
-      [v28 width];
+      shapeLayout4 = [(CRLShapeRep *)self shapeLayout];
+      stroke3 = [shapeLayout4 stroke];
+      [stroke3 width];
       v8 = v29;
 
-      v20 = [(CRLShapeRep *)self shapeLayout];
-      v21 = [v20 stroke];
-      [v21 width];
+      shapeLayout3 = [(CRLShapeRep *)self shapeLayout];
+      stroke2 = [shapeLayout3 stroke];
+      [stroke2 width];
       v4 = v4 + v30 * -0.5;
       goto LABEL_6;
     }
@@ -5110,46 +5110,46 @@ LABEL_7:
 
 - (BOOL)i_editMenuOverlapsEndKnobs
 {
-  v3 = [(CRLShapeRep *)self shapeLayout];
-  v4 = [v3 pathIsLineSegment];
+  shapeLayout = [(CRLShapeRep *)self shapeLayout];
+  pathIsLineSegment = [shapeLayout pathIsLineSegment];
 
-  if (!v4)
+  if (!pathIsLineSegment)
   {
     return 0;
   }
 
-  v5 = [(CRLShapeRep *)self shapeLayout];
-  [v5 headPoint];
+  shapeLayout2 = [(CRLShapeRep *)self shapeLayout];
+  [shapeLayout2 headPoint];
   v7 = v6;
   v9 = v8;
-  v10 = [(CRLShapeRep *)self shapeLayout];
-  [v10 tailPoint];
+  shapeLayout3 = [(CRLShapeRep *)self shapeLayout];
+  [shapeLayout3 tailPoint];
   v13 = sub_100120ABC(v7, v9, v11, v12, 0.5);
   v15 = v14;
 
-  v16 = [(CRLCanvasRep *)self canvas];
-  v17 = [(CRLCanvasRep *)self canvas];
+  canvas = [(CRLCanvasRep *)self canvas];
+  canvas2 = [(CRLCanvasRep *)self canvas];
   [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:v13, v15];
-  [v17 convertUnscaledToBoundsPoint:?];
-  [v16 i_approximateScaledFrameOfEditingMenuAtPoint:?];
+  [canvas2 convertUnscaledToBoundsPoint:?];
+  [canvas i_approximateScaledFrameOfEditingMenuAtPoint:?];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  v26 = [(CRLCanvasRep *)self canvas];
-  v27 = [(CRLShapeRep *)self shapeLayout];
-  [v27 headPoint];
+  canvas3 = [(CRLCanvasRep *)self canvas];
+  shapeLayout4 = [(CRLShapeRep *)self shapeLayout];
+  [shapeLayout4 headPoint];
   [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:?];
-  [v26 convertUnscaledToBoundsPoint:?];
+  [canvas3 convertUnscaledToBoundsPoint:?];
   v29 = v28;
   v31 = v30;
 
-  v32 = [(CRLCanvasRep *)self canvas];
-  v33 = [(CRLShapeRep *)self shapeLayout];
-  [v33 tailPoint];
+  canvas4 = [(CRLCanvasRep *)self canvas];
+  shapeLayout5 = [(CRLShapeRep *)self shapeLayout];
+  [shapeLayout5 tailPoint];
   [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:?];
-  [v32 convertUnscaledToBoundsPoint:?];
+  [canvas4 convertUnscaledToBoundsPoint:?];
   v35 = v34;
   v37 = v36;
 

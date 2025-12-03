@@ -1,7 +1,7 @@
 @interface ICAppearanceInfo
-+ (id)appearanceInfoWithType:(unint64_t)a3;
-+ (void)enumerateAppearanceTypesUsingBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)appearanceInfoWithType:(unint64_t)type;
++ (void)enumerateAppearanceTypesUsingBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -23,22 +23,22 @@
   return v2;
 }
 
-+ (id)appearanceInfoWithType:(unint64_t)a3
++ (id)appearanceInfoWithType:(unint64_t)type
 {
   v4 = objc_alloc_init(ICAppearanceInfo);
-  [(ICAppearanceInfo *)v4 setType:a3];
+  [(ICAppearanceInfo *)v4 setType:type];
 
   return v4;
 }
 
-+ (void)enumerateAppearanceTypesUsingBlock:(id)a3
++ (void)enumerateAppearanceTypesUsingBlock:(id)block
 {
   v4 = 0;
   v5 = 0;
   v6 = 0;
   do
   {
-    (*(a3 + 2))(a3, v5, &v6);
+    (*(block + 2))(block, v5, &v6);
     if (v4)
     {
       break;
@@ -56,24 +56,24 @@
   result = self->_hash;
   if (!result)
   {
-    v4 = [(ICAppearanceInfo *)self type];
-    result = ICHashWithHashKeys(v4, v5, v6, v7, v8, v9, v10, v11, 0);
+    type = [(ICAppearanceInfo *)self type];
+    result = ICHashWithHashKeys(type, v5, v6, v7, v8, v9, v10, v11, 0);
   }
 
   self->_hash = result;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = ICDynamicCast();
 
   if (v5)
   {
-    v6 = [(ICAppearanceInfo *)self type];
-    v7 = v6 == [v5 type];
+    type = [(ICAppearanceInfo *)self type];
+    v7 = type == [v5 type];
   }
 
   else

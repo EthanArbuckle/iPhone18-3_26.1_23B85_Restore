@@ -1,15 +1,15 @@
 @interface CRSWidgetStack
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRSWidgetStack)init;
-- (CRSWidgetStack)initWithID:(id)a3 widgets:(id)a4;
+- (CRSWidgetStack)initWithID:(id)d widgets:(id)widgets;
 - (NSArray)_widgets;
 - (NSArray)widgets;
 - (NSString)description;
 - (NSUUID)id;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)set_widgets:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)set_widgets:(id)set_widgets;
 @end
 
 @implementation CRSWidgetStack
@@ -30,9 +30,9 @@
 
 - (NSArray)widgets
 {
-  v2 = [(CRSWidgetStack *)self _widgets];
+  _widgets = [(CRSWidgetStack *)self _widgets];
 
-  return v2;
+  return _widgets;
 }
 
 - (NSArray)_widgets
@@ -45,7 +45,7 @@
   return v3;
 }
 
-- (void)set_widgets:(id)a3
+- (void)set_widgets:(id)set_widgets
 {
   type metadata accessor for CRSWidget(0);
   v4 = sub_242FCB32C();
@@ -53,7 +53,7 @@
   *(self + OBJC_IVAR___CRSWidgetStack__widgets) = v4;
 }
 
-- (CRSWidgetStack)initWithID:(id)a3 widgets:(id)a4
+- (CRSWidgetStack)initWithID:(id)d widgets:(id)widgets
 {
   v5 = sub_242FCB2CC();
   v6 = *(v5 - 8);
@@ -76,9 +76,9 @@
   return v14;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_242FC6CA0(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -87,18 +87,18 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CRSWidgetStack.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CRSWidgetStack.encode(with:)(coderCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_242FCB3BC();
     swift_unknownObjectRelease();
@@ -107,7 +107,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = CRSWidgetStack.isEqual(_:)(v8);
@@ -123,13 +123,13 @@
   v5 = *(v4 + 64);
   MEMORY[0x28223BE20](v3);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
-  v9 = [(CRSWidgetStack *)v8 id];
+  selfCopy = self;
+  v9 = [(CRSWidgetStack *)selfCopy id];
   sub_242FCB2AC();
 
   v10 = sub_242FCB2BC();
   (*(v4 + 8))(v7, v3);
-  v11 = [(CRSWidgetStack *)v8 widgets];
+  widgets = [(CRSWidgetStack *)selfCopy widgets];
   type metadata accessor for CRSWidget(0);
   sub_242FCB32C();
 
@@ -141,7 +141,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CRSWidgetStack.description.getter();
 
   v3 = sub_242FCB2DC();

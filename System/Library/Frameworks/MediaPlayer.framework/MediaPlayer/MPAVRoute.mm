@@ -1,9 +1,9 @@
 @interface MPAVRoute
-+ (id)clusterCompositionForOutputDevice:(id)a3;
-+ (int64_t)clusterTypeForMRClusterType:(unsigned int)a3;
-+ (int64_t)routeSubtypeForMRSubtype:(unsigned int)a3 mrType:(unsigned int)a4;
-+ (int64_t)routeSubtypeForMRSubtype:(unsigned int)a3 withOverridesFromMRType:(unsigned int)a4;
-- (BOOL)containsDeviceWithSubtype:(int64_t)a3;
++ (id)clusterCompositionForOutputDevice:(id)device;
++ (int64_t)clusterTypeForMRClusterType:(unsigned int)type;
++ (int64_t)routeSubtypeForMRSubtype:(unsigned int)subtype mrType:(unsigned int)type;
++ (int64_t)routeSubtypeForMRSubtype:(unsigned int)subtype withOverridesFromMRType:(unsigned int)type;
+- (BOOL)containsDeviceWithSubtype:(int64_t)subtype;
 - (BOOL)isAirpodsRoute;
 - (BOOL)isAppleTVRoute;
 - (BOOL)isB298Route;
@@ -35,7 +35,7 @@
 - (BOOL)isBeatsXRoute;
 - (BOOL)isDeviceRoute;
 - (BOOL)isDisplayedAsPicked;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isH1Route;
 - (BOOL)isHearingDeviceRoute;
 - (BOOL)isHomeTheaterB520Route;
@@ -52,8 +52,8 @@
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)setAVRouteDescription:(id)a3;
-- (void)setRouteName:(id)a3;
+- (void)setAVRouteDescription:(id)description;
+- (void)setRouteName:(id)name;
 @end
 
 @implementation MPAVRoute
@@ -62,50 +62,50 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPAVRoute *)self routeName];
-  v6 = [(MPAVRoute *)self routeUID];
-  v7 = [(MPAVRoute *)self routeType];
-  if (v7 > 3)
+  routeName = [(MPAVRoute *)self routeName];
+  routeUID = [(MPAVRoute *)self routeUID];
+  routeType = [(MPAVRoute *)self routeType];
+  if (routeType > 3)
   {
     v8 = @"Undefined";
   }
 
   else
   {
-    v8 = off_1E7676B20[v7];
+    v8 = off_1E7676B20[routeType];
   }
 
-  v9 = [(MPAVRoute *)self routeSubtype];
-  if (v9 > 0x1B)
+  routeSubtype = [(MPAVRoute *)self routeSubtype];
+  if (routeSubtype > 0x1B)
   {
     v10 = @"Undefined";
   }
 
   else
   {
-    v10 = off_1E7676A40[v9];
+    v10 = off_1E7676A40[routeSubtype];
   }
 
   v11 = v10;
-  v12 = [v3 stringWithFormat:@"<%@: %p name=%@ uid=%@ type=%@ subtype=%@>", v4, self, v5, v6, v8, v11];
+  v12 = [v3 stringWithFormat:@"<%@: %p name=%@ uid=%@ type=%@ subtype=%@>", v4, self, routeName, routeUID, v8, v11];
 
   return v12;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(MPAVRoute *)self routeUID];
-  v4 = [(MPAVRoute *)self routeName];
-  v5 = [(MPAVRoute *)self routeType];
-  v6 = [(MPAVRoute *)self routeSubtype];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  routeUID = [(MPAVRoute *)self routeUID];
+  routeName = [(MPAVRoute *)self routeName];
+  routeType = [(MPAVRoute *)self routeType];
+  routeSubtype = [(MPAVRoute *)self routeSubtype];
+  if (routeUID && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = [v3 hash];
+    v7 = [routeUID hash];
   }
 
-  else if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  else if (routeName && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = v6 + v5 + [v4 hash];
+    v7 = routeSubtype + routeType + [routeName hash];
   }
 
   else
@@ -118,20 +118,20 @@
 
 - (BOOL)isBeatsLegacyRoute
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 componentsSeparatedByString:{@", "}];
-  v4 = [v3 firstObject];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier componentsSeparatedByString:{@", "}];
+  firstObject = [v3 firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    if ([v4 containsString:@"10507"])
+    if ([firstObject containsString:@"10507"])
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = [v4 containsString:@"204"];
+      v5 = [firstObject containsString:@"204"];
     }
   }
 
@@ -145,80 +145,80 @@
 
 - (BOOL)isB372Route
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8208"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8208"}];
 
   return v3;
 }
 
 - (BOOL)isB364Route
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8205"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8205"}];
 
   return v3;
 }
 
 - (BOOL)isB444Route
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8203"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8203"}];
 
   return v3;
 }
 
 - (BOOL)isPowerbeatsRoute
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8195"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8195"}];
 
   return v3;
 }
 
 - (BOOL)isB607Route
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8214"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8214"}];
 
   return v3;
 }
 
 - (BOOL)isB498Route
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8221"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8221"}];
 
   return v3;
 }
 
 - (BOOL)isB494Route
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8210"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8210"}];
 
   return v3;
 }
 
 - (BOOL)isBeatsXRoute
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8197"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8197"}];
 
   return v3;
 }
 
 - (BOOL)isBeatsStudioRoute
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8201"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8201"}];
 
   return v3;
 }
 
 - (BOOL)isB507Route
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8209"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8209"}];
 
   return v3;
 }
@@ -226,120 +226,120 @@
 - (BOOL)isAirpodsRoute
 {
   v2 = MEMORY[0x1E69B09D0];
-  v3 = [(MPAVRoute *)self productIdentifier];
-  LOBYTE(v2) = [v2 isAirPodsDeviceWithModelID:v3];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  LOBYTE(v2) = [v2 isAirPodsDeviceWithModelID:productIdentifier];
 
   return v2;
 }
 
 - (BOOL)isB298Route
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8206"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8206"}];
 
   return v3;
 }
 
 - (BOOL)isB698CRoute
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8228"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8228"}];
 
   return v3;
 }
 
 - (BOOL)isB515Route
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8202"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8202"}];
 
   return v3;
 }
 
 - (BOOL)isB688Route
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8211"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8211"}];
 
   return v3;
 }
 
 - (BOOL)isB698Route
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8212"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8212"}];
 
   return v3;
 }
 
 - (BOOL)isB419Route
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8204"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8204"}];
 
   return v3;
 }
 
 - (BOOL)isBeatsSoloRoute
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8198"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8198"}];
 
   return v3;
 }
 
 - (BOOL)isB735MRoute
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 5024"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 5024"}];
 
   return v3;
 }
 
 - (BOOL)isB735ERoute
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 5023"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 5023"}];
 
   return v3;
 }
 
 - (BOOL)isB768CHMRoute
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8224"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8224"}];
 
   return v3;
 }
 
 - (BOOL)isB768ERoute
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8217"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8217"}];
 
   return v3;
 }
 
 - (BOOL)isB768CHERoute
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8222"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8222"}];
 
   return v3;
 }
 
 - (BOOL)isB768MRoute
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8219"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8219"}];
 
   return v3;
 }
 
 - (BOOL)isHearingDeviceRoute
 {
-  v2 = [(MPAVRoute *)self routeUID];
-  v3 = [v2 containsString:@"-tlea"];
+  routeUID = [(MPAVRoute *)self routeUID];
+  v3 = [routeUID containsString:@"-tlea"];
 
   return v3;
 }
@@ -347,8 +347,8 @@
 - (BOOL)isH1Route
 {
   v2 = MEMORY[0x1E69B09D0];
-  v3 = [(MPAVRoute *)self productIdentifier];
-  LOBYTE(v2) = [v2 isW2DeviceWithModelID:v3];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  LOBYTE(v2) = [v2 isW2DeviceWithModelID:productIdentifier];
 
   return v2;
 }
@@ -356,8 +356,8 @@
 - (BOOL)isW1Route
 {
   v2 = MEMORY[0x1E69B09D0];
-  v3 = [(MPAVRoute *)self productIdentifier];
-  LOBYTE(v2) = [v2 isW1DeviceWithModelID:v3];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  LOBYTE(v2) = [v2 isW1DeviceWithModelID:productIdentifier];
 
   return v2;
 }
@@ -369,34 +369,34 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(MPAVRoute *)self routeUID];
-    v7 = [(MPAVRoute *)self routeName];
-    v8 = [(MPAVRoute *)self routeType];
-    v9 = [(MPAVRoute *)self routeSubtype];
-    if ([v6 length])
+    v5 = equalCopy;
+    routeUID = [(MPAVRoute *)self routeUID];
+    routeName = [(MPAVRoute *)self routeName];
+    routeType = [(MPAVRoute *)self routeType];
+    routeSubtype = [(MPAVRoute *)self routeSubtype];
+    if ([routeUID length])
     {
-      if ([v6 length])
+      if ([routeUID length])
       {
-        v10 = [v5 routeUID];
-        v11 = v6;
+        routeUID2 = [v5 routeUID];
+        v11 = routeUID;
 LABEL_5:
-        v12 = [v11 isEqualToString:v10];
+        v12 = [v11 isEqualToString:routeUID2];
 
 LABEL_11:
         goto LABEL_12;
       }
     }
 
-    else if (v8 == [v5 routeType] && v9 == objc_msgSend(v5, "routeSubtype"))
+    else if (routeType == [v5 routeType] && routeSubtype == objc_msgSend(v5, "routeSubtype"))
     {
-      v10 = [v5 routeName];
-      v11 = v7;
+      routeUID2 = [v5 routeName];
+      v11 = routeName;
       goto LABEL_5;
     }
 
@@ -406,7 +406,7 @@ LABEL_11:
 
   v14.receiver = self;
   v14.super_class = MPAVRoute;
-  v12 = [(MPAVRoute *)&v14 isEqual:v4];
+  v12 = [(MPAVRoute *)&v14 isEqual:equalCopy];
 LABEL_12:
 
   return v12;
@@ -416,7 +416,7 @@ LABEL_12:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPAVRoute *)self routeName];
+  routeName = [(MPAVRoute *)self routeName];
   if ([(MPAVRoute *)self isPicked])
   {
     v6 = @"YES";
@@ -427,8 +427,8 @@ LABEL_12:
     v6 = @"NO";
   }
 
-  v7 = [(MPAVRoute *)self routeUID];
-  v8 = [v3 stringWithFormat:@"<%@: %p, %@, picked=%@ uid=%@>", v4, self, v5, v6, v7];
+  routeUID = [(MPAVRoute *)self routeUID];
+  v8 = [v3 stringWithFormat:@"<%@: %p, %@, picked=%@ uid=%@>", v4, self, routeName, v6, routeUID];
 
   wirelessDisplayRoute = self->_wirelessDisplayRoute;
   if (wirelessDisplayRoute)
@@ -450,21 +450,21 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)containsDeviceWithSubtype:(int64_t)a3
+- (BOOL)containsDeviceWithSubtype:(int64_t)subtype
 {
-  if ([(MPAVRoute *)self originalRouteSubtype]== a3)
+  if ([(MPAVRoute *)self originalRouteSubtype]== subtype)
   {
     return 1;
   }
 
-  v6 = [(MPAVRoute *)self clusterComposition];
+  clusterComposition = [(MPAVRoute *)self clusterComposition];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __39__MPAVRoute_containsDeviceWithSubtype___block_invoke;
   v10[3] = &__block_descriptor_40_e54_B24__0__MPAVOutputDeviceDescription_8__NSDictionary_16l;
-  v10[4] = a3;
+  v10[4] = subtype;
   v7 = [MEMORY[0x1E696AE18] predicateWithBlock:v10];
-  v8 = [v6 filteredArrayUsingPredicate:v7];
+  v8 = [clusterComposition filteredArrayUsingPredicate:v7];
   v5 = [v8 count] != 0;
 
   return v5;
@@ -498,8 +498,8 @@ LABEL_12:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(MPAVRoute *)self clusterComposition];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  clusterComposition = [(MPAVRoute *)self clusterComposition];
+  v4 = [clusterComposition countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -511,7 +511,7 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(clusterComposition);
         }
 
         if (v6)
@@ -521,12 +521,12 @@ LABEL_12:
 
         else
         {
-          v9 = [*(*(&v11 + 1) + 8 * i) modelID];
-          v6 = [v9 containsString:@"AudioAccessory5"];
+          modelID = [*(*(&v11 + 1) + 8 * i) modelID];
+          v6 = [modelID containsString:@"AudioAccessory5"];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [clusterComposition countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -542,32 +542,32 @@ LABEL_12:
 
 - (BOOL)isJ327Route
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:@"j327"];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:@"j327"];
 
   return v3;
 }
 
 - (BOOL)isB494BRoute
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8239"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8239"}];
 
   return v3;
 }
 
 - (BOOL)isBeatsStudioProRoute
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8215"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8215"}];
 
   return v3;
 }
 
 - (BOOL)isB465Route
 {
-  v2 = [(MPAVRoute *)self productIdentifier];
-  v3 = [v2 containsString:{@"76, 8229"}];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  v3 = [productIdentifier containsString:{@"76, 8229"}];
 
   return v3;
 }
@@ -575,8 +575,8 @@ LABEL_12:
 - (BOOL)isBeatsRoute
 {
   v2 = MEMORY[0x1E69B09D0];
-  v3 = [(MPAVRoute *)self productIdentifier];
-  LOBYTE(v2) = [v2 isBeatsDeviceWithModelID:v3];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  LOBYTE(v2) = [v2 isBeatsDeviceWithModelID:productIdentifier];
 
   return v2;
 }
@@ -584,8 +584,8 @@ LABEL_12:
 - (BOOL)isW3Route
 {
   v2 = MEMORY[0x1E69B09D0];
-  v3 = [(MPAVRoute *)self productIdentifier];
-  LOBYTE(v2) = [v2 isW3DeviceWithModelID:v3];
+  productIdentifier = [(MPAVRoute *)self productIdentifier];
+  LOBYTE(v2) = [v2 isW3DeviceWithModelID:productIdentifier];
 
   return v2;
 }
@@ -612,36 +612,36 @@ LABEL_12:
 
 - (BOOL)isDeviceRoute
 {
-  v3 = [(MPAVRoute *)self routeSubtype];
-  if (v3 != 1)
+  routeSubtype = [(MPAVRoute *)self routeSubtype];
+  if (routeSubtype != 1)
   {
-    LOBYTE(v3) = [(MPAVRoute *)self routeSubtype]== 2;
+    LOBYTE(routeSubtype) = [(MPAVRoute *)self routeSubtype]== 2;
   }
 
-  return v3;
+  return routeSubtype;
 }
 
 - (BOOL)isAppleTVRoute
 {
-  v3 = [(MPAVRoute *)self routeType];
-  if (v3 != 1)
+  routeType = [(MPAVRoute *)self routeType];
+  if (routeType != 1)
   {
-    LOBYTE(v3) = [(MPAVRoute *)self routeType]== 2;
+    LOBYTE(routeType) = [(MPAVRoute *)self routeType]== 2;
   }
 
-  return v3;
+  return routeType;
 }
 
-- (void)setAVRouteDescription:(id)a3
+- (void)setAVRouteDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   avRouteDescription = self->_avRouteDescription;
   self->_avRouteDescription = v4;
 }
 
-- (void)setRouteName:(id)a3
+- (void)setRouteName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   routeName = self->_routeName;
   self->_routeName = v4;
 }
@@ -663,34 +663,34 @@ LABEL_12:
   return v2;
 }
 
-+ (int64_t)clusterTypeForMRClusterType:(unsigned int)a3
++ (int64_t)clusterTypeForMRClusterType:(unsigned int)type
 {
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_1A273DEA8[a3 - 1];
+    return qword_1A273DEA8[type - 1];
   }
 }
 
-+ (id)clusterCompositionForOutputDevice:(id)a3
++ (id)clusterCompositionForOutputDevice:(id)device
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 deviceSubtype] == 15)
+  deviceCopy = device;
+  if ([deviceCopy deviceSubtype] == 15)
   {
     v4 = MEMORY[0x1E695DF70];
-    v5 = [v3 clusterComposition];
-    v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    clusterComposition = [deviceCopy clusterComposition];
+    v6 = [v4 arrayWithCapacity:{objc_msgSend(clusterComposition, "count")}];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    obj = [v3 clusterComposition];
+    obj = [deviceCopy clusterComposition];
     v7 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
@@ -709,8 +709,8 @@ LABEL_12:
           v12 = [MPAVOutputDeviceDescription alloc];
           v13 = [objc_opt_class() routeSubtypeForMRSubtype:objc_msgSend(v11 mrType:{"deviceSubtype"), objc_msgSend(v11, "deviceType")}];
           v14 = [v11 uid];
-          v15 = [v11 modelID];
-          v16 = [(MPAVOutputDeviceDescription *)v12 initWithDeviceType:0 deviceSubtype:v13 uid:v14 modelID:v15];
+          modelID = [v11 modelID];
+          v16 = [(MPAVOutputDeviceDescription *)v12 initWithDeviceType:0 deviceSubtype:v13 uid:v14 modelID:modelID];
 
           [v6 addObject:v16];
         }
@@ -730,27 +730,27 @@ LABEL_12:
   return v6;
 }
 
-+ (int64_t)routeSubtypeForMRSubtype:(unsigned int)a3 mrType:(unsigned int)a4
++ (int64_t)routeSubtypeForMRSubtype:(unsigned int)subtype mrType:(unsigned int)type
 {
-  switch(a3)
+  switch(subtype)
   {
     case 1u:
       v4 = 9;
-      if (a4 != 1)
+      if (type != 1)
       {
         v4 = 1;
       }
 
-      v5 = a4 == 2;
+      v5 = type == 2;
       v6 = 21;
       goto LABEL_16;
     case 2u:
-      v5 = a4 == 2;
+      v5 = type == 2;
       v4 = 2;
       v6 = 11;
       goto LABEL_16;
     case 3u:
-      v5 = a4 == 2;
+      v5 = type == 2;
       v4 = 3;
       v6 = 12;
 LABEL_16:
@@ -827,20 +827,20 @@ LABEL_16:
   return result;
 }
 
-+ (int64_t)routeSubtypeForMRSubtype:(unsigned int)a3 withOverridesFromMRType:(unsigned int)a4
++ (int64_t)routeSubtypeForMRSubtype:(unsigned int)subtype withOverridesFromMRType:(unsigned int)type
 {
-  if (a3 == 11 || (a4 & 0xFFFFFFFD) != 1)
+  if (subtype == 11 || (type & 0xFFFFFFFD) != 1)
   {
-    return [a1 routeSubtypeForMRSubtype:? mrType:?];
+    return [self routeSubtypeForMRSubtype:? mrType:?];
   }
 
   v4 = 9;
-  if (a4 == 3)
+  if (type == 3)
   {
     v4 = 15;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     return 0;
   }

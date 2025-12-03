@@ -1,5 +1,5 @@
 @interface HMDNaturalLightingEnabledRetryContext
-- (HMDNaturalLightingEnabledRetryContext)initWithNaturalLightingEnabled:(BOOL)a3 completion:(id)a4 retryCount:(unint64_t)a5;
+- (HMDNaturalLightingEnabledRetryContext)initWithNaturalLightingEnabled:(BOOL)enabled completion:(id)completion retryCount:(unint64_t)count;
 - (id)attributeDescriptions;
 @end
 
@@ -27,21 +27,21 @@
   return v11;
 }
 
-- (HMDNaturalLightingEnabledRetryContext)initWithNaturalLightingEnabled:(BOOL)a3 completion:(id)a4 retryCount:(unint64_t)a5
+- (HMDNaturalLightingEnabledRetryContext)initWithNaturalLightingEnabled:(BOOL)enabled completion:(id)completion retryCount:(unint64_t)count
 {
-  v8 = a4;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = HMDNaturalLightingEnabledRetryContext;
   v9 = [(HMDNaturalLightingEnabledRetryContext *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_naturalLightingEnabled = a3;
-    v11 = _Block_copy(v8);
+    v9->_naturalLightingEnabled = enabled;
+    v11 = _Block_copy(completionCopy);
     completion = v10->_completion;
     v10->_completion = v11;
 
-    v10->_retryCount = a5;
+    v10->_retryCount = count;
   }
 
   return v10;

@@ -1,17 +1,17 @@
 @interface MSPSharedTripService
-- (void)_ds_stopSharingWithParticipant:(id)a3 completion:(id)a4;
+- (void)_ds_stopSharingWithParticipant:(id)participant completion:(id)completion;
 @end
 
 @implementation MSPSharedTripService
 
-- (void)_ds_stopSharingWithParticipant:(id)a3 completion:(id)a4
+- (void)_ds_stopSharingWithParticipant:(id)participant completion:(id)completion
 {
-  v7 = a3;
-  v6 = a4;
+  participantCopy = participant;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(MSPSharedTripService *)self stopSharingWithContact:v7 reason:1 completion:v6];
+    [(MSPSharedTripService *)self stopSharingWithContact:participantCopy reason:1 completion:completionCopy];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface MTRThermostatClusterScheduleTransitionStruct
 - (MTRThermostatClusterScheduleTransitionStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -36,26 +36,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterScheduleTransitionStruct);
-  v5 = [(MTRThermostatClusterScheduleTransitionStruct *)self dayOfWeek];
-  [(MTRThermostatClusterScheduleTransitionStruct *)v4 setDayOfWeek:v5];
+  dayOfWeek = [(MTRThermostatClusterScheduleTransitionStruct *)self dayOfWeek];
+  [(MTRThermostatClusterScheduleTransitionStruct *)v4 setDayOfWeek:dayOfWeek];
 
-  v6 = [(MTRThermostatClusterScheduleTransitionStruct *)self transitionTime];
-  [(MTRThermostatClusterScheduleTransitionStruct *)v4 setTransitionTime:v6];
+  transitionTime = [(MTRThermostatClusterScheduleTransitionStruct *)self transitionTime];
+  [(MTRThermostatClusterScheduleTransitionStruct *)v4 setTransitionTime:transitionTime];
 
-  v7 = [(MTRThermostatClusterScheduleTransitionStruct *)self presetHandle];
-  [(MTRThermostatClusterScheduleTransitionStruct *)v4 setPresetHandle:v7];
+  presetHandle = [(MTRThermostatClusterScheduleTransitionStruct *)self presetHandle];
+  [(MTRThermostatClusterScheduleTransitionStruct *)v4 setPresetHandle:presetHandle];
 
-  v8 = [(MTRThermostatClusterScheduleTransitionStruct *)self systemMode];
-  [(MTRThermostatClusterScheduleTransitionStruct *)v4 setSystemMode:v8];
+  systemMode = [(MTRThermostatClusterScheduleTransitionStruct *)self systemMode];
+  [(MTRThermostatClusterScheduleTransitionStruct *)v4 setSystemMode:systemMode];
 
-  v9 = [(MTRThermostatClusterScheduleTransitionStruct *)self coolingSetpoint];
-  [(MTRThermostatClusterScheduleTransitionStruct *)v4 setCoolingSetpoint:v9];
+  coolingSetpoint = [(MTRThermostatClusterScheduleTransitionStruct *)self coolingSetpoint];
+  [(MTRThermostatClusterScheduleTransitionStruct *)v4 setCoolingSetpoint:coolingSetpoint];
 
-  v10 = [(MTRThermostatClusterScheduleTransitionStruct *)self heatingSetpoint];
-  [(MTRThermostatClusterScheduleTransitionStruct *)v4 setHeatingSetpoint:v10];
+  heatingSetpoint = [(MTRThermostatClusterScheduleTransitionStruct *)self heatingSetpoint];
+  [(MTRThermostatClusterScheduleTransitionStruct *)v4 setHeatingSetpoint:heatingSetpoint];
 
   return v4;
 }

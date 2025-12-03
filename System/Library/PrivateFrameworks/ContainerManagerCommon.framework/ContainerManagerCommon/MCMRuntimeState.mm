@@ -7,9 +7,9 @@
 - (id)_urlForDirectory;
 - (void)_accumulateAndPersist;
 - (void)_loadAndRestore;
-- (void)_restoreFromPlist:(id)a3;
-- (void)_restoreTestLock:(unint64_t)a3 count:(unint64_t)a4;
-- (void)_restoreTestLocksWithPlistArray:(id)a3;
+- (void)_restoreFromPlist:(id)plist;
+- (void)_restoreTestLock:(unint64_t)lock count:(unint64_t)count;
+- (void)_restoreTestLocksWithPlistArray:(id)array;
 - (void)persist;
 - (void)reset;
 - (void)restore;
@@ -33,35 +33,35 @@
   return result;
 }
 
-- (void)_restoreTestLock:(unint64_t)a3 count:(unint64_t)a4
+- (void)_restoreTestLock:(unint64_t)lock count:(unint64_t)count
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (count)
   {
-    v4 = a4;
+    countCopy = count;
     do
     {
-      v7 = [(MCMRuntimeState *)self testLocks];
-      [v7 acquireLock:a3];
+      testLocks = [(MCMRuntimeState *)self testLocks];
+      [testLocks acquireLock:lock];
 
-      --v4;
+      --countCopy;
     }
 
-    while (v4);
+    while (countCopy);
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_restoreTestLocksWithPlistArray:(id)a3
+- (void)_restoreTestLocksWithPlistArray:(id)array
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v23 count:16];
+  v4 = [arrayCopy countByEnumeratingWithState:&v24 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -73,7 +73,7 @@
       {
         if (*v25 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v8 = *(*(&v24 + 1) + 8 * v7);
@@ -142,7 +142,7 @@ LABEL_15:
       }
 
       while (v5 != v7);
-      v18 = [v3 countByEnumeratingWithState:&v24 objects:v23 count:16];
+      v18 = [arrayCopy countByEnumeratingWithState:&v24 objects:v23 count:16];
       v5 = v18;
     }
 
@@ -152,11 +152,11 @@ LABEL_15:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_restoreFromPlist:(id)a3
+- (void)_restoreFromPlist:(id)plist
 {
   v14 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v4 = [v13 objectForKeyedSubscript:@"MCMRuntimeStateTestLocksEnabled"];
+  plistCopy = plist;
+  v4 = [plistCopy objectForKeyedSubscript:@"MCMRuntimeStateTestLocksEnabled"];
   objc_opt_class();
   v5 = v4;
   if (objc_opt_isKindOfClass())
@@ -171,12 +171,12 @@ LABEL_15:
 
   if (v6)
   {
-    v7 = [v6 BOOLValue];
-    v8 = [(MCMRuntimeState *)self testLocks];
-    [v8 setEnabled:v7];
+    bOOLValue = [v6 BOOLValue];
+    testLocks = [(MCMRuntimeState *)self testLocks];
+    [testLocks setEnabled:bOOLValue];
   }
 
-  v9 = [v13 objectForKeyedSubscript:@"MCMRuntimeStateTestLocks"];
+  v9 = [plistCopy objectForKeyedSubscript:@"MCMRuntimeStateTestLocks"];
   objc_opt_class();
   v10 = v9;
   if (objc_opt_isKindOfClass())
@@ -210,12 +210,12 @@ LABEL_15:
 
   if (!v7)
   {
-    v9 = [v8 domain];
-    if ([v9 isEqualToString:*MEMORY[0x1E696A798]])
+    domain = [v8 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A798]])
     {
-      v10 = [v8 code];
+      code = [v8 code];
 
-      if (v10 == 2)
+      if (code == 2)
       {
         v11 = container_log_handle_for_category();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -255,11 +255,11 @@ LABEL_11:
 - (id)_accumulateTestLocksAsPlistArray
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 0; i != 15; ++i)
   {
-    v5 = [(MCMRuntimeState *)self testLocks];
-    v6 = [v5 countOfLock:i];
+    testLocks = [(MCMRuntimeState *)self testLocks];
+    v6 = [testLocks countOfLock:i];
 
     if (v6 >= 1)
     {
@@ -270,11 +270,11 @@ LABEL_11:
       v8 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
       v14[1] = v8;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
-      [v3 addObject:v9];
+      [array addObject:v9];
     }
   }
 
-  v10 = [v3 copy];
+  v10 = [array copy];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -286,12 +286,12 @@ LABEL_11:
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"MCMRuntimeStateTestLocksEnabled";
   v3 = MEMORY[0x1E696AD98];
-  v4 = [(MCMRuntimeState *)self testLocks];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "enabled")}];
+  testLocks = [(MCMRuntimeState *)self testLocks];
+  v5 = [v3 numberWithBool:{objc_msgSend(testLocks, "enabled")}];
   v10[1] = @"MCMRuntimeStateTestLocks";
   v11[0] = v5;
-  v6 = [(MCMRuntimeState *)self _accumulateTestLocksAsPlistArray];
-  v11[1] = v6;
+  _accumulateTestLocksAsPlistArray = [(MCMRuntimeState *)self _accumulateTestLocksAsPlistArray];
+  v11[1] = _accumulateTestLocksAsPlistArray;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -304,10 +304,10 @@ LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
   v4 = +[MCMFileManager defaultManager];
-  v5 = [(MCMRuntimeState *)self _accumulateAsPlist];
+  _accumulateAsPlist = [(MCMRuntimeState *)self _accumulateAsPlist];
   v6 = [(MCMRuntimeState *)self url];
   v11 = 0;
-  v7 = [v5 MCM_writeToURL:v6 withOptions:0x10000000 fileManager:v4 error:&v11];
+  v7 = [_accumulateAsPlist MCM_writeToURL:v6 withOptions:0x10000000 fileManager:v4 error:&v11];
   v8 = v11;
 
   if ((v7 & 1) == 0)
@@ -339,8 +339,8 @@ LABEL_11:
   }
 
   v3 = [MCMPOSIXUser posixUserWithName:v2];
-  v4 = [v3 homeDirectoryURL];
-  v5 = [v4 URLByAppendingPathComponent:@"Library/MobileContainerManager" isDirectory:1];
+  homeDirectoryURL = [v3 homeDirectoryURL];
+  v5 = [homeDirectoryURL URLByAppendingPathComponent:@"Library/MobileContainerManager" isDirectory:1];
 
   v6 = *MEMORY[0x1E69E9840];
 
@@ -398,8 +398,8 @@ LABEL_11:
   v3 = v2;
   if (v2)
   {
-    v4 = [(MCMRuntimeState *)v2 _urlForDirectory];
-    v5 = [v4 URLByAppendingPathComponent:@"runtime_state" isDirectory:0];
+    _urlForDirectory = [(MCMRuntimeState *)v2 _urlForDirectory];
+    v5 = [_urlForDirectory URLByAppendingPathComponent:@"runtime_state" isDirectory:0];
     v6 = [v5 URLByAppendingPathExtension:@"plist"];
     url = v3->_url;
     v3->_url = v6;

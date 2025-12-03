@@ -1,8 +1,8 @@
 @interface MTASleepAlarmSetupTableViewCell
 - (BOOL)_shouldStackViews;
-- (MTASleepAlarmSetupTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MTASleepAlarmSetupTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (MTASleepAlarmSetupTableViewCellDelegate)delegate;
-- (void)configureSetupButtonWithTitle:(id)a3 action:(SEL)a4;
+- (void)configureSetupButtonWithTitle:(id)title action:(SEL)action;
 - (void)setupCell;
 - (void)setupConstraints;
 @end
@@ -16,26 +16,26 @@
 
   v4 = [NSBundle bundleWithIdentifier:@"com.apple.MobileTimerUI"];
   v5 = [v4 localizedStringForKey:@"SLEEP_ALARM_NONE" value:&stru_1000AEF10 table:@"MobileTimerUI_Burrito"];
-  v6 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
-  [v6 setText:v5];
+  titleLabel = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+  [titleLabel setText:v5];
 
   v7 = +[UIColor mtui_disabledTextColor];
-  v8 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
-  [v8 setTextColor:v7];
+  titleLabel2 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+  [titleLabel2 setTextColor:v7];
 
   v9 = [UIFont _preferredFontForTextStyle:UIFontTextStyleBody maximumContentSizeCategory:UIContentSizeCategoryAccessibilityLarge];
-  v10 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
-  [v10 setFont:v9];
+  titleLabel3 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+  [titleLabel3 setFont:v9];
 
-  v11 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
-  [v11 setAdjustsFontSizeToFitWidth:1];
+  titleLabel4 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+  [titleLabel4 setAdjustsFontSizeToFitWidth:1];
 
-  v12 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel5 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+  [titleLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v14 = [(MTASleepAlarmSetupTableViewCell *)self contentView];
-  v13 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
-  [v14 addSubview:v13];
+  contentView = [(MTASleepAlarmSetupTableViewCell *)self contentView];
+  titleLabel6 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+  [contentView addSubview:titleLabel6];
 }
 
 - (MTASleepAlarmSetupTableViewCellDelegate)delegate
@@ -48,119 +48,119 @@
 - (void)setupConstraints
 {
   v74 = objc_opt_new();
-  v3 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
-  v4 = [v3 leadingAnchor];
-  v5 = [(MTASleepAlarmSetupTableViewCell *)self layoutMarginsGuide];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  titleLabel = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+  leadingAnchor = [titleLabel leadingAnchor];
+  layoutMarginsGuide = [(MTASleepAlarmSetupTableViewCell *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v74 addObject:v7];
 
-  v8 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-  [v8 bounds];
+  setupButton = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+  [setupButton bounds];
   v10 = v9;
 
-  LODWORD(v8) = _os_feature_enabled_impl();
-  v11 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-  v12 = [v11 widthAnchor];
-  v13 = v12;
+  LODWORD(setupButton) = _os_feature_enabled_impl();
+  setupButton2 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+  widthAnchor = [setupButton2 widthAnchor];
+  v13 = widthAnchor;
   v14 = v10 + 24.0;
-  if (v8)
+  if (setupButton)
   {
     v14 = v10;
   }
 
-  v15 = [v12 constraintEqualToConstant:v14];
+  v15 = [widthAnchor constraintEqualToConstant:v14];
   [v74 addObject:v15];
 
-  v16 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-  v17 = [v16 heightAnchor];
-  v18 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-  v19 = [v18 titleLabel];
-  v20 = [v19 font];
-  [v20 lineHeight];
-  v22 = [v17 constraintEqualToConstant:ceil(v21) + 12.0];
+  setupButton3 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+  heightAnchor = [setupButton3 heightAnchor];
+  setupButton4 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+  titleLabel2 = [setupButton4 titleLabel];
+  font = [titleLabel2 font];
+  [font lineHeight];
+  v22 = [heightAnchor constraintEqualToConstant:ceil(v21) + 12.0];
   [v74 addObject:v22];
 
   if ([(MTASleepAlarmSetupTableViewCell *)self _shouldStackViews])
   {
-    v23 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-    v24 = [v23 leadingAnchor];
-    v25 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
-    v26 = [v25 leadingAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26];
+    setupButton5 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+    leadingAnchor3 = [setupButton5 leadingAnchor];
+    titleLabel3 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+    leadingAnchor4 = [titleLabel3 leadingAnchor];
+    v27 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v74 addObject:v27];
 
-    v28 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
-    v29 = [v28 topAnchor];
-    v30 = [(MTASleepAlarmSetupTableViewCell *)self contentView];
-    v31 = [v30 topAnchor];
-    v32 = [v29 constraintEqualToAnchor:v31 constant:16.0];
+    titleLabel4 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+    topAnchor = [titleLabel4 topAnchor];
+    contentView = [(MTASleepAlarmSetupTableViewCell *)self contentView];
+    topAnchor2 = [contentView topAnchor];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
     [v74 addObject:v32];
 
-    v33 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-    v34 = [v33 topAnchor];
-    v35 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
-    v36 = [v35 bottomAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36 constant:6.0];
+    setupButton6 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+    topAnchor3 = [setupButton6 topAnchor];
+    titleLabel5 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+    bottomAnchor = [titleLabel5 bottomAnchor];
+    v37 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:6.0];
     [v74 addObject:v37];
 
-    v38 = [(MTASleepAlarmSetupTableViewCell *)self contentView];
-    v39 = [v38 bottomAnchor];
-    v40 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-    v41 = [v40 bottomAnchor];
-    [v39 constraintEqualToAnchor:v41 constant:16.0];
+    contentView2 = [(MTASleepAlarmSetupTableViewCell *)self contentView];
+    bottomAnchor2 = [contentView2 bottomAnchor];
+    setupButton7 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+    bottomAnchor3 = [setupButton7 bottomAnchor];
+    [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:16.0];
   }
 
   else
   {
-    v42 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
-    v43 = [v42 centerYAnchor];
-    v44 = [(MTASleepAlarmSetupTableViewCell *)self contentView];
-    v45 = [v44 centerYAnchor];
-    v46 = [v43 constraintEqualToAnchor:v45];
+    titleLabel6 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+    centerYAnchor = [titleLabel6 centerYAnchor];
+    contentView3 = [(MTASleepAlarmSetupTableViewCell *)self contentView];
+    centerYAnchor2 = [contentView3 centerYAnchor];
+    v46 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v74 addObject:v46];
 
-    v47 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
-    v48 = [v47 heightAnchor];
-    v49 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
-    v50 = [v49 font];
-    [v50 lineHeight];
-    v52 = [v48 constraintEqualToConstant:ceil(v51)];
+    titleLabel7 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+    heightAnchor2 = [titleLabel7 heightAnchor];
+    titleLabel8 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+    font2 = [titleLabel8 font];
+    [font2 lineHeight];
+    v52 = [heightAnchor2 constraintEqualToConstant:ceil(v51)];
     [v74 addObject:v52];
 
-    v53 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-    v54 = [v53 leadingAnchor];
-    v55 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
-    v56 = [v55 trailingAnchor];
-    v57 = [v54 constraintEqualToAnchor:v56 constant:16.0];
+    setupButton8 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+    leadingAnchor5 = [setupButton8 leadingAnchor];
+    titleLabel9 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+    trailingAnchor = [titleLabel9 trailingAnchor];
+    v57 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor constant:16.0];
     [v74 addObject:v57];
 
-    v58 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-    v59 = [v58 centerYAnchor];
-    v60 = [(MTASleepAlarmSetupTableViewCell *)self contentView];
-    v61 = [v60 centerYAnchor];
-    v62 = [v59 constraintEqualToAnchor:v61];
+    setupButton9 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+    centerYAnchor3 = [setupButton9 centerYAnchor];
+    contentView4 = [(MTASleepAlarmSetupTableViewCell *)self contentView];
+    centerYAnchor4 = [contentView4 centerYAnchor];
+    v62 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v74 addObject:v62];
 
-    v63 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-    v64 = [v63 topAnchor];
-    v65 = [(MTASleepAlarmSetupTableViewCell *)self contentView];
-    v66 = [v65 topAnchor];
-    v67 = [v64 constraintGreaterThanOrEqualToAnchor:v66 constant:16.0];
+    setupButton10 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+    topAnchor4 = [setupButton10 topAnchor];
+    contentView5 = [(MTASleepAlarmSetupTableViewCell *)self contentView];
+    topAnchor5 = [contentView5 topAnchor];
+    v67 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:topAnchor5 constant:16.0];
     [v74 addObject:v67];
 
-    v68 = [(MTASleepAlarmSetupTableViewCell *)self contentView];
-    v69 = [v68 bottomAnchor];
-    v70 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-    v71 = [v70 bottomAnchor];
-    v72 = [v69 constraintGreaterThanOrEqualToAnchor:v71 constant:16.0];
+    contentView6 = [(MTASleepAlarmSetupTableViewCell *)self contentView];
+    bottomAnchor4 = [contentView6 bottomAnchor];
+    setupButton11 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+    bottomAnchor5 = [setupButton11 bottomAnchor];
+    v72 = [bottomAnchor4 constraintGreaterThanOrEqualToAnchor:bottomAnchor5 constant:16.0];
     [v74 addObject:v72];
 
-    v38 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-    v39 = [v38 trailingAnchor];
-    v40 = [(MTASleepAlarmSetupTableViewCell *)self layoutMarginsGuide];
-    v41 = [v40 trailingAnchor];
-    [v39 constraintEqualToAnchor:v41];
+    contentView2 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+    bottomAnchor2 = [contentView2 trailingAnchor];
+    setupButton7 = [(MTASleepAlarmSetupTableViewCell *)self layoutMarginsGuide];
+    bottomAnchor3 = [setupButton7 trailingAnchor];
+    [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   }
   v73 = ;
   [v74 addObject:v73];
@@ -170,17 +170,17 @@
 
 - (BOOL)_shouldStackViews
 {
-  v3 = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
+  titleLabel = [(MTASleepAlarmSetupTableViewCell *)self titleLabel];
   height = CGSizeZero.height;
-  [v3 sizeThatFits:{CGSizeZero.width, height}];
+  [titleLabel sizeThatFits:{CGSizeZero.width, height}];
   v6 = v5;
 
-  v7 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-  [v7 sizeThatFits:{CGSizeZero.width, height}];
+  setupButton = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+  [setupButton sizeThatFits:{CGSizeZero.width, height}];
   v9 = v8 + 24.0;
 
-  v10 = [(MTASleepAlarmSetupTableViewCell *)self contentView];
-  [v10 bounds];
+  contentView = [(MTASleepAlarmSetupTableViewCell *)self contentView];
+  [contentView bounds];
   v11 = CGRectGetWidth(v17) - v9;
   [(MTASleepAlarmSetupTableViewCell *)self layoutMargins];
   v13 = v11 - v12;
@@ -190,11 +190,11 @@
   return v15 - v6 <= 16.0;
 }
 
-- (MTASleepAlarmSetupTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MTASleepAlarmSetupTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = MTASleepAlarmSetupTableViewCell;
-  v4 = [(MTASleepAlarmSetupTableViewCell *)&v7 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(MTASleepAlarmSetupTableViewCell *)&v7 initWithStyle:0 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -204,17 +204,17 @@
   return v5;
 }
 
-- (void)configureSetupButtonWithTitle:(id)a3 action:(SEL)a4
+- (void)configureSetupButtonWithTitle:(id)title action:(SEL)action
 {
-  v33 = a3;
-  v6 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+  titleCopy = title;
+  setupButton = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
 
-  if (!v6)
+  if (!setupButton)
   {
     if (_os_feature_enabled_impl())
     {
-      v7 = [MTAUtilities pillButtonWithTitle:v33];
-      [(MTASleepAlarmSetupTableViewCell *)self setSetupButton:v7];
+      setupButton6 = [MTAUtilities pillButtonWithTitle:titleCopy];
+      [(MTASleepAlarmSetupTableViewCell *)self setSetupButton:setupButton6];
     }
 
     else
@@ -223,52 +223,52 @@
       [(MTASleepAlarmSetupTableViewCell *)self setSetupButton:v8];
 
       v9 = +[UIColor mtui_tintColor];
-      v10 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-      [v10 setTintColor:v9];
+      setupButton2 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+      [setupButton2 setTintColor:v9];
 
       v11 = +[UIColor mtui_buttonBackgroundColor];
-      v12 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-      [v12 setBackgroundColor:v11];
+      setupButton3 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+      [setupButton3 setBackgroundColor:v11];
 
-      v13 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-      [v13 setTitle:v33 forState:0];
+      setupButton4 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+      [setupButton4 setTitle:titleCopy forState:0];
 
-      v14 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+      setupButton5 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
       v15 = +[UIColor mtui_tintColor];
-      [v14 setTitleColor:v15 forState:0];
+      [setupButton5 setTitleColor:v15 forState:0];
 
-      v7 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-      v16 = [v7 titleLabel];
-      v17 = [v16 font];
-      [v17 lineHeight];
+      setupButton6 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+      titleLabel = [setupButton6 titleLabel];
+      font = [titleLabel font];
+      [font lineHeight];
       v19 = ceil(v18) * 0.5 + 6.0;
-      v20 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-      v21 = [v20 layer];
-      [v21 setCornerRadius:v19];
+      setupButton7 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+      layer = [setupButton7 layer];
+      [layer setCornerRadius:v19];
     }
 
-    v22 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-    [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+    setupButton8 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+    [setupButton8 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v23 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-    v24 = [(MTASleepAlarmSetupTableViewCell *)self delegate];
-    [v23 addTarget:v24 action:a4 forControlEvents:64];
+    setupButton9 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+    delegate = [(MTASleepAlarmSetupTableViewCell *)self delegate];
+    [setupButton9 addTarget:delegate action:action forControlEvents:64];
 
     v25 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    v26 = [v25 familyName];
+    familyName = [v25 familyName];
     [v25 pointSize];
-    v27 = [UIFont fontWithFamilyName:v26 traits:2 size:?];
-    v28 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-    v29 = [v28 titleLabel];
-    [v29 setFont:v27];
+    v27 = [UIFont fontWithFamilyName:familyName traits:2 size:?];
+    setupButton10 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+    titleLabel2 = [setupButton10 titleLabel];
+    [titleLabel2 setFont:v27];
 
-    v30 = [(MTASleepAlarmSetupTableViewCell *)self contentView];
-    v31 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-    [v30 addSubview:v31];
+    contentView = [(MTASleepAlarmSetupTableViewCell *)self contentView];
+    setupButton11 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+    [contentView addSubview:setupButton11];
   }
 
-  v32 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
-  [v32 sizeToFit];
+  setupButton12 = [(MTASleepAlarmSetupTableViewCell *)self setupButton];
+  [setupButton12 sizeToFit];
 
   [(MTASleepAlarmSetupTableViewCell *)self setupConstraints];
 }

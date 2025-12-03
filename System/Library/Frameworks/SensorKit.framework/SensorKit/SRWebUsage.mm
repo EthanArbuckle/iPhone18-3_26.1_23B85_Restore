@@ -1,38 +1,38 @@
 @interface SRWebUsage
-+ (SRWebUsage)webUsageWithTotalUsageTime:(double)a3;
-- (BOOL)isEqual:(id)a3;
++ (SRWebUsage)webUsageWithTotalUsageTime:(double)time;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SRWebUsage)initWithCoder:(id)a3;
+- (SRWebUsage)initWithCoder:(id)coder;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRWebUsage
 
-+ (SRWebUsage)webUsageWithTotalUsageTime:(double)a3
++ (SRWebUsage)webUsageWithTotalUsageTime:(double)time
 {
   v4 = objc_alloc_init(SRWebUsage);
-  [(SRWebUsage *)v4 setTotalUsageTime:a3];
+  [(SRWebUsage *)v4 setTotalUsageTime:time];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   [(SRWebUsage *)self totalUsageTime];
 
-  [a3 encodeDouble:@"totalUsageTime" forKey:?];
+  [coder encodeDouble:@"totalUsageTime" forKey:?];
 }
 
-- (SRWebUsage)initWithCoder:(id)a3
+- (SRWebUsage)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
@@ -42,7 +42,7 @@
   v6 = [(SRWebUsage *)&v9 init];
   if (v6)
   {
-    [a3 decodeDoubleForKey:@"totalUsageTime"];
+    [coder decodeDoubleForKey:@"totalUsageTime"];
     v6->_totalUsageTime = v7;
   }
 
@@ -56,9 +56,9 @@
   [(SRWebUsage *)&v2 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -70,7 +70,7 @@
   }
 
   totalUsageTime = self->_totalUsageTime;
-  [a3 totalUsageTime];
+  [equal totalUsageTime];
   return totalUsageTime == v6;
 }
 

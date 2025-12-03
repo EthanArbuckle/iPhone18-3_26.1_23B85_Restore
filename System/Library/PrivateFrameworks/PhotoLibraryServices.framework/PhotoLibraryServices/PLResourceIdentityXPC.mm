@@ -1,12 +1,12 @@
 @interface PLResourceIdentityXPC
-+ (id)dictionaryRepresentationFromResourceIdentity:(id)a3;
-+ (id)imageRequestResourceForDataStoreKey:(id)a3 store:(id)a4 assetObjectID:(id)a5 context:(id)a6;
++ (id)dictionaryRepresentationFromResourceIdentity:(id)identity;
++ (id)imageRequestResourceForDataStoreKey:(id)key store:(id)store assetObjectID:(id)d context:(id)context;
 + (id)possibleClassesInDictionaryRepresentation;
 - (BOOL)isOriginalResource;
 - (NSString)description;
-- (PLResourceIdentityXPC)initWithDictionary:(id)a3;
-- (PLResourceIdentityXPC)initWithResource:(id)a3;
-- (PLResourceIdentityXPC)initWithResourceType:(unsigned int)a3 version:(unsigned int)a4 recipeID:(unsigned int)a5 uti:(id)a6 conformsToTypes:(int64_t)a7;
+- (PLResourceIdentityXPC)initWithDictionary:(id)dictionary;
+- (PLResourceIdentityXPC)initWithResource:(id)resource;
+- (PLResourceIdentityXPC)initWithResourceType:(unsigned int)type version:(unsigned int)version recipeID:(unsigned int)d uti:(id)uti conformsToTypes:(int64_t)types;
 @end
 
 @implementation PLResourceIdentityXPC
@@ -29,59 +29,59 @@
   }
 
   v9 = v8;
-  v10 = [(PLUniformTypeIdentifier *)self->_uniformTypeIdentifier identifier];
-  v11 = [v4 stringWithFormat:@"<%@ %p> %@, recipe: %@, uti: %@", v6, self, v9, v3, v10];
+  identifier = [(PLUniformTypeIdentifier *)self->_uniformTypeIdentifier identifier];
+  v11 = [v4 stringWithFormat:@"<%@ %p> %@, recipe: %@, uti: %@", v6, self, v9, v3, identifier];
 
   return v11;
 }
 
 - (BOOL)isOriginalResource
 {
-  v2 = self;
-  if ([(PLResourceIdentityXPC *)v2 version])
+  selfCopy = self;
+  if ([(PLResourceIdentityXPC *)selfCopy version])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = ([(PLResourceIdentityXPC *)v2 recipeID]& 1) == 0;
+    v3 = ([(PLResourceIdentityXPC *)selfCopy recipeID]& 1) == 0;
   }
 
   return v3;
 }
 
-- (PLResourceIdentityXPC)initWithDictionary:(id)a3
+- (PLResourceIdentityXPC)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"resourceType"];
-  v6 = [v5 integerValue];
-  v7 = [v4 objectForKeyedSubscript:@"resourceVersion"];
-  v8 = [v7 integerValue];
-  v9 = [v4 objectForKeyedSubscript:@"resourceRecipeID"];
-  v10 = [v9 integerValue];
-  v11 = [v4 objectForKeyedSubscript:@"resourceUniformTypeIdentifier"];
-  v12 = [v4 objectForKeyedSubscript:@"conformsToTypes"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"resourceType"];
+  integerValue = [v5 integerValue];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"resourceVersion"];
+  integerValue2 = [v7 integerValue];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"resourceRecipeID"];
+  integerValue3 = [v9 integerValue];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"resourceUniformTypeIdentifier"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"conformsToTypes"];
 
-  v13 = -[PLResourceIdentityXPC initWithResourceType:version:recipeID:uti:conformsToTypes:](self, "initWithResourceType:version:recipeID:uti:conformsToTypes:", v6, v8, v10, v11, [v12 integerValue]);
+  v13 = -[PLResourceIdentityXPC initWithResourceType:version:recipeID:uti:conformsToTypes:](self, "initWithResourceType:version:recipeID:uti:conformsToTypes:", integerValue, integerValue2, integerValue3, v11, [v12 integerValue]);
   return v13;
 }
 
-- (PLResourceIdentityXPC)initWithResource:(id)a3
+- (PLResourceIdentityXPC)initWithResource:(id)resource
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  resourceCopy = resource;
+  v5 = resourceCopy;
+  if (resourceCopy)
   {
-    v6 = [v4 uniformTypeIdentifier];
-    if (v6 && (v7 = v6, [v5 uniformTypeIdentifier], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, v9))
+    uniformTypeIdentifier = [resourceCopy uniformTypeIdentifier];
+    if (uniformTypeIdentifier && (v7 = uniformTypeIdentifier, [v5 uniformTypeIdentifier], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "identifier"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v7, v9))
     {
-      v10 = [v5 uniformTypeIdentifier];
-      v11 = [v10 identifier];
+      uniformTypeIdentifier2 = [v5 uniformTypeIdentifier];
+      identifier = [uniformTypeIdentifier2 identifier];
 
-      v12 = [v5 uniformTypeIdentifier];
-      v13 = PLResourceConformsToTypesFromUTI(v12);
+      uniformTypeIdentifier3 = [v5 uniformTypeIdentifier];
+      v13 = PLResourceConformsToTypesFromUTI(uniformTypeIdentifier3);
     }
 
     else
@@ -100,7 +100,7 @@
       }
 
       v13 = 0;
-      v11 = 0;
+      identifier = 0;
       switch([v5 resourceType])
       {
         case 0u:
@@ -131,7 +131,7 @@
         case 7u:
           v18 = MEMORY[0x1E6982D60];
 LABEL_14:
-          v11 = [*v18 identifier];
+          identifier = [*v18 identifier];
           v13 = 0;
           break;
         case 0x11u:
@@ -150,12 +150,12 @@ LABEL_14:
         case 0x1Eu:
           break;
         default:
-          v11 = 0;
+          identifier = 0;
           break;
       }
     }
 
-    v19 = -[PLResourceIdentityXPC initWithResourceType:version:recipeID:uti:conformsToTypes:](self, "initWithResourceType:version:recipeID:uti:conformsToTypes:", [v5 resourceType], objc_msgSend(v5, "version"), objc_msgSend(v5, "recipeID"), v11, v13);
+    v19 = -[PLResourceIdentityXPC initWithResourceType:version:recipeID:uti:conformsToTypes:](self, "initWithResourceType:version:recipeID:uti:conformsToTypes:", [v5 resourceType], objc_msgSend(v5, "version"), objc_msgSend(v5, "recipeID"), identifier, v13);
   }
 
   else
@@ -167,10 +167,10 @@ LABEL_14:
   return v19;
 }
 
-- (PLResourceIdentityXPC)initWithResourceType:(unsigned int)a3 version:(unsigned int)a4 recipeID:(unsigned int)a5 uti:(id)a6 conformsToTypes:(int64_t)a7
+- (PLResourceIdentityXPC)initWithResourceType:(unsigned int)type version:(unsigned int)version recipeID:(unsigned int)d uti:(id)uti conformsToTypes:(int64_t)types
 {
-  v11 = a6;
-  if (v11)
+  utiCopy = uti;
+  if (utiCopy)
   {
     v17.receiver = self;
     v17.super_class = PLResourceIdentityXPC;
@@ -178,10 +178,10 @@ LABEL_14:
     v13 = v12;
     if (v12)
     {
-      v12->_resourceType = a3;
-      v12->_version = a4;
-      v12->_recipeID = a5;
-      v14 = [PLUniformTypeIdentifier utiWithIdentifier:v11];
+      v12->_resourceType = type;
+      v12->_version = version;
+      v12->_recipeID = d;
+      v14 = [PLUniformTypeIdentifier utiWithIdentifier:utiCopy];
       uniformTypeIdentifier = v13->_uniformTypeIdentifier;
       v13->_uniformTypeIdentifier = v14;
     }
@@ -206,32 +206,32 @@ LABEL_14:
   return v5;
 }
 
-+ (id)dictionaryRepresentationFromResourceIdentity:(id)a3
++ (id)dictionaryRepresentationFromResourceIdentity:(id)identity
 {
   v17[5] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 uniformTypeIdentifier];
-  v5 = [v4 identifier];
+  identityCopy = identity;
+  uniformTypeIdentifier = [identityCopy uniformTypeIdentifier];
+  identifier = [uniformTypeIdentifier identifier];
 
-  if (v5)
+  if (identifier)
   {
     v16[0] = @"resourceType";
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v3, "resourceType")}];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(identityCopy, "resourceType")}];
     v17[0] = v6;
     v16[1] = @"resourceVersion";
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v3, "version")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(identityCopy, "version")}];
     v17[1] = v7;
     v16[2] = @"resourceRecipeID";
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v3, "recipeID")}];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(identityCopy, "recipeID")}];
     v17[2] = v8;
     v16[3] = @"resourceUniformTypeIdentifier";
-    v9 = [v3 uniformTypeIdentifier];
-    v10 = [v9 identifier];
-    v17[3] = v10;
+    uniformTypeIdentifier2 = [identityCopy uniformTypeIdentifier];
+    identifier2 = [uniformTypeIdentifier2 identifier];
+    v17[3] = identifier2;
     v16[4] = @"conformsToTypes";
     v11 = MEMORY[0x1E696AD98];
-    v12 = [v3 uniformTypeIdentifier];
-    v13 = [v11 numberWithInteger:PLResourceConformsToTypesFromUTI(v12)];
+    uniformTypeIdentifier3 = [identityCopy uniformTypeIdentifier];
+    v13 = [v11 numberWithInteger:PLResourceConformsToTypesFromUTI(uniformTypeIdentifier3)];
     v17[4] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:5];
   }
@@ -244,12 +244,12 @@ LABEL_14:
   return v14;
 }
 
-+ (id)imageRequestResourceForDataStoreKey:(id)a3 store:(id)a4 assetObjectID:(id)a5 context:(id)a6
++ (id)imageRequestResourceForDataStoreKey:(id)key store:(id)store assetObjectID:(id)d context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  storeCopy = store;
+  dCopy = d;
+  contextCopy = context;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -260,16 +260,16 @@ LABEL_14:
   v20[1] = 3221225472;
   v20[2] = __89__PLResourceIdentityXPC_imageRequestResourceForDataStoreKey_store_assetObjectID_context___block_invoke;
   v20[3] = &unk_1E75754C8;
-  v14 = v12;
+  v14 = dCopy;
   v21 = v14;
-  v15 = v13;
+  v15 = contextCopy;
   v22 = v15;
-  v16 = v10;
+  v16 = keyCopy;
   v23 = v16;
-  v17 = v11;
+  v17 = storeCopy;
   v24 = v17;
   v25 = &v27;
-  v26 = a1;
+  selfCopy = self;
   [v15 performBlockAndWait:v20];
   v18 = v28[5];
 

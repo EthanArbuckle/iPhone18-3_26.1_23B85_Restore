@@ -1,18 +1,18 @@
 @interface CLSRemoteViewController
-+ (id)instantiateViewControllerWithInputItems:(id)a3 identifier:(id)a4 connectionHandler:(id)a5;
-- (void)presentModallyInNewWindowWithCompletion:(id)a3;
++ (id)instantiateViewControllerWithInputItems:(id)items identifier:(id)identifier connectionHandler:(id)handler;
+- (void)presentModallyInNewWindowWithCompletion:(id)completion;
 - (void)viewDidInvalidateIntrinsicContentSize;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation CLSRemoteViewController
 
-+ (id)instantiateViewControllerWithInputItems:(id)a3 identifier:(id)a4 connectionHandler:(id)a5
++ (id)instantiateViewControllerWithInputItems:(id)items identifier:(id)identifier connectionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v10 = objc_msgSend_dictionaryWithObject_forKey_(MEMORY[0x277CBEB38], v9, a4, *MEMORY[0x277CCA0E0]);
+  itemsCopy = items;
+  handlerCopy = handler;
+  v10 = objc_msgSend_dictionaryWithObject_forKey_(MEMORY[0x277CBEB38], v9, identifier, *MEMORY[0x277CCA0E0]);
   v27 = 0;
   v12 = objc_msgSend_extensionsWithMatchingAttributes_error_(MEMORY[0x277CCA9C8], v11, v10, &v27);
   v15 = v27;
@@ -33,8 +33,8 @@
     v22[2] = sub_243520188;
     v22[3] = &unk_278DBEFE0;
     v17 = &v23;
-    v23 = v8;
-    objc_msgSend_instantiateViewControllerWithInputItems_listenerEndpoint_connectionHandler_(v16, v18, v7, 0, v22);
+    v23 = handlerCopy;
+    objc_msgSend_instantiateViewControllerWithInputItems_listenerEndpoint_connectionHandler_(v16, v18, itemsCopy, 0, v22);
     v19 = v16;
   }
 
@@ -45,7 +45,7 @@
     block[2] = sub_243520170;
     block[3] = &unk_278DBF030;
     v17 = &v26;
-    v26 = v8;
+    v26 = handlerCopy;
     v25 = v15;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
@@ -61,12 +61,12 @@
   objc_msgSend_viewDidInvalidateIntrinsicContentSize(v5, v3, v4);
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = v4;
-  if (v4 && objc_msgSend_code(v4, v5, v6) != 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  errorCopy = error;
+  v7 = errorCopy;
+  if (errorCopy && objc_msgSend_code(errorCopy, v5, v6) != 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v11 = v7;
@@ -80,16 +80,16 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentModallyInNewWindowWithCompletion:(id)a3
+- (void)presentModallyInNewWindowWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_243520568;
   v6[3] = &unk_278DBF030;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

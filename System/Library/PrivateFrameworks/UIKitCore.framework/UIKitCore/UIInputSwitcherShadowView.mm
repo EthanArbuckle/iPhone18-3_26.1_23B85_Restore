@@ -1,18 +1,18 @@
 @interface UIInputSwitcherShadowView
 - (CGRect)keyRect;
-- (UIInputSwitcherShadowView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (UIInputSwitcherShadowView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation UIInputSwitcherShadowView
 
-- (UIInputSwitcherShadowView)initWithFrame:(CGRect)a3
+- (UIInputSwitcherShadowView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = UIInputSwitcherShadowView;
-  v3 = [(UIView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,21 +26,21 @@
 
     v10 = [[_UIBackdropView alloc] initWithStyle:2050];
     [(UIInputSwitcherShadowView *)v4 setBlurView:v10];
-    v11 = [(UIInputSwitcherShadowView *)v4 blurView];
-    v12 = [v11 inputSettings];
-    [v12 setFilterMaskAlpha:1.0];
+    blurView = [(UIInputSwitcherShadowView *)v4 blurView];
+    inputSettings = [blurView inputSettings];
+    [inputSettings setFilterMaskAlpha:1.0];
 
-    v13 = [(UIInputSwitcherShadowView *)v4 blurView];
-    v14 = [v13 inputSettings];
-    [v14 setBlurRadius:2.0];
+    blurView2 = [(UIInputSwitcherShadowView *)v4 blurView];
+    inputSettings2 = [blurView2 inputSettings];
+    [inputSettings2 setBlurRadius:2.0];
 
-    v15 = [(UIInputSwitcherShadowView *)v4 blurView];
-    v16 = [v15 inputSettings];
-    [v16 setGrayscaleTintLevel:0.17];
+    blurView3 = [(UIInputSwitcherShadowView *)v4 blurView];
+    inputSettings3 = [blurView3 inputSettings];
+    [inputSettings3 setGrayscaleTintLevel:0.17];
 
-    v17 = [(UIInputSwitcherShadowView *)v4 blurView];
-    v18 = [v17 inputSettings];
-    [v18 setGrayscaleTintAlpha:0.87];
+    blurView4 = [(UIInputSwitcherShadowView *)v4 blurView];
+    inputSettings4 = [blurView4 inputSettings];
+    [inputSettings4 setGrayscaleTintAlpha:0.87];
 
     v19 = v4;
   }
@@ -48,16 +48,16 @@
   return v4;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIInputSwitcherShadowView *)self menu];
-  v9 = [v8 mode];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  menu = [(UIInputSwitcherShadowView *)self menu];
+  mode = [menu mode];
 
-  if (v9)
+  if (mode)
   {
     v12.origin.x = x;
     v12.origin.y = y;
@@ -91,33 +91,33 @@
   v11.super_class = UIInputSwitcherShadowView;
   [(UIView *)&v11 layoutSubviews];
   m_mode = self->m_mode;
-  v4 = [(UIInputSwitcherShadowView *)self blurView];
-  v5 = v4;
+  blurView = [(UIInputSwitcherShadowView *)self blurView];
+  maskForShadowViewBlurredBackground = blurView;
   if (m_mode)
   {
-    [v4 removeFromSuperview];
+    [blurView removeFromSuperview];
   }
 
   else
   {
-    [(UIView *)self addSubview:v4];
+    [(UIView *)self addSubview:blurView];
 
-    v6 = [(UIInputSwitcherShadowView *)self menu];
-    v5 = [v6 maskForShadowViewBlurredBackground];
+    menu = [(UIInputSwitcherShadowView *)self menu];
+    maskForShadowViewBlurredBackground = [menu maskForShadowViewBlurredBackground];
 
-    v7 = [(UIInputSwitcherShadowView *)self blurView];
-    v8 = [v7 inputSettings];
-    [v8 setFilterMaskImage:v5];
+    blurView2 = [(UIInputSwitcherShadowView *)self blurView];
+    inputSettings = [blurView2 inputSettings];
+    [inputSettings setFilterMaskImage:maskForShadowViewBlurredBackground];
 
-    v9 = [(UIInputSwitcherShadowView *)self blurView];
-    v10 = [v9 inputSettings];
-    [v10 setGrayscaleTintMaskImage:v5];
+    blurView3 = [(UIInputSwitcherShadowView *)self blurView];
+    inputSettings2 = [blurView3 inputSettings];
+    [inputSettings2 setGrayscaleTintMaskImage:maskForShadowViewBlurredBackground];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v4 = [(UIView *)self _keyboardOrientation:a3.origin.x];
+  v4 = [(UIView *)self _keyboardOrientation:rect.origin.x];
   [(UIView *)self bounds];
   v6 = v5;
   v8 = v7;
@@ -136,10 +136,10 @@
 
   if ([(UIInputSwitcherShadowView *)self mode]== 1)
   {
-    v15 = [(UIInputSwitcherShadowView *)self menu];
-    v16 = [v15 containerView];
+    menu = [(UIInputSwitcherShadowView *)self menu];
+    containerView = [menu containerView];
     [(UIInputSwitcherShadowView *)self keyRect];
-    [v16 convertRect:self toView:?];
+    [containerView convertRect:self toView:?];
     v18 = v17;
     v20 = *&v19;
     v51 = v6;
@@ -147,27 +147,27 @@
     v22 = v21;
     v24 = v23;
 
-    v25 = [objc_opt_self() mainScreen];
-    [v25 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v50 = v26;
 
-    v27 = [(UIView *)self _inheritedRenderConfig];
-    [v27 colorAdaptiveBackground];
+    _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+    [_inheritedRenderConfig colorAdaptiveBackground];
 
     CGContextSaveGState(v14);
-    v28 = [(UIInputSwitcherShadowView *)self menu];
-    v29 = [v28 usesStraightLeftEdge];
+    menu2 = [(UIInputSwitcherShadowView *)self menu];
+    usesStraightLeftEdge = [menu2 usesStraightLeftEdge];
     v30 = v6;
     v31 = v24;
-    PopupPath = UIInputSwitcherCreatePopupPath(v29, 0, -1, v4, v30, v8, v10, v12 + -16.0, v18, v20, v22, v24);
+    PopupPath = UIInputSwitcherCreatePopupPath(usesStraightLeftEdge, 0, -1, v4, v30, v8, v10, v12 + -16.0, v18, v20, v22, v24);
 
     CGContextAddPath(v14, PopupPath);
     v33 = [UIColor colorWithWhite:1.0 alpha:0.3];
-    v34 = [v33 CGColor];
+    cGColor = [v33 CGColor];
 
-    CGContextSetFillColorWithColor(v14, v34);
+    CGContextSetFillColorWithColor(v14, cGColor);
     v35 = [UIColor colorWithWhite:0.0 alpha:0.2];
-    v36 = [v35 CGColor];
+    cGColor2 = [v35 CGColor];
 
     if (v50 <= 1.0)
     {
@@ -181,34 +181,34 @@
 
     v55.width = -v37;
     v55.height = 0.0;
-    CGContextSetShadowWithColor(v14, v55, v37, v36);
+    CGContextSetShadowWithColor(v14, v55, v37, cGColor2);
     CGContextFillPath(v14);
     CGContextRestoreGState(v14);
     CGContextSaveGState(v14);
     CGContextAddPath(v14, PopupPath);
-    CGContextSetFillColorWithColor(v14, v34);
+    CGContextSetFillColorWithColor(v14, cGColor);
     v56.height = 0.0;
     v56.width = v37;
-    CGContextSetShadowWithColor(v14, v56, v37, v36);
+    CGContextSetShadowWithColor(v14, v56, v37, cGColor2);
     CGContextFillPath(v14);
     CGContextRestoreGState(v14);
     CGContextSaveGState(v14);
     CGContextAddPath(v14, PopupPath);
-    CGContextSetFillColorWithColor(v14, v34);
+    CGContextSetFillColorWithColor(v14, cGColor);
     v57.width = 0.0;
     v57.height = v37;
-    CGContextSetShadowWithColor(v14, v57, v37, v36);
+    CGContextSetShadowWithColor(v14, v57, v37, cGColor2);
     CGContextFillPath(v14);
     CGContextRestoreGState(v14);
     CGContextSaveGState(v14);
-    v38 = [(UIInputSwitcherShadowView *)self menu];
-    v39 = UIInputSwitcherCreatePopupPath([v38 usesStraightLeftEdge], 0, -1, v4, v51, v8, v10, v12 + -16.0, v18, *&v52, v22, v31);
+    menu3 = [(UIInputSwitcherShadowView *)self menu];
+    v39 = UIInputSwitcherCreatePopupPath([menu3 usesStraightLeftEdge], 0, -1, v4, v51, v8, v10, v12 + -16.0, v18, *&v52, v22, v31);
 
     v40 = [UIColor colorWithWhite:0.0 alpha:0.2];
-    v41 = [v40 CGColor];
+    cGColor3 = [v40 CGColor];
 
     CGContextAddPath(v14, v39);
-    CGContextSetStrokeColorWithColor(v14, v41);
+    CGContextSetStrokeColorWithColor(v14, cGColor3);
     CGContextSetLineWidth(v14, 0.5);
     CGContextStrokePath(v14);
     CGPathRelease(v39);
@@ -216,11 +216,11 @@
     CGContextSaveGState(v14);
     CGContextAddPath(v14, PopupPath);
     CGContextClip(v14);
-    v42 = [(UIInputSwitcherShadowView *)self gradientColors];
-    v53 = [v42 objectAtIndex:0];
+    gradientColors = [(UIInputSwitcherShadowView *)self gradientColors];
+    v53 = [gradientColors objectAtIndex:0];
 
-    v43 = [(UIInputSwitcherShadowView *)self gradientColors];
-    v44 = [v43 objectAtIndex:1];
+    gradientColors2 = [(UIInputSwitcherShadowView *)self gradientColors];
+    v44 = [gradientColors2 objectAtIndex:1];
 
     v45 = v53;
     v46 = UIKBCreateTwoColorLinearGradient([v53 CGColor], objc_msgSend(v44, "CGColor"));

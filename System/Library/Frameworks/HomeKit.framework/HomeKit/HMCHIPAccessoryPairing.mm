@@ -1,49 +1,49 @@
 @interface HMCHIPAccessoryPairing
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMCHIPAccessoryPairing)initWithCoder:(id)a3;
-- (HMCHIPAccessoryPairing)initWithIdentifier:(id)a3 home:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMCHIPAccessoryPairing)initWithCoder:(id)coder;
+- (HMCHIPAccessoryPairing)initWithIdentifier:(id)identifier home:(id)home;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)operationalIdentity;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMCHIPAccessoryPairing
 
 - (id)operationalIdentity
 {
-  v3 = [(HMCHIPAccessoryPairing *)self home];
-  v4 = [v3 ecosystem];
-  v5 = [v4 rootPublicKey];
+  home = [(HMCHIPAccessoryPairing *)self home];
+  ecosystem = [home ecosystem];
+  rootPublicKey = [ecosystem rootPublicKey];
 
-  v6 = [(HMCHIPAccessoryPairing *)self identifier];
-  v7 = [[HMCHIPAccessoryOperationalIdentity alloc] initWithRootPublicKey:v5 nodeID:v6];
+  identifier = [(HMCHIPAccessoryPairing *)self identifier];
+  v7 = [[HMCHIPAccessoryOperationalIdentity alloc] initWithRootPublicKey:rootPublicKey nodeID:identifier];
 
   return v7;
 }
 
 - (NSArray)attributeDescriptions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v5 = [(HMCHIPAccessoryPairing *)self identifier];
-  v6 = [v4 initWithName:@"Identifier" value:v5];
-  [v3 addObject:v6];
+  identifier = [(HMCHIPAccessoryPairing *)self identifier];
+  v6 = [v4 initWithName:@"Identifier" value:identifier];
+  [array addObject:v6];
 
   v7 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v8 = [(HMCHIPAccessoryPairing *)self home];
-  v9 = [v7 initWithName:@"Home" value:v8];
-  [v3 addObject:v9];
+  home = [(HMCHIPAccessoryPairing *)self home];
+  v9 = [v7 initWithName:@"Home" value:home];
+  [array addObject:v9];
 
   v10 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v11 = [(HMCHIPAccessoryPairing *)self systemCommissionerPairingUUID];
-  v12 = [v10 initWithName:@"System Commissioner Pairing UUID" value:v11];
-  [v3 addObject:v12];
+  systemCommissionerPairingUUID = [(HMCHIPAccessoryPairing *)self systemCommissionerPairingUUID];
+  v12 = [v10 initWithName:@"System Commissioner Pairing UUID" value:systemCommissionerPairingUUID];
+  [array addObject:v12];
 
-  v13 = [v3 copy];
+  v13 = [array copy];
 
   return v13;
 }
@@ -55,13 +55,13 @@
   return [v2 shortDescription];
 }
 
-- (HMCHIPAccessoryPairing)initWithCoder:(id)a3
+- (HMCHIPAccessoryPairing)initWithCoder:(id)coder
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCAP.ck.identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCAP.ck.home"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCAP.ck.systemCommissionerPairingUUID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCAP.ck.identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCAP.ck.home"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCAP.ck.systemCommissionerPairingUUID"];
   if (v5)
   {
     v8 = v6 == 0;
@@ -75,7 +75,7 @@
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -97,36 +97,36 @@
   {
     v12 = [(HMCHIPAccessoryPairing *)self initWithIdentifier:v5 home:v6];
     [(HMCHIPAccessoryPairing *)v12 setSystemCommissionerPairingUUID:v7];
-    v13 = v12;
-    v14 = v13;
+    selfCopy = v12;
+    v14 = selfCopy;
   }
 
   v15 = *MEMORY[0x1E69E9840];
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMCHIPAccessoryPairing *)self identifier];
-  [v4 encodeObject:v5 forKey:@"HMCAP.ck.identifier"];
+  coderCopy = coder;
+  identifier = [(HMCHIPAccessoryPairing *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"HMCAP.ck.identifier"];
 
-  v6 = [(HMCHIPAccessoryPairing *)self home];
-  [v4 encodeObject:v6 forKey:@"HMCAP.ck.home"];
+  home = [(HMCHIPAccessoryPairing *)self home];
+  [coderCopy encodeObject:home forKey:@"HMCAP.ck.home"];
 
-  v7 = [(HMCHIPAccessoryPairing *)self systemCommissionerPairingUUID];
-  [v4 encodeObject:v7 forKey:@"HMCAP.ck.systemCommissionerPairingUUID"];
+  systemCommissionerPairingUUID = [(HMCHIPAccessoryPairing *)self systemCommissionerPairingUUID];
+  [coderCopy encodeObject:systemCommissionerPairingUUID forKey:@"HMCAP.ck.systemCommissionerPairingUUID"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMutableCHIPAccessoryPairing allocWithZone:a3];
-  v5 = [(HMCHIPAccessoryPairing *)self identifier];
-  v6 = [(HMCHIPAccessoryPairing *)self home];
-  v7 = [(HMCHIPAccessoryPairing *)v4 initWithIdentifier:v5 home:v6];
+  v4 = [HMMutableCHIPAccessoryPairing allocWithZone:zone];
+  identifier = [(HMCHIPAccessoryPairing *)self identifier];
+  home = [(HMCHIPAccessoryPairing *)self home];
+  v7 = [(HMCHIPAccessoryPairing *)v4 initWithIdentifier:identifier home:home];
 
-  v8 = [(HMCHIPAccessoryPairing *)self systemCommissionerPairingUUID];
-  [(HMCHIPAccessoryPairing *)v7 setSystemCommissionerPairingUUID:v8];
+  systemCommissionerPairingUUID = [(HMCHIPAccessoryPairing *)self systemCommissionerPairingUUID];
+  [(HMCHIPAccessoryPairing *)v7 setSystemCommissionerPairingUUID:systemCommissionerPairingUUID];
 
   return v7;
 }
@@ -140,19 +140,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMCHIPAccessoryPairing *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMCHIPAccessoryPairing *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -163,13 +163,13 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMCHIPAccessoryPairing *)self identifier];
-    v8 = [v6 identifier];
-    if ([v7 isEqualToNumber:v8])
+    identifier = [(HMCHIPAccessoryPairing *)self identifier];
+    identifier2 = [v6 identifier];
+    if ([identifier isEqualToNumber:identifier2])
     {
-      v9 = [(HMCHIPAccessoryPairing *)self home];
-      v10 = [v6 home];
-      v11 = [v9 isEqual:v10];
+      home = [(HMCHIPAccessoryPairing *)self home];
+      home2 = [v6 home];
+      v11 = [home isEqual:home2];
     }
 
     else
@@ -186,18 +186,18 @@
   return v11;
 }
 
-- (HMCHIPAccessoryPairing)initWithIdentifier:(id)a3 home:(id)a4
+- (HMCHIPAccessoryPairing)initWithIdentifier:(id)identifier home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  homeCopy = home;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = homeCopy;
+  if (!homeCopy)
   {
 LABEL_7:
     v23 = _HMFPreconditionFailure();
@@ -209,7 +209,7 @@ LABEL_7:
   v9 = [(HMCHIPAccessoryPairing *)&v26 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v10;
 
@@ -218,16 +218,16 @@ LABEL_7:
     v9->_home = v12;
 
     v14 = v8;
-    v15 = v6;
+    v15 = identifierCopy;
     objc_opt_self();
-    v16 = [v15 integerValue];
+    integerValue = [v15 integerValue];
 
-    v27 = v16;
+    v27 = integerValue;
     v17 = [MEMORY[0x1E695DEF0] dataWithBytes:&v27 length:8];
     v18 = MEMORY[0x1E696AFB0];
-    v19 = [v14 UUID];
+    uUID = [v14 UUID];
 
-    v20 = [v18 hmf_UUIDWithNamespace:v19 data:v17];
+    v20 = [v18 hmf_UUIDWithNamespace:uUID data:v17];
 
     UUID = v9->_UUID;
     v9->_UUID = v20;

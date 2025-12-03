@@ -1,19 +1,19 @@
 @interface SVVideoAdSkipButton
 - (CGSize)intrinsicContentSize;
-- (SVVideoAdSkipButton)initWithFrame:(CGRect)a3;
-- (id)titleForDuration:(unint64_t)a3;
-- (void)setMode:(int)a3;
-- (void)setSkipDuration:(unint64_t)a3;
+- (SVVideoAdSkipButton)initWithFrame:(CGRect)frame;
+- (id)titleForDuration:(unint64_t)duration;
+- (void)setMode:(int)mode;
+- (void)setSkipDuration:(unint64_t)duration;
 - (void)updateHeight;
 @end
 
 @implementation SVVideoAdSkipButton
 
-- (SVVideoAdSkipButton)initWithFrame:(CGRect)a3
+- (SVVideoAdSkipButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SVVideoAdSkipButton;
-  v3 = [(SVButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SVButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -37,8 +37,8 @@
 {
   if (_UISolariumFeatureFlagEnabled())
   {
-    v3 = [(SVVideoAdSkipButton *)self playerState];
-    [v3 customControlHeight];
+    playerState = [(SVVideoAdSkipButton *)self playerState];
+    [playerState customControlHeight];
     [(SVVideoAdSkipButton *)self setHeight:?];
 
     [(SVVideoAdSkipButton *)self invalidateIntrinsicContentSize];
@@ -47,8 +47,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(SVVideoAdSkipButton *)self titleLabel];
-  [v3 intrinsicContentSize];
+  titleLabel = [(SVVideoAdSkipButton *)self titleLabel];
+  [titleLabel intrinsicContentSize];
   v5 = v4;
 
   if (_UISolariumFeatureFlagEnabled())
@@ -60,9 +60,9 @@
 
   else
   {
-    v9 = [(SVVideoAdSkipButton *)self titleLabel];
-    v10 = [v9 font];
-    [v10 capHeight];
+    titleLabel2 = [(SVVideoAdSkipButton *)self titleLabel];
+    font = [titleLabel2 font];
+    [font capHeight];
     v7 = round(v11) + 12.0;
 
     v8 = 6.0;
@@ -75,32 +75,32 @@
   return result;
 }
 
-- (void)setSkipDuration:(unint64_t)a3
+- (void)setSkipDuration:(unint64_t)duration
 {
-  self->_skipDuration = a3;
-  [(SVVideoAdSkipButton *)self setEnabled:a3 == 0];
-  v5 = [(SVVideoAdSkipButton *)self titleForDuration:a3];
+  self->_skipDuration = duration;
+  [(SVVideoAdSkipButton *)self setEnabled:duration == 0];
+  v5 = [(SVVideoAdSkipButton *)self titleForDuration:duration];
   [(SVVideoAdSkipButton *)self setAttributedTitle:v5 forState:0];
 }
 
-- (void)setMode:(int)a3
+- (void)setMode:(int)mode
 {
-  self->_mode = a3;
+  self->_mode = mode;
   v4 = [(SVVideoAdSkipButton *)self titleForDuration:[(SVVideoAdSkipButton *)self skipDuration]];
   [(SVVideoAdSkipButton *)self setAttributedTitle:v4 forState:0];
 }
 
-- (id)titleForDuration:(unint64_t)a3
+- (id)titleForDuration:(unint64_t)duration
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v4 = a3 + 1;
-  v5 = [(SVVideoAdSkipButton *)self mode];
+  v4 = duration + 1;
+  mode = [(SVVideoAdSkipButton *)self mode];
   if (v4 > 1)
   {
-    if (v5)
+    if (mode)
     {
       v7 = MEMORY[0x277CCACA8];
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:duration];
       [v7 stringWithFormat:@"%@", v8];
     }
 
@@ -109,16 +109,16 @@
       v11 = SVBundle();
       v8 = [v11 localizedStringForKey:@"Skip in %lu" value:&stru_2877C2D00 table:0];
 
-      [MEMORY[0x277CCACA8] stringWithFormat:v8, a3];
+      [MEMORY[0x277CCACA8] stringWithFormat:v8, duration];
     }
     v6 = ;
 
-    v10 = [MEMORY[0x277D75348] colorWithRed:0.921568627 green:0.921568627 blue:0.960784314 alpha:0.6];
+    whiteColor = [MEMORY[0x277D75348] colorWithRed:0.921568627 green:0.921568627 blue:0.960784314 alpha:0.6];
   }
 
   else
   {
-    if (v5)
+    if (mode)
     {
       v6 = &stru_2877C2D00;
     }
@@ -129,10 +129,10 @@
       v6 = [v9 localizedStringForKey:@"Skip" value:&stru_2877C2D00 table:0];
     }
 
-    v10 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
-  v12 = v10;
+  v12 = whiteColor;
   v13 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v6];
   v14 = _UISolariumFeatureFlagEnabled();
   v15 = MEMORY[0x277D769D0];

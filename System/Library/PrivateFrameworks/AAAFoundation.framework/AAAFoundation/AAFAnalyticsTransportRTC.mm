@@ -1,9 +1,9 @@
 @interface AAFAnalyticsTransportRTC
-+ (id)analyticsTransportRTCWithClientType:(id)a3 clientBundleId:(id)a4 clientName:(id)a5;
-- (AAFAnalyticsTransportRTC)initWithClientType:(id)a3 clientBundleId:(id)a4 clientName:(id)a5;
++ (id)analyticsTransportRTCWithClientType:(id)type clientBundleId:(id)id clientName:(id)name;
+- (AAFAnalyticsTransportRTC)initWithClientType:(id)type clientBundleId:(id)id clientName:(id)name;
 - (NSString)debugDescription;
 - (void)dealloc;
-- (void)sendEvent:(id)a3;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation AAFAnalyticsTransportRTC
@@ -12,28 +12,28 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(AAFAnalyticsTransportRTC *)self clientType];
-  v6 = [(AAFAnalyticsTransportRTC *)self clientBundleId];
-  v7 = [(AAFAnalyticsTransportRTC *)self clientName];
-  v8 = [v3 stringWithFormat:@"<%@: %p> ClientType: [%@], ClientBundleId: [%@], ClientName: [%@]", v4, self, v5, v6, v7];
+  clientType = [(AAFAnalyticsTransportRTC *)self clientType];
+  clientBundleId = [(AAFAnalyticsTransportRTC *)self clientBundleId];
+  clientName = [(AAFAnalyticsTransportRTC *)self clientName];
+  v8 = [v3 stringWithFormat:@"<%@: %p> ClientType: [%@], ClientBundleId: [%@], ClientName: [%@]", v4, self, clientType, clientBundleId, clientName];
 
   return v8;
 }
 
-- (AAFAnalyticsTransportRTC)initWithClientType:(id)a3 clientBundleId:(id)a4 clientName:(id)a5
+- (AAFAnalyticsTransportRTC)initWithClientType:(id)type clientBundleId:(id)id clientName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  typeCopy = type;
+  idCopy = id;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = AAFAnalyticsTransportRTC;
   v12 = [(AAFAnalyticsTransportRTC *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientType, a3);
-    objc_storeStrong(&v13->_clientBundleId, a4);
-    objc_storeStrong(&v13->_clientName, a5);
+    objc_storeStrong(&v12->_clientType, type);
+    objc_storeStrong(&v13->_clientBundleId, id);
+    objc_storeStrong(&v13->_clientName, name);
     v14 = [[AAFXPCSessionConfig alloc] initWithServiceName:@"com.apple.cdp.daemon" remoteProtocol:&unk_1F4849630 options:0];
     v15 = [[AAFXPCSession alloc] initWithRemoteServiceConfig:v14 delegate:v13];
     remoteService = v13->_remoteService;
@@ -45,13 +45,13 @@
   return v13;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [(AAFXPCSession *)self->_remoteService remoteServiceProxyWithErrorHandler:&__block_literal_global_5];
-  v6 = [v4 clientName];
+  clientName = [eventCopy clientName];
 
-  if (!v6)
+  if (!clientName)
   {
     v7 = _AAFLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -59,13 +59,13 @@
       [AAFAnalyticsTransportRTC sendEvent:];
     }
 
-    v8 = [(AAFAnalyticsTransportRTC *)self clientName];
-    [v4 setClientName:v8];
+    clientName2 = [(AAFAnalyticsTransportRTC *)self clientName];
+    [eventCopy setClientName:clientName2];
   }
 
-  v9 = [v4 clientBundleId];
+  clientBundleId = [eventCopy clientBundleId];
 
-  if (!v9)
+  if (!clientBundleId)
   {
     v10 = _AAFLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -73,13 +73,13 @@
       [AAFAnalyticsTransportRTC sendEvent:];
     }
 
-    v11 = [(AAFAnalyticsTransportRTC *)self clientBundleId];
-    [v4 setClientBundleId:v11];
+    clientBundleId2 = [(AAFAnalyticsTransportRTC *)self clientBundleId];
+    [eventCopy setClientBundleId:clientBundleId2];
   }
 
-  v12 = [v4 clientType];
+  clientType = [eventCopy clientType];
 
-  if (!v12)
+  if (!clientType)
   {
     v13 = _AAFLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -87,11 +87,11 @@
       [AAFAnalyticsTransportRTC sendEvent:];
     }
 
-    v14 = [(AAFAnalyticsTransportRTC *)self clientType];
-    [v4 setClientType:v14];
+    clientType2 = [(AAFAnalyticsTransportRTC *)self clientType];
+    [eventCopy setClientType:clientType2];
   }
 
-  [v5 sendEvent:v4];
+  [v5 sendEvent:eventCopy];
 }
 
 void __38__AAFAnalyticsTransportRTC_sendEvent___block_invoke(uint64_t a1, void *a2)
@@ -115,15 +115,15 @@ void __38__AAFAnalyticsTransportRTC_sendEvent___block_invoke(uint64_t a1, void *
   [(AAFAnalyticsTransportRTC *)&v4 dealloc];
 }
 
-+ (id)analyticsTransportRTCWithClientType:(id)a3 clientBundleId:(id)a4 clientName:(id)a5
++ (id)analyticsTransportRTCWithClientType:(id)type clientBundleId:(id)id clientName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9 && v10)
+  typeCopy = type;
+  idCopy = id;
+  nameCopy = name;
+  v11 = nameCopy;
+  if (typeCopy && idCopy && nameCopy)
   {
-    v12 = [[a1 alloc] initWithClientType:v8 clientBundleId:v9 clientName:v10];
+    v12 = [[self alloc] initWithClientType:typeCopy clientBundleId:idCopy clientName:nameCopy];
   }
 
   else

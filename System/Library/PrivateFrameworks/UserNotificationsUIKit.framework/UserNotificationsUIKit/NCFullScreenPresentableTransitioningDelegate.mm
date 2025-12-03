@@ -1,16 +1,16 @@
 @interface NCFullScreenPresentableTransitioningDelegate
-- (id)animationControllerForDismissedController:(id)a3 userInfo:(id)a4;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5 userInfo:(id)a6;
+- (id)animationControllerForDismissedController:(id)controller userInfo:(id)info;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController userInfo:(id)info;
 @end
 
 @implementation NCFullScreenPresentableTransitioningDelegate
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5 userInfo:(id)a6
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController userInfo:(id)info
 {
-  v6 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v7 = v6;
+    v7 = controllerCopy;
   }
 
   else
@@ -23,12 +23,12 @@
   return v7;
 }
 
-- (id)animationControllerForDismissedController:(id)a3 userInfo:(id)a4
+- (id)animationControllerForDismissedController:(id)controller userInfo:(id)info
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v5 = v4;
+    v5 = controllerCopy;
   }
 
   else

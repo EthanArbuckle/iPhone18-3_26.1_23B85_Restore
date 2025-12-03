@@ -1,27 +1,27 @@
 @interface FTMessageDelivery_HTTP
-- (BOOL)_sendMessageAsynchronously:(id)a3 error:(id *)a4;
-- (BOOL)_tryRetryMessageWithTimeInterval:(double)a3;
+- (BOOL)_sendMessageAsynchronously:(id)asynchronously error:(id *)error;
+- (BOOL)_tryRetryMessageWithTimeInterval:(double)interval;
 - (BOOL)authKitBAADisabled;
-- (BOOL)sendMessage:(id)a3;
-- (BOOL)sendMessageAtTopOfTheQueue:(id)a3;
-- (BOOL)shouldFailFastForMessage:(id)a3;
-- (FTMessageDelivery_HTTP)initWithAPSConnection:(id)a3;
-- (FTMessageDelivery_HTTP)initWithIDSServerBag:(id)a3 apsConnection:(id)a4;
-- (FTMessageDelivery_HTTP)initWithIDSServerBag:(id)a3 iMessageServerBag:(id)a4 remoteConnectionFactory:(id)a5 mobileNetworkManager:(id)a6 apsConnection:(id)a7 retryBackoffProvider:(id)a8 timeoutBackoffProvider:(id)a9;
-- (id)_processResultData:(id)a3 forMessage:(id)a4 error:(id *)a5;
+- (BOOL)sendMessage:(id)message;
+- (BOOL)sendMessageAtTopOfTheQueue:(id)queue;
+- (BOOL)shouldFailFastForMessage:(id)message;
+- (FTMessageDelivery_HTTP)initWithAPSConnection:(id)connection;
+- (FTMessageDelivery_HTTP)initWithIDSServerBag:(id)bag apsConnection:(id)connection;
+- (FTMessageDelivery_HTTP)initWithIDSServerBag:(id)bag iMessageServerBag:(id)serverBag remoteConnectionFactory:(id)factory mobileNetworkManager:(id)manager apsConnection:(id)connection retryBackoffProvider:(id)provider timeoutBackoffProvider:(id)backoffProvider;
+- (id)_processResultData:(id)data forMessage:(id)message error:(id *)error;
 - (void)_cleanupURLConnection;
 - (void)_clearRetryTimer;
 - (void)_dequeueIfNeeded;
-- (void)_informDelegatesOfMessage:(id)a3 result:(id)a4 resultCode:(int64_t)a5 error:(id)a6;
-- (void)_notifyDelegateAboutError:(id)a3 forMessage:(id)a4;
-- (void)_serverBagLoaded:(id)a3;
+- (void)_informDelegatesOfMessage:(id)message result:(id)result resultCode:(int64_t)code error:(id)error;
+- (void)_notifyDelegateAboutError:(id)error forMessage:(id)message;
+- (void)_serverBagLoaded:(id)loaded;
 - (void)_updateWiFiAssertions;
-- (void)_urlRequestWithURL:(id)a3 andData:(id)a4 message:(id)a5 completionBlock:(id)a6;
-- (void)cancelMessage:(id)a3;
+- (void)_urlRequestWithURL:(id)l andData:(id)data message:(id)message completionBlock:(id)block;
+- (void)cancelMessage:(id)message;
 - (void)dealloc;
 - (void)invalidate;
 - (void)networkStateChanged;
-- (void)queue:(id)a3 hitTimeoutForMessage:(id)a4;
+- (void)queue:(id)queue hitTimeoutForMessage:(id)message;
 @end
 
 @implementation FTMessageDelivery_HTTP
@@ -29,41 +29,41 @@
 - (void)_dequeueIfNeeded
 {
   v54 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  [(FTMessageDelivery_HTTP *)v2 _updateWiFiAssertions];
-  v3 = [(FTMessageDelivery *)v2 _queue];
-  v4 = [v3 count];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(FTMessageDelivery_HTTP *)selfCopy _updateWiFiAssertions];
+  _queue = [(FTMessageDelivery *)selfCopy _queue];
+  v4 = [_queue count];
 
   if (v4)
   {
-    v5 = [(FTMessageDelivery *)v2 _queue];
-    v6 = [v5 topMessage];
+    _queue2 = [(FTMessageDelivery *)selfCopy _queue];
+    topMessage = [_queue2 topMessage];
 
-    [v6 startSendEventTracing];
-    v7 = v2->_idsServerBag;
-    if (![v6 isIDSMessage]|| ([(IDSServerBag *)v7 isLoaded]& 1) != 0)
+    [topMessage startSendEventTracing];
+    v7 = selfCopy->_idsServerBag;
+    if (![topMessage isIDSMessage]|| ([(IDSServerBag *)v7 isLoaded]& 1) != 0)
     {
-      [(FTMessageDelivery_HTTP *)v2 _cleanupURLConnection];
-      v8 = [(FTMessageDelivery *)v2 _queue];
-      v9 = [v8 dequeueTopMessage];
+      [(FTMessageDelivery_HTTP *)selfCopy _cleanupURLConnection];
+      _queue3 = [(FTMessageDelivery *)selfCopy _queue];
+      dequeueTopMessage = [_queue3 dequeueTopMessage];
 
-      if (([v9 isValidMessage]& 1) == 0)
+      if (([dequeueTopMessage isValidMessage]& 1) == 0)
       {
-        v12 = [MEMORY[0x1E696AEC0] stringGUID];
-        v19 = [MEMORY[0x1E69A6138] registration];
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+        stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+        registration = [MEMORY[0x1E69A6138] registration];
+        if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v51 = v12;
-          _os_log_impl(&dword_195925000, v19, OS_LOG_TYPE_DEFAULT, "%@ Message not being delivered, invalid message", buf, 0xCu);
+          v51 = stringGUID;
+          _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "%@ Message not being delivered, invalid message", buf, 0xCu);
         }
 
         v20 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v51 = v12;
+          v51 = stringGUID;
           _os_log_impl(&dword_195925000, v20, OS_LOG_TYPE_DEFAULT, "%@ Cancelling message delivery! invalid message!", buf, 0xCu);
         }
 
@@ -71,31 +71,31 @@
         {
           if (MarcoShouldLog())
           {
-            v39 = v12;
+            v39 = stringGUID;
             MarcoLog();
           }
 
           if (IMShouldLog())
           {
-            v39 = v12;
+            v39 = stringGUID;
             IMLogString();
           }
         }
 
         v18 = [FTMessageDelivery _errorForTDMessageDeliveryStatus:5003 userInfo:0, v39];
-        [(FTMessageDelivery_HTTP *)v2 _notifyDelegateAboutError:v18 forMessage:v9];
-        v11 = 0;
+        [(FTMessageDelivery_HTTP *)selfCopy _notifyDelegateAboutError:v18 forMessage:dequeueTopMessage];
+        registration4 = 0;
         goto LABEL_60;
       }
 
       v49 = 0;
-      v10 = [v9 hasRequiredKeys:&v49];
-      v11 = v49;
+      v10 = [dequeueTopMessage hasRequiredKeys:&v49];
+      registration4 = v49;
       if ((v10 & 1) == 0)
       {
-        v12 = [MEMORY[0x1E696AEC0] stringGUID];
-        v24 = [MEMORY[0x1E69A6138] warning];
-        if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+        stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+        warning = [MEMORY[0x1E69A6138] warning];
+        if (os_log_type_enabled(warning, OS_LOG_TYPE_ERROR))
         {
           sub_1959639CC();
         }
@@ -104,9 +104,9 @@
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v51 = v12;
+          v51 = stringGUID;
           v52 = 2112;
-          v53 = v11;
+          v53 = registration4;
           _os_log_impl(&dword_195925000, v25, OS_LOG_TYPE_DEFAULT, "%@ Cancelling message delivery! Missing keys: %@", buf, 0x16u);
         }
 
@@ -114,69 +114,69 @@
         {
           if (MarcoShouldLog())
           {
-            v39 = v12;
-            v40 = v11;
+            v39 = stringGUID;
+            v40 = registration4;
             MarcoLog();
           }
 
           if (IMShouldLog())
           {
-            v39 = v12;
-            v40 = v11;
+            v39 = stringGUID;
+            v40 = registration4;
             IMLogString();
           }
         }
 
-        if ([v9 payloadCanBeLogged:v39])
+        if ([dequeueTopMessage payloadCanBeLogged:v39])
         {
-          v26 = [v9 messageBodyUsingCache];
-          v27 = [v26 description];
+          messageBodyUsingCache = [dequeueTopMessage messageBodyUsingCache];
+          v27 = [messageBodyUsingCache description];
           v28 = IDSLoggableDescriptionForObjectOnService();
 
-          v47 = v12;
+          v47 = stringGUID;
           v48 = v28;
           cut_dispatch_log_queue();
         }
 
         v18 = [FTMessageDelivery _errorForTDMessageDeliveryStatus:5008 userInfo:0];
-        [(FTMessageDelivery_HTTP *)v2 _notifyDelegateAboutError:v18 forMessage:v9];
+        [(FTMessageDelivery_HTTP *)selfCopy _notifyDelegateAboutError:v18 forMessage:dequeueTopMessage];
         goto LABEL_60;
       }
 
-      if ([(FTMessageDelivery *)v2 retryInAirplaneMode]|| ![(FTMessageDeliveryHTTPMobileNetworkManager *)v2->_mobileNetworkManager isAirplaneModeEnabled]|| ([(FTMessageDeliveryHTTPMobileNetworkManager *)v2->_mobileNetworkManager isWiFiUsable]& 1) != 0)
+      if ([(FTMessageDelivery *)selfCopy retryInAirplaneMode]|| ![(FTMessageDeliveryHTTPMobileNetworkManager *)selfCopy->_mobileNetworkManager isAirplaneModeEnabled]|| ([(FTMessageDeliveryHTTPMobileNetworkManager *)selfCopy->_mobileNetworkManager isWiFiUsable]& 1) != 0)
       {
-        if (![(FTMessageDelivery_HTTP *)v2 shouldFailFastForMessage:v9])
+        if (![(FTMessageDelivery_HTTP *)selfCopy shouldFailFastForMessage:dequeueTopMessage])
         {
-          if (![(FTMessageDelivery *)v2 isTrafficDisabledOnVMForMessage:v9])
+          if (![(FTMessageDelivery *)selfCopy isTrafficDisabledOnVMForMessage:dequeueTopMessage])
           {
-            [(FTMessageDelivery_HTTP *)v2 _sendMessageAsynchronously:v9 error:0];
+            [(FTMessageDelivery_HTTP *)selfCopy _sendMessageAsynchronously:dequeueTopMessage error:0];
             goto LABEL_61;
           }
 
-          v12 = [MEMORY[0x1E696AEC0] stringGUID];
-          v30 = [MEMORY[0x1E69A6138] warning];
-          if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+          stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+          warning2 = [MEMORY[0x1E69A6138] warning];
+          if (os_log_type_enabled(warning2, OS_LOG_TYPE_ERROR))
           {
             sub_195963AB8();
           }
 
-          if ([v9 payloadCanBeLogged])
+          if ([dequeueTopMessage payloadCanBeLogged])
           {
-            v31 = [v9 messageBodyUsingCache];
-            v32 = [v31 description];
+            messageBodyUsingCache2 = [dequeueTopMessage messageBodyUsingCache];
+            v32 = [messageBodyUsingCache2 description];
             v33 = IDSLoggableDescriptionForObjectOnService();
 
-            v41 = v12;
+            v41 = stringGUID;
             v42 = v33;
             cut_dispatch_log_queue();
           }
 
           v18 = [FTMessageDelivery _errorForTDMessageDeliveryStatus:20000 userInfo:0];
-          [(FTMessageDelivery_HTTP *)v2 _notifyDelegateAboutError:v18 forMessage:v9];
+          [(FTMessageDelivery_HTTP *)selfCopy _notifyDelegateAboutError:v18 forMessage:dequeueTopMessage];
 LABEL_60:
 
 LABEL_61:
-          [(FTMessageDelivery_HTTP *)v2 _updateWiFiAssertions];
+          [(FTMessageDelivery_HTTP *)selfCopy _updateWiFiAssertions];
 LABEL_62:
 
 LABEL_63:
@@ -185,9 +185,9 @@ LABEL_64:
           goto LABEL_65;
         }
 
-        v12 = [MEMORY[0x1E696AEC0] stringGUID];
-        v13 = [MEMORY[0x1E69A6138] warning];
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+        warning3 = [MEMORY[0x1E69A6138] warning];
+        if (os_log_type_enabled(warning3, OS_LOG_TYPE_ERROR))
         {
           sub_195963B28();
         }
@@ -196,7 +196,7 @@ LABEL_64:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v51 = v12;
+          v51 = stringGUID;
           _os_log_impl(&dword_195925000, v14, OS_LOG_TYPE_DEFAULT, "%@ Message not being delivered, network is unavailable, can attempt stewie", buf, 0xCu);
         }
 
@@ -204,24 +204,24 @@ LABEL_64:
         {
           if (MarcoShouldLog())
           {
-            v39 = v12;
+            v39 = stringGUID;
             MarcoLog();
           }
 
           if (IMShouldLog())
           {
-            v39 = v12;
+            v39 = stringGUID;
             IMLogString();
           }
         }
 
-        if ([v9 payloadCanBeLogged])
+        if ([dequeueTopMessage payloadCanBeLogged])
         {
-          v15 = [v9 messageBodyUsingCache];
-          v16 = [v15 description];
+          messageBodyUsingCache3 = [dequeueTopMessage messageBodyUsingCache];
+          v16 = [messageBodyUsingCache3 description];
           v17 = IDSLoggableDescriptionForObjectOnService();
 
-          v43 = v12;
+          v43 = stringGUID;
           v44 = v17;
           cut_dispatch_log_queue();
         }
@@ -229,9 +229,9 @@ LABEL_64:
 
       else
       {
-        v12 = [MEMORY[0x1E696AEC0] stringGUID];
-        v34 = [MEMORY[0x1E69A6138] warning];
-        if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+        stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+        warning4 = [MEMORY[0x1E69A6138] warning];
+        if (os_log_type_enabled(warning4, OS_LOG_TYPE_ERROR))
         {
           sub_195963A48();
         }
@@ -240,7 +240,7 @@ LABEL_64:
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v51 = v12;
+          v51 = stringGUID;
           _os_log_impl(&dword_195925000, v35, OS_LOG_TYPE_DEFAULT, "%@ Message not being delivered, airplane mode is enabled", buf, 0xCu);
         }
 
@@ -248,67 +248,67 @@ LABEL_64:
         {
           if (MarcoShouldLog())
           {
-            v39 = v12;
+            v39 = stringGUID;
             MarcoLog();
           }
 
           if (IMShouldLog())
           {
-            v39 = v12;
+            v39 = stringGUID;
             IMLogString();
           }
         }
 
-        if ([v9 payloadCanBeLogged])
+        if ([dequeueTopMessage payloadCanBeLogged])
         {
-          v36 = [v9 messageBodyUsingCache];
-          v37 = [v36 description];
+          messageBodyUsingCache4 = [dequeueTopMessage messageBodyUsingCache];
+          v37 = [messageBodyUsingCache4 description];
           v38 = IDSLoggableDescriptionForObjectOnService();
 
-          v45 = v12;
+          v45 = stringGUID;
           v46 = v38;
           cut_dispatch_log_queue();
         }
       }
 
       v18 = [FTMessageDelivery _errorForTDMessageDeliveryStatus:10000 userInfo:0];
-      [(FTMessageDelivery_HTTP *)v2 _notifyDelegateAboutError:v18 forMessage:v9];
+      [(FTMessageDelivery_HTTP *)selfCopy _notifyDelegateAboutError:v18 forMessage:dequeueTopMessage];
       goto LABEL_60;
     }
 
-    if ([(FTMessageDelivery *)v2 logToRegistration])
+    if ([(FTMessageDelivery *)selfCopy logToRegistration])
     {
-      v21 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      registration2 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_195925000, v21, OS_LOG_TYPE_DEFAULT, "Server bag is not loaded, waiting for it", buf, 2u);
+        _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, "Server bag is not loaded, waiting for it", buf, 2u);
       }
     }
 
     if ([(IDSServerBag *)v7 isServerAvailable])
     {
-      if ([(FTMessageDelivery *)v2 logToRegistration])
+      if ([(FTMessageDelivery *)selfCopy logToRegistration])
       {
-        v22 = [MEMORY[0x1E69A6138] registration];
-        if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+        registration3 = [MEMORY[0x1E69A6138] registration];
+        if (os_log_type_enabled(registration3, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_195925000, v22, OS_LOG_TYPE_DEFAULT, " => Server is available", buf, 2u);
+          _os_log_impl(&dword_195925000, registration3, OS_LOG_TYPE_DEFAULT, " => Server is available", buf, 2u);
         }
       }
 
       if (([(IDSServerBag *)v7 isLoading]& 1) != 0)
       {
-        if ([(FTMessageDelivery *)v2 logToRegistration])
+        if ([(FTMessageDelivery *)selfCopy logToRegistration])
         {
-          v11 = [MEMORY[0x1E69A6138] registration];
-          if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+          registration4 = [MEMORY[0x1E69A6138] registration];
+          if (os_log_type_enabled(registration4, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
             v23 = " => Already loading";
 LABEL_78:
-            _os_log_impl(&dword_195925000, v11, OS_LOG_TYPE_DEFAULT, v23, buf, 2u);
+            _os_log_impl(&dword_195925000, registration4, OS_LOG_TYPE_DEFAULT, v23, buf, 2u);
             goto LABEL_79;
           }
 
@@ -319,10 +319,10 @@ LABEL_78:
       else
       {
         [(IDSServerBag *)v7 startBagLoad];
-        if ([(FTMessageDelivery *)v2 logToRegistration])
+        if ([(FTMessageDelivery *)selfCopy logToRegistration])
         {
-          v11 = [MEMORY[0x1E69A6138] registration];
-          if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+          registration4 = [MEMORY[0x1E69A6138] registration];
+          if (os_log_type_enabled(registration4, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
             v23 = " => Starting load";
@@ -334,10 +334,10 @@ LABEL_78:
       }
     }
 
-    else if ([(FTMessageDelivery *)v2 logToRegistration])
+    else if ([(FTMessageDelivery *)selfCopy logToRegistration])
     {
-      v11 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      registration4 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v23 = " => Server not available";
@@ -345,37 +345,37 @@ LABEL_78:
       }
 
 LABEL_79:
-      v9 = v6;
+      dequeueTopMessage = topMessage;
       goto LABEL_62;
     }
 
-    v9 = v6;
+    dequeueTopMessage = topMessage;
     goto LABEL_63;
   }
 
-  if ([(FTMessageDelivery *)v2 logToRegistration])
+  if ([(FTMessageDelivery *)selfCopy logToRegistration])
   {
-    v9 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    dequeueTopMessage = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(dequeueTopMessage, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_195925000, v9, OS_LOG_TYPE_DEFAULT, "Nothing left in queue, done", buf, 2u);
+      _os_log_impl(&dword_195925000, dequeueTopMessage, OS_LOG_TYPE_DEFAULT, "Nothing left in queue, done", buf, 2u);
     }
 
     goto LABEL_64;
   }
 
 LABEL_65:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v29 = *MEMORY[0x1E69E9840];
 }
 
 - (void)_updateWiFiAssertions
 {
-  v3 = [(FTMessageDelivery_HTTP *)self busy];
+  busy = [(FTMessageDelivery_HTTP *)self busy];
   mobileNetworkManager = self->_mobileNetworkManager;
-  if (v3)
+  if (busy)
   {
 
     MEMORY[0x1EEE66B58](mobileNetworkManager, sel_addWiFiAutoAssociationClientToken_);
@@ -390,71 +390,71 @@ LABEL_65:
 
 - (void)_cleanupURLConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_remoteConnection && [(FTMessageDelivery *)v2 logToRegistration])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_remoteConnection && [(FTMessageDelivery *)selfCopy logToRegistration])
   {
-    v3 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       *v5 = 0;
-      _os_log_impl(&dword_195925000, v3, OS_LOG_TYPE_DEFAULT, "Cleaning out url connection", v5, 2u);
+      _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Cleaning out url connection", v5, 2u);
     }
   }
 
-  [(FTMessageDeliveryRemoteURLConnection *)v2->_remoteConnection cancel];
-  remoteConnection = v2->_remoteConnection;
-  v2->_remoteConnection = 0;
+  [(FTMessageDeliveryRemoteURLConnection *)selfCopy->_remoteConnection cancel];
+  remoteConnection = selfCopy->_remoteConnection;
+  selfCopy->_remoteConnection = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (FTMessageDelivery_HTTP)initWithAPSConnection:(id)a3
+- (FTMessageDelivery_HTTP)initWithAPSConnection:(id)connection
 {
   v4 = MEMORY[0x1E69A53F0];
-  v5 = a3;
+  connectionCopy = connection;
   v6 = [v4 sharedInstanceForBagType:0];
-  v7 = [(FTMessageDelivery_HTTP *)self initWithIDSServerBag:v6 apsConnection:v5];
+  v7 = [(FTMessageDelivery_HTTP *)self initWithIDSServerBag:v6 apsConnection:connectionCopy];
 
   return v7;
 }
 
-- (FTMessageDelivery_HTTP)initWithIDSServerBag:(id)a3 apsConnection:(id)a4
+- (FTMessageDelivery_HTTP)initWithIDSServerBag:(id)bag apsConnection:(id)connection
 {
   v6 = MEMORY[0x1E69A53F0];
-  v7 = a4;
-  v8 = a3;
+  connectionCopy = connection;
+  bagCopy = bag;
   v9 = [v6 sharedInstanceForBagType:1];
   v10 = objc_alloc_init(FTMessageDeliveryRemoteURLConnectionFactory);
-  v11 = [MEMORY[0x1E69A6108] sharedInstance];
-  v12 = [(FTMessageDelivery_HTTP *)self initWithIDSServerBag:v8 iMessageServerBag:v9 remoteConnectionFactory:v10 mobileNetworkManager:v11 apsConnection:v7 retryBackoffProvider:&unk_1F09C70E8 timeoutBackoffProvider:&unk_1F09C7108];
+  mEMORY[0x1E69A6108] = [MEMORY[0x1E69A6108] sharedInstance];
+  v12 = [(FTMessageDelivery_HTTP *)self initWithIDSServerBag:bagCopy iMessageServerBag:v9 remoteConnectionFactory:v10 mobileNetworkManager:mEMORY[0x1E69A6108] apsConnection:connectionCopy retryBackoffProvider:&unk_1F09C70E8 timeoutBackoffProvider:&unk_1F09C7108];
 
   return v12;
 }
 
-- (FTMessageDelivery_HTTP)initWithIDSServerBag:(id)a3 iMessageServerBag:(id)a4 remoteConnectionFactory:(id)a5 mobileNetworkManager:(id)a6 apsConnection:(id)a7 retryBackoffProvider:(id)a8 timeoutBackoffProvider:(id)a9
+- (FTMessageDelivery_HTTP)initWithIDSServerBag:(id)bag iMessageServerBag:(id)serverBag remoteConnectionFactory:(id)factory mobileNetworkManager:(id)manager apsConnection:(id)connection retryBackoffProvider:(id)provider timeoutBackoffProvider:(id)backoffProvider
 {
-  v31 = a3;
-  v30 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
+  bagCopy = bag;
+  serverBagCopy = serverBag;
+  factoryCopy = factory;
+  managerCopy = manager;
+  providerCopy = provider;
+  backoffProviderCopy = backoffProvider;
   v32.receiver = self;
   v32.super_class = FTMessageDelivery_HTTP;
-  v20 = [(FTMessageDelivery *)&v32 initWithAPSConnection:a7];
+  v20 = [(FTMessageDelivery *)&v32 initWithAPSConnection:connection];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_idsServerBag, a3);
-    objc_storeStrong(&v21->_iMessageServerBag, a4);
-    objc_storeStrong(&v21->_remoteConnectionFactory, a5);
-    objc_storeStrong(&v21->_mobileNetworkManager, a6);
-    v22 = MEMORY[0x19A8B8CC0](v18);
+    objc_storeStrong(&v20->_idsServerBag, bag);
+    objc_storeStrong(&v21->_iMessageServerBag, serverBag);
+    objc_storeStrong(&v21->_remoteConnectionFactory, factory);
+    objc_storeStrong(&v21->_mobileNetworkManager, manager);
+    v22 = MEMORY[0x19A8B8CC0](providerCopy);
     retryBackoffProvider = v21->_retryBackoffProvider;
     v21->_retryBackoffProvider = v22;
 
-    v24 = MEMORY[0x19A8B8CC0](v19);
+    v24 = MEMORY[0x19A8B8CC0](backoffProviderCopy);
     timeoutBackoffProvider = v21->_timeoutBackoffProvider;
     v21->_timeoutBackoffProvider = v24;
 
@@ -465,8 +465,8 @@ LABEL_65:
       v21->_offGridConnectionMonitor = v26;
     }
 
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 addObserver:v21 selector:sel__serverBagLoaded_ name:*MEMORY[0x1E69A50A8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v21 selector:sel__serverBagLoaded_ name:*MEMORY[0x1E69A50A8] object:0];
   }
 
   return v21;
@@ -474,8 +474,8 @@ LABEL_65:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:0 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:0 object:0];
 
   [(FTMessageDeliveryRemoteURLConnection *)self->_remoteConnection cancel];
   v4.receiver = self;
@@ -483,43 +483,43 @@ LABEL_65:
   [(FTMessageDelivery *)&v4 dealloc];
 }
 
-- (void)_urlRequestWithURL:(id)a3 andData:(id)a4 message:(id)a5 completionBlock:(id)a6
+- (void)_urlRequestWithURL:(id)l andData:(id)data message:(id)message completionBlock:(id)block
 {
   v144 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v103 = a4;
-  v10 = a5;
-  v101 = a6;
-  v108 = v10;
-  if (v9)
+  lCopy = l;
+  dataCopy = data;
+  messageCopy = message;
+  blockCopy = block;
+  v108 = messageCopy;
+  if (lCopy)
   {
-    if ([v10 wantsGZip])
+    if ([messageCopy wantsGZip])
     {
-      v98 = [v103 _FTCopyGzippedData];
+      _FTCopyGzippedData = [dataCopy _FTCopyGzippedData];
     }
 
     else
     {
-      v98 = v103;
+      _FTCopyGzippedData = dataCopy;
     }
 
-    v102 = [v10 additionalQueryStringParameters];
+    additionalQueryStringParameters = [messageCopy additionalQueryStringParameters];
     v96 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v12 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v102;
+      *&buf[4] = additionalQueryStringParameters;
       _os_log_impl(&dword_195925000, v12, OS_LOG_TYPE_DEFAULT, " Query parameters: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v90 = v102;
+      v90 = additionalQueryStringParameters;
       _IDSLogV();
     }
 
-    if ([v102 count])
+    if ([additionalQueryStringParameters count])
     {
       v133[0] = MEMORY[0x1E69E9820];
       v133[1] = 3221225472;
@@ -527,7 +527,7 @@ LABEL_65:
       v133[3] = &unk_1E7435060;
       v13 = v96;
       v134 = v13;
-      [v102 enumerateKeysAndObjectsUsingBlock:v133];
+      [additionalQueryStringParameters enumerateKeysAndObjectsUsingBlock:v133];
       v14 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
@@ -544,8 +544,8 @@ LABEL_65:
 
       if ([v13 length])
       {
-        v15 = [v9 absoluteString];
-        v16 = [v15 stringByAppendingFormat:@"?%@", v13];
+        absoluteString = [lCopy absoluteString];
+        v16 = [absoluteString stringByAppendingFormat:@"?%@", v13];
 
         v100 = [MEMORY[0x1E695DFF8] URLWithString:v16];
 
@@ -566,13 +566,13 @@ LABEL_65:
 
       else
       {
-        v100 = v9;
+        v100 = lCopy;
       }
     }
 
     else
     {
-      v100 = v9;
+      v100 = lCopy;
     }
 
     v18 = self->_timeoutBackoffProvider == 0;
@@ -592,12 +592,12 @@ LABEL_65:
     if (([v108 wantsHTTPGet] & 1) == 0)
     {
       [v110 setHTTPMethod:@"POST"];
-      [v110 setHTTPBody:v98];
+      [v110 setHTTPBody:_FTCopyGzippedData];
     }
 
     if (([v108 isIDSMessage] & 1) == 0)
     {
-      [v110 setHTTPBody:v103];
+      [v110 setHTTPBody:dataCopy];
     }
 
     if ([v108 httpDoNotDecodeData])
@@ -610,12 +610,12 @@ LABEL_65:
     }
 
     [v110 setHTTPShouldHandleCookies:0];
-    v26 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       *&buf[4] = v100;
-      _os_log_impl(&dword_195925000, v26, OS_LOG_TYPE_DEFAULT, "Building URL request with URL: %@", buf, 0xCu);
+      _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Building URL request with URL: %@", buf, 0xCu);
     }
 
     v27 = OSLogHandleForIDSCategory();
@@ -641,9 +641,9 @@ LABEL_65:
     v28 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [(FTMessageDelivery *)self userAgent];
+      userAgent = [(FTMessageDelivery *)self userAgent];
       *buf = 138412290;
-      *&buf[4] = v29;
+      *&buf[4] = userAgent;
       _os_log_impl(&dword_195925000, v28, OS_LOG_TYPE_DEFAULT, "       User Agent: %@", buf, 0xCu);
     }
 
@@ -651,13 +651,13 @@ LABEL_65:
     {
       if (MarcoShouldLog())
       {
-        v92 = [(FTMessageDelivery *)self userAgent];
+        userAgent2 = [(FTMessageDelivery *)self userAgent];
         MarcoLog();
       }
 
       if (IMShouldLog())
       {
-        v92 = [(FTMessageDelivery *)self userAgent];
+        userAgent2 = [(FTMessageDelivery *)self userAgent];
         IMLogString();
       }
     }
@@ -677,29 +677,29 @@ LABEL_65:
     v31 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [(FTMessageDelivery *)self userAgent];
+      userAgent3 = [(FTMessageDelivery *)self userAgent];
       *buf = 138412290;
-      *&buf[4] = v32;
+      *&buf[4] = userAgent3;
       _os_log_impl(&dword_195925000, v31, OS_LOG_TYPE_DEFAULT, "       User Agent: %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v92 = [(FTMessageDelivery *)self userAgent];
+      userAgent2 = [(FTMessageDelivery *)self userAgent];
       _IDSLogV();
     }
 
-    v104 = [(FTMessageDelivery *)self userAgent];
-    if (![(__CFString *)v104 length])
+    userAgent4 = [(FTMessageDelivery *)self userAgent];
+    if (![(__CFString *)userAgent4 length])
     {
 
-      v104 = @"FTMessageDelivery";
+      userAgent4 = @"FTMessageDelivery";
     }
 
     v33 = MEMORY[0x1E696AEC0];
     v34 = +[FTDeviceSupport sharedInstance];
-    v35 = [v34 userAgentString];
-    v105 = [v33 stringWithFormat:@"%@ %@", v104, v35];
+    userAgentString = [v34 userAgentString];
+    v105 = [v33 stringWithFormat:@"%@ %@", userAgent4, userAgentString];
 
     v36 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -738,11 +738,11 @@ LABEL_65:
       _IDSLogV();
     }
 
-    v38 = [v108 isIDSMessage];
+    isIDSMessage = [v108 isIDSMessage];
     v39 = sub_19592BC58();
     v40 = [v39 length];
 
-    if (v38)
+    if (isIDSMessage)
     {
       if (v40)
       {
@@ -767,22 +767,22 @@ LABEL_65:
           [v110 setValue:@"gzip" forHTTPHeaderField:@"content-encoding"];
         }
 
-        v42 = [v108 overrideContentType];
-        v43 = v42;
-        if (!v42)
+        overrideContentType = [v108 overrideContentType];
+        v43 = overrideContentType;
+        if (!overrideContentType)
         {
-          v42 = @"application/x-apple-plist";
+          overrideContentType = @"application/x-apple-plist";
         }
 
-        v44 = [(__CFString *)v42 length]== 0;
+        v44 = [(__CFString *)overrideContentType length]== 0;
 
         if (!v44)
         {
-          v45 = [v108 overrideContentType];
-          v46 = v45;
-          if (v45)
+          overrideContentType2 = [v108 overrideContentType];
+          v46 = overrideContentType2;
+          if (overrideContentType2)
           {
-            v47 = v45;
+            v47 = overrideContentType2;
           }
 
           else
@@ -793,13 +793,13 @@ LABEL_65:
           [v110 setValue:v47 forHTTPHeaderField:@"content-type"];
         }
 
-        v48 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v98, "length")}];
+        v48 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(_FTCopyGzippedData, "length")}];
 
         if (v48)
         {
-          v49 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v98, "length")}];
-          v50 = [v49 stringValue];
-          [v110 setValue:v50 forHTTPHeaderField:@"content-length"];
+          v49 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(_FTCopyGzippedData, "length")}];
+          stringValue = [v49 stringValue];
+          [v110 setValue:stringValue forHTTPHeaderField:@"content-length"];
         }
       }
     }
@@ -818,13 +818,13 @@ LABEL_65:
       }
     }
 
-    v52 = [v108 additionalMessageHeaders];
+    additionalMessageHeaders = [v108 additionalMessageHeaders];
     v131 = 0u;
     v132 = 0u;
     v129 = 0u;
     v130 = 0u;
-    v53 = [v52 allKeys];
-    v54 = [v53 countByEnumeratingWithState:&v129 objects:v139 count:16];
+    allKeys = [additionalMessageHeaders allKeys];
+    v54 = [allKeys countByEnumeratingWithState:&v129 objects:v139 count:16];
     if (v54)
     {
       v55 = *v130;
@@ -834,22 +834,22 @@ LABEL_65:
         {
           if (*v130 != v55)
           {
-            objc_enumerationMutation(v53);
+            objc_enumerationMutation(allKeys);
           }
 
           v57 = *(*(&v129 + 1) + 8 * i);
-          v58 = [v52 objectForKey:{v57, v94, v95}];
+          v58 = [additionalMessageHeaders objectForKey:{v57, v94, v95}];
 
           if (v58)
           {
-            v59 = [v52 objectForKey:v57];
+            v59 = [additionalMessageHeaders objectForKey:v57];
             [v110 setValue:v59 forHTTPHeaderField:v57];
           }
 
           v60 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
           {
-            v61 = [v52 objectForKey:v57];
+            v61 = [additionalMessageHeaders objectForKey:v57];
             *buf = 138412546;
             *&buf[4] = v57;
             *&buf[12] = 2112;
@@ -861,21 +861,21 @@ LABEL_65:
           {
             if (MarcoShouldLog())
             {
-              [v52 objectForKey:v57];
+              [additionalMessageHeaders objectForKey:v57];
               v95 = v94 = v57;
               MarcoLog();
             }
 
             if (IMShouldLog())
             {
-              [v52 objectForKey:v57];
+              [additionalMessageHeaders objectForKey:v57];
               v95 = v94 = v57;
               IMLogString();
             }
           }
         }
 
-        v54 = [v53 countByEnumeratingWithState:&v129 objects:v139 count:16];
+        v54 = [allKeys countByEnumeratingWithState:&v129 objects:v139 count:16];
       }
 
       while (v54);
@@ -887,14 +887,14 @@ LABEL_65:
     v136 = sub_19592BE94;
     v137 = sub_19592BFD8;
     v138 = 0;
-    v62 = [v108 uniqueID];
+    uniqueID = [v108 uniqueID];
     objc_initWeak(&location, v108);
     v123[0] = MEMORY[0x1E69E9820];
     v123[1] = 3221225472;
     v123[2] = sub_195940FE8;
     v123[3] = &unk_1E7435350;
     objc_copyWeak(v127, &location);
-    v127[1] = v62;
+    v127[1] = uniqueID;
     v123[4] = self;
     v63 = v108;
     v124 = v63;
@@ -907,13 +907,13 @@ LABEL_65:
     v116[2] = sub_1959414D4;
     v116[3] = &unk_1E74353C8;
     v116[4] = self;
-    v122 = v62;
+    v122 = uniqueID;
     v65 = v64;
     v117 = v65;
     v121 = buf;
-    v66 = v101;
+    v66 = blockCopy;
     v120 = v66;
-    v107 = v98;
+    v107 = _FTCopyGzippedData;
     v118 = v107;
     v67 = v96;
     v119 = v67;
@@ -1050,18 +1050,18 @@ LABEL_151:
 
   if (MarcoShouldLogCheckpoints())
   {
-    v90 = v10;
+    v90 = messageCopy;
     MarcoNoteCheckpoint();
   }
 
   if ([(FTMessageDelivery *)self logToRegistration])
   {
-    v11 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    registration2 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v10;
-      _os_log_impl(&dword_195925000, v11, OS_LOG_TYPE_DEFAULT, "Cannot send message: Empty URL requested for message: %@, forcing a bag load", buf, 0xCu);
+      *&buf[4] = messageCopy;
+      _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, "Cannot send message: Empty URL requested for message: %@, forcing a bag load", buf, 0xCu);
     }
   }
 
@@ -1072,22 +1072,22 @@ LABEL_153:
   v89 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_processResultData:(id)a3 forMessage:(id)a4 error:(id *)a5
+- (id)_processResultData:(id)data forMessage:(id)message error:(id *)error
 {
   v21[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  messageCopy = message;
   v9 = objc_autoreleasePoolPush();
-  if (![v7 length])
+  if (![dataCopy length])
   {
     v11 = 0;
     goto LABEL_5;
   }
 
-  v10 = [v8 parsedIDSMessageResult];
-  if (v10)
+  parsedIDSMessageResult = [messageCopy parsedIDSMessageResult];
+  if (parsedIDSMessageResult)
   {
-    v11 = v10;
+    v11 = parsedIDSMessageResult;
 LABEL_5:
     objc_autoreleasePoolPop(v9);
     v12 = 0;
@@ -1097,15 +1097,15 @@ LABEL_6:
   }
 
   v21[0] = 0xAAAAAAAAAAAAAAAALL;
-  v16 = [v7 _FTDecompressData];
-  if (v16)
+  _FTDecompressData = [dataCopy _FTDecompressData];
+  if (_FTDecompressData)
   {
-    v17 = v16;
+    v17 = _FTDecompressData;
   }
 
   else
   {
-    v17 = v7;
+    v17 = dataCopy;
   }
 
   v20 = 0;
@@ -1113,12 +1113,12 @@ LABEL_6:
   v12 = v20;
 
   objc_autoreleasePoolPop(v9);
-  if (!a5 || !v12)
+  if (!error || !v12)
   {
     v19 = objc_autoreleasePoolPush();
-    if (v8 && v11)
+    if (messageCopy && v11)
     {
-      [v8 handleResponseDictionary:v11];
+      [messageCopy handleResponseDictionary:v11];
     }
 
     v11 = v11;
@@ -1128,7 +1128,7 @@ LABEL_6:
 
   v18 = v12;
   v13 = 0;
-  *a5 = v12;
+  *error = v12;
 LABEL_7:
 
   v14 = *MEMORY[0x1E69E9840];
@@ -1136,35 +1136,35 @@ LABEL_7:
   return v13;
 }
 
-- (void)_notifyDelegateAboutError:(id)a3 forMessage:(id)a4
+- (void)_notifyDelegateAboutError:(id)error forMessage:(id)message
 {
-  v12 = a3;
-  v6 = a4;
+  errorCopy = error;
+  messageCopy = message;
   [(FTMessageDelivery_HTTP *)self _cleanupURLConnection];
-  v7 = [(FTMessageDelivery *)self _queue];
-  v8 = [v7 topMessage];
-  v9 = [v6 isEqual:v8];
+  _queue = [(FTMessageDelivery *)self _queue];
+  topMessage = [_queue topMessage];
+  v9 = [messageCopy isEqual:topMessage];
 
   if (v9)
   {
-    v10 = [(FTMessageDelivery *)self _queue];
-    v11 = [v10 dequeueTopMessage];
+    _queue2 = [(FTMessageDelivery *)self _queue];
+    dequeueTopMessage = [_queue2 dequeueTopMessage];
   }
 
-  [(FTMessageDelivery *)self _informDelegateAboutMessage:v6 error:v12 result:0 resultCode:20000 interface:0];
+  [(FTMessageDelivery *)self _informDelegateAboutMessage:messageCopy error:errorCopy result:0 resultCode:20000 interface:0];
   [(FTMessageDelivery_HTTP *)self _dequeueIfNeeded];
 }
 
-- (void)_informDelegatesOfMessage:(id)a3 result:(id)a4 resultCode:(int64_t)a5 error:(id)a6
+- (void)_informDelegatesOfMessage:(id)message result:(id)result resultCode:(int64_t)code error:(id)error
 {
   self->super._retries = 0;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(FTMessageDelivery *)self _queue];
-  [v13 removeMessage:v12];
+  errorCopy = error;
+  resultCopy = result;
+  messageCopy = message;
+  _queue = [(FTMessageDelivery *)self _queue];
+  [_queue removeMessage:messageCopy];
 
-  [(FTMessageDelivery *)self _informDelegateAboutMessage:v12 error:v10 result:v11 resultCode:a5 interface:0];
+  [(FTMessageDelivery *)self _informDelegateAboutMessage:messageCopy error:errorCopy result:resultCopy resultCode:code interface:0];
   [(FTMessageDelivery_HTTP *)self _cleanupURLConnection];
 
   [(FTMessageDelivery_HTTP *)self _dequeueIfNeeded];
@@ -1184,47 +1184,47 @@ LABEL_7:
   objc_sync_enter(obj);
   obj->_pendingRetryAfterAirplaneMode = 0;
   [(FTMessageDelivery_HTTP *)obj _clearRetryTimer];
-  v2 = [(FTMessageDelivery *)obj _queue];
-  [v2 removeAllMessages];
+  _queue = [(FTMessageDelivery *)obj _queue];
+  [_queue removeAllMessages];
 
   [(FTMessageDelivery_HTTP *)obj _cleanupURLConnection];
   objc_sync_exit(obj);
 }
 
-- (BOOL)_sendMessageAsynchronously:(id)a3 error:(id *)a4
+- (BOOL)_sendMessageAsynchronously:(id)asynchronously error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  asynchronouslyCopy = asynchronously;
+  if (asynchronouslyCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    if ([(FTMessageDelivery *)v6 logToRegistration])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if ([(FTMessageDelivery *)selfCopy logToRegistration])
     {
-      v7 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      registration = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v36 = v5;
-        _os_log_impl(&dword_195925000, v7, OS_LOG_TYPE_DEFAULT, "Requesting async send: %@", buf, 0xCu);
+        v36 = asynchronouslyCopy;
+        _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Requesting async send: %@", buf, 0xCu);
       }
     }
 
-    v8 = [v5 bagKey];
-    v9 = [v5 messageBodyDataOverride];
+    bagKey = [asynchronouslyCopy bagKey];
+    messageBodyDataOverride = [asynchronouslyCopy messageBodyDataOverride];
 
-    if (v9)
+    if (messageBodyDataOverride)
     {
-      v10 = [v5 messageBodyDataOverride];
+      messageBodyDataOverride2 = [asynchronouslyCopy messageBodyDataOverride];
     }
 
     else
     {
-      if ([v5 isIDSMessage])
+      if ([asynchronouslyCopy isIDSMessage])
       {
-        v12 = [v5 messageBodyUsingCache];
+        messageBodyUsingCache = [asynchronouslyCopy messageBodyUsingCache];
         v34 = 0;
-        v10 = [MEMORY[0x1E696AE40] dataWithPropertyList:v12 format:100 options:0 error:&v34];
+        messageBodyDataOverride2 = [MEMORY[0x1E696AE40] dataWithPropertyList:messageBodyUsingCache format:100 options:0 error:&v34];
         v13 = v34;
         if (v13)
         {
@@ -1232,9 +1232,9 @@ LABEL_7:
           v15 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
-            v16 = [v14 localizedDescription];
+            localizedDescription = [v14 localizedDescription];
             *buf = 138412290;
-            v36 = v16;
+            v36 = localizedDescription;
             _os_log_impl(&dword_195925000, v15, OS_LOG_TYPE_ERROR, "error = %@", buf, 0xCu);
           }
 
@@ -1244,75 +1244,75 @@ LABEL_7:
             goto LABEL_25;
           }
 
-          v28 = [v14 localizedDescription];
+          localizedDescription2 = [v14 localizedDescription];
           _IDSWarnV();
 
-          v29 = [v14 localizedDescription];
+          localizedDescription3 = [v14 localizedDescription];
           _IDSLogV();
 
-          v17 = [v14 localizedDescription];
+          localizedDescription4 = [v14 localizedDescription];
           _IDSLogTransport();
           v11 = 0;
 LABEL_24:
 
 LABEL_25:
-          objc_sync_exit(v6);
+          objc_sync_exit(selfCopy);
 LABEL_26:
 
           goto LABEL_27;
         }
 
 LABEL_21:
-        v18 = [(IDSServerBag *)v6->_idsServerBag urlWithKey:v8];
-        v19 = [v5 URLOverride];
+        v18 = [(IDSServerBag *)selfCopy->_idsServerBag urlWithKey:bagKey];
+        uRLOverride = [asynchronouslyCopy URLOverride];
 
-        if (v19)
+        if (uRLOverride)
         {
-          v20 = [v5 URLOverride];
+          uRLOverride2 = [asynchronouslyCopy URLOverride];
 
-          v18 = v20;
+          v18 = uRLOverride2;
         }
 
-        [v5 setSentByteCount:{objc_msgSend(v10, "length")}];
-        v21 = [MEMORY[0x1E695DF00] date];
-        [v5 setRequestStart:v21];
+        [asynchronouslyCopy setSentByteCount:{objc_msgSend(messageBodyDataOverride2, "length")}];
+        date = [MEMORY[0x1E695DF00] date];
+        [asynchronouslyCopy setRequestStart:date];
 
-        v22 = [v5 uniqueID];
+        uniqueID = [asynchronouslyCopy uniqueID];
         v30[0] = MEMORY[0x1E69E9820];
         v30[1] = 3221225472;
         v30[2] = sub_195942F04;
         v30[3] = &unk_1E74354B8;
-        v30[4] = v6;
-        v33 = v22;
-        v17 = v18;
-        v31 = v17;
-        v12 = v12;
-        v32 = v12;
+        v30[4] = selfCopy;
+        v33 = uniqueID;
+        localizedDescription4 = v18;
+        v31 = localizedDescription4;
+        messageBodyUsingCache = messageBodyUsingCache;
+        v32 = messageBodyUsingCache;
         v23 = MEMORY[0x19A8B8CC0](v30);
-        v24 = [(FTMessageDeliveryRemoteURLConnectionFactory *)v6->_remoteConnectionFactory remoteURLConnection];
-        remoteConnection = v6->_remoteConnection;
-        v6->_remoteConnection = v24;
+        remoteURLConnection = [(FTMessageDeliveryRemoteURLConnectionFactory *)selfCopy->_remoteConnectionFactory remoteURLConnection];
+        remoteConnection = selfCopy->_remoteConnection;
+        selfCopy->_remoteConnection = remoteURLConnection;
 
-        [(FTMessageDelivery_HTTP *)v6 _urlRequestWithURL:v17 andData:v10 message:v5 completionBlock:v23];
+        [(FTMessageDelivery_HTTP *)selfCopy _urlRequestWithURL:localizedDescription4 andData:messageBodyDataOverride2 message:asynchronouslyCopy completionBlock:v23];
         v14 = 0;
         v11 = 1;
         goto LABEL_24;
       }
 
-      v10 = 0;
+      messageBodyDataOverride2 = 0;
     }
 
-    v12 = 0;
+    messageBodyUsingCache = 0;
     goto LABEL_21;
   }
 
   if ([(FTMessageDelivery *)self logToRegistration])
   {
-    v6 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(&v6->super.super, OS_LOG_TYPE_DEFAULT))
+    selfCopy = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(&selfCopy->super.super, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_195925000, &v6->super.super, OS_LOG_TYPE_DEFAULT, "Cannot send nil message", buf, 2u);
+      _os_log_impl(&dword_195925000, &selfCopy->super.super, OS_LOG_TYPE_DEFAULT, "Cannot send nil message", buf, 2u);
     }
 
     v11 = 0;
@@ -1326,18 +1326,18 @@ LABEL_27:
   return v11;
 }
 
-- (BOOL)_tryRetryMessageWithTimeInterval:(double)a3
+- (BOOL)_tryRetryMessageWithTimeInterval:(double)interval
 {
   v17 = *MEMORY[0x1E69E9840];
   if ([(FTMessageDelivery *)self logToRegistration])
   {
-    v5 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       retries = self->super._retries;
       v15 = 67109120;
       LODWORD(v16) = retries;
-      _os_log_impl(&dword_195925000, v5, OS_LOG_TYPE_DEFAULT, "Should retry, already tried: %d times", &v15, 8u);
+      _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Should retry, already tried: %d times", &v15, 8u);
     }
   }
 
@@ -1347,10 +1347,10 @@ LABEL_27:
   {
     if ([(FTMessageDelivery *)self logToRegistration])
     {
-      v10 = [MEMORY[0x1E69A6138] warning];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+      warning = [MEMORY[0x1E69A6138] warning];
+      if (os_log_type_enabled(warning, OS_LOG_TYPE_FAULT))
       {
-        sub_195963B98(v10);
+        sub_195963B98(warning);
       }
     }
   }
@@ -1359,16 +1359,16 @@ LABEL_27:
   {
     if ([(FTMessageDelivery *)self logToRegistration])
     {
-      v12 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      registration2 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v15) = 0;
-        _os_log_impl(&dword_195925000, v12, OS_LOG_TYPE_DEFAULT, "Not retrying right now, we're in airplane mode with no wifi", &v15, 2u);
+        _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, "Not retrying right now, we're in airplane mode with no wifi", &v15, 2u);
       }
     }
 
     self->_pendingRetryAfterAirplaneMode = 1;
-    self->_retryTimeAfterAirplaneMode = a3;
+    self->_retryTimeAfterAirplaneMode = interval;
   }
 
   else
@@ -1377,7 +1377,7 @@ LABEL_27:
     retryBackoffProvider = self->_retryBackoffProvider;
     if (retryBackoffProvider)
     {
-      v9 = retryBackoffProvider[2](retryBackoffProvider, self->super._retries, a3);
+      v9 = retryBackoffProvider[2](retryBackoffProvider, self->super._retries, interval);
     }
 
     else
@@ -1387,12 +1387,12 @@ LABEL_27:
 
     if ([(FTMessageDelivery *)self logToRegistration])
     {
-      v11 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      registration3 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration3, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 134217984;
         v16 = v9;
-        _os_log_impl(&dword_195925000, v11, OS_LOG_TYPE_DEFAULT, "Retrying - trying again in %f seconds", &v15, 0xCu);
+        _os_log_impl(&dword_195925000, registration3, OS_LOG_TYPE_DEFAULT, "Retrying - trying again in %f seconds", &v15, 0xCu);
       }
     }
 
@@ -1404,21 +1404,21 @@ LABEL_27:
   return result;
 }
 
-- (void)queue:(id)a3 hitTimeoutForMessage:(id)a4
+- (void)queue:(id)queue hitTimeoutForMessage:(id)message
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 wantsCFNetworkTimeout])
+  queueCopy = queue;
+  messageCopy = message;
+  if ([messageCopy wantsCFNetworkTimeout])
   {
     if ([(FTMessageDelivery *)self logToRegistration])
     {
-      v8 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      registration = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *v19 = v7;
-        _os_log_impl(&dword_195925000, v8, OS_LOG_TYPE_DEFAULT, "Message timed out, but we're going to wait for CFNetwork: %@", buf, 0xCu);
+        *v19 = messageCopy;
+        _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Message timed out, but we're going to wait for CFNetwork: %@", buf, 0xCu);
       }
     }
 
@@ -1426,7 +1426,7 @@ LABEL_27:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *v19 = v7;
+      *v19 = messageCopy;
       _os_log_impl(&dword_195925000, v9, OS_LOG_TYPE_DEFAULT, "Message timed out, but we're going to wait for CFNetwork: %@", buf, 0xCu);
     }
 
@@ -1444,29 +1444,29 @@ LABEL_27:
     }
   }
 
-  else if ([v7 wantsExtraTimeoutRetry] && (v10 = objc_msgSend(v7, "timeoutRetries"), v10 < objc_msgSend(v7, "maxTimeoutRetries")))
+  else if ([messageCopy wantsExtraTimeoutRetry] && (v10 = objc_msgSend(messageCopy, "timeoutRetries"), v10 < objc_msgSend(messageCopy, "maxTimeoutRetries")))
   {
-    [v7 setTimeoutRetries:{objc_msgSend(v7, "timeoutRetries") + 1}];
+    [messageCopy setTimeoutRetries:{objc_msgSend(messageCopy, "timeoutRetries") + 1}];
     if ([(FTMessageDelivery *)self logToRegistration])
     {
-      v11 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      registration2 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109634;
-        *v19 = [v7 timeoutRetries];
+        *v19 = [messageCopy timeoutRetries];
         *&v19[4] = 1024;
-        *&v19[6] = [v7 maxTimeoutRetries];
+        *&v19[6] = [messageCopy maxTimeoutRetries];
         v20 = 2112;
-        v21 = v7;
-        _os_log_impl(&dword_195925000, v11, OS_LOG_TYPE_DEFAULT, "Message timed out, but we want extra timeout retries (%d/%d): %@", buf, 0x18u);
+        v21 = messageCopy;
+        _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, "Message timed out, but we want extra timeout retries (%d/%d): %@", buf, 0x18u);
       }
 
-      v12 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      registration3 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration3, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
         *v19 = 0x4000000000000000;
-        _os_log_impl(&dword_195925000, v12, OS_LOG_TYPE_DEFAULT, "Retrying - trying again in %f seconds", buf, 0xCu);
+        _os_log_impl(&dword_195925000, registration3, OS_LOG_TYPE_DEFAULT, "Retrying - trying again in %f seconds", buf, 0xCu);
       }
     }
 
@@ -1479,7 +1479,7 @@ LABEL_27:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *v19 = v7;
+      *v19 = messageCopy;
       _os_log_impl(&dword_195925000, v13, OS_LOG_TYPE_DEFAULT, "Queue timed out delivery for message: %@", buf, 0xCu);
     }
 
@@ -1487,51 +1487,51 @@ LABEL_27:
     {
       if (MarcoShouldLog())
       {
-        v17 = v7;
+        v17 = messageCopy;
         MarcoLog();
       }
 
       if (IMShouldLog())
       {
-        v17 = v7;
+        v17 = messageCopy;
         IMLogString();
       }
     }
 
     if ([(FTMessageDelivery *)self logToRegistration])
     {
-      v14 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      registration4 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *v19 = v7;
-        _os_log_impl(&dword_195925000, v14, OS_LOG_TYPE_DEFAULT, "Queue timed out delivery for message: %@", buf, 0xCu);
+        *v19 = messageCopy;
+        _os_log_impl(&dword_195925000, registration4, OS_LOG_TYPE_DEFAULT, "Queue timed out delivery for message: %@", buf, 0xCu);
       }
     }
 
     [(FTMessageDelivery_HTTP *)self _clearRetryTimer];
     v15 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A978] code:-1001 userInfo:0];
     self->super._retries = 0;
-    [(FTMessageDelivery_HTTP *)self _notifyDelegateAboutError:v15 forMessage:v7];
+    [(FTMessageDelivery_HTTP *)self _notifyDelegateAboutError:v15 forMessage:messageCopy];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelMessage:(id)a3
+- (void)cancelMessage:(id)message
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v17.receiver = self;
   v17.super_class = FTMessageDelivery_HTTP;
-  [(FTMessageDelivery *)&v17 cancelMessage:v4];
-  if (v4)
+  [(FTMessageDelivery *)&v17 cancelMessage:messageCopy];
+  if (messageCopy)
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v4;
+      v19 = messageCopy;
       _os_log_impl(&dword_195925000, v5, OS_LOG_TYPE_DEFAULT, "Cancelling message in the queue: %@", buf, 0xCu);
     }
 
@@ -1539,63 +1539,63 @@ LABEL_27:
     {
       if (MarcoShouldLog())
       {
-        v16 = v4;
+        v16 = messageCopy;
         MarcoLog();
       }
 
       if (IMShouldLog())
       {
-        v16 = v4;
+        v16 = messageCopy;
         IMLogString();
       }
     }
 
     if ([(FTMessageDelivery *)self logToRegistration])
     {
-      v6 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      registration = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v19 = v4;
-        _os_log_impl(&dword_195925000, v6, OS_LOG_TYPE_DEFAULT, "Cancelling message in the queue: %@", buf, 0xCu);
+        v19 = messageCopy;
+        _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Cancelling message in the queue: %@", buf, 0xCu);
       }
     }
 
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [(FTMessageDelivery *)v7 _queue];
-    v9 = [v8 messages];
-    if ([v9 containsObject:v4])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    _queue = [(FTMessageDelivery *)selfCopy _queue];
+    messages = [_queue messages];
+    if ([messages containsObject:messageCopy])
     {
     }
 
     else
     {
-      v10 = [(FTMessageDelivery *)v7 currentMessage];
-      v11 = v10 == v4;
+      currentMessage = [(FTMessageDelivery *)selfCopy currentMessage];
+      v11 = currentMessage == messageCopy;
 
       if (!v11)
       {
 LABEL_19:
-        objc_sync_exit(v7);
+        objc_sync_exit(selfCopy);
 
         goto LABEL_20;
       }
     }
 
-    v12 = [(FTMessageDelivery *)v7 currentMessage];
-    v13 = v12 == v4;
+    currentMessage2 = [(FTMessageDelivery *)selfCopy currentMessage];
+    v13 = currentMessage2 == messageCopy;
 
     if (v13)
     {
-      v7->_pendingRetryAfterAirplaneMode = 0;
-      [(FTMessageDelivery_HTTP *)v7 _cleanupURLConnection];
+      selfCopy->_pendingRetryAfterAirplaneMode = 0;
+      [(FTMessageDelivery_HTTP *)selfCopy _cleanupURLConnection];
     }
 
-    v14 = [(FTMessageDelivery *)v7 _queue];
-    [v14 removeMessage:v4];
+    _queue2 = [(FTMessageDelivery *)selfCopy _queue];
+    [_queue2 removeMessage:messageCopy];
 
-    [(FTMessageDelivery_HTTP *)v7 _dequeueIfNeeded];
+    [(FTMessageDelivery_HTTP *)selfCopy _dequeueIfNeeded];
     goto LABEL_19;
   }
 
@@ -1604,153 +1604,153 @@ LABEL_20:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)sendMessage:(id)a3
+- (BOOL)sendMessage:(id)message
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [v4 _setUsingOutgoingPush:0];
-  [v4 setDeliveryMechanism:2];
+  messageCopy = message;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [messageCopy _setUsingOutgoingPush:0];
+  [messageCopy setDeliveryMechanism:2];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-  [v4 setTimeSent:?];
-  if ([(FTMessageDelivery *)v5 logToRegistration])
+  [messageCopy setTimeSent:?];
+  if ([(FTMessageDelivery *)selfCopy logToRegistration])
   {
-    v6 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v4;
-      _os_log_impl(&dword_195925000, v6, OS_LOG_TYPE_DEFAULT, "Adding message to the queue: %@", &v14, 0xCu);
+      v15 = messageCopy;
+      _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Adding message to the queue: %@", &v14, 0xCu);
     }
   }
 
-  v7 = [(FTMessageDelivery *)v5 _queue];
-  [v7 addMessage:v4];
+  _queue = [(FTMessageDelivery *)selfCopy _queue];
+  [_queue addMessage:messageCopy];
 
-  if ([(FTMessageDelivery_HTTP *)v5 busy])
+  if ([(FTMessageDelivery_HTTP *)selfCopy busy])
   {
-    if ([(FTMessageDelivery *)v5 logToRegistration])
+    if ([(FTMessageDelivery *)selfCopy logToRegistration])
     {
-      v8 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      registration2 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(FTMessageDelivery *)v5 _queue];
-        v10 = [v9 currentMessage];
-        remoteConnection = v5->_remoteConnection;
+        _queue2 = [(FTMessageDelivery *)selfCopy _queue];
+        currentMessage = [_queue2 currentMessage];
+        remoteConnection = selfCopy->_remoteConnection;
         v14 = 138412546;
-        v15 = v10;
+        v15 = currentMessage;
         v16 = 2112;
         v17 = remoteConnection;
-        _os_log_impl(&dword_195925000, v8, OS_LOG_TYPE_DEFAULT, "  Busy delivering: %@  (%@)", &v14, 0x16u);
+        _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, "  Busy delivering: %@  (%@)", &v14, 0x16u);
       }
     }
   }
 
   else
   {
-    [(FTMessageDelivery_HTTP *)v5 _dequeueIfNeeded];
+    [(FTMessageDelivery_HTTP *)selfCopy _dequeueIfNeeded];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x1E69E9840];
   return 1;
 }
 
-- (BOOL)sendMessageAtTopOfTheQueue:(id)a3
+- (BOOL)sendMessageAtTopOfTheQueue:(id)queue
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  queueCopy = queue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-  [v4 setTimeSent:?];
-  if ([(FTMessageDelivery *)v5 logToRegistration])
+  [queueCopy setTimeSent:?];
+  if ([(FTMessageDelivery *)selfCopy logToRegistration])
   {
-    v6 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v4;
-      _os_log_impl(&dword_195925000, v6, OS_LOG_TYPE_DEFAULT, "Adding message to the queue: %@", &v14, 0xCu);
+      v15 = queueCopy;
+      _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Adding message to the queue: %@", &v14, 0xCu);
     }
   }
 
-  v7 = [(FTMessageDelivery *)v5 _queue];
-  [v7 addMessageAtHeadOfQueue:v4];
+  _queue = [(FTMessageDelivery *)selfCopy _queue];
+  [_queue addMessageAtHeadOfQueue:queueCopy];
 
-  if ([(FTMessageDelivery_HTTP *)v5 busy])
+  if ([(FTMessageDelivery_HTTP *)selfCopy busy])
   {
-    if ([(FTMessageDelivery *)v5 logToRegistration])
+    if ([(FTMessageDelivery *)selfCopy logToRegistration])
     {
-      v8 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      registration2 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(FTMessageDelivery *)v5 _queue];
-        v10 = [v9 currentMessage];
-        remoteConnection = v5->_remoteConnection;
+        _queue2 = [(FTMessageDelivery *)selfCopy _queue];
+        currentMessage = [_queue2 currentMessage];
+        remoteConnection = selfCopy->_remoteConnection;
         v14 = 138412546;
-        v15 = v10;
+        v15 = currentMessage;
         v16 = 2112;
         v17 = remoteConnection;
-        _os_log_impl(&dword_195925000, v8, OS_LOG_TYPE_DEFAULT, "  Busy delivering: %@  (%@)", &v14, 0x16u);
+        _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, "  Busy delivering: %@  (%@)", &v14, 0x16u);
       }
     }
   }
 
   else
   {
-    [(FTMessageDelivery_HTTP *)v5 _dequeueIfNeeded];
+    [(FTMessageDelivery_HTTP *)selfCopy _dequeueIfNeeded];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x1E69E9840];
   return 1;
 }
 
-- (void)_serverBagLoaded:(id)a3
+- (void)_serverBagLoaded:(id)loaded
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(FTMessageDelivery *)v5 logToRegistration])
+  loadedCopy = loaded;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(FTMessageDelivery *)selfCopy logToRegistration])
   {
-    v6 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v12) = 0;
-      _os_log_impl(&dword_195925000, v6, OS_LOG_TYPE_DEFAULT, "Server bag loaded", &v12, 2u);
+      _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "Server bag loaded", &v12, 2u);
     }
   }
 
-  if ([(FTMessageDelivery_HTTP *)v5 busy])
+  if ([(FTMessageDelivery_HTTP *)selfCopy busy])
   {
-    if ([(FTMessageDelivery *)v5 logToRegistration])
+    if ([(FTMessageDelivery *)selfCopy logToRegistration])
     {
-      v7 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      registration2 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(FTMessageDelivery *)v5 _queue];
-        v9 = [v8 currentMessage];
-        remoteConnection = v5->_remoteConnection;
+        _queue = [(FTMessageDelivery *)selfCopy _queue];
+        currentMessage = [_queue currentMessage];
+        remoteConnection = selfCopy->_remoteConnection;
         v12 = 138412546;
-        v13 = v9;
+        v13 = currentMessage;
         v14 = 2112;
         v15 = remoteConnection;
-        _os_log_impl(&dword_195925000, v7, OS_LOG_TYPE_DEFAULT, "  Busy delivering: %@  (%@)", &v12, 0x16u);
+        _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, "  Busy delivering: %@  (%@)", &v12, 0x16u);
       }
     }
   }
 
   else
   {
-    [(FTMessageDelivery_HTTP *)v5 _dequeueIfNeeded];
+    [(FTMessageDelivery_HTTP *)selfCopy _dequeueIfNeeded];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -1761,20 +1761,20 @@ LABEL_20:
   v3 = [v2 objectForKey:@"authkit-baa-disabled"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)shouldFailFastForMessage:(id)a3
+- (BOOL)shouldFailFastForMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if (!_os_feature_enabled_impl() || ([MEMORY[0x1E69A6180] shouldDisableFailFastWhenSatelliteIsAvailable] & 1) != 0)
   {
     goto LABEL_14;
@@ -1790,25 +1790,25 @@ LABEL_20:
     sub_195963BF0();
   }
 
-  v5 = [v4 topic];
-  if ([v5 isEqualToIgnoringCase:qword_1ED7687F8])
+  topic = [messageCopy topic];
+  if ([topic isEqualToIgnoringCase:qword_1ED7687F8])
   {
-    v6 = [(_FT_IDSOffGridConnectionMonitor *)self->_offGridConnectionMonitor isConnectionSuitableForIMLOverStewie];
+    isConnectionSuitableForIMLOverStewie = [(_FT_IDSOffGridConnectionMonitor *)self->_offGridConnectionMonitor isConnectionSuitableForIMLOverStewie];
   }
 
   else
   {
-    v7 = [v4 topic];
-    if (([v7 isEqualToIgnoringCase:qword_1ED768808] & 1) == 0)
+    topic2 = [messageCopy topic];
+    if (([topic2 isEqualToIgnoringCase:qword_1ED768808] & 1) == 0)
     {
 
       goto LABEL_14;
     }
 
-    v6 = [(_FT_IDSOffGridConnectionMonitor *)self->_offGridConnectionMonitor isConnectionSuitableForIMLOverStewie];
+    isConnectionSuitableForIMLOverStewie = [(_FT_IDSOffGridConnectionMonitor *)self->_offGridConnectionMonitor isConnectionSuitableForIMLOverStewie];
   }
 
-  if ((v6 & 1) == 0)
+  if ((isConnectionSuitableForIMLOverStewie & 1) == 0)
   {
 LABEL_14:
     v8 = 0;
@@ -1852,11 +1852,11 @@ LABEL_15:
 
     if ([(FTMessageDelivery *)self logToRegistration])
     {
-      v4 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+      registration = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_195925000, v4, OS_LOG_TYPE_DEFAULT, "We're out of airplane mode, and we have a pending retry", buf, 2u);
+        _os_log_impl(&dword_195925000, registration, OS_LOG_TYPE_DEFAULT, "We're out of airplane mode, and we have a pending retry", buf, 2u);
       }
     }
 
@@ -1885,12 +1885,12 @@ LABEL_15:
 
     if ([(FTMessageDelivery *)self logToRegistration])
     {
-      v8 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      registration2 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
         v12 = v7;
-        _os_log_impl(&dword_195925000, v8, OS_LOG_TYPE_DEFAULT, "Retrying - trying again in %f seconds", buf, 0xCu);
+        _os_log_impl(&dword_195925000, registration2, OS_LOG_TYPE_DEFAULT, "Retrying - trying again in %f seconds", buf, 0xCu);
       }
     }
 

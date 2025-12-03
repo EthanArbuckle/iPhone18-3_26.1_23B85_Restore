@@ -1,27 +1,27 @@
 @interface SBFSceneWorkspaceController
-- (BOOL)enumerateScenesWithBlock:(id)a3;
-- (SBFSceneWorkspaceController)initWithIdentifier:(id)a3 delegate:(id)a4;
+- (BOOL)enumerateScenesWithBlock:(id)block;
+- (SBFSceneWorkspaceController)initWithIdentifier:(id)identifier delegate:(id)delegate;
 - (SBFSceneWorkspaceControllerDelegate)delegate;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)sceneFromIdentityToken:(id)a3;
-- (id)sceneFromIdentityTokenStringRepresentation:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)sceneFromIdentityToken:(id)token;
+- (id)sceneFromIdentityTokenStringRepresentation:(id)representation;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)createSceneForProcessIdentity:(id)a3 withOptions:(id)a4 completion:(id)a5;
+- (void)createSceneForProcessIdentity:(id)identity withOptions:(id)options completion:(id)completion;
 - (void)invalidate;
 @end
 
 @implementation SBFSceneWorkspaceController
 
-- (SBFSceneWorkspaceController)initWithIdentifier:(id)a3 delegate:(id)a4
+- (SBFSceneWorkspaceController)initWithIdentifier:(id)identifier delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  v8 = delegateCopy;
+  if (identifierCopy)
   {
-    if (v7)
+    if (delegateCopy)
     {
       goto LABEL_3;
     }
@@ -45,7 +45,7 @@ LABEL_3:
   if (v9)
   {
     objc_storeWeak(&v9->_delegate, v8);
-    v11 = [objc_alloc(MEMORY[0x1E699F7F8]) initWithIdentifier:v6];
+    v11 = [objc_alloc(MEMORY[0x1E699F7F8]) initWithIdentifier:identifierCopy];
     sceneWorkspace = v10->_sceneWorkspace;
     v10->_sceneWorkspace = v11;
 
@@ -55,15 +55,15 @@ LABEL_3:
   return v10;
 }
 
-- (void)createSceneForProcessIdentity:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (void)createSceneForProcessIdentity:(id)identity withOptions:(id)options completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  identityCopy = identity;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (identityCopy)
   {
-    if (v9)
+    if (optionsCopy)
     {
       goto LABEL_3;
     }
@@ -72,7 +72,7 @@ LABEL_3:
   else
   {
     [SBFSceneWorkspaceController createSceneForProcessIdentity:withOptions:completion:];
-    if (v9)
+    if (optionsCopy)
     {
       goto LABEL_3;
     }
@@ -85,10 +85,10 @@ LABEL_3:
   v20[1] = 3221225472;
   v20[2] = __84__SBFSceneWorkspaceController_createSceneForProcessIdentity_withOptions_completion___block_invoke;
   v20[3] = &unk_1E807F3D8;
-  v12 = v9;
+  v12 = optionsCopy;
   v21 = v12;
-  v22 = v8;
-  v13 = v8;
+  v22 = identityCopy;
+  v13 = identityCopy;
   v14 = [(FBSceneWorkspace *)sceneWorkspace createScene:v20];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -100,19 +100,19 @@ LABEL_3:
   v16 = SBLogCommon();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(SBFSceneWorkspaceController *)self sceneWorkspaceIdentifier];
+    sceneWorkspaceIdentifier = [(SBFSceneWorkspaceController *)self sceneWorkspaceIdentifier];
     *buf = 134218498;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
-    v26 = v17;
+    v26 = sceneWorkspaceIdentifier;
     v27 = 2114;
     v28 = v14;
     _os_log_impl(&dword_1BEA11000, v16, OS_LOG_TYPE_DEFAULT, "SceneWorkspace[%p-%{public}@] did create App scene: %{public}@", buf, 0x20u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, v14, 0);
+    completionCopy[2](completionCopy, v14, 0);
   }
 }
 
@@ -138,24 +138,24 @@ void __84__SBFSceneWorkspaceController_createSceneForProcessIdentity_withOptions
   [v3 setClientSettings:v4];
 }
 
-- (id)sceneFromIdentityToken:(id)a3
+- (id)sceneFromIdentityToken:(id)token
 {
-  v4 = a3;
-  if (!v4)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
     [SBFSceneWorkspaceController sceneFromIdentityToken:];
   }
 
-  v5 = [v4 stringRepresentation];
-  v6 = [(SBFSceneWorkspaceController *)self sceneFromIdentityTokenStringRepresentation:v5];
+  stringRepresentation = [tokenCopy stringRepresentation];
+  v6 = [(SBFSceneWorkspaceController *)self sceneFromIdentityTokenStringRepresentation:stringRepresentation];
 
   return v6;
 }
 
-- (id)sceneFromIdentityTokenStringRepresentation:(id)a3
+- (id)sceneFromIdentityTokenStringRepresentation:(id)representation
 {
-  v4 = a3;
-  if (!v4)
+  representationCopy = representation;
+  if (!representationCopy)
   {
     [SBFSceneWorkspaceController sceneFromIdentityTokenStringRepresentation:];
   }
@@ -170,7 +170,7 @@ void __84__SBFSceneWorkspaceController_createSceneForProcessIdentity_withOptions
   v8[1] = 3221225472;
   v8[2] = __74__SBFSceneWorkspaceController_sceneFromIdentityTokenStringRepresentation___block_invoke;
   v8[3] = &unk_1E807F428;
-  v5 = v4;
+  v5 = representationCopy;
   v9 = v5;
   v10 = &v11;
   [(SBFSceneWorkspaceController *)self enumerateScenesWithBlock:v8];
@@ -195,17 +195,17 @@ void __74__SBFSceneWorkspaceController_sceneFromIdentityTokenStringRepresentatio
   }
 }
 
-- (BOOL)enumerateScenesWithBlock:(id)a3
+- (BOOL)enumerateScenesWithBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v16 = 0;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(FBSceneWorkspace *)self->_sceneWorkspace allScenes];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  allScenes = [(FBSceneWorkspace *)self->_sceneWorkspace allScenes];
+  v6 = [allScenes countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -216,10 +216,10 @@ LABEL_3:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allScenes);
       }
 
-      v4[2](v4, *(*(&v12 + 1) + 8 * v9), &v16);
+      blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * v9), &v16);
       if (v16)
       {
         break;
@@ -227,7 +227,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v7 = [allScenes countByEnumeratingWithState:&v12 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -249,8 +249,8 @@ LABEL_3:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(FBSceneWorkspace *)self->_sceneWorkspace allScenes];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allScenes = [(FBSceneWorkspace *)self->_sceneWorkspace allScenes];
+  v4 = [allScenes countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -261,7 +261,7 @@ LABEL_3:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allScenes);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -269,7 +269,7 @@ LABEL_3:
         [v8 invalidate];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allScenes countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -281,34 +281,34 @@ LABEL_3:
 
 - (id)succinctDescription
 {
-  v2 = [(SBFSceneWorkspaceController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFSceneWorkspaceController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(SBFSceneWorkspaceController *)self sceneWorkspaceIdentifier];
-  [v3 appendString:v4 withName:@"identifier"];
+  sceneWorkspaceIdentifier = [(SBFSceneWorkspaceController *)self sceneWorkspaceIdentifier];
+  [v3 appendString:sceneWorkspaceIdentifier withName:@"identifier"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFSceneWorkspaceController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFSceneWorkspaceController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBFSceneWorkspaceController *)self succinctDescriptionBuilder];
-  v5 = [(FBSceneWorkspace *)self->_sceneWorkspace delegate];
-  v6 = [v4 appendObject:v5 withName:@"FB workspace Delegate"];
+  succinctDescriptionBuilder = [(SBFSceneWorkspaceController *)self succinctDescriptionBuilder];
+  delegate = [(FBSceneWorkspace *)self->_sceneWorkspace delegate];
+  v6 = [succinctDescriptionBuilder appendObject:delegate withName:@"FB workspace Delegate"];
 
   if ([(FBSceneWorkspace *)self->_sceneWorkspace conformsToProtocol:&unk_1F3D57250])
   {
@@ -320,10 +320,10 @@ LABEL_3:
     sceneWorkspace = 0;
   }
 
-  v8 = [(FBSceneWorkspace *)sceneWorkspace succinctDescription];
-  v9 = [v4 appendObject:v8 withName:@"FB workspace minus scenes"];
+  succinctDescription = [(FBSceneWorkspace *)sceneWorkspace succinctDescription];
+  v9 = [succinctDescriptionBuilder appendObject:succinctDescription withName:@"FB workspace minus scenes"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (SBFSceneWorkspaceControllerDelegate)delegate

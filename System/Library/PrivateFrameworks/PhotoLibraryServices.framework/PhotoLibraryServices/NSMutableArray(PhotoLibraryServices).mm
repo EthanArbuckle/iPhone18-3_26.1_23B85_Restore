@@ -9,9 +9,9 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 indexOfObject:v7 inSortedRange:0 options:objc_msgSend(a1 usingComparator:{"count"), 1024, v6}];
+  v8 = [self indexOfObject:v7 inSortedRange:0 options:objc_msgSend(self usingComparator:{"count"), 1024, v6}];
 
-  [a1 insertObject:v7 atIndex:v8];
+  [self insertObject:v7 atIndex:v8];
   return v8;
 }
 
@@ -19,10 +19,10 @@
 {
   if (a3)
   {
-    return [a1 addObject:?];
+    return [self addObject:?];
   }
 
-  return a1;
+  return self;
 }
 
 @end

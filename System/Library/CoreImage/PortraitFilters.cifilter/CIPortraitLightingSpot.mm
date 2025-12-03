@@ -114,14 +114,14 @@
   v15 = sin(v13 + v13);
   v16 = [CIVector vectorWithX:v14.__cosval * v14.__cosval / ((v4 + v4) * v4) + v14.__sinval * v14.__sinval / ((v8 + v8) * v8) Y:(v15 / (v8 * 4.0 * v8) - v15 / (v4 * 4.0 * v4)) Z:v14.__sinval * v14.__sinval / ((v4 + v4) * v4) + v14.__cosval * v14.__cosval / ((v8 + v8) * v8) W:v6];
   v17 = [CIVector vectorWithX:v26 Y:v25];
-  v18 = [(CIPortraitLightingSpot *)self _portraitSpotKernel];
+  _portraitSpotKernel = [(CIPortraitLightingSpot *)self _portraitSpotKernel];
   [(CIImage *)self->inputImage extent];
   inputCenter = self->inputCenter;
   v27[0] = self->inputImage;
   v27[1] = inputCenter;
   v27[2] = v16;
   v27[3] = v17;
-  return [v18 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v27, 4), v20, v21, v22, v23}];
+  return [_portraitSpotKernel applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v27, 4), v20, v21, v22, v23}];
 }
 
 @end

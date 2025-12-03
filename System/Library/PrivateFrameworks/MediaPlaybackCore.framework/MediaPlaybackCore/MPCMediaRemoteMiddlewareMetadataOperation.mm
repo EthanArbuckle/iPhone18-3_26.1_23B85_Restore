@@ -1,14 +1,14 @@
 @interface MPCMediaRemoteMiddlewareMetadataOperation
-- (MPCMediaRemoteMiddlewareMetadataOperation)initWithMiddleware:(id)a3 request:(id)a4;
+- (MPCMediaRemoteMiddlewareMetadataOperation)initWithMiddleware:(id)middleware request:(id)request;
 - (MPSectionedCollection)modelObjects;
 - (MPSectionedCollection)sourceContentItems;
 - (NSArray)outputProtocols;
 - (NSIndexPath)playingIndexPath;
-- (_MSVSignedRange)rangeFromTracklistRange:(id)a3;
-- (id)_genericObjectPropertySetForContentItem:(id)a3 preferredRelationships:(id)a4 propertySet:(id)a5;
-- (id)_itemGenericObjectPropertySetForContentItem:(id)a3 propertySet:(id)a4;
+- (_MSVSignedRange)rangeFromTracklistRange:(id)range;
+- (id)_genericObjectPropertySetForContentItem:(id)item preferredRelationships:(id)relationships propertySet:(id)set;
+- (id)_itemGenericObjectPropertySetForContentItem:(id)item propertySet:(id)set;
 - (id)timeoutDescription;
-- (void)_loadPlaybackQueueWithCompletion:(id)a3;
+- (void)_loadPlaybackQueueWithCompletion:(id)completion;
 - (void)execute;
 @end
 
@@ -25,10 +25,10 @@
 
 - (void)execute
 {
-  v3 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self middleware];
-  v4 = [v3 controller];
+  middleware = [(MPCMediaRemoteMiddlewareMetadataOperation *)self middleware];
+  controller = [middleware controller];
 
-  if (v4)
+  if (controller)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -45,17 +45,17 @@
   }
 }
 
-- (id)_itemGenericObjectPropertySetForContentItem:(id)a3 propertySet:(id)a4
+- (id)_itemGenericObjectPropertySetForContentItem:(id)item propertySet:(id)set
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 deviceSpecificUserInfo];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E6970288]];
+  itemCopy = item;
+  setCopy = set;
+  deviceSpecificUserInfo = [itemCopy deviceSpecificUserInfo];
+  v9 = [deviceSpecificUserInfo objectForKeyedSubscript:*MEMORY[0x1E6970288]];
 
-  v10 = [v7 relationships];
+  relationships = [setCopy relationships];
   v11 = *MEMORY[0x1E6970120];
-  v12 = [v10 objectForKeyedSubscript:*MEMORY[0x1E6970120]];
+  v12 = [relationships objectForKeyedSubscript:*MEMORY[0x1E6970120]];
 
   if (v9)
   {
@@ -73,15 +73,15 @@
     goto LABEL_24;
   }
 
-  v15 = [v6 mediaType];
+  mediaType = [itemCopy mediaType];
   v14 = MEMORY[0x1E695E0F0];
-  if (v15 <= 511)
+  if (mediaType <= 511)
   {
-    if (v15 != 1)
+    if (mediaType != 1)
     {
-      if (v15 != 2)
+      if (mediaType != 2)
       {
-        if (v15 != 256)
+        if (mediaType != 256)
         {
           goto LABEL_21;
         }
@@ -104,7 +104,7 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  switch(v15)
+  switch(mediaType)
   {
     case 0x200:
       v20 = *MEMORY[0x1E6970198];
@@ -131,7 +131,7 @@ LABEL_20:
   }
 
 LABEL_21:
-  v21 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self _genericObjectPropertySetForContentItem:v6 preferredRelationships:v14 propertySet:v12];
+  v21 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self _genericObjectPropertySetForContentItem:itemCopy preferredRelationships:v14 propertySet:v12];
 
   if (v21)
   {
@@ -147,12 +147,12 @@ LABEL_21:
 
   v12 = 0;
 LABEL_24:
-  v25 = [v6 mediaType];
-  if (v25 <= 255)
+  mediaType2 = [itemCopy mediaType];
+  if (mediaType2 <= 255)
   {
-    if (v25 != 1)
+    if (mediaType2 != 1)
     {
-      if (v25 == 2)
+      if (mediaType2 == 2)
       {
         v31 = *MEMORY[0x1E6970158];
         v38[0] = *MEMORY[0x1E6970130];
@@ -162,7 +162,7 @@ LABEL_24:
         goto LABEL_39;
       }
 
-      if (v25 != 4)
+      if (mediaType2 != 4)
       {
         goto LABEL_41;
       }
@@ -182,14 +182,14 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (v25 > 2047)
+  if (mediaType2 > 2047)
   {
-    if (v25 == 0x2000)
+    if (mediaType2 == 0x2000)
     {
       goto LABEL_37;
     }
 
-    if (v25 != 2048)
+    if (mediaType2 != 2048)
     {
       goto LABEL_41;
     }
@@ -197,7 +197,7 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  if (v25 == 256)
+  if (mediaType2 == 256)
   {
 LABEL_37:
     v30 = *MEMORY[0x1E6970158];
@@ -210,7 +210,7 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if (v25 == 512)
+  if (mediaType2 == 512)
   {
     v26 = *MEMORY[0x1E6970110];
     v39[0] = *MEMORY[0x1E6970160];
@@ -228,35 +228,35 @@ LABEL_40:
 LABEL_41:
   if (objc_opt_respondsToSelector())
   {
-    v33 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self request];
-    v34 = [v33 preferredFallbackItemRelationship];
+    request = [(MPCMediaRemoteMiddlewareMetadataOperation *)self request];
+    preferredFallbackItemRelationship = [request preferredFallbackItemRelationship];
 
-    if (v34)
+    if (preferredFallbackItemRelationship)
     {
-      v35 = [v14 arrayByAddingObject:v34];
+      v35 = [v14 arrayByAddingObject:preferredFallbackItemRelationship];
 
       v14 = v35;
     }
   }
 
-  v24 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self _genericObjectPropertySetForContentItem:v6 preferredRelationships:v14 propertySet:v7];
+  v24 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self _genericObjectPropertySetForContentItem:itemCopy preferredRelationships:v14 propertySet:setCopy];
 LABEL_46:
 
   return v24;
 }
 
-- (id)_genericObjectPropertySetForContentItem:(id)a3 preferredRelationships:(id)a4 propertySet:(id)a5
+- (id)_genericObjectPropertySetForContentItem:(id)item preferredRelationships:(id)relationships propertySet:(id)set
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a5;
-  v8 = [MEMORY[0x1E6970670] requiredStoreLibraryPersonalizationProperties];
+  relationshipsCopy = relationships;
+  setCopy = set;
+  requiredStoreLibraryPersonalizationProperties = [MEMORY[0x1E6970670] requiredStoreLibraryPersonalizationProperties];
   v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:1];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v10 = v6;
+  v10 = relationshipsCopy;
   v11 = [v10 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v11)
   {
@@ -272,20 +272,20 @@ LABEL_46:
         }
 
         v15 = *(*(&v35 + 1) + 8 * i);
-        v16 = [v7 relationships];
-        v17 = [v16 objectForKeyedSubscript:v15];
+        relationships = [setCopy relationships];
+        v17 = [relationships objectForKeyedSubscript:v15];
 
         if (v17)
         {
-          v18 = [v8 relationships];
-          v19 = [v18 objectForKeyedSubscript:v15];
-          v20 = v19;
+          relationships2 = [requiredStoreLibraryPersonalizationProperties relationships];
+          v19 = [relationships2 objectForKeyedSubscript:v15];
+          emptyPropertySet = v19;
           if (!v19)
           {
-            v20 = [MEMORY[0x1E69708B0] emptyPropertySet];
+            emptyPropertySet = [MEMORY[0x1E69708B0] emptyPropertySet];
           }
 
-          v21 = [v17 propertySetByCombiningWithPropertySet:v20];
+          v21 = [v17 propertySetByCombiningWithPropertySet:emptyPropertySet];
           [v9 setObject:v21 forKeyedSubscript:v15];
 
           if (!v19)
@@ -311,22 +311,22 @@ LABEL_15:
   if (![v9 count])
   {
     memset(v34, 0, sizeof(v34));
-    v22 = [v7 relationships];
-    if ([v22 countByEnumeratingWithState:v34 objects:v39 count:16])
+    relationships3 = [setCopy relationships];
+    if ([relationships3 countByEnumeratingWithState:v34 objects:v39 count:16])
     {
       v23 = **(&v34[0] + 1);
-      v33 = [v7 relationships];
-      v24 = [v33 objectForKeyedSubscript:v23];
-      v32 = v8;
-      v25 = [v8 relationships];
-      v26 = [v25 objectForKeyedSubscript:v23];
-      v27 = v26;
+      relationships4 = [setCopy relationships];
+      v24 = [relationships4 objectForKeyedSubscript:v23];
+      v32 = requiredStoreLibraryPersonalizationProperties;
+      relationships5 = [requiredStoreLibraryPersonalizationProperties relationships];
+      v26 = [relationships5 objectForKeyedSubscript:v23];
+      emptyPropertySet2 = v26;
       if (!v26)
       {
-        v27 = [MEMORY[0x1E69708B0] emptyPropertySet];
+        emptyPropertySet2 = [MEMORY[0x1E69708B0] emptyPropertySet];
       }
 
-      [v24 propertySetByCombiningWithPropertySet:v27];
+      [v24 propertySetByCombiningWithPropertySet:emptyPropertySet2];
       v29 = v28 = v24;
       [v9 setObject:v29 forKeyedSubscript:v23];
 
@@ -334,7 +334,7 @@ LABEL_15:
       {
       }
 
-      v8 = v32;
+      requiredStoreLibraryPersonalizationProperties = v32;
     }
   }
 
@@ -342,32 +342,32 @@ LABEL_15:
   {
     v30 = [objc_alloc(MEMORY[0x1E69708B0]) initWithProperties:0 relationships:v9];
 
-    v7 = v30;
+    setCopy = v30;
   }
 
-  return v7;
+  return setCopy;
 }
 
-- (_MSVSignedRange)rangeFromTracklistRange:(id)a3
+- (_MSVSignedRange)rangeFromTracklistRange:(id)range
 {
-  if (a3.var1 >= 0)
+  if (range.var1 >= 0)
   {
-    var1 = a3.var1;
+    var1 = range.var1;
   }
 
   else
   {
-    var1 = -a3.var1;
+    var1 = -range.var1;
   }
 
-  if (a3.var0 >= 0)
+  if (range.var0 >= 0)
   {
-    var0 = a3.var0;
+    var0 = range.var0;
   }
 
   else
   {
-    var0 = -a3.var0;
+    var0 = -range.var0;
   }
 
   v5 = -var0;
@@ -380,13 +380,13 @@ LABEL_15:
 - (id)timeoutDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self playQueueIdentifiersFuture];
-  v5 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self playingIdentifierFuture];
+  playQueueIdentifiersFuture = [(MPCMediaRemoteMiddlewareMetadataOperation *)self playQueueIdentifiersFuture];
+  playingIdentifierFuture = [(MPCMediaRemoteMiddlewareMetadataOperation *)self playingIdentifierFuture];
   v6 = +[MPCPlayerPathCache sharedCache];
-  v7 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self request];
-  v8 = [v7 playerPath];
-  v9 = [v6 observationTokenDescriptionForPlayerPath:v8];
-  v10 = [v3 stringWithFormat:@"playQueueIdentifiersFuture=%@ playingIdentifierFuture=%@ playerPathObserver=%@", v4, v5, v9];
+  request = [(MPCMediaRemoteMiddlewareMetadataOperation *)self request];
+  playerPath = [request playerPath];
+  v9 = [v6 observationTokenDescriptionForPlayerPath:playerPath];
+  v10 = [v3 stringWithFormat:@"playQueueIdentifiersFuture=%@ playingIdentifierFuture=%@ playerPathObserver=%@", playQueueIdentifiersFuture, playingIdentifierFuture, v9];
 
   return v10;
 }
@@ -583,22 +583,22 @@ void __52__MPCMediaRemoteMiddlewareMetadataOperation_execute__block_invoke_2(uin
   [*(a1 + 64) appendSection:v3];
 }
 
-- (void)_loadPlaybackQueueWithCompletion:(id)a3
+- (void)_loadPlaybackQueueWithCompletion:(id)completion
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _Block_copy(self->_invalidationHandler);
-  v6 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self request];
-  v7 = [v6 tracklistRange];
-  v9 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self rangeFromTracklistRange:v7, v8];
+  request = [(MPCMediaRemoteMiddlewareMetadataOperation *)self request];
+  tracklistRange = [request tracklistRange];
+  v9 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self rangeFromTracklistRange:tracklistRange, v8];
   v11 = v10;
 
   v12 = [objc_alloc(MEMORY[0x1E69B0AC0]) initWithRange:{v9, v11}];
-  v13 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self request];
-  v14 = [v13 playingItemProperties];
-  v15 = [v14 relationships];
+  request2 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self request];
+  playingItemProperties = [request2 playingItemProperties];
+  relationships = [playingItemProperties relationships];
   v16 = *MEMORY[0x1E6970130];
-  v17 = [v15 objectForKeyedSubscript:*MEMORY[0x1E6970130]];
+  v17 = [relationships objectForKeyedSubscript:*MEMORY[0x1E6970130]];
   if (v17)
   {
   }
@@ -606,17 +606,17 @@ void __52__MPCMediaRemoteMiddlewareMetadataOperation_execute__block_invoke_2(uin
   else
   {
     [(MPCMediaRemoteMiddlewareMetadataOperation *)self request];
-    v18 = v47 = v4;
+    v18 = v47 = completionCopy;
     [v18 queueItemProperties];
     v46 = v12;
     v20 = v19 = v5;
-    v21 = [v20 relationships];
-    v22 = [v21 objectForKeyedSubscript:v16];
+    relationships2 = [v20 relationships];
+    v22 = [relationships2 objectForKeyedSubscript:v16];
 
     v5 = v19;
     v12 = v46;
 
-    v4 = v47;
+    completionCopy = v47;
     if (!v22)
     {
       goto LABEL_7;
@@ -625,26 +625,26 @@ void __52__MPCMediaRemoteMiddlewareMetadataOperation_execute__block_invoke_2(uin
 
   [v12 setIncludeInfo:1];
   [v12 setIncludeSections:1];
-  v23 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self request];
-  v24 = [v23 playingItemProperties];
-  v25 = [v24 relationships];
-  v26 = [v25 objectForKeyedSubscript:v16];
+  request3 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self request];
+  playingItemProperties2 = [request3 playingItemProperties];
+  relationships3 = [playingItemProperties2 relationships];
+  v26 = [relationships3 objectForKeyedSubscript:v16];
 
-  v27 = [v26 properties];
-  LODWORD(v24) = [v27 containsObject:*MEMORY[0x1E696FE58]];
+  properties = [v26 properties];
+  LODWORD(playingItemProperties2) = [properties containsObject:*MEMORY[0x1E696FE58]];
 
-  if (v24)
+  if (playingItemProperties2)
   {
     [v12 setIncludeAlignments:1];
   }
 
 LABEL_7:
-  v28 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self request];
-  v29 = [v28 label];
-  v30 = v29;
-  if (v29)
+  request4 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self request];
+  label = [request4 label];
+  v30 = label;
+  if (label)
   {
-    v31 = v29;
+    v31 = label;
   }
 
   else
@@ -654,36 +654,36 @@ LABEL_7:
 
   [v12 setLabel:v31];
 
-  v32 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self middleware];
-  v33 = [v32 controller];
-  v34 = [v33 playbackQueueForRequest:v12];
+  middleware = [(MPCMediaRemoteMiddlewareMetadataOperation *)self middleware];
+  controller = [middleware controller];
+  v34 = [controller playbackQueueForRequest:v12];
   [(MPCMediaRemoteMiddlewareMetadataOperation *)self setPlaybackQueueFuture:v34];
 
-  v35 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self playbackQueueFuture];
+  playbackQueueFuture = [(MPCMediaRemoteMiddlewareMetadataOperation *)self playbackQueueFuture];
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __78__MPCMediaRemoteMiddlewareMetadataOperation__loadPlaybackQueueWithCompletion___block_invoke;
   v53[3] = &unk_1E8239528;
   v36 = v5;
   v54 = v36;
-  v37 = [v35 onInvalid:v53];
+  v37 = [playbackQueueFuture onInvalid:v53];
 
   v55[0] = v37;
   v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:1];
   invalidationObservers = self->_invalidationObservers;
   self->_invalidationObservers = v38;
 
-  v40 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self playbackQueueFuture];
+  playbackQueueFuture2 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self playbackQueueFuture];
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __78__MPCMediaRemoteMiddlewareMetadataOperation__loadPlaybackQueueWithCompletion___block_invoke_2;
   v50[3] = &unk_1E8238718;
   v50[4] = self;
   v51 = v36;
-  v41 = v4;
+  v41 = completionCopy;
   v52 = v41;
   v42 = v36;
-  v43 = [v40 onSuccess:v50];
+  v43 = [playbackQueueFuture2 onSuccess:v50];
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
   v48[2] = __78__MPCMediaRemoteMiddlewareMetadataOperation__loadPlaybackQueueWithCompletion___block_invoke_5;
@@ -861,18 +861,18 @@ void __78__MPCMediaRemoteMiddlewareMetadataOperation__loadPlaybackQueueWithCompl
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (MPCMediaRemoteMiddlewareMetadataOperation)initWithMiddleware:(id)a3 request:(id)a4
+- (MPCMediaRemoteMiddlewareMetadataOperation)initWithMiddleware:(id)middleware request:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  middlewareCopy = middleware;
+  requestCopy = request;
   v12.receiver = self;
   v12.super_class = MPCMediaRemoteMiddlewareMetadataOperation;
   v9 = [(MPAsyncOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_middleware, a3);
-    objc_storeStrong(&v10->_request, a4);
+    objc_storeStrong(&v9->_middleware, middleware);
+    objc_storeStrong(&v10->_request, request);
   }
 
   return v10;
@@ -880,26 +880,26 @@ void __78__MPCMediaRemoteMiddlewareMetadataOperation__loadPlaybackQueueWithCompl
 
 - (MPSectionedCollection)sourceContentItems
 {
-  v2 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self middleware];
-  v3 = [v2 queueContentItems];
+  middleware = [(MPCMediaRemoteMiddlewareMetadataOperation *)self middleware];
+  queueContentItems = [middleware queueContentItems];
 
-  return v3;
+  return queueContentItems;
 }
 
 - (MPSectionedCollection)modelObjects
 {
-  v2 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self middleware];
-  v3 = [v2 queueModelObjects];
+  middleware = [(MPCMediaRemoteMiddlewareMetadataOperation *)self middleware];
+  queueModelObjects = [middleware queueModelObjects];
 
-  return v3;
+  return queueModelObjects;
 }
 
 - (NSIndexPath)playingIndexPath
 {
-  v2 = [(MPCMediaRemoteMiddlewareMetadataOperation *)self middleware];
-  v3 = [v2 playingIndexPath];
+  middleware = [(MPCMediaRemoteMiddlewareMetadataOperation *)self middleware];
+  playingIndexPath = [middleware playingIndexPath];
 
-  return v3;
+  return playingIndexPath;
 }
 
 @end

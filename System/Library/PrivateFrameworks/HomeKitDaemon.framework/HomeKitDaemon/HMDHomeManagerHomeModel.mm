@@ -1,22 +1,22 @@
 @interface HMDHomeManagerHomeModel
-+ (id)modelForHomeUUID:(id)a3;
++ (id)modelForHomeUUID:(id)d;
 + (id)properties;
 @end
 
 @implementation HMDHomeManagerHomeModel
 
-+ (id)modelForHomeUUID:(id)a3
++ (id)modelForHomeUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = [HMDHomeManagerHomeModel alloc];
-  v5 = [HMDHomeManagerHomeModel deriveUUIDFromHomeUUID:v3];
+  v5 = [HMDHomeManagerHomeModel deriveUUIDFromHomeUUID:dCopy];
   v6 = objc_alloc(MEMORY[0x277CCAD78]);
   v7 = [v6 initWithUUIDString:*MEMORY[0x277CD23C8]];
   v8 = [(HMDBackingStoreModelObject *)v4 initWithUUID:v5 parentUUID:v7];
 
   v9 = [HMDHomeManagerHomeHandle alloc];
-  v10 = [MEMORY[0x277CCAD78] UUID];
-  v11 = [(HMDHomeManagerHomeHandle *)v9 initWithBackingStoreUUID:v10 homeUUID:v3];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v11 = [(HMDHomeManagerHomeHandle *)v9 initWithBackingStoreUUID:uUID homeUUID:dCopy];
 
   [(HMDHomeManagerHomeModel *)v8 setHandle:v11];
 

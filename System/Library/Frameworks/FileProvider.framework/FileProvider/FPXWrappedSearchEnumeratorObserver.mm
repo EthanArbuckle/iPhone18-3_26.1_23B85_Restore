@@ -1,38 +1,38 @@
 @interface FPXWrappedSearchEnumeratorObserver
-- (FPXWrappedSearchEnumeratorObserver)initWithTarget:(id)a3 providerID:(id)a4 domainIdentifier:(id)a5 maximumNumberOfResultsPerPage:(int64_t)a6;
-- (void)didEnumerateSearchResults:(id)a3;
+- (FPXWrappedSearchEnumeratorObserver)initWithTarget:(id)target providerID:(id)d domainIdentifier:(id)identifier maximumNumberOfResultsPerPage:(int64_t)page;
+- (void)didEnumerateSearchResults:(id)results;
 @end
 
 @implementation FPXWrappedSearchEnumeratorObserver
 
-- (FPXWrappedSearchEnumeratorObserver)initWithTarget:(id)a3 providerID:(id)a4 domainIdentifier:(id)a5 maximumNumberOfResultsPerPage:(int64_t)a6
+- (FPXWrappedSearchEnumeratorObserver)initWithTarget:(id)target providerID:(id)d domainIdentifier:(id)identifier maximumNumberOfResultsPerPage:(int64_t)page
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  targetCopy = target;
+  dCopy = d;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = FPXWrappedSearchEnumeratorObserver;
   v14 = [(FPXWrappedSearchEnumeratorObserver *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_target, a3);
-    objc_storeStrong(&v15->_providerIdentifier, a4);
-    objc_storeStrong(&v15->_domainIdentifier, a5);
-    v15->_maximumNumberOfResultsPerPage = a6;
+    objc_storeStrong(&v14->_target, target);
+    objc_storeStrong(&v15->_providerIdentifier, d);
+    objc_storeStrong(&v15->_domainIdentifier, identifier);
+    v15->_maximumNumberOfResultsPerPage = page;
   }
 
   return v15;
 }
 
-- (void)didEnumerateSearchResults:(id)a3
+- (void)didEnumerateSearchResults:(id)results
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64__FPXWrappedSearchEnumeratorObserver_didEnumerateSearchResults___block_invoke;
   v5[3] = &unk_1E793BD98;
   v5[4] = self;
-  v4 = [a3 fp_map:v5];
+  v4 = [results fp_map:v5];
   [(NSFileProviderSearchEnumerationObserver *)self->_target didEnumerateSearchResults:v4];
 }
 

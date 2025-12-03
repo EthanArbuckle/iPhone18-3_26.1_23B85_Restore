@@ -1,26 +1,26 @@
 @interface ICASFastSyncMessageData
-- (ICASFastSyncMessageData)initWithCountOfMessagesSent:(id)a3 countOfMessagesReceived:(id)a4 avgMessageSizeInBytes:(id)a5 maxMessageSizeInBytes:(id)a6;
+- (ICASFastSyncMessageData)initWithCountOfMessagesSent:(id)sent countOfMessagesReceived:(id)received avgMessageSizeInBytes:(id)bytes maxMessageSizeInBytes:(id)inBytes;
 - (id)toDict;
 @end
 
 @implementation ICASFastSyncMessageData
 
-- (ICASFastSyncMessageData)initWithCountOfMessagesSent:(id)a3 countOfMessagesReceived:(id)a4 avgMessageSizeInBytes:(id)a5 maxMessageSizeInBytes:(id)a6
+- (ICASFastSyncMessageData)initWithCountOfMessagesSent:(id)sent countOfMessagesReceived:(id)received avgMessageSizeInBytes:(id)bytes maxMessageSizeInBytes:(id)inBytes
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  sentCopy = sent;
+  receivedCopy = received;
+  bytesCopy = bytes;
+  inBytesCopy = inBytes;
   v18.receiver = self;
   v18.super_class = ICASFastSyncMessageData;
   v15 = [(ICASFastSyncMessageData *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_countOfMessagesSent, a3);
-    objc_storeStrong(&v16->_countOfMessagesReceived, a4);
-    objc_storeStrong(&v16->_avgMessageSizeInBytes, a5);
-    objc_storeStrong(&v16->_maxMessageSizeInBytes, a6);
+    objc_storeStrong(&v15->_countOfMessagesSent, sent);
+    objc_storeStrong(&v16->_countOfMessagesReceived, received);
+    objc_storeStrong(&v16->_avgMessageSizeInBytes, bytes);
+    objc_storeStrong(&v16->_maxMessageSizeInBytes, inBytes);
   }
 
   return v16;
@@ -30,61 +30,61 @@
 {
   v19[4] = *MEMORY[0x277D85DE8];
   v18[0] = @"countOfMessagesSent";
-  v3 = [(ICASFastSyncMessageData *)self countOfMessagesSent];
-  if (v3)
+  countOfMessagesSent = [(ICASFastSyncMessageData *)self countOfMessagesSent];
+  if (countOfMessagesSent)
   {
-    v4 = [(ICASFastSyncMessageData *)self countOfMessagesSent];
+    countOfMessagesSent2 = [(ICASFastSyncMessageData *)self countOfMessagesSent];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    countOfMessagesSent2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v19[0] = v4;
+  v5 = countOfMessagesSent2;
+  v19[0] = countOfMessagesSent2;
   v18[1] = @"countOfMessagesReceived";
-  v6 = [(ICASFastSyncMessageData *)self countOfMessagesReceived];
-  if (v6)
+  countOfMessagesReceived = [(ICASFastSyncMessageData *)self countOfMessagesReceived];
+  if (countOfMessagesReceived)
   {
-    v7 = [(ICASFastSyncMessageData *)self countOfMessagesReceived];
+    countOfMessagesReceived2 = [(ICASFastSyncMessageData *)self countOfMessagesReceived];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    countOfMessagesReceived2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v19[1] = v7;
+  v8 = countOfMessagesReceived2;
+  v19[1] = countOfMessagesReceived2;
   v18[2] = @"avgMessageSizeInBytes";
-  v9 = [(ICASFastSyncMessageData *)self avgMessageSizeInBytes];
-  if (v9)
+  avgMessageSizeInBytes = [(ICASFastSyncMessageData *)self avgMessageSizeInBytes];
+  if (avgMessageSizeInBytes)
   {
-    v10 = [(ICASFastSyncMessageData *)self avgMessageSizeInBytes];
+    avgMessageSizeInBytes2 = [(ICASFastSyncMessageData *)self avgMessageSizeInBytes];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    avgMessageSizeInBytes2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v19[2] = v10;
+  v11 = avgMessageSizeInBytes2;
+  v19[2] = avgMessageSizeInBytes2;
   v18[3] = @"maxMessageSizeInBytes";
-  v12 = [(ICASFastSyncMessageData *)self maxMessageSizeInBytes];
-  if (v12)
+  maxMessageSizeInBytes = [(ICASFastSyncMessageData *)self maxMessageSizeInBytes];
+  if (maxMessageSizeInBytes)
   {
-    v13 = [(ICASFastSyncMessageData *)self maxMessageSizeInBytes];
+    maxMessageSizeInBytes2 = [(ICASFastSyncMessageData *)self maxMessageSizeInBytes];
   }
 
   else
   {
-    v13 = objc_opt_new();
+    maxMessageSizeInBytes2 = objc_opt_new();
   }
 
-  v14 = v13;
-  v19[3] = v13;
+  v14 = maxMessageSizeInBytes2;
+  v19[3] = maxMessageSizeInBytes2;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
 
   v16 = *MEMORY[0x277D85DE8];

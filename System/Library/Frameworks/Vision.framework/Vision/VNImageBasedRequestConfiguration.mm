@@ -1,7 +1,7 @@
 @interface VNImageBasedRequestConfiguration
 - (CGRect)regionOfInterest;
-- (VNImageBasedRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VNImageBasedRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VNImageBasedRequestConfiguration
@@ -19,11 +19,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = VNImageBasedRequestConfiguration;
-  v4 = [(VNRequestConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(VNRequestConfiguration *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -35,11 +35,11 @@
   return v5;
 }
 
-- (VNImageBasedRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNImageBasedRequestConfiguration)initWithRequestClass:(Class)class
 {
   v4.receiver = self;
   v4.super_class = VNImageBasedRequestConfiguration;
-  result = [(VNRequestConfiguration *)&v4 initWithRequestClass:a3];
+  result = [(VNRequestConfiguration *)&v4 initWithRequestClass:class];
   if (result)
   {
     result->_regionOfInterest = VNNormalizedIdentityRect;

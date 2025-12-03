@@ -6,20 +6,20 @@
 
 - (id)byteString
 {
-  v2 = [MEMORY[0x29EDBA050] string];
-  v3 = [a1 bytes];
-  if ([a1 length])
+  string = [MEMORY[0x29EDBA050] string];
+  bytes = [self bytes];
+  if ([self length])
   {
     v4 = 0;
     do
     {
-      [v2 appendFormat:@"%02x", *(v3 + v4++)];
+      [string appendFormat:@"%02x", *(bytes + v4++)];
     }
 
-    while (v4 < [a1 length]);
+    while (v4 < [self length]);
   }
 
-  v5 = [MEMORY[0x29EDBA0F8] stringWithString:v2];
+  v5 = [MEMORY[0x29EDBA0F8] stringWithString:string];
 
   return v5;
 }

@@ -1,24 +1,24 @@
 @interface NavdRouteGenius
 - (NSString)uniqueName;
-- (NavdRouteGenius)initWithDelegate:(id)a3 resourceDepot:(id)a4 locationUpdater:(id)a5;
+- (NavdRouteGenius)initWithDelegate:(id)delegate resourceDepot:(id)depot locationUpdater:(id)updater;
 - (id).cxx_construct;
-- (void)_updateExternalAccessory:(id)a3;
+- (void)_updateExternalAccessory:(id)accessory;
 - (void)dealloc;
-- (void)didChangeProtectionStatusForBundleId:(id)a3;
-- (void)didUpdateLocation:(id)a3;
+- (void)didChangeProtectionStatusForBundleId:(id)id;
+- (void)didUpdateLocation:(id)location;
 - (void)forceReroute;
-- (void)invalidateForMapsSuggestionsManager:(id)a3;
+- (void)invalidateForMapsSuggestionsManager:(id)manager;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation NavdRouteGenius
 
-- (NavdRouteGenius)initWithDelegate:(id)a3 resourceDepot:(id)a4 locationUpdater:(id)a5
+- (NavdRouteGenius)initWithDelegate:(id)delegate resourceDepot:(id)depot locationUpdater:(id)updater
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  delegateCopy = delegate;
+  depotCopy = depot;
+  updaterCopy = updater;
   v38.receiver = self;
   v38.super_class = NavdRouteGenius;
   v12 = [(NavdRouteGenius *)&v38 init];
@@ -36,12 +36,12 @@
     name = v12->_state.queue._name;
     v12->_state.queue._name = v16;
 
-    objc_storeStrong(&v12->_config.delegate, a3);
-    objc_storeStrong(&v12->_config.locationUpdater, a5);
-    objc_storeStrong(&v12->_config.resourceDepot, a4);
-    v18 = [v10 oneAppGuardian];
+    objc_storeStrong(&v12->_config.delegate, delegate);
+    objc_storeStrong(&v12->_config.locationUpdater, updater);
+    objc_storeStrong(&v12->_config.resourceDepot, depot);
+    oneAppGuardian = [depotCopy oneAppGuardian];
     appGuardian = v12->_config.appGuardian;
-    v12->_config.appGuardian = v18;
+    v12->_config.appGuardian = oneAppGuardian;
 
     uniqueName = v12->_uniqueName;
     v12->_uniqueName = @"NavdRouteGenius";
@@ -51,8 +51,8 @@
     [v21 addObserver:v12 selector:"_updateExternalAccessory:" name:@"MapsExternalAccessoryUpdatedNotification" object:v22];
 
     v23 = [NavdNetworkRequester alloc];
-    v24 = [v10 oneNetworkRequester];
-    v25 = [(NavdNetworkRequester *)v23 initWithNetworkRequester:v24 purpose:6 source:1];
+    oneNetworkRequester = [depotCopy oneNetworkRequester];
+    v25 = [(NavdNetworkRequester *)v23 initWithNetworkRequester:oneNetworkRequester purpose:6 source:1];
     requester = v12->_config.requester;
     v12->_config.requester = v25;
 
@@ -90,15 +90,15 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_updateExternalAccessory:(id)a3
+- (void)_updateExternalAccessory:(id)accessory
 {
   v4 = +[MapsExternalAccessory sharedInstance];
-  v5 = [v4 isConnected];
+  isConnected = [v4 isConnected];
 
-  if ((v5 & 1) == 0)
+  if ((isConnected & 1) == 0)
   {
-    v6 = self;
-    objc_sync_enter(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
@@ -106,8 +106,8 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Ending currentSession", v8, 2u);
     }
 
-    v6->_state.triggerLocation.currentSession = 0;
-    objc_sync_exit(v6);
+    selfCopy->_state.triggerLocation.currentSession = 0;
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -152,7 +152,7 @@
   objc_destroyWeak(buf);
 }
 
-- (void)invalidateForMapsSuggestionsManager:(id)a3
+- (void)invalidateForMapsSuggestionsManager:(id)manager
 {
   objc_initWeak(&location, self);
   v4[0] = _NSConcreteStackBlock;
@@ -166,18 +166,18 @@
   objc_destroyWeak(&location);
 }
 
-- (void)didUpdateLocation:(id)a3
+- (void)didUpdateLocation:(id)location
 {
-  v4 = a3;
-  if (v4)
+  locationCopy = location;
+  if (locationCopy)
   {
     objc_initWeak(location, self);
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100019B8C;
     v6[3] = &unk_100065908;
-    v7 = v4;
-    v8 = self;
+    v7 = locationCopy;
+    selfCopy = self;
     objc_copyWeak(&v9, location);
     sub_1000100B4(&self->_state, self, v6);
     objc_destroyWeak(&v9);
@@ -214,12 +214,12 @@
   [(NavdRouteGenius *)&v5 dealloc];
 }
 
-- (void)didChangeProtectionStatusForBundleId:(id)a3
+- (void)didChangeProtectionStatusForBundleId:(id)id
 {
-  v4 = [(NavdRouteGeniusRoute *)self->_state.route entry];
-  v5 = [v4 isLockedOrHidden];
+  entry = [(NavdRouteGeniusRoute *)self->_state.route entry];
+  isLockedOrHidden = [entry isLockedOrHidden];
 
-  if (v5)
+  if (isLockedOrHidden)
   {
 
     [(NavdRouteGenius *)self stop];

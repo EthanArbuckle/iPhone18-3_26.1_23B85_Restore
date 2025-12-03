@@ -1,6 +1,6 @@
 @interface XRRecentArrayStoredPrefs
-+ (id)sharedInstanceForPreferencePath:(id)a3;
-- (XRRecentArrayStoredPrefs)initWithMaximumRecentCount:(unint64_t)a3 preferencePath:(id)a4;
++ (id)sharedInstanceForPreferencePath:(id)path;
+- (XRRecentArrayStoredPrefs)initWithMaximumRecentCount:(unint64_t)count preferencePath:(id)path;
 - (void)_readUserDefaults;
 - (void)dealloc;
 - (void)synchronize;
@@ -8,21 +8,21 @@
 
 @implementation XRRecentArrayStoredPrefs
 
-+ (id)sharedInstanceForPreferencePath:(id)a3
++ (id)sharedInstanceForPreferencePath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   if (qword_27EE86930 != -1)
   {
     sub_2480B3BB0();
   }
 
   dispatch_semaphore_wait(qword_27EE86928, 0xFFFFFFFFFFFFFFFFLL);
-  v7 = objc_msgSend_objectForKey_(qword_27EE86920, v4, v3, v5, v6);
+  v7 = objc_msgSend_objectForKey_(qword_27EE86920, v4, pathCopy, v5, v6);
   if (!v7)
   {
     v8 = [XRRecentArrayStoredPrefs alloc];
-    v7 = objc_msgSend_initWithMaximumRecentCount_preferencePath_(v8, v9, 10, v3, v10);
-    objc_msgSend_setObject_forKeyedSubscript_(qword_27EE86920, v11, v7, v3, v12);
+    v7 = objc_msgSend_initWithMaximumRecentCount_preferencePath_(v8, v9, 10, pathCopy, v10);
+    objc_msgSend_setObject_forKeyedSubscript_(qword_27EE86920, v11, v7, pathCopy, v12);
   }
 
   dispatch_semaphore_signal(qword_27EE86928);
@@ -30,19 +30,19 @@
   return v7;
 }
 
-- (XRRecentArrayStoredPrefs)initWithMaximumRecentCount:(unint64_t)a3 preferencePath:(id)a4
+- (XRRecentArrayStoredPrefs)initWithMaximumRecentCount:(unint64_t)count preferencePath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v23.receiver = self;
   v23.super_class = XRRecentArrayStoredPrefs;
-  v10 = [(XRRecentArray *)&v23 initWithMaximumRecentCount:a3];
+  v10 = [(XRRecentArray *)&v23 initWithMaximumRecentCount:count];
   if (v10)
   {
-    v11 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v7, @"%@.array", v8, v9, v6);
+    v11 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v7, @"%@.array", v8, v9, pathCopy);
     preferencePathArray = v10->_preferencePathArray;
     v10->_preferencePathArray = v11;
 
-    v16 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v13, @"%@.maxCount", v14, v15, v6);
+    v16 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v13, @"%@.maxCount", v14, v15, pathCopy);
     preferencePathMaxCount = v10->_preferencePathMaxCount;
     v10->_preferencePathMaxCount = v16;
 

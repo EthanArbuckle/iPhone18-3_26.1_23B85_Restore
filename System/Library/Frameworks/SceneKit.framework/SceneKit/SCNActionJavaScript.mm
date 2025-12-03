@@ -1,34 +1,34 @@
 @interface SCNActionJavaScript
-+ (id)javaScriptActionWithDuration:(double)a3 script:(id)a4;
-- (SCNActionJavaScript)initWithCoder:(id)a3;
-- (SCNActionJavaScript)initWithString:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)javaScriptActionWithDuration:(double)duration script:(id)script;
+- (SCNActionJavaScript)initWithCoder:(id)coder;
+- (SCNActionJavaScript)initWithString:(id)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)parameters;
 - (id)reversedAction;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNActionJavaScript
 
-- (SCNActionJavaScript)initWithString:(id)a3
+- (SCNActionJavaScript)initWithString:(id)string
 {
   v6.receiver = self;
   v6.super_class = SCNActionJavaScript;
   v4 = [(SCNAction *)&v6 init];
   if (v4)
   {
-    v4->_script = [a3 copy];
+    v4->_script = [string copy];
     operator new();
   }
 
   return 0;
 }
 
-+ (id)javaScriptActionWithDuration:(double)a3 script:(id)a4
++ (id)javaScriptActionWithDuration:(double)duration script:(id)script
 {
-  v5 = [[SCNActionJavaScript alloc] initWithString:a4];
-  [(SCNAction *)v5 setDuration:a3];
+  v5 = [[SCNActionJavaScript alloc] initWithString:script];
+  [(SCNAction *)v5 setDuration:duration];
   return v5;
 }
 
@@ -39,15 +39,15 @@
   [(SCNAction *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[SCNActionJavaScript alloc] initWithString:self->_script];
-  v5 = [(SCNAction *)self caction];
-  v6 = [(SCNAction *)v4 caction];
-  *(v6 + 56) = *&v5->var7;
-  *(v6 + 104) = v5->var14;
-  *(v6 + 120) = *&v5->var16;
-  *(v6 + 80) = 0;
+  caction = [(SCNAction *)self caction];
+  caction2 = [(SCNAction *)v4 caction];
+  *(caction2 + 56) = *&caction->var7;
+  *(caction2 + 104) = caction->var14;
+  *(caction2 + 120) = *&caction->var16;
+  *(caction2 + 80) = 0;
   return v4;
 }
 
@@ -58,26 +58,26 @@
   return v2;
 }
 
-- (SCNActionJavaScript)initWithCoder:(id)a3
+- (SCNActionJavaScript)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SCNActionJavaScript;
   v4 = [(SCNAction *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_script = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"script", "copy"}];
+    v4->_script = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"script", "copy"}];
     operator new();
   }
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNActionJavaScript;
   [(SCNAction *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_script forKey:@"script"];
+  [coder encodeObject:self->_script forKey:@"script"];
 }
 
 - (id)parameters

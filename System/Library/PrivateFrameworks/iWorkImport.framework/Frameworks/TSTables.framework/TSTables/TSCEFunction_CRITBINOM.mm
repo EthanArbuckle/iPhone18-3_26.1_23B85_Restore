@@ -1,45 +1,45 @@
 @interface TSCEFunction_CRITBINOM
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_CRITBINOM
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v82 = 0;
-  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 0, &v82);
+  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 0, &v82);
   v11 = v82;
   v16 = objc_msgSend_trunc(v10, v12, v13, v14, v15);
 
   objc_msgSend_doubleRepresentation(v16, v17, v18, v19, v20);
   if (v11)
   {
-    v25 = objc_msgSend_raiseErrorOrConvert_(a3, v21, v11, v22, v23);
+    v25 = objc_msgSend_raiseErrorOrConvert_(context, v21, v11, v22, v23);
     goto LABEL_25;
   }
 
   v26 = v24;
-  v27 = *(*a5 + 8);
+  v27 = *(*arguments + 8);
   v81 = 0;
-  v29 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v27, v28, a3, a4, 1, &v81);
+  v29 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v27, v28, context, spec, 1, &v81);
   v11 = v81;
   objc_msgSend_doubleRepresentation(v29, v30, v31, v32, v33);
   if (v11)
   {
-    v25 = objc_msgSend_raiseErrorOrConvert_(a3, v34, v11, v35, v36);
+    v25 = objc_msgSend_raiseErrorOrConvert_(context, v34, v11, v35, v36);
     goto LABEL_24;
   }
 
   v38 = v37;
-  v39 = *(*a5 + 16);
+  v39 = *(*arguments + 16);
   v80 = 0;
-  v41 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v39, v40, a3, a4, 2, &v80);
+  v41 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v39, v40, context, spec, 2, &v80);
   v11 = v80;
   objc_msgSend_doubleRepresentation(v41, v42, v43, v44, v45);
   if (v11)
   {
-    v50 = objc_msgSend_raiseErrorOrConvert_(a3, v46, v11, v47, v48);
+    v50 = objc_msgSend_raiseErrorOrConvert_(context, v46, v11, v47, v48);
     goto LABEL_23;
   }
 
@@ -107,7 +107,7 @@ LABEL_17:
   v41 = v75;
   if (v8)
   {
-    objc_msgSend_formatWithContext_(v8, v71, a3, v72, v73);
+    objc_msgSend_formatWithContext_(v8, v71, context, v72, v73);
   }
 
   else

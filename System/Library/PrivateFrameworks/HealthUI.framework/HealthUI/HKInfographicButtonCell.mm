@@ -1,29 +1,29 @@
 @interface HKInfographicButtonCell
 - (void)_constrainButton;
 - (void)_didTapButton;
-- (void)setConfiguration:(id)a3 buttonTapHandler:(id)a4;
-- (void)updateAutomationIdentifiersWith:(id)a3;
+- (void)setConfiguration:(id)configuration buttonTapHandler:(id)handler;
+- (void)updateAutomationIdentifiersWith:(id)with;
 @end
 
 @implementation HKInfographicButtonCell
 
-- (void)setConfiguration:(id)a3 buttonTapHandler:(id)a4
+- (void)setConfiguration:(id)configuration buttonTapHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 copy];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  v8 = [configurationCopy copy];
   configuration = self->_configuration;
   self->_configuration = v8;
 
   [(UIButtonConfiguration *)self->_configuration setContentInsets:0.0, 0.0, 0.0, 0.0];
-  v10 = [v7 copy];
+  v10 = [handlerCopy copy];
   buttonTapHandler = self->_buttonTapHandler;
   self->_buttonTapHandler = v10;
 
   button = self->_button;
   if (button)
   {
-    [(UIButton *)button setConfiguration:v6];
+    [(UIButton *)button setConfiguration:configurationCopy];
   }
 
   else
@@ -55,40 +55,40 @@ void __61__HKInfographicButtonCell_setConfiguration_buttonTapHandler___block_inv
 - (void)_constrainButton
 {
   v26[4] = *MEMORY[0x1E69E9840];
-  v3 = [(HKInfographicButtonCell *)self contentView];
-  [v3 addSubview:self->_button];
+  contentView = [(HKInfographicButtonCell *)self contentView];
+  [contentView addSubview:self->_button];
 
   [(UIButton *)self->_button setContentHorizontalAlignment:4];
   v17 = MEMORY[0x1E696ACD8];
-  v24 = [(UIButton *)self->_button topAnchor];
-  v25 = [(HKInfographicButtonCell *)self contentView];
-  v23 = [v25 topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23 constant:5.0];
+  topAnchor = [(UIButton *)self->_button topAnchor];
+  contentView2 = [(HKInfographicButtonCell *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
   v26[0] = v22;
-  v20 = [(UIButton *)self->_button leadingAnchor];
-  v21 = [(HKInfographicButtonCell *)self contentView];
-  v19 = [v21 layoutMarginsGuide];
-  v18 = [v19 leadingAnchor];
-  v16 = [v20 constraintEqualToAnchor:v18];
+  leadingAnchor = [(UIButton *)self->_button leadingAnchor];
+  contentView3 = [(HKInfographicButtonCell *)self contentView];
+  layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[1] = v16;
-  v14 = [(UIButton *)self->_button trailingAnchor];
-  v15 = [(HKInfographicButtonCell *)self contentView];
-  v13 = [v15 layoutMarginsGuide];
-  v4 = [v13 trailingAnchor];
-  v5 = [v14 constraintEqualToAnchor:v4];
+  trailingAnchor = [(UIButton *)self->_button trailingAnchor];
+  contentView4 = [(HKInfographicButtonCell *)self contentView];
+  layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v5 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v26[2] = v5;
-  v6 = [(UIButton *)self->_button bottomAnchor];
-  v7 = [(HKInfographicButtonCell *)self contentView];
-  v8 = [v7 layoutMarginsGuide];
-  v9 = [v8 bottomAnchor];
-  v10 = [v6 constraintEqualToAnchor:v9];
+  bottomAnchor = [(UIButton *)self->_button bottomAnchor];
+  contentView5 = [(HKInfographicButtonCell *)self contentView];
+  layoutMarginsGuide3 = [contentView5 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide3 bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[3] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
   [v17 activateConstraints:v11];
 
   [(UIButton *)self->_button setTranslatesAutoresizingMaskIntoConstraints:0];
-  v12 = [(HKInfographicButtonCell *)self contentView];
-  [v12 setDirectionalLayoutMargins:{7.0, 7.0, 18.0, 7.0}];
+  contentView6 = [(HKInfographicButtonCell *)self contentView];
+  [contentView6 setDirectionalLayoutMargins:{7.0, 7.0, 18.0, 7.0}];
 }
 
 - (void)_didTapButton
@@ -100,14 +100,14 @@ void __61__HKInfographicButtonCell_setConfiguration_buttonTapHandler___block_inv
   }
 }
 
-- (void)updateAutomationIdentifiersWith:(id)a3
+- (void)updateAutomationIdentifiersWith:(id)with
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  withCopy = with;
+  v5 = withCopy;
+  if (withCopy)
   {
-    v13[0] = v4;
+    v13[0] = withCopy;
     v13[1] = @"InfographicButtonItem";
     v13[2] = @"Cell";
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
@@ -119,15 +119,15 @@ void __61__HKInfographicButtonCell_setConfiguration_buttonTapHandler___block_inv
     v12[2] = @"Button";
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:3];
     v9 = HKUIJoinStringsForAutomationIdentifier(v8);
-    v10 = [(HKInfographicButtonCell *)self button];
-    [v10 setAccessibilityIdentifier:v9];
+    button = [(HKInfographicButtonCell *)self button];
+    [button setAccessibilityIdentifier:v9];
   }
 
   else
   {
     [(HKInfographicButtonCell *)self setAccessibilityIdentifier:0];
-    v11 = [(HKInfographicButtonCell *)self button];
-    [v11 setAccessibilityIdentifier:0];
+    button2 = [(HKInfographicButtonCell *)self button];
+    [button2 setAccessibilityIdentifier:0];
   }
 }
 

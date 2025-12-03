@@ -1,83 +1,83 @@
 @interface EKDayViewContent
-- (BOOL)_getBottomPinRegion:(double *)a3 dayIndex:(unint64_t *)a4 forPoint:(CGPoint)a5;
-- (BOOL)_layoutDayIfNeeded:(int64_t)a3;
-- (BOOL)_layoutNeededForDay:(int64_t)a3;
-- (BOOL)_shouldAnnotateAppEntitiesForDayAtIndex:(unint64_t)a3;
+- (BOOL)_getBottomPinRegion:(double *)region dayIndex:(unint64_t *)index forPoint:(CGPoint)point;
+- (BOOL)_layoutDayIfNeeded:(int64_t)needed;
+- (BOOL)_layoutNeededForDay:(int64_t)day;
+- (BOOL)_shouldAnnotateAppEntitiesForDayAtIndex:(unint64_t)index;
 - (BOOL)containsVisibleOccurrenceViews;
-- (BOOL)eventsIntersectRect:(CGRect)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)itemIsEligibleForGrouping:(id)a3;
-- (CGPoint)pointForDate:(double)a3;
-- (CGRect)_occurrencePaddingBetweenDays:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (EKDayViewContent)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4 orientation:(int64_t)a5;
-- (EKDayViewContent)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4 orientation:(int64_t)a5 backgroundColor:(id)a6 opaque:(BOOL)a7 isMiniPreviewInEventDetail:(BOOL)a8 numberOfDaysToDisplay:(unint64_t)a9;
+- (BOOL)eventsIntersectRect:(CGRect)rect;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)itemIsEligibleForGrouping:(id)grouping;
+- (CGPoint)pointForDate:(double)date;
+- (CGRect)_occurrencePaddingBetweenDays:(CGRect)days;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (EKDayViewContent)initWithFrame:(CGRect)frame sizeClass:(int64_t)class orientation:(int64_t)orientation;
+- (EKDayViewContent)initWithFrame:(CGRect)frame sizeClass:(int64_t)class orientation:(int64_t)orientation backgroundColor:(id)color opaque:(BOOL)opaque isMiniPreviewInEventDetail:(BOOL)detail numberOfDaysToDisplay:(unint64_t)display;
 - (EKDayViewContentDelegate)delegate;
-- (UIEdgeInsets)insetsForInterfaceLayout:(UIEdgeInsets)a3;
+- (UIEdgeInsets)insetsForInterfaceLayout:(UIEdgeInsets)layout;
 - (UIEdgeInsets)occurrencePadding;
-- (_NSRange)_dayRangeForEvent:(id)a3 useProposedTime:(BOOL)a4;
-- (_NSRange)_dayRangeForEventWithStartDate:(id)a3 endDate:(id)a4;
+- (_NSRange)_dayRangeForEvent:(id)event useProposedTime:(BOOL)time;
+- (_NSRange)_dayRangeForEventWithStartDate:(id)date endDate:(id)endDate;
 - (double)_dayWidth;
-- (double)dateForPoint:(CGPoint)a3;
+- (double)dateForPoint:(CGPoint)point;
 - (double)firstEventSecond;
 - (id)allVisibleItems;
 - (id)dayStarts;
-- (id)groupItem:(id)a3 withItem:(id)a4;
+- (id)groupItem:(id)item withItem:(id)withItem;
 - (id)lastDisplayedSecond;
 - (id)layoutParameters;
-- (id)occurrenceViewForEvent:(id)a3;
-- (id)occurrenceViewForEvent:(id)a3 onDate:(double)a4;
+- (id)occurrenceViewForEvent:(id)event;
+- (id)occurrenceViewForEvent:(id)event onDate:(double)date;
 - (id)occurrenceViews;
 - (id)presentationControllerForEditMenu;
-- (id)selectedCopyViewForDayOccurrenceView:(id)a3;
+- (id)selectedCopyViewForDayOccurrenceView:(id)view;
 - (id)selectedEventsForEditMenu;
 - (id)singleItemsByDay;
 - (id)singleItemsForPreloadByDay;
 - (id)visibleItemsByDay;
-- (unint64_t)_dayIndexForAllIndex:(unint64_t)a3;
+- (unint64_t)_dayIndexForAllIndex:(unint64_t)index;
 - (void)_adjustViewsForPinning;
 - (void)_computeDayStartsAndEnds;
-- (void)_configureOccurrenceViewMarginAndPadding:(id)a3;
-- (void)_layoutDay:(unint64_t)a3 isLoadingAsync:(BOOL)a4;
+- (void)_configureOccurrenceViewMarginAndPadding:(id)padding;
+- (void)_layoutDay:(unint64_t)day isLoadingAsync:(BOOL)async;
 - (void)_layoutDaysIfVisible;
-- (void)_tapRecognized:(id)a3;
+- (void)_tapRecognized:(id)recognized;
 - (void)_updateShouldAnnotateAppEntitiesByDay;
-- (void)applyContentItem:(id)a3 toView:(id)a4 shouldAnnotate:(BOOL)a5;
-- (void)applyLoadedOccurrenceBatchStartingAtIndex:(int64_t)a3 batchSize:(int64_t)a4 fromArray:(id)a5 withStartDate:(id)a6 animated:(BOOL)a7 reverse:(BOOL)a8 completion:(id)a9;
-- (void)applyLoadedOccurrencesWithBatching:(BOOL)a3 animated:(BOOL)a4 reverse:(BOOL)a5 completion:(id)a6;
+- (void)applyContentItem:(id)item toView:(id)view shouldAnnotate:(BOOL)annotate;
+- (void)applyLoadedOccurrenceBatchStartingAtIndex:(int64_t)index batchSize:(int64_t)size fromArray:(id)array withStartDate:(id)date animated:(BOOL)animated reverse:(BOOL)reverse completion:(id)completion;
+- (void)applyLoadedOccurrencesWithBatching:(BOOL)batching animated:(BOOL)animated reverse:(BOOL)reverse completion:(id)completion;
 - (void)attemptDisplayReviewPrompt;
 - (void)clearTemporaryViews;
-- (void)dayOccurrenceViewSelected:(id)a3 source:(unint64_t)a4;
+- (void)dayOccurrenceViewSelected:(id)selected source:(unint64_t)source;
 - (void)dealloc;
 - (void)invalidateOccurrenceLayout;
 - (void)layoutSubviews;
-- (void)loadAndLayoutOccurrences:(id)a3 reverse:(BOOL)a4;
-- (void)loadOccurrences:(id)a3;
+- (void)loadAndLayoutOccurrences:(id)occurrences reverse:(BOOL)reverse;
+- (void)loadOccurrences:(id)occurrences;
 - (void)movePreloadedItemsToVisible;
-- (void)prepareForReuseIsReload:(BOOL)a3;
-- (void)rectBecameVisible:(CGRect)a3;
+- (void)prepareForReuseIsReload:(BOOL)reload;
+- (void)rectBecameVisible:(CGRect)visible;
 - (void)saveTemporaryViews;
-- (void)selectEvent:(id)a3;
-- (void)setAllowsOccurrenceSelection:(BOOL)a3;
-- (void)setCalendar:(id)a3;
-- (void)setDarkensWeekends:(BOOL)a3;
-- (void)setDimmedOccurrence:(id)a3;
-- (void)setFixedDayWidth:(double)a3;
+- (void)selectEvent:(id)event;
+- (void)setAllowsOccurrenceSelection:(BOOL)selection;
+- (void)setCalendar:(id)calendar;
+- (void)setDarkensWeekends:(BOOL)weekends;
+- (void)setDimmedOccurrence:(id)occurrence;
+- (void)setFixedDayWidth:(double)width;
 - (void)setNeedsDisplay;
-- (void)setOccurrenceLayoutLeadingInset:(double)a3;
-- (void)setOccurrenceLayoutTrailingInset:(double)a3;
-- (void)setOccurrenceLocationColor:(id)a3;
-- (void)setOccurrencePadding:(UIEdgeInsets)a3;
-- (void)setOccurrenceTextBackgroundColor:(id)a3;
-- (void)setOccurrenceTimeColor:(id)a3;
-- (void)setOccurrenceTitleColor:(id)a3;
-- (void)setOccurrences:(id)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setReduceLayoutProcessingForAnimation:(BOOL)a3;
-- (void)setStartDateWithDateComponents:(id)a3;
-- (void)setTimeZone:(id)a3;
-- (void)setUsesSmallText:(BOOL)a3;
-- (void)setViewsDimmed:(BOOL)a3 forEvent:(id)a4;
+- (void)setOccurrenceLayoutLeadingInset:(double)inset;
+- (void)setOccurrenceLayoutTrailingInset:(double)inset;
+- (void)setOccurrenceLocationColor:(id)color;
+- (void)setOccurrencePadding:(UIEdgeInsets)padding;
+- (void)setOccurrenceTextBackgroundColor:(id)color;
+- (void)setOccurrenceTimeColor:(id)color;
+- (void)setOccurrenceTitleColor:(id)color;
+- (void)setOccurrences:(id)occurrences;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setReduceLayoutProcessingForAnimation:(BOOL)animation;
+- (void)setStartDateWithDateComponents:(id)components;
+- (void)setTimeZone:(id)zone;
+- (void)setUsesSmallText:(BOOL)text;
+- (void)setViewsDimmed:(BOOL)dimmed forEvent:(id)event;
 - (void)stopRenderingEvents;
 - (void)updateCurrentLayoutParameters;
 @end
@@ -87,15 +87,15 @@
 - (id)occurrenceViews
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(EKDayGridView *)self->_grid occurrenceContainerView];
-  v3 = [v2 subviews];
+  occurrenceContainerView = [(EKDayGridView *)self->_grid occurrenceContainerView];
+  subviews = [occurrenceContainerView subviews];
 
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(subviews, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = subviews;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -151,8 +151,8 @@
     v5 = 0;
     do
     {
-      v6 = [(EKCalendarDate *)v2 calendarDateForEndOfDay];
-      v7 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v2, @"startDate", v6, @"endDate", 0}];
+      calendarDateForEndOfDay = [(EKCalendarDate *)v2 calendarDateForEndOfDay];
+      v7 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v2, @"startDate", calendarDateForEndOfDay, @"endDate", 0}];
       [(NSMutableArray *)obj->_dayStarts addObject:v7];
       v8 = [(EKCalendarDate *)v2 calendarDateByAddingDays:v3];
 
@@ -176,7 +176,7 @@
 - (void)_updateShouldAnnotateAppEntitiesByDay
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(EKDayViewContent *)self delegate];
+  delegate = [(EKDayViewContent *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -207,8 +207,8 @@
         v9 = [(NSMutableArray *)self->_dayStarts objectAtIndexedSubscript:v8];
         v10 = [v9 objectForKey:@"startDate"];
 
-        v11 = [(EKDayViewContent *)self delegate];
-        v12 = [v11 dayViewContentShouldAnnotateAppEntities:self onDayStarting:v10];
+        delegate2 = [(EKDayViewContent *)self delegate];
+        v12 = [delegate2 dayViewContentShouldAnnotateAppEntities:self onDayStarting:v10];
 
         v13 = self->_shouldAnnotateAppEntitiesByDay;
         v14 = [MEMORY[0x1E696AD98] numberWithBool:v12];
@@ -237,8 +237,8 @@
                   objc_enumerationMutation(v17);
                 }
 
-                v21 = [*(*(&v22 + 1) + 8 * i) view];
-                [v21 setShouldAnnotateAppEntities:v12];
+                view = [*(*(&v22 + 1) + 8 * i) view];
+                [view setShouldAnnotateAppEntities:v12];
               }
 
               v18 = [v17 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -273,8 +273,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(EKDayViewContent *)self visibleItemsByDay];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  visibleItemsByDay = [(EKDayViewContent *)self visibleItemsByDay];
+  v5 = [visibleItemsByDay countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -285,13 +285,13 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleItemsByDay);
         }
 
         [v3 addObjectsFromArray:*(*(&v10 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [visibleItemsByDay countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -316,9 +316,9 @@
   p_latestVisibleRect = &self->_latestVisibleRect;
   if (!CGRectIsNull(self->_latestVisibleRect))
   {
-    v3 = [(EKDayViewContent *)self visibleItemsByDay];
+    visibleItemsByDay = [(EKDayViewContent *)self visibleItemsByDay];
 
-    if (v3)
+    if (visibleItemsByDay)
     {
       if ([(EKDayViewContent *)self _doOffscreenOccurrences])
       {
@@ -356,14 +356,14 @@
           self->_topStackViews = v11;
         }
 
-        v80 = [(EKDayViewContent *)self visibleItemsByDay];
+        visibleItemsByDay2 = [(EKDayViewContent *)self visibleItemsByDay];
         if (self->_daysToDisplay)
         {
           v15 = 0;
           v16 = v10 * 3.0;
           do
           {
-            if (v15 >= [v80 count])
+            if (v15 >= [visibleItemsByDay2 count])
             {
               break;
             }
@@ -387,7 +387,7 @@
               v82 = 0;
             }
 
-            v83 = [v80 objectAtIndex:v15];
+            v83 = [visibleItemsByDay2 objectAtIndex:v15];
             if ([v83 count])
             {
               v143.origin.y = 0.0;
@@ -520,8 +520,8 @@
                 self->_visiblePinnedStackHeightBelow[v15] = v43;
                 if ([v79 count])
                 {
-                  v44 = [v79 lastObject];
-                  v45 = [v44 objectAtIndex:0];
+                  lastObject = [v79 lastObject];
+                  v45 = [lastObject objectAtIndex:0];
                   [v45 unPinnedViewFrame];
                   v46 = CGRectGetMaxY(v144);
                 }
@@ -533,8 +533,8 @@
 
                 if ([v37 count])
                 {
-                  v47 = [v37 lastObject];
-                  v48 = [v47 objectAtIndex:0];
+                  lastObject2 = [v37 lastObject];
+                  v48 = [lastObject2 objectAtIndex:0];
                   [v48 unPinnedViewFrame];
                   v49 = CGRectGetMinY(v145);
                 }
@@ -572,8 +572,8 @@
 
                 if (CalCanvasPocketEventIndicatorEnabled())
                 {
-                  v56 = [v79 lastObject];
-                  [v82 updateWithRows:v56];
+                  lastObject3 = [v79 lastObject];
+                  [v82 updateWithRows:lastObject3];
                 }
 
                 else
@@ -628,16 +628,16 @@
                       }
 
                       v64 = *(*(&v84 + 1) + 8 * j);
-                      v65 = [v64 view];
-                      [v65 frame];
+                      view = [v64 view];
+                      [view frame];
                       v67 = v66;
                       v69 = v68;
                       v71 = v70;
 
                       [v64 unPinnedViewFrame];
                       v73 = v72;
-                      v74 = [v64 view];
-                      [v74 setFrame:{v67, v73, v69, v71}];
+                      view2 = [v64 view];
+                      [view2 setFrame:{v67, v73, v69, v71}];
                     }
 
                     v61 = [v60 countByEnumeratingWithState:&v84 objects:v140 count:16];
@@ -691,13 +691,13 @@
       v7 = 0;
       while (1)
       {
-        v8 = [v6 dayOfWeek];
-        if (v8 == 1)
+        dayOfWeek = [v6 dayOfWeek];
+        if (dayOfWeek == 1)
         {
           break;
         }
 
-        if (v8 == 7)
+        if (dayOfWeek == 7)
         {
           v9 = &OBJC_IVAR___EKDayViewContent__saturdayDarkeningView;
 LABEL_8:
@@ -732,8 +732,8 @@ LABEL_12:
   }
 
   daysToDisplay = self->_daysToDisplay;
-  v4 = [(EKDayViewContent *)self singleItemsByDay];
-  v5 = [v4 count];
+  singleItemsByDay = [(EKDayViewContent *)self singleItemsByDay];
+  v5 = [singleItemsByDay count];
 
   if (daysToDisplay >= v5)
   {
@@ -802,23 +802,23 @@ LABEL_21:
   [(EKDayViewContent *)self setShouldAnimateLayout:0];
   if (v8)
   {
-    v10 = [(EKDayViewContent *)self delegate];
+    delegate = [(EKDayViewContent *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(EKDayViewContent *)self delegate];
-      [v12 dayViewContentDidLayout:self];
+      delegate2 = [(EKDayViewContent *)self delegate];
+      [delegate2 dayViewContentDidLayout:self];
     }
   }
 }
 
 - (id)dayStarts
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_dayStarts copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_dayStarts copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -1034,17 +1034,17 @@ LABEL_15:
 - (void)clearTemporaryViews
 {
   v24 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_saveTemporaryViewsEntryCount - 1;
-  v2->_saveTemporaryViewsEntryCount = v3;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_saveTemporaryViewsEntryCount - 1;
+  selfCopy->_saveTemporaryViewsEntryCount = v3;
   if (!v3)
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    obj = v2->_temporaryViewCacheByDay;
+    obj = selfCopy->_temporaryViewCacheByDay;
     v4 = [(NSMutableArray *)obj countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v4)
     {
@@ -1063,8 +1063,8 @@ LABEL_15:
           v15 = 0u;
           v16 = 0u;
           v17 = 0u;
-          v7 = [v6 allValues];
-          v8 = [v7 countByEnumeratingWithState:&v14 objects:v22 count:16];
+          allValues = [v6 allValues];
+          v8 = [allValues countByEnumeratingWithState:&v14 objects:v22 count:16];
           if (v8)
           {
             v9 = *v15;
@@ -1074,16 +1074,16 @@ LABEL_15:
               {
                 if (*v15 != v9)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(allValues);
                 }
 
                 v11 = *(*(&v14 + 1) + 8 * j);
                 [v11 setHidden:1];
                 [v11 setOccurrence:0];
-                [(NSMutableArray *)v2->_reusableViews addObject:v11];
+                [(NSMutableArray *)selfCopy->_reusableViews addObject:v11];
               }
 
-              v8 = [v7 countByEnumeratingWithState:&v14 objects:v22 count:16];
+              v8 = [allValues countByEnumeratingWithState:&v14 objects:v22 count:16];
             }
 
             while (v8);
@@ -1099,7 +1099,7 @@ LABEL_15:
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, void *a2, uint64_t a3)
@@ -1217,15 +1217,15 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
   *(*(*(a1 + 48) + 8) + 24) = *(*(*(a1 + 48) + 8) + 24) - v26;
 }
 
-- (EKDayViewContent)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4 orientation:(int64_t)a5 backgroundColor:(id)a6 opaque:(BOOL)a7 isMiniPreviewInEventDetail:(BOOL)a8 numberOfDaysToDisplay:(unint64_t)a9
+- (EKDayViewContent)initWithFrame:(CGRect)frame sizeClass:(int64_t)class orientation:(int64_t)orientation backgroundColor:(id)color opaque:(BOOL)opaque isMiniPreviewInEventDetail:(BOOL)detail numberOfDaysToDisplay:(unint64_t)display
 {
-  v10 = a8;
-  v11 = a7;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a6;
-  [EKDayTimeView defaultHeightForSizeClass:a4 orientation:a5];
+  detailCopy = detail;
+  opaqueCopy = opaque;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
+  [EKDayTimeView defaultHeightForSizeClass:class orientation:orientation];
   v65.receiver = self;
   v65.super_class = EKDayViewContent;
   v20 = [(EKDayViewContent *)&v65 initWithFrame:x, y, width, v19];
@@ -1233,7 +1233,7 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
   if (v20)
   {
     v20->_layoutParametersLock._os_unfair_lock_opaque = 0;
-    [(EKDayViewContent *)v20 setOpaque:v11];
+    [(EKDayViewContent *)v20 setOpaque:opaqueCopy];
     [(EKDayViewContent *)v21 bounds];
     if (v22 < 0.0)
     {
@@ -1247,7 +1247,7 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
 
     v24 = [EKDayGridView alloc];
     [(EKDayViewContent *)v21 bounds];
-    v25 = [(EKDayGridView *)v24 initWithFrame:a4 sizeClass:v18 backgroundColor:v11 opaque:a9 numberOfDaysToDisplay:?];
+    v25 = [(EKDayGridView *)v24 initWithFrame:class sizeClass:colorCopy backgroundColor:opaqueCopy opaque:display numberOfDaysToDisplay:?];
     grid = v21->_grid;
     v21->_grid = v25;
 
@@ -1259,12 +1259,12 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
     calendar = v21->_calendar;
     v21->_calendar = v27;
 
-    v29 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a9];
+    v29 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:display];
     dayStarts = v21->_dayStarts;
     v21->_dayStarts = v29;
 
-    v21->_daysToDisplay = a9;
-    v31 = [MEMORY[0x1E695DF70] arrayWithCapacity:a9];
+    v21->_daysToDisplay = display;
+    v31 = [MEMORY[0x1E695DF70] arrayWithCapacity:display];
     lastLayoutParametersForDay = v21->_lastLayoutParametersForDay;
     v21->_lastLayoutParametersForDay = v31;
 
@@ -1286,9 +1286,9 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
       while (v37 < 2 * v21->_daysToDisplay);
     }
 
-    v21->_visiblePinnedStackHeightAbove = malloc_type_calloc(a9, 8uLL, 0x100004000313F17uLL);
-    v21->_visiblePinnedStackHeightBelow = malloc_type_calloc(a9, 8uLL, 0x100004000313F17uLL);
-    [(EKDayViewContent *)v21 setIsMiniPreviewInEventDetail:v10];
+    v21->_visiblePinnedStackHeightAbove = malloc_type_calloc(display, 8uLL, 0x100004000313F17uLL);
+    v21->_visiblePinnedStackHeightBelow = malloc_type_calloc(display, 8uLL, 0x100004000313F17uLL);
+    [(EKDayViewContent *)v21 setIsMiniPreviewInEventDetail:detailCopy];
     v38 = *(MEMORY[0x1E695F050] + 16);
     v21->_latestVisibleRect.origin = *MEMORY[0x1E695F050];
     v21->_latestVisibleRect.size = v38;
@@ -1324,7 +1324,7 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
     reusableViews = v21->_reusableViews;
     v21->_reusableViews = v52;
 
-    v21->_sizeClass = a4;
+    v21->_sizeClass = class;
     v21->_occurrenceLayoutLeadingInset = 0.0;
     v21->_occurrenceLayoutTrailingInset = 0.0;
     v54 = objc_opt_new();
@@ -1362,22 +1362,22 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
   return v21;
 }
 
-- (EKDayViewContent)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4 orientation:(int64_t)a5
+- (EKDayViewContent)initWithFrame:(CGRect)frame sizeClass:(int64_t)class orientation:(int64_t)orientation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = [MEMORY[0x1E69DC888] whiteColor];
-  v13 = [(EKDayViewContent *)self initWithFrame:a4 sizeClass:a5 orientation:v12 backgroundColor:1 opaque:0 isMiniPreviewInEventDetail:1 numberOfDaysToDisplay:x, y, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  height = [(EKDayViewContent *)self initWithFrame:class sizeClass:orientation orientation:whiteColor backgroundColor:1 opaque:0 isMiniPreviewInEventDetail:1 numberOfDaysToDisplay:x, y, width, height];
 
-  return v13;
+  return height;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   free(self->_visiblePinnedStackHeightAbove);
   free(self->_visiblePinnedStackHeightBelow);
@@ -1386,18 +1386,18 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
   [(EKDayViewContent *)&v4 dealloc];
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   v16 = *MEMORY[0x1E69E9840];
   [(EKDayGridView *)self->_grid setOrientation:?];
-  v5 = a3 - 3;
-  [(EKDayViewContent *)self setUsesSmallText:(a3 - 3) < 2];
+  v5 = orientation - 3;
+  [(EKDayViewContent *)self setUsesSmallText:(orientation - 3) < 2];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(EKDayViewContent *)self occurrenceViews];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  occurrenceViews = [(EKDayViewContent *)self occurrenceViews];
+  v7 = [occurrenceViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1409,14 +1409,14 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(occurrenceViews);
         }
 
         [*(*(&v11 + 1) + 8 * v10++) setUsesSmallText:v5 < 2];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [occurrenceViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -1425,9 +1425,9 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
   [(EKDayViewContent *)self invalidateOccurrenceLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(EKDayGridView *)self->_grid sizeThatFits:a3.width, a3.height];
+  [(EKDayGridView *)self->_grid sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -1453,30 +1453,30 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
   return v4;
 }
 
-- (void)selectEvent:(id)a3
+- (void)selectEvent:(id)event
 {
-  v5 = a3;
-  if (self->_selectedEvent != v5)
+  eventCopy = event;
+  if (self->_selectedEvent != eventCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectedEvent, a3);
-    v5 = v6;
+    v6 = eventCopy;
+    objc_storeStrong(&self->_selectedEvent, event);
+    eventCopy = v6;
   }
 }
 
-- (void)setDimmedOccurrence:(id)a3
+- (void)setDimmedOccurrence:(id)occurrence
 {
-  v5 = a3;
+  occurrenceCopy = occurrence;
   dimmedOccurrence = self->_dimmedOccurrence;
-  v7 = v5;
-  if (dimmedOccurrence != v5)
+  v7 = occurrenceCopy;
+  if (dimmedOccurrence != occurrenceCopy)
   {
     if (dimmedOccurrence)
     {
       [(EKDayViewContent *)self setViewsDimmed:0 forEvent:?];
     }
 
-    objc_storeStrong(&self->_dimmedOccurrence, a3);
+    objc_storeStrong(&self->_dimmedOccurrence, occurrence);
     if (self->_dimmedOccurrence)
     {
       [(EKDayViewContent *)self setViewsDimmed:1 forEvent:?];
@@ -1484,53 +1484,53 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
   }
 }
 
-- (void)setAllowsOccurrenceSelection:(BOOL)a3
+- (void)setAllowsOccurrenceSelection:(BOOL)selection
 {
-  if (self->_allowsOccurrenceSelection != a3)
+  if (self->_allowsOccurrenceSelection != selection)
   {
-    v4 = a3;
-    self->_allowsOccurrenceSelection = a3;
-    v9 = [(EKDayViewContent *)self subviews];
-    v5 = [v9 count];
+    selectionCopy = selection;
+    self->_allowsOccurrenceSelection = selection;
+    subviews = [(EKDayViewContent *)self subviews];
+    v5 = [subviews count];
     if (v5)
     {
       v6 = v5;
       for (i = 0; i != v6; ++i)
       {
-        v8 = [v9 objectAtIndex:i];
+        v8 = [subviews objectAtIndex:i];
         if ([v8 tag] == 2423)
         {
-          [v8 setUserInteractionEnabled:v4];
+          [v8 setUserInteractionEnabled:selectionCopy];
         }
       }
     }
   }
 }
 
-- (void)setFixedDayWidth:(double)a3
+- (void)setFixedDayWidth:(double)width
 {
-  if (self->_fixedDayWidth != a3)
+  if (self->_fixedDayWidth != width)
   {
-    self->_fixedDayWidth = a3;
-    v5 = [(EKDayViewContent *)self grid];
-    [v5 setFixedDayWidth:a3];
+    self->_fixedDayWidth = width;
+    grid = [(EKDayViewContent *)self grid];
+    [grid setFixedDayWidth:width];
 
     [(EKDayViewContent *)self invalidateOccurrenceLayout];
   }
 }
 
-- (void)setUsesSmallText:(BOOL)a3
+- (void)setUsesSmallText:(BOOL)text
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_usesSmallText != a3)
+  if (self->_usesSmallText != text)
   {
-    self->_usesSmallText = a3;
+    self->_usesSmallText = text;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(EKDayViewContent *)self occurrenceViews];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    occurrenceViews = [(EKDayViewContent *)self occurrenceViews];
+    v5 = [occurrenceViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1542,14 +1542,14 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(occurrenceViews);
           }
 
           [*(*(&v9 + 1) + 8 * v8++) setUsesSmallText:self->_usesSmallText];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [occurrenceViews countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -1557,18 +1557,18 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
   }
 }
 
-- (void)setReduceLayoutProcessingForAnimation:(BOOL)a3
+- (void)setReduceLayoutProcessingForAnimation:(BOOL)animation
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_reduceLayoutProcessingForAnimation != a3)
+  if (self->_reduceLayoutProcessingForAnimation != animation)
   {
-    v3 = a3;
+    animationCopy = animation;
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(EKDayViewContent *)self occurrenceViews];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    occurrenceViews = [(EKDayViewContent *)self occurrenceViews];
+    v6 = [occurrenceViews countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1580,150 +1580,150 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(occurrenceViews);
           }
 
-          [*(*(&v10 + 1) + 8 * v9++) setReduceLayoutProcessingForAnimation:v3];
+          [*(*(&v10 + 1) + 8 * v9++) setReduceLayoutProcessingForAnimation:animationCopy];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [occurrenceViews countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
     }
 
-    self->_reduceLayoutProcessingForAnimation = v3;
+    self->_reduceLayoutProcessingForAnimation = animationCopy;
   }
 }
 
-- (void)setCalendar:(id)a3
+- (void)setCalendar:(id)calendar
 {
-  v17 = a3;
-  v4 = [v17 isEqual:self->_calendar];
-  v5 = v17;
+  calendarCopy = calendar;
+  v4 = [calendarCopy isEqual:self->_calendar];
+  v5 = calendarCopy;
   if ((v4 & 1) == 0)
   {
-    v6 = [v17 copy];
+    v6 = [calendarCopy copy];
     calendar = self->_calendar;
     self->_calendar = v6;
 
-    v8 = self;
-    objc_sync_enter(v8);
-    startDate = v8->_startDate;
-    v10 = [(NSCalendar *)self->_calendar timeZone];
-    v11 = [(EKCalendarDate *)startDate calendarDateInTimeZone:v10];
-    v12 = v8->_startDate;
-    v8->_startDate = v11;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    startDate = selfCopy->_startDate;
+    timeZone = [(NSCalendar *)self->_calendar timeZone];
+    v11 = [(EKCalendarDate *)startDate calendarDateInTimeZone:timeZone];
+    v12 = selfCopy->_startDate;
+    selfCopy->_startDate = v11;
 
-    endDate = v8->_endDate;
-    v14 = [(NSCalendar *)self->_calendar timeZone];
-    v15 = [(EKCalendarDate *)endDate calendarDateInTimeZone:v14];
-    v16 = v8->_endDate;
-    v8->_endDate = v15;
+    endDate = selfCopy->_endDate;
+    timeZone2 = [(NSCalendar *)self->_calendar timeZone];
+    v15 = [(EKCalendarDate *)endDate calendarDateInTimeZone:timeZone2];
+    v16 = selfCopy->_endDate;
+    selfCopy->_endDate = v15;
 
-    objc_sync_exit(v8);
-    [(EKDayViewContent *)v8 _computeDayStartsAndEnds];
-    v5 = v17;
+    objc_sync_exit(selfCopy);
+    [(EKDayViewContent *)selfCopy _computeDayStartsAndEnds];
+    v5 = calendarCopy;
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v11 = a3;
-  v4 = [(NSCalendar *)self->_calendar timeZone];
-  v5 = [v11 isEqualToTimeZone:v4];
+  zoneCopy = zone;
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
+  v5 = [zoneCopy isEqualToTimeZone:timeZone];
 
   if ((v5 & 1) == 0)
   {
-    [(NSCalendar *)self->_calendar setTimeZone:v11];
-    v6 = self;
-    objc_sync_enter(v6);
-    v7 = [(EKCalendarDate *)v6->_startDate calendarDateInTimeZone:v11];
-    startDate = v6->_startDate;
-    v6->_startDate = v7;
+    [(NSCalendar *)self->_calendar setTimeZone:zoneCopy];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v7 = [(EKCalendarDate *)selfCopy->_startDate calendarDateInTimeZone:zoneCopy];
+    startDate = selfCopy->_startDate;
+    selfCopy->_startDate = v7;
 
-    v9 = [(EKCalendarDate *)v6->_endDate calendarDateInTimeZone:v11];
-    endDate = v6->_endDate;
-    v6->_endDate = v9;
+    v9 = [(EKCalendarDate *)selfCopy->_endDate calendarDateInTimeZone:zoneCopy];
+    endDate = selfCopy->_endDate;
+    selfCopy->_endDate = v9;
 
-    objc_sync_exit(v6);
-    [(EKDayViewContent *)v6 _computeDayStartsAndEnds];
+    objc_sync_exit(selfCopy);
+    [(EKDayViewContent *)selfCopy _computeDayStartsAndEnds];
   }
 }
 
-- (void)setOccurrenceTitleColor:(id)a3
+- (void)setOccurrenceTitleColor:(id)color
 {
-  v5 = a3;
-  if (self->_occurrenceTitleColor != v5)
+  colorCopy = color;
+  if (self->_occurrenceTitleColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_occurrenceTitleColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_occurrenceTitleColor, color);
     [(EKDayViewContent *)self invalidateOccurrenceLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setOccurrenceTimeColor:(id)a3
+- (void)setOccurrenceTimeColor:(id)color
 {
-  v5 = a3;
-  if (self->_occurrenceTimeColor != v5)
+  colorCopy = color;
+  if (self->_occurrenceTimeColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_occurrenceTimeColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_occurrenceTimeColor, color);
     [(EKDayViewContent *)self invalidateOccurrenceLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setOccurrenceLocationColor:(id)a3
+- (void)setOccurrenceLocationColor:(id)color
 {
-  v5 = a3;
-  if (self->_occurrenceLocationColor != v5)
+  colorCopy = color;
+  if (self->_occurrenceLocationColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_occurrenceLocationColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_occurrenceLocationColor, color);
     [(EKDayViewContent *)self invalidateOccurrenceLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setOccurrenceTextBackgroundColor:(id)a3
+- (void)setOccurrenceTextBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_occurrenceTextBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_occurrenceTextBackgroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_occurrenceTextBackgroundColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_occurrenceTextBackgroundColor, color);
     [(EKDayViewContent *)self invalidateOccurrenceLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setOccurrenceLayoutLeadingInset:(double)a3
+- (void)setOccurrenceLayoutLeadingInset:(double)inset
 {
-  if (vabdd_f64(self->_occurrenceLayoutLeadingInset, a3) >= 2.22044605e-16)
+  if (vabdd_f64(self->_occurrenceLayoutLeadingInset, inset) >= 2.22044605e-16)
   {
-    self->_occurrenceLayoutLeadingInset = a3;
-    [(EKDayViewContent *)self invalidateOccurrenceLayout];
-  }
-}
-
-- (void)setOccurrenceLayoutTrailingInset:(double)a3
-{
-  if (vabdd_f64(self->_occurrenceLayoutTrailingInset, a3) >= 2.22044605e-16)
-  {
-    self->_occurrenceLayoutTrailingInset = a3;
+    self->_occurrenceLayoutLeadingInset = inset;
     [(EKDayViewContent *)self invalidateOccurrenceLayout];
   }
 }
 
-- (UIEdgeInsets)insetsForInterfaceLayout:(UIEdgeInsets)a3
+- (void)setOccurrenceLayoutTrailingInset:(double)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  if (vabdd_f64(self->_occurrenceLayoutTrailingInset, inset) >= 2.22044605e-16)
+  {
+    self->_occurrenceLayoutTrailingInset = inset;
+    [(EKDayViewContent *)self invalidateOccurrenceLayout];
+  }
+}
+
+- (UIEdgeInsets)insetsForInterfaceLayout:(UIEdgeInsets)layout
+{
+  right = layout.right;
+  bottom = layout.bottom;
+  left = layout.left;
+  top = layout.top;
   IsLeftToRight = CalInterfaceIsLeftToRight();
   if (IsLeftToRight)
   {
@@ -1754,9 +1754,9 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
   return result;
 }
 
-- (void)setOccurrencePadding:(UIEdgeInsets)a3
+- (void)setOccurrencePadding:(UIEdgeInsets)padding
 {
-  [(EKDayViewContent *)self insetsForInterfaceLayout:a3.top, a3.left, a3.bottom, a3.right];
+  [(EKDayViewContent *)self insetsForInterfaceLayout:padding.top, padding.left, padding.bottom, padding.right];
   if (!self->_hasCustomOccurrencePadding || (v8.f64[0] = v4, v8.f64[1] = v5, v9.f64[0] = v6, v9.f64[1] = v7, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v8, *&self->_occurrencePadding.top), vceqq_f64(v9, *&self->_occurrencePadding.bottom)))) & 1) == 0))
   {
     self->_occurrencePadding.top = v4;
@@ -1769,46 +1769,46 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
   }
 }
 
-- (void)setStartDateWithDateComponents:(id)a3
+- (void)setStartDateWithDateComponents:(id)components
 {
-  v13 = a3;
-  if (([v13 isEqual:self->_startDate] & 1) == 0)
+  componentsCopy = components;
+  if (([componentsCopy isEqual:self->_startDate] & 1) == 0)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v5 = MEMORY[0x1E69930C8];
-    v6 = [(NSCalendar *)v4->_calendar timeZone];
-    v7 = [v5 calendarDateWithDateComponents:v13 timeZone:v6];
-    v8 = [v7 calendarDateForDay];
+    timeZone = [(NSCalendar *)selfCopy->_calendar timeZone];
+    v7 = [v5 calendarDateWithDateComponents:componentsCopy timeZone:timeZone];
+    calendarDateForDay = [v7 calendarDateForDay];
     startDate = self->_startDate;
-    self->_startDate = v8;
+    self->_startDate = calendarDateForDay;
 
     v10 = self->_startDate;
-    if (v4->_daysToDisplay == 1)
+    if (selfCopy->_daysToDisplay == 1)
     {
       v11 = v10;
     }
 
     else
     {
-      v11 = [(EKCalendarDate *)v10 calendarDateByAddingDays:LODWORD(v4->_daysToDisplay) - 1];
+      v11 = [(EKCalendarDate *)v10 calendarDateByAddingDays:LODWORD(selfCopy->_daysToDisplay) - 1];
     }
 
-    endDate = v4->_endDate;
-    v4->_endDate = v11;
+    endDate = selfCopy->_endDate;
+    selfCopy->_endDate = v11;
 
-    objc_sync_exit(v4);
-    [(EKDayViewContent *)v4 _computeDayStartsAndEnds];
-    [(EKDayViewContent *)v4 invalidateOccurrenceLayout];
+    objc_sync_exit(selfCopy);
+    [(EKDayViewContent *)selfCopy _computeDayStartsAndEnds];
+    [(EKDayViewContent *)selfCopy invalidateOccurrenceLayout];
   }
 }
 
-- (void)rectBecameVisible:(CGRect)a3
+- (void)rectBecameVisible:(CGRect)visible
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
   v26 = *MEMORY[0x1E69E9840];
   p_latestVisibleRect = &self->_latestVisibleRect;
   if (CGFloatNearlyEqualToFloat())
@@ -1829,8 +1829,8 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [(EKDayViewContent *)self allVisibleItems];
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allVisibleItems = [(EKDayViewContent *)self allVisibleItems];
+  v11 = [allVisibleItems countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1841,24 +1841,24 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allVisibleItems);
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 view];
-        if (![v16 isHidden])
+        view = [v15 view];
+        if (![view isHidden])
         {
           goto LABEL_13;
         }
 
-        v17 = [v15 view];
-        [v17 frame];
+        view2 = [v15 view];
+        [view2 frame];
         IsEmpty = CGRectIsEmpty(v27);
 
         if (!IsEmpty)
         {
-          v19 = [v15 view];
-          [v19 frame];
+          view3 = [v15 view];
+          [view3 frame];
           v29.origin.x = x;
           v29.origin.y = y;
           v29.size.width = width;
@@ -1867,8 +1867,8 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_5(uint64_t a1, 
 
           if (v20)
           {
-            v16 = [v15 view];
-            [v16 setHidden:0];
+            view = [v15 view];
+            [view setHidden:0];
 LABEL_13:
 
             continue;
@@ -1876,7 +1876,7 @@ LABEL_13:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v12 = [allVisibleItems countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v12);
@@ -1895,8 +1895,8 @@ LABEL_13:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(EKDayViewContent *)self occurrenceViews];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  occurrenceViews = [(EKDayViewContent *)self occurrenceViews];
+  v3 = [occurrenceViews countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1906,7 +1906,7 @@ LABEL_13:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(occurrenceViews);
         }
 
         if (![*(*(&v7 + 1) + 8 * i) isHidden])
@@ -1916,7 +1916,7 @@ LABEL_13:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [occurrenceViews countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1931,34 +1931,34 @@ LABEL_11:
   return v3;
 }
 
-- (void)dayOccurrenceViewSelected:(id)a3 source:(unint64_t)a4
+- (void)dayOccurrenceViewSelected:(id)selected source:(unint64_t)source
 {
-  v6 = a3;
-  v20 = v6;
-  if (a4 == 1 && self->_sizeClass == 2 && (v7 = objc_loadWeakRetained(&self->_delegate), v8 = objc_opt_respondsToSelector(), v7, v6 = v20, (v8 & 1) != 0))
+  selectedCopy = selected;
+  v20 = selectedCopy;
+  if (source == 1 && self->_sizeClass == 2 && (v7 = objc_loadWeakRetained(&self->_delegate), v8 = objc_opt_respondsToSelector(), v7, selectedCopy = v20, (v8 & 1) != 0))
   {
-    v9 = [v20 isReminderStack];
+    isReminderStack = [v20 isReminderStack];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    if (v9)
+    if (isReminderStack)
     {
-      v11 = [v20 occurrences];
-      [WeakRetained dayViewContent:self pointerDidTargetOccurrences:v11];
+      occurrences = [v20 occurrences];
+      [WeakRetained dayViewContent:self pointerDidTargetOccurrences:occurrences];
     }
 
     else
     {
       v18 = MEMORY[0x1E695DEC8];
-      v11 = [v20 occurrence];
-      v19 = [v18 arrayWithObject:v11];
+      occurrences = [v20 occurrence];
+      v19 = [v18 arrayWithObject:occurrences];
       [WeakRetained dayViewContent:self pointerDidTargetOccurrences:v19];
     }
   }
 
-  else if ([v6 isReminderStack] && (v12 = objc_loadWeakRetained(&self->_delegate), v13 = objc_opt_respondsToSelector(), v12, (v13 & 1) != 0))
+  else if ([selectedCopy isReminderStack] && (v12 = objc_loadWeakRetained(&self->_delegate), v13 = objc_opt_respondsToSelector(), v12, (v13 & 1) != 0))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v11 = [v20 occurrences];
-    [WeakRetained dayViewContent:self didSelectEvents:v11 userInitiated:{+[EKDayOccurrenceView isUserInitiated:](EKDayOccurrenceView, "isUserInitiated:", a4)}];
+    occurrences = [v20 occurrences];
+    [WeakRetained dayViewContent:self didSelectEvents:occurrences userInitiated:{+[EKDayOccurrenceView isUserInitiated:](EKDayOccurrenceView, "isUserInitiated:", source)}];
   }
 
   else
@@ -1972,10 +1972,10 @@ LABEL_11:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v11 = [v20 occurrence];
-    v16 = [EKDayOccurrenceView isUserInitiated:a4];
-    v17 = [v20 occurrenceDate];
-    [WeakRetained dayViewContent:self didSelectEvent:v11 userInitiated:v16 dateSelected:v17];
+    occurrences = [v20 occurrence];
+    v16 = [EKDayOccurrenceView isUserInitiated:source];
+    occurrenceDate = [v20 occurrenceDate];
+    [WeakRetained dayViewContent:self didSelectEvent:occurrences userInitiated:v16 dateSelected:occurrenceDate];
   }
 
 LABEL_12:
@@ -1984,29 +1984,29 @@ LABEL_12:
 - (id)presentationControllerForEditMenu
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained presentationControllerForEditMenu];
+  presentationControllerForEditMenu = [WeakRetained presentationControllerForEditMenu];
 
-  return v3;
+  return presentationControllerForEditMenu;
 }
 
 - (id)selectedEventsForEditMenu
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained selectedEventsForEditMenu];
+  selectedEventsForEditMenu = [WeakRetained selectedEventsForEditMenu];
 
-  return v3;
+  return selectedEventsForEditMenu;
 }
 
-- (id)selectedCopyViewForDayOccurrenceView:(id)a3
+- (id)selectedCopyViewForDayOccurrenceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v7 dayViewContent:self selectedCopyViewForOccurrenceView:v4];
+    v8 = [v7 dayViewContent:self selectedCopyViewForOccurrenceView:viewCopy];
   }
 
   else
@@ -2029,7 +2029,7 @@ LABEL_12:
   }
 }
 
-- (BOOL)_shouldAnnotateAppEntitiesForDayAtIndex:(unint64_t)a3
+- (BOOL)_shouldAnnotateAppEntitiesForDayAtIndex:(unint64_t)index
 {
   shouldAnnotateAppEntitiesByDay = self->_shouldAnnotateAppEntitiesByDay;
   if (!shouldAnnotateAppEntitiesByDay)
@@ -2038,28 +2038,28 @@ LABEL_12:
     shouldAnnotateAppEntitiesByDay = self->_shouldAnnotateAppEntitiesByDay;
   }
 
-  if ([(NSMutableArray *)shouldAnnotateAppEntitiesByDay count]<= a3)
+  if ([(NSMutableArray *)shouldAnnotateAppEntitiesByDay count]<= index)
   {
     return 0;
   }
 
-  v6 = [(NSMutableArray *)self->_shouldAnnotateAppEntitiesByDay objectAtIndexedSubscript:a3];
-  v7 = [v6 BOOLValue];
+  v6 = [(NSMutableArray *)self->_shouldAnnotateAppEntitiesByDay objectAtIndexedSubscript:index];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)setViewsDimmed:(BOOL)a3 forEvent:(id)a4
+- (void)setViewsDimmed:(BOOL)dimmed forEvent:(id)event
 {
-  v4 = a3;
+  dimmedCopy = dimmed;
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  eventCopy = event;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(EKDayViewContent *)self allVisibleItems];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allVisibleItems = [(EKDayViewContent *)self allVisibleItems];
+  v8 = [allVisibleItems countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2070,42 +2070,42 @@ LABEL_12:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allVisibleItems);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 view];
-        v14 = [v13 occurrence];
-        v15 = [v14 isEqual:v6];
+        view = [v12 view];
+        occurrence = [view occurrence];
+        v15 = [occurrence isEqual:eventCopy];
 
         if (v15)
         {
-          v16 = [v12 view];
-          [v16 setDimmed:v4];
+          view2 = [v12 view];
+          [view2 setDimmed:dimmedCopy];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [allVisibleItems countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
   }
 }
 
-- (CGPoint)pointForDate:(double)a3
+- (CGPoint)pointForDate:(double)date
 {
   v5 = MEMORY[0x1E69930C8];
-  v6 = [(NSCalendar *)self->_calendar timeZone];
-  v7 = [v5 calendarDateWithAbsoluteTime:v6 timeZone:a3];
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
+  v7 = [v5 calendarDateWithAbsoluteTime:timeZone timeZone:date];
 
-  v8 = [v7 calendarDateForDay];
-  v9 = [v8 secondsFromGMT];
-  v10 = [v7 secondsFromGMT];
-  [v8 absoluteTime];
-  [(EKDayGridView *)self->_grid positionOfSecond:(a3 - v11 - (v9 - v10))];
+  calendarDateForDay = [v7 calendarDateForDay];
+  secondsFromGMT = [calendarDateForDay secondsFromGMT];
+  secondsFromGMT2 = [v7 secondsFromGMT];
+  [calendarDateForDay absoluteTime];
+  [(EKDayGridView *)self->_grid positionOfSecond:(date - v11 - (secondsFromGMT - secondsFromGMT2))];
   v13 = v12;
-  v14 = [(EKDayViewContent *)self dayStarts];
-  v15 = [v14 objectAtIndex:0];
+  dayStarts = [(EKDayViewContent *)self dayStarts];
+  v15 = [dayStarts objectAtIndex:0];
   v16 = [v15 objectForKey:@"startDate"];
 
   v17 = [v7 differenceInDays:v16];
@@ -2124,18 +2124,18 @@ LABEL_12:
   return result;
 }
 
-- (id)occurrenceViewForEvent:(id)a3 onDate:(double)a4
+- (id)occurrenceViewForEvent:(id)event onDate:(double)date
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(EKDayGridView *)self->_grid occurrenceContainerView];
-  v8 = [v7 subviews];
+  eventCopy = event;
+  occurrenceContainerView = [(EKDayGridView *)self->_grid occurrenceContainerView];
+  subviews = [occurrenceContainerView subviews];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v8;
+  v9 = subviews;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -2154,8 +2154,8 @@ LABEL_12:
         v15 = *(*(&v24 + 1) + 8 * i);
         if ([v15 tag] == 2423)
         {
-          v16 = [v15 occurrences];
-          v17 = [v16 containsObject:v6];
+          occurrences = [v15 occurrences];
+          v17 = [occurrences containsObject:eventCopy];
 
           if (v17)
           {
@@ -2164,9 +2164,9 @@ LABEL_12:
               v12 = v15;
             }
 
-            if (a4 != 0.0)
+            if (date != 0.0)
             {
-              [(EKDayViewContent *)self pointForDate:a4];
+              [(EKDayViewContent *)self pointForDate:date];
               [(EKDayViewContent *)self convertPoint:v15 toView:?];
               v19 = v18;
               v21 = v20;
@@ -2206,20 +2206,20 @@ LABEL_18:
   return v22;
 }
 
-- (id)occurrenceViewForEvent:(id)a3
+- (id)occurrenceViewForEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  eventCopy = event;
+  if (eventCopy)
   {
-    v5 = [(EKDayGridView *)self->_grid occurrenceContainerView];
-    v6 = [v5 subviews];
+    occurrenceContainerView = [(EKDayGridView *)self->_grid occurrenceContainerView];
+    subviews = [occurrenceContainerView subviews];
 
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v6;
+    v7 = subviews;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -2236,8 +2236,8 @@ LABEL_18:
           v11 = *(*(&v15 + 1) + 8 * i);
           if ([v11 tag] == 2423)
           {
-            v12 = [v11 occurrences];
-            v13 = [v12 containsObject:v4];
+            occurrences = [v11 occurrences];
+            v13 = [occurrences containsObject:eventCopy];
 
             if (v13)
             {
@@ -2268,12 +2268,12 @@ LABEL_14:
   return v8;
 }
 
-- (void)setDarkensWeekends:(BOOL)a3
+- (void)setDarkensWeekends:(BOOL)weekends
 {
-  if (self->_darkensWeekends != a3)
+  if (self->_darkensWeekends != weekends)
   {
-    self->_darkensWeekends = a3;
-    if (a3)
+    self->_darkensWeekends = weekends;
+    if (weekends)
     {
       if (!self->_sundayDarkeningView)
       {
@@ -2315,10 +2315,10 @@ LABEL_14:
   }
 }
 
-- (double)dateForPoint:(CGPoint)a3
+- (double)dateForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(EKDayViewContent *)self _dayWidth];
   [(EKDayGridView *)self->_grid secondAtPosition:y];
   if (x >= 0.0)
@@ -2326,13 +2326,13 @@ LABEL_14:
     CalTimeDirectionIsLeftToRight();
   }
 
-  v6 = [(NSCalendar *)self->_calendar timeZone];
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
   [(EKCalendarDate *)self->_startDate absoluteTime];
   CalAbsoluteTimeAddGregorianUnits();
   v8 = v7;
-  if (v6)
+  if (timeZone)
   {
-    CFRelease(v6);
+    CFRelease(timeZone);
   }
 
   return v8;
@@ -2401,24 +2401,24 @@ uint64_t __40__EKDayViewContent__layoutDaysIfVisible__block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_layoutNeededForDay:(int64_t)a3
+- (BOOL)_layoutNeededForDay:(int64_t)day
 {
-  v5 = [(EKDayViewContent *)self layoutParameters];
+  layoutParameters = [(EKDayViewContent *)self layoutParameters];
   v6 = self->_lastLayoutParametersForDay;
   objc_sync_enter(v6);
-  v7 = [(NSMutableArray *)self->_lastLayoutParametersForDay objectAtIndexedSubscript:a3];
-  v8 = [v7 isEqual:v5];
+  v7 = [(NSMutableArray *)self->_lastLayoutParametersForDay objectAtIndexedSubscript:day];
+  v8 = [v7 isEqual:layoutParameters];
 
   objc_sync_exit(v6);
-  if ((v8 & 1) != 0 || ([(EKDayViewContent *)self _dayWidth], v10 = v9, [(EKDayViewContent *)self frame], v15.origin.y = 0.0, v15.origin.x = v10 * a3, v15.size.width = v10, !CGRectIntersectsRect(v15, self->_latestVisibleRect)))
+  if ((v8 & 1) != 0 || ([(EKDayViewContent *)self _dayWidth], v10 = v9, [(EKDayViewContent *)self frame], v15.origin.y = 0.0, v15.origin.x = v10 * day, v15.size.width = v10, !CGRectIntersectsRect(v15, self->_latestVisibleRect)))
   {
     v13 = 0;
   }
 
   else
   {
-    v11 = [(EKDayViewContent *)self singleItemsByDay];
-    v12 = [v11 objectAtIndex:a3];
+    singleItemsByDay = [(EKDayViewContent *)self singleItemsByDay];
+    v12 = [singleItemsByDay objectAtIndex:day];
 
     v13 = [v12 count] != 0;
   }
@@ -2426,28 +2426,28 @@ uint64_t __40__EKDayViewContent__layoutDaysIfVisible__block_invoke(uint64_t a1)
   return v13;
 }
 
-- (BOOL)_layoutDayIfNeeded:(int64_t)a3
+- (BOOL)_layoutDayIfNeeded:(int64_t)needed
 {
   v5 = [(EKDayViewContent *)self _layoutNeededForDay:?];
   if (v5)
   {
-    [(EKDayViewContent *)self _layoutDay:a3 isLoadingAsync:0];
+    [(EKDayViewContent *)self _layoutDay:needed isLoadingAsync:0];
   }
 
   return v5;
 }
 
-- (void)_layoutDay:(unint64_t)a3 isLoadingAsync:(BOOL)a4
+- (void)_layoutDay:(unint64_t)day isLoadingAsync:(BOOL)async
 {
-  v4 = a4;
+  asyncCopy = async;
   v72 = *MEMORY[0x1E69E9840];
   [(EKDayViewContent *)self _dayWidth];
   v7 = v6;
-  v51 = v4;
-  if (v4)
+  v51 = asyncCopy;
+  if (asyncCopy)
   {
-    v8 = [(EKDayViewContent *)self singleItemsForPreloadByDay];
-    v54 = [v8 objectAtIndex:a3];
+    singleItemsForPreloadByDay = [(EKDayViewContent *)self singleItemsForPreloadByDay];
+    v54 = [singleItemsForPreloadByDay objectAtIndex:day];
 
     v9 = v54;
     if (![v54 count])
@@ -2461,8 +2461,8 @@ uint64_t __40__EKDayViewContent__layoutDaysIfVisible__block_invoke(uint64_t a1)
 
   else
   {
-    v11 = [(EKDayViewContent *)self singleItemsByDay];
-    v54 = [v11 objectAtIndex:a3];
+    singleItemsByDay = [(EKDayViewContent *)self singleItemsByDay];
+    v54 = [singleItemsByDay objectAtIndex:day];
 
     v9 = v54;
     if (![v54 count])
@@ -2473,16 +2473,16 @@ uint64_t __40__EKDayViewContent__layoutDaysIfVisible__block_invoke(uint64_t a1)
     v10 = &OBJC_IVAR___EKDayViewContent__geometryDelegates;
   }
 
-  v12 = [(NSMutableArray *)self->_dayStarts objectAtIndexedSubscript:a3];
+  v12 = [(NSMutableArray *)self->_dayStarts objectAtIndexedSubscript:day];
   v50 = [v12 objectForKey:@"startDate"];
 
-  v13 = [(NSMutableArray *)self->_dayStarts objectAtIndexedSubscript:a3];
+  v13 = [(NSMutableArray *)self->_dayStarts objectAtIndexedSubscript:day];
   v49 = [v13 objectForKey:@"endDate"];
 
-  v53 = [*(&self->super.super.super.isa + *v10) objectAtIndexedSubscript:a3];
-  v52 = [(EKDayViewContent *)self layoutParameters];
+  v53 = [*(&self->super.super.super.isa + *v10) objectAtIndexedSubscript:day];
+  layoutParameters = [(EKDayViewContent *)self layoutParameters];
   v14 = *(MEMORY[0x1E695F058] + 8);
-  [v52 boundsSize];
+  [layoutParameters boundsSize];
   v16 = v15;
   v17 = 0.5;
   if (self->_daysToDisplay <= 1)
@@ -2490,12 +2490,12 @@ uint64_t __40__EKDayViewContent__layoutDaysIfVisible__block_invoke(uint64_t a1)
     +[EKDayOccurrenceView barToBarGapWidth];
   }
 
-  [v53 setFrame:{v7 * a3 + v17, v14, v7 - v17, v16}];
+  [v53 setFrame:{v7 * day + v17, v14, v7 - v17, v16}];
   v18 = objc_alloc(MEMORY[0x1E6993480]);
-  v19 = [v50 date];
-  v20 = [v49 date];
+  date = [v50 date];
+  date2 = [v49 date];
   v21 = CUIKCalendar();
-  v22 = [v18 initWithOccurrences:v54 startOfDay:v19 endOfDay:v20 geometryDelegate:v53 screenUtilsDelegate:self calendar:v21];
+  v22 = [v18 initWithOccurrences:v54 startOfDay:date endOfDay:date2 geometryDelegate:v53 screenUtilsDelegate:self calendar:v21];
 
   v47 = v22;
   v23 = [v22 groupOccurrences:self];
@@ -2504,12 +2504,12 @@ uint64_t __40__EKDayViewContent__layoutDaysIfVisible__block_invoke(uint64_t a1)
   {
     v24 = self->_displayItemsForPreloadByDay;
     objc_sync_enter(v24);
-    [(NSMutableArray *)self->_displayItemsForPreloadByDay setObject:v23 atIndexedSubscript:a3];
+    [(NSMutableArray *)self->_displayItemsForPreloadByDay setObject:v23 atIndexedSubscript:day];
     objc_sync_exit(v24);
 
     v25 = self->_displayItemsForPreloadByDayByEndDate;
     objc_sync_enter(v25);
-    [(NSMutableArray *)self->_displayItemsForPreloadByDayByEndDate setObject:v48 atIndexedSubscript:a3];
+    [(NSMutableArray *)self->_displayItemsForPreloadByDayByEndDate setObject:v48 atIndexedSubscript:day];
     objc_sync_exit(v25);
 
     [v22 applyLayoutToOccurrences];
@@ -2572,12 +2572,12 @@ uint64_t __40__EKDayViewContent__layoutDaysIfVisible__block_invoke(uint64_t a1)
   {
     v34 = self->_itemsByDay;
     objc_sync_enter(v34);
-    [(NSMutableArray *)self->_itemsByDay setObject:v23 atIndexedSubscript:a3];
+    [(NSMutableArray *)self->_itemsByDay setObject:v23 atIndexedSubscript:day];
     objc_sync_exit(v34);
 
     v35 = self->_itemsByDayByEndDate;
     objc_sync_enter(v35);
-    [(NSMutableArray *)self->_itemsByDayByEndDate setObject:v48 atIndexedSubscript:a3];
+    [(NSMutableArray *)self->_itemsByDayByEndDate setObject:v48 atIndexedSubscript:day];
     objc_sync_exit(v35);
 
     [v22 applyLayoutToOccurrences];
@@ -2632,14 +2632,14 @@ uint64_t __40__EKDayViewContent__layoutDaysIfVisible__block_invoke(uint64_t a1)
   {
     v46 = self->_lastLayoutParametersForDayForPreload;
     objc_sync_enter(v46);
-    [(NSMutableArray *)self->_lastLayoutParametersForDayForPreload setObject:v52 atIndexedSubscript:a3];
+    [(NSMutableArray *)self->_lastLayoutParametersForDayForPreload setObject:layoutParameters atIndexedSubscript:day];
   }
 
   else
   {
     v46 = self->_lastLayoutParametersForDay;
     objc_sync_enter(v46);
-    [(NSMutableArray *)self->_lastLayoutParametersForDay setObject:v52 atIndexedSubscript:a3];
+    [(NSMutableArray *)self->_lastLayoutParametersForDay setObject:layoutParameters atIndexedSubscript:day];
   }
 
   objc_sync_exit(v46);
@@ -2666,17 +2666,17 @@ uint64_t __46__EKDayViewContent__layoutDay_isLoadingAsync___block_invoke_2(uint6
   return v8;
 }
 
-- (_NSRange)_dayRangeForEventWithStartDate:(id)a3 endDate:(id)a4
+- (_NSRange)_dayRangeForEventWithStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v8 = MEMORY[0x1E69930C8];
-  v9 = [(NSCalendar *)self->_calendar timeZone];
-  v10 = [v8 calendarDateWithDate:v6 timeZone:v9];
+  timeZone = [(NSCalendar *)self->_calendar timeZone];
+  v10 = [v8 calendarDateWithDate:dateCopy timeZone:timeZone];
 
   v11 = MEMORY[0x1E69930C8];
-  v12 = [(NSCalendar *)self->_calendar timeZone];
-  v13 = [v11 calendarDateWithDate:v7 timeZone:v12];
+  timeZone2 = [(NSCalendar *)self->_calendar timeZone];
+  v13 = [v11 calendarDateWithDate:endDateCopy timeZone:timeZone2];
 
   [v10 absoluteTime];
   v15 = v14;
@@ -2689,9 +2689,9 @@ uint64_t __46__EKDayViewContent__layoutDay_isLoadingAsync___block_invoke_2(uint6
   }
 
   v18 = [v10 differenceInDays:self->_startDate];
-  v19 = [v10 calendarDateForDay];
-  v20 = [v13 differenceInDays:v19];
-  if (([v6 isEqualToDate:v7] & 1) == 0 && !objc_msgSend(v13, "hour") && !objc_msgSend(v13, "minute"))
+  calendarDateForDay = [v10 calendarDateForDay];
+  v20 = [v13 differenceInDays:calendarDateForDay];
+  if (([dateCopy isEqualToDate:endDateCopy] & 1) == 0 && !objc_msgSend(v13, "hour") && !objc_msgSend(v13, "minute"))
   {
     v20 = (__PAIR128__(v20, [v13 second]) - 1) >> 64;
   }
@@ -2703,35 +2703,35 @@ uint64_t __46__EKDayViewContent__layoutDay_isLoadingAsync___block_invoke_2(uint6
   return result;
 }
 
-- (_NSRange)_dayRangeForEvent:(id)a3 useProposedTime:(BOOL)a4
+- (_NSRange)_dayRangeForEvent:(id)event useProposedTime:(BOOL)time
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  timeCopy = time;
+  eventCopy = event;
+  v7 = eventCopy;
+  if (timeCopy)
   {
-    v8 = [v6 proposedStartDate];
+    proposedStartDate = [eventCopy proposedStartDate];
     [v7 duration];
-    v9 = [v8 dateByAddingTimeInterval:?];
+    startDate = [proposedStartDate dateByAddingTimeInterval:?];
 
-    v10 = [v7 proposedStartDate];
+    proposedStartDate2 = [v7 proposedStartDate];
 
-    v11 = self;
-    v12 = v10;
-    v13 = v9;
+    selfCopy2 = self;
+    v12 = proposedStartDate2;
+    v13 = startDate;
   }
 
   else
   {
-    v9 = [v6 startDate];
-    v10 = [v7 endDateUnadjustedForLegacyClients];
+    startDate = [eventCopy startDate];
+    proposedStartDate2 = [v7 endDateUnadjustedForLegacyClients];
 
-    v11 = self;
-    v12 = v9;
-    v13 = v10;
+    selfCopy2 = self;
+    v12 = startDate;
+    v13 = proposedStartDate2;
   }
 
-  v14 = [(EKDayViewContent *)v11 _dayRangeForEventWithStartDate:v12 endDate:v13];
+  v14 = [(EKDayViewContent *)selfCopy2 _dayRangeForEventWithStartDate:v12 endDate:v13];
   v16 = v15;
 
   v17 = v14;
@@ -2746,42 +2746,42 @@ uint64_t __46__EKDayViewContent__layoutDay_isLoadingAsync___block_invoke_2(uint6
   v2 = -1.0;
   if (self->_daysToDisplay == 1)
   {
-    v4 = [(EKDayViewContent *)self singleItemsByDay];
-    v5 = [v4 count];
+    singleItemsByDay = [(EKDayViewContent *)self singleItemsByDay];
+    v5 = [singleItemsByDay count];
 
     if (v5)
     {
       IsLeftToRight = CalTimeDirectionIsLeftToRight();
-      v7 = [(EKDayViewContent *)self singleItemsByDay];
-      v8 = v7;
+      singleItemsByDay2 = [(EKDayViewContent *)self singleItemsByDay];
+      v8 = singleItemsByDay2;
       if (IsLeftToRight)
       {
-        [v7 firstObject];
+        [singleItemsByDay2 firstObject];
       }
 
       else
       {
-        [v7 lastObject];
+        [singleItemsByDay2 lastObject];
       }
       v9 = ;
 
       if (v9 && [v9 count])
       {
         v10 = [v9 objectAtIndex:0];
-        v11 = [v10 startDate];
-        [v11 absoluteTime];
+        startDate = [v10 startDate];
+        [startDate absoluteTime];
         v13 = v12;
         [(EKCalendarDate *)self->_startDate absoluteTime];
         if (v13 < v14)
         {
           v15 = self->_startDate;
 
-          v11 = v15;
+          startDate = v15;
         }
 
-        v16 = 3600 * [v11 hour];
-        v17 = v16 + 60 * [v11 minute];
-        v2 = (v17 + [v11 second]);
+        v16 = 3600 * [startDate hour];
+        v17 = v16 + 60 * [startDate minute];
+        v2 = (v17 + [startDate second]);
       }
     }
   }
@@ -2791,24 +2791,24 @@ uint64_t __46__EKDayViewContent__layoutDay_isLoadingAsync___block_invoke_2(uint6
 
 - (id)lastDisplayedSecond
 {
-  v3 = [(EKDayViewContent *)self dayStarts];
+  dayStarts = [(EKDayViewContent *)self dayStarts];
 
-  if (!v3)
+  if (!dayStarts)
   {
     [(EKDayViewContent *)self _computeDayStartsAndEnds];
   }
 
   IsLeftToRight = CalTimeDirectionIsLeftToRight();
-  v5 = [(EKDayViewContent *)self dayStarts];
-  v6 = v5;
+  dayStarts2 = [(EKDayViewContent *)self dayStarts];
+  v6 = dayStarts2;
   if (IsLeftToRight)
   {
-    [v5 lastObject];
+    [dayStarts2 lastObject];
   }
 
   else
   {
-    [v5 firstObject];
+    [dayStarts2 firstObject];
   }
   v7 = ;
   v8 = [v7 objectForKey:@"endDate"];
@@ -2816,19 +2816,19 @@ uint64_t __46__EKDayViewContent__layoutDay_isLoadingAsync___block_invoke_2(uint6
   return v8;
 }
 
-- (void)_configureOccurrenceViewMarginAndPadding:(id)a3
+- (void)_configureOccurrenceViewMarginAndPadding:(id)padding
 {
-  v4 = a3;
+  paddingCopy = padding;
   [objc_opt_class() defaultPadding];
   if (self->_usesSmallText)
   {
     CalRoundToScreenScale(0.5);
   }
 
-  [v4 setPadding:?];
+  [paddingCopy setPadding:?];
 }
 
-- (unint64_t)_dayIndexForAllIndex:(unint64_t)a3
+- (unint64_t)_dayIndexForAllIndex:(unint64_t)index
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = self->_itemsByDay;
@@ -2857,7 +2857,7 @@ uint64_t __46__EKDayViewContent__layoutDay_isLoadingAsync___block_invoke_2(uint6
         }
 
         v8 += [*(*(&v14 + 1) + 8 * v11) count];
-        if (v8 > a3)
+        if (v8 > index)
         {
           v9 = v12;
           goto LABEL_12;
@@ -2889,50 +2889,50 @@ LABEL_12:
   return v9;
 }
 
-- (void)applyLoadedOccurrenceBatchStartingAtIndex:(int64_t)a3 batchSize:(int64_t)a4 fromArray:(id)a5 withStartDate:(id)a6 animated:(BOOL)a7 reverse:(BOOL)a8 completion:(id)a9
+- (void)applyLoadedOccurrenceBatchStartingAtIndex:(int64_t)index batchSize:(int64_t)size fromArray:(id)array withStartDate:(id)date animated:(BOOL)animated reverse:(BOOL)reverse completion:(id)completion
 {
-  v10 = a7;
+  animatedCopy = animated;
   v68 = *MEMORY[0x1E69E9840];
-  v15 = a5;
-  v16 = a6;
-  v17 = a9;
-  v18 = [v15 count];
+  arrayCopy = array;
+  dateCopy = date;
+  completionCopy = completion;
+  v18 = [arrayCopy count];
   if ([(EKDayViewContent *)self dataLoaded])
   {
-    v50 = v15;
-    if (!v16 || (-[EKDayViewContent startDate](self, "startDate"), v19 = v18, v20 = a8, v21 = a4, v22 = v10, v23 = v17, v24 = v16, v25 = objc_claimAutoreleasedReturnValue(), v26 = [v24 isEqual:v25], v25, v16 = v24, v17 = v23, v10 = v22, a4 = v21, a8 = v20, v18 = v19, v15 = v50, (v26 & 1) != 0))
+    v50 = arrayCopy;
+    if (!dateCopy || (-[EKDayViewContent startDate](self, "startDate"), v19 = v18, v20 = reverse, v21 = size, v22 = animatedCopy, v23 = completionCopy, v24 = dateCopy, v25 = objc_claimAutoreleasedReturnValue(), v26 = [v24 isEqual:v25], v25, dateCopy = v24, completionCopy = v23, animatedCopy = v22, size = v21, reverse = v20, v18 = v19, arrayCopy = v50, (v26 & 1) != 0))
     {
-      v49 = v17;
-      self->_shouldLayoutInReverse = a8;
-      v47 = v10;
-      [(EKDayViewContent *)self setShouldAnimateLayout:v10];
+      v49 = completionCopy;
+      self->_shouldLayoutInReverse = reverse;
+      v47 = animatedCopy;
+      [(EKDayViewContent *)self setShouldAnimateLayout:animatedCopy];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __124__EKDayViewContent_applyLoadedOccurrenceBatchStartingAtIndex_batchSize_fromArray_withStartDate_animated_reverse_completion___block_invoke;
       aBlock[3] = &unk_1E843ED50;
-      v27 = v15;
+      v27 = arrayCopy;
       v64 = v27;
-      v65 = self;
-      v66 = a8;
+      selfCopy = self;
+      reverseCopy = reverse;
       v28 = _Block_copy(aBlock);
-      if (a8)
+      if (reverse)
       {
-        if (a3 < a4)
+        if (index < size)
         {
           v29 = -1;
         }
 
         else
         {
-          v29 = a3 - a4;
+          v29 = index - size;
         }
 
-        for (; a3 > v29; --a3)
+        for (; index > v29; --index)
         {
-          v28[2](v28, a3);
+          v28[2](v28, index);
         }
 
-        if ((a3 & 0x8000000000000000) == 0)
+        if ((index & 0x8000000000000000) == 0)
         {
 LABEL_11:
           v30 = dispatch_time(0, 0);
@@ -2941,13 +2941,13 @@ LABEL_11:
           block[2] = __124__EKDayViewContent_applyLoadedOccurrenceBatchStartingAtIndex_batchSize_fromArray_withStartDate_animated_reverse_completion___block_invoke_2;
           block[3] = &unk_1E843ED78;
           block[4] = self;
-          v55 = a3;
-          v56 = a4;
+          indexCopy = index;
+          sizeCopy = size;
           v52 = v27;
-          v53 = v16;
+          v53 = dateCopy;
           v57 = v47;
-          v58 = a8;
-          v17 = v49;
+          reverseCopy2 = reverse;
+          completionCopy = v49;
           v54 = v49;
           dispatch_after(v30, MEMORY[0x1E69E96A0], block);
 
@@ -2960,34 +2960,34 @@ LABEL_32:
 
       else
       {
-        if (a4 + a3 >= v18)
+        if (size + index >= v18)
         {
           v31 = v18;
         }
 
         else
         {
-          v31 = a4 + a3;
+          v31 = size + index;
         }
 
-        if (v31 > a3)
+        if (v31 > index)
         {
           do
           {
-            v28[2](v28, a3++);
+            v28[2](v28, index++);
           }
 
-          while (v31 != a3);
-          a3 = v31;
+          while (v31 != index);
+          index = v31;
         }
 
-        if (a3 != v18)
+        if (index != v18)
         {
           goto LABEL_11;
         }
       }
 
-      v46 = v16;
+      v46 = dateCopy;
       v48 = v28;
       v61 = 0u;
       v62 = 0u;
@@ -3009,20 +3009,20 @@ LABEL_32:
             }
 
             v37 = *(*(&v59 + 1) + 8 * i);
-            v38 = [v37 view];
-            v39 = [v38 selectedCopy];
+            view = [v37 view];
+            selectedCopy = [view selectedCopy];
 
-            if (v39)
+            if (selectedCopy)
             {
-              [v39 requestContentIfNeeded:16 completion:0];
-              v40 = [(EKDayGridView *)self->_grid occurrenceContainerView];
-              [v40 bringSubviewToFront:v39];
+              [selectedCopy requestContentIfNeeded:16 completion:0];
+              occurrenceContainerView = [(EKDayGridView *)self->_grid occurrenceContainerView];
+              [occurrenceContainerView bringSubviewToFront:selectedCopy];
             }
 
-            v41 = [v37 view];
-            v42 = [v41 selected];
+            view2 = [v37 view];
+            selected = [view2 selected];
 
-            if (v42)
+            if (selected)
             {
               v43 = objc_alloc(MEMORY[0x1E6993428]);
               v44 = [EKDayViewContentItemStateWrapper wrapperWithContentItem:v37 viewContent:self];
@@ -3039,16 +3039,16 @@ LABEL_32:
         while (v34);
       }
 
-      v17 = v49;
+      completionCopy = v49;
       v49[2](v49);
-      v15 = v50;
-      v16 = v46;
+      arrayCopy = v50;
+      dateCopy = v46;
       v28 = v48;
       goto LABEL_32;
     }
   }
 
-  v17[2](v17);
+  completionCopy[2](completionCopy);
 LABEL_33:
 }
 
@@ -3193,12 +3193,12 @@ void __124__EKDayViewContent_applyLoadedOccurrenceBatchStartingAtIndex_batchSize
               }
 
               v10 = *(*(&v57 + 1) + 8 * j);
-              v11 = [v10 view];
-              if (v11)
+              view = [v10 view];
+              if (view)
               {
                 reusableViews = self->_reusableViews;
-                v13 = [v10 view];
-                [(NSMutableArray *)reusableViews addObject:v13];
+                view2 = [v10 view];
+                [(NSMutableArray *)reusableViews addObject:view2];
               }
             }
 
@@ -3346,20 +3346,20 @@ void __124__EKDayViewContent_applyLoadedOccurrenceBatchStartingAtIndex_batchSize
   self->_pinningValid = 0;
 }
 
-- (void)applyLoadedOccurrencesWithBatching:(BOOL)a3 animated:(BOOL)a4 reverse:(BOOL)a5 completion:(id)a6
+- (void)applyLoadedOccurrencesWithBatching:(BOOL)batching animated:(BOOL)animated reverse:(BOOL)reverse completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
-  v10 = a6;
+  reverseCopy = reverse;
+  animatedCopy = animated;
+  batchingCopy = batching;
+  completionCopy = completion;
   if ([(EKDayViewContent *)self dataLoaded])
   {
-    v11 = [(EKDayViewContent *)self allVisibleItems];
-    v12 = v11;
-    if (v8)
+    allVisibleItems = [(EKDayViewContent *)self allVisibleItems];
+    v12 = allVisibleItems;
+    if (batchingCopy)
     {
       v13 = 1;
-      if (!v6)
+      if (!reverseCopy)
       {
         goto LABEL_4;
       }
@@ -3367,35 +3367,35 @@ void __124__EKDayViewContent_applyLoadedOccurrenceBatchStartingAtIndex_batchSize
 
     else
     {
-      v13 = [v11 count];
-      if (!v6)
+      v13 = [allVisibleItems count];
+      if (!reverseCopy)
       {
 LABEL_4:
         v14 = 0;
-        if (!v8)
+        if (!batchingCopy)
         {
 LABEL_5:
-          v15 = 0;
+          startDate = 0;
 LABEL_11:
           v16[0] = MEMORY[0x1E69E9820];
           v16[1] = 3221225472;
           v16[2] = __83__EKDayViewContent_applyLoadedOccurrencesWithBatching_animated_reverse_completion___block_invoke;
           v16[3] = &unk_1E843EDA0;
           v16[4] = self;
-          v17 = v10;
-          [(EKDayViewContent *)self applyLoadedOccurrenceBatchStartingAtIndex:v14 batchSize:v13 fromArray:v12 withStartDate:v15 animated:v7 reverse:v6 completion:v16];
+          v17 = completionCopy;
+          [(EKDayViewContent *)self applyLoadedOccurrenceBatchStartingAtIndex:v14 batchSize:v13 fromArray:v12 withStartDate:startDate animated:animatedCopy reverse:reverseCopy completion:v16];
 
           goto LABEL_12;
         }
 
 LABEL_10:
-        v15 = [(EKDayViewContent *)self startDate];
+        startDate = [(EKDayViewContent *)self startDate];
         goto LABEL_11;
       }
     }
 
     v14 = [v12 count] - 1;
-    if (!v8)
+    if (!batchingCopy)
     {
       goto LABEL_5;
     }
@@ -3403,9 +3403,9 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_12:
@@ -3454,42 +3454,42 @@ void __83__EKDayViewContent_applyLoadedOccurrencesWithBatching_animated_reverse_
   objc_sync_exit(v3);
 }
 
-- (void)applyContentItem:(id)a3 toView:(id)a4 shouldAnnotate:(BOOL)a5
+- (void)applyContentItem:(id)item toView:(id)view shouldAnnotate:(BOOL)annotate
 {
-  v5 = a5;
-  v12 = a4;
-  v8 = a3;
-  v9 = [v8 event];
-  [v12 setIsProposedTime:{objc_msgSend(v8, "isProposedTime")}];
-  v10 = [v8 events];
-  [v12 setOccurrences:v10];
+  annotateCopy = annotate;
+  viewCopy = view;
+  itemCopy = item;
+  event = [itemCopy event];
+  [viewCopy setIsProposedTime:{objc_msgSend(itemCopy, "isProposedTime")}];
+  events = [itemCopy events];
+  [viewCopy setOccurrences:events];
 
-  [v8 setView:v12];
-  [v12 setDelegate:self];
-  [v12 setUsesSmallText:self->_usesSmallText];
-  [v12 setUserInteractionEnabled:self->_allowsOccurrenceSelection];
-  [v12 setTag:2423];
-  [v12 setDelegate:self];
-  [v12 setDimmed:{objc_msgSend(v8, "isProposedTime")}];
-  [v12 setHasPrecedingDuration:{objc_msgSend(v8, "hasPrecedingDuration")}];
-  [v12 setHasTrailingDuration:{objc_msgSend(v8, "hasTrailingDuration")}];
-  [v12 setMultiAllDayRoundCorners:1];
-  [v12 setOccurrenceIsFirstVisibleDayOfEvent:{objc_msgSend(v8, "occurrenceIsFirstVisibleDayOfEvent")}];
-  v11 = [v8 occurrenceDateIndex];
+  [itemCopy setView:viewCopy];
+  [viewCopy setDelegate:self];
+  [viewCopy setUsesSmallText:self->_usesSmallText];
+  [viewCopy setUserInteractionEnabled:self->_allowsOccurrenceSelection];
+  [viewCopy setTag:2423];
+  [viewCopy setDelegate:self];
+  [viewCopy setDimmed:{objc_msgSend(itemCopy, "isProposedTime")}];
+  [viewCopy setHasPrecedingDuration:{objc_msgSend(itemCopy, "hasPrecedingDuration")}];
+  [viewCopy setHasTrailingDuration:{objc_msgSend(itemCopy, "hasTrailingDuration")}];
+  [viewCopy setMultiAllDayRoundCorners:1];
+  [viewCopy setOccurrenceIsFirstVisibleDayOfEvent:{objc_msgSend(itemCopy, "occurrenceIsFirstVisibleDayOfEvent")}];
+  occurrenceDateIndex = [itemCopy occurrenceDateIndex];
 
-  [v12 setOccurrenceDateIndex:v11];
-  [v12 setIsSelectedCopyView:0];
-  [v12 setShouldAnnotateAppEntities:v5];
-  [(EKDayViewContent *)self _configureOccurrenceViewMarginAndPadding:v12];
+  [viewCopy setOccurrenceDateIndex:occurrenceDateIndex];
+  [viewCopy setIsSelectedCopyView:0];
+  [viewCopy setShouldAnnotateAppEntities:annotateCopy];
+  [(EKDayViewContent *)self _configureOccurrenceViewMarginAndPadding:viewCopy];
   if (self->_hasCustomOccurrencePadding)
   {
     [(EKDayViewContent *)self occurrencePadding];
-    [v12 setPadding:?];
+    [viewCopy setPadding:?];
   }
 
-  if ([v9 isEqual:self->_dimmedOccurrence])
+  if ([event isEqual:self->_dimmedOccurrence])
   {
-    [v12 setDimmed:1];
+    [viewCopy setDimmed:1];
   }
 }
 
@@ -3560,7 +3560,7 @@ void __83__EKDayViewContent_applyLoadedOccurrencesWithBatching_animated_reverse_
   objc_sync_exit(v3);
 }
 
-- (void)prepareForReuseIsReload:(BOOL)a3
+- (void)prepareForReuseIsReload:(BOOL)reload
 {
   [(EKDayViewContent *)self setDataLoaded:0];
   v5 = self->_singleItemsForPreloadByDay;
@@ -3617,7 +3617,7 @@ void __83__EKDayViewContent_applyLoadedOccurrencesWithBatching_animated_reverse_
 
   objc_sync_exit(v11);
 
-  if (!a3)
+  if (!reload)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -3726,11 +3726,11 @@ void __44__EKDayViewContent_prepareForReuseIsReload___block_invoke_2(uint64_t a1
   dispatch_group_leave(v2);
 }
 
-- (void)loadOccurrences:(id)a3
+- (void)loadOccurrences:(id)occurrences
 {
   v57 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v43 = [v37 count];
+  occurrencesCopy = occurrences;
+  v43 = [occurrencesCopy count];
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:self->_daysToDisplay];
   if (self->_daysToDisplay)
   {
@@ -3761,31 +3761,31 @@ void __44__EKDayViewContent_prepareForReuseIsReload___block_invoke_2(uint64_t a1
     v8 = 0;
     while (1)
     {
-      v9 = [v37 objectAtIndex:{v8, v35}];
-      v10 = [v9 isProposedTimeEvent];
+      v9 = [occurrencesCopy objectAtIndex:{v8, v35}];
+      isProposedTimeEvent = [v9 isProposedTimeEvent];
       v11 = MEMORY[0x1E6992F70];
-      if (v10)
+      if (isProposedTimeEvent)
       {
-        v12 = [v9 proposedStartDate];
+        proposedStartDate = [v9 proposedStartDate];
         [v9 duration];
-        v13 = [v11 rangeWithStartDate:v12 duration:?];
+        v13 = [v11 rangeWithStartDate:proposedStartDate duration:?];
       }
 
       else
       {
-        v12 = [v9 startDate];
-        v14 = [v9 endDateUnadjustedForLegacyClients];
-        v13 = [v11 rangeWithStartDate:v12 endDate:v14];
+        proposedStartDate = [v9 startDate];
+        endDateUnadjustedForLegacyClients = [v9 endDateUnadjustedForLegacyClients];
+        v13 = [v11 rangeWithStartDate:proposedStartDate endDate:endDateUnadjustedForLegacyClients];
       }
 
-      v15 = [(EKDayViewContent *)self endDate];
-      v16 = [v15 calendarDateByAddingDays:1];
+      endDate = [(EKDayViewContent *)self endDate];
+      v16 = [endDate calendarDateByAddingDays:1];
 
       v17 = MEMORY[0x1E6992F70];
-      v18 = [(EKDayViewContent *)self startDate];
-      v19 = [v18 date];
-      v20 = [v16 date];
-      v21 = [v17 rangeWithStartDate:v19 endDate:v20];
+      startDate = [(EKDayViewContent *)self startDate];
+      date = [startDate date];
+      date2 = [v16 date];
+      v21 = [v17 rangeWithStartDate:date endDate:date2];
 
       if (![v13 intersectsRange:v21])
       {
@@ -3797,8 +3797,8 @@ void __44__EKDayViewContent_prepareForReuseIsReload___block_invoke_2(uint64_t a1
         goto LABEL_14;
       }
 
-      v22 = [v9 eventStore];
-      if ([v22 showDeclinedEvents])
+      eventStore = [v9 eventStore];
+      if ([eventStore showDeclinedEvents])
       {
         break;
       }
@@ -3870,9 +3870,9 @@ LABEL_17:
                   objc_enumerationMutation(v27);
                 }
 
-                v31 = [*(*(&v45 + 1) + 8 * j) view];
-                v32 = [v31 occurrence];
-                v33 = [v32 isEqual:self->_selectedEvent];
+                view = [*(*(&v45 + 1) + 8 * j) view];
+                occurrence = [view occurrence];
+                v33 = [occurrence isEqual:self->_selectedEvent];
 
                 if (v33)
                 {
@@ -4036,11 +4036,11 @@ void __36__EKDayViewContent_loadOccurrences___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)loadAndLayoutOccurrences:(id)a3 reverse:(BOOL)a4
+- (void)loadAndLayoutOccurrences:(id)occurrences reverse:(BOOL)reverse
 {
-  [(EKDayViewContent *)self loadOccurrences:a3];
+  [(EKDayViewContent *)self loadOccurrences:occurrences];
   daysToDisplay = self->_daysToDisplay;
-  if (a4)
+  if (reverse)
   {
     v7 = daysToDisplay - 1;
     if ((daysToDisplay - 1) >= 0)
@@ -4066,9 +4066,9 @@ void __36__EKDayViewContent_loadOccurrences___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)setOccurrences:(id)a3
+- (void)setOccurrences:(id)occurrences
 {
-  v4 = a3;
+  occurrencesCopy = occurrences;
   if (!self->_waitingForSynchronousLayoutToReapplyViews)
   {
     [(EKDayViewContent *)self saveTemporaryViews];
@@ -4076,29 +4076,29 @@ void __36__EKDayViewContent_loadOccurrences___block_invoke(uint64_t a1, void *a2
   }
 
   [(EKDayViewContent *)self prepareForReuseIsReload:1];
-  [(EKDayViewContent *)self loadOccurrences:v4];
+  [(EKDayViewContent *)self loadOccurrences:occurrencesCopy];
   [(EKDayViewContent *)self movePreloadedItemsToVisible];
   [(EKDayViewContent *)self invalidateOccurrenceLayout];
 }
 
 - (void)saveTemporaryViews
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  ++v2->_saveTemporaryViewsEntryCount;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  ++selfCopy->_saveTemporaryViewsEntryCount;
+  objc_sync_exit(selfCopy);
 
-  obj = v2->_itemsByDay;
+  obj = selfCopy->_itemsByDay;
   objc_sync_enter(obj);
-  v3 = [(NSMutableArray *)v2->_itemsByDay count];
+  v3 = [(NSMutableArray *)selfCopy->_itemsByDay count];
   if (v3 >= 1)
   {
     v4 = 0;
-    v17 = v2;
+    v17 = selfCopy;
     do
     {
-      [(NSMutableArray *)v2->_itemsByDay objectAtIndexedSubscript:v4];
-      v6 = v5 = v2;
+      [(NSMutableArray *)selfCopy->_itemsByDay objectAtIndexedSubscript:v4];
+      v6 = v5 = selfCopy;
       if (v4 >= [(NSMutableArray *)v5->_temporaryViewCacheByDay count])
       {
         v7 = objc_opt_new();
@@ -4112,19 +4112,19 @@ void __36__EKDayViewContent_loadOccurrences___block_invoke(uint64_t a1, void *a2
         for (i = 0; i != v9; ++i)
         {
           v11 = [v6 objectAtIndexedSubscript:i];
-          v12 = [v11 view];
-          v13 = [v11 event];
-          v14 = [v13 calendarItemIdentifier];
+          view = [v11 view];
+          event = [v11 event];
+          calendarItemIdentifier = [event calendarItemIdentifier];
 
-          if (v12)
+          if (view)
           {
-            if (v14)
+            if (calendarItemIdentifier)
             {
-              v15 = [v8 objectForKeyedSubscript:v14];
+              v15 = [v8 objectForKeyedSubscript:calendarItemIdentifier];
 
               if (!v15)
               {
-                [v8 setObject:v12 forKeyedSubscript:v14];
+                [v8 setObject:view forKeyedSubscript:calendarItemIdentifier];
                 [v11 setView:0];
               }
             }
@@ -4133,7 +4133,7 @@ void __36__EKDayViewContent_loadOccurrences___block_invoke(uint64_t a1, void *a2
       }
 
       ++v4;
-      v2 = v17;
+      selfCopy = v17;
     }
 
     while (v4 != v3);
@@ -4257,12 +4257,12 @@ void __42__EKDayViewContent__adjustViewsForPinning__block_invoke_4(uint64_t a1, 
   *(*(*(a1 + 48) + 8) + 24) = v26 + *(*(*(a1 + 48) + 8) + 24);
 }
 
-- (BOOL)eventsIntersectRect:(CGRect)a3
+- (BOOL)eventsIntersectRect:(CGRect)rect
 {
-  width = a3.size.width;
-  r1 = a3.size.height;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  width = rect.size.width;
+  r1 = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v28 = *MEMORY[0x1E69E9840];
   [(EKDayViewContent *)self occurrenceViews];
   v23 = 0u;
@@ -4333,35 +4333,35 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)_getBottomPinRegion:(double *)a3 dayIndex:(unint64_t *)a4 forPoint:(CGPoint)a5
+- (BOOL)_getBottomPinRegion:(double *)region dayIndex:(unint64_t *)index forPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
+  y = point.y;
+  x = point.x;
   [(EKDayViewContent *)self _dayWidth];
   v11 = (x / v10);
   MaxY = CGRectGetMaxY(self->_latestVisibleRect);
   visiblePinnedStackHeightBelow = self->_visiblePinnedStackHeightBelow;
   v14 = visiblePinnedStackHeightBelow[v11];
   v15 = MaxY - v14;
-  if (a4)
+  if (index)
   {
-    *a4 = v11;
+    *index = v11;
   }
 
   v16 = v15 + -3.0;
-  if (a3)
+  if (region)
   {
-    *a3 = v16;
+    *region = v16;
     v14 = visiblePinnedStackHeightBelow[v11];
   }
 
   return y >= v16 && v14 > 0.0;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  [v5 locationInView:self];
+  touchCopy = touch;
+  [touchCopy locationInView:self];
   if ([(EKDayViewContent *)self _getBottomPinRegion:0 dayIndex:0 forPoint:?])
   {
     v6 = 1;
@@ -4369,7 +4369,7 @@ LABEL_14:
 
   else
   {
-    v7 = [v5 view];
+    view = [touchCopy view];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4379,10 +4379,10 @@ LABEL_14:
   return v6 & 1;
 }
 
-- (void)_tapRecognized:(id)a3
+- (void)_tapRecognized:(id)recognized
 {
   v30 = *MEMORY[0x1E69E9840];
-  [a3 locationInView:self];
+  [recognized locationInView:self];
   v5 = v4;
   v7 = v6;
   v27 = 0;
@@ -4416,8 +4416,8 @@ LABEL_19:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [(EKDayViewContent *)self visibleItemsByDay];
-  v9 = [v8 objectAtIndex:v27];
+  visibleItemsByDay = [(EKDayViewContent *)self visibleItemsByDay];
+  v9 = [visibleItemsByDay objectAtIndex:v27];
 
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (!v10)
@@ -4436,8 +4436,8 @@ LABEL_4:
     }
 
     v13 = *(*(&v23 + 1) + 8 * v12);
-    v14 = [v13 view];
-    [v14 frame];
+    view = [v13 view];
+    [view frame];
     if (v15 >= v28)
     {
       break;
@@ -4456,9 +4456,9 @@ LABEL_10:
     }
   }
 
-  v16 = [v13 isPinned];
+  isPinned = [v13 isPinned];
 
-  if ((v16 & 1) == 0)
+  if ((isPinned & 1) == 0)
   {
     goto LABEL_10;
   }
@@ -4473,9 +4473,9 @@ LABEL_10:
     if (v20)
     {
       v9 = objc_loadWeakRetained(&self->_delegate);
-      v21 = [v10 view];
-      v22 = [v21 occurrence];
-      [v9 dayViewContent:self didTapPinnedOccurrence:v22];
+      view2 = [v10 view];
+      occurrence = [view2 occurrence];
+      [v9 dayViewContent:self didTapPinnedOccurrence:occurrence];
 
       goto LABEL_19;
     }
@@ -4484,54 +4484,54 @@ LABEL_10:
 LABEL_20:
 }
 
-- (BOOL)itemIsEligibleForGrouping:(id)a3
+- (BOOL)itemIsEligibleForGrouping:(id)grouping
 {
-  v3 = [a3 event];
-  v4 = [v3 isReminderIntegrationEvent];
+  event = [grouping event];
+  isReminderIntegrationEvent = [event isReminderIntegrationEvent];
 
-  return v4;
+  return isReminderIntegrationEvent;
 }
 
-- (id)groupItem:(id)a3 withItem:(id)a4
+- (id)groupItem:(id)item withItem:(id)withItem
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 events];
-  v9 = [v6 events];
-  v10 = [v8 arrayByAddingObjectsFromArray:v9];
-  v11 = [v7 eventIndex];
-  v12 = [v6 eventIndex];
-  if (v11 >= v12)
+  withItemCopy = withItem;
+  itemCopy = item;
+  events = [itemCopy events];
+  events2 = [withItemCopy events];
+  v10 = [events arrayByAddingObjectsFromArray:events2];
+  eventIndex = [itemCopy eventIndex];
+  eventIndex2 = [withItemCopy eventIndex];
+  if (eventIndex >= eventIndex2)
   {
-    v11 = v12;
+    eventIndex = eventIndex2;
   }
 
-  v13 = [[EKDayViewContentItem alloc] initWithEventIndex:v11 sizeClass:self->_sizeClass];
+  v13 = [[EKDayViewContentItem alloc] initWithEventIndex:eventIndex sizeClass:self->_sizeClass];
   [(EKDayViewContentItem *)v13 setEvents:v10];
-  -[EKDayViewContentItem setIsLoadingAsync:](v13, "setIsLoadingAsync:", [v7 isLoadingAsync]);
-  -[EKDayViewContentItem setUsesSmallText:](v13, "setUsesSmallText:", [v7 usesSmallText]);
-  v14 = [v7 view];
-  [v14 setHidden:1];
+  -[EKDayViewContentItem setIsLoadingAsync:](v13, "setIsLoadingAsync:", [itemCopy isLoadingAsync]);
+  -[EKDayViewContentItem setUsesSmallText:](v13, "setUsesSmallText:", [itemCopy usesSmallText]);
+  view = [itemCopy view];
+  [view setHidden:1];
 
-  v15 = [v6 view];
-  [v15 setHidden:1];
+  view2 = [withItemCopy view];
+  [view2 setHidden:1];
 
-  v16 = [v7 startDate];
+  startDate = [itemCopy startDate];
 
-  v17 = [v6 startDate];
+  startDate2 = [withItemCopy startDate];
 
-  v18 = [v16 date];
-  v19 = [v17 date];
-  v20 = [v18 isBeforeDate:v19];
+  date = [startDate date];
+  date2 = [startDate2 date];
+  v20 = [date isBeforeDate:date2];
 
   if (v20)
   {
-    v21 = v16;
+    v21 = startDate;
   }
 
   else
   {
-    v21 = v17;
+    v21 = startDate2;
   }
 
   v22 = v21;
@@ -4541,12 +4541,12 @@ LABEL_20:
   return v13;
 }
 
-- (CGRect)_occurrencePaddingBetweenDays:(CGRect)a3
+- (CGRect)_occurrencePaddingBetweenDays:(CGRect)days
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = days.size.height;
+  width = days.size.width;
+  y = days.origin.y;
+  x = days.origin.x;
   IsLeftToRight = CalTimeDirectionIsLeftToRight();
   v9 = &OBJC_IVAR___EKDayViewContent__occurrenceLayoutTrailingInset;
   if (IsLeftToRight)

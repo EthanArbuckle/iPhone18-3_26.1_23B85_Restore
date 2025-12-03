@@ -1,10 +1,10 @@
 @interface VCVideoTransmitterConfig
 - (VCVideoTransmitterConfig)init;
 - (id)description;
-- (void)addCustomFeatureListString:(id)a3 payload:(int)a4;
+- (void)addCustomFeatureListString:(id)string payload:(int)payload;
 - (void)dealloc;
 - (void)init;
-- (void)setMediaControlInfoGenerator:(void *)a3;
+- (void)setMediaControlInfoGenerator:(void *)generator;
 @end
 
 @implementation VCVideoTransmitterConfig
@@ -55,7 +55,7 @@
   return [v5 stringWithFormat:@"{ %s: videoResolution:%ld codecType:%ld framerate:%lu txMaxBitrate:%lu txMinBitrate:%lu keyFrameInterval:%lu recommendedMTU:%lu cvoExtensionID:%lu enableCVO:%d customWidth %lu, customHeight %lu, pixelFormat: %s}", v4, self->_videoResolution, self->_codecType, self->_framerate, self->_txMaxBitrate, self->_txMinBitrate, self->_keyFrameInterval, self->_recommendedMTU, self->_cvoExtensionID, self->_enableCVO, self->_customWidth, self->_customHeight, FourccToCStr(self->_pixelFormat)];
 }
 
-- (void)setMediaControlInfoGenerator:(void *)a3
+- (void)setMediaControlInfoGenerator:(void *)generator
 {
   mediaControlInfoGenerator = self->_mediaControlInfoGenerator;
   if (mediaControlInfoGenerator)
@@ -63,9 +63,9 @@
     CFRelease(mediaControlInfoGenerator);
   }
 
-  if (a3)
+  if (generator)
   {
-    v6 = CFRetain(a3);
+    v6 = CFRetain(generator);
   }
 
   else
@@ -92,19 +92,19 @@
   [(VCVideoTransmitterConfig *)&v4 dealloc];
 }
 
-- (void)addCustomFeatureListString:(id)a3 payload:(int)a4
+- (void)addCustomFeatureListString:(id)string payload:(int)payload
 {
   customFeatureListStrings = self->_customFeatureListStrings;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&payload];
 
-  [(NSMutableDictionary *)customFeatureListStrings setObject:a3 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)customFeatureListStrings setObject:string forKeyedSubscript:v6];
 }
 
 - (void)init
 {
   v10 = *MEMORY[0x1E69E9840];
   v2 = 136315906;
-  v3 = a1;
+  selfCopy = self;
   v4 = 2080;
   v5 = "[VCVideoTransmitterConfig init]";
   v6 = 1024;

@@ -1,12 +1,12 @@
 @interface AFEnablementFlowConfigurationProvider
-+ (id)_createConfigurationForParameters:(id)a3;
-+ (void)_emitEnablementFlowLoggingForConfigurationParameters:(id)a3 didEnable:(BOOL)a4;
++ (id)_createConfigurationForParameters:(id)parameters;
++ (void)_emitEnablementFlowLoggingForConfigurationParameters:(id)parameters didEnable:(BOOL)enable;
 - (AFEnablementFlowConfigurationProvider)init;
 - (id)_storedRecognitionLanguageCode;
 - (id)_storedVoiceInfo;
-- (void)_resolveIfNewUserWithParameters:(id)a3 forRecognitionLanguages:(id)a4 completion:(id)a5;
-- (void)_resolveVoiceSelection:(id)a3 forRecognitionLanguages:(id)a4 completion:(id)a5;
-- (void)configurationForEnablementFlow:(int64_t)a3 recognitionLanguageCodes:(id)a4 completion:(id)a5;
+- (void)_resolveIfNewUserWithParameters:(id)parameters forRecognitionLanguages:(id)languages completion:(id)completion;
+- (void)_resolveVoiceSelection:(id)selection forRecognitionLanguages:(id)languages completion:(id)completion;
+- (void)configurationForEnablementFlow:(int64_t)flow recognitionLanguageCodes:(id)codes completion:(id)completion;
 @end
 
 @implementation AFEnablementFlowConfigurationProvider
@@ -27,18 +27,18 @@
   return v3;
 }
 
-- (void)_resolveVoiceSelection:(id)a3 forRecognitionLanguages:(id)a4 completion:(id)a5
+- (void)_resolveVoiceSelection:(id)selection forRecognitionLanguages:(id)languages completion:(id)completion
 {
   v61 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v33 = a5;
+  selectionCopy = selection;
+  languagesCopy = languages;
+  completionCopy = completion;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
   v49 = __Block_byref_object_copy__35499;
   v50 = __Block_byref_object_dispose__35500;
-  v31 = v7;
+  v31 = selectionCopy;
   v51 = v31;
   v9 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -48,12 +48,12 @@
     _os_log_impl(&dword_1912FE000, v9, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  v35 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v8;
+  obj = languagesCopy;
   v10 = [obj countByEnumeratingWithState:&v42 objects:v60 count:16];
   if (v10)
   {
@@ -99,7 +99,7 @@
 
         if (v21)
         {
-          [v35 addObjectsFromArray:v21];
+          [array addObjectsFromArray:v21];
         }
 
         if ([v21 count] >= 2)
@@ -130,7 +130,7 @@
   }
 
   v29 = [AFEnablementFlowConfigurationProvider _createConfigurationForParameters:v47[5]];
-  v33[2](v33, v29);
+  completionCopy[2](completionCopy, v29);
 
   _Block_object_dispose(&v46, 8);
   v30 = *MEMORY[0x1E69E9840];
@@ -158,18 +158,18 @@ void __99__AFEnablementFlowConfigurationProvider__resolveVoiceSelection_forRecog
   [v5 setOutputVoiceCountForRecognitionLanguage:v8];
 }
 
-- (void)_resolveIfNewUserWithParameters:(id)a3 forRecognitionLanguages:(id)a4 completion:(id)a5
+- (void)_resolveIfNewUserWithParameters:(id)parameters forRecognitionLanguages:(id)languages completion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  parametersCopy = parameters;
+  languagesCopy = languages;
+  completionCopy = completion;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__35499;
   v36 = __Block_byref_object_dispose__35500;
-  v11 = v8;
+  v11 = parametersCopy;
   v37 = v11;
   v12 = [v11 mutatedCopyWithMutator:&__block_literal_global_35514];
   v13 = v33[5];
@@ -189,14 +189,14 @@ void __99__AFEnablementFlowConfigurationProvider__resolveVoiceSelection_forRecog
     v16 = v33[5];
     v33[5] = v15;
 
-    [(AFEnablementFlowConfigurationProvider *)self _resolveVoiceSelection:v33[5] forRecognitionLanguages:v9 completion:v10];
+    [(AFEnablementFlowConfigurationProvider *)self _resolveVoiceSelection:v33[5] forRecognitionLanguages:languagesCopy completion:completionCopy];
   }
 
   else
   {
-    v17 = [(AFEnablementFlowConfigurationProvider *)self _storedRecognitionLanguageCode];
-    v18 = [(AFEnablementFlowConfigurationProvider *)self _storedVoiceInfo];
-    if (v17 | v18)
+    _storedRecognitionLanguageCode = [(AFEnablementFlowConfigurationProvider *)self _storedRecognitionLanguageCode];
+    _storedVoiceInfo = [(AFEnablementFlowConfigurationProvider *)self _storedVoiceInfo];
+    if (_storedRecognitionLanguageCode | _storedVoiceInfo)
     {
       v19 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -204,9 +204,9 @@ void __99__AFEnablementFlowConfigurationProvider__resolveVoiceSelection_forRecog
         *buf = 136315650;
         v39 = "[AFEnablementFlowConfigurationProvider _resolveIfNewUserWithParameters:forRecognitionLanguages:completion:]";
         v40 = 2112;
-        v41 = v17;
+        v41 = _storedRecognitionLanguageCode;
         v42 = 2112;
-        v43 = v18;
+        v43 = _storedVoiceInfo;
         _os_log_impl(&dword_1912FE000, v19, OS_LOG_TYPE_INFO, "%s Not a new user. Language Stored: %@, outputVoice stored: %@", buf, 0x20u);
       }
 
@@ -215,7 +215,7 @@ void __99__AFEnablementFlowConfigurationProvider__resolveVoiceSelection_forRecog
       v33[5] = v20;
 
       v22 = [AFEnablementFlowConfigurationProvider _createConfigurationForParameters:v33[5]];
-      v10[2](v10, v22);
+      completionCopy[2](completionCopy, v22);
     }
 
     else
@@ -236,8 +236,8 @@ void __99__AFEnablementFlowConfigurationProvider__resolveVoiceSelection_forRecog
       v26[3] = &unk_1E7347398;
       objc_copyWeak(&v30, &location);
       v29 = &v32;
-      v28 = v10;
-      v27 = v9;
+      v28 = completionCopy;
+      v27 = languagesCopy;
       [(AFSettingsConnection *)settingsConnection hasEverSetLanguageCodeWithCompletion:v26];
 
       objc_destroyWeak(&v30);
@@ -363,16 +363,16 @@ void __108__AFEnablementFlowConfigurationProvider__resolveIfNewUserWithParameter
   [v3 setDateStartedResolvingUserStatus:v4];
 }
 
-- (void)configurationForEnablementFlow:(int64_t)a3 recognitionLanguageCodes:(id)a4 completion:(id)a5
+- (void)configurationForEnablementFlow:(int64_t)flow recognitionLanguageCodes:(id)codes completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  codesCopy = codes;
   v10 = [AFEnablementConfigurationProviderParameters alloc];
-  v11 = [MEMORY[0x1E695DF20] dictionary];
+  dictionary = [MEMORY[0x1E695DF20] dictionary];
   LOBYTE(v12) = 0;
-  v13 = [(AFEnablementConfigurationProviderParameters *)v10 initWithEnablementFlow:a3 newUser:0 userStatusFetchError:0 dateStartedResolvingUserStatus:0 dateEndedResolvingUserStatus:0 experiment:0 experimentFetchError:0 dateStartedResolvingExperiment:0 dateEndedResolvingExperiment:0 outputVoiceCountForRecognitionLanguage:v11 recognitionLanguageWithMultipleOutputVoicesExists:v12];
+  v13 = [(AFEnablementConfigurationProviderParameters *)v10 initWithEnablementFlow:flow newUser:0 userStatusFetchError:0 dateStartedResolvingUserStatus:0 dateEndedResolvingUserStatus:0 experiment:0 experimentFetchError:0 dateStartedResolvingExperiment:0 dateEndedResolvingExperiment:0 outputVoiceCountForRecognitionLanguage:dictionary recognitionLanguageWithMultipleOutputVoicesExists:v12];
 
-  [(AFEnablementFlowConfigurationProvider *)self _resolveIfNewUserWithParameters:v13 forRecognitionLanguages:v9 completion:v8];
+  [(AFEnablementFlowConfigurationProvider *)self _resolveIfNewUserWithParameters:v13 forRecognitionLanguages:codesCopy completion:completionCopy];
 }
 
 - (AFEnablementFlowConfigurationProvider)init
@@ -390,14 +390,14 @@ void __108__AFEnablementFlowConfigurationProvider__resolveIfNewUserWithParameter
   return v2;
 }
 
-+ (void)_emitEnablementFlowLoggingForConfigurationParameters:(id)a3 didEnable:(BOOL)a4
++ (void)_emitEnablementFlowLoggingForConfigurationParameters:(id)parameters didEnable:(BOOL)enable
 {
-  v4 = a3;
-  v5 = [v4 userStatusFetchError];
-  [v4 enablementFlow];
-  v8 = v4;
-  v6 = v5;
-  v7 = v4;
+  parametersCopy = parameters;
+  userStatusFetchError = [parametersCopy userStatusFetchError];
+  [parametersCopy enablementFlow];
+  v8 = parametersCopy;
+  v6 = userStatusFetchError;
+  v7 = parametersCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -434,22 +434,22 @@ id __104__AFEnablementFlowConfigurationProvider__emitEnablementFlowLoggingForCon
   return v2;
 }
 
-+ (id)_createConfigurationForParameters:(id)a3
++ (id)_createConfigurationForParameters:(id)parameters
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v21 = "+[AFEnablementFlowConfigurationProvider _createConfigurationForParameters:]";
     v22 = 2112;
-    v23 = v3;
+    v23 = parametersCopy;
     _os_log_impl(&dword_1912FE000, v4, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
-  v5 = [v3 userStatusFetchError];
-  if (v5)
+  userStatusFetchError = [parametersCopy userStatusFetchError];
+  if (userStatusFetchError)
   {
 
 LABEL_9:
@@ -458,25 +458,25 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v6 = [v3 experimentFetchError];
+  experimentFetchError = [parametersCopy experimentFetchError];
 
-  if (v6 || ![v3 recognitionLanguageWithMultipleOutputVoicesExists])
+  if (experimentFetchError || ![parametersCopy recognitionLanguageWithMultipleOutputVoicesExists])
   {
     goto LABEL_9;
   }
 
-  if ([v3 newUser])
+  if ([parametersCopy newUser])
   {
-    v7 = +[AFEnablementFlowConfigurationProvider _shouldAllowRandomVoiceSelectionForEnablementFlow:](AFEnablementFlowConfigurationProvider, "_shouldAllowRandomVoiceSelectionForEnablementFlow:", [v3 enablementFlow]);
+    v7 = +[AFEnablementFlowConfigurationProvider _shouldAllowRandomVoiceSelectionForEnablementFlow:](AFEnablementFlowConfigurationProvider, "_shouldAllowRandomVoiceSelectionForEnablementFlow:", [parametersCopy enablementFlow]);
     v8 = 1;
   }
 
   else
   {
     v16 = +[AFPreferences sharedPreferences];
-    v17 = [v16 shouldSkipIntelligenceVoiceSelectionUpsell];
+    shouldSkipIntelligenceVoiceSelectionUpsell = [v16 shouldSkipIntelligenceVoiceSelectionUpsell];
 
-    v7 = v17 ^ 1u;
+    v7 = shouldSkipIntelligenceVoiceSelectionUpsell ^ 1u;
     v8 = v7;
   }
 
@@ -485,12 +485,12 @@ LABEL_10:
   v18[1] = 3221225472;
   v18[2] = __75__AFEnablementFlowConfigurationProvider__createConfigurationForParameters___block_invoke;
   v18[3] = &unk_1E7347818;
-  v19 = v3;
-  v9 = v3;
+  v19 = parametersCopy;
+  v9 = parametersCopy;
   v10 = MEMORY[0x193AFB7B0](v18);
   v11 = [AFEnablementConfiguration alloc];
-  v12 = [v9 outputVoiceCountForRecognitionLanguage];
-  v13 = [(AFEnablementConfiguration *)v11 initWithRequiresVoiceSelection:v8 voiceSelectionAllowsChooseForMe:v7 voiceCountForRecognitionLanguage:v12 completionLoggingBlock:v10];
+  outputVoiceCountForRecognitionLanguage = [v9 outputVoiceCountForRecognitionLanguage];
+  v13 = [(AFEnablementConfiguration *)v11 initWithRequiresVoiceSelection:v8 voiceSelectionAllowsChooseForMe:v7 voiceCountForRecognitionLanguage:outputVoiceCountForRecognitionLanguage completionLoggingBlock:v10];
 
   v14 = *MEMORY[0x1E69E9840];
 

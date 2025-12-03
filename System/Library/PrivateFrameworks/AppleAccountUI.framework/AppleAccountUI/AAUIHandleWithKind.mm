@@ -1,20 +1,20 @@
 @interface AAUIHandleWithKind
-- (AAUIHandleWithKind)initWithHandle:(id)a3 kind:(unint64_t)a4;
+- (AAUIHandleWithKind)initWithHandle:(id)handle kind:(unint64_t)kind;
 @end
 
 @implementation AAUIHandleWithKind
 
-- (AAUIHandleWithKind)initWithHandle:(id)a3 kind:(unint64_t)a4
+- (AAUIHandleWithKind)initWithHandle:(id)handle kind:(unint64_t)kind
 {
-  v7 = a3;
+  handleCopy = handle;
   v11.receiver = self;
   v11.super_class = AAUIHandleWithKind;
   v8 = [(AAUIHandleWithKind *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_handle, a3);
-    v9->_kind = a4;
+    objc_storeStrong(&v8->_handle, handle);
+    v9->_kind = kind;
   }
 
   return v9;

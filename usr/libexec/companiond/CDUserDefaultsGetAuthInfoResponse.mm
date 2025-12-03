@@ -1,27 +1,27 @@
 @interface CDUserDefaultsGetAuthInfoResponse
-- (CDUserDefaultsGetAuthInfoResponse)initWithRapportDictionary:(id)a3;
+- (CDUserDefaultsGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDUserDefaultsGetAuthInfoResponse
 
-- (CDUserDefaultsGetAuthInfoResponse)initWithRapportDictionary:(id)a3
+- (CDUserDefaultsGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = CDUserDefaultsGetAuthInfoResponse;
   v5 = [(CDUserDefaultsGetAuthInfoResponse *)&v15 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 objectForKeyedSubscript:@"userDefaultsReadInfo"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"userDefaultsReadInfo"];
     v8 = [NSKeyedUnarchiver unarchivedArrayOfObjectsOfClass:v6 fromData:v7 error:0];
     readInfo = v5->_readInfo;
     v5->_readInfo = v8;
 
     v10 = objc_opt_class();
-    v11 = [v4 objectForKeyedSubscript:@"userDefaultsWriteInfo"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"userDefaultsWriteInfo"];
     v12 = [NSKeyedUnarchiver unarchivedArrayOfObjectsOfClass:v10 fromData:v11 error:0];
     writeInfo = v5->_writeInfo;
     v5->_writeInfo = v12;
@@ -49,9 +49,9 @@
   v3 = [BSDescriptionBuilder builderWithObject:self];
   v4 = [v3 appendObject:self->_readInfo withName:@"readInfo"];
   v5 = [v3 appendObject:self->_writeInfo withName:@"writeInfo"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

@@ -1,36 +1,36 @@
 @interface HSPCPasscodeEntryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
+- (void)insertText:(id)text;
 @end
 
 @implementation HSPCPasscodeEntryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HSPCPasscodeEntryView" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"HSPCPasscodeEntryView" hasInstanceMethod:@"insertText:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HSPCPasscodeEntryView" hasInstanceMethod:@"deleteBackward" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"HSPCPasscodeEntryView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HSPCPasscodeEntryView" hasInstanceMethod:@"numberOfDigits" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HSPCPasscodeEntryView" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"HSPCPasscodeEntryView" hasInstanceMethod:@"insertText:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HSPCPasscodeEntryView" hasInstanceMethod:@"deleteBackward" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"HSPCPasscodeEntryView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HSPCPasscodeEntryView" hasInstanceMethod:@"numberOfDigits" withFullSignature:{"Q", 0}];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v8.receiver = self;
   v8.super_class = HSPCPasscodeEntryViewAccessibility;
-  v2 = [(HSPCPasscodeEntryViewAccessibility *)&v8 accessibilityTraits];
+  accessibilityTraits = [(HSPCPasscodeEntryViewAccessibility *)&v8 accessibilityTraits];
   v3 = *MEMORY[0x29EDC7598];
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
-  v5 = v3 | v2;
-  LODWORD(v2) = [v4 isFirstResponder];
+  v5 = v3 | accessibilityTraits;
+  LODWORD(accessibilityTraits) = [v4 isFirstResponder];
 
   v6 = *MEMORY[0x29EDC7528];
-  if (!v2)
+  if (!accessibilityTraits)
   {
     v6 = 0;
   }
@@ -42,8 +42,8 @@
 {
   v10[1] = *MEMORY[0x29EDCA608];
   v3 = objc_alloc(MEMORY[0x29EDBD7E8]);
-  v4 = [(HSPCPasscodeEntryViewAccessibility *)self _axText];
-  v5 = [v3 initWithString:v4];
+  _axText = [(HSPCPasscodeEntryViewAccessibility *)self _axText];
+  v5 = [v3 initWithString:_axText];
 
   v9 = *MEMORY[0x29EDBD9D0];
   v10[0] = MEMORY[0x29EDB8EB0];
@@ -55,15 +55,15 @@
   return v5;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
-  v5 = [(HSPCPasscodeEntryViewAccessibility *)self _axText];
-  v6 = [v5 length];
+  textCopy = text;
+  _axText = [(HSPCPasscodeEntryViewAccessibility *)self _axText];
+  v6 = [_axText length];
 
   v13.receiver = self;
   v13.super_class = HSPCPasscodeEntryViewAccessibility;
-  [(HSPCPasscodeEntryViewAccessibility *)&v13 insertText:v4];
+  [(HSPCPasscodeEntryViewAccessibility *)&v13 insertText:textCopy];
   objc_opt_class();
   v7 = __UIAccessibilityCastAsClass();
   v8 = [(HSPCPasscodeEntryViewAccessibility *)self safeIntegerForKey:@"numberOfDigits"];
@@ -82,8 +82,8 @@
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v7);
   }
 
-  v10 = [(HSPCPasscodeEntryViewAccessibility *)self _axText];
-  v11 = [v10 length];
+  _axText2 = [(HSPCPasscodeEntryViewAccessibility *)self _axText];
+  v11 = [_axText2 length];
 
   if (v11 == v8)
   {
@@ -102,13 +102,13 @@ void __49__HSPCPasscodeEntryViewAccessibility_insertText___block_invoke()
 
 - (void)deleteBackward
 {
-  v3 = [(HSPCPasscodeEntryViewAccessibility *)self _axText];
+  _axText = [(HSPCPasscodeEntryViewAccessibility *)self _axText];
   v8.receiver = self;
   v8.super_class = HSPCPasscodeEntryViewAccessibility;
   [(HSPCPasscodeEntryViewAccessibility *)&v8 deleteBackward];
-  if ([v3 length])
+  if ([_axText length])
   {
-    v4 = [v3 substringWithRange:{objc_msgSend(v3, "length") - 1, 1}];
+    v4 = [_axText substringWithRange:{objc_msgSend(_axText, "length") - 1, 1}];
   }
 
   else

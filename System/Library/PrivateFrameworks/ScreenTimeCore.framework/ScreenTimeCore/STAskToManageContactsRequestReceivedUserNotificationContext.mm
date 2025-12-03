@@ -1,6 +1,6 @@
 @interface STAskToManageContactsRequestReceivedUserNotificationContext
 - (STAskToManageContactsRequestReceivedUserNotificationContext)init;
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4;
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block;
 @end
 
 @implementation STAskToManageContactsRequestReceivedUserNotificationContext
@@ -12,20 +12,20 @@
   return [(STUserNotificationContext *)&v3 initWithIdentifier:@"AskToManageContactsRequestReceivedUserNotificationContextIdentifier"];
 }
 
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __112__STAskToManageContactsRequestReceivedUserNotificationContext_customizeNotificationContent_withCompletionBlock___block_invoke;
   v11[3] = &unk_1E7CE6C98;
-  v12 = v6;
-  v13 = v7;
+  v12 = contentCopy;
+  v13 = blockCopy;
   v10.receiver = self;
   v10.super_class = STAskToManageContactsRequestReceivedUserNotificationContext;
-  v8 = v7;
-  v9 = v6;
+  v8 = blockCopy;
+  v9 = contentCopy;
   [(STUserNotificationContext *)&v10 customizeNotificationContent:v9 withCompletionBlock:v11];
 }
 

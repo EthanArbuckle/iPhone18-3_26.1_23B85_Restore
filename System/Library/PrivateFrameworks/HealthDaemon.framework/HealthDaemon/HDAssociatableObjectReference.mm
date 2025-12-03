@@ -1,27 +1,27 @@
 @interface HDAssociatableObjectReference
-- (BOOL)isEqual:(id)a3;
-- (HDAssociatableObjectReference)initWithCoder:(id)a3;
-- (HDAssociatableObjectReference)initWithUUID:(id)a3 objectClass:(Class)a4;
-- (id)persistentIDInTransaction:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDAssociatableObjectReference)initWithCoder:(id)coder;
+- (HDAssociatableObjectReference)initWithUUID:(id)d objectClass:(Class)class;
+- (id)persistentIDInTransaction:(id)transaction error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDAssociatableObjectReference
 
-- (HDAssociatableObjectReference)initWithUUID:(id)a3 objectClass:(Class)a4
+- (HDAssociatableObjectReference)initWithUUID:(id)d objectClass:(Class)class
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = HDAssociatableObjectReference;
   v7 = [(HDAssociatableObjectReference *)&v16 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dCopy copy];
     UUID = v7->_UUID;
     v7->_UUID = v8;
 
-    objc_storeStrong(&v7->_objectClass, a4);
+    objc_storeStrong(&v7->_objectClass, class);
     if (([(objc_class *)v7->_objectClass isEqual:objc_opt_class()]& 1) == 0)
     {
       _HKInitializeLogging();
@@ -42,10 +42,10 @@
   return v7;
 }
 
-- (id)persistentIDInTransaction:(id)a3 error:(id *)a4
+- (id)persistentIDInTransaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  if ([(objc_class *)self->_objectClass isEqual:objc_opt_class()]&& ([HDWorkoutActivityEntity activityEntityWithUUID:self->_UUID transaction:v6 error:a4], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  transactionCopy = transaction;
+  if ([(objc_class *)self->_objectClass isEqual:objc_opt_class()]&& ([HDWorkoutActivityEntity activityEntityWithUUID:self->_UUID transaction:transactionCopy error:error], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
     v9 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v7, "persistentID")}];
@@ -59,23 +59,23 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v5 = v4[1];
+  v5 = equalCopy[1];
   UUID = self->_UUID;
   if (v5 != UUID && (!UUID || ![(NSUUID *)v5 isEqual:?]))
   {
     goto LABEL_8;
   }
 
-  v7 = v4[2];
+  v7 = equalCopy[2];
   objectClass = self->_objectClass;
   if (v7 == objectClass)
   {
@@ -99,11 +99,11 @@ LABEL_9:
   return v9;
 }
 
-- (HDAssociatableObjectReference)initWithCoder:(id)a3
+- (HDAssociatableObjectReference)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"class"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"class"];
 
   v7 = NSClassFromString(v6);
   if (!v7)
@@ -116,13 +116,13 @@ LABEL_9:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"UUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"UUID"];
   v6 = NSStringFromClass(self->_objectClass);
-  [v5 encodeObject:v6 forKey:@"class"];
+  [coderCopy encodeObject:v6 forKey:@"class"];
 }
 
 @end

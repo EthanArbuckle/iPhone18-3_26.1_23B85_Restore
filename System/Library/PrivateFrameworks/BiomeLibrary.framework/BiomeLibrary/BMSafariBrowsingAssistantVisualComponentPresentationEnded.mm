@@ -1,29 +1,29 @@
 @interface BMSafariBrowsingAssistantVisualComponentPresentationEnded
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSafariBrowsingAssistantVisualComponentPresentationEnded)initWithHideReason:(int)a3;
-- (BMSafariBrowsingAssistantVisualComponentPresentationEnded)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSafariBrowsingAssistantVisualComponentPresentationEnded)initWithHideReason:(int)reason;
+- (BMSafariBrowsingAssistantVisualComponentPresentationEnded)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
 @end
 
 @implementation BMSafariBrowsingAssistantVisualComponentPresentationEnded
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSafariBrowsingAssistantVisualComponentPresentationEnded *)self hideReason];
-    v7 = [v5 hideReason];
+    v5 = equalCopy;
+    hideReason = [(BMSafariBrowsingAssistantVisualComponentPresentationEnded *)self hideReason];
+    hideReason2 = [v5 hideReason];
 
-    v8 = v6 == v7;
+    v8 = hideReason == hideReason2;
   }
 
   else
@@ -39,13 +39,13 @@
   v8[1] = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMSafariBrowsingAssistantVisualComponentPresentationEnded hideReason](self, "hideReason")}];
   v7 = @"hideReason";
-  v3 = v2;
+  null = v2;
   if (!v2)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   if (!v2)
   {
@@ -56,16 +56,16 @@
   return v4;
 }
 
-- (BMSafariBrowsingAssistantVisualComponentPresentationEnded)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSafariBrowsingAssistantVisualComponentPresentationEnded)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = [a3 objectForKeyedSubscript:@"hideReason"];
+  v6 = [dictionary objectForKeyedSubscript:@"hideReason"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    a4 = 0;
+    error = 0;
 LABEL_9:
-    self = -[BMSafariBrowsingAssistantVisualComponentPresentationEnded initWithHideReason:](self, "initWithHideReason:", [a4 intValue]);
-    v8 = self;
+    self = -[BMSafariBrowsingAssistantVisualComponentPresentationEnded initWithHideReason:](self, "initWithHideReason:", [error intValue]);
+    selfCopy = self;
     goto LABEL_10;
   }
 
@@ -74,7 +74,7 @@ LABEL_9:
   {
     v7 = v6;
 LABEL_8:
-    a4 = v7;
+    error = v7;
     goto LABEL_9;
   }
 
@@ -85,7 +85,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = objc_alloc(MEMORY[0x1E696ABC0]);
     v12 = *MEMORY[0x1E698F240];
@@ -93,30 +93,30 @@ LABEL_8:
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"hideReason"];
     v16[0] = v13;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    *a4 = [v11 initWithDomain:v12 code:2 userInfo:v14];
+    *error = [v11 initWithDomain:v12 code:2 userInfo:v14];
 
-    a4 = 0;
+    error = 0;
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_10:
 
   v9 = *MEMORY[0x1E69E9840];
-  return v8;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSafariBrowsingAssistantVisualComponentPresentationEnded *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v25.receiver = self;
   v25.super_class = BMSafariBrowsingAssistantVisualComponentPresentationEnded;
   v5 = [(BMEventBase *)&v25 init];
@@ -125,12 +125,12 @@ LABEL_10:
     goto LABEL_37;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -141,18 +141,18 @@ LABEL_10:
       while (1)
       {
         v26 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v26 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v26 & 0x7F) << v7;
@@ -169,9 +169,9 @@ LABEL_10:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -184,18 +184,18 @@ LABEL_16:
         while (1)
         {
           v26 = 0;
-          v18 = [v4 position] + 1;
-          if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 1, v19 <= objc_msgSend(v4, "length")))
+          v18 = [fromCopy position] + 1;
+          if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 1, v19 <= objc_msgSend(fromCopy, "length")))
           {
-            v20 = [v4 data];
-            [v20 getBytes:&v26 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v17 |= (v26 & 0x7F) << v15;
@@ -211,7 +211,7 @@ LABEL_16:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v17 > 3)
+        if (([fromCopy hasError] & 1) != 0 || v17 > 3)
         {
 LABEL_32:
           LODWORD(v17) = 0;
@@ -225,13 +225,13 @@ LABEL_32:
         goto LABEL_36;
       }
 
-      v22 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v22 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_36:
     v23 = 0;
@@ -255,7 +255,7 @@ LABEL_37:
   return v5;
 }
 
-- (BMSafariBrowsingAssistantVisualComponentPresentationEnded)initWithHideReason:(int)a3
+- (BMSafariBrowsingAssistantVisualComponentPresentationEnded)initWithHideReason:(int)reason
 {
   v6.receiver = self;
   v6.super_class = BMSafariBrowsingAssistantVisualComponentPresentationEnded;
@@ -263,7 +263,7 @@ LABEL_37:
   if (v4)
   {
     v4->_dataVersion = [objc_opt_class() latestDataVersion];
-    v4->_hideReason = a3;
+    v4->_hideReason = reason;
   }
 
   return v4;
@@ -293,9 +293,9 @@ LABEL_37:
   return v3;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -303,8 +303,8 @@ LABEL_37:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSafariBrowsingAssistantVisualComponentPresentationEnded alloc] initByReadFrom:v7];
     v4 = v8;

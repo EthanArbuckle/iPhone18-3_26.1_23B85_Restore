@@ -1,29 +1,29 @@
 @interface POMMESSchemaPOMMESPegasusRequestArguments
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESPegasusRequestArguments)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESPegasusRequestArguments)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (POMMESSchemaPOMMESPegasusRequestArguments)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESPegasusRequestArguments)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addQueries:(id)a3;
-- (void)setHasConversationContextBytesLength:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addQueries:(id)queries;
+- (void)setHasConversationContextBytesLength:(BOOL)length;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESPegasusRequestArguments
 
-- (POMMESSchemaPOMMESPegasusRequestArguments)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESPegasusRequestArguments)initWithDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = POMMESSchemaPOMMESPegasusRequestArguments;
   v5 = [(POMMESSchemaPOMMESPegasusRequestArguments *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"queries"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"queries"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"queryMetadata"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"queryMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(POMMESSchemaPOMMESPegasusRequestArguments *)v5 setQueryMetadata:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"featureFlag"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"featureFlag"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
     }
 
     v28 = v6;
-    v18 = [v4 objectForKeyedSubscript:@"siriPegasusMetadata"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"siriPegasusMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,14 +91,14 @@
       [(POMMESSchemaPOMMESPegasusRequestArguments *)v5 setSiriPegasusMetadata:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"isDataOnlyRequest"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"isDataOnlyRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusRequestArguments setIsDataOnlyRequest:](v5, "setIsDataOnlyRequest:", [v20 BOOLValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"clientConversationMetadata"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"clientConversationMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -106,14 +106,14 @@
       [(POMMESSchemaPOMMESPegasusRequestArguments *)v5 setClientConversationMetadata:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"conversationContextBytesLength"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"conversationContextBytesLength"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESPegasusRequestArguments setConversationContextBytesLength:](v5, "setConversationContextBytesLength:", [v23 unsignedIntValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"personalDomainFallback"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"personalDomainFallback"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,30 +127,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESPegasusRequestArguments)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESPegasusRequestArguments)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESPegasusRequestArguments *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESPegasusRequestArguments *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -164,52 +164,52 @@
 - (id)dictionaryRepresentation
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_clientConversationMetadata)
   {
-    v4 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self clientConversationMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    clientConversationMetadata = [(POMMESSchemaPOMMESPegasusRequestArguments *)self clientConversationMetadata];
+    dictionaryRepresentation = [clientConversationMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"clientConversationMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"clientConversationMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"clientConversationMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"clientConversationMetadata"];
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[POMMESSchemaPOMMESPegasusRequestArguments conversationContextBytesLength](self, "conversationContextBytesLength")}];
-    [v3 setObject:v7 forKeyedSubscript:@"conversationContextBytesLength"];
+    [dictionary setObject:v7 forKeyedSubscript:@"conversationContextBytesLength"];
   }
 
   if (self->_featureFlag)
   {
-    v8 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self featureFlag];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"featureFlag"];
+    featureFlag = [(POMMESSchemaPOMMESPegasusRequestArguments *)self featureFlag];
+    v9 = [featureFlag copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"featureFlag"];
   }
 
   if (*&self->_has)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[POMMESSchemaPOMMESPegasusRequestArguments isDataOnlyRequest](self, "isDataOnlyRequest")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isDataOnlyRequest"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isDataOnlyRequest"];
   }
 
   if (self->_personalDomainFallback)
   {
-    v11 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self personalDomainFallback];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"personalDomainFallback"];
+    personalDomainFallback = [(POMMESSchemaPOMMESPegasusRequestArguments *)self personalDomainFallback];
+    v12 = [personalDomainFallback copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"personalDomainFallback"];
   }
 
   if ([(NSArray *)self->_queries count])
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -229,16 +229,16 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          if (v19)
+          dictionaryRepresentation2 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v13 addObject:v19];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v20 = [MEMORY[0x1E695DFB0] null];
-            [v13 addObject:v20];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -248,44 +248,44 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"queries"];
+    [dictionary setObject:array forKeyedSubscript:@"queries"];
   }
 
   if (self->_queryMetadata)
   {
-    v21 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queryMetadata];
-    v22 = [v21 dictionaryRepresentation];
-    if (v22)
+    queryMetadata = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queryMetadata];
+    dictionaryRepresentation3 = [queryMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v22 forKeyedSubscript:@"queryMetadata"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"queryMetadata"];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v23 forKeyedSubscript:@"queryMetadata"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"queryMetadata"];
     }
   }
 
   if (self->_siriPegasusMetadata)
   {
-    v24 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self siriPegasusMetadata];
-    v25 = [v24 dictionaryRepresentation];
-    if (v25)
+    siriPegasusMetadata = [(POMMESSchemaPOMMESPegasusRequestArguments *)self siriPegasusMetadata];
+    dictionaryRepresentation4 = [siriPegasusMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v25 forKeyedSubscript:@"siriPegasusMetadata"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"siriPegasusMetadata"];
     }
 
     else
     {
-      v26 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v26 forKeyedSubscript:@"siriPegasusMetadata"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"siriPegasusMetadata"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v28];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v28];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -318,28 +318,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ [(NSString *)self->_personalDomainFallback hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
-  v5 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queries];
-  v6 = [v4 queries];
-  if ((v5 != 0) == (v6 == 0))
+  queries = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queries];
+  queries2 = [equalCopy queries];
+  if ((queries != 0) == (queries2 == 0))
   {
     goto LABEL_37;
   }
 
-  v7 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queries];
-  if (v7)
+  queries3 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queries];
+  if (queries3)
   {
-    v8 = v7;
-    v9 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queries];
-    v10 = [v4 queries];
-    v11 = [v9 isEqual:v10];
+    v8 = queries3;
+    queries4 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queries];
+    queries5 = [equalCopy queries];
+    v11 = [queries4 isEqual:queries5];
 
     if (!v11)
     {
@@ -351,20 +351,20 @@
   {
   }
 
-  v5 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queryMetadata];
-  v6 = [v4 queryMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  queries = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queryMetadata];
+  queries2 = [equalCopy queryMetadata];
+  if ((queries != 0) == (queries2 == 0))
   {
     goto LABEL_37;
   }
 
-  v12 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queryMetadata];
-  if (v12)
+  queryMetadata = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queryMetadata];
+  if (queryMetadata)
   {
-    v13 = v12;
-    v14 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queryMetadata];
-    v15 = [v4 queryMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = queryMetadata;
+    queryMetadata2 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queryMetadata];
+    queryMetadata3 = [equalCopy queryMetadata];
+    v16 = [queryMetadata2 isEqual:queryMetadata3];
 
     if (!v16)
     {
@@ -376,20 +376,20 @@
   {
   }
 
-  v5 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self featureFlag];
-  v6 = [v4 featureFlag];
-  if ((v5 != 0) == (v6 == 0))
+  queries = [(POMMESSchemaPOMMESPegasusRequestArguments *)self featureFlag];
+  queries2 = [equalCopy featureFlag];
+  if ((queries != 0) == (queries2 == 0))
   {
     goto LABEL_37;
   }
 
-  v17 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self featureFlag];
-  if (v17)
+  featureFlag = [(POMMESSchemaPOMMESPegasusRequestArguments *)self featureFlag];
+  if (featureFlag)
   {
-    v18 = v17;
-    v19 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self featureFlag];
-    v20 = [v4 featureFlag];
-    v21 = [v19 isEqual:v20];
+    v18 = featureFlag;
+    featureFlag2 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self featureFlag];
+    featureFlag3 = [equalCopy featureFlag];
+    v21 = [featureFlag2 isEqual:featureFlag3];
 
     if (!v21)
     {
@@ -401,20 +401,20 @@
   {
   }
 
-  v5 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self siriPegasusMetadata];
-  v6 = [v4 siriPegasusMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  queries = [(POMMESSchemaPOMMESPegasusRequestArguments *)self siriPegasusMetadata];
+  queries2 = [equalCopy siriPegasusMetadata];
+  if ((queries != 0) == (queries2 == 0))
   {
     goto LABEL_37;
   }
 
-  v22 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self siriPegasusMetadata];
-  if (v22)
+  siriPegasusMetadata = [(POMMESSchemaPOMMESPegasusRequestArguments *)self siriPegasusMetadata];
+  if (siriPegasusMetadata)
   {
-    v23 = v22;
-    v24 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self siriPegasusMetadata];
-    v25 = [v4 siriPegasusMetadata];
-    v26 = [v24 isEqual:v25];
+    v23 = siriPegasusMetadata;
+    siriPegasusMetadata2 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self siriPegasusMetadata];
+    siriPegasusMetadata3 = [equalCopy siriPegasusMetadata];
+    v26 = [siriPegasusMetadata2 isEqual:siriPegasusMetadata3];
 
     if (!v26)
     {
@@ -426,7 +426,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[72] & 1))
+  if ((*&self->_has & 1) != (equalCopy[72] & 1))
   {
     goto LABEL_38;
   }
@@ -434,26 +434,26 @@
   if (*&self->_has)
   {
     isDataOnlyRequest = self->_isDataOnlyRequest;
-    if (isDataOnlyRequest != [v4 isDataOnlyRequest])
+    if (isDataOnlyRequest != [equalCopy isDataOnlyRequest])
     {
       goto LABEL_38;
     }
   }
 
-  v5 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self clientConversationMetadata];
-  v6 = [v4 clientConversationMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  queries = [(POMMESSchemaPOMMESPegasusRequestArguments *)self clientConversationMetadata];
+  queries2 = [equalCopy clientConversationMetadata];
+  if ((queries != 0) == (queries2 == 0))
   {
     goto LABEL_37;
   }
 
-  v28 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self clientConversationMetadata];
-  if (v28)
+  clientConversationMetadata = [(POMMESSchemaPOMMESPegasusRequestArguments *)self clientConversationMetadata];
+  if (clientConversationMetadata)
   {
-    v29 = v28;
-    v30 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self clientConversationMetadata];
-    v31 = [v4 clientConversationMetadata];
-    v32 = [v30 isEqual:v31];
+    v29 = clientConversationMetadata;
+    clientConversationMetadata2 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self clientConversationMetadata];
+    clientConversationMetadata3 = [equalCopy clientConversationMetadata];
+    v32 = [clientConversationMetadata2 isEqual:clientConversationMetadata3];
 
     if (!v32)
     {
@@ -466,7 +466,7 @@
   }
 
   v33 = (*&self->_has >> 1) & 1;
-  if (v33 != ((v4[72] >> 1) & 1))
+  if (v33 != ((equalCopy[72] >> 1) & 1))
   {
     goto LABEL_38;
   }
@@ -474,18 +474,18 @@
   if (v33)
   {
     conversationContextBytesLength = self->_conversationContextBytesLength;
-    if (conversationContextBytesLength != [v4 conversationContextBytesLength])
+    if (conversationContextBytesLength != [equalCopy conversationContextBytesLength])
     {
       goto LABEL_38;
     }
   }
 
-  v5 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self personalDomainFallback];
-  v6 = [v4 personalDomainFallback];
-  if ((v5 != 0) != (v6 == 0))
+  queries = [(POMMESSchemaPOMMESPegasusRequestArguments *)self personalDomainFallback];
+  queries2 = [equalCopy personalDomainFallback];
+  if ((queries != 0) != (queries2 == 0))
   {
-    v35 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self personalDomainFallback];
-    if (!v35)
+    personalDomainFallback = [(POMMESSchemaPOMMESPegasusRequestArguments *)self personalDomainFallback];
+    if (!personalDomainFallback)
     {
 
 LABEL_41:
@@ -493,10 +493,10 @@ LABEL_41:
       goto LABEL_39;
     }
 
-    v36 = v35;
-    v37 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self personalDomainFallback];
-    v38 = [v4 personalDomainFallback];
-    v39 = [v37 isEqual:v38];
+    v36 = personalDomainFallback;
+    personalDomainFallback2 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self personalDomainFallback];
+    personalDomainFallback3 = [equalCopy personalDomainFallback];
+    v39 = [personalDomainFallback2 isEqual:personalDomainFallback3];
 
     if (v39)
     {
@@ -516,10 +516,10 @@ LABEL_39:
   return v40;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -551,26 +551,26 @@ LABEL_39:
     while (v7);
   }
 
-  v10 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queryMetadata];
+  queryMetadata = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queryMetadata];
 
-  if (v10)
+  if (queryMetadata)
   {
-    v11 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queryMetadata];
+    queryMetadata2 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queryMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self featureFlag];
+  featureFlag = [(POMMESSchemaPOMMESPegasusRequestArguments *)self featureFlag];
 
-  if (v12)
+  if (featureFlag)
   {
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self siriPegasusMetadata];
+  siriPegasusMetadata = [(POMMESSchemaPOMMESPegasusRequestArguments *)self siriPegasusMetadata];
 
-  if (v13)
+  if (siriPegasusMetadata)
   {
-    v14 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self siriPegasusMetadata];
+    siriPegasusMetadata2 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self siriPegasusMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -579,11 +579,11 @@ LABEL_39:
     PBDataWriterWriteBOOLField();
   }
 
-  v15 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self clientConversationMetadata];
+  clientConversationMetadata = [(POMMESSchemaPOMMESPegasusRequestArguments *)self clientConversationMetadata];
 
-  if (v15)
+  if (clientConversationMetadata)
   {
-    v16 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self clientConversationMetadata];
+    clientConversationMetadata2 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self clientConversationMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -592,17 +592,17 @@ LABEL_39:
     PBDataWriterWriteUint32Field();
   }
 
-  v17 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self personalDomainFallback];
+  personalDomainFallback = [(POMMESSchemaPOMMESPegasusRequestArguments *)self personalDomainFallback];
 
-  if (v17)
+  if (personalDomainFallback)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setHasConversationContextBytesLength:(BOOL)a3
+- (void)setHasConversationContextBytesLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v3 = 2;
   }
@@ -615,57 +615,57 @@ LABEL_39:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addQueries:(id)a3
+- (void)addQueries:(id)queries
 {
-  v4 = a3;
+  queriesCopy = queries;
   queries = self->_queries;
-  v8 = v4;
+  v8 = queriesCopy;
   if (!queries)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_queries;
-    self->_queries = v6;
+    self->_queries = array;
 
-    v4 = v8;
+    queriesCopy = v8;
     queries = self->_queries;
   }
 
-  [(NSArray *)queries addObject:v4];
+  [(NSArray *)queries addObject:queriesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v18.receiver = self;
   v18.super_class = POMMESSchemaPOMMESPegasusRequestArguments;
-  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:v4];
-  v6 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queries];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:policyCopy];
+  queries = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queries];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:queries underConditions:policyCopy];
   [(POMMESSchemaPOMMESPegasusRequestArguments *)self setQueries:v7];
 
-  v8 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queryMetadata];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
-  v10 = [v9 suppressMessage];
+  queryMetadata = [(POMMESSchemaPOMMESPegasusRequestArguments *)self queryMetadata];
+  v9 = [queryMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v9 suppressMessage];
 
-  if (v10)
+  if (suppressMessage)
   {
     [(POMMESSchemaPOMMESPegasusRequestArguments *)self deleteQueryMetadata];
   }
 
-  v11 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self siriPegasusMetadata];
-  v12 = [v11 applySensitiveConditionsPolicy:v4];
-  v13 = [v12 suppressMessage];
+  siriPegasusMetadata = [(POMMESSchemaPOMMESPegasusRequestArguments *)self siriPegasusMetadata];
+  v12 = [siriPegasusMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v12 suppressMessage];
 
-  if (v13)
+  if (suppressMessage2)
   {
     [(POMMESSchemaPOMMESPegasusRequestArguments *)self deleteSiriPegasusMetadata];
   }
 
-  v14 = [(POMMESSchemaPOMMESPegasusRequestArguments *)self clientConversationMetadata];
-  v15 = [v14 applySensitiveConditionsPolicy:v4];
-  v16 = [v15 suppressMessage];
+  clientConversationMetadata = [(POMMESSchemaPOMMESPegasusRequestArguments *)self clientConversationMetadata];
+  v15 = [clientConversationMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v15 suppressMessage];
 
-  if (v16)
+  if (suppressMessage3)
   {
     [(POMMESSchemaPOMMESPegasusRequestArguments *)self deleteClientConversationMetadata];
   }

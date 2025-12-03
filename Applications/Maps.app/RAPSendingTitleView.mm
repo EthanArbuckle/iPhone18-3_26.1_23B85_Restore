@@ -1,20 +1,20 @@
 @interface RAPSendingTitleView
 + (id)localizedSendingTitle;
-- (RAPSendingTitleView)initWithFrame:(CGRect)a3;
+- (RAPSendingTitleView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation RAPSendingTitleView
 
-- (RAPSendingTitleView)initWithFrame:(CGRect)a3
+- (RAPSendingTitleView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = RAPSendingTitleView;
-  v3 = [(RAPSendingTitleView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RAPSendingTitleView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UILabel);
-    v5 = [objc_opt_class() localizedSendingTitle];
-    [v4 setText:v5];
+    localizedSendingTitle = [objc_opt_class() localizedSendingTitle];
+    [v4 setText:localizedSendingTitle];
 
     v6 = [UIFont boldSystemFontOfSize:17.0];
     [v4 setFont:v6];

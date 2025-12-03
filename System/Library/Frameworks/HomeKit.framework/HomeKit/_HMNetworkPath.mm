@@ -1,5 +1,5 @@
 @interface _HMNetworkPath
-- (_HMNetworkPath)initWithNwPath:(id)a3;
+- (_HMNetworkPath)initWithNwPath:(id)path;
 - (int)status;
 @end
 
@@ -7,22 +7,22 @@
 
 - (int)status
 {
-  v2 = [(_HMNetworkPath *)self nwPath];
-  status = nw_path_get_status(v2);
+  nwPath = [(_HMNetworkPath *)self nwPath];
+  status = nw_path_get_status(nwPath);
 
   return status;
 }
 
-- (_HMNetworkPath)initWithNwPath:(id)a3
+- (_HMNetworkPath)initWithNwPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = _HMNetworkPath;
   v6 = [(_HMNetworkPath *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_nwPath, a3);
+    objc_storeStrong(&v6->_nwPath, path);
   }
 
   return v7;

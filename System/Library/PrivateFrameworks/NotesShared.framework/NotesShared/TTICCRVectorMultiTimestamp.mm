@@ -1,11 +1,11 @@
 @interface TTICCRVectorMultiTimestamp
-- (TTICCRVectorMultiTimestamp)initWithCapacity:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TTICCRVectorMultiTimestamp)initWithCapacity:(unint64_t)capacity;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TTICCRVectorMultiTimestamp
 
-- (TTICCRVectorMultiTimestamp)initWithCapacity:(unint64_t)a3
+- (TTICCRVectorMultiTimestamp)initWithCapacity:(unint64_t)capacity
 {
   for (i = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
   {
@@ -20,11 +20,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TTICCRVectorMultiTimestamp allocWithZone:a3];
-  v5 = [(ICTTVectorMultiTimestamp *)self timestamps];
-  v6 = -[TTICCRVectorMultiTimestamp initWithCapacity:](v4, "initWithCapacity:", [v5 count]);
+  v4 = [TTICCRVectorMultiTimestamp allocWithZone:zone];
+  timestamps = [(ICTTVectorMultiTimestamp *)self timestamps];
+  v6 = -[TTICCRVectorMultiTimestamp initWithCapacity:](v4, "initWithCapacity:", [timestamps count]);
 
   [(ICTTVectorMultiTimestamp *)v6 mergeWithTimestamp:self];
   return v6;

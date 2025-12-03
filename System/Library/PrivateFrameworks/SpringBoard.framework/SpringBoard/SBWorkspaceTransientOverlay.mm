@@ -1,25 +1,25 @@
 @interface SBWorkspaceTransientOverlay
-- (SBWorkspaceTransientOverlay)initWithViewController:(id)a3;
+- (SBWorkspaceTransientOverlay)initWithViewController:(id)controller;
 - (id)_generator;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBWorkspaceTransientOverlay
 
-- (SBWorkspaceTransientOverlay)initWithViewController:(id)a3
+- (SBWorkspaceTransientOverlay)initWithViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [v6 stringWithFormat:@"%@-%p", v8, v5];
+  controllerCopy = [v6 stringWithFormat:@"%@-%p", v8, controllerCopy];
   v12.receiver = self;
   v12.super_class = SBWorkspaceTransientOverlay;
-  v10 = [(SBWorkspaceEntity *)&v12 initWithIdentifier:v9 displayChangeSettings:0];
+  v10 = [(SBWorkspaceEntity *)&v12 initWithIdentifier:controllerCopy displayChangeSettings:0];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_viewController, a3);
+    objc_storeStrong(&v10->_viewController, controller);
   }
 
   return v10;
@@ -60,11 +60,11 @@ id __41__SBWorkspaceTransientOverlay__generator__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SBWorkspaceTransientOverlay;
-  v4 = [(SBWorkspaceEntity *)&v7 copyWithZone:a3];
+  v4 = [(SBWorkspaceEntity *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

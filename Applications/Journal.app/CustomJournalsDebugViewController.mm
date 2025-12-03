@@ -1,30 +1,30 @@
 @interface CustomJournalsDebugViewController
-- (_TtC7Journal33CustomJournalsDebugViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC7Journal33CustomJournalsDebugViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)controller:(id)a3 didChangeContentWithSnapshot:(id)a4;
+- (_TtC7Journal33CustomJournalsDebugViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC7Journal33CustomJournalsDebugViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)controller:(id)controller didChangeContentWithSnapshot:(id)snapshot;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CustomJournalsDebugViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10051DAF4();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10051DC24(a3);
+  selfCopy = self;
+  sub_10051DC24(appear);
 }
 
-- (_TtC7Journal33CustomJournalsDebugViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC7Journal33CustomJournalsDebugViewController)initWithCollectionViewLayout:(id)layout
 {
   v4 = OBJC_IVAR____TtC7Journal33CustomJournalsDebugViewController_context;
   v5 = qword_100ACFCA8;
-  v6 = a3;
+  layoutCopy = layout;
   if (v5 != -1)
   {
     swift_once();
@@ -37,14 +37,14 @@
   v11.receiver = self;
   v11.super_class = type metadata accessor for CustomJournalsDebugViewController();
   v8 = v7;
-  v9 = [(CustomJournalsDebugViewController *)&v11 initWithCollectionViewLayout:v6];
+  v9 = [(CustomJournalsDebugViewController *)&v11 initWithCollectionViewLayout:layoutCopy];
 
   return v9;
 }
 
-- (_TtC7Journal33CustomJournalsDebugViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal33CustomJournalsDebugViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -56,11 +56,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10051E3C8(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10051E3C8(v5, v7, bundle);
 }
 
-- (void)controller:(id)a3 didChangeContentWithSnapshot:(id)a4
+- (void)controller:(id)controller didChangeContentWithSnapshot:(id)snapshot
 {
   v6 = sub_1000F24EC(&unk_100AE7E60);
   v7 = *(v6 - 8);
@@ -73,8 +73,8 @@
   v10 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal33CustomJournalsDebugViewController_dataSource);
   if (v10)
   {
-    v11 = a4;
-    v12 = self;
+    snapshotCopy = snapshot;
+    selfCopy = self;
     v13 = v10;
     dispatch thunk of UICollectionViewDiffableDataSource.apply(_:animatingDifferences:completion:)();
 

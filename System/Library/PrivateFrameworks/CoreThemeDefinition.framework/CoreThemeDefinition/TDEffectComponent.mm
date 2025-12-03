@@ -11,22 +11,22 @@
 - (id)CUIEffectParameterSoftenSize;
 - (id)CUIEffectParameterSpread;
 - (id)CUIEffectParameterTintable;
-- (id)parameterOfType:(unsigned int)a3;
-- (void)addParametersToPreset:(id)a3;
-- (void)setEffectParametersFromPreset:(id)a3 atIndex:(unint64_t)a4 withDocument:(id)a5;
-- (void)updatePresetParameters:(id)a3 atIndex:(unint64_t)a4;
+- (id)parameterOfType:(unsigned int)type;
+- (void)addParametersToPreset:(id)preset;
+- (void)setEffectParametersFromPreset:(id)preset atIndex:(unint64_t)index withDocument:(id)document;
+- (void)updatePresetParameters:(id)parameters atIndex:(unint64_t)index;
 @end
 
 @implementation TDEffectComponent
 
-- (void)setEffectParametersFromPreset:(id)a3 atIndex:(unint64_t)a4 withDocument:(id)a5
+- (void)setEffectParametersFromPreset:(id)preset atIndex:(unint64_t)index withDocument:(id)document
 {
-  v9 = [a5 effectTypeWithIdentifier:{objc_msgSend(a3, "effectTypeAtIndex:", a4)}];
+  v9 = [document effectTypeWithIdentifier:{objc_msgSend(preset, "effectTypeAtIndex:", index)}];
   v10 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:5];
   [(TDEffectComponent *)self setEffectType:v9];
   v20 = 0;
   v21 = 0;
-  [a3 getEffectTuples:&v21 count:&v20 atEffectIndex:a4];
+  [preset getEffectTuples:&v21 count:&v20 atEffectIndex:index];
   if (v20)
   {
     v11 = 0;
@@ -34,8 +34,8 @@
     {
       v13 = *(v21 + v11 + 4);
       v14 = *(v21 + v11 + 8);
-      v15 = [a5 effectParameterTypeWithIdentifier:v13];
-      v16 = [a5 newObjectForEntity:@"EffectParameterValue"];
+      v15 = [document effectParameterTypeWithIdentifier:v13];
+      v16 = [document newObjectForEntity:@"EffectParameterValue"];
       [v16 setParameterType:v15];
       [v16 setComponent:self];
       if (v13 <= 0xB)
@@ -83,7 +83,7 @@ LABEL_13:
   [(TDEffectComponent *)self setParameters:v10];
 }
 
-- (void)updatePresetParameters:(id)a3 atIndex:(unint64_t)a4
+- (void)updatePresetParameters:(id)parameters atIndex:(unint64_t)index
 {
   v26 = *MEMORY[0x277D85DE8];
   v7 = [-[TDEffectComponent effectType](self "effectType")];
@@ -91,8 +91,8 @@ LABEL_13:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [(TDEffectComponent *)self parameters];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  parameters = [(TDEffectComponent *)self parameters];
+  v9 = [parameters countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -104,7 +104,7 @@ LABEL_13:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(parameters);
         }
 
         v13 = *(*(&v21 + 1) + 8 * v12);
@@ -114,9 +114,9 @@ LABEL_13:
         {
           if (((1 << v14) & 0xFB0) != 0)
           {
-            v16 = [v13 intValue];
+            intValue = [v13 intValue];
 LABEL_15:
-            v18 = COERCE_DOUBLE([v16 unsignedIntegerValue]);
+            v18 = COERCE_DOUBLE([intValue unsignedIntegerValue]);
             goto LABEL_16;
           }
 
@@ -136,18 +136,18 @@ LABEL_15:
 
         if (v14 < 2)
         {
-          v16 = [v13 colorValue];
+          intValue = [v13 colorValue];
           goto LABEL_15;
         }
 
         v18 = 0.0;
 LABEL_16:
-        [a3 addValue:*&v18 forParameter:v15 withEffectType:v7 atEffectIndex:a4];
+        [parameters addValue:*&v18 forParameter:v15 withEffectType:v7 atEffectIndex:index];
         ++v12;
       }
 
       while (v10 != v12);
-      v19 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v19 = [parameters countByEnumeratingWithState:&v21 objects:v25 count:16];
       v10 = v19;
     }
 
@@ -157,7 +157,7 @@ LABEL_16:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addParametersToPreset:(id)a3
+- (void)addParametersToPreset:(id)preset
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = [-[TDEffectComponent effectType](self "effectType")];
@@ -165,8 +165,8 @@ LABEL_16:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(TDEffectComponent *)self parameters];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  parameters = [(TDEffectComponent *)self parameters];
+  v7 = [parameters countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -178,7 +178,7 @@ LABEL_16:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(parameters);
         }
 
         v11 = *(*(&v19 + 1) + 8 * v10);
@@ -188,9 +188,9 @@ LABEL_16:
         {
           if (((1 << v12) & 0xFB0) != 0)
           {
-            v14 = [v11 intValue];
+            intValue = [v11 intValue];
 LABEL_15:
-            v16 = COERCE_DOUBLE([v14 unsignedIntegerValue]);
+            v16 = COERCE_DOUBLE([intValue unsignedIntegerValue]);
             goto LABEL_16;
           }
 
@@ -210,18 +210,18 @@ LABEL_15:
 
         if (v12 < 2)
         {
-          v14 = [v11 colorValue];
+          intValue = [v11 colorValue];
           goto LABEL_15;
         }
 
         v16 = 0.0;
 LABEL_16:
-        [a3 appendValue:*&v16 forParameter:v13 withEffectType:v5];
+        [preset appendValue:*&v16 forParameter:v13 withEffectType:v5];
         ++v10;
       }
 
       while (v8 != v10);
-      v17 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v17 = [parameters countByEnumeratingWithState:&v19 objects:v23 count:16];
       v8 = v17;
     }
 
@@ -231,15 +231,15 @@ LABEL_16:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)parameterOfType:(unsigned int)a3
+- (id)parameterOfType:(unsigned int)type
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [(TDEffectComponent *)self parameters];
+  parameters = [(TDEffectComponent *)self parameters];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [parameters countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -250,18 +250,18 @@ LABEL_3:
     {
       if (*v13 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(parameters);
       }
 
       v9 = *(*(&v12 + 1) + 8 * v8);
-      if ([objc_msgSend(v9 "parameterType")] == a3)
+      if ([objc_msgSend(v9 "parameterType")] == type)
       {
         break;
       }
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [parameters countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           goto LABEL_3;

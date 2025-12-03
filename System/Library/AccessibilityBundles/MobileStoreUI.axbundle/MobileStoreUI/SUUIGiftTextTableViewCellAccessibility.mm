@@ -1,80 +1,80 @@
 @interface SUUIGiftTextTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3;
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column;
 - (_NSRange)_accessibilitySelectedTextRange;
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3;
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3;
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range;
 @end
 
 @implementation SUUIGiftTextTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIGiftTextTableViewCell" hasInstanceVariable:@"_textView" withType:"UITextView"];
-  [v3 validateClass:@"SUUIGiftTextTableViewCell" hasInstanceVariable:@"_placeholderLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIGiftTextTableViewCell" hasInstanceVariable:@"_textView" withType:"UITextView"];
+  [validationsCopy validateClass:@"SUUIGiftTextTableViewCell" hasInstanceVariable:@"_placeholderLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityValue
 {
   v3 = [(SUUIGiftTextTableViewCellAccessibility *)self safeValueForKey:@"_placeholderLabel"];
-  v4 = [v3 isHidden];
+  isHidden = [v3 isHidden];
 
-  if (v4)
+  if (isHidden)
   {
-    v5 = [(SUUIGiftTextTableViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-    [v5 accessibilityValue];
+    _accessibilityTextViewTextOperationResponder = [(SUUIGiftTextTableViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+    [_accessibilityTextViewTextOperationResponder accessibilityValue];
   }
 
   else
   {
-    v5 = [(SUUIGiftTextTableViewCellAccessibility *)self safeValueForKey:@"_placeholderLabel"];
-    [v5 accessibilityLabel];
+    _accessibilityTextViewTextOperationResponder = [(SUUIGiftTextTableViewCellAccessibility *)self safeValueForKey:@"_placeholderLabel"];
+    [_accessibilityTextViewTextOperationResponder accessibilityLabel];
   }
   v6 = ;
 
   return v6;
 }
 
-- (void)_accessibilitySetSelectedTextRange:(_NSRange)a3
+- (void)_accessibilitySetSelectedTextRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(SUUIGiftTextTableViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  [v5 _accessibilitySetSelectedTextRange:{location, length}];
+  length = range.length;
+  location = range.location;
+  _accessibilityTextViewTextOperationResponder = [(SUUIGiftTextTableViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  [_accessibilityTextViewTextOperationResponder _accessibilitySetSelectedTextRange:{location, length}];
 }
 
-- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)a3
+- (id)_accessibilityLineNumberAndColumnForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(SUUIGiftTextTableViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v6 = [v5 _accessibilityLineNumberAndColumnForPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  _accessibilityTextViewTextOperationResponder = [(SUUIGiftTextTableViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  v6 = [_accessibilityTextViewTextOperationResponder _accessibilityLineNumberAndColumnForPoint:{x, y}];
 
   return v6;
 }
 
 - (_NSRange)_accessibilitySelectedTextRange
 {
-  v2 = [(SUUIGiftTextTableViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v3 = [v2 _accessibilitySelectedTextRange];
+  _accessibilityTextViewTextOperationResponder = [(SUUIGiftTextTableViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  _accessibilitySelectedTextRange = [_accessibilityTextViewTextOperationResponder _accessibilitySelectedTextRange];
   v5 = v4;
 
-  v6 = v3;
+  v6 = _accessibilitySelectedTextRange;
   v7 = v5;
   result.length = v7;
   result.location = v6;
   return result;
 }
 
-- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)a3
+- (_NSRange)_accessibilityRangeForLineNumberAndColumn:(id)column
 {
-  v4 = a3;
-  v5 = [(SUUIGiftTextTableViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v6 = [v5 _accessibilityRangeForLineNumberAndColumn:v4];
+  columnCopy = column;
+  _accessibilityTextViewTextOperationResponder = [(SUUIGiftTextTableViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  v6 = [_accessibilityTextViewTextOperationResponder _accessibilityRangeForLineNumberAndColumn:columnCopy];
   v8 = v7;
 
   v9 = v6;
@@ -87,23 +87,23 @@
 - (unint64_t)accessibilityTraits
 {
   v3 = [(SUUIGiftTextTableViewCellAccessibility *)self safeValueForKey:@"_placeholderLabel"];
-  v4 = [v3 isHidden];
+  isHidden = [v3 isHidden];
 
-  if (!v4)
+  if (!isHidden)
   {
     return 0;
   }
 
-  v5 = [(SUUIGiftTextTableViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  v6 = [v5 accessibilityTraits];
+  _accessibilityTextViewTextOperationResponder = [(SUUIGiftTextTableViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  accessibilityTraits = [_accessibilityTextViewTextOperationResponder accessibilityTraits];
 
-  return v6;
+  return accessibilityTraits;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = [(SUUIGiftTextTableViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  [v2 accessibilityActivationPoint];
+  _accessibilityTextViewTextOperationResponder = [(SUUIGiftTextTableViewCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  [_accessibilityTextViewTextOperationResponder accessibilityActivationPoint];
   v4 = v3;
   v6 = v5;
 

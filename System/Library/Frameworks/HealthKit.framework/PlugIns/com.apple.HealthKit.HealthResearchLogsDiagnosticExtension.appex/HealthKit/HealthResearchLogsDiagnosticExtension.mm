@@ -1,7 +1,7 @@
 @interface HealthResearchLogsDiagnosticExtension
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3 withProgressHandler:(id)a4;
-- (id)createErrorFile:(id)a3;
+- (id)attachmentsForParameters:(id)parameters withProgressHandler:(id)handler;
+- (id)createErrorFile:(id)file;
 @end
 
 @implementation HealthResearchLogsDiagnosticExtension
@@ -20,26 +20,26 @@
   return v4;
 }
 
-- (id)attachmentsForParameters:(id)a3 withProgressHandler:(id)a4
+- (id)attachmentsForParameters:(id)parameters withProgressHandler:(id)handler
 {
-  v6 = a3;
-  v56 = a4;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v7 = sub_100001368();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v66 = v6;
+    v66 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "attachments for parameters: %{public}@", buf, 0xCu);
   }
 
-  v55 = v6;
+  v55 = parametersCopy;
 
   v8 = +[NSDate now];
   v9 = [v8 dateByAddingTimeInterval:-86400.0];
 
   v10 = objc_opt_new();
-  v11 = [v10 UUIDString];
-  v12 = [NSString stringWithFormat:@"%@-research", v11];
+  uUIDString = [v10 UUIDString];
+  v12 = [NSString stringWithFormat:@"%@-research", uUIDString];
 
   v13 = NSTemporaryDirectory();
   v14 = [v13 stringByAppendingPathComponent:v12];
@@ -70,23 +70,23 @@
   v23 = sub_100001368();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [v16 path];
+    path = [v16 path];
     *buf = 138412290;
-    v66 = v24;
+    v66 = path;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "researchLogsURL: %@", buf, 0xCu);
   }
 
   v25 = sub_100001368();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [v20 path];
+    path2 = [v20 path];
     *buf = 138412290;
-    v66 = v26;
+    v66 = path2;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "logArchiveURL: %@", buf, 0xCu);
   }
 
-  v27 = [v20 path];
-  [v27 UTF8String];
+  path3 = [v20 path];
+  [path3 UTF8String];
   [v9 timeIntervalSince1970];
   Archive = OSLogCreateArchive();
 
@@ -100,17 +100,17 @@
       sub_1000073FC(Archive, v30);
     }
 
-    v31 = [NSString stringWithFormat:@"Error: Couldn't create OSLogArchive with status: %d", Archive];
-    v32 = [v31 dataUsingEncoding:4];
+    archive = [NSString stringWithFormat:@"Error: Couldn't create OSLogArchive with status: %d", Archive];
+    v32 = [archive dataUsingEncoding:4];
     [v32 writeToURL:v16 atomically:1];
-    v33 = [DEAttachmentItem attachmentWithPathURL:v16];
-    v64 = v33;
+    name = [DEAttachmentItem attachmentWithPathURL:v16];
+    v64 = name;
     v34 = [NSArray arrayWithObjects:&v64 count:1];
   }
 
   else
   {
-    v35 = self;
+    selfCopy = self;
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -119,25 +119,25 @@
 
     v32 = [&off_10000CBA0 mutableCopy];
     v36 = +[UIDevice currentDevice];
-    v33 = [v36 name];
+    name = [v36 name];
 
     [v32 addObjectsFromArray:&off_10000CBB8];
     v60 = 0;
-    v37 = [[HRLDLogArchiveProcessor alloc] initWithArchiveStartDate:v9 deviceName:v33 logArchiveURL:v20 outputFileURL:v16 redactedToken:@"<REDACTED>" windowSize:&v60 error:7200.0];
+    v37 = [[HRLDLogArchiveProcessor alloc] initWithArchiveStartDate:v9 deviceName:name logArchiveURL:v20 outputFileURL:v16 redactedToken:@"<REDACTED>" windowSize:&v60 error:7200.0];
     v38 = v60;
     v53 = v37;
     if (v38)
     {
-      v31 = v38;
+      archive = v38;
       v39 = sub_100001368();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
-        sub_100007474(v31);
+        sub_100007474(archive);
       }
 
-      v40 = [v31 localizedDescription];
-      v41 = [NSString stringWithFormat:@"Encountered error creating Log Processor: %@", v40, v53, v54];
-      v42 = [(HealthResearchLogsDiagnosticExtension *)v35 createErrorFile:v41];
+      localizedDescription = [archive localizedDescription];
+      v41 = [NSString stringWithFormat:@"Encountered error creating Log Processor: %@", localizedDescription, v53, v54];
+      v42 = [(HealthResearchLogsDiagnosticExtension *)selfCopy createErrorFile:v41];
 
       v43 = [DEAttachmentItem attachmentWithPathURL:v42];
       v63[0] = v43;
@@ -145,7 +145,7 @@
       v63[1] = v44;
       v34 = [NSArray arrayWithObjects:v63 count:2];
 
-      v6 = v55;
+      parametersCopy = v55;
     }
 
     else
@@ -155,21 +155,21 @@
       v57[1] = 3221225472;
       v57[2] = sub_100001C1C;
       v57[3] = &unk_10000C700;
-      v58 = v56;
+      v58 = handlerCopy;
       [(HRLDLogArchiveProcessor *)v37 writeLogsToDiskFrom:v32 error:&v59 progressHandler:v57];
-      v31 = v59;
+      archive = v59;
       v45 = sub_100001368();
       v46 = v45;
-      if (v31)
+      if (archive)
       {
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
-          sub_1000074FC(v31);
+          sub_1000074FC(archive);
         }
 
-        v47 = [v31 localizedDescription];
-        v48 = [NSString stringWithFormat:@"Encountered error writing logs to disk: %@", v47, v53, v54];
-        v49 = [(HealthResearchLogsDiagnosticExtension *)v35 createErrorFile:v48];
+        localizedDescription2 = [archive localizedDescription];
+        v48 = [NSString stringWithFormat:@"Encountered error writing logs to disk: %@", localizedDescription2, v53, v54];
+        v49 = [(HealthResearchLogsDiagnosticExtension *)selfCopy createErrorFile:v48];
 
         v50 = [DEAttachmentItem attachmentWithPathURL:v49];
         v62[0] = v50;
@@ -191,7 +191,7 @@
         v34 = [NSArray arrayWithObjects:&v61 count:1];
       }
 
-      v6 = v55;
+      parametersCopy = v55;
 
       v42 = v58;
     }
@@ -200,14 +200,14 @@
   return v34;
 }
 
-- (id)createErrorFile:(id)a3
+- (id)createErrorFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = NSTemporaryDirectory();
   v5 = [v4 stringByAppendingPathComponent:@"session-error"];
   v6 = [NSURL fileURLWithPath:v5];
 
-  v7 = [v3 dataUsingEncoding:4];
+  v7 = [fileCopy dataUsingEncoding:4];
 
   [v7 writeToURL:v6 atomically:1];
 

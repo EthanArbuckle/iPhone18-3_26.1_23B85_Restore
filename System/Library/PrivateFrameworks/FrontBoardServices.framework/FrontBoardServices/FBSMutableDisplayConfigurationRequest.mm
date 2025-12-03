@@ -1,10 +1,10 @@
 @interface FBSMutableDisplayConfigurationRequest
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FBSMutableDisplayConfigurationRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[FBSDisplayConfigurationRequest allocWithZone:?]];
   *(result + 7) = self->super._overscanCompensation;

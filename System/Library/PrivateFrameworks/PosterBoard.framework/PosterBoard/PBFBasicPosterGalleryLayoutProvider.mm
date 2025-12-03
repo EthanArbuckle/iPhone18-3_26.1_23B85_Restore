@@ -1,38 +1,38 @@
 @interface PBFBasicPosterGalleryLayoutProvider
-- (void)fetchGalleryLayoutWithCompletion:(id)a3;
-- (void)handlePosterDescriptorsDidChange:(id)a3 withCompletion:(id)a4;
+- (void)fetchGalleryLayoutWithCompletion:(id)completion;
+- (void)handlePosterDescriptorsDidChange:(id)change withCompletion:(id)completion;
 @end
 
 @implementation PBFBasicPosterGalleryLayoutProvider
 
-- (void)fetchGalleryLayoutWithCompletion:(id)a3
+- (void)fetchGalleryLayoutWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_galleryLayout && ([MEMORY[0x277CBEAF8] currentLocale], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqual:", v5->_locale), v6, v7))
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_galleryLayout && ([MEMORY[0x277CBEAF8] currentLocale], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqual:", selfCopy->_locale), v6, v7))
   {
-    v8 = v5->_galleryLayout;
+    v8 = selfCopy->_galleryLayout;
   }
 
   else
   {
-    v9 = [(NSDictionary *)v5->_posterDescriptorsByExtensionBundleIdentifier allKeys];
-    v10 = [v9 sortedArrayUsingSelector:sel_localizedCompare_];
+    allKeys = [(NSDictionary *)selfCopy->_posterDescriptorsByExtensionBundleIdentifier allKeys];
+    v10 = [allKeys sortedArrayUsingSelector:sel_localizedCompare_];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __72__PBFBasicPosterGalleryLayoutProvider_fetchGalleryLayoutWithCompletion___block_invoke;
     v12[3] = &unk_2782C86E8;
-    v12[4] = v5;
+    v12[4] = selfCopy;
     v11 = [v10 bs_mapNoNulls:v12];
-    v8 = [objc_alloc(MEMORY[0x277D3E990]) initWithSections:v11 locale:v5->_locale];
-    objc_storeStrong(&v5->_galleryLayout, v8);
+    v8 = [objc_alloc(MEMORY[0x277D3E990]) initWithSections:v11 locale:selfCopy->_locale];
+    objc_storeStrong(&selfCopy->_galleryLayout, v8);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  v4[2](v4, v8, 0);
+  completionCopy[2](completionCopy, v8, 0);
 }
 
 id __72__PBFBasicPosterGalleryLayoutProvider_fetchGalleryLayoutWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -103,30 +103,30 @@ id __72__PBFBasicPosterGalleryLayoutProvider_fetchGalleryLayoutWithCompletion___
   return v13;
 }
 
-- (void)handlePosterDescriptorsDidChange:(id)a3 withCompletion:(id)a4
+- (void)handlePosterDescriptorsDidChange:(id)change withCompletion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
-  (*(v6 + 2))(v6, 0, 0);
-  v7 = self;
-  objc_sync_enter(v7);
-  if (([v13 isEqualToDictionary:v7->_posterDescriptorsByExtensionBundleIdentifier] & 1) == 0)
+  changeCopy = change;
+  completionCopy = completion;
+  (*(completionCopy + 2))(completionCopy, 0, 0);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (([changeCopy isEqualToDictionary:selfCopy->_posterDescriptorsByExtensionBundleIdentifier] & 1) == 0)
   {
-    v8 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:v13 copyItems:1];
-    posterDescriptorsByExtensionBundleIdentifier = v7->_posterDescriptorsByExtensionBundleIdentifier;
-    v7->_posterDescriptorsByExtensionBundleIdentifier = v8;
+    v8 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:changeCopy copyItems:1];
+    posterDescriptorsByExtensionBundleIdentifier = selfCopy->_posterDescriptorsByExtensionBundleIdentifier;
+    selfCopy->_posterDescriptorsByExtensionBundleIdentifier = v8;
 
-    v10 = [MEMORY[0x277CBEAF8] currentLocale];
-    locale = v7->_locale;
-    v7->_locale = v10;
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    locale = selfCopy->_locale;
+    selfCopy->_locale = currentLocale;
 
-    galleryLayout = v7->_galleryLayout;
-    v7->_galleryLayout = 0;
+    galleryLayout = selfCopy->_galleryLayout;
+    selfCopy->_galleryLayout = 0;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
-  (*(v6 + 2))(v6, 1, 0);
+  (*(completionCopy + 2))(completionCopy, 1, 0);
 }
 
 @end

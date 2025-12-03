@@ -1,29 +1,29 @@
 @interface EXPSchemaEXPTrialRollout
-- (BOOL)isEqual:(id)a3;
-- (EXPSchemaEXPTrialRollout)initWithDictionary:(id)a3;
-- (EXPSchemaEXPTrialRollout)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EXPSchemaEXPTrialRollout)initWithDictionary:(id)dictionary;
+- (EXPSchemaEXPTrialRollout)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addNamespaces:(id)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addNamespaces:(id)namespaces;
+- (void)setHasStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation EXPSchemaEXPTrialRollout
 
-- (EXPSchemaEXPTrialRollout)initWithDictionary:(id)a3
+- (EXPSchemaEXPTrialRollout)initWithDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = EXPSchemaEXPTrialRollout;
   v5 = [(EXPSchemaEXPTrialRollout *)&v28 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"rolloutId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"rolloutId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(EXPSchemaEXPTrialRollout *)v5 setRolloutId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"rampId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"rampId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,21 +39,21 @@
       [(EXPSchemaEXPTrialRollout *)v5 setRampId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"deploymentId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"deploymentId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[EXPSchemaEXPTrialRollout setDeploymentId:](v5, "setDeploymentId:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"status"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[EXPSchemaEXPTrialRollout setStatus:](v5, "setStatus:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"namespaces"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"namespaces"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,30 +103,30 @@
   return v5;
 }
 
-- (EXPSchemaEXPTrialRollout)initWithJSON:(id)a3
+- (EXPSchemaEXPTrialRollout)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(EXPSchemaEXPTrialRollout *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(EXPSchemaEXPTrialRollout *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(EXPSchemaEXPTrialRollout *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -140,16 +140,16 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[EXPSchemaEXPTrialRollout deploymentId](self, "deploymentId")}];
-    [v3 setObject:v4 forKeyedSubscript:@"deploymentId"];
+    [dictionary setObject:v4 forKeyedSubscript:@"deploymentId"];
   }
 
   if ([(NSArray *)self->_namespaces count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -169,16 +169,16 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          if (v11)
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v5 addObject:v11];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v12 = [MEMORY[0x1E695DFB0] null];
-            [v5 addObject:v12];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -188,21 +188,21 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"namespaces"];
+    [dictionary setObject:array forKeyedSubscript:@"namespaces"];
   }
 
   if (self->_rampId)
   {
-    v13 = [(EXPSchemaEXPTrialRollout *)self rampId];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"rampId"];
+    rampId = [(EXPSchemaEXPTrialRollout *)self rampId];
+    v14 = [rampId copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"rampId"];
   }
 
   if (self->_rolloutId)
   {
-    v15 = [(EXPSchemaEXPTrialRollout *)self rolloutId];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"rolloutId"];
+    rolloutId = [(EXPSchemaEXPTrialRollout *)self rolloutId];
+    v16 = [rolloutId copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"rolloutId"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -218,12 +218,12 @@
       v18 = off_1E78D4918[v17];
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"status"];
+    [dictionary setObject:v18 forKeyedSubscript:@"status"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -254,28 +254,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSArray *)self->_namespaces hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = [(EXPSchemaEXPTrialRollout *)self rolloutId];
-  v6 = [v4 rolloutId];
-  if ((v5 != 0) == (v6 == 0))
+  rolloutId = [(EXPSchemaEXPTrialRollout *)self rolloutId];
+  rolloutId2 = [equalCopy rolloutId];
+  if ((rolloutId != 0) == (rolloutId2 == 0))
   {
     goto LABEL_23;
   }
 
-  v7 = [(EXPSchemaEXPTrialRollout *)self rolloutId];
-  if (v7)
+  rolloutId3 = [(EXPSchemaEXPTrialRollout *)self rolloutId];
+  if (rolloutId3)
   {
-    v8 = v7;
-    v9 = [(EXPSchemaEXPTrialRollout *)self rolloutId];
-    v10 = [v4 rolloutId];
-    v11 = [v9 isEqual:v10];
+    v8 = rolloutId3;
+    rolloutId4 = [(EXPSchemaEXPTrialRollout *)self rolloutId];
+    rolloutId5 = [equalCopy rolloutId];
+    v11 = [rolloutId4 isEqual:rolloutId5];
 
     if (!v11)
     {
@@ -287,20 +287,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(EXPSchemaEXPTrialRollout *)self rampId];
-  v6 = [v4 rampId];
-  if ((v5 != 0) == (v6 == 0))
+  rolloutId = [(EXPSchemaEXPTrialRollout *)self rampId];
+  rolloutId2 = [equalCopy rampId];
+  if ((rolloutId != 0) == (rolloutId2 == 0))
   {
     goto LABEL_23;
   }
 
-  v12 = [(EXPSchemaEXPTrialRollout *)self rampId];
-  if (v12)
+  rampId = [(EXPSchemaEXPTrialRollout *)self rampId];
+  if (rampId)
   {
-    v13 = v12;
-    v14 = [(EXPSchemaEXPTrialRollout *)self rampId];
-    v15 = [v4 rampId];
-    v16 = [v14 isEqual:v15];
+    v13 = rampId;
+    rampId2 = [(EXPSchemaEXPTrialRollout *)self rampId];
+    rampId3 = [equalCopy rampId];
+    v16 = [rampId2 isEqual:rampId3];
 
     if (!v16)
     {
@@ -313,7 +313,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v18 = v4[40];
+  v18 = equalCopy[40];
   if ((*&has & 1) != (v18 & 1))
   {
     goto LABEL_24;
@@ -322,13 +322,13 @@ LABEL_3:
   if (*&has)
   {
     deploymentId = self->_deploymentId;
-    if (deploymentId != [v4 deploymentId])
+    if (deploymentId != [equalCopy deploymentId])
     {
       goto LABEL_24;
     }
 
     has = self->_has;
-    v18 = v4[40];
+    v18 = equalCopy[40];
   }
 
   v20 = (*&has >> 1) & 1;
@@ -340,23 +340,23 @@ LABEL_3:
   if (v20)
   {
     status = self->_status;
-    if (status != [v4 status])
+    if (status != [equalCopy status])
     {
       goto LABEL_24;
     }
   }
 
-  v5 = [(EXPSchemaEXPTrialRollout *)self namespaces];
-  v6 = [v4 namespaces];
-  if ((v5 != 0) == (v6 == 0))
+  rolloutId = [(EXPSchemaEXPTrialRollout *)self namespaces];
+  rolloutId2 = [equalCopy namespaces];
+  if ((rolloutId != 0) == (rolloutId2 == 0))
   {
 LABEL_23:
 
     goto LABEL_24;
   }
 
-  v22 = [(EXPSchemaEXPTrialRollout *)self namespaces];
-  if (!v22)
+  namespaces = [(EXPSchemaEXPTrialRollout *)self namespaces];
+  if (!namespaces)
   {
 
 LABEL_27:
@@ -364,10 +364,10 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  v23 = v22;
-  v24 = [(EXPSchemaEXPTrialRollout *)self namespaces];
-  v25 = [v4 namespaces];
-  v26 = [v24 isEqual:v25];
+  v23 = namespaces;
+  namespaces2 = [(EXPSchemaEXPTrialRollout *)self namespaces];
+  namespaces3 = [equalCopy namespaces];
+  v26 = [namespaces2 isEqual:namespaces3];
 
   if (v26)
   {
@@ -381,20 +381,20 @@ LABEL_25:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EXPSchemaEXPTrialRollout *)self rolloutId];
+  toCopy = to;
+  rolloutId = [(EXPSchemaEXPTrialRollout *)self rolloutId];
 
-  if (v5)
+  if (rolloutId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(EXPSchemaEXPTrialRollout *)self rampId];
+  rampId = [(EXPSchemaEXPTrialRollout *)self rampId];
 
-  if (v6)
+  if (rampId)
   {
     PBDataWriterWriteStringField();
   }
@@ -440,27 +440,27 @@ LABEL_25:
   }
 }
 
-- (void)addNamespaces:(id)a3
+- (void)addNamespaces:(id)namespaces
 {
-  v4 = a3;
+  namespacesCopy = namespaces;
   namespaces = self->_namespaces;
-  v8 = v4;
+  v8 = namespacesCopy;
   if (!namespaces)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_namespaces;
-    self->_namespaces = v6;
+    self->_namespaces = array;
 
-    v4 = v8;
+    namespacesCopy = v8;
     namespaces = self->_namespaces;
   }
 
-  [(NSArray *)namespaces addObject:v4];
+  [(NSArray *)namespaces addObject:namespacesCopy];
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -473,14 +473,14 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = EXPSchemaEXPTrialRollout;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(EXPSchemaEXPTrialRollout *)self namespaces:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(EXPSchemaEXPTrialRollout *)self setNamespaces:v7];
 

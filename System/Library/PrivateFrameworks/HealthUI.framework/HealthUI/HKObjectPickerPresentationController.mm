@@ -1,33 +1,33 @@
 @interface HKObjectPickerPresentationController
 - (UIViewController)viewControllerPresenter;
-- (void)_dismissViewControllerAnimated:(BOOL)a3;
-- (void)_makeRemoteViewControllerVisible:(id)a3;
-- (void)_presentWithPromptSession:(id)a3 presentationRequests:(id)a4 completion:(id)a5;
-- (void)_requestAndConfigureHostViewController:(id)a3 presentationRequests:(id)a4 completion:(id)a5;
+- (void)_dismissViewControllerAnimated:(BOOL)animated;
+- (void)_makeRemoteViewControllerVisible:(id)visible;
+- (void)_presentWithPromptSession:(id)session presentationRequests:(id)requests completion:(id)completion;
+- (void)_requestAndConfigureHostViewController:(id)controller presentationRequests:(id)requests completion:(id)completion;
 - (void)cancelPresentation;
 - (void)dealloc;
-- (void)healthPrivacyHostObjectPickerViewController:(id)a3 didFinishWithError:(id)a4;
-- (void)presentWithSession:(id)a3 presentationRequests:(id)a4 authorizationViewControllerPresenter:(id)a5 completion:(id)a6;
+- (void)healthPrivacyHostObjectPickerViewController:(id)controller didFinishWithError:(id)error;
+- (void)presentWithSession:(id)session presentationRequests:(id)requests authorizationViewControllerPresenter:(id)presenter completion:(id)completion;
 @end
 
 @implementation HKObjectPickerPresentationController
 
 - (void)dealloc
 {
-  v3 = [(_UIAsyncInvocation *)self->_requestCancellationInvocation invoke];
+  invoke = [(_UIAsyncInvocation *)self->_requestCancellationInvocation invoke];
   [(HKHealthPrivacyHostObjectPickerViewController *)self->_hostViewController setDelegate:0];
   v4.receiver = self;
   v4.super_class = HKObjectPickerPresentationController;
   [(HKObjectPickerPresentationController *)&v4 dealloc];
 }
 
-- (void)presentWithSession:(id)a3 presentationRequests:(id)a4 authorizationViewControllerPresenter:(id)a5 completion:(id)a6
+- (void)presentWithSession:(id)session presentationRequests:(id)requests authorizationViewControllerPresenter:(id)presenter completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v12)
+  sessionCopy = session;
+  requestsCopy = requests;
+  presenterCopy = presenter;
+  completionCopy = completion;
+  if (presenterCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -35,7 +35,7 @@
       [HKObjectPickerPresentationController presentWithSession:presentationRequests:authorizationViewControllerPresenter:completion:];
     }
 
-    objc_storeWeak(&self->_viewControllerPresenter, v12);
+    objc_storeWeak(&self->_viewControllerPresenter, presenterCopy);
   }
 
   v17[0] = MEMORY[0x1E69E9820];
@@ -43,12 +43,12 @@
   v17[2] = __128__HKObjectPickerPresentationController_presentWithSession_presentationRequests_authorizationViewControllerPresenter_completion___block_invoke;
   v17[3] = &unk_1E81B5FD0;
   v17[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v13;
-  v14 = v13;
-  v15 = v11;
-  v16 = v10;
+  v18 = sessionCopy;
+  v19 = requestsCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = requestsCopy;
+  v16 = sessionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v17);
 }
 
@@ -94,15 +94,15 @@ uint64_t __58__HKObjectPickerPresentationController_cancelPresentation__block_in
   return [v3 _dismissViewControllerAnimated:1];
 }
 
-- (void)_requestAndConfigureHostViewController:(id)a3 presentationRequests:(id)a4 completion:(id)a5
+- (void)_requestAndConfigureHostViewController:(id)controller presentationRequests:(id)requests completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  controllerCopy = controller;
+  requestsCopy = requests;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (controllerCopy)
   {
-    if (v10)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -132,7 +132,7 @@ LABEL_3:
     aBlock[2] = __111__HKObjectPickerPresentationController__requestAndConfigureHostViewController_presentationRequests_completion___block_invoke;
     aBlock[3] = &unk_1E81B66C0;
     aBlock[4] = self;
-    v17 = v8;
+    v17 = controllerCopy;
     v18 = v11;
     v13 = _Block_copy(aBlock);
     self->_didPresent = 1;
@@ -174,19 +174,19 @@ void __111__HKObjectPickerPresentationController__requestAndConfigureHostViewCon
   v10();
 }
 
-- (void)_presentWithPromptSession:(id)a3 presentationRequests:(id)a4 completion:(id)a5
+- (void)_presentWithPromptSession:(id)session presentationRequests:(id)requests completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  sessionCopy = session;
+  requestsCopy = requests;
+  completionCopy = completion;
+  if (!sessionCopy)
   {
     [HKObjectPickerPresentationController _presentWithPromptSession:presentationRequests:completion:];
   }
 
-  v11 = [v8 sessionIdentifier];
+  sessionIdentifier = [sessionCopy sessionIdentifier];
 
-  if (!v11)
+  if (!sessionIdentifier)
   {
     [HKObjectPickerPresentationController _presentWithPromptSession:presentationRequests:completion:];
   }
@@ -195,16 +195,16 @@ void __111__HKObjectPickerPresentationController__requestAndConfigureHostViewCon
   v14[1] = 3221225472;
   v14[2] = __98__HKObjectPickerPresentationController__presentWithPromptSession_presentationRequests_completion___block_invoke;
   v14[3] = &unk_1E81B66E8;
-  v15 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
-  [(HKObjectPickerPresentationController *)self _requestAndConfigureHostViewController:v14 presentationRequests:v12 completion:v10];
+  v15 = sessionCopy;
+  v16 = requestsCopy;
+  v12 = requestsCopy;
+  v13 = sessionCopy;
+  [(HKObjectPickerPresentationController *)self _requestAndConfigureHostViewController:v14 presentationRequests:v12 completion:completionCopy];
 }
 
-- (void)_makeRemoteViewControllerVisible:(id)a3
+- (void)_makeRemoteViewControllerVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   if (_UIApplicationIsExtension())
   {
     _HKInitializeLogging();
@@ -217,77 +217,77 @@ void __111__HKObjectPickerPresentationController__requestAndConfigureHostViewCon
 
   else
   {
-    v6 = [MEMORY[0x1E696C608] sharedBehavior];
-    v7 = [v6 isiPad];
+    mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+    isiPad = [mEMORY[0x1E696C608] isiPad];
 
-    if (v7)
+    if (isiPad)
     {
-      [v4 setModalPresentationStyle:2];
-      [v4 setPreferredContentSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+      [visibleCopy setModalPresentationStyle:2];
+      [visibleCopy setPreferredContentSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
     }
 
-    [v4 setModalInPresentation:1];
+    [visibleCopy setModalInPresentation:1];
     v8 = objc_alloc_init(HKAuthorizationViewPresenterProvider);
     WeakRetained = objc_loadWeakRetained(&self->_viewControllerPresenter);
     v10 = [(HKAuthorizationViewPresenterProvider *)v8 hkAuthorizationViewControllerPresenter:WeakRetained];
 
-    v11 = [v10 presentedViewController];
+    presentedViewController = [v10 presentedViewController];
 
-    if (v11)
+    if (presentedViewController)
     {
       do
       {
-        v12 = [v10 presentedViewController];
+        presentedViewController2 = [v10 presentedViewController];
 
-        v13 = [v12 presentedViewController];
+        v12PresentedViewController = [presentedViewController2 presentedViewController];
 
-        v10 = v12;
+        v10 = presentedViewController2;
       }
 
-      while (v13);
+      while (v12PresentedViewController);
     }
 
     else
     {
-      v12 = v10;
+      presentedViewController2 = v10;
     }
 
-    [v12 presentViewController:v4 animated:1 completion:0];
+    [presentedViewController2 presentViewController:visibleCopy animated:1 completion:0];
   }
 }
 
-- (void)_dismissViewControllerAnimated:(BOOL)a3
+- (void)_dismissViewControllerAnimated:(BOOL)animated
 {
   if (self->_didPresent)
   {
     v10[9] = v3;
     v10[10] = v4;
-    v5 = a3;
+    animatedCopy = animated;
     v7 = self->_hostViewController;
     [(HKHealthPrivacyHostObjectPickerViewController *)v7 setDelegate:0];
     hostViewController = self->_hostViewController;
     self->_hostViewController = 0;
 
-    v9 = [(HKHealthPrivacyHostObjectPickerViewController *)v7 presentingViewController];
+    presentingViewController = [(HKHealthPrivacyHostObjectPickerViewController *)v7 presentingViewController];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __71__HKObjectPickerPresentationController__dismissViewControllerAnimated___block_invoke;
     v10[3] = &unk_1E81B55A8;
     v10[4] = self;
-    [v9 dismissViewControllerAnimated:v5 completion:v10];
+    [presentingViewController dismissViewControllerAnimated:animatedCopy completion:v10];
   }
 }
 
-- (void)healthPrivacyHostObjectPickerViewController:(id)a3 didFinishWithError:(id)a4
+- (void)healthPrivacyHostObjectPickerViewController:(id)controller didFinishWithError:(id)error
 {
-  v5 = a4;
-  if (v5)
+  errorCopy = error;
+  if (errorCopy)
   {
     _HKInitializeLogging();
     v6 = HKLogAuthorization();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [HKObjectPickerPresentationController healthPrivacyHostObjectPickerViewController:v5 didFinishWithError:v6];
+      [HKObjectPickerPresentationController healthPrivacyHostObjectPickerViewController:errorCopy didFinishWithError:v6];
     }
   }
 

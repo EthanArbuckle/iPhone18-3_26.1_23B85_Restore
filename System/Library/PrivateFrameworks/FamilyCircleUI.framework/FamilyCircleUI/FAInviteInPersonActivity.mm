@@ -2,8 +2,8 @@
 - (FAInviteInPersonActivity)init;
 - (UIViewController)presentingViewController;
 - (id)activityTitle;
-- (void)_handleRUIDismiss:(id)a3;
-- (void)_notifyCompletionWithSuccess:(BOOL)a3 userInfo:(id)a4;
+- (void)_handleRUIDismiss:(id)dismiss;
+- (void)_notifyCompletionWithSuccess:(BOOL)success userInfo:(id)info;
 - (void)dealloc;
 - (void)performActivity;
 @end
@@ -17,8 +17,8 @@
   v2 = [(UIActivity *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v3 addObserver:v2 selector:sel__handleRUIDismiss_ name:*MEMORY[0x277D080D0] object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleRUIDismiss_ name:*MEMORY[0x277D080D0] object:0];
   }
 
   return v2;
@@ -26,8 +26,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = FAInviteInPersonActivity;
@@ -52,8 +52,8 @@
   v11 = __Block_byref_object_dispose__5;
   v12 = objc_alloc_init(FACircleStateController);
   [v8[5] setPresentationType:1];
-  v4 = [(FAInviteInPersonActivity *)self presentingViewController];
-  [v8[5] setPresenter:v4];
+  presentingViewController = [(FAInviteInPersonActivity *)self presentingViewController];
+  [v8[5] setPresenter:presentingViewController];
 
   v5 = v8[5];
   v6[0] = MEMORY[0x277D85DD0];
@@ -96,17 +96,17 @@ void __43__FAInviteInPersonActivity_performActivity__block_invoke(uint64_t a1, v
   }
 }
 
-- (void)_notifyCompletionWithSuccess:(BOOL)a3 userInfo:(id)a4
+- (void)_notifyCompletionWithSuccess:(BOOL)success userInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__FAInviteInPersonActivity__notifyCompletionWithSuccess_userInfo___block_invoke;
   block[3] = &unk_2782F4148;
   block[4] = self;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = infoCopy;
+  successCopy = success;
+  v7 = infoCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -119,16 +119,16 @@ uint64_t __66__FAInviteInPersonActivity__notifyCompletionWithSuccess_userInfo___
   return [v2 activityDidFinish:v3];
 }
 
-- (void)_handleRUIDismiss:(id)a3
+- (void)_handleRUIDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  dismissCopy = dismiss;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"success"];
+    userInfo = [dismissCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:@"success"];
 
     if ([v8 length])
     {
@@ -138,9 +138,9 @@ uint64_t __66__FAInviteInPersonActivity__notifyCompletionWithSuccess_userInfo___
         [(FAInviteInPersonActivity *)v8 _handleRUIDismiss:v9];
       }
 
-      v10 = [v8 BOOLValue];
-      v11 = [v4 userInfo];
-      [(FAInviteInPersonActivity *)self _notifyCompletionWithSuccess:v10 userInfo:v11];
+      bOOLValue = [v8 BOOLValue];
+      userInfo2 = [dismissCopy userInfo];
+      [(FAInviteInPersonActivity *)self _notifyCompletionWithSuccess:bOOLValue userInfo:userInfo2];
     }
   }
 }

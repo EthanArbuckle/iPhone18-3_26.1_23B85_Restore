@@ -1,6 +1,6 @@
 @interface TPSAppleFitnessPlusSubscriptionValidation
 - (TPSAppleFitnessPlusSubscriptionValidation)init;
-- (TPSAppleFitnessPlusSubscriptionValidation)initWithTargetContext:(id)a3;
+- (TPSAppleFitnessPlusSubscriptionValidation)initWithTargetContext:(id)context;
 @end
 
 @implementation TPSAppleFitnessPlusSubscriptionValidation
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (TPSAppleFitnessPlusSubscriptionValidation)initWithTargetContext:(id)a3
+- (TPSAppleFitnessPlusSubscriptionValidation)initWithTargetContext:(id)context
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,12 +1,12 @@
 @interface DeprecatedText.Drawing.View
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (_TtCVV12NowPlayingUI14DeprecatedText7Drawing4View)initWithCoder:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (_TtCVV12NowPlayingUI14DeprecatedText7Drawing4View)initWithCoder:(id)coder;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation DeprecatedText.Drawing.View
 
-- (_TtCVV12NowPlayingUI14DeprecatedText7Drawing4View)initWithCoder:(id)a3
+- (_TtCVV12NowPlayingUI14DeprecatedText7Drawing4View)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCVV12NowPlayingUI14DeprecatedText7Drawing4View_isDisabled) = 0;
   v3 = (self + OBJC_IVAR____TtCVV12NowPlayingUI14DeprecatedText7Drawing4View__textDrawingContext);
@@ -28,20 +28,20 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   sub_11E914();
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
   v5 = sub_1448DC();
   v7 = v6;
   v11.receiver = self;
   v11.super_class = _s4ViewCMa();
-  v8 = self;
-  if ([(DeprecatedText.Drawing.View *)&v11 _shouldAnimatePropertyWithKey:a3]|| v5 == 0x73746E65746E6F63 && v7 == 0xE800000000000000)
+  selfCopy = self;
+  if ([(DeprecatedText.Drawing.View *)&v11 _shouldAnimatePropertyWithKey:key]|| v5 == 0x73746E65746E6F63 && v7 == 0xE800000000000000)
   {
 
     v9 = 1;

@@ -1,28 +1,28 @@
 @interface AMDFeatureDescriptor
-+ (id)getDataType:(id)a3;
-- (AMDFeatureDescriptor)initWithDictionary:(id)a3 withUserId:(id)a4 featureName:(id)a5;
-- (AMDFeatureDescriptor)initWithDictionaryV2:(id)a3 withUserId:(id)a4 featureName:(id)a5 withDomain:(id)a6;
++ (id)getDataType:(id)type;
+- (AMDFeatureDescriptor)initWithDictionary:(id)dictionary withUserId:(id)id featureName:(id)name;
+- (AMDFeatureDescriptor)initWithDictionaryV2:(id)v2 withUserId:(id)id featureName:(id)name withDomain:(id)domain;
 - (BOOL)checkJoinParameters;
-- (id)getFeature:(id *)a3;
-- (id)getFeatureData:(id *)a3;
-- (id)performInnerJoin:(id)a3;
-- (id)performOuterJoin:(id)a3;
-- (id)prepareArrayResult:(id)a3;
-- (id)prepareDictionaryResult:(id)a3;
-- (id)prepareResult:(id)a3;
-- (id)sort:(id)a3;
-- (id)transformTPDataForJoin:(id)a3;
-- (void)outerJoin:(id)a3;
+- (id)getFeature:(id *)feature;
+- (id)getFeatureData:(id *)data;
+- (id)performInnerJoin:(id)join;
+- (id)performOuterJoin:(id)join;
+- (id)prepareArrayResult:(id)result;
+- (id)prepareDictionaryResult:(id)result;
+- (id)prepareResult:(id)result;
+- (id)sort:(id)sort;
+- (id)transformTPDataForJoin:(id)join;
+- (void)outerJoin:(id)join;
 @end
 
 @implementation AMDFeatureDescriptor
 
-+ (id)getDataType:(id)a3
++ (id)getDataType:(id)type
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, type);
   if (!getDataType__typeDict)
   {
     v11 = objc_alloc(MEMORY[0x277CBEAC0]);
@@ -54,34 +54,34 @@
   return v5;
 }
 
-- (AMDFeatureDescriptor)initWithDictionary:(id)a3 withUserId:(id)a4 featureName:(id)a5
+- (AMDFeatureDescriptor)initWithDictionary:(id)dictionary withUserId:(id)id featureName:(id)name
 {
   v135 = *MEMORY[0x277D85DE8];
-  v126 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dictionary);
   v124 = 0;
-  objc_storeStrong(&v124, a4);
+  objc_storeStrong(&v124, id);
   v123 = 0;
-  objc_storeStrong(&v123, a5);
-  v5 = v126;
-  v126 = 0;
+  objc_storeStrong(&v123, name);
+  v5 = selfCopy;
+  selfCopy = 0;
   v122.receiver = v5;
   v122.super_class = AMDFeatureDescriptor;
-  v126 = [(AMDFeatureDescriptor *)&v122 init];
-  objc_storeStrong(&v126, v126);
-  [v126 setFeatureName:v123];
-  [v126 setVersion:@"v1"];
+  selfCopy = [(AMDFeatureDescriptor *)&v122 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  [selfCopy setFeatureName:v123];
+  [selfCopy setVersion:@"v1"];
   v121 = [location[0] valueForKey:@"source_entity"];
   if (v121)
   {
     v63 = [MEMORY[0x277CBE428] fetchRequestWithEntityName:v121];
-    [v126 setFetchRequest:?];
+    [selfCopy setFetchRequest:?];
     MEMORY[0x277D82BD8](v63);
-    v64 = [v126 fetchRequest];
-    [v64 setResultType:2];
-    MEMORY[0x277D82BD8](v64);
+    fetchRequest = [selfCopy fetchRequest];
+    [fetchRequest setResultType:2];
+    MEMORY[0x277D82BD8](fetchRequest);
     v116 = [location[0] valueForKey:@"properties_to_fetch"];
     if (!v116 || ![v116 count])
     {
@@ -133,20 +133,20 @@ LABEL_52:
       MEMORY[0x277D82BD8](v57);
       if (!v117)
       {
-        v35 = [v126 fetchRequest];
-        [v35 setPropertiesToFetch:v109];
-        MEMORY[0x277D82BD8](v35);
+        fetchRequest2 = [selfCopy fetchRequest];
+        [fetchRequest2 setPropertiesToFetch:v109];
+        MEMORY[0x277D82BD8](fetchRequest2);
         v87 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v36 = [&unk_2852BC208 objectForKey:v121];
         MEMORY[0x277D82BD8](v36);
         if (v36)
         {
-          v86 = [MEMORY[0x277CCACA8] stringWithFormat:@"userId == %@", v124];
+          v124 = [MEMORY[0x277CCACA8] stringWithFormat:@"userId == %@", v124];
           v33 = v87;
-          v34 = [MEMORY[0x277CCAC30] predicateWithFormat:v86];
+          v34 = [MEMORY[0x277CCAC30] predicateWithFormat:v124];
           [v33 addObject:?];
           MEMORY[0x277D82BD8](v34);
-          objc_storeStrong(&v86, 0);
+          objc_storeStrong(&v124, 0);
         }
 
         v85 = [location[0] valueForKey:@"predicates"];
@@ -224,46 +224,46 @@ LABEL_52:
           objc_storeStrong(&v81, 0);
         }
 
-        v18 = [v126 fetchRequest];
+        fetchRequest3 = [selfCopy fetchRequest];
         v17 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v87];
-        [v18 setPredicate:?];
+        [fetchRequest3 setPredicate:?];
         MEMORY[0x277D82BD8](v17);
-        MEMORY[0x277D82BD8](v18);
-        v19 = [v126 aggregatedProperty];
-        MEMORY[0x277D82BD8](v19);
-        if (v19)
+        MEMORY[0x277D82BD8](fetchRequest3);
+        aggregatedProperty = [selfCopy aggregatedProperty];
+        MEMORY[0x277D82BD8](aggregatedProperty);
+        if (aggregatedProperty)
         {
-          v16 = [v126 fetchRequest];
-          v15 = [v126 keyProperty];
-          v128 = v15;
+          fetchRequest4 = [selfCopy fetchRequest];
+          keyProperty = [selfCopy keyProperty];
+          v128 = keyProperty;
           v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v128 count:1];
-          [v16 setPropertiesToGroupBy:?];
+          [fetchRequest4 setPropertiesToGroupBy:?];
           MEMORY[0x277D82BD8](v14);
-          MEMORY[0x277D82BD8](v15);
-          MEMORY[0x277D82BD8](v16);
+          MEMORY[0x277D82BD8](keyProperty);
+          MEMORY[0x277D82BD8](fetchRequest4);
         }
 
         v75 = [location[0] valueForKey:@"sort_descriptors"];
         if (v75 && [v75 count])
         {
-          v13 = [v75 firstObject];
-          v12 = [v13 objectForKey:@"sort_order"];
-          [v126 setSortOrder:?];
+          firstObject = [v75 firstObject];
+          v12 = [firstObject objectForKey:@"sort_order"];
+          [selfCopy setSortOrder:?];
           MEMORY[0x277D82BD8](v12);
-          MEMORY[0x277D82BD8](v13);
+          MEMORY[0x277D82BD8](firstObject);
         }
 
         v10 = [location[0] valueForKey:@"num_records"];
-        [v126 setMaxRecords:?];
+        [selfCopy setMaxRecords:?];
         MEMORY[0x277D82BD8](v10);
-        v11 = [v126 maxRecords];
+        maxRecords = [selfCopy maxRecords];
         v73 = 0;
         v71 = 0;
-        if (v11 && (v74 = [v126 maxRecords], v73 = 1, objc_msgSend(v74, "integerValue") > 0))
+        if (maxRecords && (v74 = [selfCopy maxRecords], v73 = 1, objc_msgSend(v74, "integerValue") > 0))
         {
-          v72 = [v126 maxRecords];
+          maxRecords2 = [selfCopy maxRecords];
           v71 = 1;
-          v9 = v72;
+          v9 = maxRecords2;
         }
 
         else
@@ -271,10 +271,10 @@ LABEL_52:
           v9 = &unk_2852BB1C0;
         }
 
-        [v126 setMaxRecords:v9];
+        [selfCopy setMaxRecords:v9];
         if (v71)
         {
-          MEMORY[0x277D82BD8](v72);
+          MEMORY[0x277D82BD8](maxRecords2);
         }
 
         if (v73)
@@ -282,19 +282,19 @@ LABEL_52:
           MEMORY[0x277D82BD8](v74);
         }
 
-        MEMORY[0x277D82BD8](v11);
+        MEMORY[0x277D82BD8](maxRecords);
         v70 = [location[0] valueForKey:@"do_outer_join"];
         if (v70)
         {
-          v8 = [v70 intValue];
+          intValue = [v70 intValue];
         }
 
         else
         {
-          v8 = 1;
+          intValue = 1;
         }
 
-        [v126 setDoOuterJoin:v8 != 0];
+        [selfCopy setDoOuterJoin:intValue != 0];
         v69 = [location[0] valueForKey:@"default_join_values"];
         if (v69)
         {
@@ -306,8 +306,8 @@ LABEL_52:
           v7 = &unk_2852BB1D8;
         }
 
-        [v126 setDefaultJoinValue:v7];
-        v127 = MEMORY[0x277D82BE0](v126);
+        [selfCopy setDefaultJoinValue:v7];
+        v127 = MEMORY[0x277D82BE0](selfCopy);
         v117 = 1;
         objc_storeStrong(&v69, 0);
         objc_storeStrong(&v70, 0);
@@ -406,7 +406,7 @@ LABEL_52:
               [v88 setExpressionResultType:{objc_msgSend(v98, "unsignedIntegerValue")}];
               [v88 setExpression:v89];
               [v109 addObject:v88];
-              [v126 setAggregatedProperty:v106];
+              [selfCopy setAggregatedProperty:v106];
               objc_storeStrong(&v88, 0);
               objc_storeStrong(&v89, 0);
               objc_storeStrong(&v92, 0);
@@ -480,7 +480,7 @@ LABEL_52:
       else
       {
         [v109 addObject:v106];
-        [v126 setKeyProperty:v106];
+        [selfCopy setKeyProperty:v106];
       }
 
       v117 = 0;
@@ -524,41 +524,41 @@ LABEL_94:
   objc_storeStrong(&v123, 0);
   objc_storeStrong(&v124, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v126, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v127;
 }
 
-- (AMDFeatureDescriptor)initWithDictionaryV2:(id)a3 withUserId:(id)a4 featureName:(id)a5 withDomain:(id)a6
+- (AMDFeatureDescriptor)initWithDictionaryV2:(id)v2 withUserId:(id)id featureName:(id)name withDomain:(id)domain
 {
   v189 = *MEMORY[0x277D85DE8];
-  v180 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, v2);
   v178 = 0;
-  objc_storeStrong(&v178, a4);
+  objc_storeStrong(&v178, id);
   v177 = 0;
-  objc_storeStrong(&v177, a5);
+  objc_storeStrong(&v177, name);
   v176 = 0;
-  objc_storeStrong(&v176, a6);
-  v6 = v180;
-  v180 = 0;
+  objc_storeStrong(&v176, domain);
+  v6 = selfCopy;
+  selfCopy = 0;
   v175.receiver = v6;
   v175.super_class = AMDFeatureDescriptor;
-  v180 = [(AMDFeatureDescriptor *)&v175 init];
-  objc_storeStrong(&v180, v180);
-  [v180 setFeatureName:v177];
-  [v180 setVersion:@"v2"];
+  selfCopy = [(AMDFeatureDescriptor *)&v175 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  [selfCopy setFeatureName:v177];
+  [selfCopy setVersion:@"v2"];
   v174 = [location[0] valueForKey:@"source_entity"];
   if (v174)
   {
     v89 = [MEMORY[0x277CBE428] fetchRequestWithEntityName:v174];
-    [v180 setFetchRequest:?];
+    [selfCopy setFetchRequest:?];
     MEMORY[0x277D82BD8](v89);
-    v90 = [v180 fetchRequest];
-    [v90 setResultType:2];
-    MEMORY[0x277D82BD8](v90);
+    fetchRequest = [selfCopy fetchRequest];
+    [fetchRequest setResultType:2];
+    MEMORY[0x277D82BD8](fetchRequest);
     v169 = [location[0] valueForKey:@"properties_to_fetch"];
     if (!v169 || ![v169 count])
     {
@@ -583,7 +583,7 @@ LABEL_131:
     v165 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v169, "count")}];
     v164 = 0;
     v84 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v180 setPropertyDict:?];
+    [selfCopy setPropertyDict:?];
     MEMORY[0x277D82BD8](v84);
     memset(__b, 0, sizeof(__b));
     v85 = MEMORY[0x277D82BE0](v169);
@@ -596,9 +596,9 @@ LABEL_60:
       MEMORY[0x277D82BD8](v85);
       if (!v170)
       {
-        v53 = [v180 fetchRequest];
-        [v53 setPropertiesToFetch:v165];
-        MEMORY[0x277D82BD8](v53);
+        fetchRequest2 = [selfCopy fetchRequest];
+        [fetchRequest2 setPropertiesToFetch:v165];
+        MEMORY[0x277D82BD8](fetchRequest2);
         v135 = [location[0] objectForKey:@"having_predicate"];
         if ((v164 & 1) != 0 && v135 && [v135 count])
         {
@@ -626,9 +626,9 @@ LABEL_60:
               {
                 v126 = [MEMORY[0x277CCA9C0] expressionForVariable:v131];
                 v125 = [@"%@ " stringByAppendingString:v130];
-                v124 = [MEMORY[0x277CCAC30] predicateWithFormat:v125, v126];
-                [v134 addObject:v124];
-                objc_storeStrong(&v124, 0);
+                v126 = [MEMORY[0x277CCAC30] predicateWithFormat:v125, v126];
+                [v134 addObject:v126];
+                objc_storeStrong(&v126, 0);
                 objc_storeStrong(&v125, 0);
                 objc_storeStrong(&v126, 0);
                 v170 = 0;
@@ -667,9 +667,9 @@ LABEL_60:
 
           MEMORY[0x277D82BD8](v51);
           v123 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v134];
-          v44 = [v180 fetchRequest];
-          [v44 setHavingPredicate:v123];
-          MEMORY[0x277D82BD8](v44);
+          fetchRequest3 = [selfCopy fetchRequest];
+          [fetchRequest3 setHavingPredicate:v123];
+          MEMORY[0x277D82BD8](fetchRequest3);
           objc_storeStrong(&v123, 0);
           objc_storeStrong(&v134, 0);
         }
@@ -679,12 +679,12 @@ LABEL_60:
         MEMORY[0x277D82BD8](v43);
         if (v43)
         {
-          v121 = [MEMORY[0x277CCACA8] stringWithFormat:@"userId == %@", v178];
+          v178 = [MEMORY[0x277CCACA8] stringWithFormat:@"userId == %@", v178];
           v41 = v122;
-          v42 = [MEMORY[0x277CCAC30] predicateWithFormat:v121];
+          v42 = [MEMORY[0x277CCAC30] predicateWithFormat:v178];
           [v41 addObject:?];
           MEMORY[0x277D82BD8](v42);
-          objc_storeStrong(&v121, 0);
+          objc_storeStrong(&v178, 0);
         }
 
         v120 = [location[0] objectForKey:@"only_local_data"];
@@ -713,9 +713,9 @@ LABEL_60:
           else
           {
             v38 = v122;
-            v39 = [MEMORY[0x277CCAC30] predicateWithFormat:@"deviceId == %@", v118];
+            v118 = [MEMORY[0x277CCAC30] predicateWithFormat:@"deviceId == %@", v118];
             [v38 addObject:?];
-            MEMORY[0x277D82BD8](v39);
+            MEMORY[0x277D82BD8](v118);
           }
 
           objc_storeStrong(&v118, 0);
@@ -762,23 +762,23 @@ LABEL_60:
           MEMORY[0x277D82BD8](v34);
         }
 
-        v27 = [v180 fetchRequest];
+        fetchRequest4 = [selfCopy fetchRequest];
         v26 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v122];
-        [v27 setPredicate:?];
+        [fetchRequest4 setPredicate:?];
         MEMORY[0x277D82BD8](v26);
-        MEMORY[0x277D82BD8](v27);
+        MEMORY[0x277D82BD8](fetchRequest4);
         v110 = [location[0] objectForKey:@"group_by_descriptors"];
         if (v110)
         {
-          v22 = [v180 aggregatedPropertyList];
+          aggregatedPropertyList = [selfCopy aggregatedPropertyList];
           v105 = 0;
           v23 = 0;
-          if (v22)
+          if (aggregatedPropertyList)
           {
-            v106 = [v180 aggregatedPropertyList];
+            aggregatedPropertyList2 = [selfCopy aggregatedPropertyList];
             v105 = 1;
             v23 = 0;
-            if ([v106 count])
+            if ([aggregatedPropertyList2 count])
             {
               v23 = [v110 count] != 0;
             }
@@ -786,43 +786,43 @@ LABEL_60:
 
           if (v105)
           {
-            MEMORY[0x277D82BD8](v106);
+            MEMORY[0x277D82BD8](aggregatedPropertyList2);
           }
 
-          MEMORY[0x277D82BD8](v22);
+          MEMORY[0x277D82BD8](aggregatedPropertyList);
           if (v23)
           {
-            v21 = [v180 fetchRequest];
-            [v21 setPropertiesToGroupBy:v110];
-            MEMORY[0x277D82BD8](v21);
+            fetchRequest5 = [selfCopy fetchRequest];
+            [fetchRequest5 setPropertiesToGroupBy:v110];
+            MEMORY[0x277D82BD8](fetchRequest5);
           }
 
           v104 = [location[0] valueForKey:@"sort_descriptors"];
           if (v104 && [v104 count])
           {
-            v18 = [v104 firstObject];
-            v17 = [v18 objectForKey:@"sort_order"];
-            [v180 setSortOrder:?];
+            firstObject = [v104 firstObject];
+            v17 = [firstObject objectForKey:@"sort_order"];
+            [selfCopy setSortOrder:?];
             MEMORY[0x277D82BD8](v17);
-            MEMORY[0x277D82BD8](v18);
-            v20 = [v104 firstObject];
-            v19 = [v20 objectForKey:@"sort_key"];
-            [v180 setSortKey:?];
+            MEMORY[0x277D82BD8](firstObject);
+            firstObject2 = [v104 firstObject];
+            v19 = [firstObject2 objectForKey:@"sort_key"];
+            [selfCopy setSortKey:?];
             MEMORY[0x277D82BD8](v19);
-            MEMORY[0x277D82BD8](v20);
+            MEMORY[0x277D82BD8](firstObject2);
           }
 
           v15 = [location[0] valueForKey:@"num_records"];
-          [v180 setMaxRecords:?];
+          [selfCopy setMaxRecords:?];
           MEMORY[0x277D82BD8](v15);
-          v16 = [v180 maxRecords];
+          maxRecords = [selfCopy maxRecords];
           v102 = 0;
           v100 = 0;
-          if (v16 && (v103 = [v180 maxRecords], v102 = 1, objc_msgSend(v103, "integerValue") > 0))
+          if (maxRecords && (v103 = [selfCopy maxRecords], v102 = 1, objc_msgSend(v103, "integerValue") > 0))
           {
-            v101 = [v180 maxRecords];
+            maxRecords2 = [selfCopy maxRecords];
             v100 = 1;
-            v14 = v101;
+            v14 = maxRecords2;
           }
 
           else
@@ -830,10 +830,10 @@ LABEL_60:
             v14 = &unk_2852BB1C0;
           }
 
-          [v180 setMaxRecords:v14];
+          [selfCopy setMaxRecords:v14];
           if (v100)
           {
-            MEMORY[0x277D82BD8](v101);
+            MEMORY[0x277D82BD8](maxRecords2);
           }
 
           if (v102)
@@ -841,20 +841,20 @@ LABEL_60:
             MEMORY[0x277D82BD8](v103);
           }
 
-          MEMORY[0x277D82BD8](v16);
+          MEMORY[0x277D82BD8](maxRecords);
           v99 = [location[0] objectForKey:@"join_descriptors"];
           v97 = 0;
           v13 = 0;
           if (v99)
           {
-            v98 = [v99 firstObject];
+            firstObject3 = [v99 firstObject];
             v97 = 1;
-            v13 = v98 != 0;
+            v13 = firstObject3 != 0;
           }
 
           if (v97)
           {
-            MEMORY[0x277D82BD8](v98);
+            MEMORY[0x277D82BD8](firstObject3);
           }
 
           if (!v13)
@@ -862,24 +862,24 @@ LABEL_60:
             goto LABEL_127;
           }
 
-          v96 = [v99 firstObject];
-          v8 = [v96 objectForKey:@"key"];
-          [v180 setKeyProperty:?];
+          firstObject4 = [v99 firstObject];
+          v8 = [firstObject4 objectForKey:@"key"];
+          [selfCopy setKeyProperty:?];
           MEMORY[0x277D82BD8](v8);
-          v9 = [v96 objectForKey:@"type"];
-          [v180 setJoinType:?];
+          v9 = [firstObject4 objectForKey:@"type"];
+          [selfCopy setJoinType:?];
           MEMORY[0x277D82BD8](v9);
-          v10 = [v96 objectForKey:@"table"];
-          [v180 setJoinTable:?];
+          v10 = [firstObject4 objectForKey:@"table"];
+          [selfCopy setJoinTable:?];
           MEMORY[0x277D82BD8](v10);
-          v11 = [v96 objectForKey:@"default_join_values"];
-          [v180 setDefaultJoinValueDict:?];
+          v11 = [firstObject4 objectForKey:@"default_join_values"];
+          [selfCopy setDefaultJoinValueDict:?];
           MEMORY[0x277D82BD8](v11);
-          v12 = [v96 objectForKey:@"columns_to_fetch"];
-          [v180 setJoinRequiredColumns:?];
+          v12 = [firstObject4 objectForKey:@"columns_to_fetch"];
+          [selfCopy setJoinRequiredColumns:?];
           MEMORY[0x277D82BD8](v12);
-          [v180 setJoinTableDomain:v176];
-          if ([v180 checkJoinParameters])
+          [selfCopy setJoinTableDomain:v176];
+          if ([selfCopy checkJoinParameters])
           {
             v170 = 0;
           }
@@ -890,11 +890,11 @@ LABEL_60:
             v170 = 1;
           }
 
-          objc_storeStrong(&v96, 0);
+          objc_storeStrong(&firstObject4, 0);
           if (!v170)
           {
 LABEL_127:
-            v181 = MEMORY[0x277D82BE0](v180);
+            v181 = MEMORY[0x277D82BE0](selfCopy);
             v170 = 1;
           }
 
@@ -965,12 +965,12 @@ LABEL_127:
       if (v157)
       {
         v164 = 1;
-        v71 = [v180 aggregatedPropertyList];
-        MEMORY[0x277D82BD8](v71);
-        if (!v71)
+        aggregatedPropertyList3 = [selfCopy aggregatedPropertyList];
+        MEMORY[0x277D82BD8](aggregatedPropertyList3);
+        if (!aggregatedPropertyList3)
         {
           v70 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          [v180 setAggregatedPropertyList:?];
+          [selfCopy setAggregatedPropertyList:?];
           MEMORY[0x277D82BD8](v70);
         }
 
@@ -1025,13 +1025,13 @@ LABEL_127:
               [v136 setExpressionResultType:{objc_msgSend(v146, "unsignedIntegerValue")}];
               [v136 setExpression:v137];
               [v165 addObject:v136];
-              [v180 setAggregatedProperty:v161];
-              v54 = [v180 aggregatedPropertyList];
-              [v54 addObject:v161];
-              MEMORY[0x277D82BD8](v54);
-              v55 = [v180 propertyDict];
-              [v55 setObject:v149 forKey:v161];
-              MEMORY[0x277D82BD8](v55);
+              [selfCopy setAggregatedProperty:v161];
+              aggregatedPropertyList4 = [selfCopy aggregatedPropertyList];
+              [aggregatedPropertyList4 addObject:v161];
+              MEMORY[0x277D82BD8](aggregatedPropertyList4);
+              propertyDict = [selfCopy propertyDict];
+              [propertyDict setObject:v149 forKey:v161];
+              MEMORY[0x277D82BD8](propertyDict);
               objc_storeStrong(&v136, 0);
               objc_storeStrong(&v137, 0);
               objc_storeStrong(&v140, 0);
@@ -1112,9 +1112,9 @@ LABEL_127:
           if (v75)
           {
             [v165 addObject:v161];
-            v72 = [v180 propertyDict];
-            [v72 setObject:v156 forKey:v161];
-            MEMORY[0x277D82BD8](v72);
+            propertyDict2 = [selfCopy propertyDict];
+            [propertyDict2 setObject:v156 forKey:v161];
+            MEMORY[0x277D82BD8](propertyDict2);
             v170 = 0;
           }
 
@@ -1202,18 +1202,18 @@ LABEL_132:
   objc_storeStrong(&v177, 0);
   objc_storeStrong(&v178, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v180, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v181;
 }
 
-- (id)getFeature:(id *)a3
+- (id)getFeature:(id *)feature
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
-  location = [(AMDFeatureDescriptor *)self getFeatureData:a3];
-  if (!*v6 && location)
+  featureCopy = feature;
+  location = [(AMDFeatureDescriptor *)self getFeatureData:feature];
+  if (!*featureCopy && location)
   {
     v9 = [AMDFeature featureFromValue:location];
   }
@@ -1232,42 +1232,42 @@ LABEL_132:
 - (BOOL)checkJoinParameters
 {
   v38 = *MEMORY[0x277D85DE8];
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
-  v16 = [(AMDFeatureDescriptor *)self joinType];
+  joinType = [(AMDFeatureDescriptor *)self joinType];
   v31 = 0;
   v17 = 1;
-  if (![(NSString *)v16 isEqualToString:@"inner"])
+  if (![(NSString *)joinType isEqualToString:@"inner"])
   {
-    v32 = [(AMDFeatureDescriptor *)v34 joinType];
+    joinType2 = [(AMDFeatureDescriptor *)selfCopy joinType];
     v31 = 1;
-    v17 = [(NSString *)v32 isEqualToString:@"outer"];
+    v17 = [(NSString *)joinType2 isEqualToString:@"outer"];
   }
 
   if (v31)
   {
-    MEMORY[0x277D82BD8](v32);
+    MEMORY[0x277D82BD8](joinType2);
   }
 
-  MEMORY[0x277D82BD8](v16);
+  MEMORY[0x277D82BD8](joinType);
   if (v17)
   {
-    v12 = [(AMDFeatureDescriptor *)v34 joinTable];
+    joinTable = [(AMDFeatureDescriptor *)selfCopy joinTable];
     v26 = 0;
     v13 = 1;
-    if (v12)
+    if (joinTable)
     {
-      v27 = [(AMDFeatureDescriptor *)v34 joinTableDomain];
+      joinTableDomain = [(AMDFeatureDescriptor *)selfCopy joinTableDomain];
       v26 = 1;
-      v13 = v27 == 0;
+      v13 = joinTableDomain == 0;
     }
 
     if (v26)
     {
-      MEMORY[0x277D82BD8](v27);
+      MEMORY[0x277D82BD8](joinTableDomain);
     }
 
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](joinTable);
     if (v13)
     {
       v25 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -1286,36 +1286,36 @@ LABEL_132:
 
     else
     {
-      v8 = [(AMDFeatureDescriptor *)v34 joinTableDomain];
+      joinTableDomain2 = [(AMDFeatureDescriptor *)selfCopy joinTableDomain];
       v9 = [AMDDomains getCodeForDomain:?];
-      MEMORY[0x277D82BD8](v8);
+      MEMORY[0x277D82BD8](joinTableDomain2);
       if (v9)
       {
-        v4 = [(AMDFeatureDescriptor *)v34 joinRequiredColumns];
+        joinRequiredColumns = [(AMDFeatureDescriptor *)selfCopy joinRequiredColumns];
         v19 = 0;
         v5 = 1;
-        if (v4)
+        if (joinRequiredColumns)
         {
-          v20 = [(AMDFeatureDescriptor *)v34 joinRequiredColumns];
+          joinRequiredColumns2 = [(AMDFeatureDescriptor *)selfCopy joinRequiredColumns];
           v19 = 1;
-          v5 = [(NSArray *)v20 count]== 0;
+          v5 = [(NSArray *)joinRequiredColumns2 count]== 0;
         }
 
         if (v19)
         {
-          MEMORY[0x277D82BD8](v20);
+          MEMORY[0x277D82BD8](joinRequiredColumns2);
         }
 
-        MEMORY[0x277D82BD8](v4);
+        MEMORY[0x277D82BD8](joinRequiredColumns);
         if (v5)
         {
           v18 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            v3 = [(AMDFeatureDescriptor *)v34 joinTable];
-            __os_log_helper_16_2_1_8_64(v36, v3);
+            joinTable2 = [(AMDFeatureDescriptor *)selfCopy joinTable];
+            __os_log_helper_16_2_1_8_64(v36, joinTable2);
             _os_log_error_impl(&dword_240CB9000, v18, OS_LOG_TYPE_ERROR, "Required fields from feature: %@ have not been provided", v36, 0xCu);
-            MEMORY[0x277D82BD8](v3);
+            MEMORY[0x277D82BD8](joinTable2);
           }
 
           objc_storeStrong(&v18, 0);
@@ -1334,12 +1334,12 @@ LABEL_132:
         v21 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v7 = [(AMDFeatureDescriptor *)v34 joinTableDomain];
-          v6 = [(AMDFeatureDescriptor *)v34 joinTable];
-          __os_log_helper_16_2_2_8_64_8_64(v37, v7, v6);
+          joinTableDomain3 = [(AMDFeatureDescriptor *)selfCopy joinTableDomain];
+          joinTable3 = [(AMDFeatureDescriptor *)selfCopy joinTable];
+          __os_log_helper_16_2_2_8_64_8_64(v37, joinTableDomain3, joinTable3);
           _os_log_error_impl(&dword_240CB9000, v22, v21, "Unsupported domain:%@ passed for feature: %@", v37, 0x16u);
-          MEMORY[0x277D82BD8](v6);
-          MEMORY[0x277D82BD8](v7);
+          MEMORY[0x277D82BD8](joinTable3);
+          MEMORY[0x277D82BD8](joinTableDomain3);
         }
 
         objc_storeStrong(&v22, 0);
@@ -1368,12 +1368,12 @@ LABEL_132:
   return v35 & 1;
 }
 
-- (id)getFeatureData:(id *)a3
+- (id)getFeatureData:(id *)data
 {
   v75 = *MEMORY[0x277D85DE8];
-  v71 = self;
+  selfCopy = self;
   v70 = a2;
-  v69 = a3;
+  dataCopy = data;
   v62 = 0;
   v63 = &v62;
   v64 = 838860800;
@@ -1389,16 +1389,16 @@ LABEL_132:
   v60 = __Block_byref_object_dispose__12;
   v61 = 0;
   v31 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v54 = [v31 getManagedObjectContext];
+  getManagedObjectContext = [v31 getManagedObjectContext];
   MEMORY[0x277D82BD8](v31);
-  v30 = v54;
+  v30 = getManagedObjectContext;
   v47 = MEMORY[0x277D85DD0];
   v48 = -1073741824;
   v49 = 0;
   v50 = __39__AMDFeatureDescriptor_getFeatureData___block_invoke;
   v51 = &unk_278CB5A80;
-  v52 = MEMORY[0x277D82BE0](v54);
-  v53[0] = MEMORY[0x277D82BE0](v71);
+  v52 = MEMORY[0x277D82BE0](getManagedObjectContext);
+  v53[0] = MEMORY[0x277D82BE0](selfCopy);
   v53[1] = &v62;
   v53[2] = &v55;
   [v30 performBlockAndWait:&v47];
@@ -1406,15 +1406,15 @@ LABEL_132:
   {
     v29 = v63[5];
     v3 = v29;
-    *v69 = v29;
+    *dataCopy = v29;
     oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     type = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      v28 = [*v69 localizedDescription];
-      __os_log_helper_16_2_1_8_64(v74, v28);
+      localizedDescription = [*dataCopy localizedDescription];
+      __os_log_helper_16_2_1_8_64(v74, localizedDescription);
       _os_log_error_impl(&dword_240CB9000, oslog, type, "Error executing aggregation: %@", v74, 0xCu);
-      MEMORY[0x277D82BD8](v28);
+      MEMORY[0x277D82BD8](localizedDescription);
     }
 
     objc_storeStrong(&oslog, 0);
@@ -1429,21 +1429,21 @@ LABEL_132:
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
     {
       v27 = [v56[5] count];
-      v26 = [(AMDFeatureDescriptor *)v71 featureName];
-      __os_log_helper_16_2_2_8_0_8_64(v73, v27, v26);
+      featureName = [(AMDFeatureDescriptor *)selfCopy featureName];
+      __os_log_helper_16_2_2_8_0_8_64(v73, v27, featureName);
       _os_log_debug_impl(&dword_240CB9000, v43, v42, "Got %lu records for feature %@", v73, 0x16u);
-      MEMORY[0x277D82BD8](v26);
+      MEMORY[0x277D82BD8](featureName);
     }
 
     objc_storeStrong(&v43, 0);
-    v24 = [(AMDFeatureDescriptor *)v71 version];
-    v25 = [(NSString *)v24 isEqualToString:@"v1"];
-    MEMORY[0x277D82BD8](v24);
+    version = [(AMDFeatureDescriptor *)selfCopy version];
+    v25 = [(NSString *)version isEqualToString:@"v1"];
+    MEMORY[0x277D82BD8](version);
     if (v25)
     {
-      [(AMDFeatureDescriptor *)v71 outerJoin:v56[5]];
-      v23 = v71;
-      v22 = [(AMDFeatureDescriptor *)v71 sort:v56[5]];
+      [(AMDFeatureDescriptor *)selfCopy outerJoin:v56[5]];
+      v23 = selfCopy;
+      v22 = [(AMDFeatureDescriptor *)selfCopy sort:v56[5]];
       v72 = [(AMDFeatureDescriptor *)v23 prepareResult:?];
       MEMORY[0x277D82BD8](v22);
       v44 = 1;
@@ -1453,41 +1453,41 @@ LABEL_132:
     {
       v40 = 0;
       v38 = 0;
-      v20 = [(AMDFeatureDescriptor *)v71 joinType];
+      joinType = [(AMDFeatureDescriptor *)selfCopy joinType];
       v21 = 0;
-      if (v20)
+      if (joinType)
       {
-        v41 = [(AMDFeatureDescriptor *)v71 joinTable];
+        joinTable = [(AMDFeatureDescriptor *)selfCopy joinTable];
         v40 = 1;
         v21 = 0;
-        if (v41)
+        if (joinTable)
         {
-          v39 = [(AMDFeatureDescriptor *)v71 joinTableDomain];
+          joinTableDomain = [(AMDFeatureDescriptor *)selfCopy joinTableDomain];
           v38 = 1;
-          v21 = v39 != 0;
+          v21 = joinTableDomain != 0;
         }
       }
 
       if (v38)
       {
-        MEMORY[0x277D82BD8](v39);
+        MEMORY[0x277D82BD8](joinTableDomain);
       }
 
       if (v40)
       {
-        MEMORY[0x277D82BD8](v41);
+        MEMORY[0x277D82BD8](joinTable);
       }
 
-      MEMORY[0x277D82BD8](v20);
+      MEMORY[0x277D82BD8](joinType);
       if (v21)
       {
         location = 0;
-        v18 = [(AMDFeatureDescriptor *)v71 joinType];
-        v19 = [(NSString *)v18 isEqualToString:@"inner"];
-        MEMORY[0x277D82BD8](v18);
+        joinType2 = [(AMDFeatureDescriptor *)selfCopy joinType];
+        v19 = [(NSString *)joinType2 isEqualToString:@"inner"];
+        MEMORY[0x277D82BD8](joinType2);
         if (v19)
         {
-          v4 = [(AMDFeatureDescriptor *)v71 performInnerJoin:v56[5]];
+          v4 = [(AMDFeatureDescriptor *)selfCopy performInnerJoin:v56[5]];
           v5 = location;
           location = v4;
           MEMORY[0x277D82BD8](v5);
@@ -1496,24 +1496,24 @@ LABEL_132:
         else
         {
           v35 = 0;
-          v17 = [(AMDFeatureDescriptor *)v71 joinType];
+          joinType3 = [(AMDFeatureDescriptor *)selfCopy joinType];
           v16 = 0;
-          if ([(NSString *)v17 isEqualToString:@"outer"])
+          if ([(NSString *)joinType3 isEqualToString:@"outer"])
           {
-            v36 = [(AMDFeatureDescriptor *)v71 defaultJoinValueDict];
+            defaultJoinValueDict = [(AMDFeatureDescriptor *)selfCopy defaultJoinValueDict];
             v35 = 1;
-            v16 = v36 != 0;
+            v16 = defaultJoinValueDict != 0;
           }
 
           if (v35)
           {
-            MEMORY[0x277D82BD8](v36);
+            MEMORY[0x277D82BD8](defaultJoinValueDict);
           }
 
-          MEMORY[0x277D82BD8](v17);
+          MEMORY[0x277D82BD8](joinType3);
           if (v16)
           {
-            v6 = [(AMDFeatureDescriptor *)v71 performOuterJoin:v56[5]];
+            v6 = [(AMDFeatureDescriptor *)selfCopy performOuterJoin:v56[5]];
             v7 = location;
             location = v6;
             MEMORY[0x277D82BD8](v7);
@@ -1537,8 +1537,8 @@ LABEL_132:
 
         if (location)
         {
-          v13 = v71;
-          v12 = [(AMDFeatureDescriptor *)v71 sort:location];
+          v13 = selfCopy;
+          v12 = [(AMDFeatureDescriptor *)selfCopy sort:location];
           v72 = [(AMDFeatureDescriptor *)v13 prepareArrayResult:?];
           MEMORY[0x277D82BD8](v12);
         }
@@ -1554,8 +1554,8 @@ LABEL_132:
 
       else
       {
-        v11 = v71;
-        v10 = [(AMDFeatureDescriptor *)v71 sort:v56[5]];
+        v11 = selfCopy;
+        v10 = [(AMDFeatureDescriptor *)selfCopy sort:v56[5]];
         v72 = [(AMDFeatureDescriptor *)v11 prepareArrayResult:?];
         MEMORY[0x277D82BD8](v10);
         v44 = 1;
@@ -1571,7 +1571,7 @@ LABEL_132:
 
   objc_storeStrong(v53, 0);
   objc_storeStrong(&v52, 0);
-  objc_storeStrong(&v54, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   _Block_object_dispose(&v55, 8);
   objc_storeStrong(&v61, 0);
   _Block_object_dispose(&v62, 8);
@@ -1606,25 +1606,25 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
   objc_storeStrong(v10, 0);
 }
 
-- (void)outerJoin:(id)a3
+- (void)outerJoin:(id)join
 {
   v79 = *MEMORY[0x277D85DE8];
-  v70 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, join);
   v67 = 0;
   LOBYTE(v48) = 1;
-  if ([(AMDFeatureDescriptor *)v70 doOuterJoin])
+  if ([(AMDFeatureDescriptor *)selfCopy doOuterJoin])
   {
-    v68 = [(AMDFeatureDescriptor *)v70 keyProperty];
+    keyProperty = [(AMDFeatureDescriptor *)selfCopy keyProperty];
     v67 = 1;
-    v48 = ![(NSString *)v68 isEqualToString:0x2852A8B68];
+    v48 = ![(NSString *)keyProperty isEqualToString:0x2852A8B68];
   }
 
   if (v67)
   {
-    MEMORY[0x277D82BD8](v68);
+    MEMORY[0x277D82BD8](keyProperty);
   }
 
   if (v48)
@@ -1648,13 +1648,13 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
       if (!v65 && v62)
       {
         v40 = MEMORY[0x277CBEB58];
-        v41 = [v64 allKeys];
+        allKeys = [v64 allKeys];
         v60 = [v40 setWithArray:?];
-        MEMORY[0x277D82BD8](v41);
+        MEMORY[0x277D82BD8](allKeys);
         v42 = MEMORY[0x277CBEB98];
-        v43 = [v62 allKeys];
+        allKeys2 = [v62 allKeys];
         v59 = [v42 setWithArray:?];
-        MEMORY[0x277D82BD8](v43);
+        MEMORY[0x277D82BD8](allKeys2);
         [v60 unionSet:v59];
         memset(__b, 0, sizeof(__b));
         v44 = MEMORY[0x277D82BE0](location[0]);
@@ -1675,11 +1675,11 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
             v58 = *(__b[1] + 8 * v38);
             v33 = v60;
             v32 = v58;
-            v35 = [(AMDFeatureDescriptor *)v70 keyProperty];
+            keyProperty2 = [(AMDFeatureDescriptor *)selfCopy keyProperty];
             v34 = [v32 objectForKey:?];
             [v33 removeObject:?];
             MEMORY[0x277D82BD8](v34);
-            MEMORY[0x277D82BD8](v35);
+            MEMORY[0x277D82BD8](keyProperty2);
             ++v38;
             if (v36 + 1 >= v39)
             {
@@ -1720,43 +1720,43 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
             }
 
             v54 = *(v53[1] + 8 * v28);
-            v24 = [(AMDFeatureDescriptor *)v70 aggregatedProperty];
+            aggregatedProperty = [(AMDFeatureDescriptor *)selfCopy aggregatedProperty];
             v51 = 0;
             v25 = 1;
-            if (!v24)
+            if (!aggregatedProperty)
             {
-              v52 = [(AMDFeatureDescriptor *)v70 aggregatedPropertyList];
+              aggregatedPropertyList = [(AMDFeatureDescriptor *)selfCopy aggregatedPropertyList];
               v51 = 1;
-              v25 = v52 != 0;
+              v25 = aggregatedPropertyList != 0;
             }
 
             if (v51)
             {
-              MEMORY[0x277D82BD8](v52);
+              MEMORY[0x277D82BD8](aggregatedPropertyList);
             }
 
-            MEMORY[0x277D82BD8](v24);
+            MEMORY[0x277D82BD8](aggregatedProperty);
             if (v25)
             {
-              v22 = [(AMDFeatureDescriptor *)v70 version];
-              v23 = [(NSString *)v22 isEqualToString:@"v1"];
-              MEMORY[0x277D82BD8](v22);
+              version = [(AMDFeatureDescriptor *)selfCopy version];
+              v23 = [(NSString *)version isEqualToString:@"v1"];
+              MEMORY[0x277D82BD8](version);
               if (v23)
               {
                 v17 = location[0];
-                v21 = [(AMDFeatureDescriptor *)v70 keyProperty];
-                v74[0] = v21;
+                keyProperty3 = [(AMDFeatureDescriptor *)selfCopy keyProperty];
+                v74[0] = keyProperty3;
                 v75[0] = v54;
-                v20 = [(AMDFeatureDescriptor *)v70 aggregatedProperty];
-                v74[1] = v20;
-                v19 = [(AMDFeatureDescriptor *)v70 defaultJoinValue];
-                v75[1] = v19;
+                aggregatedProperty2 = [(AMDFeatureDescriptor *)selfCopy aggregatedProperty];
+                v74[1] = aggregatedProperty2;
+                defaultJoinValue = [(AMDFeatureDescriptor *)selfCopy defaultJoinValue];
+                v75[1] = defaultJoinValue;
                 v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v75 forKeys:v74 count:2];
                 [v17 addObject:?];
                 MEMORY[0x277D82BD8](v18);
-                MEMORY[0x277D82BD8](v19);
-                MEMORY[0x277D82BD8](v20);
-                MEMORY[0x277D82BD8](v21);
+                MEMORY[0x277D82BD8](defaultJoinValue);
+                MEMORY[0x277D82BD8](aggregatedProperty2);
+                MEMORY[0x277D82BD8](keyProperty3);
               }
 
               else
@@ -1764,12 +1764,12 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
                 v50 = objc_alloc_init(MEMORY[0x277CBEB38]);
                 v13 = v50;
                 v12 = v54;
-                v14 = [(AMDFeatureDescriptor *)v70 keyProperty];
+                keyProperty4 = [(AMDFeatureDescriptor *)selfCopy keyProperty];
                 [v13 setObject:v12 forKey:?];
-                MEMORY[0x277D82BD8](v14);
+                MEMORY[0x277D82BD8](keyProperty4);
                 memset(v49, 0, 0x40uLL);
-                v15 = [(AMDFeatureDescriptor *)v70 aggregatedPropertyList];
-                v16 = [(NSMutableArray *)v15 countByEnumeratingWithState:v49 objects:v73 count:16];
+                aggregatedPropertyList2 = [(AMDFeatureDescriptor *)selfCopy aggregatedPropertyList];
+                v16 = [(NSMutableArray *)aggregatedPropertyList2 countByEnumeratingWithState:v49 objects:v73 count:16];
                 if (v16)
                 {
                   v9 = *v49[2];
@@ -1780,19 +1780,19 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
                     v8 = v10;
                     if (*v49[2] != v9)
                     {
-                      objc_enumerationMutation(v15);
+                      objc_enumerationMutation(aggregatedPropertyList2);
                     }
 
                     v49[8] = *(v49[1] + 8 * v10);
                     v6 = v50;
-                    v7 = [(AMDFeatureDescriptor *)v70 defaultJoinValue];
+                    defaultJoinValue2 = [(AMDFeatureDescriptor *)selfCopy defaultJoinValue];
                     [v6 setObject:? forKey:?];
-                    MEMORY[0x277D82BD8](v7);
+                    MEMORY[0x277D82BD8](defaultJoinValue2);
                     ++v10;
                     if (v8 + 1 >= v11)
                     {
                       v10 = 0;
-                      v11 = [(NSMutableArray *)v15 countByEnumeratingWithState:v49 objects:v73 count:16];
+                      v11 = [(NSMutableArray *)aggregatedPropertyList2 countByEnumeratingWithState:v49 objects:v73 count:16];
                       if (!v11)
                       {
                         break;
@@ -1801,7 +1801,7 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
                   }
                 }
 
-                MEMORY[0x277D82BD8](v15);
+                MEMORY[0x277D82BD8](aggregatedPropertyList2);
                 [location[0] addObject:v50];
                 objc_storeStrong(&v50, 0);
               }
@@ -1810,13 +1810,13 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
             else
             {
               v3 = location[0];
-              v5 = [(AMDFeatureDescriptor *)v70 keyProperty];
-              v71 = v5;
+              keyProperty5 = [(AMDFeatureDescriptor *)selfCopy keyProperty];
+              v71 = keyProperty5;
               v72 = v54;
               v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
               [v3 addObject:?];
               MEMORY[0x277D82BD8](v4);
-              MEMORY[0x277D82BD8](v5);
+              MEMORY[0x277D82BD8](keyProperty5);
             }
 
             ++v28;
@@ -1859,27 +1859,27 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
   *MEMORY[0x277D85DE8];
 }
 
-- (id)transformTPDataForJoin:(id)a3
+- (id)transformTPDataForJoin:(id)join
 {
   v43 = *MEMORY[0x277D85DE8];
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, join);
   v36 = [location[0] objectForKey:0x2852ABCA8];
   v35 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v23 = [(AMDFeatureDescriptor *)v38 keyProperty];
+  keyProperty = [(AMDFeatureDescriptor *)selfCopy keyProperty];
   v34 = [v36 objectForKey:?];
-  MEMORY[0x277D82BD8](v23);
+  MEMORY[0x277D82BD8](keyProperty);
   if (v34)
   {
     v32 = [v34 objectForKey:@"featureValue"];
     v22 = [v34 objectForKey:@"featureFormat"];
-    v21 = [(AMDFeatureDescriptor *)v38 keyProperty];
+    keyProperty2 = [(AMDFeatureDescriptor *)selfCopy keyProperty];
     [v35 setObject:v22 forKey:?];
-    MEMORY[0x277D82BD8](v21);
+    MEMORY[0x277D82BD8](keyProperty2);
     MEMORY[0x277D82BD8](v22);
-    v31 = [v36 allKeys];
+    allKeys = [v36 allKeys];
     v30 = objc_alloc_init(MEMORY[0x277CBEB38]);
     for (i = 0; ; ++i)
     {
@@ -1892,7 +1892,7 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
       v28 = [v32 objectAtIndex:i];
       v27 = objc_alloc_init(MEMORY[0x277CBEB38]);
       memset(__b, 0, sizeof(__b));
-      obj = MEMORY[0x277D82BE0](v31);
+      obj = MEMORY[0x277D82BE0](allKeys);
       v19 = [obj countByEnumeratingWithState:__b objects:v42 count:16];
       if (v19)
       {
@@ -1909,9 +1909,9 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
 
           v26 = *(__b[1] + 8 * v16);
           v11 = v26;
-          v12 = [(AMDFeatureDescriptor *)v38 keyProperty];
+          keyProperty3 = [(AMDFeatureDescriptor *)selfCopy keyProperty];
           v13 = [v11 isEqualToString:?];
-          MEMORY[0x277D82BD8](v12);
+          MEMORY[0x277D82BD8](keyProperty3);
           if ((v13 & 1) == 0)
           {
             if (!i)
@@ -1960,7 +1960,7 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
     v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:2];
     v33 = 1;
     objc_storeStrong(&v30, 0);
-    objc_storeStrong(&v31, 0);
+    objc_storeStrong(&allKeys, 0);
     objc_storeStrong(&v32, 0);
   }
 
@@ -1980,38 +1980,38 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)performInnerJoin:(id)a3
+- (id)performInnerJoin:(id)join
 {
   v83 = *MEMORY[0x277D85DE8];
-  v74 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, join);
   v72 = 0;
-  v45 = [(AMDFeatureDescriptor *)v74 joinTable];
-  v44 = [(AMDFeatureDescriptor *)v74 joinTableDomain];
+  joinTable = [(AMDFeatureDescriptor *)selfCopy joinTable];
+  joinTableDomain = [(AMDFeatureDescriptor *)selfCopy joinTableDomain];
   obj = v72;
-  v43 = [AMDTasteProfile getFeatureValueWithName:"getFeatureValueWithName:inDomain:error:" inDomain:v45 error:?];
+  v43 = [AMDTasteProfile getFeatureValueWithName:"getFeatureValueWithName:inDomain:error:" inDomain:joinTable error:?];
   objc_storeStrong(&v72, obj);
   v71 = v43;
-  MEMORY[0x277D82BD8](v44);
-  MEMORY[0x277D82BD8](v45);
+  MEMORY[0x277D82BD8](joinTableDomain);
+  MEMORY[0x277D82BD8](joinTable);
   if (!v72 && v71)
   {
-    v65 = [(AMDFeatureDescriptor *)v74 transformTPDataForJoin:v71];
+    v65 = [(AMDFeatureDescriptor *)selfCopy transformTPDataForJoin:v71];
     if (v65)
     {
       v62 = [v65 objectForKey:@"featureValue"];
       v61 = [v65 objectForKey:@"featureFormat"];
       v33 = MEMORY[0x277CBEB98];
       v35 = [v71 objectForKey:0x2852ABCA8];
-      v34 = [v35 allKeys];
+      allKeys = [v35 allKeys];
       v60 = [v33 setWithArray:?];
-      MEMORY[0x277D82BD8](v34);
+      MEMORY[0x277D82BD8](allKeys);
       MEMORY[0x277D82BD8](v35);
       memset(__b, 0, sizeof(__b));
-      v36 = [(AMDFeatureDescriptor *)v74 joinRequiredColumns];
-      v37 = [(NSArray *)v36 countByEnumeratingWithState:__b objects:v80 count:16];
+      joinRequiredColumns = [(AMDFeatureDescriptor *)selfCopy joinRequiredColumns];
+      v37 = [(NSArray *)joinRequiredColumns countByEnumeratingWithState:__b objects:v80 count:16];
       if (v37)
       {
         v30 = *__b[2];
@@ -2022,7 +2022,7 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
           v29 = v31;
           if (*__b[2] != v30)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(joinRequiredColumns);
           }
 
           v59 = *(__b[1] + 8 * v31);
@@ -2035,7 +2035,7 @@ void __39__AMDFeatureDescriptor_getFeatureData___block_invoke(uint64_t a1)
           if (v29 + 1 >= v32)
           {
             v31 = 0;
-            v32 = [(NSArray *)v36 countByEnumeratingWithState:__b objects:v80 count:16];
+            v32 = [(NSArray *)joinRequiredColumns countByEnumeratingWithState:__b objects:v80 count:16];
             if (!v32)
             {
               goto LABEL_20;
@@ -2062,7 +2062,7 @@ LABEL_20:
         v66 = 0;
       }
 
-      MEMORY[0x277D82BD8](v36);
+      MEMORY[0x277D82BD8](joinRequiredColumns);
       if (!v66)
       {
         v55 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2084,16 +2084,16 @@ LABEL_20:
 
             v54 = *(v53[1] + 8 * v25);
             v21 = v54;
-            v22 = [(AMDFeatureDescriptor *)v74 keyProperty];
+            keyProperty = [(AMDFeatureDescriptor *)selfCopy keyProperty];
             v52 = [v21 objectForKey:?];
-            MEMORY[0x277D82BD8](v22);
+            MEMORY[0x277D82BD8](keyProperty);
             v51 = [v62 objectForKey:v52];
             if (v51)
             {
               v50 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v54];
               memset(v48, 0, sizeof(v48));
-              v19 = [(AMDFeatureDescriptor *)v74 joinRequiredColumns];
-              v20 = [(NSArray *)v19 countByEnumeratingWithState:v48 objects:v77 count:16];
+              joinRequiredColumns2 = [(AMDFeatureDescriptor *)selfCopy joinRequiredColumns];
+              v20 = [(NSArray *)joinRequiredColumns2 countByEnumeratingWithState:v48 objects:v77 count:16];
               if (v20)
               {
                 v16 = *v48[2];
@@ -2104,7 +2104,7 @@ LABEL_20:
                   v15 = v17;
                   if (*v48[2] != v16)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(joinRequiredColumns2);
                   }
 
                   v49 = *(v48[1] + 8 * v17);
@@ -2116,7 +2116,7 @@ LABEL_20:
                   if (v15 + 1 >= v18)
                   {
                     v17 = 0;
-                    v18 = [(NSArray *)v19 countByEnumeratingWithState:v48 objects:v77 count:16];
+                    v18 = [(NSArray *)joinRequiredColumns2 countByEnumeratingWithState:v48 objects:v77 count:16];
                     if (!v18)
                     {
                       break;
@@ -2125,7 +2125,7 @@ LABEL_20:
                 }
               }
 
-              MEMORY[0x277D82BD8](v19);
+              MEMORY[0x277D82BD8](joinRequiredColumns2);
               [v55 addObject:v50];
               objc_storeStrong(&v50, 0);
               v66 = 0;
@@ -2155,8 +2155,8 @@ LABEL_20:
         if ([v55 count])
         {
           memset(v46, 0, sizeof(v46));
-          v11 = [(AMDFeatureDescriptor *)v74 joinRequiredColumns];
-          v12 = [(NSArray *)v11 countByEnumeratingWithState:v46 objects:v76 count:16];
+          joinRequiredColumns3 = [(AMDFeatureDescriptor *)selfCopy joinRequiredColumns];
+          v12 = [(NSArray *)joinRequiredColumns3 countByEnumeratingWithState:v46 objects:v76 count:16];
           if (v12)
           {
             v8 = *v46[2];
@@ -2167,20 +2167,20 @@ LABEL_20:
               v7 = v9;
               if (*v46[2] != v8)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(joinRequiredColumns3);
               }
 
               v47 = *(v46[1] + 8 * v9);
-              v6 = [(AMDFeatureDescriptor *)v74 propertyDict];
+              propertyDict = [(AMDFeatureDescriptor *)selfCopy propertyDict];
               v5 = [v61 objectForKey:v47];
-              [NSMutableDictionary setObject:v6 forKey:"setObject:forKey:"];
+              [NSMutableDictionary setObject:propertyDict forKey:"setObject:forKey:"];
               MEMORY[0x277D82BD8](v5);
-              MEMORY[0x277D82BD8](v6);
+              MEMORY[0x277D82BD8](propertyDict);
               ++v9;
               if (v7 + 1 >= v10)
               {
                 v9 = 0;
-                v10 = [(NSArray *)v11 countByEnumeratingWithState:v46 objects:v76 count:16];
+                v10 = [(NSArray *)joinRequiredColumns3 countByEnumeratingWithState:v46 objects:v76 count:16];
                 if (!v10)
                 {
                   break;
@@ -2189,7 +2189,7 @@ LABEL_20:
             }
           }
 
-          MEMORY[0x277D82BD8](v11);
+          MEMORY[0x277D82BD8](joinRequiredColumns3);
         }
 
         v75 = MEMORY[0x277D82BE0](v55);
@@ -2208,10 +2208,10 @@ LABEL_20:
       v63 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
       {
-        v38 = [(AMDFeatureDescriptor *)v74 keyProperty];
-        __os_log_helper_16_2_1_8_64(v81, v38);
+        keyProperty2 = [(AMDFeatureDescriptor *)selfCopy keyProperty];
+        __os_log_helper_16_2_1_8_64(v81, keyProperty2);
         _os_log_error_impl(&dword_240CB9000, v64, v63, "Inner join failed:Key property %@ not found in feature", v81, 0xCu);
-        MEMORY[0x277D82BD8](v38);
+        MEMORY[0x277D82BD8](keyProperty2);
       }
 
       objc_storeStrong(&v64, 0);
@@ -2230,13 +2230,13 @@ LABEL_20:
     {
       log = oslog;
       v40 = type;
-      v42 = [(AMDFeatureDescriptor *)v74 joinTable];
-      v41 = [v72 localizedDescription];
-      v67 = MEMORY[0x277D82BE0](v41);
-      __os_log_helper_16_2_2_8_64_8_64(v82, v42, v67);
+      joinTable2 = [(AMDFeatureDescriptor *)selfCopy joinTable];
+      localizedDescription = [v72 localizedDescription];
+      v67 = MEMORY[0x277D82BE0](localizedDescription);
+      __os_log_helper_16_2_2_8_64_8_64(v82, joinTable2, v67);
       _os_log_error_impl(&dword_240CB9000, log, v40, "Inner join failed: Feature %@ could not be fetched. Error: %@", v82, 0x16u);
-      MEMORY[0x277D82BD8](v41);
-      MEMORY[0x277D82BD8](v42);
+      MEMORY[0x277D82BD8](localizedDescription);
+      MEMORY[0x277D82BD8](joinTable2);
       objc_storeStrong(&v67, 0);
     }
 
@@ -2254,36 +2254,36 @@ LABEL_20:
   return v3;
 }
 
-- (id)performOuterJoin:(id)a3
+- (id)performOuterJoin:(id)join
 {
   v101 = *MEMORY[0x277D85DE8];
-  v90 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, join);
   v88 = 0;
-  v56 = [(AMDFeatureDescriptor *)v90 joinTable];
-  v55 = [(AMDFeatureDescriptor *)v90 joinTableDomain];
+  joinTable = [(AMDFeatureDescriptor *)selfCopy joinTable];
+  joinTableDomain = [(AMDFeatureDescriptor *)selfCopy joinTableDomain];
   obj = v88;
-  v54 = [AMDTasteProfile getFeatureValueWithName:"getFeatureValueWithName:inDomain:error:" inDomain:v56 error:?];
+  v54 = [AMDTasteProfile getFeatureValueWithName:"getFeatureValueWithName:inDomain:error:" inDomain:joinTable error:?];
   objc_storeStrong(&v88, obj);
   v87 = v54;
-  MEMORY[0x277D82BD8](v55);
-  MEMORY[0x277D82BD8](v56);
+  MEMORY[0x277D82BD8](joinTableDomain);
+  MEMORY[0x277D82BD8](joinTable);
   if (!v88 && v87)
   {
-    v81 = [(AMDFeatureDescriptor *)v90 transformTPDataForJoin:v87];
+    v81 = [(AMDFeatureDescriptor *)selfCopy transformTPDataForJoin:v87];
     if (v81)
     {
       v78 = [v81 objectForKey:@"featureValue"];
       v77 = [v81 objectForKey:@"featureFormat"];
       v46 = [v87 objectForKey:0x2852ABCA8];
-      v76 = [v46 allKeys];
+      allKeys = [v46 allKeys];
       MEMORY[0x277D82BD8](v46);
-      v75 = [MEMORY[0x277CBEB98] setWithArray:v76];
+      v75 = [MEMORY[0x277CBEB98] setWithArray:allKeys];
       memset(__b, 0, sizeof(__b));
-      v47 = [(AMDFeatureDescriptor *)v90 joinRequiredColumns];
-      v48 = [(NSArray *)v47 countByEnumeratingWithState:__b objects:v98 count:16];
+      joinRequiredColumns = [(AMDFeatureDescriptor *)selfCopy joinRequiredColumns];
+      v48 = [(NSArray *)joinRequiredColumns countByEnumeratingWithState:__b objects:v98 count:16];
       if (v48)
       {
         v43 = *__b[2];
@@ -2294,7 +2294,7 @@ LABEL_20:
           v42 = v44;
           if (*__b[2] != v43)
           {
-            objc_enumerationMutation(v47);
+            objc_enumerationMutation(joinRequiredColumns);
           }
 
           v74 = *(__b[1] + 8 * v44);
@@ -2314,10 +2314,10 @@ LABEL_20:
             goto LABEL_25;
           }
 
-          v40 = [(AMDFeatureDescriptor *)v90 defaultJoinValueDict];
-          v41 = [(NSDictionary *)v40 objectForKey:v74];
+          defaultJoinValueDict = [(AMDFeatureDescriptor *)selfCopy defaultJoinValueDict];
+          v41 = [(NSDictionary *)defaultJoinValueDict objectForKey:v74];
           MEMORY[0x277D82BD8](v41);
-          MEMORY[0x277D82BD8](v40);
+          MEMORY[0x277D82BD8](defaultJoinValueDict);
           if (!v41)
           {
             break;
@@ -2327,7 +2327,7 @@ LABEL_20:
           if (v42 + 1 >= v45)
           {
             v44 = 0;
-            v45 = [(NSArray *)v47 countByEnumeratingWithState:__b objects:v98 count:16];
+            v45 = [(NSArray *)joinRequiredColumns countByEnumeratingWithState:__b objects:v98 count:16];
             if (!v45)
             {
               goto LABEL_24;
@@ -2340,10 +2340,10 @@ LABEL_20:
         if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
         {
           v38 = v74;
-          v39 = [(AMDFeatureDescriptor *)v90 joinTable];
-          __os_log_helper_16_2_2_8_64_8_64(v96, v38, v39);
+          joinTable2 = [(AMDFeatureDescriptor *)selfCopy joinTable];
+          __os_log_helper_16_2_2_8_64_8_64(v96, v38, joinTable2);
           _os_log_error_impl(&dword_240CB9000, v70, v69, "Outer join failed:Default value not provided for column: %@ while performing join with feature: %@", v96, 0x16u);
-          MEMORY[0x277D82BD8](v39);
+          MEMORY[0x277D82BD8](joinTable2);
         }
 
         objc_storeStrong(&v70, 0);
@@ -2358,7 +2358,7 @@ LABEL_24:
       }
 
 LABEL_25:
-      MEMORY[0x277D82BD8](v47);
+      MEMORY[0x277D82BD8](joinRequiredColumns);
       if (!v82)
       {
         v68 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2380,16 +2380,16 @@ LABEL_25:
 
             v67 = *(v66[1] + 8 * v34);
             v30 = v67;
-            v31 = [(AMDFeatureDescriptor *)v90 keyProperty];
+            keyProperty = [(AMDFeatureDescriptor *)selfCopy keyProperty];
             v65 = [v30 objectForKey:?];
-            MEMORY[0x277D82BD8](v31);
+            MEMORY[0x277D82BD8](keyProperty);
             v64 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v67];
             v63 = [v78 objectForKey:v65];
             if (v63)
             {
               memset(v59, 0, sizeof(v59));
-              v19 = [(AMDFeatureDescriptor *)v90 joinRequiredColumns];
-              v20 = [(NSArray *)v19 countByEnumeratingWithState:v59 objects:v93 count:16];
+              joinRequiredColumns2 = [(AMDFeatureDescriptor *)selfCopy joinRequiredColumns];
+              v20 = [(NSArray *)joinRequiredColumns2 countByEnumeratingWithState:v59 objects:v93 count:16];
               if (v20)
               {
                 v16 = *v59[2];
@@ -2400,7 +2400,7 @@ LABEL_25:
                   v15 = v17;
                   if (*v59[2] != v16)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(joinRequiredColumns2);
                   }
 
                   v60 = *(v59[1] + 8 * v17);
@@ -2412,7 +2412,7 @@ LABEL_25:
                   if (v15 + 1 >= v18)
                   {
                     v17 = 0;
-                    v18 = [(NSArray *)v19 countByEnumeratingWithState:v59 objects:v93 count:16];
+                    v18 = [(NSArray *)joinRequiredColumns2 countByEnumeratingWithState:v59 objects:v93 count:16];
                     if (!v18)
                     {
                       break;
@@ -2421,14 +2421,14 @@ LABEL_25:
                 }
               }
 
-              MEMORY[0x277D82BD8](v19);
+              MEMORY[0x277D82BD8](joinRequiredColumns2);
             }
 
             else
             {
               memset(v61, 0, sizeof(v61));
-              v28 = [(AMDFeatureDescriptor *)v90 joinRequiredColumns];
-              v29 = [(NSArray *)v28 countByEnumeratingWithState:v61 objects:v94 count:16];
+              joinRequiredColumns3 = [(AMDFeatureDescriptor *)selfCopy joinRequiredColumns];
+              v29 = [(NSArray *)joinRequiredColumns3 countByEnumeratingWithState:v61 objects:v94 count:16];
               if (v29)
               {
                 v25 = *v61[2];
@@ -2439,21 +2439,21 @@ LABEL_25:
                   v24 = v26;
                   if (*v61[2] != v25)
                   {
-                    objc_enumerationMutation(v28);
+                    objc_enumerationMutation(joinRequiredColumns3);
                   }
 
                   v62 = *(v61[1] + 8 * v26);
                   v21 = v64;
-                  v23 = [(AMDFeatureDescriptor *)v90 defaultJoinValueDict];
-                  v22 = [(NSDictionary *)v23 objectForKey:v62];
+                  defaultJoinValueDict2 = [(AMDFeatureDescriptor *)selfCopy defaultJoinValueDict];
+                  v22 = [(NSDictionary *)defaultJoinValueDict2 objectForKey:v62];
                   [v21 setObject:? forKey:?];
                   MEMORY[0x277D82BD8](v22);
-                  MEMORY[0x277D82BD8](v23);
+                  MEMORY[0x277D82BD8](defaultJoinValueDict2);
                   ++v26;
                   if (v24 + 1 >= v27)
                   {
                     v26 = 0;
-                    v27 = [(NSArray *)v28 countByEnumeratingWithState:v61 objects:v94 count:16];
+                    v27 = [(NSArray *)joinRequiredColumns3 countByEnumeratingWithState:v61 objects:v94 count:16];
                     if (!v27)
                     {
                       break;
@@ -2462,7 +2462,7 @@ LABEL_25:
                 }
               }
 
-              MEMORY[0x277D82BD8](v28);
+              MEMORY[0x277D82BD8](joinRequiredColumns3);
             }
 
             [v68 addObject:v64];
@@ -2486,8 +2486,8 @@ LABEL_25:
         if ([v68 count])
         {
           memset(v57, 0, sizeof(v57));
-          v11 = [(AMDFeatureDescriptor *)v90 joinRequiredColumns];
-          v12 = [(NSArray *)v11 countByEnumeratingWithState:v57 objects:v92 count:16];
+          joinRequiredColumns4 = [(AMDFeatureDescriptor *)selfCopy joinRequiredColumns];
+          v12 = [(NSArray *)joinRequiredColumns4 countByEnumeratingWithState:v57 objects:v92 count:16];
           if (v12)
           {
             v8 = *v57[2];
@@ -2498,20 +2498,20 @@ LABEL_25:
               v7 = v9;
               if (*v57[2] != v8)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(joinRequiredColumns4);
               }
 
               v58 = *(v57[1] + 8 * v9);
-              v6 = [(AMDFeatureDescriptor *)v90 propertyDict];
+              propertyDict = [(AMDFeatureDescriptor *)selfCopy propertyDict];
               v5 = [v77 objectForKey:v58];
-              [NSMutableDictionary setObject:v6 forKey:"setObject:forKey:"];
+              [NSMutableDictionary setObject:propertyDict forKey:"setObject:forKey:"];
               MEMORY[0x277D82BD8](v5);
-              MEMORY[0x277D82BD8](v6);
+              MEMORY[0x277D82BD8](propertyDict);
               ++v9;
               if (v7 + 1 >= v10)
               {
                 v9 = 0;
-                v10 = [(NSArray *)v11 countByEnumeratingWithState:v57 objects:v92 count:16];
+                v10 = [(NSArray *)joinRequiredColumns4 countByEnumeratingWithState:v57 objects:v92 count:16];
                 if (!v10)
                 {
                   break;
@@ -2520,7 +2520,7 @@ LABEL_25:
             }
           }
 
-          MEMORY[0x277D82BD8](v11);
+          MEMORY[0x277D82BD8](joinRequiredColumns4);
         }
 
         v91 = MEMORY[0x277D82BE0](v68);
@@ -2529,7 +2529,7 @@ LABEL_25:
       }
 
       objc_storeStrong(&v75, 0);
-      objc_storeStrong(&v76, 0);
+      objc_storeStrong(&allKeys, 0);
       objc_storeStrong(&v77, 0);
       objc_storeStrong(&v78, 0);
     }
@@ -2540,10 +2540,10 @@ LABEL_25:
       v79 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v80, OS_LOG_TYPE_ERROR))
       {
-        v49 = [(AMDFeatureDescriptor *)v90 keyProperty];
-        __os_log_helper_16_2_1_8_64(v99, v49);
+        keyProperty2 = [(AMDFeatureDescriptor *)selfCopy keyProperty];
+        __os_log_helper_16_2_1_8_64(v99, keyProperty2);
         _os_log_error_impl(&dword_240CB9000, v80, v79, "Outer join failed:Key property %@ not found in feature", v99, 0xCu);
-        MEMORY[0x277D82BD8](v49);
+        MEMORY[0x277D82BD8](keyProperty2);
       }
 
       objc_storeStrong(&v80, 0);
@@ -2562,13 +2562,13 @@ LABEL_25:
     {
       log = oslog;
       v51 = type;
-      v53 = [(AMDFeatureDescriptor *)v90 joinTable];
-      v52 = [v88 localizedDescription];
-      v83 = MEMORY[0x277D82BE0](v52);
-      __os_log_helper_16_2_2_8_64_8_64(v100, v53, v83);
+      joinTable3 = [(AMDFeatureDescriptor *)selfCopy joinTable];
+      localizedDescription = [v88 localizedDescription];
+      v83 = MEMORY[0x277D82BE0](localizedDescription);
+      __os_log_helper_16_2_2_8_64_8_64(v100, joinTable3, v83);
       _os_log_error_impl(&dword_240CB9000, log, v51, "Outer join failed: Feature %@ could not be fetched. Error: %@", v100, 0x16u);
-      MEMORY[0x277D82BD8](v52);
-      MEMORY[0x277D82BD8](v53);
+      MEMORY[0x277D82BD8](localizedDescription);
+      MEMORY[0x277D82BD8](joinTable3);
       objc_storeStrong(&v83, 0);
     }
 
@@ -2586,20 +2586,20 @@ LABEL_25:
   return v3;
 }
 
-- (id)sort:(id)a3
+- (id)sort:(id)sort
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = [(AMDFeatureDescriptor *)v27 sortOrder];
+  objc_storeStrong(location, sort);
+  sortOrder = [(AMDFeatureDescriptor *)selfCopy sortOrder];
   v15 = 1;
-  if (v14)
+  if (sortOrder)
   {
     v15 = [location[0] count] == 0;
   }
 
-  MEMORY[0x277D82BD8](v14);
+  MEMORY[0x277D82BD8](sortOrder);
   if (v15)
   {
     v28 = MEMORY[0x277D82BE0](location[0]);
@@ -2609,82 +2609,82 @@ LABEL_25:
   else
   {
     v24 = 0;
-    v12 = [(AMDFeatureDescriptor *)v27 version];
-    v13 = [(NSString *)v12 isEqualToString:@"v1"];
-    MEMORY[0x277D82BD8](v12);
+    version = [(AMDFeatureDescriptor *)selfCopy version];
+    v13 = [(NSString *)version isEqualToString:@"v1"];
+    MEMORY[0x277D82BD8](version);
     if (v13)
     {
-      v11 = [(AMDFeatureDescriptor *)v27 aggregatedProperty];
+      aggregatedProperty = [(AMDFeatureDescriptor *)selfCopy aggregatedProperty];
       v22 = 0;
       v20 = 0;
-      if (v11)
+      if (aggregatedProperty)
       {
-        v23 = [(AMDFeatureDescriptor *)v27 aggregatedProperty];
+        aggregatedProperty2 = [(AMDFeatureDescriptor *)selfCopy aggregatedProperty];
         v22 = 1;
-        objc_storeStrong(&v24, v23);
+        objc_storeStrong(&v24, aggregatedProperty2);
       }
 
       else
       {
-        v21 = [(AMDFeatureDescriptor *)v27 keyProperty];
+        keyProperty = [(AMDFeatureDescriptor *)selfCopy keyProperty];
         v20 = 1;
-        objc_storeStrong(&v24, v21);
+        objc_storeStrong(&v24, keyProperty);
       }
 
       if (v20)
       {
-        MEMORY[0x277D82BD8](v21);
+        MEMORY[0x277D82BD8](keyProperty);
       }
 
       if (v22)
       {
-        MEMORY[0x277D82BD8](v23);
+        MEMORY[0x277D82BD8](aggregatedProperty2);
       }
 
-      MEMORY[0x277D82BD8](v11);
+      MEMORY[0x277D82BD8](aggregatedProperty);
     }
 
     else
     {
-      v10 = [(AMDFeatureDescriptor *)v27 sortKey];
+      sortKey = [(AMDFeatureDescriptor *)selfCopy sortKey];
       v18 = 0;
       v16 = 0;
-      if (v10)
+      if (sortKey)
       {
-        v19 = [(AMDFeatureDescriptor *)v27 sortKey];
+        sortKey2 = [(AMDFeatureDescriptor *)selfCopy sortKey];
         v18 = 1;
-        objc_storeStrong(&v24, v19);
+        objc_storeStrong(&v24, sortKey2);
       }
 
       else
       {
-        v17 = [(AMDFeatureDescriptor *)v27 keyProperty];
+        keyProperty2 = [(AMDFeatureDescriptor *)selfCopy keyProperty];
         v16 = 1;
-        objc_storeStrong(&v24, v17);
+        objc_storeStrong(&v24, keyProperty2);
       }
 
       if (v16)
       {
-        MEMORY[0x277D82BD8](v17);
+        MEMORY[0x277D82BD8](keyProperty2);
       }
 
       if (v18)
       {
-        MEMORY[0x277D82BD8](v19);
+        MEMORY[0x277D82BD8](sortKey2);
       }
 
-      MEMORY[0x277D82BD8](v10);
+      MEMORY[0x277D82BD8](sortKey);
     }
 
-    v6 = [location[0] firstObject];
-    v5 = [v6 objectForKey:v24];
+    firstObject = [location[0] firstObject];
+    v5 = [firstObject objectForKey:v24];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
-    v8 = [(AMDFeatureDescriptor *)v27 sortOrder];
-    v9 = [(NSNumber *)v8 intValue]== 0;
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](firstObject);
+    sortOrder2 = [(AMDFeatureDescriptor *)selfCopy sortOrder];
+    v9 = [(NSNumber *)sortOrder2 intValue]== 0;
+    MEMORY[0x277D82BD8](sortOrder2);
     v28 = [AMDMiscHelpers sortArrayElements:location[0] inDescendingOrder:v9 withComparisonKey:v24 isKeyString:isKindOfClass & 1];
     v25 = 1;
     objc_storeStrong(&v24, 0);
@@ -2696,13 +2696,13 @@ LABEL_25:
   return v3;
 }
 
-- (id)prepareDictionaryResult:(id)a3
+- (id)prepareDictionaryResult:(id)result
 {
   v31 = *MEMORY[0x277D85DE8];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, result);
   v20 = objc_alloc(MEMORY[0x277CBEB38]);
   v27 = [v20 initWithCapacity:{objc_msgSend(location[0], "count")}];
   memset(__b, 0, sizeof(__b));
@@ -2723,30 +2723,30 @@ LABEL_25:
 
       v26 = *(__b[1] + 8 * v18);
       v14 = v26;
-      v15 = [(AMDFeatureDescriptor *)v29 keyProperty];
+      keyProperty = [(AMDFeatureDescriptor *)selfCopy keyProperty];
       v24 = [v14 objectForKey:?];
-      MEMORY[0x277D82BD8](v15);
+      MEMORY[0x277D82BD8](keyProperty);
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v3 = [v24 stringValue];
+        stringValue = [v24 stringValue];
         v4 = v24;
-        v24 = v3;
+        v24 = stringValue;
         MEMORY[0x277D82BD8](v4);
       }
 
       v8 = v27;
       v7 = v26;
-      v10 = [(AMDFeatureDescriptor *)v29 aggregatedProperty];
+      aggregatedProperty = [(AMDFeatureDescriptor *)selfCopy aggregatedProperty];
       v9 = [v7 objectForKey:?];
       [v8 setObject:? forKey:?];
       MEMORY[0x277D82BD8](v9);
-      MEMORY[0x277D82BD8](v10);
+      MEMORY[0x277D82BD8](aggregatedProperty);
       v13 = [v27 count];
-      v11 = [(AMDFeatureDescriptor *)v29 maxRecords];
-      v12 = [(NSNumber *)v11 integerValue];
-      MEMORY[0x277D82BD8](v11);
-      if (v13 == v12)
+      maxRecords = [(AMDFeatureDescriptor *)selfCopy maxRecords];
+      integerValue = [(NSNumber *)maxRecords integerValue];
+      MEMORY[0x277D82BD8](maxRecords);
+      if (v13 == integerValue)
       {
         v23 = 2;
       }
@@ -2784,13 +2784,13 @@ LABEL_25:
   return v6;
 }
 
-- (id)prepareArrayResult:(id)a3
+- (id)prepareArrayResult:(id)result
 {
   v43 = *MEMORY[0x277D85DE8];
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, result);
   v36 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v35 = 0;
   memset(__b, 0, sizeof(__b));
@@ -2849,9 +2849,9 @@ LABEL_25:
             v11 = [v34 objectForKey:v32];
             [v10 addObject:?];
             MEMORY[0x277D82BD8](v11);
-            v12 = [(AMDFeatureDescriptor *)v38 propertyDict];
-            v28 = [(NSMutableDictionary *)v12 objectForKey:v32];
-            MEMORY[0x277D82BD8](v12);
+            propertyDict = [(AMDFeatureDescriptor *)selfCopy propertyDict];
+            v28 = [(NSMutableDictionary *)propertyDict objectForKey:v32];
+            MEMORY[0x277D82BD8](propertyDict);
             [v30 setObject:v29 forKey:@"featureValue"];
             [v30 setObject:v28 forKey:@"featureFormat"];
             [v36 setObject:v30 forKey:v32];
@@ -2875,10 +2875,10 @@ LABEL_25:
 
       MEMORY[0x277D82BD8](v18);
       v7 = ++v35;
-      v5 = [(AMDFeatureDescriptor *)v38 maxRecords];
-      v6 = [(NSNumber *)v5 integerValue];
-      MEMORY[0x277D82BD8](v5);
-      if (v7 == v6)
+      maxRecords = [(AMDFeatureDescriptor *)selfCopy maxRecords];
+      integerValue = [(NSNumber *)maxRecords integerValue];
+      MEMORY[0x277D82BD8](maxRecords);
+      if (v7 == integerValue)
       {
         break;
       }
@@ -2909,18 +2909,18 @@ LABEL_25:
   return v4;
 }
 
-- (id)prepareResult:(id)a3
+- (id)prepareResult:(id)result
 {
   v27 = *MEMORY[0x277D85DE8];
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = [(AMDFeatureDescriptor *)v24 aggregatedProperty];
-  MEMORY[0x277D82BD8](v19);
-  if (v19)
+  objc_storeStrong(location, result);
+  aggregatedProperty = [(AMDFeatureDescriptor *)selfCopy aggregatedProperty];
+  MEMORY[0x277D82BD8](aggregatedProperty);
+  if (aggregatedProperty)
   {
-    v25 = [(AMDFeatureDescriptor *)v24 prepareDictionaryResult:location[0]];
+    v25 = [(AMDFeatureDescriptor *)selfCopy prepareDictionaryResult:location[0]];
   }
 
   else
@@ -2946,16 +2946,16 @@ LABEL_25:
         v21 = *(__b[1] + 8 * v14);
         v6 = v22;
         v5 = v21;
-        v8 = [(AMDFeatureDescriptor *)v24 keyProperty];
+        keyProperty = [(AMDFeatureDescriptor *)selfCopy keyProperty];
         v7 = [v5 objectForKey:?];
         [v6 addObject:?];
         MEMORY[0x277D82BD8](v7);
-        MEMORY[0x277D82BD8](v8);
+        MEMORY[0x277D82BD8](keyProperty);
         v11 = [v22 count];
-        v9 = [(AMDFeatureDescriptor *)v24 maxRecords];
-        v10 = [(NSNumber *)v9 integerValue];
-        MEMORY[0x277D82BD8](v9);
-        if (v11 == v10)
+        maxRecords = [(AMDFeatureDescriptor *)selfCopy maxRecords];
+        integerValue = [(NSNumber *)maxRecords integerValue];
+        MEMORY[0x277D82BD8](maxRecords);
+        if (v11 == integerValue)
         {
           break;
         }

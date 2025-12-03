@@ -1,26 +1,26 @@
 @interface VKCRemoveBackgroundVideoPreviewResult
 - ($58EB755F713D70195D081A2438463C76)timeRange;
 - (CGRect)normalizedCropRect;
-- (VKCRemoveBackgroundVideoPreviewResult)initWithMADVideoPreviewResult:(id)a3 error:(id)a4;
-- (id)subjectMatteAtCompositionTime:(id *)a3;
-- (id)subjectMatteForImage:(id)a3 atCompositionTime:(id *)a4;
+- (VKCRemoveBackgroundVideoPreviewResult)initWithMADVideoPreviewResult:(id)result error:(id)error;
+- (id)subjectMatteAtCompositionTime:(id *)time;
+- (id)subjectMatteForImage:(id)image atCompositionTime:(id *)time;
 @end
 
 @implementation VKCRemoveBackgroundVideoPreviewResult
 
-- (VKCRemoveBackgroundVideoPreviewResult)initWithMADVideoPreviewResult:(id)a3 error:(id)a4
+- (VKCRemoveBackgroundVideoPreviewResult)initWithMADVideoPreviewResult:(id)result error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = VKCRemoveBackgroundVideoPreviewResult;
   v9 = [(VKCRemoveBackgroundVideoPreviewResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_madResult, a3);
-    v10->_successful = v7 != 0;
-    objc_storeStrong(&v10->_error, a4);
+    objc_storeStrong(&v9->_madResult, result);
+    v10->_successful = resultCopy != 0;
+    objc_storeStrong(&v10->_error, error);
   }
 
   return v10;
@@ -62,7 +62,7 @@
   return result;
 }
 
-- (id)subjectMatteAtCompositionTime:(id *)a3
+- (id)subjectMatteAtCompositionTime:(id *)time
 {
   v26 = *MEMORY[0x1E69E9840];
   memset(&v24, 0, sizeof(v24));
@@ -81,18 +81,18 @@
 
   *&rhs.value = v20;
   rhs.epoch = v21;
-  lhs = *a3;
+  lhs = *time;
   CMTimeSubtract(&v24, &lhs, &rhs);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(_MADVideoRemoveBackgroundPreviewResult *)self->_madResult frames];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v25 count:16];
+  frames = [(_MADVideoRemoveBackgroundPreviewResult *)self->_madResult frames];
+  v7 = [frames countByEnumeratingWithState:&v15 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
-    v9 = 0;
+    pixelBuffer = 0;
     v10 = *v16;
 LABEL_6:
     v11 = 0;
@@ -100,7 +100,7 @@ LABEL_6:
     {
       if (*v16 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(frames);
       }
 
       v12 = *(*(&v15 + 1) + 8 * v11);
@@ -120,10 +120,10 @@ LABEL_6:
         break;
       }
 
-      v9 = [v12 pixelBuffer];
+      pixelBuffer = [v12 pixelBuffer];
       if (v8 == ++v11)
       {
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v25 count:16];
+        v8 = [frames countByEnumeratingWithState:&v15 objects:v25 count:16];
         if (v8)
         {
           goto LABEL_6;
@@ -133,9 +133,9 @@ LABEL_6:
       }
     }
 
-    if (v9)
+    if (pixelBuffer)
     {
-      v13 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:v9];
+      v13 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:pixelBuffer];
       goto LABEL_19;
     }
   }
@@ -150,15 +150,15 @@ LABEL_19:
   return v13;
 }
 
-- (id)subjectMatteForImage:(id)a3 atCompositionTime:(id *)a4
+- (id)subjectMatteForImage:(id)image atCompositionTime:(id *)time
 {
-  v6 = a3;
-  *&v16.a = *&a4->var0;
-  *&v16.c = a4->var3;
+  imageCopy = image;
+  *&v16.a = *&time->var0;
+  *&v16.c = time->var3;
   v7 = [(VKCRemoveBackgroundVideoPreviewResult *)self subjectMatteAtCompositionTime:&v16];
   if (v7)
   {
-    [v6 extent];
+    [imageCopy extent];
     v9 = v8;
     v11 = v10;
     [v7 extent];

@@ -1,46 +1,46 @@
 @interface WBSCRDTGeneration
-- (BOOL)isEqual:(id)a3;
-- (WBSCRDTGeneration)initWithCoder:(id)a3;
-- (WBSCRDTGeneration)initWithDeviceIdentifier:(id)a3 generation:(unint64_t)a4;
-- (id)incrementedGenerationWithDeviceIdentifier:(id)a3;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WBSCRDTGeneration)initWithCoder:(id)coder;
+- (WBSCRDTGeneration)initWithDeviceIdentifier:(id)identifier generation:(unint64_t)generation;
+- (id)incrementedGenerationWithDeviceIdentifier:(id)identifier;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSCRDTGeneration
 
-- (WBSCRDTGeneration)initWithDeviceIdentifier:(id)a3 generation:(unint64_t)a4
+- (WBSCRDTGeneration)initWithDeviceIdentifier:(id)identifier generation:(unint64_t)generation
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = WBSCRDTGeneration;
   v7 = [(WBSCRDTGeneration *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     deviceIdentifier = v7->_deviceIdentifier;
     v7->_deviceIdentifier = v8;
 
-    v7->_generation = a4;
+    v7->_generation = generation;
     v10 = v7;
   }
 
   return v7;
 }
 
-- (id)incrementedGenerationWithDeviceIdentifier:(id)a3
+- (id)incrementedGenerationWithDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithDeviceIdentifier:v4 generation:self->_generation + 1];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(objc_opt_class()) initWithDeviceIdentifier:identifierCopy generation:self->_generation + 1];
 
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   generation = self->_generation;
-  v6 = v4[2];
+  v6 = compareCopy[2];
   if (generation >= v6)
   {
     if (generation > v6)
@@ -50,7 +50,7 @@
 
     else
     {
-      v7 = [(NSString *)self->_deviceIdentifier compare:v4[1]];
+      v7 = [(NSString *)self->_deviceIdentifier compare:compareCopy[1]];
     }
   }
 
@@ -62,18 +62,18 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && self->_generation == v6->_generation)
     {
@@ -89,22 +89,22 @@
   return v7;
 }
 
-- (WBSCRDTGeneration)initWithCoder:(id)a3
+- (WBSCRDTGeneration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
-  v6 = [v4 decodeIntegerForKey:@"generation"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"generation"];
 
   v7 = [(WBSCRDTGeneration *)self initWithDeviceIdentifier:v5 generation:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceIdentifier = self->_deviceIdentifier;
-  v5 = a3;
-  [v5 encodeObject:deviceIdentifier forKey:@"deviceIdentifier"];
-  [v5 encodeInteger:self->_generation forKey:@"generation"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceIdentifier forKey:@"deviceIdentifier"];
+  [coderCopy encodeInteger:self->_generation forKey:@"generation"];
 }
 
 @end

@@ -3,7 +3,7 @@
 - (HMIMemorySampler)init;
 - (void)start;
 - (void)stop;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMIMemorySampler
@@ -49,20 +49,20 @@ uint64_t __34__HMIMemorySampler_sharedInstance__block_invoke()
 
 - (void)start
 {
-  v2 = [(HMIMemorySampler *)self tick];
-  [v2 resume];
+  tick = [(HMIMemorySampler *)self tick];
+  [tick resume];
 }
 
 - (void)stop
 {
-  v2 = [(HMIMemorySampler *)self tick];
-  [v2 suspend];
+  tick = [(HMIMemorySampler *)self tick];
+  [tick suspend];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   v5 = objc_autoreleasePoolPush();
   v6 = getpid();
   v53 = 0u;
@@ -121,7 +121,7 @@ uint64_t __34__HMIMemorySampler_sharedInstance__block_invoke()
     v20 = [v18 stringWithFormat:@"%9s", objc_msgSend(v19, "UTF8String")];
 
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
@@ -138,7 +138,7 @@ uint64_t __34__HMIMemorySampler_sharedInstance__block_invoke()
     }
 
     objc_autoreleasePoolPop(v21);
-    if (([(HMIMemorySampler *)v22 highWaterMark]& 0x8000000000000000) == 0 && v7 > [(HMIMemorySampler *)v22 highWaterMark])
+    if (([(HMIMemorySampler *)selfCopy highWaterMark]& 0x8000000000000000) == 0 && v7 > [(HMIMemorySampler *)selfCopy highWaterMark])
     {
       objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"OutOfMemory" reason:@"Reached high water mark." userInfo:0]);
     }

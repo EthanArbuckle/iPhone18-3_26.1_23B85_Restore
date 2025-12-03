@@ -1,27 +1,27 @@
 @interface HDHeartbeatSeriesFeatureStatusManagerServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
 + (id)requiredEntitlements;
-- (HDHeartbeatSeriesFeatureStatusManagerServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDHeartbeatSeriesFeatureStatusManagerServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (id)_clientRemoteObjectProxy;
-- (void)heartbeatSeriesFeatureStatusManager:(id)a3 didFailToUpdateWithError:(id)a4;
-- (void)heartbeatSeriesFeatureStatusManager:(id)a3 didUpdatePredominantFeature:(int64_t)a4;
-- (void)remote_startObservingChangesWithCompletion:(id)a3;
+- (void)heartbeatSeriesFeatureStatusManager:(id)manager didFailToUpdateWithError:(id)error;
+- (void)heartbeatSeriesFeatureStatusManager:(id)manager didUpdatePredominantFeature:(int64_t)feature;
+- (void)remote_startObservingChangesWithCompletion:(id)completion;
 @end
 
 @implementation HDHeartbeatSeriesFeatureStatusManagerServer
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
-  v16 = [v15 profileExtensionWithIdentifier:*MEMORY[0x277D12F10]];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  v16 = [profile profileExtensionWithIdentifier:*MEMORY[0x277D12F10]];
 
   if (v16)
   {
-    v17 = [[HDHeartbeatSeriesFeatureStatusManagerServer alloc] initWithUUID:v11 configuration:v12 client:v13 delegate:v14];
+    v17 = [[HDHeartbeatSeriesFeatureStatusManagerServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
   }
 
   else
@@ -29,10 +29,10 @@
     v18 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"No profile extension found for %@", objc_opt_class()}];
     if (v18)
     {
-      if (a7)
+      if (error)
       {
         v19 = v18;
-        *a7 = v18;
+        *error = v18;
       }
 
       else
@@ -47,15 +47,15 @@
   return v17;
 }
 
-- (HDHeartbeatSeriesFeatureStatusManagerServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDHeartbeatSeriesFeatureStatusManagerServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a5;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = HDHeartbeatSeriesFeatureStatusManagerServer;
-  v11 = [(HDStandardTaskServer *)&v15 initWithUUID:a3 configuration:a4 client:v10 delegate:a6];
+  v11 = [(HDStandardTaskServer *)&v15 initWithUUID:d configuration:configuration client:clientCopy delegate:delegate];
   if (v11)
   {
-    v12 = [[HDHeartbeatSeriesFeatureStatusManager alloc] initWithClient:v10];
+    v12 = [[HDHeartbeatSeriesFeatureStatusManager alloc] initWithClient:clientCopy];
     manager = v11->_manager;
     v11->_manager = v12;
   }
@@ -63,15 +63,15 @@
   return v11;
 }
 
-- (void)remote_startObservingChangesWithCompletion:(id)a3
+- (void)remote_startObservingChangesWithCompletion:(id)completion
 {
   manager = self->_manager;
-  v5 = a3;
+  completionCopy = completion;
   [(HDHeartbeatSeriesFeatureStatusManager *)manager startObservingChangesWithDelegate:self];
-  [(HDHeartbeatSeriesFeatureStatusManager *)self->_manager getPredominantFeatureWithCompletion:v5];
+  [(HDHeartbeatSeriesFeatureStatusManager *)self->_manager getPredominantFeatureWithCompletion:completionCopy];
 }
 
-- (void)heartbeatSeriesFeatureStatusManager:(id)a3 didUpdatePredominantFeature:(int64_t)a4
+- (void)heartbeatSeriesFeatureStatusManager:(id)manager didUpdatePredominantFeature:(int64_t)feature
 {
   _HKInitializeLogging();
   v6 = HKLogHeartRateCategory();
@@ -86,13 +86,13 @@
     }
   }
 
-  v9 = [(HDHeartbeatSeriesFeatureStatusManagerServer *)self _clientRemoteObjectProxy];
-  [v9 client_heartbeatSeriesFeatureStatusManagerDidUpdatePredominantFeature:a4];
+  _clientRemoteObjectProxy = [(HDHeartbeatSeriesFeatureStatusManagerServer *)self _clientRemoteObjectProxy];
+  [_clientRemoteObjectProxy client_heartbeatSeriesFeatureStatusManagerDidUpdatePredominantFeature:feature];
 }
 
-- (void)heartbeatSeriesFeatureStatusManager:(id)a3 didFailToUpdateWithError:(id)a4
+- (void)heartbeatSeriesFeatureStatusManager:(id)manager didFailToUpdateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   _HKInitializeLogging();
   v6 = HKLogHeartRateCategory();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
@@ -106,17 +106,17 @@
     }
   }
 
-  v9 = [(HDHeartbeatSeriesFeatureStatusManagerServer *)self _clientRemoteObjectProxy];
-  [v9 client_heartbeatSeriesFeatureStatusManagerDidFailToUpdateWithError:v5];
+  _clientRemoteObjectProxy = [(HDHeartbeatSeriesFeatureStatusManagerServer *)self _clientRemoteObjectProxy];
+  [_clientRemoteObjectProxy client_heartbeatSeriesFeatureStatusManagerDidFailToUpdateWithError:errorCopy];
 }
 
 - (id)_clientRemoteObjectProxy
 {
-  v2 = [(HDStandardTaskServer *)self client];
-  v3 = [v2 connection];
-  v4 = [v3 remoteObjectProxy];
+  client = [(HDStandardTaskServer *)self client];
+  connection = [client connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v4;
+  return remoteObjectProxy;
 }
 
 + (id)requiredEntitlements

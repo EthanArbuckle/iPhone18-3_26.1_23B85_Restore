@@ -1,10 +1,10 @@
 @interface CVACalibration
 + (id)classes;
-+ (id)withData:(id)a3;
-- (CVACalibration)initWithCoder:(id)a3;
++ (id)withData:(id)data;
+- (CVACalibration)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (id)dictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVACalibration
@@ -25,11 +25,11 @@
   return v3;
 }
 
-+ (id)withData:(id)a3
++ (id)withData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[CVACalibration classes];
-  v5 = [CVAMetadataWrapper decodeNSCoderObject:v3 classes:v4];
+  v5 = [CVAMetadataWrapper decodeNSCoderObject:dataCopy classes:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -47,20 +47,20 @@
   return v6;
 }
 
-- (CVACalibration)initWithCoder:(id)a3
+- (CVACalibration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CVACalibration;
   v5 = [(CVACalibration *)&v12 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectForKey:@"ccl"];
+    v7 = [coderCopy decodeObjectForKey:@"ccl"];
     cameraCalibrations = v5->_cameraCalibrations;
     v5->_cameraCalibrations = v7;
 
-    v9 = [v4 decodeObjectForKey:@"imui"];
+    v9 = [coderCopy decodeObjectForKey:@"imui"];
     imuCalibration = v5->_imuCalibration;
     v5->_imuCalibration = v9;
 
@@ -70,12 +70,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
-  [v5 encodeObject:self->_cameraCalibrations forKey:@"ccl"];
-  [v5 encodeObject:self->_imuCalibration forKey:@"imui"];
+  [coderCopy encodeObject:self->_cameraCalibrations forKey:@"ccl"];
+  [coderCopy encodeObject:self->_imuCalibration forKey:@"imui"];
   objc_autoreleasePoolPop(v4);
 }
 
@@ -102,8 +102,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) dictionary];
-        [v3 addObject:v9];
+        dictionary = [*(*(&v14 + 1) + 8 * i) dictionary];
+        [v3 addObject:dictionary];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v14 objects:v20 count:16];
@@ -115,8 +115,8 @@
   v18[0] = @"ccl";
   v18[1] = @"imui";
   v19[0] = v3;
-  v10 = [(CVAIMUCalibration *)self->_imuCalibration dictionary];
-  v19[1] = v10;
+  dictionary2 = [(CVAIMUCalibration *)self->_imuCalibration dictionary];
+  v19[1] = dictionary2;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -128,8 +128,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CVACalibration *)self dictionary];
-  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, v5];
+  dictionary = [(CVACalibration *)self dictionary];
+  v6 = [v3 stringWithFormat:@"<%@: %@>", v4, dictionary];
 
   return v6;
 }

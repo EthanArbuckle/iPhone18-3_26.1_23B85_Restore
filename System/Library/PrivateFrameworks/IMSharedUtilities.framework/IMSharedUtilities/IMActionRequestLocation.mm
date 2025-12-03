@@ -1,14 +1,14 @@
 @interface IMActionRequestLocation
 - (IMActionRequestLocation)init;
-- (IMActionRequestLocation)initWithSendPush:(BOOL)a3;
+- (IMActionRequestLocation)initWithSendPush:(BOOL)push;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation IMActionRequestLocation
 
-- (IMActionRequestLocation)initWithSendPush:(BOOL)a3
+- (IMActionRequestLocation)initWithSendPush:(BOOL)push
 {
-  *(&self->super.isa + OBJC_IVAR___IMActionRequestLocation_sendPush) = a3;
+  *(&self->super.isa + OBJC_IVAR___IMActionRequestLocation_sendPush) = push;
   v4.receiver = self;
   v4.super_class = IMActionRequestLocation;
   return [(IMActionRequestLocation *)&v4 init];
@@ -21,8 +21,8 @@
   *(inited + 16) = xmmword_1A88E14F0;
   *(inited + 32) = 0x68737550646E6573;
   *(inited + 40) = 0xE800000000000000;
-  v4 = self;
-  [(IMActionRequestLocation *)v4 sendPush];
+  selfCopy = self;
+  [(IMActionRequestLocation *)selfCopy sendPush];
   v5 = sub_1A88C86C8();
   *(inited + 72) = sub_1A85E9718(0, &qword_1ED8C9450);
   *(inited + 48) = v5;

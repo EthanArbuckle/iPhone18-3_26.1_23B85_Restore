@@ -1,7 +1,7 @@
 @interface VSPreferences
 - (BOOL)allowInsecureAuthContext;
 - (BOOL)allowNonSystemTrust;
-- (BOOL)featureIsEnabled:(id)a3 present:(BOOL *)a4;
+- (BOOL)featureIsEnabled:(id)enabled present:(BOOL *)present;
 - (BOOL)flushMetrics;
 - (BOOL)hasChosenDesiredApp;
 - (BOOL)ignoreSetTopBoxProfile;
@@ -28,57 +28,57 @@
 - (int64_t)cachedDeveloperProviderStatus;
 - (int64_t)cachedStoreProviderStatus;
 - (int64_t)forcedAvailabilityStatus;
-- (void)_updateValue:(id)a3 forKey:(id)a4;
-- (void)clearFeature:(id)a3;
+- (void)_updateValue:(id)value forKey:(id)key;
+- (void)clearFeature:(id)feature;
 - (void)clearSetTopBoxActivationTime;
-- (void)disableFeature:(id)a3;
-- (void)enableFeature:(id)a3;
-- (void)setCachedAvailabilityStatus:(int64_t)a3;
-- (void)setCachedDeveloperProviderStatus:(int64_t)a3;
-- (void)setCachedStoreProviderStatus:(int64_t)a3;
-- (void)setIgnoreSetTopBoxProfile:(BOOL)a3;
-- (void)setIsInSTBMode:(BOOL)a3;
-- (void)setMetricUserID:(id)a3;
+- (void)disableFeature:(id)feature;
+- (void)enableFeature:(id)feature;
+- (void)setCachedAvailabilityStatus:(int64_t)status;
+- (void)setCachedDeveloperProviderStatus:(int64_t)status;
+- (void)setCachedStoreProviderStatus:(int64_t)status;
+- (void)setIgnoreSetTopBoxProfile:(BOOL)profile;
+- (void)setIsInSTBMode:(BOOL)mode;
+- (void)setMetricUserID:(id)d;
 - (void)setPerformedSubcriptionToUserAccountMigration;
 - (void)setSetTopBoxActivationTime;
-- (void)setVendorIdentifierDictionary:(id)a3;
+- (void)setVendorIdentifierDictionary:(id)dictionary;
 @end
 
 @implementation VSPreferences
 
 - (NSUserDefaults)userDefaults
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_userDefaults;
-  if (!v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  standardUserDefaults = selfCopy->_userDefaults;
+  if (!standardUserDefaults)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    objc_storeStrong(&v2->_userDefaults, v3);
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    objc_storeStrong(&selfCopy->_userDefaults, standardUserDefaults);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  if (!v3)
+  if (!standardUserDefaults)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The __orNil parameter must not be nil."];
   }
 
-  return v3;
+  return standardUserDefaults;
 }
 
 - (NSUserDefaults)globalUserDefaults
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_globalUserDefaults;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_globalUserDefaults;
   if (!v3)
   {
     v3 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.VideoSubscriberAccount"];
-    objc_storeStrong(&v2->_globalUserDefaults, v3);
+    objc_storeStrong(&selfCopy->_globalUserDefaults, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -90,16 +90,16 @@
 
 - (VSDevice)device
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_device;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_device;
   if (!v3)
   {
     v3 = +[VSDevice currentDevice];
-    objc_storeStrong(&v2->_device, v3);
+    objc_storeStrong(&selfCopy->_device, v3);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
@@ -109,103 +109,103 @@
   return v3;
 }
 
-- (void)_updateValue:(id)a3 forKey:(id)a4
+- (void)_updateValue:(id)value forKey:(id)key
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v7;
+    v14 = keyCopy;
     v15 = 2112;
-    v16 = v6;
+    v16 = valueCopy;
     _os_log_impl(&dword_23AB8E000, v8, OS_LOG_TYPE_DEFAULT, "Updating value for key %@ to %@", &v13, 0x16u);
   }
 
-  v9 = [(VSPreferences *)self userDefaults];
-  v10 = [(VSPreferences *)self undoManager];
-  if (v10)
+  userDefaults = [(VSPreferences *)self userDefaults];
+  undoManager = [(VSPreferences *)self undoManager];
+  if (undoManager)
   {
-    v11 = [v9 valueForKey:v7];
-    v12 = [v10 prepareWithInvocationTarget:self];
-    [v12 _updateValue:v11 forKey:v7];
+    v11 = [userDefaults valueForKey:keyCopy];
+    v12 = [undoManager prepareWithInvocationTarget:self];
+    [v12 _updateValue:v11 forKey:keyCopy];
   }
 
-  if (v6)
+  if (valueCopy)
   {
-    [v9 setValue:v6 forKey:v7];
+    [userDefaults setValue:valueCopy forKey:keyCopy];
   }
 
   else
   {
-    [v9 removeObjectForKey:v7];
+    [userDefaults removeObjectForKey:keyCopy];
   }
 }
 
 - (BOOL)shouldSkipSetup
 {
-  v2 = [(VSPreferences *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"VSSkipSetup"];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"VSSkipSetup"];
 
   return v3;
 }
 
 - (int64_t)cachedAvailabilityStatus
 {
-  v2 = [(VSPreferences *)self userDefaults];
-  v3 = [v2 integerForKey:@"VSIdentityProviderAvailabilityStatus"];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  v3 = [userDefaults integerForKey:@"VSIdentityProviderAvailabilityStatus"];
 
   return v3;
 }
 
-- (void)setCachedAvailabilityStatus:(int64_t)a3
+- (void)setCachedAvailabilityStatus:(int64_t)status
 {
-  v4 = [(VSPreferences *)self userDefaults];
-  [v4 setInteger:a3 forKey:@"VSIdentityProviderAvailabilityStatus"];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  [userDefaults setInteger:status forKey:@"VSIdentityProviderAvailabilityStatus"];
 }
 
 - (int64_t)cachedDeveloperProviderStatus
 {
-  v2 = [(VSPreferences *)self userDefaults];
-  v3 = [v2 integerForKey:@"VSDeveloperIdentityProviderAvailabilityStatus"];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  v3 = [userDefaults integerForKey:@"VSDeveloperIdentityProviderAvailabilityStatus"];
 
   return v3;
 }
 
-- (void)setCachedDeveloperProviderStatus:(int64_t)a3
+- (void)setCachedDeveloperProviderStatus:(int64_t)status
 {
-  v4 = [(VSPreferences *)self userDefaults];
-  [v4 setInteger:a3 forKey:@"VSDeveloperIdentityProviderAvailabilityStatus"];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  [userDefaults setInteger:status forKey:@"VSDeveloperIdentityProviderAvailabilityStatus"];
 }
 
 - (int64_t)cachedStoreProviderStatus
 {
-  v2 = [(VSPreferences *)self userDefaults];
-  v3 = [v2 integerForKey:@"VSStoreIdentityProviderAvailabilityStatus"];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  v3 = [userDefaults integerForKey:@"VSStoreIdentityProviderAvailabilityStatus"];
 
   return v3;
 }
 
-- (void)setCachedStoreProviderStatus:(int64_t)a3
+- (void)setCachedStoreProviderStatus:(int64_t)status
 {
-  v4 = [(VSPreferences *)self userDefaults];
-  [v4 setInteger:a3 forKey:@"VSStoreIdentityProviderAvailabilityStatus"];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  [userDefaults setInteger:status forKey:@"VSStoreIdentityProviderAvailabilityStatus"];
 }
 
 - (BOOL)allowNonSystemTrust
 {
-  v3 = [(VSPreferences *)self userDefaults];
-  if ([v3 BOOLForKey:@"VSIgnoreExtendedValidation"])
+  userDefaults = [(VSPreferences *)self userDefaults];
+  if ([userDefaults BOOLForKey:@"VSIgnoreExtendedValidation"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(VSPreferences *)self globalUserDefaults];
-    v4 = [v5 BOOLForKey:@"VSIgnoreExtendedValidation"];
+    globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+    v4 = [globalUserDefaults BOOLForKey:@"VSIgnoreExtendedValidation"];
   }
 
   return v4;
@@ -213,16 +213,16 @@
 
 - (BOOL)allowInsecureAuthContext
 {
-  v3 = [(VSPreferences *)self userDefaults];
-  if ([v3 BOOLForKey:@"VSAllowInsecureAuthContext"])
+  userDefaults = [(VSPreferences *)self userDefaults];
+  if ([userDefaults BOOLForKey:@"VSAllowInsecureAuthContext"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(VSPreferences *)self globalUserDefaults];
-    v4 = [v5 BOOLForKey:@"VSAllowInsecureAuthContext"];
+    globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+    v4 = [globalUserDefaults BOOLForKey:@"VSAllowInsecureAuthContext"];
   }
 
   return v4;
@@ -230,13 +230,13 @@
 
 - (NSURL)overridingAppBootURL
 {
-  v3 = [(VSPreferences *)self device];
-  v4 = [v3 isRunningAnInternalBuild];
+  device = [(VSPreferences *)self device];
+  isRunningAnInternalBuild = [device isRunningAnInternalBuild];
 
-  if (v4)
+  if (isRunningAnInternalBuild)
   {
-    v5 = [(VSPreferences *)self userDefaults];
-    v6 = [v5 stringForKey:@"vsa-boot-url"];
+    userDefaults = [(VSPreferences *)self userDefaults];
+    v6 = [userDefaults stringForKey:@"vsa-boot-url"];
 
     if ([v6 length])
     {
@@ -264,133 +264,133 @@
 
 - (BOOL)shouldDisableRequestTimeouts
 {
-  v3 = [(VSPreferences *)self device];
-  v4 = [v3 isRunningAnInternalBuild];
+  device = [(VSPreferences *)self device];
+  isRunningAnInternalBuild = [device isRunningAnInternalBuild];
 
-  if (!v4)
+  if (!isRunningAnInternalBuild)
   {
     return 0;
   }
 
-  v5 = [(VSPreferences *)self userDefaults];
-  v6 = [v5 BOOLForKey:@"vsa-disable-timeouts"];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  v6 = [userDefaults BOOLForKey:@"vsa-disable-timeouts"];
 
   return v6;
 }
 
 - (BOOL)shouldAlwaysAllowRemoteInspection
 {
-  v2 = [(VSPreferences *)self device];
-  v3 = [v2 isRunningAnInternalBuild];
+  device = [(VSPreferences *)self device];
+  isRunningAnInternalBuild = [device isRunningAnInternalBuild];
 
-  return v3;
+  return isRunningAnInternalBuild;
 }
 
 - (BOOL)hasChosenDesiredApp
 {
-  v2 = [(VSPreferences *)self userDefaults];
-  v3 = [v2 objectForKey:@"VSProviderAppInstallMetadata"];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  v3 = [userDefaults objectForKey:@"VSProviderAppInstallMetadata"];
 
   return v3 != 0;
 }
 
 - (BOOL)isInSTBMode
 {
-  v2 = [(VSPreferences *)self userDefaults];
-  v3 = [v2 objectForKey:@"VSProviderIsInSTBMode"];
-  v4 = [v3 BOOLValue];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  v3 = [userDefaults objectForKey:@"VSProviderIsInSTBMode"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setIsInSTBMode:(BOOL)a3
+- (void)setIsInSTBMode:(BOOL)mode
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:mode];
   [(VSPreferences *)self _updateValue:v4 forKey:@"VSProviderIsInSTBMode"];
 }
 
 - (BOOL)setTopBoxInfoIsSetTopBoxOverride
 {
-  v2 = [(VSPreferences *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"VSSetTopBoxInfoIsSetTopBoxOverride"];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"VSSetTopBoxInfoIsSetTopBoxOverride"];
 
   return v3;
 }
 
 - (NSString)setTopBoxInfoProviderIdOverride
 {
-  v2 = [(VSPreferences *)self userDefaults];
-  v3 = [v2 objectForKey:@"VSSetTopBoxInfoProviderIdOverride"];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  v3 = [userDefaults objectForKey:@"VSSetTopBoxInfoProviderIdOverride"];
 
   return v3;
 }
 
 - (NSString)setTopBoxInfoProviderDisplayNameOverride
 {
-  v2 = [(VSPreferences *)self userDefaults];
-  v3 = [v2 objectForKey:@"VSSetTopBoxInfoProviderDisplayNameOverride"];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  v3 = [userDefaults objectForKey:@"VSSetTopBoxInfoProviderDisplayNameOverride"];
 
   return v3;
 }
 
 - (NSString)setTopBoxInfoAppAdamIdOverride
 {
-  v2 = [(VSPreferences *)self userDefaults];
-  v3 = [v2 objectForKey:@"VSSetTopBoxInfoAppAdamIdOverride"];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  v3 = [userDefaults objectForKey:@"VSSetTopBoxInfoAppAdamIdOverride"];
 
   return v3;
 }
 
 - (NSString)setTopBoxInfoBundleIdentifierOverride
 {
-  v2 = [(VSPreferences *)self userDefaults];
-  v3 = [v2 objectForKey:@"VSSetTopBoxBundleIdentifierOverride"];
+  userDefaults = [(VSPreferences *)self userDefaults];
+  v3 = [userDefaults objectForKey:@"VSSetTopBoxBundleIdentifierOverride"];
 
   return v3;
 }
 
-- (void)setIgnoreSetTopBoxProfile:(BOOL)a3
+- (void)setIgnoreSetTopBoxProfile:(BOOL)profile
 {
-  v3 = a3;
-  v4 = [(VSPreferences *)self globalUserDefaults];
-  [v4 setBool:v3 forKey:@"VSIgnoreSetTopBoxProfile"];
+  profileCopy = profile;
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  [globalUserDefaults setBool:profileCopy forKey:@"VSIgnoreSetTopBoxProfile"];
 }
 
 - (BOOL)ignoreSetTopBoxProfile
 {
-  v2 = [(VSPreferences *)self globalUserDefaults];
-  v3 = [v2 BOOLForKey:@"VSIgnoreSetTopBoxProfile"];
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  v3 = [globalUserDefaults BOOLForKey:@"VSIgnoreSetTopBoxProfile"];
 
   return v3;
 }
 
 - (NSString)metricUserID
 {
-  v2 = [(VSPreferences *)self globalUserDefaults];
-  v3 = [v2 stringForKey:@"VSMetricUserID"];
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  v3 = [globalUserDefaults stringForKey:@"VSMetricUserID"];
 
   return v3;
 }
 
-- (void)setMetricUserID:(id)a3
+- (void)setMetricUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(VSPreferences *)self globalUserDefaults];
-  [v5 setObject:v4 forKey:@"VSMetricUserID"];
+  dCopy = d;
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  [globalUserDefaults setObject:dCopy forKey:@"VSMetricUserID"];
 
   v6 = MEMORY[0x277CCABB0];
   v7 = [MEMORY[0x277CBEAA8] now];
   [v7 timeIntervalSince1970];
   v9 = [v6 numberWithDouble:?];
 
-  v8 = [(VSPreferences *)self globalUserDefaults];
-  [v8 setObject:v9 forKey:@"VSMetricUserIDLastGenerated"];
+  globalUserDefaults2 = [(VSPreferences *)self globalUserDefaults];
+  [globalUserDefaults2 setObject:v9 forKey:@"VSMetricUserIDLastGenerated"];
 }
 
 - (NSDate)setTopBoxActivationTime
 {
-  v2 = [(VSPreferences *)self globalUserDefaults];
-  [v2 doubleForKey:@"VSSetTopBoxActivationTime"];
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  [globalUserDefaults doubleForKey:@"VSSetTopBoxActivationTime"];
   v4 = v3;
 
   if (v4 <= 0.0)
@@ -408,24 +408,24 @@
 
 - (void)setSetTopBoxActivationTime
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v5 = v4;
 
-  v6 = [(VSPreferences *)self globalUserDefaults];
-  [v6 setDouble:@"VSSetTopBoxActivationTime" forKey:v5];
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  [globalUserDefaults setDouble:@"VSSetTopBoxActivationTime" forKey:v5];
 }
 
 - (void)clearSetTopBoxActivationTime
 {
-  v2 = [(VSPreferences *)self globalUserDefaults];
-  [v2 removeObjectForKey:@"VSSetTopBoxActivationTime"];
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  [globalUserDefaults removeObjectForKey:@"VSSetTopBoxActivationTime"];
 }
 
 - (NSDate)metricUserIDLastGenerated
 {
-  v2 = [(VSPreferences *)self globalUserDefaults];
-  v3 = [v2 integerForKey:@"VSMetricUserIDLastGenerated"];
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  v3 = [globalUserDefaults integerForKey:@"VSMetricUserIDLastGenerated"];
 
   if (v3)
   {
@@ -440,69 +440,69 @@
   return v4;
 }
 
-- (BOOL)featureIsEnabled:(id)a3 present:(BOOL *)a4
+- (BOOL)featureIsEnabled:(id)enabled present:(BOOL *)present
 {
-  v6 = a3;
-  v7 = [(VSPreferences *)self globalUserDefaults];
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"VSFeature", v6];
+  enabledCopy = enabled;
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  enabledCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"VSFeature", enabledCopy];
 
-  v9 = [v7 valueForKey:v8];
+  v9 = [globalUserDefaults valueForKey:enabledCopy];
 
-  if (a4)
+  if (present)
   {
-    *a4 = v9 != 0;
+    *present = v9 != 0;
   }
 
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  return v10;
+  return bOOLValue;
 }
 
-- (void)enableFeature:(id)a3
+- (void)enableFeature:(id)feature
 {
-  v4 = a3;
-  v6 = [(VSPreferences *)self globalUserDefaults];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"VSFeature", v4];
+  featureCopy = feature;
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  featureCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"VSFeature", featureCopy];
 
-  [v6 setBool:1 forKey:v5];
+  [globalUserDefaults setBool:1 forKey:featureCopy];
 }
 
-- (void)disableFeature:(id)a3
+- (void)disableFeature:(id)feature
 {
-  v4 = a3;
-  v6 = [(VSPreferences *)self globalUserDefaults];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"VSFeature", v4];
+  featureCopy = feature;
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  featureCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"VSFeature", featureCopy];
 
-  [v6 setBool:0 forKey:v5];
+  [globalUserDefaults setBool:0 forKey:featureCopy];
 }
 
-- (void)clearFeature:(id)a3
+- (void)clearFeature:(id)feature
 {
-  v4 = a3;
-  v6 = [(VSPreferences *)self globalUserDefaults];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"VSFeature", v4];
+  featureCopy = feature;
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  featureCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"VSFeature", featureCopy];
 
-  [v6 removeObjectForKey:v5];
+  [globalUserDefaults removeObjectForKey:featureCopy];
 }
 
 - (BOOL)performedSubcriptionToUserAccountMigration
 {
-  v2 = [(VSPreferences *)self globalUserDefaults];
-  v3 = [v2 BOOLForKey:@"VSPerformedSubToUserAccountMigration"];
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  v3 = [globalUserDefaults BOOLForKey:@"VSPerformedSubToUserAccountMigration"];
 
   return v3;
 }
 
 - (void)setPerformedSubcriptionToUserAccountMigration
 {
-  v2 = [(VSPreferences *)self globalUserDefaults];
-  [v2 setBool:1 forKey:@"VSPerformedSubToUserAccountMigration"];
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  [globalUserDefaults setBool:1 forKey:@"VSPerformedSubToUserAccountMigration"];
 }
 
 - (NSDictionary)vendorIdentifierDictionary
 {
-  v2 = [(VSPreferences *)self globalUserDefaults];
-  v3 = [v2 dictionaryForKey:@"VSVendorIdentifierTable"];
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  v3 = [globalUserDefaults dictionaryForKey:@"VSVendorIdentifierTable"];
 
   if (!v3)
   {
@@ -512,33 +512,33 @@
   return v3;
 }
 
-- (void)setVendorIdentifierDictionary:(id)a3
+- (void)setVendorIdentifierDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(VSPreferences *)self globalUserDefaults];
-  [v5 setObject:v4 forKey:@"VSVendorIdentifierTable"];
+  dictionaryCopy = dictionary;
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  [globalUserDefaults setObject:dictionaryCopy forKey:@"VSVendorIdentifierTable"];
 }
 
 - (BOOL)flushMetrics
 {
-  v2 = [(VSPreferences *)self globalUserDefaults];
-  v3 = [v2 BOOLForKey:@"VSFlushMetrics"];
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  v3 = [globalUserDefaults BOOLForKey:@"VSFlushMetrics"];
 
   return v3;
 }
 
 - (int64_t)forcedAvailabilityStatus
 {
-  v2 = [(VSPreferences *)self globalUserDefaults];
-  v3 = [v2 integerForKey:@"VSForcedAvailabilityStatus"];
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  v3 = [globalUserDefaults integerForKey:@"VSForcedAvailabilityStatus"];
 
   return v3;
 }
 
 - (NSString)forceSingleProviderID
 {
-  v2 = [(VSPreferences *)self globalUserDefaults];
-  v3 = [v2 stringForKey:@"VSForceSingleProvider"];
+  globalUserDefaults = [(VSPreferences *)self globalUserDefaults];
+  v3 = [globalUserDefaults stringForKey:@"VSForceSingleProvider"];
 
   return v3;
 }

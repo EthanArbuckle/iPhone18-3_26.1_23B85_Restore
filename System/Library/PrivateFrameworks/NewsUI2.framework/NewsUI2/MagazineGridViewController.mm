@@ -1,25 +1,25 @@
 @interface MagazineGridViewController
-- (_TtC7NewsUI226MagazineGridViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7NewsUI226MagazineGridViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)contentScrollView;
 - (void)doDoneAction;
 - (void)doDownloadAction;
 - (void)doRemoveDownloadsAction;
 - (void)doRemoveIssuesAndDownloadsAction;
 - (void)doSelectAllAction;
-- (void)scrollToTopAnimated:(BOOL)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollToTopAnimated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation MagazineGridViewController
 
-- (_TtC7NewsUI226MagazineGridViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI226MagazineGridViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -28,35 +28,35 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2196EEA10();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2196EEF30();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2196EF140(a3);
+  selfCopy = self;
+  sub_2196EF140(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2196EF3D0(a3);
+  selfCopy = self;
+  sub_2196EF3D0(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(MagazineGridViewController *)&v5 viewWillDisappear:v3];
+  [(MagazineGridViewController *)&v5 viewWillDisappear:disappearCopy];
   if (v4[OBJC_IVAR____TtC7NewsUI226MagazineGridViewController_viewControllerConfig] == 1)
   {
     swift_getObjectType();
@@ -64,57 +64,57 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   ObjectType = swift_getObjectType();
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = self;
-  [(MagazineGridViewController *)&v8 viewDidDisappear:v3];
-  if ([(MagazineGridViewController *)v6 isEditing])
+  selfCopy = self;
+  [(MagazineGridViewController *)&v8 viewDidDisappear:disappearCopy];
+  if ([(MagazineGridViewController *)selfCopy isEditing])
   {
-    v7.receiver = v6;
+    v7.receiver = selfCopy;
     v7.super_class = ObjectType;
     [(MagazineGridViewController *)&v7 setEditing:0 animated:0];
     sub_2196EF774(0, 0, 1);
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(MagazineGridViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
+  [(MagazineGridViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
   sub_2196F4468();
 }
 
 - (id)contentScrollView
 {
-  v2 = self;
+  selfCopy = self;
   sub_219BE8664();
   v3 = sub_219BE7BC4();
 
   return v3;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v6 = v7.receiver;
-  [(MagazineGridViewController *)&v7 setEditing:v5 animated:v4];
-  sub_2196EF774(v5, v4, 1);
+  [(MagazineGridViewController *)&v7 setEditing:editingCopy animated:animatedCopy];
+  sub_2196EF774(editingCopy, animatedCopy, 1);
 }
 
 - (void)doSelectAllAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_2196F0F70();
 }
 
@@ -129,30 +129,30 @@
 
 - (void)doDownloadAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_2196F17D0();
 }
 
 - (void)doRemoveIssuesAndDownloadsAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_2196F1F80(MEMORY[0x277D31B18], sub_2196F4740);
 }
 
 - (void)doRemoveDownloadsAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_2196F1F80(MEMORY[0x277D31B10], sub_2196F438C);
 }
 
-- (void)scrollToTopAnimated:(BOOL)a3
+- (void)scrollToTopAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = self;
+  animatedCopy = animated;
+  selfCopy = self;
   sub_219BE8664();
   v4 = sub_219BE7BC4();
 
-  [v4 ts:v3 scrollToTop:?];
+  [v4 ts:animatedCopy scrollToTop:?];
 }
 
 @end

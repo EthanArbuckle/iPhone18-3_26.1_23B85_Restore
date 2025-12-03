@@ -1,19 +1,19 @@
 @interface AVSampleBufferDisplayLayerContentLayer
-- (id)actionForKey:(id)a3;
+- (id)actionForKey:(id)key;
 @end
 
 @implementation AVSampleBufferDisplayLayerContentLayer
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
-  if (([a3 isEqualToString:@"contentsCDRStrength"] & 1) == 0 && (objc_msgSend(a3, "isEqualToString:", @"contentsEDRStrength") & 1) == 0 && !objc_msgSend(a3, "isEqualToString:", @"preferredDynamicRange"))
+  if (([key isEqualToString:@"contentsCDRStrength"] & 1) == 0 && (objc_msgSend(key, "isEqualToString:", @"contentsEDRStrength") & 1) == 0 && !objc_msgSend(key, "isEqualToString:", @"preferredDynamicRange"))
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = AVSampleBufferDisplayLayerContentLayer;
-  return [(AVSampleBufferDisplayLayerContentLayer *)&v6 actionForKey:a3];
+  return [(AVSampleBufferDisplayLayerContentLayer *)&v6 actionForKey:key];
 }
 
 @end

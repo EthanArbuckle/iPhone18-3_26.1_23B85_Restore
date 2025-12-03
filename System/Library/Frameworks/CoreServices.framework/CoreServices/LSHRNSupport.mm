@@ -1,10 +1,10 @@
 @interface LSHRNSupport
 + (BOOL)deviceConfiguredForHRN;
-+ (id)vendorIDFromVendorName:(id)a3 seedData:(id)a4 error:(id *)a5;
++ (id)vendorIDFromVendorName:(id)name seedData:(id)data error:(id *)error;
 + (void)deviceConfiguredForHRN;
 + (void)invalidateCache;
-+ (void)setActivationRecordOverride:(BOOL)a3;
-+ (void)setFeatureFlagOverride:(BOOL)a3;
++ (void)setActivationRecordOverride:(BOOL)override;
++ (void)setFeatureFlagOverride:(BOOL)override;
 @end
 
 @implementation LSHRNSupport
@@ -132,10 +132,10 @@ LABEL_29:
   os_unfair_lock_unlock(&hrnLock);
 }
 
-+ (void)setActivationRecordOverride:(BOOL)a3
++ (void)setActivationRecordOverride:(BOOL)override
 {
   v3 = 1;
-  if (!a3)
+  if (!override)
   {
     v3 = -1;
   }
@@ -143,10 +143,10 @@ LABEL_29:
   activationRecordOverride = v3;
 }
 
-+ (void)setFeatureFlagOverride:(BOOL)a3
++ (void)setFeatureFlagOverride:(BOOL)override
 {
   v3 = 1;
-  if (!a3)
+  if (!override)
   {
     v3 = -1;
   }
@@ -154,15 +154,15 @@ LABEL_29:
   featureFlagOverride = v3;
 }
 
-+ (id)vendorIDFromVendorName:(id)a3 seedData:(id)a4 error:(id *)a5
++ (id)vendorIDFromVendorName:(id)name seedData:(id)data error:(id *)error
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  dataCopy = data;
   v18[0] = 0;
   v18[1] = 0;
-  [v7 UTF8String];
-  strlen([v7 UTF8String]);
+  [nameCopy UTF8String];
+  strlen([nameCopy UTF8String]);
   Hkdf = CCKDFParametersCreateHkdf();
   if (Hkdf)
   {
@@ -176,9 +176,9 @@ LABEL_29:
 
   else
   {
-    v12 = v8;
-    [v8 bytes];
-    [v8 length];
+    v12 = dataCopy;
+    [dataCopy bytes];
+    [dataCopy length];
     if (!CCDeriveKey())
     {
       v14 = 0;
@@ -197,10 +197,10 @@ LABEL_29:
   v13 = 0;
   v14 = v10;
 LABEL_8:
-  if (a5 && v14)
+  if (error && v14)
   {
     v15 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   v16 = *MEMORY[0x1E69E9840];

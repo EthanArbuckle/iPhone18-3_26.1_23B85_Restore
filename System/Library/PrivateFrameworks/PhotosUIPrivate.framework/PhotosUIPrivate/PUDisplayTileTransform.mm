@@ -1,5 +1,5 @@
 @interface PUDisplayTileTransform
-+ (PUDisplayTileTransform)displayTileTransformWithModelTileTransform:(id)a3 initialScale:(double)a4 initialSize:(CGSize)a5 displaySize:(CGSize)a6 secondaryDisplayTileTransform:(id)a7;
++ (PUDisplayTileTransform)displayTileTransformWithModelTileTransform:(id)transform initialScale:(double)scale initialSize:(CGSize)size displaySize:(CGSize)displaySize secondaryDisplayTileTransform:(id)tileTransform;
 - (CGAffineTransform)affineTransform;
 - (CGSize)_displaySize;
 - (CGSize)_initialSize;
@@ -7,8 +7,8 @@
 - (PUDisplayTileTransform)init;
 - (PUModelTileTransform)modelTileTransform;
 - (id)description;
-- (id)newDisplayTileTransformWithUserAffineTransform:(CGAffineTransform *)a3 userInputOriginIdentifier:(id)a4 isZoomedOut:(BOOL)a5;
-- (void)_setAffineTransform:(CGAffineTransform *)a3;
+- (id)newDisplayTileTransformWithUserAffineTransform:(CGAffineTransform *)transform userInputOriginIdentifier:(id)identifier isZoomedOut:(BOOL)out;
+- (void)_setAffineTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation PUDisplayTileTransform
@@ -40,11 +40,11 @@
   return result;
 }
 
-- (void)_setAffineTransform:(CGAffineTransform *)a3
+- (void)_setAffineTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_affineTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_affineTransform.c = *&transform->c;
   *&self->_affineTransform.tx = v4;
   *&self->_affineTransform.a = v3;
 }
@@ -63,10 +63,10 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PUDisplayTileTransform *)self hasUserInput];
+  hasUserInput = [(PUDisplayTileTransform *)self hasUserInput];
   [(PUDisplayTileTransform *)self affineTransform];
   v7 = NSStringFromCGAffineTransform(&transform);
-  v8 = [v3 stringWithFormat:@"<%@: %p hasUserInput:%i; affineTransform:%@>", v5, self, v6, v7];;
+  v8 = [v3 stringWithFormat:@"<%@: %p hasUserInput:%i; affineTransform:%@>", v5, self, hasUserInput, v7];;
 
   return v8;
 }
@@ -101,8 +101,8 @@
     v5 = v4;
     if (v4 == 0.0)
     {
-      v37 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v37 handleFailureInMethod:a2 object:self file:@"PUDisplayTileTransform.m" lineNumber:226 description:{@"Invalid parameter not satisfying: %@", @"initialScale != 0.0"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUDisplayTileTransform.m" lineNumber:226 description:{@"Invalid parameter not satisfying: %@", @"initialScale != 0.0"}];
     }
 
     v6 = v39 / v5;
@@ -182,28 +182,28 @@
 
     v32 = fmax(fmin(*(&v40 + 1) / v27, 0.5), -0.5);
     v33 = [PUModelTileTransform alloc];
-    v34 = [(PUDisplayTileTransform *)self userInputOriginIdentifier];
-    v35 = [(PUModelTileTransform *)v33 initWithNormalizedTranslation:v34 overscroll:[(PUDisplayTileTransform *)self isZoomedOut] scale:v26 userInputOriginIdentifier:v32 isZoomedOut:v25, v31, v6];
+    userInputOriginIdentifier = [(PUDisplayTileTransform *)self userInputOriginIdentifier];
+    initWithNoUserInput = [(PUModelTileTransform *)v33 initWithNormalizedTranslation:userInputOriginIdentifier overscroll:[(PUDisplayTileTransform *)self isZoomedOut] scale:v26 userInputOriginIdentifier:v32 isZoomedOut:v25, v31, v6];
   }
 
   else
   {
-    v35 = [[PUModelTileTransform alloc] initWithNoUserInput];
+    initWithNoUserInput = [[PUModelTileTransform alloc] initWithNoUserInput];
   }
 
-  return v35;
+  return initWithNoUserInput;
 }
 
-- (id)newDisplayTileTransformWithUserAffineTransform:(CGAffineTransform *)a3 userInputOriginIdentifier:(id)a4 isZoomedOut:(BOOL)a5
+- (id)newDisplayTileTransformWithUserAffineTransform:(CGAffineTransform *)transform userInputOriginIdentifier:(id)identifier isZoomedOut:(BOOL)out
 {
-  v5 = a5;
-  v8 = a4;
+  outCopy = out;
+  identifierCopy = identifier;
   v9 = objc_alloc_init(PUDisplayTileTransform);
   [(PUDisplayTileTransform *)v9 _setHasUserInput:1];
-  v10 = *&a3->c;
-  v12[0] = *&a3->a;
+  v10 = *&transform->c;
+  v12[0] = *&transform->a;
   v12[1] = v10;
-  v12[2] = *&a3->tx;
+  v12[2] = *&transform->tx;
   [(PUDisplayTileTransform *)v9 _setAffineTransform:v12];
   [(PUDisplayTileTransform *)self _initialScale];
   [(PUDisplayTileTransform *)v9 _setInitialScale:?];
@@ -211,52 +211,52 @@
   [(PUDisplayTileTransform *)v9 _setInitialSize:?];
   [(PUDisplayTileTransform *)self _displaySize];
   [(PUDisplayTileTransform *)v9 _setDisplaySize:?];
-  [(PUDisplayTileTransform *)v9 _setUserInputOriginIdentifier:v8];
+  [(PUDisplayTileTransform *)v9 _setUserInputOriginIdentifier:identifierCopy];
 
   [(PUDisplayTileTransform *)self transformPadding];
   [(PUDisplayTileTransform *)v9 _setTransformPadding:?];
-  [(PUDisplayTileTransform *)v9 _setZoomedOut:v5];
+  [(PUDisplayTileTransform *)v9 _setZoomedOut:outCopy];
   return v9;
 }
 
-+ (PUDisplayTileTransform)displayTileTransformWithModelTileTransform:(id)a3 initialScale:(double)a4 initialSize:(CGSize)a5 displaySize:(CGSize)a6 secondaryDisplayTileTransform:(id)a7
++ (PUDisplayTileTransform)displayTileTransformWithModelTileTransform:(id)transform initialScale:(double)scale initialSize:(CGSize)size displaySize:(CGSize)displaySize secondaryDisplayTileTransform:(id)tileTransform
 {
-  height = a6.height;
-  width = a6.width;
-  v9 = a5.height;
-  v10 = a5.width;
-  v14 = a3;
-  v15 = a7;
-  v77 = a4;
-  if (a4 == 0.0)
+  height = displaySize.height;
+  width = displaySize.width;
+  v9 = size.height;
+  v10 = size.width;
+  transformCopy = transform;
+  tileTransformCopy = tileTransform;
+  scaleCopy = scale;
+  if (scale == 0.0)
   {
-    v64 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v64 handleFailureInMethod:a2 object:a1 file:@"PUDisplayTileTransform.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"initialScale != 0.0f"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUDisplayTileTransform.m" lineNumber:126 description:{@"Invalid parameter not satisfying: %@", @"initialScale != 0.0f"}];
   }
 
-  v16 = [v14 hasUserInput];
-  [v14 normalizedTranslation];
+  hasUserInput = [transformCopy hasUserInput];
+  [transformCopy normalizedTranslation];
   v75 = v17;
   v76 = v18;
-  [v14 scale];
+  [transformCopy scale];
   v79 = v19;
-  [v14 overscroll];
+  [transformCopy overscroll];
   v22 = *MEMORY[0x1E695F060];
   v23 = *(MEMORY[0x1E695F060] + 8);
   v78 = v10;
-  if (v15)
+  if (tileTransformCopy)
   {
     v72 = v20;
     v73 = v21;
-    v24 = [v15 modelTileTransform];
-    [v15 _initialSize];
+    modelTileTransform = [tileTransformCopy modelTileTransform];
+    [tileTransformCopy _initialSize];
     v74 = v9;
     v26 = v25;
     v28 = v27;
-    [v15 _displaySize];
+    [tileTransformCopy _displaySize];
     v30 = v29;
     v32 = v31;
-    [v24 scale];
+    [modelTileTransform scale];
     v68 = v28 * v33;
     v70 = v26 * v33;
     v66 = fmin(fmax(width / v10, height / v74), fmax(v30 / v26, v32 / v28));
@@ -282,7 +282,7 @@
     v41 = fmin(width / v30, height / v32);
     v65 = height - v32 * v41;
     v67 = width - v30 * v41;
-    [v24 scale];
+    [modelTileTransform scale];
     v43 = v26 * v42;
     v9 = v74;
     v44 = v28 * v42;
@@ -414,17 +414,17 @@
   *&v82.tx = *&v83.tx;
   CGAffineTransformTranslate(&v83, &v82, v20, v21);
   v81 = v83;
-  CGAffineTransformScale(&v82, &v81, v79 * v77, v79 * v77);
+  CGAffineTransformScale(&v82, &v81, v79 * scaleCopy, v79 * scaleCopy);
   v83 = v82;
   v61 = objc_alloc_init(PUDisplayTileTransform);
-  [(PUDisplayTileTransform *)v61 _setHasUserInput:v16];
+  [(PUDisplayTileTransform *)v61 _setHasUserInput:hasUserInput];
   v82 = v83;
   [(PUDisplayTileTransform *)v61 _setAffineTransform:&v82];
-  [(PUDisplayTileTransform *)v61 _setInitialScale:v77];
+  [(PUDisplayTileTransform *)v61 _setInitialScale:scaleCopy];
   [(PUDisplayTileTransform *)v61 _setInitialSize:v78, v9];
   [(PUDisplayTileTransform *)v61 _setDisplaySize:width, height];
-  v62 = [v14 userInputOriginIdentifier];
-  [(PUDisplayTileTransform *)v61 _setUserInputOriginIdentifier:v62];
+  userInputOriginIdentifier = [transformCopy userInputOriginIdentifier];
+  [(PUDisplayTileTransform *)v61 _setUserInputOriginIdentifier:userInputOriginIdentifier];
 
   [(PUDisplayTileTransform *)v61 _setTransformPadding:v22, v23];
 

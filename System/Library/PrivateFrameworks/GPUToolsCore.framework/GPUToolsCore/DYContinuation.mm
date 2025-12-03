@@ -1,6 +1,6 @@
 @interface DYContinuation
 - (DYContinuation)init;
-- (DYContinuation)initWithQueue:(id)a3 block:(id)a4;
+- (DYContinuation)initWithQueue:(id)queue block:(id)block;
 - (void)dealloc;
 @end
 
@@ -13,14 +13,14 @@
   return 0;
 }
 
-- (DYContinuation)initWithQueue:(id)a3 block:(id)a4
+- (DYContinuation)initWithQueue:(id)queue block:(id)block
 {
-  if (!a3)
+  if (!queue)
   {
     [DYContinuation initWithQueue:block:];
   }
 
-  if (!a4)
+  if (!block)
   {
     [DYContinuation initWithQueue:block:];
   }
@@ -30,9 +30,9 @@
   v6 = [(DYContinuation *)&v8 init];
   if (v6)
   {
-    dispatch_retain(a3);
-    v6->queue = a3;
-    v6->block = [a4 copy];
+    dispatch_retain(queue);
+    v6->queue = queue;
+    v6->block = [block copy];
   }
 
   return v6;

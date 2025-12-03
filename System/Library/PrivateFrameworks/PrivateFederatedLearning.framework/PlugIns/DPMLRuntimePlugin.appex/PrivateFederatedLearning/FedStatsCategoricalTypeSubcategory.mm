@@ -1,30 +1,30 @@
 @interface FedStatsCategoricalTypeSubcategory
-+ (id)categoryWithSuperCategory:(id)a3 index:(unint64_t)a4;
-- (FedStatsCategoricalTypeSubcategory)initWithSuperCategory:(id)a3 index:(unint64_t)a4;
++ (id)categoryWithSuperCategory:(id)category index:(unint64_t)index;
+- (FedStatsCategoricalTypeSubcategory)initWithSuperCategory:(id)category index:(unint64_t)index;
 @end
 
 @implementation FedStatsCategoricalTypeSubcategory
 
-- (FedStatsCategoricalTypeSubcategory)initWithSuperCategory:(id)a3 index:(unint64_t)a4
+- (FedStatsCategoricalTypeSubcategory)initWithSuperCategory:(id)category index:(unint64_t)index
 {
-  v7 = a3;
+  categoryCopy = category;
   v11.receiver = self;
   v11.super_class = FedStatsCategoricalTypeSubcategory;
   v8 = [(FedStatsCategoricalTypeSubcategory *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_superCategory, a3);
-    v9->_index = a4;
+    objc_storeStrong(&v8->_superCategory, category);
+    v9->_index = index;
   }
 
   return v9;
 }
 
-+ (id)categoryWithSuperCategory:(id)a3 index:(unint64_t)a4
++ (id)categoryWithSuperCategory:(id)category index:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithSuperCategory:v6 index:a4];
+  categoryCopy = category;
+  v7 = [[self alloc] initWithSuperCategory:categoryCopy index:index];
 
   return v7;
 }

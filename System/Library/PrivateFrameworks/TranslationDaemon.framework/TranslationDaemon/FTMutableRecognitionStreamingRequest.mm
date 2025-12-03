@@ -1,7 +1,7 @@
 @interface FTMutableRecognitionStreamingRequest
-+ (Class)content_mutableClassForType:(int64_t)a3;
-+ (int64_t)content_typeForMutableObject:(id)a3;
-+ (int64_t)content_typeForObject:(id)a3;
++ (Class)content_mutableClassForType:(int64_t)type;
++ (int64_t)content_typeForMutableObject:(id)object;
++ (int64_t)content_typeForObject:(id)object;
 - (FTAudioPacket)contentAsFTAudioPacket;
 - (FTCheckForSpeechRequest)contentAsFTCheckForSpeechRequest;
 - (FTFinishAudio)contentAsFTFinishAudio;
@@ -14,21 +14,21 @@
 - (FTSetSpeechProfile)contentAsFTSetSpeechProfile;
 - (FTStartSpeechRequest)contentAsFTStartSpeechRequest;
 - (FTUpdateAudioInfo)contentAsFTUpdateAudioInfo;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)content_type;
-- (void)setContent:(id)a3;
-- (void)setContentAsFTAudioPacket:(id)a3;
-- (void)setContentAsFTCheckForSpeechRequest:(id)a3;
-- (void)setContentAsFTFinishAudio:(id)a3;
-- (void)setContentAsFTResetServerEndpointer:(id)a3;
-- (void)setContentAsFTSetAlternateRecognitionSausage:(id)a3;
-- (void)setContentAsFTSetEndpointerState:(id)a3;
-- (void)setContentAsFTSetRequestOrigin:(id)a3;
-- (void)setContentAsFTSetSpeechContext:(id)a3;
-- (void)setContentAsFTSetSpeechProfile:(id)a3;
-- (void)setContentAsFTStartSpeechRequest:(id)a3;
-- (void)setContentAsFTUpdateAudioInfo:(id)a3;
-- (void)setContent_type:(int64_t)a3;
+- (void)setContent:(id)content;
+- (void)setContentAsFTAudioPacket:(id)packet;
+- (void)setContentAsFTCheckForSpeechRequest:(id)request;
+- (void)setContentAsFTFinishAudio:(id)audio;
+- (void)setContentAsFTResetServerEndpointer:(id)endpointer;
+- (void)setContentAsFTSetAlternateRecognitionSausage:(id)sausage;
+- (void)setContentAsFTSetEndpointerState:(id)state;
+- (void)setContentAsFTSetRequestOrigin:(id)origin;
+- (void)setContentAsFTSetSpeechContext:(id)context;
+- (void)setContentAsFTSetSpeechProfile:(id)profile;
+- (void)setContentAsFTStartSpeechRequest:(id)request;
+- (void)setContentAsFTUpdateAudioInfo:(id)info;
+- (void)setContent_type:(int64_t)content_type;
 @end
 
 @implementation FTMutableRecognitionStreamingRequest
@@ -40,17 +40,17 @@
   v2 = [(FTMutableRecognitionStreamingRequest *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -61,14 +61,14 @@
 - (int64_t)content_type
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"content_type"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setContent_type:(int64_t)a3
+- (void)setContent_type:(int64_t)content_type
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:content_type];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
@@ -87,11 +87,11 @@
   return v3;
 }
 
-- (void)setContentAsFTStartSpeechRequest:(id)a3
+- (void)setContentAsFTStartSpeechRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   [(FTMutableRecognitionStreamingRequest *)self setContent_type:1];
-  v4 = [v5 copy];
+  v4 = [requestCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -110,11 +110,11 @@
   return v3;
 }
 
-- (void)setContentAsFTUpdateAudioInfo:(id)a3
+- (void)setContentAsFTUpdateAudioInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   [(FTMutableRecognitionStreamingRequest *)self setContent_type:2];
-  v4 = [v5 copy];
+  v4 = [infoCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -133,11 +133,11 @@
   return v3;
 }
 
-- (void)setContentAsFTSetRequestOrigin:(id)a3
+- (void)setContentAsFTSetRequestOrigin:(id)origin
 {
-  v5 = a3;
+  originCopy = origin;
   [(FTMutableRecognitionStreamingRequest *)self setContent_type:3];
-  v4 = [v5 copy];
+  v4 = [originCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -156,11 +156,11 @@
   return v3;
 }
 
-- (void)setContentAsFTSetSpeechContext:(id)a3
+- (void)setContentAsFTSetSpeechContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   [(FTMutableRecognitionStreamingRequest *)self setContent_type:4];
-  v4 = [v5 copy];
+  v4 = [contextCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -179,11 +179,11 @@
   return v3;
 }
 
-- (void)setContentAsFTSetSpeechProfile:(id)a3
+- (void)setContentAsFTSetSpeechProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   [(FTMutableRecognitionStreamingRequest *)self setContent_type:5];
-  v4 = [v5 copy];
+  v4 = [profileCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -202,11 +202,11 @@
   return v3;
 }
 
-- (void)setContentAsFTSetEndpointerState:(id)a3
+- (void)setContentAsFTSetEndpointerState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   [(FTMutableRecognitionStreamingRequest *)self setContent_type:6];
-  v4 = [v5 copy];
+  v4 = [stateCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -225,11 +225,11 @@
   return v3;
 }
 
-- (void)setContentAsFTAudioPacket:(id)a3
+- (void)setContentAsFTAudioPacket:(id)packet
 {
-  v5 = a3;
+  packetCopy = packet;
   [(FTMutableRecognitionStreamingRequest *)self setContent_type:7];
-  v4 = [v5 copy];
+  v4 = [packetCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -248,11 +248,11 @@
   return v3;
 }
 
-- (void)setContentAsFTFinishAudio:(id)a3
+- (void)setContentAsFTFinishAudio:(id)audio
 {
-  v5 = a3;
+  audioCopy = audio;
   [(FTMutableRecognitionStreamingRequest *)self setContent_type:8];
-  v4 = [v5 copy];
+  v4 = [audioCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -271,11 +271,11 @@
   return v3;
 }
 
-- (void)setContentAsFTResetServerEndpointer:(id)a3
+- (void)setContentAsFTResetServerEndpointer:(id)endpointer
 {
-  v5 = a3;
+  endpointerCopy = endpointer;
   [(FTMutableRecognitionStreamingRequest *)self setContent_type:9];
-  v4 = [v5 copy];
+  v4 = [endpointerCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -294,11 +294,11 @@
   return v3;
 }
 
-- (void)setContentAsFTCheckForSpeechRequest:(id)a3
+- (void)setContentAsFTCheckForSpeechRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   [(FTMutableRecognitionStreamingRequest *)self setContent_type:10];
-  v4 = [v5 copy];
+  v4 = [requestCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
@@ -317,92 +317,92 @@
   return v3;
 }
 
-- (void)setContentAsFTSetAlternateRecognitionSausage:(id)a3
+- (void)setContentAsFTSetAlternateRecognitionSausage:(id)sausage
 {
-  v5 = a3;
+  sausageCopy = sausage;
   [(FTMutableRecognitionStreamingRequest *)self setContent_type:11];
-  v4 = [v5 copy];
+  v4 = [sausageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v5 = a3;
-  -[FTMutableRecognitionStreamingRequest setContent_type:](self, "setContent_type:", [objc_opt_class() content_typeForObject:v5]);
-  v4 = [v5 copy];
+  contentCopy = content;
+  -[FTMutableRecognitionStreamingRequest setContent_type:](self, "setContent_type:", [objc_opt_class() content_typeForObject:contentCopy]);
+  v4 = [contentCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"content"];
 }
 
-+ (Class)content_mutableClassForType:(int64_t)a3
++ (Class)content_mutableClassForType:(int64_t)type
 {
-  if ((a3 - 1) > 0xA)
+  if ((type - 1) > 0xA)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_2789B8E30[a3 - 1];
+    v4 = *off_2789B8E30[type - 1];
     v5 = objc_opt_class();
   }
 
   return v5;
 }
 
-+ (int64_t)content_typeForMutableObject:(id)a3
++ (int64_t)content_typeForMutableObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 2;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 3;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 4;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 5;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 6;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 7;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 8;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 9;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 10;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 11;
   }
@@ -415,65 +415,65 @@
   return v4;
 }
 
-+ (int64_t)content_typeForObject:(id)a3
++ (int64_t)content_typeForObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 2;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 3;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 4;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 5;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 6;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 7;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 8;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 9;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 10;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 11;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 11;
   }

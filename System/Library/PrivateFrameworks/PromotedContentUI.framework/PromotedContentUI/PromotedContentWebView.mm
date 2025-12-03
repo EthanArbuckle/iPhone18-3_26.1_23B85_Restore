@@ -1,17 +1,17 @@
 @interface PromotedContentWebView
 - (CGRect)frame;
-- (_TtC17PromotedContentUI22PromotedContentWebView)initWithFrame:(CGRect)a3 configuration:(id)a4;
+- (_TtC17PromotedContentUI22PromotedContentWebView)initWithFrame:(CGRect)frame configuration:(id)configuration;
 - (void)dealloc;
 - (void)didMoveToSuperview;
-- (void)setFrame:(CGRect)a3;
-- (void)webProcessDiagnosticJSOStatusReported:(id)a3 status:(id)a4;
-- (void)webProcessMRAIDJSODidCallCreateCalendarEvent:(id)a3;
-- (void)webProcessMRAIDJSODidCallExpand:(id)a3 withMaximumWidth:(double)a4 andHeight:(double)a5;
-- (void)webProcessMRAIDJSODidCallOpen:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)webProcessDiagnosticJSOStatusReported:(id)reported status:(id)status;
+- (void)webProcessMRAIDJSODidCallCreateCalendarEvent:(id)event;
+- (void)webProcessMRAIDJSODidCallExpand:(id)expand withMaximumWidth:(double)width andHeight:(double)height;
+- (void)webProcessMRAIDJSODidCallOpen:(id)open;
 - (void)webProcessPlugInDidCreateBrowserContextController;
 - (void)webProcessPlugInWillDestroyBrowserContextController;
-- (void)webProcessVideoAdJSODidCallViewabilityChanged:(BOOL)a3 playTime:(float)a4 volume:(float)a5;
-- (void)webProcessVideoAdJSOGetVideoInfo:(id)a3;
+- (void)webProcessVideoAdJSODidCallViewabilityChanged:(BOOL)changed playTime:(float)time volume:(float)volume;
+- (void)webProcessVideoAdJSOGetVideoInfo:(id)info;
 @end
 
 @implementation PromotedContentWebView
@@ -28,22 +28,22 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = type metadata accessor for PromotedContentWebView();
   v19.receiver = self;
   v19.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(PromotedContentWebView *)&v19 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18.receiver = v9;
+  v18.receiver = selfCopy;
   v18.super_class = v8;
   [(PromotedContentWebView *)&v18 setFrame:x, y, width, height];
   sub_1C1A6547C(v11, v13, v15, v17);
@@ -51,24 +51,24 @@
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1A65648();
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1A6F65C();
   sub_1C199E4CC();
   v3 = sub_1C1A6F8EC();
   sub_1C1A6F18C();
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for PromotedContentWebView();
   [(PromotedContentWebView *)&v4 dealloc];
 }
 
-- (_TtC17PromotedContentUI22PromotedContentWebView)initWithFrame:(CGRect)a3 configuration:(id)a4
+- (_TtC17PromotedContentUI22PromotedContentWebView)initWithFrame:(CGRect)frame configuration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -77,42 +77,42 @@
 
 - (void)webProcessPlugInDidCreateBrowserContextController
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1A65C9C();
 }
 
 - (void)webProcessPlugInWillDestroyBrowserContextController
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1A65E40();
 }
 
-- (void)webProcessDiagnosticJSOStatusReported:(id)a3 status:(id)a4
+- (void)webProcessDiagnosticJSOStatusReported:(id)reported status:(id)status
 {
-  v6 = a3;
-  v10 = a4;
-  v7 = self;
+  reportedCopy = reported;
+  statusCopy = status;
+  selfCopy = self;
   v8 = sub_1C1A65254();
   if (v8)
   {
     v9 = v8;
     if ([v8 respondsToSelector_])
     {
-      [v9 webProcessDiagnosticJSOStatusReported:v6 status:v10];
+      [v9 webProcessDiagnosticJSOStatusReported:reportedCopy status:statusCopy];
     }
 
     swift_unknownObjectRelease();
   }
 }
 
-- (void)webProcessMRAIDJSODidCallExpand:(id)a3 withMaximumWidth:(double)a4 andHeight:(double)a5
+- (void)webProcessMRAIDJSODidCallExpand:(id)expand withMaximumWidth:(double)width andHeight:(double)height
 {
   v8 = sub_1C1A6D48C();
   v9 = *(v8 - 8);
   MEMORY[0x1EEE9AC00](v8);
   v11 = &v16 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C1A6D43C();
-  v12 = self;
+  selfCopy = self;
   v13 = sub_1C1A65254();
   if (v13)
   {
@@ -120,7 +120,7 @@
     if ([v13 respondsToSelector_])
     {
       v15 = sub_1C1A6D41C();
-      [v14 webProcessMRAIDJSODidCallExpand:v15 withMaximumWidth:a4 andHeight:a5];
+      [v14 webProcessMRAIDJSODidCallExpand:v15 withMaximumWidth:width andHeight:height];
       swift_unknownObjectRelease();
     }
 
@@ -138,10 +138,10 @@
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)webProcessMRAIDJSODidCallCreateCalendarEvent:(id)a3
+- (void)webProcessMRAIDJSODidCallCreateCalendarEvent:(id)event
 {
   sub_1C1A6F31C();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1C1A65254();
   if (v5)
   {
@@ -160,14 +160,14 @@
   }
 }
 
-- (void)webProcessMRAIDJSODidCallOpen:(id)a3
+- (void)webProcessMRAIDJSODidCallOpen:(id)open
 {
   v4 = sub_1C1A6D48C();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C1A6D43C();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1C1A65254();
   if (v9)
   {
@@ -193,12 +193,12 @@
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)webProcessVideoAdJSOGetVideoInfo:(id)a3
+- (void)webProcessVideoAdJSOGetVideoInfo:(id)info
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(info);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v9 = self;
+  selfCopy = self;
   v6 = sub_1C1A65254();
   if (v6)
   {
@@ -225,19 +225,19 @@
   }
 }
 
-- (void)webProcessVideoAdJSODidCallViewabilityChanged:(BOOL)a3 playTime:(float)a4 volume:(float)a5
+- (void)webProcessVideoAdJSODidCallViewabilityChanged:(BOOL)changed playTime:(float)time volume:(float)volume
 {
-  v7 = a3;
-  v12 = self;
+  changedCopy = changed;
+  selfCopy = self;
   v8 = sub_1C1A65254();
   if (v8)
   {
     v9 = v8;
     if ([v8 respondsToSelector_])
     {
-      *&v10 = a4;
-      *&v11 = a5;
-      [v9 webProcessVideoAdJSODidCallViewabilityChanged:v7 playTime:v10 volume:v11];
+      *&v10 = time;
+      *&v11 = volume;
+      [v9 webProcessVideoAdJSODidCallViewabilityChanged:changedCopy playTime:v10 volume:v11];
     }
 
     swift_unknownObjectRelease();

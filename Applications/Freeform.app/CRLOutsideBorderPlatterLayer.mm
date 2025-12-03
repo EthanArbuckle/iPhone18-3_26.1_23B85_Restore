@@ -1,6 +1,6 @@
 @interface CRLOutsideBorderPlatterLayer
 - (_TtC8Freeform28CRLOutsideBorderPlatterLayer)init;
-- (_TtC8Freeform28CRLOutsideBorderPlatterLayer)initWithLayer:(id)a3;
+- (_TtC8Freeform28CRLOutsideBorderPlatterLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -20,7 +20,7 @@
   return v4;
 }
 
-- (_TtC8Freeform28CRLOutsideBorderPlatterLayer)initWithLayer:(id)a3
+- (_TtC8Freeform28CRLOutsideBorderPlatterLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -30,7 +30,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_100F19834();
 }
 

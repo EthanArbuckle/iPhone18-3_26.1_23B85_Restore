@@ -1,41 +1,41 @@
 @interface AXUIPasscodeViewController
-- (AXUIPasscodeViewController)initWithCoder:(id)a3;
-- (AXUIPasscodeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (AXUIPasscodeViewController)initWithPresentationStyle:(int)a3 forSetup:(BOOL)a4 pinLength:(unint64_t)a5;
+- (AXUIPasscodeViewController)initWithCoder:(id)coder;
+- (AXUIPasscodeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (AXUIPasscodeViewController)initWithPresentationStyle:(int)style forSetup:(BOOL)setup pinLength:(unint64_t)length;
 - (AXUIPasscodeViewControllerDelegate)delegate;
 - (BOOL)_shouldAllowMultipleEntryAttempts;
 - (BOOL)_shouldShowCancelButton;
-- (BOOL)pinIsAcceptable:(id)a3 outError:(id *)a4;
+- (BOOL)pinIsAcceptable:(id)acceptable outError:(id *)error;
 - (id)stringsBundle;
 - (int64_t)_activeInterfaceOrientation;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_didFinishDismissingPasscodeViewWithReason:(int64_t)a3;
-- (void)_dismissPasscodeViewAnimated:(BOOL)a3 withReason:(int64_t)a4;
-- (void)_notifyDelegateOfPasscodeViewDismissalWithReason:(int64_t)a3;
+- (void)_didFinishDismissingPasscodeViewWithReason:(int64_t)reason;
+- (void)_dismissPasscodeViewAnimated:(BOOL)animated withReason:(int64_t)reason;
+- (void)_notifyDelegateOfPasscodeViewDismissalWithReason:(int64_t)reason;
 - (void)_notifyDelegateOfPasscodeViewVisibilityChange;
-- (void)_presentPasscodeViewWithParentViewController:(id)a3 animated:(BOOL)a4;
+- (void)_presentPasscodeViewWithParentViewController:(id)controller animated:(BOOL)animated;
 - (void)_slidePasscodeField;
-- (void)_updateErrorTextAndFailureCount:(BOOL)a3;
+- (void)_updateErrorTextAndFailureCount:(BOOL)count;
 - (void)didAcceptSetPIN;
 - (void)loadView;
-- (void)pinEntered:(id)a3;
-- (void)popoverPresentationController:(id)a3 willRepositionPopoverToRect:(CGRect *)a4 inView:(id *)a5;
+- (void)pinEntered:(id)entered;
+- (void)popoverPresentationController:(id)controller willRepositionPopoverToRect:(CGRect *)rect inView:(id *)view;
 @end
 
 @implementation AXUIPasscodeViewController
 
-- (AXUIPasscodeViewController)initWithPresentationStyle:(int)a3 forSetup:(BOOL)a4 pinLength:(unint64_t)a5
+- (AXUIPasscodeViewController)initWithPresentationStyle:(int)style forSetup:(BOOL)setup pinLength:(unint64_t)length
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = *&a3;
+  lengthCopy = length;
+  setupCopy = setup;
+  v7 = *&style;
   v17.receiver = self;
   v17.super_class = AXUIPasscodeViewController;
   v8 = [(AXUIPasscodeViewController *)&v17 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    if (v6)
+    if (setupCopy)
     {
       v10 = 0;
     }
@@ -47,17 +47,17 @@
 
     v11 = *MEMORY[0x1E69C5778];
     *(&v8->super.super.super.super.super.super.isa + v11) = v10;
-    if (v6)
+    if (setupCopy)
     {
       *(&v8->super.super.super.super.super.super.isa + *MEMORY[0x1E69C5780]) = 1;
     }
 
-    v12 = [MEMORY[0x1E69C5748] emptyGroupSpecifier];
-    [v12 setProperty:v9 forKey:*MEMORY[0x1E69C59B0]];
+    emptyGroupSpecifier = [MEMORY[0x1E69C5748] emptyGroupSpecifier];
+    [emptyGroupSpecifier setProperty:v9 forKey:*MEMORY[0x1E69C59B0]];
     v13 = [MEMORY[0x1E696AD98] numberWithInt:*(&v9->super.super.super.super.super.super.isa + v11)];
-    [v12 setProperty:v13 forKey:@"mode"];
+    [emptyGroupSpecifier setProperty:v13 forKey:@"mode"];
 
-    [(DevicePINController *)v9 setSpecifier:v12];
+    [(DevicePINController *)v9 setSpecifier:emptyGroupSpecifier];
     [(AXUIPasscodeViewController *)v9 setPresentationStyle:v7];
     v14 = [[AXUIPasscodePaneContainingNavigationController alloc] initWithRootViewController:v9];
     [(AXUIPasscodePaneContainingNavigationController *)v14 setDelegate:v9];
@@ -69,9 +69,9 @@
         [(AXUIPasscodeViewController *)v9 preferredContentSize];
         [(AXUIPasscodeViewController *)v9 setPreferredContentSize:?];
         [(AXUIPasscodePaneContainingNavigationController *)v14 setModalPresentationStyle:2];
-        v15 = [(AXUIPasscodePaneContainingNavigationController *)v14 popoverPresentationController];
-        [v15 setPermittedArrowDirections:0];
-        [v15 setDelegate:v9];
+        popoverPresentationController = [(AXUIPasscodePaneContainingNavigationController *)v14 popoverPresentationController];
+        [popoverPresentationController setPermittedArrowDirections:0];
+        [popoverPresentationController setDelegate:v9];
       }
     }
 
@@ -80,17 +80,17 @@
       [(AXUIPasscodePaneContainingNavigationController *)v14 setModalPresentationStyle:0];
     }
 
-    v9->_pinLength = v5;
+    v9->_pinLength = lengthCopy;
   }
 
   return v9;
 }
 
-- (AXUIPasscodeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AXUIPasscodeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = AXUIPasscodeViewController;
-  v4 = [(AXUIPasscodeViewController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(AXUIPasscodeViewController *)&v6 initWithNibName:name bundle:bundle];
   if (v4)
   {
   }
@@ -98,11 +98,11 @@
   return 0;
 }
 
-- (AXUIPasscodeViewController)initWithCoder:(id)a3
+- (AXUIPasscodeViewController)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AXUIPasscodeViewController;
-  v3 = [(AXUIPasscodeViewController *)&v5 initWithCoder:a3];
+  v3 = [(AXUIPasscodeViewController *)&v5 initWithCoder:coder];
   if (v3)
   {
   }
@@ -112,35 +112,35 @@
 
 - (void)loadView
 {
-  v3 = [MEMORY[0x1E69DC888] labelColor];
-  v4 = [MEMORY[0x1E69C5710] appearance];
-  [v4 setTextColor:v3];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  appearance = [MEMORY[0x1E69C5710] appearance];
+  [appearance setTextColor:labelColor];
 
   v19.receiver = self;
   v19.super_class = AXUIPasscodeViewController;
   [(DevicePINController *)&v19 loadView];
-  v5 = [(AXUIPasscodeViewController *)self view];
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v6 bounds];
-  [v5 setFrame:?];
+  view = [(AXUIPasscodeViewController *)self view];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
+  [view setFrame:?];
 
-  [v5 bounds];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v15 = [[GuidedAccessDevicePINPane alloc] initWithFrame:v7, v9, v11, v13];
-  v16 = [v5 backgroundColor];
-  [(GuidedAccessDevicePINPane *)v15 setBackgroundColor:v16];
+  backgroundColor = [view backgroundColor];
+  [(GuidedAccessDevicePINPane *)v15 setBackgroundColor:backgroundColor];
 
   [(PSEditingPane *)v15 setDelegate:self];
   [(DevicePINController *)self setPane:v15];
-  v17 = [(AXUIPasscodeViewController *)self pinViewTitle];
+  pinViewTitle = [(AXUIPasscodeViewController *)self pinViewTitle];
 
-  if (v17)
+  if (pinViewTitle)
   {
-    v18 = [(AXUIPasscodeViewController *)self pinViewTitle];
-    [(DevicePINPane *)v15 setTitle:v18];
+    pinViewTitle2 = [(AXUIPasscodeViewController *)self pinViewTitle];
+    [(DevicePINPane *)v15 setTitle:pinViewTitle2];
   }
 
   [(GuidedAccessDevicePINPane *)v15 setFrame:v8, v10, v12, v14];
@@ -148,10 +148,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3)
+  if (userInterfaceIdiom)
   {
     return 30;
   }
@@ -162,37 +162,37 @@
   }
 }
 
-- (void)_presentPasscodeViewWithParentViewController:(id)a3 animated:(BOOL)a4
+- (void)_presentPasscodeViewWithParentViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a3;
-  [(AXUIPasscodeViewController *)self setPresentorViewController:v5];
+  controllerCopy = controller;
+  [(AXUIPasscodeViewController *)self setPresentorViewController:controllerCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__AXUIPasscodeViewController__presentPasscodeViewWithParentViewController_animated___block_invoke;
   aBlock[3] = &unk_1E812DCA8;
   aBlock[4] = self;
   v6 = _Block_copy(aBlock);
-  v7 = [(AXUIPasscodeViewController *)self navigationItem];
-  [v7 setHidesBackButton:1];
+  navigationItem = [(AXUIPasscodeViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
   if (![(AXUIPasscodeViewController *)self _shouldShowCancelButton])
   {
-    [v7 setRightBarButtonItem:0];
-    [v7 setLeftBarButtonItem:0];
+    [navigationItem setRightBarButtonItem:0];
+    [navigationItem setLeftBarButtonItem:0];
   }
 
   if ([(AXUIPasscodeViewController *)self presentationStyle]== 1)
   {
-    v8 = [v5 view];
-    v9 = [(AXUIPasscodeViewController *)self hostingNavigationController];
-    v10 = [v9 popoverPresentationController];
+    view = [controllerCopy view];
+    hostingNavigationController = [(AXUIPasscodeViewController *)self hostingNavigationController];
+    popoverPresentationController = [hostingNavigationController popoverPresentationController];
 
-    [v10 setSourceView:v8];
-    [v8 bounds];
-    [v10 setSourceRect:?];
+    [popoverPresentationController setSourceView:view];
+    [view bounds];
+    [popoverPresentationController setSourceRect:?];
   }
 
-  v11 = [(AXUIPasscodeViewController *)self hostingNavigationController];
-  [v5 presentViewController:v11 animated:1 completion:v6];
+  hostingNavigationController2 = [(AXUIPasscodeViewController *)self hostingNavigationController];
+  [controllerCopy presentViewController:hostingNavigationController2 animated:1 completion:v6];
 }
 
 uint64_t __84__AXUIPasscodeViewController__presentPasscodeViewWithParentViewController_animated___block_invoke(uint64_t a1)
@@ -207,33 +207,33 @@ uint64_t __84__AXUIPasscodeViewController__presentPasscodeViewWithParentViewCont
   return [v4 _notifyDelegateOfPasscodeViewVisibilityChange];
 }
 
-- (void)_dismissPasscodeViewAnimated:(BOOL)a3 withReason:(int64_t)a4
+- (void)_dismissPasscodeViewAnimated:(BOOL)animated withReason:(int64_t)reason
 {
-  v5 = a3;
-  v7 = [(AXUIPasscodeViewController *)self presentorViewController];
+  animatedCopy = animated;
+  presentorViewController = [(AXUIPasscodeViewController *)self presentorViewController];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__AXUIPasscodeViewController__dismissPasscodeViewAnimated_withReason___block_invoke;
   v8[3] = &unk_1E812E0A8;
   v8[4] = self;
-  v8[5] = a4;
-  [v7 dismissViewControllerAnimated:v5 completion:v8];
+  v8[5] = reason;
+  [presentorViewController dismissViewControllerAnimated:animatedCopy completion:v8];
 }
 
-- (void)_didFinishDismissingPasscodeViewWithReason:(int64_t)a3
+- (void)_didFinishDismissingPasscodeViewWithReason:(int64_t)reason
 {
   if ([(AXUIPasscodeViewController *)self presentationStyle]== 1)
   {
-    v5 = [(AXUIPasscodeViewController *)self hostingNavigationController];
-    v6 = [v5 popoverPresentationController];
-    [v6 setDelegate:0];
+    hostingNavigationController = [(AXUIPasscodeViewController *)self hostingNavigationController];
+    popoverPresentationController = [hostingNavigationController popoverPresentationController];
+    [popoverPresentationController setDelegate:0];
   }
 
-  v7 = [(AXUIPasscodeViewController *)self hostingNavigationController];
-  [v7 setDelegate:0];
+  hostingNavigationController2 = [(AXUIPasscodeViewController *)self hostingNavigationController];
+  [hostingNavigationController2 setDelegate:0];
 
   [(AXUIPasscodeViewController *)self setHostingNavigationController:0];
-  [(AXUIPasscodeViewController *)self _notifyDelegateOfPasscodeViewDismissalWithReason:a3];
+  [(AXUIPasscodeViewController *)self _notifyDelegateOfPasscodeViewDismissalWithReason:reason];
   [(AXUIPasscodeViewController *)self setPresentorViewController:0];
   [(AXUIPasscodeViewController *)self setPasscodeViewVisible:0];
 
@@ -242,28 +242,28 @@ uint64_t __84__AXUIPasscodeViewController__presentPasscodeViewWithParentViewCont
 
 - (void)_notifyDelegateOfPasscodeViewVisibilityChange
 {
-  v3 = [(AXUIPasscodeViewController *)self delegate];
+  delegate = [(AXUIPasscodeViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 passcodeViewController:self passcodeViewIsVisible:{-[AXUIPasscodeViewController isPasscodeViewVisible](self, "isPasscodeViewVisible")}];
+    [delegate passcodeViewController:self passcodeViewIsVisible:{-[AXUIPasscodeViewController isPasscodeViewVisible](self, "isPasscodeViewVisible")}];
   }
 }
 
-- (void)_notifyDelegateOfPasscodeViewDismissalWithReason:(int64_t)a3
+- (void)_notifyDelegateOfPasscodeViewDismissalWithReason:(int64_t)reason
 {
-  v5 = [(AXUIPasscodeViewController *)self delegate];
+  delegate = [(AXUIPasscodeViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 passcodeViewController:self wasDismissedWithReason:a3];
+    [delegate passcodeViewController:self wasDismissedWithReason:reason];
   }
 }
 
 - (BOOL)_shouldShowCancelButton
 {
-  v3 = [(AXUIPasscodeViewController *)self delegate];
+  delegate = [(AXUIPasscodeViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 shouldShowCancelButtonForPasscodeViewController:self];
+    v4 = [delegate shouldShowCancelButtonForPasscodeViewController:self];
   }
 
   else
@@ -276,28 +276,28 @@ uint64_t __84__AXUIPasscodeViewController__presentPasscodeViewWithParentViewCont
 
 - (int64_t)_activeInterfaceOrientation
 {
-  v3 = [(AXUIPasscodeViewController *)self delegate];
+  delegate = [(AXUIPasscodeViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 activeInterfaceOrientationForPasscodeViewController:self];
+    interfaceOrientation = [delegate activeInterfaceOrientationForPasscodeViewController:self];
   }
 
   else
   {
-    v5 = [(AXUIPasscodeViewController *)self view];
-    v6 = [v5 window];
-    v4 = [v6 interfaceOrientation];
+    view = [(AXUIPasscodeViewController *)self view];
+    window = [view window];
+    interfaceOrientation = [window interfaceOrientation];
   }
 
-  return v4;
+  return interfaceOrientation;
 }
 
 - (BOOL)_shouldAllowMultipleEntryAttempts
 {
-  v3 = [(AXUIPasscodeViewController *)self delegate];
+  delegate = [(AXUIPasscodeViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 shouldAllowMultipleEntryAttemptsForPasscodeViewController:self];
+    v4 = [delegate shouldAllowMultipleEntryAttemptsForPasscodeViewController:self];
   }
 
   else
@@ -316,31 +316,31 @@ uint64_t __84__AXUIPasscodeViewController__presentPasscodeViewWithParentViewCont
   return [v2 bundleForClass:v3];
 }
 
-- (void)pinEntered:(id)a3
+- (void)pinEntered:(id)entered
 {
-  v4 = a3;
+  enteredCopy = entered;
   [(AXUIPasscodeViewController *)self setAsynchronouslyCheckedPinWasValid:0];
   if ([(DevicePINController *)self mode]== 3)
   {
-    v5 = [(AXUIPasscodeViewController *)self delegate];
-    v6 = [MEMORY[0x1E69DC668] isRunningInStoreDemoMode];
-    if ([(DevicePINController *)self mode]== 3 && (v6 & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0)
+    delegate = [(AXUIPasscodeViewController *)self delegate];
+    isRunningInStoreDemoMode = [MEMORY[0x1E69DC668] isRunningInStoreDemoMode];
+    if ([(DevicePINController *)self mode]== 3 && (isRunningInStoreDemoMode & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __41__AXUIPasscodeViewController_pinEntered___block_invoke;
       v9[3] = &unk_1E812E0D0;
       v9[4] = self;
-      v10 = v4;
-      [v5 passcodeViewController:self isPasscode:v10 correctWithCompletionHandler:v9];
+      v10 = enteredCopy;
+      [delegate passcodeViewController:self isPasscode:v10 correctWithCompletionHandler:v9];
     }
 
     else
     {
-      [(AXUIPasscodeViewController *)self setAsynchronouslyCheckedPinWasValid:v6];
+      [(AXUIPasscodeViewController *)self setAsynchronouslyCheckedPinWasValid:isRunningInStoreDemoMode];
       v8.receiver = self;
       v8.super_class = AXUIPasscodeViewController;
-      [(DevicePINController *)&v8 pinEntered:v4];
+      [(DevicePINController *)&v8 pinEntered:enteredCopy];
       [(AXUIPasscodeViewController *)self setAsynchronouslyCheckedPinWasValid:0];
     }
   }
@@ -349,7 +349,7 @@ uint64_t __84__AXUIPasscodeViewController__presentPasscodeViewWithParentViewCont
   {
     v7.receiver = self;
     v7.super_class = AXUIPasscodeViewController;
-    [(DevicePINController *)&v7 pinEntered:v4];
+    [(DevicePINController *)&v7 pinEntered:enteredCopy];
   }
 }
 
@@ -363,10 +363,10 @@ uint64_t __41__AXUIPasscodeViewController_pinEntered___block_invoke(uint64_t a1,
   return [*(a1 + 32) setAsynchronouslyCheckedPinWasValid:0];
 }
 
-- (BOOL)pinIsAcceptable:(id)a3 outError:(id *)a4
+- (BOOL)pinIsAcceptable:(id)acceptable outError:(id *)error
 {
-  v4 = a3;
-  v5 = [v4 length] == 6 || objc_msgSend(v4, "length") == 4;
+  acceptableCopy = acceptable;
+  v5 = [acceptableCopy length] == 6 || objc_msgSend(acceptableCopy, "length") == 4;
 
   return v5;
 }
@@ -374,15 +374,15 @@ uint64_t __41__AXUIPasscodeViewController_pinEntered___block_invoke(uint64_t a1,
 - (void)_slidePasscodeField
 {
   v3 = *(&self->super.super.super.super.super.super.isa + *MEMORY[0x1E69C57A0]);
-  v4 = [(AXUIPasscodeViewController *)self simplePIN];
-  v5 = [(AXUIPasscodeViewController *)self requiresKeyboard];
+  simplePIN = [(AXUIPasscodeViewController *)self simplePIN];
+  requiresKeyboard = [(AXUIPasscodeViewController *)self requiresKeyboard];
 
-  [v3 slideToNewPasscodeField:v4 requiresKeyboard:v5 numericOnly:1];
+  [v3 slideToNewPasscodeField:simplePIN requiresKeyboard:requiresKeyboard numericOnly:1];
 }
 
-- (void)_updateErrorTextAndFailureCount:(BOOL)a3
+- (void)_updateErrorTextAndFailureCount:(BOOL)count
 {
-  v3 = a3;
+  countCopy = count;
   if (*(&self->super.super.super.super.super.super.isa + *MEMORY[0x1E69C5778]) == 3 && ![(AXUIPasscodeViewController *)self _shouldAllowMultipleEntryAttempts])
   {
 
@@ -393,31 +393,31 @@ uint64_t __41__AXUIPasscodeViewController_pinEntered___block_invoke(uint64_t a1,
   {
     v5.receiver = self;
     v5.super_class = AXUIPasscodeViewController;
-    [(DevicePINController *)&v5 _updateErrorTextAndFailureCount:v3];
+    [(DevicePINController *)&v5 _updateErrorTextAndFailureCount:countCopy];
   }
 }
 
 - (void)didAcceptSetPIN
 {
-  v4 = [(AXUIPasscodeViewController *)self delegate];
+  delegate = [(AXUIPasscodeViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(AXUIPasscodeViewController *)self passcode];
-    [v4 passcodeViewController:self didFinishSettingUpPasscode:v3];
+    passcode = [(AXUIPasscodeViewController *)self passcode];
+    [delegate passcodeViewController:self didFinishSettingUpPasscode:passcode];
   }
 
   [(AXUIPasscodeViewController *)self _dismissPasscodeViewAnimated:1 withReason:4];
 }
 
-- (void)popoverPresentationController:(id)a3 willRepositionPopoverToRect:(CGRect *)a4 inView:(id *)a5
+- (void)popoverPresentationController:(id)controller willRepositionPopoverToRect:(CGRect *)rect inView:(id *)view
 {
-  v11 = [(AXUIPasscodeViewController *)self presentorViewController:a3];
-  v6 = [v11 view];
-  [v6 bounds];
-  a4->origin.x = v7;
-  a4->origin.y = v8;
-  a4->size.width = v9;
-  a4->size.height = v10;
+  v11 = [(AXUIPasscodeViewController *)self presentorViewController:controller];
+  view = [v11 view];
+  [view bounds];
+  rect->origin.x = v7;
+  rect->origin.y = v8;
+  rect->size.width = v9;
+  rect->size.height = v10;
 }
 
 - (AXUIPasscodeViewControllerDelegate)delegate

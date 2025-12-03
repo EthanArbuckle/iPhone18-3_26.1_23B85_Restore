@@ -1,17 +1,17 @@
 @interface _UIContentUnavailableView
-+ (_UIContentUnavailableView)allocWithZone:(_NSZone *)a3;
-- (CGColor)_colorForButtonForStyle:(unint64_t)a3 controlState:(unint64_t)a4;
++ (_UIContentUnavailableView)allocWithZone:(_NSZone *)zone;
+- (CGColor)_colorForButtonForStyle:(unint64_t)style controlState:(unint64_t)state;
 - (CGSize)_buttonSize;
 - (UIEdgeInsets)_buttonContentEdgeInsets;
-- (_UIContentUnavailableView)initWithFrame:(CGRect)a3;
-- (_UIContentUnavailableView)initWithFrame:(CGRect)a3 title:(id)a4 style:(unint64_t)a5 includeBackdrop:(BOOL)a6;
+- (_UIContentUnavailableView)initWithFrame:(CGRect)frame;
+- (_UIContentUnavailableView)initWithFrame:(CGRect)frame title:(id)title style:(unint64_t)style includeBackdrop:(BOOL)backdrop;
 - (double)_buttonAlpha;
 - (double)_buttonVerticalSpacing;
 - (double)_labelAlpha;
 - (double)_labelVerticalSpacing;
-- (id)_buttonBackgroundImageForStyle:(unint64_t)a3 controlState:(unint64_t)a4;
+- (id)_buttonBackgroundImageForStyle:(unint64_t)style controlState:(unint64_t)state;
 - (id)_buttonFont;
-- (void)_actionButtonPressed:(id)a3;
+- (void)_actionButtonPressed:(id)pressed;
 - (void)_rebuildConstraints;
 - (void)_updateForCurrentContentSizeCategory;
 - (void)_updateViewHierarchy;
@@ -19,21 +19,21 @@
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setButtonTitle:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setVibrantOptions:(unint64_t)a3;
+- (void)setButtonTitle:(id)title;
+- (void)setMessage:(id)message;
+- (void)setTitle:(id)title;
+- (void)setVibrantOptions:(unint64_t)options;
 - (void)updateConstraints;
-- (void)windowWillAnimateRotateNotification:(id)a3;
-- (void)windowWillRotateNotification:(id)a3;
+- (void)windowWillAnimateRotateNotification:(id)notification;
+- (void)windowWillRotateNotification:(id)notification;
 @end
 
 @implementation _UIContentUnavailableView
 
 - (double)_labelVerticalSpacing
 {
-  v2 = [(_UIContentUnavailableView *)self _messageTextStyle];
-  v3 = [UIFontMetrics metricsForTextStyle:v2];
+  _messageTextStyle = [(_UIContentUnavailableView *)self _messageTextStyle];
+  v3 = [UIFontMetrics metricsForTextStyle:_messageTextStyle];
   [v3 scaledValueForValue:35.0];
   v5 = v4;
 
@@ -43,26 +43,26 @@
 - (void)didMoveToWindow
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4 != 1)
+  if (userInterfaceIdiom != 1)
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 removeObserver:self name:@"UIWindowWillRotateNotification" object:0];
-    [v9 removeObserver:self name:@"UIWindowWillAnimateRotationNotification" object:0];
-    [v9 removeObserver:self name:@"UIWindowDidRotateNotification" object:0];
-    v5 = [(UIView *)self window];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"UIWindowWillRotateNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIWindowWillAnimateRotationNotification" object:0];
+    [defaultCenter removeObserver:self name:@"UIWindowDidRotateNotification" object:0];
+    window = [(UIView *)self window];
 
-    if (v5)
+    if (window)
     {
-      v6 = [(UIView *)self window];
-      [v9 addObserver:self selector:sel_windowWillRotateNotification_ name:@"UIWindowWillRotateNotification" object:v6];
+      window2 = [(UIView *)self window];
+      [defaultCenter addObserver:self selector:sel_windowWillRotateNotification_ name:@"UIWindowWillRotateNotification" object:window2];
 
-      v7 = [(UIView *)self window];
-      [v9 addObserver:self selector:sel_windowWillAnimateRotateNotification_ name:@"UIWindowWillAnimateRotationNotification" object:v7];
+      window3 = [(UIView *)self window];
+      [defaultCenter addObserver:self selector:sel_windowWillAnimateRotateNotification_ name:@"UIWindowWillAnimateRotationNotification" object:window3];
 
-      v8 = [(UIView *)self window];
-      [v9 addObserver:self selector:sel_windowDidRotateNotification_ name:@"UIWindowDidRotateNotification" object:v8];
+      window4 = [(UIView *)self window];
+      [defaultCenter addObserver:self selector:sel_windowDidRotateNotification_ name:@"UIWindowDidRotateNotification" object:window4];
     }
 
     else
@@ -91,9 +91,9 @@
   [(UIView *)self->_scrollView bounds];
   if (v4 > CGRectGetHeight(v9))
   {
-    v5 = [(UIView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+    traitCollection = [(UIView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
@@ -121,8 +121,8 @@
     [(UIView *)self->_titleLabel setBackgroundColor:v9];
 
     [(UIView *)self->_titleLabel setOpaque:0];
-    v10 = [(_UIContentUnavailableView *)self _titleFont];
-    [(UILabel *)self->_titleLabel setFont:v10];
+    _titleFont = [(_UIContentUnavailableView *)self _titleFont];
+    [(UILabel *)self->_titleLabel setFont:_titleFont];
 
     [(UILabel *)self->_titleLabel setNumberOfLines:0];
     LODWORD(v11) = 1051931443;
@@ -135,16 +135,16 @@
   [(UILabel *)titleLabel setText:self->_title];
   if ([(_UIContentUnavailableView *)self _hasVibrantText]&& self->_style == 1)
   {
-    v12 = [(_UIContentUnavailableView *)self _vibrantBaseColor];
+    _vibrantBaseColor = [(_UIContentUnavailableView *)self _vibrantBaseColor];
   }
 
   else
   {
-    v12 = [(_UIContentUnavailableView *)self _flatTextColor];
+    _vibrantBaseColor = [(_UIContentUnavailableView *)self _flatTextColor];
   }
 
-  v13 = v12;
-  [(UILabel *)self->_titleLabel setTextColor:v12];
+  v13 = _vibrantBaseColor;
+  [(UILabel *)self->_titleLabel setTextColor:_vibrantBaseColor];
 
   [(_UIContentUnavailableView *)self _labelAlpha];
   [(UIView *)self->_titleLabel setAlpha:?];
@@ -164,8 +164,8 @@
     [(UIView *)v14 _setDrawsAsBackdropOverlayWithBlendMode:v15];
     if ([(_UIContentUnavailableView *)self _hasVibrantText])
     {
-      v16 = [(_UIContentUnavailableView *)self _vibrantBaseColor];
-      [(UIView *)self->_titleLabel setTintColor:v16];
+      _vibrantBaseColor2 = [(_UIContentUnavailableView *)self _vibrantBaseColor];
+      [(UIView *)self->_titleLabel setTintColor:_vibrantBaseColor2];
     }
 
     else
@@ -208,16 +208,16 @@
     [(UILabel *)messageLabel setText:self->_message];
     if ([(_UIContentUnavailableView *)self _hasVibrantText]&& self->_style == 1)
     {
-      v26 = [(_UIContentUnavailableView *)self _vibrantBaseColor];
+      _vibrantBaseColor3 = [(_UIContentUnavailableView *)self _vibrantBaseColor];
     }
 
     else
     {
-      v26 = [(_UIContentUnavailableView *)self _flatTextColor];
+      _vibrantBaseColor3 = [(_UIContentUnavailableView *)self _flatTextColor];
     }
 
-    v27 = v26;
-    [(UILabel *)self->_messageLabel setTextColor:v26];
+    v27 = _vibrantBaseColor3;
+    [(UILabel *)self->_messageLabel setTextColor:_vibrantBaseColor3];
 
     [(_UIContentUnavailableView *)self _labelAlpha];
     [(UIView *)self->_messageLabel setAlpha:?];
@@ -237,8 +237,8 @@
       [(UIView *)v28 _setDrawsAsBackdropOverlayWithBlendMode:v29];
       if ([(_UIContentUnavailableView *)self _hasVibrantText])
       {
-        v30 = [(_UIContentUnavailableView *)self _vibrantBaseColor];
-        [(UIView *)self->_messageLabel setTintColor:v30];
+        _vibrantBaseColor4 = [(_UIContentUnavailableView *)self _vibrantBaseColor];
+        [(UIView *)self->_messageLabel setTintColor:_vibrantBaseColor4];
       }
 
       else
@@ -270,19 +270,19 @@
 
       [(UIControl *)self->_actionButton addTarget:self action:sel__actionButtonPressed_ forControlEvents:0x2000];
       [(UIButton *)self->_actionButton setFrame:0.0, 0.0, 124.0, 29.0];
-      v36 = [(_UIContentUnavailableView *)self _buttonFont];
-      v37 = [(UIButton *)self->_actionButton titleLabel];
-      [v37 setFont:v36];
+      _buttonFont = [(_UIContentUnavailableView *)self _buttonFont];
+      titleLabel = [(UIButton *)self->_actionButton titleLabel];
+      [titleLabel setFont:_buttonFont];
 
-      v38 = [(UIButton *)self->_actionButton titleLabel];
-      [v38 setNumberOfLines:0];
+      titleLabel2 = [(UIButton *)self->_actionButton titleLabel];
+      [titleLabel2 setNumberOfLines:0];
 
-      v39 = [(UIButton *)self->_actionButton titleLabel];
+      titleLabel3 = [(UIButton *)self->_actionButton titleLabel];
       LODWORD(v40) = 1051931443;
-      [v39 _setHyphenationFactor:v40];
+      [titleLabel3 _setHyphenationFactor:v40];
 
-      v41 = [(UIButton *)self->_actionButton titleLabel];
-      [v41 setTextAlignment:1];
+      titleLabel4 = [(UIButton *)self->_actionButton titleLabel];
+      [titleLabel4 setTextAlignment:1];
 
       [(UIView *)self->_actionButton setTranslatesAutoresizingMaskIntoConstraints:0];
       [(UIButton *)self->_actionButton setContentHorizontalAlignment:0];
@@ -297,27 +297,27 @@
 
     [(_UIContentUnavailableView *)self _buttonAlpha];
     [(UIView *)self->_actionButton setAlpha:?];
-    v44 = [(_UIContentUnavailableView *)self _flatTextColor];
+    _flatTextColor = [(_UIContentUnavailableView *)self _flatTextColor];
     v45 = +[UIColor blackColor];
     style = self->_style;
     if (style)
     {
       if (style == 1)
       {
-        v47 = [(_UIContentUnavailableView *)self _hasVibrantButton];
+        _hasVibrantButton = [(_UIContentUnavailableView *)self _hasVibrantButton];
         v48 = self->_actionButton;
-        if (v47)
+        if (_hasVibrantButton)
         {
           [(UIView *)v48 _setDrawsAsBackdropOverlayWithBlendMode:3];
           v49 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979D98]];
-          v50 = [(UIButton *)self->_actionButton titleLabel];
-          v51 = [v50 layer];
-          [v51 setCompositingFilter:v49];
+          titleLabel5 = [(UIButton *)self->_actionButton titleLabel];
+          layer = [titleLabel5 layer];
+          [layer setCompositingFilter:v49];
 
-          v52 = [(_UIContentUnavailableView *)self _vibrantBaseColor];
-          [(UIButton *)self->_actionButton setTintColor:v52];
+          _vibrantBaseColor5 = [(_UIContentUnavailableView *)self _vibrantBaseColor];
+          [(UIButton *)self->_actionButton setTintColor:_vibrantBaseColor5];
 
-          v53 = [(_UIContentUnavailableView *)self _vibrantBaseColor];
+          _vibrantBaseColor6 = [(_UIContentUnavailableView *)self _vibrantBaseColor];
 
           [(UIButton *)self->_actionButton setBackgroundImage:0 forState:1];
         }
@@ -325,19 +325,19 @@
         else
         {
           [(UIView *)v48 _setDrawsAsBackdropOverlayWithBlendMode:0];
-          v55 = [(UIButton *)self->_actionButton titleLabel];
-          v56 = [v55 layer];
-          [v56 setCompositingFilter:0];
+          titleLabel6 = [(UIButton *)self->_actionButton titleLabel];
+          layer2 = [titleLabel6 layer];
+          [layer2 setCompositingFilter:0];
 
           [(UIButton *)self->_actionButton setTintColor:0];
-          v53 = +[UIColor whiteColor];
+          _vibrantBaseColor6 = +[UIColor whiteColor];
 
           v57 = self->_actionButton;
           v58 = [(_UIContentUnavailableView *)self _buttonBackgroundImageForStyle:self->_style controlState:1];
           [(UIButton *)v57 setBackgroundImage:v58 forState:1];
         }
 
-        v44 = v53;
+        _flatTextColor = _vibrantBaseColor6;
       }
     }
 
@@ -346,7 +346,7 @@
       [(UIButton *)self->_actionButton setBackgroundImage:0 forState:1];
     }
 
-    [(UIButton *)self->_actionButton setTitleColor:v44 forState:0];
+    [(UIButton *)self->_actionButton setTitleColor:_flatTextColor forState:0];
     [(UIButton *)self->_actionButton setTitleColor:v45 forState:8];
 
 LABEL_43:
@@ -377,9 +377,9 @@ LABEL_45:
   style = self->_style;
   if (style == 1)
   {
-    v4 = [(_UIContentUnavailableView *)self _hasVibrantText];
+    _hasVibrantText = [(_UIContentUnavailableView *)self _hasVibrantText];
     result = 1.0;
-    if (v4)
+    if (_hasVibrantText)
     {
       return result;
     }
@@ -418,9 +418,9 @@ LABEL_45:
   v73 = _Block_copy(aBlock);
   v8 = [MEMORY[0x1E69977A0] constraintWithItem:self->_titleLabel attribute:3 relatedBy:0 toItem:self->_containerView attribute:3 multiplier:1.0 constant:0.0];
   [(NSMutableArray *)self->_containerViewContraints addObject:v8];
-  v9 = [(UIView *)self traitCollection];
-  v10 = [v9 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v10);
+  traitCollection = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   messageLabel = self->_messageLabel;
   if (messageLabel || (messageLabel = self->_actionButton) != 0)
@@ -532,34 +532,34 @@ LABEL_45:
   if (v34)
   {
     v35 = self->_containerViewContraints;
-    v36 = [(UIView *)v34 centerXAnchor];
-    v37 = [(UIView *)self->_containerView centerXAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    centerXAnchor = [(UIView *)v34 centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_containerView centerXAnchor];
+    v38 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [(NSMutableArray *)v35 addObject:v38];
 
     v39 = self->_containerViewContraints;
-    v40 = [(UIView *)self->_actionButton leadingAnchor];
-    v41 = [(UIView *)self->_containerView leadingAnchor];
-    v42 = [v40 constraintGreaterThanOrEqualToAnchor:v41];
+    leadingAnchor = [(UIView *)self->_actionButton leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_containerView leadingAnchor];
+    v42 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     [(NSMutableArray *)v39 addObject:v42];
 
     v43 = self->_containerViewContraints;
-    v44 = [(UIView *)self->_actionButton trailingAnchor];
-    v45 = [(UIView *)self->_containerView trailingAnchor];
-    v46 = [v44 constraintLessThanOrEqualToAnchor:v45];
+    trailingAnchor = [(UIView *)self->_actionButton trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_containerView trailingAnchor];
+    v46 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     [(NSMutableArray *)v43 addObject:v46];
 
     [(_UIContentUnavailableView *)self _buttonSize];
     v48 = v47;
     v50 = v49;
     v51 = self->_containerViewContraints;
-    v52 = [(UIView *)self->_actionButton widthAnchor];
-    v53 = [v52 constraintGreaterThanOrEqualToConstant:v48];
+    widthAnchor = [(UIView *)self->_actionButton widthAnchor];
+    v53 = [widthAnchor constraintGreaterThanOrEqualToConstant:v48];
     [(NSMutableArray *)v51 addObject:v53];
 
     v54 = self->_containerViewContraints;
-    v55 = [(UIView *)self->_actionButton heightAnchor];
-    v56 = [v55 constraintGreaterThanOrEqualToConstant:v50];
+    heightAnchor = [(UIView *)self->_actionButton heightAnchor];
+    v56 = [heightAnchor constraintGreaterThanOrEqualToConstant:v50];
     [(NSMutableArray *)v54 addObject:v56];
 
     v25 = v73;
@@ -569,17 +569,17 @@ LABEL_45:
       v59 = v57 + v58;
       v62 = v60 + v61;
       v63 = self->_containerViewContraints;
-      v64 = [(UIView *)self->_actionButton widthAnchor];
-      v65 = [(UIButton *)self->_actionButton titleLabel];
-      v66 = [v65 widthAnchor];
-      v67 = [v64 constraintEqualToAnchor:v66 constant:v59];
+      widthAnchor2 = [(UIView *)self->_actionButton widthAnchor];
+      titleLabel = [(UIButton *)self->_actionButton titleLabel];
+      widthAnchor3 = [titleLabel widthAnchor];
+      v67 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3 constant:v59];
       [(NSMutableArray *)v63 addObject:v67];
 
       v68 = self->_containerViewContraints;
-      v69 = [(UIView *)self->_actionButton heightAnchor];
-      v70 = [(UIButton *)self->_actionButton titleLabel];
-      v71 = [v70 heightAnchor];
-      v72 = [v69 constraintEqualToAnchor:v71 constant:v62];
+      heightAnchor2 = [(UIView *)self->_actionButton heightAnchor];
+      titleLabel2 = [(UIButton *)self->_actionButton titleLabel];
+      heightAnchor3 = [titleLabel2 heightAnchor];
+      v72 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3 constant:v62];
       [(NSMutableArray *)v68 addObject:v72];
 
       v25 = v73;
@@ -589,34 +589,34 @@ LABEL_45:
   [(UIView *)self _setNeedsUpdateConstraintsNeedingLayout:0];
 }
 
-+ (_UIContentUnavailableView)allocWithZone:(_NSZone *)a3
++ (_UIContentUnavailableView)allocWithZone:(_NSZone *)zone
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS____UIContentUnavailableView;
-  return objc_msgSendSuper2(&v4, sel_allocWithZone_, a3);
+  return objc_msgSendSuper2(&v4, sel_allocWithZone_, zone);
 }
 
-- (_UIContentUnavailableView)initWithFrame:(CGRect)a3
+- (_UIContentUnavailableView)initWithFrame:(CGRect)frame
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIContentUnavailableView.m" lineNumber:129 description:@"-[_UIContentUnavailableView initWithFrame:] will not return a usable view"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIContentUnavailableView.m" lineNumber:129 description:@"-[_UIContentUnavailableView initWithFrame:] will not return a usable view"];
 
   return 0;
 }
 
-- (_UIContentUnavailableView)initWithFrame:(CGRect)a3 title:(id)a4 style:(unint64_t)a5 includeBackdrop:(BOOL)a6
+- (_UIContentUnavailableView)initWithFrame:(CGRect)frame title:(id)title style:(unint64_t)style includeBackdrop:(BOOL)backdrop
 {
-  v6 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  backdropCopy = backdrop;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v99[1] = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  if (!a5 && v6)
+  titleCopy = title;
+  if (!style && backdropCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIContentUnavailableView.m" lineNumber:138 description:@"UIContentUnavailableStyleAutomatic does not currently support backdrops"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIContentUnavailableView.m" lineNumber:138 description:@"UIContentUnavailableStyleAutomatic does not currently support backdrops"];
   }
 
   v16 = +[UIDevice currentDevice];
@@ -668,8 +668,8 @@ LABEL_45:
   v25 = v24;
   if (v24)
   {
-    v24->_style = a5;
-    v26 = [v14 copy];
+    v24->_style = style;
+    v26 = [titleCopy copy];
     title = v25->_title;
     v25->_title = v26;
 
@@ -691,7 +691,7 @@ LABEL_45:
 
     [(UIView *)v25->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v25->_scrollView addSubview:v25->_containerView];
-    if (v6)
+    if (backdropCopy)
     {
       v34 = [[_UIBackdropView alloc] initWithPrivateStyle:2030];
       backdrop = v25->_backdrop;
@@ -699,70 +699,70 @@ LABEL_45:
 
       [(UIView *)v25->_backdrop setUserInteractionEnabled:1];
       [(UIView *)v25 addSubview:v25->_backdrop];
-      v36 = [(UIView *)v25->_backdrop topAnchor];
-      v37 = [(UIView *)v25 topAnchor];
-      v38 = [v36 constraintEqualToAnchor:v37];
+      topAnchor = [(UIView *)v25->_backdrop topAnchor];
+      topAnchor2 = [(UIView *)v25 topAnchor];
+      v38 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [(UIView *)v25 addConstraint:v38];
 
-      v39 = [(UIView *)v25->_backdrop leftAnchor];
-      v40 = [(UIView *)v25 leftAnchor];
-      v41 = [v39 constraintEqualToAnchor:v40];
+      leftAnchor = [(UIView *)v25->_backdrop leftAnchor];
+      leftAnchor2 = [(UIView *)v25 leftAnchor];
+      v41 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       [(UIView *)v25 addConstraint:v41];
 
-      v42 = [(UIView *)v25->_backdrop bottomAnchor];
-      v43 = [(UIView *)v25 bottomAnchor];
-      v44 = [v42 constraintEqualToAnchor:v43];
+      bottomAnchor = [(UIView *)v25->_backdrop bottomAnchor];
+      bottomAnchor2 = [(UIView *)v25 bottomAnchor];
+      v44 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [(UIView *)v25 addConstraint:v44];
 
-      v45 = [(UIView *)v25->_backdrop rightAnchor];
-      v46 = [(UIView *)v25 rightAnchor];
-      v47 = [v45 constraintEqualToAnchor:v46];
+      rightAnchor = [(UIView *)v25->_backdrop rightAnchor];
+      rightAnchor2 = [(UIView *)v25 rightAnchor];
+      v47 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
       [(UIView *)v25 addConstraint:v47];
 
-      v48 = [(_UIBackdropView *)v25->_backdrop contentView];
+      contentView = [(_UIBackdropView *)v25->_backdrop contentView];
     }
 
     else
     {
-      v48 = v25;
+      contentView = v25;
     }
 
-    v49 = v48;
-    [(UIView *)v48 _setHostsLayoutEngine:1];
+    v49 = contentView;
+    [(UIView *)contentView _setHostsLayoutEngine:1];
     [(UIView *)v49 addSubview:v25->_scrollView];
-    v50 = [(UIView *)v25->_containerView topAnchor];
-    v51 = [(UIView *)v25->_scrollView topAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51];
+    topAnchor3 = [(UIView *)v25->_containerView topAnchor];
+    topAnchor4 = [(UIView *)v25->_scrollView topAnchor];
+    v52 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     [(UIView *)v49 addConstraint:v52];
 
-    v53 = [(UIView *)v25->_containerView bottomAnchor];
-    v54 = [(UIView *)v25->_scrollView bottomAnchor];
-    v55 = [v53 constraintEqualToAnchor:v54];
+    bottomAnchor3 = [(UIView *)v25->_containerView bottomAnchor];
+    bottomAnchor4 = [(UIView *)v25->_scrollView bottomAnchor];
+    v55 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     [(UIView *)v49 addConstraint:v55];
 
-    v56 = [(UIView *)v25->_scrollView leadingAnchor];
-    v57 = [(UIView *)v25->_containerView leadingAnchor];
-    v58 = [v56 constraintEqualToAnchor:v57];
+    leadingAnchor = [(UIView *)v25->_scrollView leadingAnchor];
+    leadingAnchor2 = [(UIView *)v25->_containerView leadingAnchor];
+    v58 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [(UIView *)v49 addConstraint:v58];
 
-    v59 = [(UIView *)v25->_scrollView trailingAnchor];
-    v60 = [(UIView *)v25->_containerView trailingAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60];
+    trailingAnchor = [(UIView *)v25->_scrollView trailingAnchor];
+    trailingAnchor2 = [(UIView *)v25->_containerView trailingAnchor];
+    v61 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [(UIView *)v49 addConstraint:v61];
 
-    v62 = [(UIView *)v25->_containerView centerXAnchor];
-    v63 = [(UIView *)v25->_scrollView centerXAnchor];
-    v64 = [v62 constraintEqualToAnchor:v63];
+    centerXAnchor = [(UIView *)v25->_containerView centerXAnchor];
+    centerXAnchor2 = [(UIView *)v25->_scrollView centerXAnchor];
+    v64 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [(UIView *)v49 addConstraint:v64];
 
-    v65 = [(UIView *)v25->_scrollView heightAnchor];
-    v66 = [(UIView *)v49 heightAnchor];
-    v67 = [v65 constraintLessThanOrEqualToAnchor:v66];
+    heightAnchor = [(UIView *)v25->_scrollView heightAnchor];
+    heightAnchor2 = [(UIView *)v49 heightAnchor];
+    v67 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2];
     [(UIView *)v49 addConstraint:v67];
 
-    v68 = [(UIView *)v25->_scrollView heightAnchor];
-    v69 = [(UIView *)v25->_containerView heightAnchor];
-    v70 = [v68 constraintEqualToAnchor:v69 constant:0.0];
+    heightAnchor3 = [(UIView *)v25->_scrollView heightAnchor];
+    heightAnchor4 = [(UIView *)v25->_containerView heightAnchor];
+    v70 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4 constant:0.0];
 
     LODWORD(v71) = 1144750080;
     [v70 setPriority:v71];
@@ -778,11 +778,11 @@ LABEL_45:
     [v74 setPriority:v75];
     [(UIView *)v49 addConstraint:v74];
     v76 = +[UIDevice currentDevice];
-    v77 = [v76 userInterfaceIdiom];
+    userInterfaceIdiom = [v76 userInterfaceIdiom];
 
     v78 = MEMORY[0x1E69977A0];
     v79 = v25->_scrollView;
-    if (v77 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v80 = _NSDictionaryOfVariableBindings(&cfstr_Scrollview.isa, v79, 0);
       v81 = [v78 constraintsWithVisualFormat:@"H:[_scrollView(>=124 options:<=418)]" metrics:0 views:0, v80];
@@ -790,28 +790,28 @@ LABEL_45:
       [(UIView *)v49 addConstraints:v81];
       v82 = MEMORY[0x1E69977A0];
       v83 = v25->_scrollView;
-      v84 = [(UIView *)v49 safeAreaLayoutGuide];
-      v85 = [v82 constraintWithItem:v83 attribute:5 relatedBy:1 toItem:v84 attribute:5 multiplier:1.0 constant:30.0];
+      safeAreaLayoutGuide = [(UIView *)v49 safeAreaLayoutGuide];
+      v85 = [v82 constraintWithItem:v83 attribute:5 relatedBy:1 toItem:safeAreaLayoutGuide attribute:5 multiplier:1.0 constant:30.0];
 
       [(UIView *)v49 addConstraint:v85];
       v86 = MEMORY[0x1E69977A0];
       v87 = v25->_scrollView;
-      v88 = [(UIView *)v49 safeAreaLayoutGuide];
-      v89 = [v86 constraintWithItem:v87 attribute:6 relatedBy:-1 toItem:v88 attribute:6 multiplier:1.0 constant:-30.0];
+      safeAreaLayoutGuide2 = [(UIView *)v49 safeAreaLayoutGuide];
+      v89 = [v86 constraintWithItem:v87 attribute:6 relatedBy:-1 toItem:safeAreaLayoutGuide2 attribute:6 multiplier:1.0 constant:-30.0];
 
       [(UIView *)v49 addConstraint:v89];
     }
 
     else
     {
-      v90 = [(UIView *)v49 safeAreaLayoutGuide];
-      v91 = [v78 constraintWithItem:v79 attribute:5 relatedBy:0 toItem:v90 attribute:5 multiplier:1.0 constant:29.0];
+      safeAreaLayoutGuide3 = [(UIView *)v49 safeAreaLayoutGuide];
+      v91 = [v78 constraintWithItem:v79 attribute:5 relatedBy:0 toItem:safeAreaLayoutGuide3 attribute:5 multiplier:1.0 constant:29.0];
 
       [(UIView *)v49 addConstraint:v91];
       v92 = MEMORY[0x1E69977A0];
       v93 = v25->_scrollView;
-      v94 = [(UIView *)v49 safeAreaLayoutGuide];
-      v89 = [v92 constraintWithItem:v93 attribute:6 relatedBy:0 toItem:v94 attribute:6 multiplier:1.0 constant:-29.0];
+      safeAreaLayoutGuide4 = [(UIView *)v49 safeAreaLayoutGuide];
+      v89 = [v92 constraintWithItem:v93 attribute:6 relatedBy:0 toItem:safeAreaLayoutGuide4 attribute:6 multiplier:1.0 constant:-29.0];
 
       [(UIView *)v49 addConstraint:v89];
     }
@@ -833,12 +833,12 @@ LABEL_45:
 - (void)dealloc
 {
   v6[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UIWindowWillRotateNotification";
   v6[1] = @"UIWindowWillAnimateRotationNotification";
   v6[2] = @"UIWindowDidRotateNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:3];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5.receiver = self;
   v5.super_class = _UIContentUnavailableView;
@@ -847,16 +847,16 @@ LABEL_45:
 
 - (void)_updateForCurrentContentSizeCategory
 {
-  v3 = [(_UIContentUnavailableView *)self _titleFont];
-  [(UILabel *)self->_titleLabel setFont:v3];
+  _titleFont = [(_UIContentUnavailableView *)self _titleFont];
+  [(UILabel *)self->_titleLabel setFont:_titleFont];
 
-  v4 = [(_UIContentUnavailableView *)self _messageTextStyle];
-  v5 = [off_1E70ECC18 preferredFontForTextStyle:v4];
+  _messageTextStyle = [(_UIContentUnavailableView *)self _messageTextStyle];
+  v5 = [off_1E70ECC18 preferredFontForTextStyle:_messageTextStyle];
   [(UILabel *)self->_messageLabel setFont:v5];
 
-  v6 = [(_UIContentUnavailableView *)self _buttonFont];
-  v7 = [(UIButton *)self->_actionButton titleLabel];
-  [v7 setFont:v6];
+  _buttonFont = [(_UIContentUnavailableView *)self _buttonFont];
+  titleLabel = [(UIButton *)self->_actionButton titleLabel];
+  [titleLabel setFont:_buttonFont];
 
   if (self->_containerViewContraints)
   {
@@ -865,46 +865,46 @@ LABEL_45:
   }
 }
 
-- (CGColor)_colorForButtonForStyle:(unint64_t)a3 controlState:(unint64_t)a4
+- (CGColor)_colorForButtonForStyle:(unint64_t)style controlState:(unint64_t)state
 {
-  if (a3 == 1)
+  if (style == 1)
   {
-    v5 = [(_UIContentUnavailableView *)self _hasVibrantButton];
+    _hasVibrantButton = [(_UIContentUnavailableView *)self _hasVibrantButton];
     v6 = 0.6;
     v7 = 1.0;
-    if (a4)
+    if (state)
     {
       v6 = 1.0;
     }
 
-    if (!v5)
+    if (!_hasVibrantButton)
     {
       v7 = v6;
     }
 
     v8 = [UIColor colorWithWhite:0.0 alpha:v7];
-    v9 = [v8 CGColor];
+    cGColor = [v8 CGColor];
   }
 
   else
   {
-    v8 = [UIColor labelColor:a3];
+    v8 = [UIColor labelColor:style];
     v10 = [v8 colorWithAlphaComponent:1.0];
-    v9 = [v10 CGColor];
+    cGColor = [v10 CGColor];
   }
 
-  return v9;
+  return cGColor;
 }
 
-- (id)_buttonBackgroundImageForStyle:(unint64_t)a3 controlState:(unint64_t)a4
+- (id)_buttonBackgroundImageForStyle:(unint64_t)style controlState:(unint64_t)state
 {
   if (qword_1ED499DA8 != -1)
   {
     dispatch_once(&qword_1ED499DA8, &__block_literal_global_716);
   }
 
-  v7 = [(_UIContentUnavailableView *)self _colorForButtonForStyle:a3 controlState:a4];
-  v8 = [[_UIContentUnavailableViewCacheKey alloc] initWithStyle:a3 color:v7];
+  v7 = [(_UIContentUnavailableView *)self _colorForButtonForStyle:style controlState:state];
+  v8 = [[_UIContentUnavailableViewCacheKey alloc] initWithStyle:style color:v7];
   v9 = [_MergedGlobals_9_15 objectForKey:v8];
   if (!v9)
   {
@@ -920,11 +920,11 @@ LABEL_45:
 
     v24 = _Q0;
     v25 = 0x4008000000000000;
-    v26 = a3;
+    styleCopy = style;
     v16 = [(UIGraphicsImageRenderer *)v10 imageWithActions:v23];
     v9 = [v16 resizableImageWithCapInsets:{5.0, 5.0, 5.0, 5.0}];
 
-    if (a3 == 1)
+    if (style == 1)
     {
       v17 = [v9 imageWithRenderingMode:2];
 
@@ -944,14 +944,14 @@ LABEL_45:
   return v9;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  v11 = v5;
-  if (!v5 || (v6 = [v5 length], v7 = v11, !v6))
+  titleCopy = title;
+  v11 = titleCopy;
+  if (!titleCopy || (v6 = [titleCopy length], v7 = v11, !v6))
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIContentUnavailableView.m" lineNumber:540 description:@"Title cannot be nil or empty"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIContentUnavailableView.m" lineNumber:540 description:@"Title cannot be nil or empty"];
 
     v7 = v11;
   }
@@ -966,12 +966,12 @@ LABEL_45:
   }
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_message] & 1) == 0)
+  messageCopy = message;
+  if (([messageCopy isEqualToString:self->_message] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [messageCopy copy];
     message = self->_message;
     self->_message = v4;
 
@@ -979,12 +979,12 @@ LABEL_45:
   }
 }
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_buttonTitle] & 1) == 0)
+  titleCopy = title;
+  if (([titleCopy isEqualToString:self->_buttonTitle] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [titleCopy copy];
     buttonTitle = self->_buttonTitle;
     self->_buttonTitle = v4;
 
@@ -992,18 +992,18 @@ LABEL_45:
   }
 }
 
-- (void)_actionButtonPressed:(id)a3
+- (void)_actionButtonPressed:(id)pressed
 {
-  v4 = [(_UIContentUnavailableView *)self buttonAction];
+  buttonAction = [(_UIContentUnavailableView *)self buttonAction];
 
-  if (v4)
+  if (buttonAction)
   {
-    v5 = [(_UIContentUnavailableView *)self buttonAction];
-    v5[2]();
+    buttonAction2 = [(_UIContentUnavailableView *)self buttonAction];
+    buttonAction2[2]();
   }
 }
 
-- (void)windowWillRotateNotification:(id)a3
+- (void)windowWillRotateNotification:(id)notification
 {
   [(UIView *)self->_containerView bounds];
   v6 = v5;
@@ -1029,7 +1029,7 @@ LABEL_45:
   [(UIView *)containerView addSubview:v16];
 }
 
-- (void)windowWillAnimateRotateNotification:(id)a3
+- (void)windowWillAnimateRotateNotification:(id)notification
 {
   [(UIView *)self->_containerView bounds];
   v6 = v5;
@@ -1095,8 +1095,8 @@ LABEL_45:
 
 - (id)_buttonFont
 {
-  v2 = [(_UIContentUnavailableView *)self _buttonTextStyle];
-  v3 = [off_1E70ECC18 preferredFontForTextStyle:v2];
+  _buttonTextStyle = [(_UIContentUnavailableView *)self _buttonTextStyle];
+  v3 = [off_1E70ECC18 preferredFontForTextStyle:_buttonTextStyle];
 
   return v3;
 }
@@ -1112,9 +1112,9 @@ LABEL_45:
 
 - (UIEdgeInsets)_buttonContentEdgeInsets
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  traitCollection = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v5 = 0.0;
   if (IsAccessibilityCategory)
@@ -1134,11 +1134,11 @@ LABEL_45:
 
 - (double)_buttonVerticalSpacing
 {
-  v3 = [(_UIContentUnavailableView *)self _buttonTextStyle];
-  v4 = [UIFontMetrics metricsForTextStyle:v3];
-  v5 = [(UIView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  _buttonTextStyle = [(_UIContentUnavailableView *)self _buttonTextStyle];
+  v4 = [UIFontMetrics metricsForTextStyle:_buttonTextStyle];
+  traitCollection = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   v8 = 35.0;
   if (IsAccessibilityCategory)
   {
@@ -1151,11 +1151,11 @@ LABEL_45:
   return v10;
 }
 
-- (void)setVibrantOptions:(unint64_t)a3
+- (void)setVibrantOptions:(unint64_t)options
 {
-  if (self->_vibrantOptions != a3)
+  if (self->_vibrantOptions != options)
   {
-    self->_vibrantOptions = a3;
+    self->_vibrantOptions = options;
     [(UIView *)self setNeedsLayout];
   }
 }

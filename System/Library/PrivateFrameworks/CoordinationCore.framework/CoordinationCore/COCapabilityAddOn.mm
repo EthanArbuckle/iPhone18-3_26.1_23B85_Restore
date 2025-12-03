@@ -1,34 +1,34 @@
 @interface COCapabilityAddOn
-- (BOOL)_legacyShimOverridesAvailableCapabilities:(id)a3;
-- (COCapabilityAddOn)initWithSupportedCapabilities:(id)a3;
+- (BOOL)_legacyShimOverridesAvailableCapabilities:(id)capabilities;
+- (COCapabilityAddOn)initWithSupportedCapabilities:(id)capabilities;
 - (COCapabilityAddOnDelegate)delegate;
 - (NSDictionary)gatheredCapabilities;
 - (NSSet)availableCapabilities;
 - (NSSet)supportedCapabilities;
-- (id)availableCapabilitiesForNode:(id)a3;
+- (id)availableCapabilitiesForNode:(id)node;
 - (void)_enableForPairLegacySupport;
 - (void)_notifyDelegateCapabilitiesChanged;
-- (void)_setAvailableCapabilities_Unsafe:(id)a3;
-- (void)_withLock:(id)a3;
-- (void)didAddToMeshController:(id)a3;
-- (void)didChangeNodesForMeshController:(id)a3;
-- (void)handleCapabilitiesReadRequest:(id)a3 callback:(id)a4;
-- (void)handleCapabilitiesUpdateNotification:(id)a3;
-- (void)legacyShim:(id)a3 availableCapabilitiesChanged:(id)a4;
-- (void)meshController:(id)a3 didTransitionToState:(unint64_t)a4;
+- (void)_setAvailableCapabilities_Unsafe:(id)unsafe;
+- (void)_withLock:(id)lock;
+- (void)didAddToMeshController:(id)controller;
+- (void)didChangeNodesForMeshController:(id)controller;
+- (void)handleCapabilitiesReadRequest:(id)request callback:(id)callback;
+- (void)handleCapabilitiesUpdateNotification:(id)notification;
+- (void)legacyShim:(id)shim availableCapabilitiesChanged:(id)changed;
+- (void)meshController:(id)controller didTransitionToState:(unint64_t)state;
 - (void)performCapabilitiesUpdate;
-- (void)setAvailableCapabilities:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setGatheredCapabilities:(id)a3;
-- (void)setSupportedCapabilities:(id)a3;
-- (void)willRemoveFromMeshController:(id)a3;
+- (void)setAvailableCapabilities:(id)capabilities;
+- (void)setDelegate:(id)delegate;
+- (void)setGatheredCapabilities:(id)capabilities;
+- (void)setSupportedCapabilities:(id)capabilities;
+- (void)willRemoveFromMeshController:(id)controller;
 @end
 
 @implementation COCapabilityAddOn
 
-- (COCapabilityAddOn)initWithSupportedCapabilities:(id)a3
+- (COCapabilityAddOn)initWithSupportedCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   v14.receiver = self;
   v14.super_class = COCapabilityAddOn;
   v5 = [(COMeshAddOn *)&v14 init];
@@ -40,9 +40,9 @@
     availableCapabilities = v6->_availableCapabilities;
     v6->_availableCapabilities = v7;
 
-    if (v4)
+    if (capabilitiesCopy)
     {
-      v9 = [v4 copy];
+      v9 = [capabilitiesCopy copy];
     }
 
     else
@@ -61,33 +61,33 @@
   return v6;
 }
 
-- (void)meshController:(id)a3 didTransitionToState:(unint64_t)a4
+- (void)meshController:(id)controller didTransitionToState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 != 3)
+  controllerCopy = controller;
+  v7 = controllerCopy;
+  if (state != 3)
   {
-    if ((a4 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+    if ((state & 0xFFFFFFFFFFFFFFFBLL) != 0)
     {
       goto LABEL_8;
     }
 
     [(COCapabilityAddOn *)self setGatheredCapabilities:MEMORY[0x277CBEC10]];
-    v11 = [(COCapabilityAddOn *)self supportedCapabilities];
-    [(COCapabilityAddOn *)self setAvailableCapabilities:v11];
+    supportedCapabilities = [(COCapabilityAddOn *)self supportedCapabilities];
+    [(COCapabilityAddOn *)self setAvailableCapabilities:supportedCapabilities];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v8 = [v6 me];
-  v9 = [v7 leader];
-  v10 = [v8 isEqual:v9];
+  v8 = [controllerCopy me];
+  leader = [v7 leader];
+  v10 = [v8 isEqual:leader];
 
   if (!v10)
   {
-    v11 = objc_alloc_init(MEMORY[0x277CBEAC0]);
-    [(COCapabilityAddOn *)self setGatheredCapabilities:v11];
+    supportedCapabilities = objc_alloc_init(MEMORY[0x277CBEAC0]);
+    [(COCapabilityAddOn *)self setGatheredCapabilities:supportedCapabilities];
     goto LABEL_7;
   }
 
@@ -95,35 +95,35 @@ LABEL_7:
 LABEL_8:
   v12.receiver = self;
   v12.super_class = COCapabilityAddOn;
-  [(COMeshAddOn *)&v12 meshController:v7 didTransitionToState:a4];
+  [(COMeshAddOn *)&v12 meshController:v7 didTransitionToState:state];
 }
 
-- (void)didAddToMeshController:(id)a3
+- (void)didAddToMeshController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = COCapabilityAddOn;
-  [(COMeshAddOn *)&v12 didAddToMeshController:v4];
+  [(COMeshAddOn *)&v12 didAddToMeshController:controllerCopy];
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__COCapabilityAddOn_didAddToMeshController___block_invoke;
   v9[3] = &unk_278E15FA8;
   objc_copyWeak(&v10, &location);
-  [v4 registerHandler:v9 forRequestClass:objc_opt_class()];
+  [controllerCopy registerHandler:v9 forRequestClass:objc_opt_class()];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__COCapabilityAddOn_didAddToMeshController___block_invoke_2;
   v7[3] = &unk_278E15FD0;
   objc_copyWeak(&v8, &location);
   v7[4] = self;
-  [v4 registerHandler:v7 forCommandClass:objc_opt_class()];
+  [controllerCopy registerHandler:v7 forCommandClass:objc_opt_class()];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __44__COCapabilityAddOn_didAddToMeshController___block_invoke_3;
   v5[3] = &unk_278E15FF8;
   objc_copyWeak(&v6, &location);
-  [v4 registerHandler:v5 forNotificationClass:objc_opt_class()];
+  [controllerCopy registerHandler:v5 forNotificationClass:objc_opt_class()];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
@@ -163,41 +163,41 @@ void __44__COCapabilityAddOn_didAddToMeshController___block_invoke_3(uint64_t a1
   }
 }
 
-- (void)willRemoveFromMeshController:(id)a3
+- (void)willRemoveFromMeshController:(id)controller
 {
-  v4 = a3;
-  [v4 deregisterHandlerForNotificationClass:objc_opt_class()];
-  [v4 deregisterHandlerForCommandClass:objc_opt_class()];
-  [v4 deregisterHandlerForRequestClass:objc_opt_class()];
+  controllerCopy = controller;
+  [controllerCopy deregisterHandlerForNotificationClass:objc_opt_class()];
+  [controllerCopy deregisterHandlerForCommandClass:objc_opt_class()];
+  [controllerCopy deregisterHandlerForRequestClass:objc_opt_class()];
   v5.receiver = self;
   v5.super_class = COCapabilityAddOn;
-  [(COMeshAddOn *)&v5 willRemoveFromMeshController:v4];
+  [(COMeshAddOn *)&v5 willRemoveFromMeshController:controllerCopy];
 }
 
-- (void)didChangeNodesForMeshController:(id)a3
+- (void)didChangeNodesForMeshController:(id)controller
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(COMeshAddOn *)self meshController];
-  v6 = [v5 me];
-  v7 = [(COMeshAddOn *)self meshController];
-  v8 = [v7 leader];
-  v9 = [v6 isEqual:v8];
+  controllerCopy = controller;
+  meshController = [(COMeshAddOn *)self meshController];
+  v6 = [meshController me];
+  meshController2 = [(COMeshAddOn *)self meshController];
+  leader = [meshController2 leader];
+  v9 = [v6 isEqual:leader];
 
   if (v9)
   {
-    v10 = [(COCapabilityAddOn *)self gatheredCapabilities];
-    v11 = [v10 mutableCopy];
+    gatheredCapabilities = [(COCapabilityAddOn *)self gatheredCapabilities];
+    v11 = [gatheredCapabilities mutableCopy];
 
-    v35 = self;
-    v12 = [(COMeshAddOn *)self meshController];
-    v13 = [v12 nodes];
+    selfCopy = self;
+    meshController3 = [(COMeshAddOn *)self meshController];
+    nodes = [meshController3 nodes];
 
     v45 = 0u;
     v46 = 0u;
     v44 = 0u;
     v43 = 0u;
-    v14 = v13;
+    v14 = nodes;
     v15 = [v14 countByEnumeratingWithState:&v43 objects:v50 count:16];
     if (v15)
     {
@@ -213,8 +213,8 @@ void __44__COCapabilityAddOn_didAddToMeshController___block_invoke_3(uint64_t a1
             objc_enumerationMutation(v14);
           }
 
-          v20 = [*(*(&v43 + 1) + 8 * i) remote];
-          v21 = [v11 objectForKey:v20];
+          remote = [*(*(&v43 + 1) + 8 * i) remote];
+          v21 = [v11 objectForKey:remote];
           v22 = v21 == 0;
 
           v17 |= v22;
@@ -228,15 +228,15 @@ void __44__COCapabilityAddOn_didAddToMeshController___block_invoke_3(uint64_t a1
       if (v17)
       {
         v23 = COCoreLogForCategory(5);
-        self = v35;
+        self = selfCopy;
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v49 = v35;
+          v49 = selfCopy;
           _os_log_impl(&dword_244378000, v23, OS_LOG_TYPE_DEFAULT, "%p node added, need to perform update", buf, 0xCu);
         }
 
-        [(COCapabilityAddOn *)v35 performCapabilitiesUpdate];
+        [(COCapabilityAddOn *)selfCopy performCapabilitiesUpdate];
 LABEL_27:
 
         goto LABEL_28;
@@ -247,14 +247,14 @@ LABEL_27:
     {
     }
 
-    v34 = v4;
+    v34 = controllerCopy;
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
     obj = [v11 allKeys];
     v24 = [obj countByEnumeratingWithState:&v39 objects:v47 count:16];
-    self = v35;
+    self = selfCopy;
     if (v24)
     {
       v25 = v24;
@@ -276,18 +276,18 @@ LABEL_27:
           v38[4] = v28;
           if ([v14 indexOfObjectPassingTest:v38] == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v29 = [(COMeshAddOn *)self meshController];
-            v30 = [v29 me];
+            meshController4 = [(COMeshAddOn *)self meshController];
+            v30 = [meshController4 me];
             v31 = [v28 isEqual:v30];
 
-            self = v35;
+            self = selfCopy;
             if ((v31 & 1) == 0)
             {
               v32 = COCoreLogForCategory(5);
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134217984;
-                v49 = v35;
+                v49 = selfCopy;
                 _os_log_impl(&dword_244378000, v32, OS_LOG_TYPE_DEFAULT, "%p node removed, dropping gathered Capabilities", buf, 0xCu);
               }
 
@@ -303,14 +303,14 @@ LABEL_27:
     }
 
     [(COCapabilityAddOn *)self setGatheredCapabilities:v11];
-    v4 = v34;
+    controllerCopy = v34;
     goto LABEL_27;
   }
 
 LABEL_28:
   v37.receiver = self;
   v37.super_class = COCapabilityAddOn;
-  [(COMeshAddOn *)&v37 didChangeNodesForMeshController:v4];
+  [(COMeshAddOn *)&v37 didChangeNodesForMeshController:controllerCopy];
 
   v33 = *MEMORY[0x277D85DE8];
 }
@@ -354,34 +354,34 @@ uint64_t __42__COCapabilityAddOn_supportedCapabilities__block_invoke(uint64_t a1
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setSupportedCapabilities:(id)a3
+- (void)setSupportedCapabilities:(id)capabilities
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(COCapabilityAddOn *)self pairLegacyShim];
+  capabilitiesCopy = capabilities;
+  pairLegacyShim = [(COCapabilityAddOn *)self pairLegacyShim];
 
-  if (v5)
+  if (pairLegacyShim)
   {
     v6 = COCoreLogForCategory(5);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_244378000, v6, OS_LOG_TYPE_DEFAULT, "%p including Legacy Shim as supported Capability", buf, 0xCu);
     }
 
-    v7 = [v4 setByAddingObject:0x2857B5268];
+    v7 = [capabilitiesCopy setByAddingObject:0x2857B5268];
 
-    v4 = v7;
+    capabilitiesCopy = v7;
   }
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __46__COCapabilityAddOn_setSupportedCapabilities___block_invoke;
   v10[3] = &unk_278E156B0;
-  v11 = v4;
-  v12 = self;
-  v8 = v4;
+  v11 = capabilitiesCopy;
+  selfCopy2 = self;
+  v8 = capabilitiesCopy;
   [(COCapabilityAddOn *)self _withLock:v10];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -459,16 +459,16 @@ uint64_t __42__COCapabilityAddOn_availableCapabilities__block_invoke(uint64_t a1
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setAvailableCapabilities:(id)a3
+- (void)setAvailableCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__COCapabilityAddOn_setAvailableCapabilities___block_invoke;
   v6[3] = &unk_278E156B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = capabilitiesCopy;
+  v5 = capabilitiesCopy;
   [(COCapabilityAddOn *)self _withLock:v6];
 }
 
@@ -503,16 +503,16 @@ uint64_t __41__COCapabilityAddOn_gatheredCapabilities__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setGatheredCapabilities:(id)a3
+- (void)setGatheredCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__COCapabilityAddOn_setGatheredCapabilities___block_invoke;
   v6[3] = &unk_278E156B0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = capabilitiesCopy;
+  selfCopy = self;
+  v5 = capabilitiesCopy;
   [(COCapabilityAddOn *)self _withLock:v6];
 }
 
@@ -580,16 +580,16 @@ uint64_t __29__COCapabilityAddOn_delegate__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__COCapabilityAddOn_setDelegate___block_invoke;
   v6[3] = &unk_278E156B0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = delegateCopy;
+  selfCopy = self;
+  v5 = delegateCopy;
   [(COCapabilityAddOn *)self _withLock:v6];
 }
 
@@ -608,27 +608,27 @@ void __33__COCapabilityAddOn_setDelegate___block_invoke(uint64_t a1)
   }
 }
 
-- (id)availableCapabilitiesForNode:(id)a3
+- (id)availableCapabilitiesForNode:(id)node
 {
-  v4 = a3;
-  v5 = [v4 remote];
-  if (v5)
+  nodeCopy = node;
+  remote = [nodeCopy remote];
+  if (remote)
   {
-    v6 = v5;
+    source = remote;
 LABEL_3:
-    v7 = [(COCapabilityAddOn *)self gatheredCapabilities];
-    v8 = [v7 objectForKey:v6];
+    gatheredCapabilities = [(COCapabilityAddOn *)self gatheredCapabilities];
+    v8 = [gatheredCapabilities objectForKey:source];
 
     goto LABEL_7;
   }
 
-  v9 = [(COMeshAddOn *)self meshController];
-  v10 = [v9 listener];
+  meshController = [(COMeshAddOn *)self meshController];
+  listener = [meshController listener];
 
-  if (v10 == v4)
+  if (listener == nodeCopy)
   {
-    v6 = [v4 source];
-    if (v6)
+    source = [nodeCopy source];
+    if (source)
     {
       goto LABEL_3;
     }
@@ -636,7 +636,7 @@ LABEL_3:
 
   else
   {
-    v6 = 0;
+    source = 0;
   }
 
   v8 = 0;
@@ -659,7 +659,7 @@ LABEL_7:
     v7[2] = __55__COCapabilityAddOn__notifyDelegateCapabilitiesChanged__block_invoke;
     v7[3] = &unk_278E15728;
     v8 = v3;
-    v9 = self;
+    selfCopy = self;
     v10 = v4;
     v6 = v4;
     dispatch_async(v5, v7);
@@ -668,83 +668,83 @@ LABEL_7:
   objc_destroyWeak(&to);
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_setAvailableCapabilities_Unsafe:(id)a3
+- (void)_setAvailableCapabilities_Unsafe:(id)unsafe
 {
   v76 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(COCapabilityAddOn *)self pairLegacyShim];
+  unsafeCopy = unsafe;
+  pairLegacyShim = [(COCapabilityAddOn *)self pairLegacyShim];
 
-  if (v5)
+  if (pairLegacyShim)
   {
-    if ([(COCapabilityAddOn *)self _legacyShimOverridesAvailableCapabilities:v4])
+    if ([(COCapabilityAddOn *)self _legacyShimOverridesAvailableCapabilities:unsafeCopy])
     {
-      v6 = [(COCapabilityAddOn *)self pairLegacyShim];
-      v58 = [v6 availableCapabilities];
+      pairLegacyShim2 = [(COCapabilityAddOn *)self pairLegacyShim];
+      availableCapabilities = [pairLegacyShim2 availableCapabilities];
 
       v7 = COCoreLogForCategory(5);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218498;
-        v71 = self;
+        selfCopy = self;
         v72 = 2112;
-        v73 = v4;
+        v73 = unsafeCopy;
         v74 = 2112;
-        v75 = v58;
+        v75 = availableCapabilities;
         _os_log_impl(&dword_244378000, v7, OS_LOG_TYPE_DEFAULT, "%p overriding available Capabilities(%@) with Legacy Shim Capabilities(%@)", buf, 0x20u);
       }
     }
 
     else
     {
-      v58 = v4;
+      availableCapabilities = unsafeCopy;
     }
 
-    v8 = [(COMeshAddOn *)self meshController];
+    meshController = [(COMeshAddOn *)self meshController];
     v9 = +[COHomeKitAdapter sharedInstance];
-    v10 = [v9 currentAccessory];
-    if (!v10)
+    currentAccessory = [v9 currentAccessory];
+    if (!currentAccessory)
     {
       v11 = 0;
 LABEL_41:
 
-      v4 = v58;
+      unsafeCopy = availableCapabilities;
       goto LABEL_42;
     }
 
-    v11 = [v9 homeForAccessory:v10];
+    v11 = [v9 homeForAccessory:currentAccessory];
     if (!v11)
     {
       goto LABEL_41;
     }
 
-    v12 = [v9 mediaSystemForAccessory:v10 inHome:v11];
+    v12 = [v9 mediaSystemForAccessory:currentAccessory inHome:v11];
     if (!v12)
     {
       goto LABEL_41;
     }
 
     v13 = v12;
-    v59 = [v12 uniqueIdentifier];
+    uniqueIdentifier = [v12 uniqueIdentifier];
     if ([MEMORY[0x277CFD0B8] isGlobalMessagingEnabled])
     {
       v66 = 0u;
       v67 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v14 = [(COMeshAddOn *)self meshController];
-      v15 = [v14 nodes];
+      meshController2 = [(COMeshAddOn *)self meshController];
+      nodes = [meshController2 nodes];
 
-      obj = v15;
-      v16 = [v15 countByEnumeratingWithState:&v64 objects:v69 count:16];
+      obj = nodes;
+      v16 = [nodes countByEnumeratingWithState:&v64 objects:v69 count:16];
       if (!v16)
       {
 LABEL_40:
@@ -755,9 +755,9 @@ LABEL_40:
       v17 = v16;
       v52 = v13;
       v53 = v11;
-      v54 = v10;
+      v54 = currentAccessory;
       v55 = v9;
-      v56 = self;
+      selfCopy3 = self;
       v18 = *v65;
       do
       {
@@ -769,44 +769,44 @@ LABEL_40:
           }
 
           v20 = *(*(&v64 + 1) + 8 * i);
-          v21 = [v8 nodeManager];
-          v22 = [v20 remote];
-          v23 = [v21 nodeControllerForConstituent:v22];
+          nodeManager = [meshController nodeManager];
+          remote = [v20 remote];
+          v23 = [nodeManager nodeControllerForConstituent:remote];
 
-          v24 = [v23 rapportTransport];
-          v25 = [v24 client];
-          v26 = [v25 destinationDevice];
+          rapportTransport = [v23 rapportTransport];
+          client = [rapportTransport client];
+          destinationDevice = [client destinationDevice];
 
-          v27 = [v26 mediaSystemIdentifier];
-          v28 = v8;
-          v29 = [v59 isEqual:v27];
+          mediaSystemIdentifier = [destinationDevice mediaSystemIdentifier];
+          v28 = meshController;
+          v29 = [uniqueIdentifier isEqual:mediaSystemIdentifier];
 
           if (v29)
           {
-            v30 = [v28 nodes];
-            v31 = [v30 containsObject:v20];
+            nodes2 = [v28 nodes];
+            v31 = [nodes2 containsObject:v20];
 
-            v8 = v28;
+            meshController = v28;
             if ((v31 & 1) == 0)
             {
               v32 = COCoreLogForCategory(5);
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 134218242;
-                v71 = v56;
+                selfCopy = selfCopy3;
                 v72 = 2112;
-                v73 = v58;
+                v73 = availableCapabilities;
                 _os_log_impl(&dword_244378000, v32, OS_LOG_TYPE_DEFAULT, "%p overriding available Capabilities(%@) due to legacy peer in pair", buf, 0x16u);
               }
 
               v33 = objc_alloc_init(MEMORY[0x277CBEB98]);
-              v58 = v33;
+              availableCapabilities = v33;
             }
           }
 
           else
           {
-            v8 = v28;
+            meshController = v28;
           }
         }
 
@@ -820,41 +820,41 @@ LABEL_40:
     {
       v52 = v13;
       v53 = v11;
-      v54 = v10;
+      v54 = currentAccessory;
       v55 = v9;
-      v56 = self;
-      [v8 listener];
+      selfCopy3 = self;
+      [meshController listener];
       v60 = 0u;
       v61 = 0u;
       v62 = 0u;
       obj = v63 = 0u;
-      v34 = [obj nodes];
-      v35 = [v34 countByEnumeratingWithState:&v60 objects:v68 count:16];
+      nodes3 = [obj nodes];
+      v35 = [nodes3 countByEnumeratingWithState:&v60 objects:v68 count:16];
       if (v35)
       {
         v36 = v35;
         v37 = *v61;
         do
         {
-          v38 = v8;
+          v38 = meshController;
           for (j = 0; j != v36; ++j)
           {
             if (*v61 != v37)
             {
-              objc_enumerationMutation(v34);
+              objc_enumerationMutation(nodes3);
             }
 
             v40 = *(*(&v60 + 1) + 8 * j);
-            v41 = [v40 client];
-            v42 = [v41 destinationDevice];
+            client2 = [v40 client];
+            destinationDevice2 = [client2 destinationDevice];
 
-            v43 = [v42 mediaSystemIdentifier];
-            v44 = [v59 isEqual:v43];
+            mediaSystemIdentifier2 = [destinationDevice2 mediaSystemIdentifier];
+            v44 = [uniqueIdentifier isEqual:mediaSystemIdentifier2];
 
             if (v44)
             {
-              v45 = [v38 nodes];
-              v46 = [v45 containsObject:v40];
+              nodes4 = [v38 nodes];
+              v46 = [nodes4 containsObject:v40];
 
               if ((v46 & 1) == 0)
               {
@@ -862,28 +862,28 @@ LABEL_40:
                 if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 134218242;
-                  v71 = v56;
+                  selfCopy = selfCopy3;
                   v72 = 2112;
-                  v73 = v58;
+                  v73 = availableCapabilities;
                   _os_log_impl(&dword_244378000, v47, OS_LOG_TYPE_DEFAULT, "%p overriding available Capabilities(%@) due to legacy peer in pair", buf, 0x16u);
                 }
 
                 v48 = objc_alloc_init(MEMORY[0x277CBEB98]);
-                v58 = v48;
+                availableCapabilities = v48;
               }
             }
           }
 
-          v36 = [v34 countByEnumeratingWithState:&v60 objects:v68 count:16];
-          v8 = v38;
+          v36 = [nodes3 countByEnumeratingWithState:&v60 objects:v68 count:16];
+          meshController = v38;
         }
 
         while (v36);
       }
     }
 
-    self = v56;
-    v10 = v54;
+    self = selfCopy3;
+    currentAccessory = v54;
     v9 = v55;
     v13 = v52;
     v11 = v53;
@@ -891,9 +891,9 @@ LABEL_40:
   }
 
 LABEL_42:
-  if (([v4 isEqualToSet:self->_availableCapabilities] & 1) == 0)
+  if (([unsafeCopy isEqualToSet:self->_availableCapabilities] & 1) == 0)
   {
-    v49 = [v4 copy];
+    v49 = [unsafeCopy copy];
     availableCapabilities = self->_availableCapabilities;
     self->_availableCapabilities = v49;
 
@@ -907,7 +907,7 @@ LABEL_42:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 134217984;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_244378000, a2, OS_LOG_TYPE_DEBUG, "%p performing Capabilities update", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -1080,18 +1080,18 @@ uint64_t __46__COCapabilityAddOn_performCapabilitiesUpdate__block_invoke_2(uint6
   return v4;
 }
 
-- (void)handleCapabilitiesReadRequest:(id)a3 callback:(id)a4
+- (void)handleCapabilitiesReadRequest:(id)request callback:(id)callback
 {
-  v5 = a4;
-  v6 = [(COCapabilityAddOn *)self supportedCapabilities];
-  v7 = [[COCapabilityReadResponse alloc] initWithCapabilities:v6];
-  v5[2](v5, v7, 0);
+  callbackCopy = callback;
+  supportedCapabilities = [(COCapabilityAddOn *)self supportedCapabilities];
+  v7 = [[COCapabilityReadResponse alloc] initWithCapabilities:supportedCapabilities];
+  callbackCopy[2](callbackCopy, v7, 0);
 }
 
-- (void)handleCapabilitiesUpdateNotification:(id)a3
+- (void)handleCapabilitiesUpdateNotification:(id)notification
 {
-  v4 = [a3 capabilities];
-  [(COCapabilityAddOn *)self setAvailableCapabilities:v4];
+  capabilities = [notification capabilities];
+  [(COCapabilityAddOn *)self setAvailableCapabilities:capabilities];
 }
 
 - (void)_enableForPairLegacySupport
@@ -1102,8 +1102,8 @@ uint64_t __46__COCapabilityAddOn_performCapabilitiesUpdate__block_invoke_2(uint6
   v4[3] = &unk_278E15AB8;
   v4[4] = self;
   [(COCapabilityAddOn *)self _withLock:v4];
-  v3 = [(COCapabilityAddOn *)self supportedCapabilities];
-  [(COCapabilityAddOn *)self setSupportedCapabilities:v3];
+  supportedCapabilities = [(COCapabilityAddOn *)self supportedCapabilities];
+  [(COCapabilityAddOn *)self setSupportedCapabilities:supportedCapabilities];
 }
 
 uint64_t __48__COCapabilityAddOn__enableForPairLegacySupport__block_invoke(uint64_t a1)
@@ -1116,9 +1116,9 @@ uint64_t __48__COCapabilityAddOn__enableForPairLegacySupport__block_invoke(uint6
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)legacyShim:(id)a3 availableCapabilitiesChanged:(id)a4
+- (void)legacyShim:(id)shim availableCapabilitiesChanged:(id)changed
 {
-  v5 = [(COMeshAddOn *)self meshControllerQueue:a3];
+  v5 = [(COMeshAddOn *)self meshControllerQueue:shim];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__COCapabilityAddOn_legacyShim_availableCapabilitiesChanged___block_invoke;
@@ -1141,16 +1141,16 @@ void __61__COCapabilityAddOn_legacyShim_availableCapabilitiesChanged___block_inv
   }
 }
 
-- (BOOL)_legacyShimOverridesAvailableCapabilities:(id)a3
+- (BOOL)_legacyShimOverridesAvailableCapabilities:(id)capabilities
 {
-  v4 = a3;
-  v5 = [(COCapabilityAddOn *)self pairLegacyShim];
-  if (v5)
+  capabilitiesCopy = capabilities;
+  pairLegacyShim = [(COCapabilityAddOn *)self pairLegacyShim];
+  if (pairLegacyShim)
   {
-    v6 = [(COMeshAddOn *)self meshController];
-    if (v6)
+    meshController = [(COMeshAddOn *)self meshController];
+    if (meshController)
     {
-      v7 = [v4 containsObject:0x2857B5268] ^ 1;
+      v7 = [capabilitiesCopy containsObject:0x2857B5268] ^ 1;
     }
 
     else

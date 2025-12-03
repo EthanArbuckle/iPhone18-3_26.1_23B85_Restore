@@ -1,7 +1,7 @@
 @interface NEBitVector
-+ (BOOL)getBitAtIndexWithBitmap:(char *)a3 bitCount:(unsigned int)a4 index:(int64_t)a5;
-+ (void)setBitAtIndexWithBitmap:(char *)a3 bitCount:(unsigned int)a4 index:(int64_t)a5 toValue:(BOOL)a6;
-- (NEBitVector)initWithBitMap:(char *)a3 bitmapSize:(unsigned int)a4 bitCount:(unsigned int)a5;
++ (BOOL)getBitAtIndexWithBitmap:(char *)bitmap bitCount:(unsigned int)count index:(int64_t)index;
++ (void)setBitAtIndexWithBitmap:(char *)bitmap bitCount:(unsigned int)count index:(int64_t)index toValue:(BOOL)value;
+- (NEBitVector)initWithBitMap:(char *)map bitmapSize:(unsigned int)size bitCount:(unsigned int)count;
 - (void)printBits;
 @end
 
@@ -37,7 +37,7 @@ LABEL_7:
   }
 }
 
-- (NEBitVector)initWithBitMap:(char *)a3 bitmapSize:(unsigned int)a4 bitCount:(unsigned int)a5
+- (NEBitVector)initWithBitMap:(char *)map bitmapSize:(unsigned int)size bitCount:(unsigned int)count
 {
   v12.receiver = self;
   v12.super_class = NEBitVector;
@@ -45,11 +45,11 @@ LABEL_7:
   v9 = v8;
   if (v8)
   {
-    if (a3 && a5 && a4 >= (a5 + 7) >> 3)
+    if (map && count && size >= (count + 7) >> 3)
     {
-      v8->_bitmap = a3;
-      v8->_bitmapSize = a4;
-      v8->_bitCount = a5;
+      v8->_bitmap = map;
+      v8->_bitmapSize = size;
+      v8->_bitCount = count;
     }
 
     else
@@ -67,38 +67,38 @@ LABEL_7:
   return v9;
 }
 
-+ (BOOL)getBitAtIndexWithBitmap:(char *)a3 bitCount:(unsigned int)a4 index:(int64_t)a5
++ (BOOL)getBitAtIndexWithBitmap:(char *)bitmap bitCount:(unsigned int)count index:(int64_t)index
 {
-  if (a4 <= a5)
+  if (count <= index)
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    return (a3[a5 >> 3] >> (a5 & 7)) & 1;
+    return (bitmap[index >> 3] >> (index & 7)) & 1;
   }
 
   return v5;
 }
 
-+ (void)setBitAtIndexWithBitmap:(char *)a3 bitCount:(unsigned int)a4 index:(int64_t)a5 toValue:(BOOL)a6
++ (void)setBitAtIndexWithBitmap:(char *)bitmap bitCount:(unsigned int)count index:(int64_t)index toValue:(BOOL)value
 {
-  if (a4 > a5)
+  if (count > index)
   {
-    v6 = a5 >> 3;
-    v7 = 1 << (a5 & 7);
-    if (a6)
+    v6 = index >> 3;
+    v7 = 1 << (index & 7);
+    if (value)
     {
-      v8 = a3[v6] | v7;
+      v8 = bitmap[v6] | v7;
     }
 
     else
     {
-      v8 = a3[v6] & ~v7;
+      v8 = bitmap[v6] & ~v7;
     }
 
-    a3[v6] = v8;
+    bitmap[v6] = v8;
   }
 }
 

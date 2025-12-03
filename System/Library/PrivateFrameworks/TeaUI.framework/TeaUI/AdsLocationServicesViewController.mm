@@ -1,6 +1,6 @@
 @interface AdsLocationServicesViewController
-- (_TtC5TeaUI33AdsLocationServicesViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC5TeaUI33AdsLocationServicesViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC5TeaUI33AdsLocationServicesViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC5TeaUI33AdsLocationServicesViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)didTapContinue;
 - (void)didTapManage;
 - (void)updateViewConstraints;
@@ -12,36 +12,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D818C64C();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D818CA04();
 }
 
 - (void)updateViewConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D818CAF8();
 }
 
-- (_TtC5TeaUI33AdsLocationServicesViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC5TeaUI33AdsLocationServicesViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   sub_1D8190F14();
-  if (a4)
+  if (text)
   {
     sub_1D8190F14();
-    if (!a5)
+    if (!name)
     {
 LABEL_3:
       sub_1D818CCD0();
     }
   }
 
-  else if (!a5)
+  else if (!name)
   {
     goto LABEL_3;
   }
@@ -50,27 +50,27 @@ LABEL_3:
   sub_1D818CCD0();
 }
 
-- (_TtC5TeaUI33AdsLocationServicesViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC5TeaUI33AdsLocationServicesViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   sub_1D8190F14();
-  if (a4)
+  if (text)
   {
     sub_1D8190F14();
   }
 
-  v8 = a5;
+  iconCopy = icon;
   sub_1D818CD44();
 }
 
 - (void)didTapContinue
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D818CE94(&OBJC_IVAR____TtC5TeaUI33AdsLocationServicesViewController_continueCallback);
 }
 
 - (void)didTapManage
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D818CE94(&OBJC_IVAR____TtC5TeaUI33AdsLocationServicesViewController_manageCallback);
 }
 

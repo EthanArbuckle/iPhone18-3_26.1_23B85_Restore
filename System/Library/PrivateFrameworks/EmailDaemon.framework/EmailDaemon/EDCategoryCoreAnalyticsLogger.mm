@@ -1,42 +1,42 @@
 @interface EDCategoryCoreAnalyticsLogger
 + (id)log;
-- (BOOL)_isMailAccountBucketBarHidden:(id)a3;
-- (EDCategoryCoreAnalyticsLogger)initWithBucketBarController:(id)a3;
-- (double)_calculateBiomeETLToCAScheduleDeltaFrom:(id)a3;
-- (double)_calculateScheduleDeltaFrom:(id)a3;
+- (BOOL)_isMailAccountBucketBarHidden:(id)hidden;
+- (EDCategoryCoreAnalyticsLogger)initWithBucketBarController:(id)controller;
+- (double)_calculateBiomeETLToCAScheduleDeltaFrom:(id)from;
+- (double)_calculateScheduleDeltaFrom:(id)from;
 - (id)_blackPearlEnabledAccounts;
-- (id)_convertModelMetadata:(id)a3;
-- (id)_createMetadataPKWithUserDefaults:(id)a3;
+- (id)_convertModelMetadata:(id)metadata;
+- (id)_createMetadataPKWithUserDefaults:(id)defaults;
 - (id)_defaultModelMetadata;
-- (id)_emSharedModelMetadataWithScheduledHour:(BOOL)a3;
-- (id)_getCommmaSeparatedString:(id)a3;
-- (id)_getMetadataIntValue:(id)a3;
-- (id)_getMetadataStringValue:(id)a3;
-- (id)_isAllInboxesCategoriesEnabled:(id)a3;
-- (id)_mailboxFromMessage:(id)a3;
-- (id)_modelMetadata:(id)a3;
-- (id)_senderAddressFromMessage:(id)a3;
-- (id)_senderDomainFromMessage:(id)a3;
-- (id)_senderIDFromMessage:(id)a3;
+- (id)_emSharedModelMetadataWithScheduledHour:(BOOL)hour;
+- (id)_getCommmaSeparatedString:(id)string;
+- (id)_getMetadataIntValue:(id)value;
+- (id)_getMetadataStringValue:(id)value;
+- (id)_isAllInboxesCategoriesEnabled:(id)enabled;
+- (id)_mailboxFromMessage:(id)message;
+- (id)_modelMetadata:(id)metadata;
+- (id)_senderAddressFromMessage:(id)message;
+- (id)_senderDomainFromMessage:(id)message;
+- (id)_senderIDFromMessage:(id)message;
 - (id)setOfBlackPearlEnabledAccoutIdentifier;
 - (int)_hourInUTC;
-- (int64_t)_accountTypeForAccount:(id)a3;
-- (int64_t)_accountTypeForMessage:(id)a3;
+- (int64_t)_accountTypeForAccount:(id)account;
+- (int64_t)_accountTypeForMessage:(id)message;
 - (void)_logAccountPersonalPreferenceForBucketBar;
 - (void)_logAccountPersonalPreferenceForScheduledHour;
-- (void)_logAccountPersonalPreferenceWithEventName:(id)a3 scheduledHour:(id)a4 includeReceivingAccountDomain:(BOOL)a5;
+- (void)_logAccountPersonalPreferenceWithEventName:(id)name scheduledHour:(id)hour includeReceivingAccountDomain:(BOOL)domain;
 - (void)_logBucketBarChanges;
-- (void)_sendCategorizationAnalyticsForAppLaunchNotification:(id)a3;
+- (void)_sendCategorizationAnalyticsForAppLaunchNotification:(id)notification;
 - (void)dealloc;
 - (void)etlFromBiomeToCA;
-- (void)logFedStatRecategorizationEventForMessages:(id)a3 categoryChangeAction:(id)a4 categoryPersistence:(id)a5;
-- (void)logModelMetadataForMessages:(id)a3 categoryPersistence:(id)a4;
-- (void)logRecategorizationEventForMessages:(id)a3 categoryType:(unint64_t)a4 categoryPersistence:(id)a5 isHighImpactFlagChange:(BOOL)a6;
-- (void)logReceiveEventForMessagesWithResult:(id)a3;
+- (void)logFedStatRecategorizationEventForMessages:(id)messages categoryChangeAction:(id)action categoryPersistence:(id)persistence;
+- (void)logModelMetadataForMessages:(id)messages categoryPersistence:(id)persistence;
+- (void)logRecategorizationEventForMessages:(id)messages categoryType:(unint64_t)type categoryPersistence:(id)persistence isHighImpactFlagChange:(BOOL)change;
+- (void)logReceiveEventForMessagesWithResult:(id)result;
 - (void)processCoreAnalyticsEvents;
 - (void)scheduleNextAnalyticsBackgroundTask;
 - (void)scheduleNextBiomeETLToCAScheduleBackgroundTask;
-- (void)setAccountsProvider:(id)a3;
+- (void)setAccountsProvider:(id)provider;
 @end
 
 @implementation EDCategoryCoreAnalyticsLogger
@@ -47,7 +47,7 @@
   block[1] = 3221225472;
   block[2] = __36__EDCategoryCoreAnalyticsLogger_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_19 != -1)
   {
     dispatch_once(&log_onceToken_19, block);
@@ -66,9 +66,9 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
   log_log_19 = v1;
 }
 
-- (EDCategoryCoreAnalyticsLogger)initWithBucketBarController:(id)a3
+- (EDCategoryCoreAnalyticsLogger)initWithBucketBarController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v27.receiver = self;
   v27.super_class = EDCategoryCoreAnalyticsLogger;
   v6 = [(EDCategoryCoreAnalyticsLogger *)&v27 init];
@@ -82,7 +82,7 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
     analyticsScheduler = v6->_analyticsScheduler;
     v6->_analyticsScheduler = v9;
 
-    objc_storeStrong(&v6->_bucketBarController, a3);
+    objc_storeStrong(&v6->_bucketBarController, controller);
     v11 = [[EDBiomeBlackPearlLogger alloc] initWithStreamType:0];
     receiveBiomeCollector = v6->_receiveBiomeCollector;
     v6->_receiveBiomeCollector = v11;
@@ -103,13 +103,13 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
     biomeFedStatsCollector = v6->_biomeFedStatsCollector;
     v6->_biomeFedStatsCollector = v19;
 
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v6 selector:sel__sendCategorizationAnalyticsForAppLaunchNotification_ name:@"EDClientStateForegroundStateDidChange" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__sendCategorizationAnalyticsForAppLaunchNotification_ name:@"EDClientStateForegroundStateDidChange" object:0];
 
-    [v5 addConfigurationObserver:v6];
+    [controllerCopy addConfigurationObserver:v6];
     v22 = [EDCoreAnalyticAccountMapperService alloc];
-    v23 = [(EDCategoryCoreAnalyticsLogger *)v6 accountsProvider];
-    v24 = [(EDCoreAnalyticAccountMapperService *)v22 initWithAccountProvider:v23];
+    accountsProvider = [(EDCategoryCoreAnalyticsLogger *)v6 accountsProvider];
+    v24 = [(EDCoreAnalyticAccountMapperService *)v22 initWithAccountProvider:accountsProvider];
     accountMapperService = v6->_accountMapperService;
     v6->_accountMapperService = v24;
   }
@@ -119,8 +119,8 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(EDCategoryCoreAnalyticsLogger *)self bucketBarController];
-  [v3 removeConfigurationObserver:self];
+  bucketBarController = [(EDCategoryCoreAnalyticsLogger *)self bucketBarController];
+  [bucketBarController removeConfigurationObserver:self];
 
   v4.receiver = self;
   v4.super_class = EDCategoryCoreAnalyticsLogger;
@@ -158,19 +158,19 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)_modelMetadata:(id)a3
+- (id)_modelMetadata:(id)metadata
 {
   v44[11] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  metadataCopy = metadata;
+  v6 = metadataCopy;
+  if (metadataCopy)
   {
     v43[0] = @"trialExperimentIdentifier";
-    v7 = [v5 experimentID];
-    v42 = v7;
-    if (v7)
+    experimentID = [metadataCopy experimentID];
+    v42 = experimentID;
+    if (experimentID)
     {
-      v8 = v7;
+      v8 = experimentID;
     }
 
     else
@@ -180,11 +180,11 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
     v44[0] = v8;
     v43[1] = @"trialExperimentDeploymentIdentifier";
-    v9 = [v6 experimentDeploymentID];
-    v41 = v9;
-    if (v9)
+    experimentDeploymentID = [v6 experimentDeploymentID];
+    v41 = experimentDeploymentID;
+    if (experimentDeploymentID)
     {
-      v10 = v9;
+      v10 = experimentDeploymentID;
     }
 
     else
@@ -194,11 +194,11 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
     v44[1] = v10;
     v43[2] = @"trialExperimentTreatmentIdentifier";
-    v11 = [v6 experimentTreatmentID];
-    v40 = v11;
-    if (v11)
+    experimentTreatmentID = [v6 experimentTreatmentID];
+    v40 = experimentTreatmentID;
+    if (experimentTreatmentID)
     {
-      v12 = v11;
+      v12 = experimentTreatmentID;
     }
 
     else
@@ -208,11 +208,11 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
     v44[2] = v12;
     v43[3] = @"trialRolloutIdentifier";
-    v13 = [v6 rolloutID];
-    v39 = v13;
-    if (v13)
+    rolloutID = [v6 rolloutID];
+    v39 = rolloutID;
+    if (rolloutID)
     {
-      v14 = v13;
+      v14 = rolloutID;
     }
 
     else
@@ -222,11 +222,11 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
     v44[3] = v14;
     v43[4] = @"trialRolloutDeploymentIdentifier";
-    v15 = [v6 rolloutDeploymentID];
-    v38 = v15;
-    if (v15)
+    rolloutDeploymentID = [v6 rolloutDeploymentID];
+    v38 = rolloutDeploymentID;
+    if (rolloutDeploymentID)
     {
-      v16 = v15;
+      v16 = rolloutDeploymentID;
     }
 
     else
@@ -236,11 +236,11 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
     v44[4] = v16;
     v43[5] = @"trialRolloutFactorPackIdentifier";
-    v17 = [v6 rolloutFactorPackID];
-    v18 = v17;
-    if (v17)
+    rolloutFactorPackID = [v6 rolloutFactorPackID];
+    v18 = rolloutFactorPackID;
+    if (rolloutFactorPackID)
     {
-      v19 = v17;
+      v19 = rolloutFactorPackID;
     }
 
     else
@@ -250,11 +250,11 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
     v44[5] = v19;
     v43[6] = @"blackPearlModelVersion";
-    v20 = [v6 modelVersion];
-    v21 = v20;
-    if (v20)
+    modelVersion = [v6 modelVersion];
+    v21 = modelVersion;
+    if (modelVersion)
     {
-      v22 = v20;
+      v22 = modelVersion;
     }
 
     else
@@ -264,11 +264,11 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
     v44[6] = v22;
     v43[7] = @"blackPearlSenderModelVersion";
-    v23 = [v6 senderModelVersion];
-    v24 = v23;
-    if (v23)
+    senderModelVersion = [v6 senderModelVersion];
+    v24 = senderModelVersion;
+    if (senderModelVersion)
     {
-      v25 = v23;
+      v25 = senderModelVersion;
     }
 
     else
@@ -278,11 +278,11 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
     v44[7] = v25;
     v43[8] = @"blackPearlBreakthroughVersion";
-    v26 = [v6 tsModelVersion];
-    v27 = v26;
-    if (v26)
+    tsModelVersion = [v6 tsModelVersion];
+    v27 = tsModelVersion;
+    if (tsModelVersion)
     {
-      v28 = v26;
+      v28 = tsModelVersion;
     }
 
     else
@@ -292,11 +292,11 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
     v44[8] = v28;
     v43[9] = @"blackPearlFinalRuleVersion";
-    v29 = [v6 finalRuleVersion];
-    v30 = v29;
-    if (v29)
+    finalRuleVersion = [v6 finalRuleVersion];
+    v30 = finalRuleVersion;
+    if (finalRuleVersion)
     {
-      v31 = v29;
+      v31 = finalRuleVersion;
     }
 
     else
@@ -306,11 +306,11 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
     v44[9] = v31;
     v43[10] = @"reasonCodes";
-    v32 = [v6 reasonCodes];
-    if (v32)
+    reasonCodes = [v6 reasonCodes];
+    if (reasonCodes)
     {
-      v3 = [v6 reasonCodes];
-      v33 = [v3 componentsJoinedByString:{@", "}];
+      reasonCodes2 = [v6 reasonCodes];
+      v33 = [reasonCodes2 componentsJoinedByString:{@", "}];
     }
 
     else
@@ -319,8 +319,8 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
     }
 
     v44[10] = v33;
-    v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:11];
-    if (v32)
+    _defaultModelMetadata = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:11];
+    if (reasonCodes)
     {
     }
   }
@@ -333,23 +333,23 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
       [EDCategoryCoreAnalyticsLogger _modelMetadata:];
     }
 
-    v35 = [(EDCategoryCoreAnalyticsLogger *)self _defaultModelMetadata];
+    _defaultModelMetadata = [(EDCategoryCoreAnalyticsLogger *)self _defaultModelMetadata];
   }
 
   v36 = *MEMORY[0x1E69E9840];
 
-  return v35;
+  return _defaultModelMetadata;
 }
 
-- (id)_convertModelMetadata:(id)a3
+- (id)_convertModelMetadata:(id)metadata
 {
   v44[11] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  metadataCopy = metadata;
+  v5 = metadataCopy;
+  if (metadataCopy)
   {
     v43[0] = @"trialExperimentIdentifier";
-    v6 = [v4 objectForKey:@"experimentID"];
+    v6 = [metadataCopy objectForKey:@"experimentID"];
     v42 = v6;
     if (v6)
     {
@@ -503,7 +503,7 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
     }
 
     v44[10] = v33;
-    v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:11];
+    _defaultModelMetadata = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:11];
     if (v32)
     {
     }
@@ -517,32 +517,32 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
       [EDCategoryCoreAnalyticsLogger _convertModelMetadata:];
     }
 
-    v35 = [(EDCategoryCoreAnalyticsLogger *)self _defaultModelMetadata];
+    _defaultModelMetadata = [(EDCategoryCoreAnalyticsLogger *)self _defaultModelMetadata];
   }
 
   v36 = *MEMORY[0x1E69E9840];
 
-  return v35;
+  return _defaultModelMetadata;
 }
 
 - (int)_hourInUTC
 {
   v2 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"UTC"];
-  v3 = [MEMORY[0x1E695DEE8] currentCalendar];
-  [v3 setTimeZone:v2];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  [currentCalendar setTimeZone:v2];
   v4 = [MEMORY[0x1E695DF00] now];
-  v5 = [v3 components:32 fromDate:v4];
+  v5 = [currentCalendar components:32 fromDate:v4];
 
   LODWORD(v4) = [v5 hour];
   return v4;
 }
 
-- (id)_emSharedModelMetadataWithScheduledHour:(BOOL)a3
+- (id)_emSharedModelMetadataWithScheduledHour:(BOOL)hour
 {
-  v3 = a3;
+  hourCopy = hour;
   v28[10] = *MEMORY[0x1E69E9840];
-  v26 = [MEMORY[0x1E695E000] em_userDefaults];
-  v5 = [(EDCategoryCoreAnalyticsLogger *)self _createMetadataPKWithUserDefaults:v26];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  v5 = [(EDCategoryCoreAnalyticsLogger *)self _createMetadataPKWithUserDefaults:em_userDefaults];
   v25 = [v5 objectForKeyedSubscript:@"trialExperimentID"];
   v24 = [v5 objectForKeyedSubscript:@"trialExperimentDeploymentID"];
   v22 = [v5 objectForKeyedSubscript:@"trialExperimentTreatmentID"];
@@ -550,10 +550,10 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
   v23 = [v5 objectForKeyedSubscript:@"trialRolloutDeploymentID"];
   v6 = [v5 objectForKeyedSubscript:@"trialRolloutFactorpackID"];
   v7 = [v5 objectForKeyedSubscript:@"categorizationVersion"];
-  v8 = [(EDCategoryCoreAnalyticsLogger *)self _hourInUTC];
-  if (v3)
+  _hourInUTC = [(EDCategoryCoreAnalyticsLogger *)self _hourInUTC];
+  if (hourCopy)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", v8];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", _hourInUTC];
   }
 
   else
@@ -573,17 +573,17 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
   v28[0] = v25;
   v27[0] = @"trialExperimentIdentifier";
   v27[1] = @"trialExperimentDeploymentIdentifier";
-  v14 = [v24 stringValue];
-  v28[1] = v14;
+  stringValue = [v24 stringValue];
+  v28[1] = stringValue;
   v28[2] = v22;
   v27[2] = @"trialExperimentTreatmentIdentifier";
   v27[3] = @"trialRolloutIdentifier";
   v28[3] = v21;
   v27[4] = @"trialRolloutDeploymentIdentifier";
-  v15 = [v23 stringValue];
+  stringValue2 = [v23 stringValue];
   v27[5] = @"trialRolloutFactorPackIdentifier";
   v27[6] = @"blackPearlCategorizationVersion";
-  v28[4] = v15;
+  v28[4] = stringValue2;
   v28[5] = v6;
   v27[7] = @"scheduledHour";
   v27[8] = @"metadataPrimaryKey";
@@ -595,7 +595,7 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:10];
 
   v17 = [v16 mutableCopy];
-  v18 = [(EDCategoryCoreAnalyticsLogger *)self _isAllInboxesCategoriesEnabled:v26];
+  v18 = [(EDCategoryCoreAnalyticsLogger *)self _isAllInboxesCategoriesEnabled:em_userDefaults];
   if (v18)
   {
     [v17 setObject:v18 forKeyedSubscript:@"isAllInboxesBlackPearlEnabled"];
@@ -606,16 +606,16 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
   return v17;
 }
 
-- (id)_isAllInboxesCategoriesEnabled:(id)a3
+- (id)_isAllInboxesCategoriesEnabled:(id)enabled
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EDCategoryCoreAnalyticsLogger *)self accountsProvider];
-  v6 = [v5 numberOfActiveAccounts];
+  enabledCopy = enabled;
+  accountsProvider = [(EDCategoryCoreAnalyticsLogger *)self accountsProvider];
+  numberOfActiveAccounts = [accountsProvider numberOfActiveAccounts];
 
-  if (v6 >= 2)
+  if (numberOfActiveAccounts >= 2)
   {
-    v8 = [v4 objectForKey:*MEMORY[0x1E699AB40]];
+    v8 = [enabledCopy objectForKey:*MEMORY[0x1E699AB40]];
     v9 = v8;
     if (v8 && ([v8 BOOLValue] & 1) == 0)
     {
@@ -625,10 +625,10 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
     else
     {
       v10 = [MEMORY[0x1E699AED0] unifiedMailboxOfType:7 name:@"All Inboxes"];
-      v11 = [(EDCategoryCoreAnalyticsLogger *)self bucketBarController];
+      bucketBarController = [(EDCategoryCoreAnalyticsLogger *)self bucketBarController];
       v16[0] = v10;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-      v13 = [v11 isBucketBarHiddenForMailboxes:v12];
+      v13 = [bucketBarController isBucketBarHiddenForMailboxes:v12];
 
       if (v13)
       {
@@ -651,18 +651,18 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (BOOL)_isMailAccountBucketBarHidden:(id)a3
+- (BOOL)_isMailAccountBucketBarHidden:(id)hidden
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 mailboxForType:7];
+  hiddenCopy = hidden;
+  v5 = [hiddenCopy mailboxForType:7];
   if ([v5 conformsToProtocol:&unk_1F4628E00])
   {
     v6 = v5;
-    v7 = [(EDCategoryCoreAnalyticsLogger *)self bucketBarController];
+    bucketBarController = [(EDCategoryCoreAnalyticsLogger *)self bucketBarController];
     v12[0] = v6;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    v9 = [v7 isBucketBarHiddenForMailboxes:v8];
+    v9 = [bucketBarController isBucketBarHiddenForMailboxes:v8];
   }
 
   else
@@ -674,11 +674,11 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)_createMetadataPKWithUserDefaults:(id)a3
+- (id)_createMetadataPKWithUserDefaults:(id)defaults
 {
-  v3 = a3;
+  defaultsCopy = defaults;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = [v3 objectForKey:@"BlackPearlExperimentID"];
+  v5 = [defaultsCopy objectForKey:@"BlackPearlExperimentID"];
   v6 = v5;
   if (v5)
   {
@@ -694,7 +694,7 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
   v39 = v8;
   [v4 setObject:v8 forKeyedSubscript:@"trialExperimentID"];
-  v9 = [v3 objectForKey:@"BlackPearlExperimentDeploymentID"];
+  v9 = [defaultsCopy objectForKey:@"BlackPearlExperimentDeploymentID"];
   v10 = v9;
   if (v9)
   {
@@ -710,7 +710,7 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
   v38 = v12;
   [v4 setObject:v12 forKeyedSubscript:@"trialExperimentDeploymentID"];
-  v13 = [v3 objectForKey:@"BlackPearlExperimentTreatmentID"];
+  v13 = [defaultsCopy objectForKey:@"BlackPearlExperimentTreatmentID"];
   v14 = v13;
   if (v13)
   {
@@ -726,7 +726,7 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
   v40 = v16;
   [v4 setObject:v16 forKeyedSubscript:@"trialExperimentTreatmentID"];
-  v17 = [v3 objectForKey:@"BlackPearlRolloutID"];
+  v17 = [defaultsCopy objectForKey:@"BlackPearlRolloutID"];
   v18 = v17;
   if (v17)
   {
@@ -741,7 +741,7 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
   v20 = v19;
 
   [v4 setObject:v20 forKeyedSubscript:@"trialRolloutID"];
-  v21 = [v3 objectForKey:@"BlackPearlRolloutDeploymentID"];
+  v21 = [defaultsCopy objectForKey:@"BlackPearlRolloutDeploymentID"];
   v22 = v21;
   if (v21)
   {
@@ -756,7 +756,7 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
   v24 = v23;
 
   [v4 setObject:v24 forKeyedSubscript:@"trialRolloutDeploymentID"];
-  v25 = [v3 objectForKey:@"BlackPearlRolloutFactorPackID"];
+  v25 = [defaultsCopy objectForKey:@"BlackPearlRolloutFactorPackID"];
   v26 = v25;
   if (v25)
   {
@@ -771,7 +771,7 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
   v28 = v27;
 
   [v4 setObject:v28 forKeyedSubscript:@"trialRolloutFactorpackID"];
-  v29 = [v3 objectForKey:@"blackPearlCategorizationVersion"];
+  v29 = [defaultsCopy objectForKey:@"blackPearlCategorizationVersion"];
   v30 = v29;
   if (v29)
   {
@@ -788,24 +788,24 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
   [v4 setObject:v32 forKeyedSubscript:@"categorizationVersion"];
   v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@|%@|%@|%@|%@|%@|%@", v32, v8, v12, v40, v20, v24, v28];
   v34 = [v33 dataUsingEncoding:4];
-  v35 = [v34 ef_md5Digest];
-  v36 = [v35 ef_hexString];
+  ef_md5Digest = [v34 ef_md5Digest];
+  ef_hexString = [ef_md5Digest ef_hexString];
 
-  [v4 setObject:v36 forKeyedSubscript:@"metadataPK"];
+  [v4 setObject:ef_hexString forKeyedSubscript:@"metadataPK"];
 
   return v4;
 }
 
-- (id)_getCommmaSeparatedString:(id)a3
+- (id)_getCommmaSeparatedString:(id)string
 {
-  v3 = [a3 componentsJoinedByString:{@", "}];
+  v3 = [string componentsJoinedByString:{@", "}];
 
   return v3;
 }
 
-- (id)_getMetadataStringValue:(id)a3
+- (id)_getMetadataStringValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -814,7 +814,7 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
   else
   {
-    v4 = v3;
+    v4 = valueCopy;
   }
 
   v5 = v4;
@@ -822,9 +822,9 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)_getMetadataIntValue:(id)a3
+- (id)_getMetadataIntValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -833,7 +833,7 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
 
   else
   {
-    v4 = v3;
+    v4 = valueCopy;
   }
 
   v5 = v4;
@@ -841,18 +841,18 @@ void __36__EDCategoryCoreAnalyticsLogger_log__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)_sendCategorizationAnalyticsForAppLaunchNotification:(id)a3
+- (void)_sendCategorizationAnalyticsForAppLaunchNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(EDCategoryCoreAnalyticsLogger *)self analyticsScheduler];
+  notificationCopy = notification;
+  analyticsScheduler = [(EDCategoryCoreAnalyticsLogger *)self analyticsScheduler];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __86__EDCategoryCoreAnalyticsLogger__sendCategorizationAnalyticsForAppLaunchNotification___block_invoke;
   v7[3] = &unk_1E8250128;
-  v6 = v4;
+  v6 = notificationCopy;
   v8 = v6;
-  v9 = self;
-  [v5 performBlock:v7];
+  selfCopy = self;
+  [analyticsScheduler performBlock:v7];
 }
 
 void __86__EDCategoryCoreAnalyticsLogger__sendCategorizationAnalyticsForAppLaunchNotification___block_invoke(uint64_t a1)
@@ -893,24 +893,24 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)logFedStatRecategorizationEventForMessages:(id)a3 categoryChangeAction:(id)a4 categoryPersistence:(id)a5
+- (void)logFedStatRecategorizationEventForMessages:(id)messages categoryChangeAction:(id)action categoryPersistence:(id)persistence
 {
-  v7 = a3;
-  v8 = a4;
+  messagesCopy = messages;
+  actionCopy = action;
   v9 = [MEMORY[0x1E695DFA8] set];
-  v10 = [v8 categoryType];
-  v11 = [v8 isModelCategoryRestoration] ^ 1;
-  if (!v7)
+  categoryType = [actionCopy categoryType];
+  v11 = [actionCopy isModelCategoryRestoration] ^ 1;
+  if (!messagesCopy)
   {
     LOBYTE(v11) = 1;
   }
 
-  if ((v11 & 1) == 0 && [v7 count])
+  if ((v11 & 1) == 0 && [messagesCopy count])
   {
-    v12 = [v7 firstObject];
-    v13 = [v12 category];
-    [v13 subtype];
-    v10 = EMCategoryFromSubtype();
+    firstObject = [messagesCopy firstObject];
+    category = [firstObject category];
+    [category subtype];
+    categoryType = EMCategoryFromSubtype();
   }
 
   v15[0] = MEMORY[0x1E69E9820];
@@ -920,8 +920,8 @@ LABEL_8:
   v15[4] = self;
   v14 = v9;
   v16 = v14;
-  v17 = v10;
-  [v7 enumerateObjectsUsingBlock:v15];
+  v17 = categoryType;
+  [messagesCopy enumerateObjectsUsingBlock:v15];
 }
 
 void __117__EDCategoryCoreAnalyticsLogger_logFedStatRecategorizationEventForMessages_categoryChangeAction_categoryPersistence___block_invoke(uint64_t a1, void *a2)
@@ -956,26 +956,26 @@ void __117__EDCategoryCoreAnalyticsLogger_logFedStatRecategorizationEventForMess
   }
 }
 
-- (void)logRecategorizationEventForMessages:(id)a3 categoryType:(unint64_t)a4 categoryPersistence:(id)a5 isHighImpactFlagChange:(BOOL)a6
+- (void)logRecategorizationEventForMessages:(id)messages categoryType:(unint64_t)type categoryPersistence:(id)persistence isHighImpactFlagChange:(BOOL)change
 {
-  v10 = a3;
-  v11 = a5;
+  messagesCopy = messages;
+  persistenceCopy = persistence;
   v12 = [MEMORY[0x1E695DF00] ef_dateHoursAgo:672];
-  v13 = [(EDCategoryCoreAnalyticsLogger *)self analyticsScheduler];
+  analyticsScheduler = [(EDCategoryCoreAnalyticsLogger *)self analyticsScheduler];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __125__EDCategoryCoreAnalyticsLogger_logRecategorizationEventForMessages_categoryType_categoryPersistence_isHighImpactFlagChange___block_invoke;
   v17[3] = &unk_1E8251600;
-  v14 = v10;
+  v14 = messagesCopy;
   v18 = v14;
   v15 = v12;
   v19 = v15;
-  v20 = self;
-  v16 = v11;
-  v23 = a6;
+  selfCopy = self;
+  v16 = persistenceCopy;
+  changeCopy = change;
   v21 = v16;
-  v22 = a4;
-  [v13 performBlock:v17];
+  typeCopy = type;
+  [analyticsScheduler performBlock:v17];
 }
 
 void __125__EDCategoryCoreAnalyticsLogger_logRecategorizationEventForMessages_categoryType_categoryPersistence_isHighImpactFlagChange___block_invoke(uint64_t a1)
@@ -1068,18 +1068,18 @@ void __125__EDCategoryCoreAnalyticsLogger_logRecategorizationEventForMessages_ca
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logReceiveEventForMessagesWithResult:(id)a3
+- (void)logReceiveEventForMessagesWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [(EDCategoryCoreAnalyticsLogger *)self analyticsScheduler];
+  resultCopy = result;
+  analyticsScheduler = [(EDCategoryCoreAnalyticsLogger *)self analyticsScheduler];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__EDCategoryCoreAnalyticsLogger_logReceiveEventForMessagesWithResult___block_invoke;
   v7[3] = &unk_1E8250128;
-  v6 = v4;
+  v6 = resultCopy;
   v8 = v6;
-  v9 = self;
-  [v5 performBlock:v7];
+  selfCopy = self;
+  [analyticsScheduler performBlock:v7];
 }
 
 void __70__EDCategoryCoreAnalyticsLogger_logReceiveEventForMessagesWithResult___block_invoke(uint64_t a1)
@@ -1208,49 +1208,49 @@ void __70__EDCategoryCoreAnalyticsLogger_logReceiveEventForMessagesWithResult___
   }
 }
 
-- (int64_t)_accountTypeForMessage:(id)a3
+- (int64_t)_accountTypeForMessage:(id)message
 {
-  v4 = [a3 account];
-  v5 = [v4 baseAccount];
+  account = [message account];
+  baseAccount = [account baseAccount];
 
-  v6 = [(EDCategoryCoreAnalyticsLogger *)self _accountTypeForAccount:v5];
+  v6 = [(EDCategoryCoreAnalyticsLogger *)self _accountTypeForAccount:baseAccount];
   return v6;
 }
 
-- (int64_t)_accountTypeForAccount:(id)a3
+- (int64_t)_accountTypeForAccount:(id)account
 {
-  v3 = a3;
-  if ([v3 isAppleAccount])
+  accountCopy = account;
+  if ([accountCopy isAppleAccount])
   {
     v4 = 1;
   }
 
-  else if ([v3 isGmailAccount])
+  else if ([accountCopy isGmailAccount])
   {
     v4 = 3;
   }
 
-  else if ([v3 isYahooAccount])
+  else if ([accountCopy isYahooAccount])
   {
     v4 = 4;
   }
 
-  else if ([v3 isExchangeAccount])
+  else if ([accountCopy isExchangeAccount])
   {
     v4 = 2;
   }
 
-  else if ([v3 isOutlookAccount])
+  else if ([accountCopy isOutlookAccount])
   {
     v4 = 6;
   }
 
-  else if ([v3 isAOLAccount])
+  else if ([accountCopy isAOLAccount])
   {
     v4 = 5;
   }
 
-  else if ([v3 isAppleEmployeeAccount])
+  else if ([accountCopy isAppleEmployeeAccount])
   {
     v4 = 0;
   }
@@ -1263,21 +1263,21 @@ void __70__EDCategoryCoreAnalyticsLogger_logReceiveEventForMessagesWithResult___
   return v4;
 }
 
-- (id)_senderIDFromMessage:(id)a3
+- (id)_senderIDFromMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 businessLogoID];
-  if (v5)
+  messageCopy = message;
+  businessLogoID = [messageCopy businessLogoID];
+  if (businessLogoID)
   {
 
 LABEL_4:
-    v7 = [(EDCategoryCoreAnalyticsLogger *)self _senderAddressFromMessage:v4];
+    v7 = [(EDCategoryCoreAnalyticsLogger *)self _senderAddressFromMessage:messageCopy];
     goto LABEL_5;
   }
 
-  v6 = [v4 brandIndicatorLocation];
+  brandIndicatorLocation = [messageCopy brandIndicatorLocation];
 
-  if (v6)
+  if (brandIndicatorLocation)
   {
     goto LABEL_4;
   }
@@ -1288,55 +1288,55 @@ LABEL_5:
   return v7;
 }
 
-- (id)_senderAddressFromMessage:(id)a3
+- (id)_senderAddressFromMessage:(id)message
 {
-  v3 = [a3 from];
-  v4 = [v3 firstObject];
+  from = [message from];
+  firstObject = [from firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)_senderDomainFromMessage:(id)a3
+- (id)_senderDomainFromMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_alloc(MEMORY[0x1E699B240]);
-  v6 = [(EDCategoryCoreAnalyticsLogger *)self _senderAddressFromMessage:v4];
+  v6 = [(EDCategoryCoreAnalyticsLogger *)self _senderAddressFromMessage:messageCopy];
   v7 = [v5 initWithString:v6];
 
-  v8 = [v7 domain];
+  domain = [v7 domain];
 
-  return v8;
+  return domain;
 }
 
-- (id)_mailboxFromMessage:(id)a3
+- (id)_mailboxFromMessage:(id)message
 {
-  v3 = a3;
-  v4 = [v3 category];
-  v5 = [v4 isHighImpact];
+  messageCopy = message;
+  category = [messageCopy category];
+  isHighImpact = [category isHighImpact];
 
-  if (v5)
+  if (isHighImpact)
   {
     v6 = @"Inbox";
   }
 
   else
   {
-    v7 = [v3 category];
-    v8 = [v7 type];
+    category2 = [messageCopy category];
+    type = [category2 type];
 
-    if ((v8 - 1) >= 3)
+    if ((type - 1) >= 3)
     {
-      v9 = [v3 mailbox];
-      v10 = [v9 type];
+      mailbox = [messageCopy mailbox];
+      type2 = [mailbox type];
 
-      if ((v10 - 1) >= 7)
+      if ((type2 - 1) >= 7)
       {
         v6 = @"Other";
       }
 
       else
       {
-        v6 = off_1E8251708[v10 - 1];
+        v6 = off_1E8251708[type2 - 1];
       }
     }
 
@@ -1349,21 +1349,21 @@ LABEL_5:
   return v6;
 }
 
-- (void)logModelMetadataForMessages:(id)a3 categoryPersistence:(id)a4
+- (void)logModelMetadataForMessages:(id)messages categoryPersistence:(id)persistence
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  messagesCopy = messages;
+  persistenceCopy = persistence;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __81__EDCategoryCoreAnalyticsLogger_logModelMetadataForMessages_categoryPersistence___block_invoke;
   v11[3] = &unk_1E8251650;
-  v12 = v8;
-  v13 = self;
-  v9 = v7;
+  v12 = dictionary;
+  selfCopy = self;
+  v9 = persistenceCopy;
   v14 = v9;
-  v10 = v8;
-  [v6 enumerateObjectsUsingBlock:v11];
+  v10 = dictionary;
+  [messagesCopy enumerateObjectsUsingBlock:v11];
 }
 
 void __81__EDCategoryCoreAnalyticsLogger_logModelMetadataForMessages_categoryPersistence___block_invoke(uint64_t a1, void *a2)
@@ -1391,17 +1391,17 @@ void __81__EDCategoryCoreAnalyticsLogger_logModelMetadataForMessages_categoryPer
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (double)_calculateScheduleDeltaFrom:(id)a3
+- (double)_calculateScheduleDeltaFrom:(id)from
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  fromCopy = from;
   v4 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"UTC"];
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-  [v5 setTimeZone:v4];
-  v6 = [v5 components:224 fromDate:v3];
-  v7 = [v6 hour];
-  v8 = [v6 minute];
-  v9 = [v6 second];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  [currentCalendar setTimeZone:v4];
+  v6 = [currentCalendar components:224 fromDate:fromCopy];
+  hour = [v6 hour];
+  minute = [v6 minute];
+  second = [v6 second];
   if ([v6 hour] <= 22 && objc_msgSend(v6, "hour") >= 5)
   {
     if ([v6 hour] >= 11)
@@ -1439,15 +1439,15 @@ void __81__EDCategoryCoreAnalyticsLogger_logModelMetadataForMessages_categoryPer
   }
 
   v12 = +[EDCategoryCoreAnalyticsLogger log];
-  v13 = v10 + -3600 * v7 - 60 * v8 - v9 + v11;
+  v13 = v10 + -3600 * hour - 60 * minute - second + v11;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 134218752;
-    v17 = [v6 hour];
+    hour2 = [v6 hour];
     v18 = 2048;
-    v19 = [v6 minute];
+    minute2 = [v6 minute];
     v20 = 2048;
-    v21 = [v6 second];
+    second2 = [v6 second];
     v22 = 2048;
     v23 = v13;
     _os_log_impl(&dword_1C61EF000, v12, OS_LOG_TYPE_DEFAULT, "Scheduling analytics task: datetimeNow = {%ld:%ld:%ld}, scheduleAfter = %ld", &v16, 0x2Au);
@@ -1457,19 +1457,19 @@ void __81__EDCategoryCoreAnalyticsLogger_logModelMetadataForMessages_categoryPer
   return v13;
 }
 
-- (double)_calculateBiomeETLToCAScheduleDeltaFrom:(id)a3
+- (double)_calculateBiomeETLToCAScheduleDeltaFrom:(id)from
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_alloc(MEMORY[0x1E695DEE8]);
   v5 = [v4 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
   v6 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"UTC"];
   [v5 setTimeZone:v6];
 
-  v7 = [v5 components:224 fromDate:v3];
-  v8 = [v7 hour];
-  v9 = [v7 minute];
-  v10 = [v7 second];
+  v7 = [v5 components:224 fromDate:fromCopy];
+  hour = [v7 hour];
+  minute = [v7 minute];
+  second = [v7 second];
   if ([v7 hour] <= 22)
   {
     v11 = 82800;
@@ -1481,15 +1481,15 @@ void __81__EDCategoryCoreAnalyticsLogger_logModelMetadataForMessages_categoryPer
   }
 
   v12 = +[EDCategoryCoreAnalyticsLogger log];
-  v13 = v11 - v10 - (3600 * v8 + 60 * v9);
+  v13 = v11 - second - (3600 * hour + 60 * minute);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 134218752;
-    v17 = [v7 hour];
+    hour2 = [v7 hour];
     v18 = 2048;
-    v19 = [v7 minute];
+    minute2 = [v7 minute];
     v20 = 2048;
-    v21 = [v7 second];
+    second2 = [v7 second];
     v22 = 2048;
     v23 = v13;
     _os_log_impl(&dword_1C61EF000, v12, OS_LOG_TYPE_DEFAULT, "Scheduling Biome ETL-To-CA analytics task: datetimeNow = {%ld:%ld:%ld}, scheduleAfter = %ld", &v16, 0x2Au);
@@ -1523,8 +1523,8 @@ void __81__EDCategoryCoreAnalyticsLogger_logModelMetadataForMessages_categoryPer
   v6 = @"EDClientStateForegroundStateDidChangeKeyIsScheduled";
   v7[0] = MEMORY[0x1E695E118];
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"EDClientStateForegroundStateDidChange" object:self userInfo:v3];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"EDClientStateForegroundStateDidChange" object:self userInfo:v3];
 
   [(EDCategoryCoreAnalyticsLogger *)self _logAccountPersonalPreferenceForScheduledHour];
   v5 = *MEMORY[0x1E69E9840];
@@ -1534,8 +1534,8 @@ void __81__EDCategoryCoreAnalyticsLogger_logModelMetadataForMessages_categoryPer
 {
   v37 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AD98];
-  v4 = [MEMORY[0x1E695DF00] date];
-  [v4 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v6 = [v3 numberWithUnsignedLongLong:v5];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v6, "unsignedLongLongValue") - 604800}];
@@ -1553,12 +1553,12 @@ void __81__EDCategoryCoreAnalyticsLogger_logModelMetadataForMessages_categoryPer
   }
 
   v10 = +[EDClientState sharedInstance];
-  v11 = [v10 isForeground];
+  isForeground = [v10 isForeground];
 
-  if ((v11 & 1) == 0)
+  if ((isForeground & 1) == 0)
   {
-    v12 = [MEMORY[0x1E695E000] em_userDefaults];
-    v13 = [v12 valueForKey:*MEMORY[0x1E699AB80]];
+    em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+    v13 = [em_userDefaults valueForKey:*MEMORY[0x1E699AB80]];
     v14 = v13;
     if (v13)
     {
@@ -1594,12 +1594,12 @@ LABEL_9:
     v6 = v14;
   }
 
-  v20 = [v7 unsignedLongLongValue];
-  if (v20 < [v6 unsignedLongLongValue])
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
+  if (unsignedLongLongValue < [v6 unsignedLongLongValue])
   {
-    v21 = [(EDCategoryCoreAnalyticsLogger *)self biomeFedStatsCollector];
-    v22 = [(EDCategoryCoreAnalyticsLogger *)self setOfBlackPearlEnabledAccoutIdentifier];
-    v23 = [v21 queryMessageGrainEvents:v8 startingAt:v7 endingAt:v6 andBPEnabledAccounts:v22];
+    biomeFedStatsCollector = [(EDCategoryCoreAnalyticsLogger *)self biomeFedStatsCollector];
+    setOfBlackPearlEnabledAccoutIdentifier = [(EDCategoryCoreAnalyticsLogger *)self setOfBlackPearlEnabledAccoutIdentifier];
+    v23 = [biomeFedStatsCollector queryMessageGrainEvents:v8 startingAt:v7 endingAt:v6 andBPEnabledAccounts:setOfBlackPearlEnabledAccoutIdentifier];
 
     if (v23)
     {
@@ -1715,7 +1715,7 @@ LABEL_11:
 - (void)_logAccountPersonalPreferenceForBucketBar
 {
   [(EDCategoryCoreAnalyticsLogger *)self _logAccountPersonalPreferenceWithEventName:@"com.apple.mail.categorization.account.preference.toggled" scheduledHour:0 includeReceivingAccountDomain:0];
-  v8 = [MEMORY[0x1E695E000] em_userDefaults];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
   v3 = [(EDCategoryCoreAnalyticsLogger *)self _isAllInboxesCategoriesEnabled:?];
   v4 = objc_opt_new();
   v5 = v4;
@@ -1723,27 +1723,27 @@ LABEL_11:
   {
     [v4 setObject:v3 forKey:@"isAllInboxesBlackPearlEnabled"];
     v6 = [objc_alloc(MEMORY[0x1E699AC78]) initWithEventName:@"com.apple.mail.categorization.account.preference.toggled" collectionData:v5];
-    v7 = [(EDCategoryCoreAnalyticsLogger *)self analyticsCollector];
-    [v7 logOneTimeEvent:v6];
+    analyticsCollector = [(EDCategoryCoreAnalyticsLogger *)self analyticsCollector];
+    [analyticsCollector logOneTimeEvent:v6];
   }
 }
 
-- (void)_logAccountPersonalPreferenceWithEventName:(id)a3 scheduledHour:(id)a4 includeReceivingAccountDomain:(BOOL)a5
+- (void)_logAccountPersonalPreferenceWithEventName:(id)name scheduledHour:(id)hour includeReceivingAccountDomain:(BOOL)domain
 {
-  v34 = a5;
+  domainCopy = domain;
   v45 = *MEMORY[0x1E69E9840];
-  v36 = a3;
-  v35 = a4;
+  nameCopy = name;
+  hourCopy = hour;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v37 = self;
-  v7 = [(EDCategoryCoreAnalyticsLogger *)self accountsProvider];
-  v8 = [v7 mailAccounts];
+  selfCopy = self;
+  accountsProvider = [(EDCategoryCoreAnalyticsLogger *)self accountsProvider];
+  mailAccounts = [accountsProvider mailAccounts];
 
-  obj = v8;
-  v9 = [v8 countByEnumeratingWithState:&v40 objects:v44 count:16];
+  obj = mailAccounts;
+  v9 = [mailAccounts countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v9)
   {
     v10 = *v41;
@@ -1763,25 +1763,25 @@ LABEL_11:
           v13 = v12;
           if (([v13 isLocalAccount] & 1) == 0 && objc_msgSend(v13, "isActive"))
           {
-            v14 = [v13 identifier];
-            v15 = [(EDCategoryCoreAnalyticsLogger *)v37 _findAccountMapping:v14];
+            identifier = [v13 identifier];
+            v15 = [(EDCategoryCoreAnalyticsLogger *)selfCopy _findAccountMapping:identifier];
 
-            v16 = [@"com.apple.mail.categorization.account.preference.toggled" isEqual:v36];
+            v16 = [@"com.apple.mail.categorization.account.preference.toggled" isEqual:nameCopy];
             v17 = v15 < 0x89 ? 1 : v16;
             if (v17)
             {
               v18 = objc_opt_new();
               v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v15];
-              v20 = [v19 stringValue];
-              [v18 setObject:v20 forKey:@"accountId"];
+              stringValue = [v19 stringValue];
+              [v18 setObject:stringValue forKey:@"accountId"];
 
-              if (v35)
+              if (hourCopy)
               {
-                [v18 setObject:v35 forKey:@"scheduledHour"];
+                [v18 setObject:hourCopy forKey:@"scheduledHour"];
               }
 
-              v21 = [v13 systemAccount];
-              v22 = [v21 accountPropertyForKey:v33];
+              systemAccount = [v13 systemAccount];
+              v22 = [systemAccount accountPropertyForKey:v33];
               v23 = v22;
               if (v22)
               {
@@ -1798,10 +1798,10 @@ LABEL_11:
                 [v18 setObject:v24 forKey:@"isMailAccountPersonalAccount"];
               }
 
-              if (v34)
+              if (domainCopy)
               {
-                v25 = [objc_alloc(MEMORY[0x1E699B1F0]) initWithSystemAccount:v21];
-                v26 = [MEMORY[0x1E696AD98] numberWithInteger:{-[EDCategoryCoreAnalyticsLogger _accountTypeForAccount:](v37, "_accountTypeForAccount:", v25)}];
+                v25 = [objc_alloc(MEMORY[0x1E699B1F0]) initWithSystemAccount:systemAccount];
+                v26 = [MEMORY[0x1E696AD98] numberWithInteger:{-[EDCategoryCoreAnalyticsLogger _accountTypeForAccount:](selfCopy, "_accountTypeForAccount:", v25)}];
                 [v18 setObject:v26 forKeyedSubscript:@"receivingAccountDomain"];
               }
 
@@ -1815,7 +1815,7 @@ LABEL_11:
                 }
               }
 
-              v27 = [(EDCategoryCoreAnalyticsLogger *)v37 _isMailAccountBucketBarHidden:v13];
+              v27 = [(EDCategoryCoreAnalyticsLogger *)selfCopy _isMailAccountBucketBarHidden:v13];
               v28 = @"1";
               if (v27)
               {
@@ -1824,9 +1824,9 @@ LABEL_11:
 
               v29 = v28;
               [v18 setObject:v29 forKey:@"isMailAccountBlackPearlEnabled"];
-              v30 = [objc_alloc(MEMORY[0x1E699AC78]) initWithEventName:v36 collectionData:v18];
-              v31 = [(EDCategoryCoreAnalyticsLogger *)v37 analyticsCollector];
-              [v31 logOneTimeEvent:v30];
+              v30 = [objc_alloc(MEMORY[0x1E699AC78]) initWithEventName:nameCopy collectionData:v18];
+              analyticsCollector = [(EDCategoryCoreAnalyticsLogger *)selfCopy analyticsCollector];
+              [analyticsCollector logOneTimeEvent:v30];
             }
           }
         }
@@ -1843,22 +1843,22 @@ LABEL_11:
 
 - (id)_blackPearlEnabledAccounts
 {
-  v3 = [MEMORY[0x1E695E000] em_userDefaults];
-  v4 = [(EDCategoryCoreAnalyticsLogger *)self accountsProvider];
-  v5 = [v4 numberOfActiveAccounts];
+  em_userDefaults = [MEMORY[0x1E695E000] em_userDefaults];
+  accountsProvider = [(EDCategoryCoreAnalyticsLogger *)self accountsProvider];
+  numberOfActiveAccounts = [accountsProvider numberOfActiveAccounts];
 
-  v6 = [(EDCategoryCoreAnalyticsLogger *)self _isAllInboxesCategoriesEnabled:v3];
-  v7 = [(EDCategoryCoreAnalyticsLogger *)self accountsProvider];
-  v8 = [v7 mailAccounts];
+  v6 = [(EDCategoryCoreAnalyticsLogger *)self _isAllInboxesCategoriesEnabled:em_userDefaults];
+  accountsProvider2 = [(EDCategoryCoreAnalyticsLogger *)self accountsProvider];
+  mailAccounts = [accountsProvider2 mailAccounts];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__EDCategoryCoreAnalyticsLogger__blackPearlEnabledAccounts__block_invoke;
   v13[3] = &unk_1E82516C8;
   v13[4] = self;
-  v15 = v5;
+  v15 = numberOfActiveAccounts;
   v9 = v6;
   v14 = v9;
-  v10 = [v8 ef_filter:v13];
+  v10 = [mailAccounts ef_filter:v13];
 
   v11 = [MEMORY[0x1E695DFD8] setWithArray:v10];
 
@@ -1884,8 +1884,8 @@ BOOL __59__EDCategoryCoreAnalyticsLogger__blackPearlEnabledAccounts__block_invok
 
 - (id)setOfBlackPearlEnabledAccoutIdentifier
 {
-  v2 = [(EDCategoryCoreAnalyticsLogger *)self _blackPearlEnabledAccounts];
-  v3 = [v2 ef_compactMap:&__block_literal_global_15];
+  _blackPearlEnabledAccounts = [(EDCategoryCoreAnalyticsLogger *)self _blackPearlEnabledAccounts];
+  v3 = [_blackPearlEnabledAccounts ef_compactMap:&__block_literal_global_15];
 
   return v3;
 }
@@ -1899,18 +1899,18 @@ id __71__EDCategoryCoreAnalyticsLogger_setOfBlackPearlEnabledAccoutIdentifier__b
   return v4;
 }
 
-- (void)setAccountsProvider:(id)a3
+- (void)setAccountsProvider:(id)provider
 {
-  v6 = a3;
-  objc_storeStrong(&self->_accountsProvider, a3);
-  v5 = [(EDCategoryCoreAnalyticsLogger *)self accountMapperService];
-  [v5 setAccountsProvider:v6];
+  providerCopy = provider;
+  objc_storeStrong(&self->_accountsProvider, provider);
+  accountMapperService = [(EDCategoryCoreAnalyticsLogger *)self accountMapperService];
+  [accountMapperService setAccountsProvider:providerCopy];
 }
 
 - (void)_logBucketBarChanges
 {
   *buf = 138543618;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2048;
   *(buf + 14) = a3;
   _os_log_debug_impl(&dword_1C61EF000, log, OS_LOG_TYPE_DEBUG, "%{public}@ - eventDictionary.count:%lu", buf, 0x16u);

@@ -1,35 +1,35 @@
 @interface HKHealthWrapMessage
 + (id)newOutputFileURL;
-+ (id)newOutputFileURLInDirectory:(id)a3;
-- (BOOL)_run:(id)a3 error:(id *)a4;
-- (BOOL)appendData:(id)a3 error:(id *)a4;
-- (BOOL)appendDataFromFileURL:(id)a3 error:(id *)a4;
-- (BOOL)startWithError:(id *)a3;
-- (BOOL)startWithOutputFileURL:(id)a3 error:(id *)a4;
-- (HKHealthWrapMessage)initWithConfiguration:(id)a3;
-- (HKHealthWrapMessage)initWithSenderUUID:(id)a3 studyUUID:(id)a4 channel:(id)a5 payloadType:(id)a6 startDate:(id)a7 endDate:(id)a8 payloadIdentifier:(id)a9 applicationData:(id)a10 certificate:(__SecCertificate *)cf;
-- (id)_codableKeyValuePairsFromDictionary:(id)a3;
-- (id)finalizeWithError:(id *)a3;
++ (id)newOutputFileURLInDirectory:(id)directory;
+- (BOOL)_run:(id)_run error:(id *)error;
+- (BOOL)appendData:(id)data error:(id *)error;
+- (BOOL)appendDataFromFileURL:(id)l error:(id *)error;
+- (BOOL)startWithError:(id *)error;
+- (BOOL)startWithOutputFileURL:(id)l error:(id *)error;
+- (HKHealthWrapMessage)initWithConfiguration:(id)configuration;
+- (HKHealthWrapMessage)initWithSenderUUID:(id)d studyUUID:(id)iD channel:(id)channel payloadType:(id)type startDate:(id)date endDate:(id)endDate payloadIdentifier:(id)identifier applicationData:(id)self0 certificate:(__SecCertificate *)cf;
+- (id)_codableKeyValuePairsFromDictionary:(id)dictionary;
+- (id)finalizeWithError:(id *)error;
 - (void)_cleanup;
 - (void)_finalize;
-- (void)_writeDataToCompressor:(id)a3;
+- (void)_writeDataToCompressor:(id)compressor;
 - (void)dealloc;
-- (void)receiveSinkContent:(id)a3;
+- (void)receiveSinkContent:(id)content;
 - (void)sinkContentFinished;
 @end
 
 @implementation HKHealthWrapMessage
 
-- (HKHealthWrapMessage)initWithSenderUUID:(id)a3 studyUUID:(id)a4 channel:(id)a5 payloadType:(id)a6 startDate:(id)a7 endDate:(id)a8 payloadIdentifier:(id)a9 applicationData:(id)a10 certificate:(__SecCertificate *)cf
+- (HKHealthWrapMessage)initWithSenderUUID:(id)d studyUUID:(id)iD channel:(id)channel payloadType:(id)type startDate:(id)date endDate:(id)endDate payloadIdentifier:(id)identifier applicationData:(id)self0 certificate:(__SecCertificate *)cf
 {
-  v17 = a3;
-  v38 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  dCopy = d;
+  iDCopy = iD;
+  channelCopy = channel;
+  typeCopy = type;
+  dateCopy = date;
+  endDateCopy = endDate;
+  identifierCopy = identifier;
+  dataCopy = data;
   v39.receiver = self;
   v39.super_class = HKHealthWrapMessage;
   v24 = [(HKHealthWrapMessage *)&v39 init];
@@ -37,38 +37,38 @@
   if (v24)
   {
     v24->_compressionEnabled = 1;
-    objc_storeStrong(&v24->_studyUUID, a4);
+    objc_storeStrong(&v24->_studyUUID, iD);
     v26 = objc_alloc_init(HKHealthWrapCodablePayloadHeader);
     payloadHeader = v25->_payloadHeader;
     v25->_payloadHeader = v26;
 
-    v28 = [v22 copy];
+    v28 = [identifierCopy copy];
     [(HKHealthWrapCodablePayloadHeader *)v25->_payloadHeader setPayloadIdentifier:v28];
 
-    v29 = [v17 hk_dataForUUIDBytes];
-    [(HKHealthWrapCodablePayloadHeader *)v25->_payloadHeader setSubjectUUID:v29];
+    hk_dataForUUIDBytes = [dCopy hk_dataForUUIDBytes];
+    [(HKHealthWrapCodablePayloadHeader *)v25->_payloadHeader setSubjectUUID:hk_dataForUUIDBytes];
 
-    v30 = [v18 copy];
+    v30 = [channelCopy copy];
     [(HKHealthWrapCodablePayloadHeader *)v25->_payloadHeader setChannel:v30];
 
-    v31 = [v19 copy];
+    v31 = [typeCopy copy];
     [(HKHealthWrapCodablePayloadHeader *)v25->_payloadHeader setPayloadType:v31];
 
-    if (v20)
+    if (dateCopy)
     {
-      [v20 timeIntervalSinceReferenceDate];
+      [dateCopy timeIntervalSinceReferenceDate];
       [(HKHealthWrapCodablePayloadHeader *)v25->_payloadHeader setStartDate:v32];
     }
 
-    if (v21)
+    if (endDateCopy)
     {
-      [v21 timeIntervalSinceReferenceDate];
+      [endDateCopy timeIntervalSinceReferenceDate];
       [(HKHealthWrapCodablePayloadHeader *)v25->_payloadHeader setEndDate:v33];
     }
 
-    if (v23)
+    if (dataCopy)
     {
-      v34 = [v23 copy];
+      v34 = [dataCopy copy];
       [(HKHealthWrapCodablePayloadHeader *)v25->_payloadHeader setApplicationData:v34];
     }
 
@@ -82,34 +82,34 @@
   return v25;
 }
 
-- (HKHealthWrapMessage)initWithConfiguration:(id)a3
+- (HKHealthWrapMessage)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [HKHealthWrapMessage initWithConfiguration:];
   }
 
-  v5 = [v4 subjectUUID];
-  v6 = [v4 studyUUID];
-  v7 = [v4 channel];
-  v8 = [v4 payloadType];
-  v9 = [v4 startDate];
-  v10 = [v4 endDate];
-  v11 = [v4 payloadIdentifier];
-  v12 = [v4 applicationData];
-  v13 = -[HKHealthWrapMessage initWithSenderUUID:studyUUID:channel:payloadType:startDate:endDate:payloadIdentifier:applicationData:certificate:](self, "initWithSenderUUID:studyUUID:channel:payloadType:startDate:endDate:payloadIdentifier:applicationData:certificate:", v5, v6, v7, v8, v9, v10, v11, v12, [v4 certificate]);
+  subjectUUID = [configurationCopy subjectUUID];
+  studyUUID = [configurationCopy studyUUID];
+  channel = [configurationCopy channel];
+  payloadType = [configurationCopy payloadType];
+  startDate = [configurationCopy startDate];
+  endDate = [configurationCopy endDate];
+  payloadIdentifier = [configurationCopy payloadIdentifier];
+  applicationData = [configurationCopy applicationData];
+  v13 = -[HKHealthWrapMessage initWithSenderUUID:studyUUID:channel:payloadType:startDate:endDate:payloadIdentifier:applicationData:certificate:](self, "initWithSenderUUID:studyUUID:channel:payloadType:startDate:endDate:payloadIdentifier:applicationData:certificate:", subjectUUID, studyUUID, channel, payloadType, startDate, endDate, payloadIdentifier, applicationData, [configurationCopy certificate]);
 
   if (v13)
   {
-    objc_storeStrong(&v13->_configuration, a3);
+    objc_storeStrong(&v13->_configuration, configuration);
     if ([(HKHealthWrapMessageConfiguration *)v13->_configuration disableCompression])
     {
       v13->_compressionEnabled = 0;
     }
 
-    v14 = [v4 keyValuePairs];
-    v15 = [(HKHealthWrapMessage *)v13 _codableKeyValuePairsFromDictionary:v14];
+    keyValuePairs = [configurationCopy keyValuePairs];
+    v15 = [(HKHealthWrapMessage *)v13 _codableKeyValuePairsFromDictionary:keyValuePairs];
     [(HKHealthWrapCodablePayloadHeader *)v13->_payloadHeader setKeyValuePairs:v15];
   }
 
@@ -131,20 +131,20 @@
   [(HKHealthWrapMessage *)&v4 dealloc];
 }
 
-- (id)_codableKeyValuePairsFromDictionary:(id)a3
+- (id)_codableKeyValuePairsFromDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v3 = MEMORY[0x1E695DF70];
-    v4 = a3;
-    v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    dictionaryCopy = dictionary;
+    v5 = [v3 arrayWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __59__HKHealthWrapMessage__codableKeyValuePairsFromDictionary___block_invoke;
     v8[3] = &unk_1E737BB50;
     v6 = v5;
     v9 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:v8];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v8];
   }
 
   else
@@ -207,12 +207,12 @@ void __59__HKHealthWrapMessage__codableKeyValuePairsFromDictionary___block_invok
   [*(a1 + 32) addObject:v6];
 }
 
-- (BOOL)startWithError:(id *)a3
+- (BOOL)startWithError:(id *)error
 {
-  v5 = [objc_opt_class() newOutputFileURL];
-  LOBYTE(a3) = [(HKHealthWrapMessage *)self startWithOutputFileURL:v5 error:a3];
+  newOutputFileURL = [objc_opt_class() newOutputFileURL];
+  LOBYTE(error) = [(HKHealthWrapMessage *)self startWithOutputFileURL:newOutputFileURL error:error];
 
-  return a3;
+  return error;
 }
 
 + (id)newOutputFileURL
@@ -220,42 +220,42 @@ void __59__HKHealthWrapMessage__codableKeyValuePairsFromDictionary___block_invok
   v3 = MEMORY[0x1E695DFF8];
   v4 = NSTemporaryDirectory();
   v5 = [v3 fileURLWithPath:v4];
-  v6 = [a1 newOutputFileURLInDirectory:v5];
+  v6 = [self newOutputFileURLInDirectory:v5];
 
   return v6;
 }
 
-+ (id)newOutputFileURLInDirectory:(id)a3
++ (id)newOutputFileURLInDirectory:(id)directory
 {
   v3 = MEMORY[0x1E696AFB0];
-  v4 = a3;
-  v5 = [v3 UUID];
+  directoryCopy = directory;
+  uUID = [v3 UUID];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [v5 UUIDString];
-  v8 = [v6 stringWithFormat:@"%@-%@", @"HealthWrap-", v7];
+  uUIDString = [uUID UUIDString];
+  v8 = [v6 stringWithFormat:@"%@-%@", @"HealthWrap-", uUIDString];
 
-  v9 = [v4 URLByAppendingPathComponent:v8];
+  v9 = [directoryCopy URLByAppendingPathComponent:v8];
 
   return v9;
 }
 
-- (BOOL)startWithOutputFileURL:(id)a3 error:(id *)a4
+- (BOOL)startWithOutputFileURL:(id)l error:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   self->_lastSuccess = 1;
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  objc_storeStrong(&self->_outputURL, a3);
-  v9 = [objc_alloc(MEMORY[0x1E695DFC0]) initWithURL:v7 append:0];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  objc_storeStrong(&self->_outputURL, l);
+  v9 = [objc_alloc(MEMORY[0x1E695DFC0]) initWithURL:lCopy append:0];
   objc_storeStrong(&self->_outputStream, v9);
   MEMORY[0x193B03090](v9, self->_encryptQueue);
   v10 = [HKHealthWrapEncryptor alloc];
   LOBYTE(v17) = self->_compressionEnabled;
-  v11 = [(HKHealthWrapEncryptor *)v10 initWithOutputStream:v9 certificate:self->_certificate algorithm:0 options:1 keySize:32 uuid:v8 studyUUID:self->_studyUUID compressionEnabled:v17];
+  v11 = [(HKHealthWrapEncryptor *)v10 initWithOutputStream:v9 certificate:self->_certificate algorithm:0 options:1 keySize:32 uuid:uUID studyUUID:self->_studyUUID compressionEnabled:v17];
   encryptor = self->_encryptor;
   self->_encryptor = v11;
 
   v13 = 0;
-  if ([(HKHealthWrapEncryptor *)self->_encryptor startWithError:a4])
+  if ([(HKHealthWrapEncryptor *)self->_encryptor startWithError:error])
   {
     if (self->_compressionEnabled)
     {
@@ -269,7 +269,7 @@ void __59__HKHealthWrapMessage__codableKeyValuePairsFromDictionary___block_invok
     v18[2] = __52__HKHealthWrapMessage_startWithOutputFileURL_error___block_invoke;
     v18[3] = &unk_1E7376780;
     v18[4] = self;
-    v13 = [(HKHealthWrapMessage *)self _run:v18 error:a4];
+    v13 = [(HKHealthWrapMessage *)self _run:v18 error:error];
   }
 
   return v13;
@@ -294,12 +294,12 @@ void __52__HKHealthWrapMessage_startWithOutputFileURL_error___block_invoke_2(uin
   [v1 _writeDataToCompressor:v2];
 }
 
-- (BOOL)appendDataFromFileURL:(id)a3 error:(id *)a4
+- (BOOL)appendDataFromFileURL:(id)l error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:a3 options:1 error:a4];
+  v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:l options:1 error:error];
   if (v6)
   {
-    v7 = [(HKHealthWrapMessage *)self appendData:v6 error:a4];
+    v7 = [(HKHealthWrapMessage *)self appendData:v6 error:error];
   }
 
   else
@@ -310,19 +310,19 @@ void __52__HKHealthWrapMessage_startWithOutputFileURL_error___block_invoke_2(uin
   return v7;
 }
 
-- (BOOL)appendData:(id)a3 error:(id *)a4
+- (BOOL)appendData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__HKHealthWrapMessage_appendData_error___block_invoke;
   v9[3] = &unk_1E7378400;
   v9[4] = self;
-  v10 = v6;
-  v7 = v6;
-  LOBYTE(a4) = [(HKHealthWrapMessage *)self _run:v9 error:a4];
+  v10 = dataCopy;
+  v7 = dataCopy;
+  LOBYTE(error) = [(HKHealthWrapMessage *)self _run:v9 error:error];
 
-  return a4;
+  return error;
 }
 
 - (void)_finalize
@@ -345,14 +345,14 @@ void __52__HKHealthWrapMessage_startWithOutputFileURL_error___block_invoke_2(uin
   }
 }
 
-- (id)finalizeWithError:(id *)a3
+- (id)finalizeWithError:(id *)error
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__HKHealthWrapMessage_finalizeWithError___block_invoke;
   v6[3] = &unk_1E7376780;
   v6[4] = self;
-  if ([(HKHealthWrapMessage *)self _run:v6 error:a3])
+  if ([(HKHealthWrapMessage *)self _run:v6 error:error])
   {
     outputURL = self->_outputURL;
   }
@@ -365,10 +365,10 @@ void __52__HKHealthWrapMessage_startWithOutputFileURL_error___block_invoke_2(uin
   return outputURL;
 }
 
-- (BOOL)_run:(id)a3 error:(id *)a4
+- (BOOL)_run:(id)_run error:(id *)error
 {
   self->_lastSuccess = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(_run + 2))(_run, a2);
   lastSuccess = self->_lastSuccess;
   if (!lastSuccess)
   {
@@ -377,10 +377,10 @@ void __52__HKHealthWrapMessage_startWithOutputFileURL_error___block_invoke_2(uin
     v8 = v7;
     if (v7)
     {
-      if (a4)
+      if (error)
       {
         v9 = v7;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -393,10 +393,10 @@ void __52__HKHealthWrapMessage_startWithOutputFileURL_error___block_invoke_2(uin
   return lastSuccess;
 }
 
-- (void)_writeDataToCompressor:(id)a3
+- (void)_writeDataToCompressor:(id)compressor
 {
-  v4 = a3;
-  v5 = [v4 length];
+  compressorCopy = compressor;
+  v5 = [compressorCopy length];
   if (v5)
   {
     v16 = bswap64(v5);
@@ -404,7 +404,7 @@ void __52__HKHealthWrapMessage_startWithOutputFileURL_error___block_invoke_2(uin
     if (self->_compressionEnabled)
     {
       [(_HKCompressionEngine *)self->_compressionEngine writeSourceContent:v6];
-      [(_HKCompressionEngine *)self->_compressionEngine writeSourceContent:v4];
+      [(_HKCompressionEngine *)self->_compressionEngine writeSourceContent:compressorCopy];
     }
 
     else
@@ -416,7 +416,7 @@ void __52__HKHealthWrapMessage_startWithOutputFileURL_error___block_invoke_2(uin
       self->_lastSuccess = v8;
       v10 = self->_encryptor;
       v14 = v9;
-      v11 = [(HKHealthWrapEncryptor *)v10 appendData:v4 error:&v14];
+      v11 = [(HKHealthWrapEncryptor *)v10 appendData:compressorCopy error:&v14];
       v12 = v14;
 
       self->_lastSuccess = v11;
@@ -441,25 +441,25 @@ void __52__HKHealthWrapMessage_startWithOutputFileURL_error___block_invoke_2(uin
 
   if (self->_outputURL)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    [v6 removeItemAtURL:self->_outputURL error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:self->_outputURL error:0];
 
     outputURL = self->_outputURL;
     self->_outputURL = 0;
   }
 }
 
-- (void)receiveSinkContent:(id)a3
+- (void)receiveSinkContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   encryptQueue = self->_encryptQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__HKHealthWrapMessage_receiveSinkContent___block_invoke;
   v7[3] = &unk_1E7378400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contentCopy;
+  v6 = contentCopy;
   dispatch_sync(encryptQueue, v7);
 }
 

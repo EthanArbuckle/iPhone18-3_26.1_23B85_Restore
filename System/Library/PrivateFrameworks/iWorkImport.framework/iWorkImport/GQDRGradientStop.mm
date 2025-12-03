@@ -1,5 +1,5 @@
 @interface GQDRGradientStop
-- (int)readAttributesFromReader:(_xmlTextReader *)a3;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader;
 - (void)dealloc;
 @end
 
@@ -12,9 +12,9 @@
   [(GQDRGradientStop *)&v3 dealloc];
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3
+- (int)readAttributesFromReader:(_xmlTextReader *)reader
 {
-  sub_42888(a3, qword_A35E8, "fraction", &self->mFraction);
+  sub_42888(reader, qword_A35E8, "fraction", &self->mFraction);
   if (v3)
   {
     return 1;

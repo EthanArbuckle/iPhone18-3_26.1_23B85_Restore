@@ -1,6 +1,6 @@
 @interface CNContactVerifier
-+ (BOOL)arePropertiesOfContactAuthorized:(id)a3 error:(id *)a4;
-+ (BOOL)isValidContact:(id)a3 error:(id *)a4;
++ (BOOL)arePropertiesOfContactAuthorized:(id)authorized error:(id *)error;
++ (BOOL)isValidContact:(id)contact error:(id *)error;
 + (id)os_log;
 @end
 
@@ -27,11 +27,11 @@ uint64_t __27__CNContactVerifier_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (BOOL)isValidContact:(id)a3 error:(id *)a4
++ (BOOL)isValidContact:(id)contact error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
+  contactCopy = contact;
+  array = [MEMORY[0x1E695DF70] array];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -40,15 +40,15 @@ uint64_t __27__CNContactVerifier_os_log__block_invoke()
   aBlock[1] = 3221225472;
   aBlock[2] = __42__CNContactVerifier_isValidContact_error___block_invoke;
   aBlock[3] = &unk_1E7412D58;
-  v7 = v5;
+  v7 = contactCopy;
   v26 = v7;
-  v29 = a4 != 0;
-  v8 = v6;
+  v29 = error != 0;
+  v8 = array;
   v27 = v8;
   v28 = &v30;
   v9 = _Block_copy(aBlock);
-  v10 = [v7 availableKeyDescriptor];
-  v11 = v10 == 0;
+  availableKeyDescriptor = [v7 availableKeyDescriptor];
+  v11 = availableKeyDescriptor == 0;
 
   if (v11)
   {
@@ -82,21 +82,21 @@ uint64_t __27__CNContactVerifier_os_log__block_invoke()
 
   else
   {
-    v12 = [v7 keyVector];
+    keyVector = [v7 keyVector];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __42__CNContactVerifier_isValidContact_error___block_invoke_2;
     v23[3] = &unk_1E7412D80;
     v24 = v9;
-    [v12 enumeratePropertiesUsingBlock:v23];
+    [keyVector enumeratePropertiesUsingBlock:v23];
 
     v13 = v24;
   }
 
   v17 = *(v31 + 24);
-  if (a4 && (v31[3] & 1) == 0)
+  if (error && (v31[3] & 1) == 0)
   {
-    *a4 = [CNErrorFactory validationErrorByAggregatingValidationErrors:v8];
+    *error = [CNErrorFactory validationErrorByAggregatingValidationErrors:v8];
   }
 
   _Block_object_dispose(&v30, 8);
@@ -144,10 +144,10 @@ void __42__CNContactVerifier_isValidContact_error___block_invoke(uint64_t a1, vo
   }
 }
 
-+ (BOOL)arePropertiesOfContactAuthorized:(id)a3 error:(id *)a4
++ (BOOL)arePropertiesOfContactAuthorized:(id)authorized error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  authorizedCopy = authorized;
   v37 = 0;
   v38[0] = &v37;
   v38[1] = 0x3032000000;
@@ -161,7 +161,7 @@ void __42__CNContactVerifier_isValidContact_error___block_invoke(uint64_t a1, vo
   aBlock[4] = &v37;
   v29 = _Block_copy(aBlock);
   v5 = +[CN restrictedProperties];
-  v6 = [v4 hasBeenPersisted];
+  hasBeenPersisted = [authorizedCopy hasBeenPersisted];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
@@ -193,26 +193,26 @@ LABEL_23:
       v12 = [v11 key];
       v49 = v12;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
-      v14 = [v4 areKeysAvailable:v13];
+      v14 = [authorizedCopy areKeysAvailable:v13];
 
       if (v14)
       {
-        v15 = [v11 CNValueForContact:v4];
-        if (v6)
+        v15 = [v11 CNValueForContact:authorizedCopy];
+        if (hasBeenPersisted)
         {
-          v16 = [v4 snapshot];
-          v17 = [v11 CNValueForContact:v16];
+          snapshot = [authorizedCopy snapshot];
+          nilValue = [v11 CNValueForContact:snapshot];
         }
 
         else
         {
-          v17 = [v11 nilValue];
+          nilValue = [v11 nilValue];
         }
 
-        if (([v11 isValue:v15 equalToEmptyEquivalentOrValue:v17] & 1) == 0)
+        if (([v11 isValue:v15 equalToEmptyEquivalentOrValue:nilValue] & 1) == 0)
         {
-          v18 = [a1 os_log];
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+          os_log = [self os_log];
+          if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
           {
             v20 = [v11 key];
             *buf = v26;
@@ -220,11 +220,11 @@ LABEL_23:
             v45 = 2114;
             v46 = v15;
             v47 = 2114;
-            v48 = v17;
-            _os_log_debug_impl(&dword_1954A0000, v18, OS_LOG_TYPE_DEBUG, "UnauthorizedKey:%{public}@, value:%{public}@, snapshotValue:%{public}@", buf, 0x20u);
+            v48 = nilValue;
+            _os_log_debug_impl(&dword_1954A0000, os_log, OS_LOG_TYPE_DEBUG, "UnauthorizedKey:%{public}@, value:%{public}@, snapshotValue:%{public}@", buf, 0x20u);
           }
 
-          if (!a4)
+          if (!error)
           {
 
             v30 = 0;
@@ -248,7 +248,7 @@ LABEL_23:
     break;
   }
 
-  if (!((a4 == 0) | v30 & 1))
+  if (!((error == 0) | v30 & 1))
   {
     if ((*(*MEMORY[0x1E6996530] + 16))())
     {
@@ -257,14 +257,14 @@ LABEL_23:
 
     else
     {
-      v23 = [a1 os_log];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+      os_log2 = [self os_log];
+      if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
       {
-        [CNContactVerifier arePropertiesOfContactAuthorized:v38 error:v23];
+        [CNContactVerifier arePropertiesOfContactAuthorized:v38 error:os_log2];
       }
 
       v24 = *(v38[0] + 40);
-      v40 = v4;
+      v40 = authorizedCopy;
       v41[0] = @"CNKeyPaths";
       v41[1] = @"CNInvalidRecords";
       v42[0] = v24;
@@ -274,7 +274,7 @@ LABEL_23:
     }
 
     [CNErrorFactory errorWithCode:102 userInfo:v21];
-    *a4 = v30 = 0;
+    *error = v30 = 0;
 LABEL_24:
   }
 

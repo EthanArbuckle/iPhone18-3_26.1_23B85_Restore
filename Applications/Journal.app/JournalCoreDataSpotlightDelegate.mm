@@ -1,5 +1,5 @@
 @interface JournalCoreDataSpotlightDelegate
-- (id)attributeSetForObject:(id)a3;
+- (id)attributeSetForObject:(id)object;
 - (id)domainIdentifier;
 - (void)dealloc;
 @end
@@ -17,7 +17,7 @@
 {
   if (*(&self->super.super.isa + OBJC_IVAR____TtC7Journal32JournalCoreDataSpotlightDelegate_protectedDataObservationTask))
   {
-    v3 = self;
+    selfCopy = self;
 
     sub_1000F24EC(&qword_100AD5BC0);
     Task.cancel()();
@@ -25,7 +25,7 @@
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;
@@ -33,11 +33,11 @@
   [(JournalCoreDataSpotlightDelegate *)&v5 dealloc];
 }
 
-- (id)attributeSetForObject:(id)a3
+- (id)attributeSetForObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1006A0774(v4);
+  objectCopy = object;
+  selfCopy = self;
+  v6 = sub_1006A0774(objectCopy);
 
   return v6;
 }

@@ -1,9 +1,9 @@
 @interface PGAOINameShortener
-+ (BOOL)isCountryWithAOISubstitutions:(id)a3;
-+ (id)_shortenedAOIForName:(id)a3;
++ (BOOL)isCountryWithAOISubstitutions:(id)substitutions;
++ (id)_shortenedAOIForName:(id)name;
 + (id)s_aoiReplacementsDictionary;
-+ (id)shortenedAOIForLocationOrAreaNode:(id)a3 locationHelper:(id)a4;
-+ (void)_enumerateWordCombinationsForName:(id)a3 usingBlock:(id)a4;
++ (id)shortenedAOIForLocationOrAreaNode:(id)node locationHelper:(id)helper;
++ (void)_enumerateWordCombinationsForName:(id)name usingBlock:(id)block;
 @end
 
 @implementation PGAOINameShortener
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __49__PGAOINameShortener_s_aoiReplacementsDictionary__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (s_aoiReplacementsDictionary_onceToken != -1)
   {
     dispatch_once(&s_aoiReplacementsDictionary_onceToken, block);
@@ -36,17 +36,17 @@ void __49__PGAOINameShortener_s_aoiReplacementsDictionary__block_invoke(uint64_t
   s_aoiReplacementsDictionary_s_aoiReplacementsDictionary = v3;
 }
 
-+ (BOOL)isCountryWithAOISubstitutions:(id)a3
++ (BOOL)isCountryWithAOISubstitutions:(id)substitutions
 {
-  v3 = a3;
-  if (v3)
+  substitutionsCopy = substitutions;
+  if (substitutionsCopy)
   {
     if (isCountryWithAOISubstitutions__onceToken != -1)
     {
       dispatch_once(&isCountryWithAOISubstitutions__onceToken, &__block_literal_global_55767);
     }
 
-    v4 = [isCountryWithAOISubstitutions__countriesWithSubstitutions containsObject:v3];
+    v4 = [isCountryWithAOISubstitutions__countriesWithSubstitutions containsObject:substitutionsCopy];
   }
 
   else
@@ -64,11 +64,11 @@ void __52__PGAOINameShortener_isCountryWithAOISubstitutions___block_invoke()
   isCountryWithAOISubstitutions__countriesWithSubstitutions = v0;
 }
 
-+ (void)_enumerateWordCombinationsForName:(id)a3 usingBlock:(id)a4
++ (void)_enumerateWordCombinationsForName:(id)name usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 componentsSeparatedByString:@" "];
+  nameCopy = name;
+  blockCopy = block;
+  v7 = [nameCopy componentsSeparatedByString:@" "];
   if ([v7 count])
   {
     v13[0] = 0;
@@ -81,7 +81,7 @@ void __52__PGAOINameShortener_isCountryWithAOISubstitutions___block_invoke()
     aBlock[3] = &unk_2788867B0;
     v10 = v7;
     v12 = v13;
-    v11 = v6;
+    v11 = blockCopy;
     v8 = _Block_copy(aBlock);
     v8[2](v8, 1);
 
@@ -172,10 +172,10 @@ LABEL_20:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_shortenedAOIForName:(id)a3
++ (id)_shortenedAOIForName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 s_aoiReplacementsDictionary];
+  nameCopy = name;
+  s_aoiReplacementsDictionary = [self s_aoiReplacementsDictionary];
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -192,13 +192,13 @@ LABEL_20:
   v16 = 3221225472;
   v17 = __43__PGAOINameShortener__shortenedAOIForName___block_invoke;
   v18 = &unk_278886788;
-  v6 = v5;
+  v6 = s_aoiReplacementsDictionary;
   v19 = v6;
   v21 = &v29;
-  v7 = v4;
+  v7 = nameCopy;
   v20 = v7;
   v22 = &v23;
-  [a1 _enumerateWordCombinationsForName:v7 usingBlock:&v15];
+  [self _enumerateWordCombinationsForName:v7 usingBlock:&v15];
   v8 = v30[5];
   if (v8)
   {
@@ -211,8 +211,8 @@ LABEL_20:
 
     else
     {
-      v13 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v11 = [v9 pg_stringByTrailingCharactersInSet:v13 options:3];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      v11 = [v9 pg_stringByTrailingCharactersInSet:whitespaceCharacterSet options:3];
 
       if ([v11 length])
       {
@@ -262,43 +262,43 @@ void __43__PGAOINameShortener__shortenedAOIForName___block_invoke(uint64_t a1, v
   }
 }
 
-+ (id)shortenedAOIForLocationOrAreaNode:(id)a3 locationHelper:(id)a4
++ (id)shortenedAOIForLocationOrAreaNode:(id)node locationHelper:(id)helper
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 label];
-  v9 = [v8 isEqualToString:@"Area"];
+  nodeCopy = node;
+  helperCopy = helper;
+  label = [nodeCopy label];
+  v9 = [label isEqualToString:@"Area"];
 
   if (v9)
   {
-    v10 = v6;
-    v11 = [v10 name];
-    v12 = [v10 collection];
+    v10 = nodeCopy;
+    name = [v10 name];
+    collection = [v10 collection];
 
-    v13 = [v7 addressNodesFromAreaNodes:v12];
+    v13 = [helperCopy addressNodesFromAreaNodes:collection];
 LABEL_5:
     v17 = v13;
 
     goto LABEL_7;
   }
 
-  v14 = [v6 label];
-  v15 = [v14 isEqualToString:@"City"];
+  label2 = [nodeCopy label];
+  v15 = [label2 isEqualToString:@"City"];
 
   if (v15)
   {
-    v16 = v6;
-    v11 = [v16 name];
-    v12 = [v16 collection];
+    v16 = nodeCopy;
+    name = [v16 name];
+    collection = [v16 collection];
 
-    v13 = [v7 addressNodesFromLocationNodes:v12];
+    v13 = [helperCopy addressNodesFromLocationNodes:collection];
     goto LABEL_5;
   }
 
   v17 = 0;
-  v11 = 0;
+  name = 0;
 LABEL_7:
-  if ([v11 length])
+  if ([name length])
   {
     v25 = 0;
     v26 = &v25;
@@ -308,18 +308,18 @@ LABEL_7:
     v21[1] = 3221225472;
     v21[2] = __71__PGAOINameShortener_shortenedAOIForLocationOrAreaNode_locationHelper___block_invoke;
     v21[3] = &unk_278886760;
-    v22 = v7;
+    v22 = helperCopy;
     v23 = &v25;
-    v24 = a1;
+    selfCopy = self;
     [v17 enumerateIdentifiersAsCollectionsWithBlock:v21];
     if (v26[3])
     {
-      v18 = [a1 _shortenedAOIForName:v11];
+      v18 = [self _shortenedAOIForName:name];
     }
 
     else
     {
-      v18 = v11;
+      v18 = name;
     }
 
     v19 = v18;
@@ -329,7 +329,7 @@ LABEL_7:
 
   else
   {
-    v19 = v11;
+    v19 = name;
   }
 
   return v19;

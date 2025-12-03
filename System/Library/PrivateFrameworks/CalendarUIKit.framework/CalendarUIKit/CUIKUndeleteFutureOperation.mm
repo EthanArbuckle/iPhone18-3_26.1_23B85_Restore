@@ -8,15 +8,15 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(CUIKUserOperation *)self objects];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  objects = [(CUIKUserOperation *)self objects];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(objects, "count")}];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(CUIKUserOperation *)self objects];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  objects2 = [(CUIKUserOperation *)self objects];
+  v7 = [objects2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -27,16 +27,16 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objects2);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) originalPostSliceDescription];
-        v12 = [v11 originalEventToSliceOn];
+        originalPostSliceDescription = [*(*(&v14 + 1) + 8 * i) originalPostSliceDescription];
+        originalEventToSliceOn = [originalPostSliceDescription originalEventToSliceOn];
 
-        [v5 addObject:v12];
+        [v5 addObject:originalEventToSliceOn];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [objects2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);

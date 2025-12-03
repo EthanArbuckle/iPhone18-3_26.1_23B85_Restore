@@ -1,16 +1,16 @@
 @interface VGFaceCapture
-+ (id)getFaceMetadata:(id)a3;
-- (BOOL)processWithCaptureData:(id)a3 callback:(id)a4;
-- (VGFaceCapture)initWithOptions:(id)a3;
++ (id)getFaceMetadata:(id)metadata;
+- (BOOL)processWithCaptureData:(id)data callback:(id)callback;
+- (VGFaceCapture)initWithOptions:(id)options;
 - (id)enrolledPoses;
 - (void)dealloc;
 @end
 
 @implementation VGFaceCapture
 
-- (VGFaceCapture)initWithOptions:(id)a3
+- (VGFaceCapture)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v19.receiver = self;
   v19.super_class = VGFaceCapture;
   v6 = [(VGFaceCapture *)&v19 init];
@@ -22,7 +22,7 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  objc_storeStrong(&v6->_options, a3);
+  objc_storeStrong(&v6->_options, options);
   v18[0] = [(VGFaceCaptureOptions *)v7->_options useFKInternalFaceDetector];
   v18[1] = [(VGFaceCaptureOptions *)v7->_options useFKForceCPU];
   v8 = [[VGFaceKitTracker alloc] initWithOptions:v18];
@@ -35,14 +35,14 @@ LABEL_8:
     faceFrameSelector = v7->_faceFrameSelector;
     v7->_faceFrameSelector = v10;
 
-    v12 = [(VGFaceCaptureOptions *)v7->_options useFaceTrackingDictionary];
-    if (v12)
+    useFaceTrackingDictionary = [(VGFaceCaptureOptions *)v7->_options useFaceTrackingDictionary];
+    if (useFaceTrackingDictionary)
     {
       v13 = v7->_faceTracker;
       v7->_faceTracker = 0;
     }
 
-    if (vg::frame_selection::metrics::isSupported(v12) && [(VGFaceCaptureOptions *)v7->_options sendMetrics])
+    if (vg::frame_selection::metrics::isSupported(useFaceTrackingDictionary) && [(VGFaceCaptureOptions *)v7->_options sendMetrics])
     {
       operator new();
     }
@@ -88,11 +88,11 @@ LABEL_12:
   return faceFrameSelector;
 }
 
-- (BOOL)processWithCaptureData:(id)a3 callback:(id)a4
+- (BOOL)processWithCaptureData:(id)data callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = vg::shared::Time(v7);
+  dataCopy = data;
+  callbackCopy = callback;
+  v8 = vg::shared::Time(callbackCopy);
   v9 = v8;
   if (self->_metricsData.__ptr_)
   {
@@ -114,28 +114,28 @@ LABEL_12:
     *(ptr + 62) = v11;
   }
 
-  if (v7)
+  if (callbackCopy)
   {
     objc_initWeak(&location, self);
-    v14 = [v6 getFaceCaptureData];
+    getFaceCaptureData = [dataCopy getFaceCaptureData];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __49__VGFaceCapture_processWithCaptureData_callback___block_invoke;
     v27[3] = &unk_279E28E08;
     objc_copyWeak(v30, &location);
     v30[1] = v9;
-    v15 = v6;
+    v15 = dataCopy;
     v28 = v15;
-    v29 = v7;
+    v29 = callbackCopy;
     v16 = MEMORY[0x2743B9AA0](v27);
     if ([(VGFaceCaptureOptions *)self->_options useFaceTrackingDictionary])
     {
-      v17 = [v15 faceTrackingResult];
+      faceTrackingResult = [v15 faceTrackingResult];
 
-      if (v17)
+      if (faceTrackingResult)
       {
-        v18 = [v15 faceTrackingResult];
-        (v16)[2](v16, v18, [(VGFaceCaptureOptions *)self->_options useFaceTrackingDictionary]);
+        faceTrackingResult2 = [v15 faceTrackingResult];
+        (v16)[2](v16, faceTrackingResult2, [(VGFaceCaptureOptions *)self->_options useFaceTrackingDictionary]);
 
         v19 = 1;
       }
@@ -163,7 +163,7 @@ LABEL_12:
       v23[4] = self;
       v24 = v15;
       v25 = v16;
-      v19 = [(VGFaceKitTracker *)faceTracker processWithCaptureData:v14 callback:v23];
+      v19 = [(VGFaceKitTracker *)faceTracker processWithCaptureData:getFaceCaptureData callback:v23];
     }
 
     objc_destroyWeak(v30);
@@ -282,17 +282,17 @@ void __49__VGFaceCapture_processWithCaptureData_callback___block_invoke_4(uint64
   (*(*(a1 + 48) + 16))();
 }
 
-+ (id)getFaceMetadata:(id)a3
++ (id)getFaceMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  metadataCopy = metadata;
+  v4 = metadataCopy;
+  if (!metadataCopy)
   {
     v12 = 0;
     goto LABEL_23;
   }
 
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277CECED8]];
+  v5 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x277CECED8]];
   v6 = v5;
   if (!v5 || ![v5 count])
   {

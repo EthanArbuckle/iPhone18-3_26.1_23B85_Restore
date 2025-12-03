@@ -1,11 +1,11 @@
 @interface APInternalCacheSettings
-+ (id)storageWithDefaultValues:(id)a3;
++ (id)storageWithDefaultValues:(id)values;
 - (double)diagnosticsIntervalValue;
 @end
 
 @implementation APInternalCacheSettings
 
-+ (id)storageWithDefaultValues:(id)a3
++ (id)storageWithDefaultValues:(id)values
 {
   v3 = [[APSettingsStorageUserDefaults alloc] initWithDefaultValues:&off_100494730];
 
@@ -14,8 +14,8 @@
 
 - (double)diagnosticsIntervalValue
 {
-  v2 = [(APInternalCacheSettings *)self diagnosticsInterval];
-  [v2 doubleValue];
+  diagnosticsInterval = [(APInternalCacheSettings *)self diagnosticsInterval];
+  [diagnosticsInterval doubleValue];
   v4 = v3;
 
   return v4;

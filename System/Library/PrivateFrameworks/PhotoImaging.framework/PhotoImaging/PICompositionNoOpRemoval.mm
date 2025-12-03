@@ -1,27 +1,27 @@
 @interface PICompositionNoOpRemoval
 + (id)_noOpRemovalFunctions;
-+ (id)copyOfAdjustmentRemovingNoOps:(id)a3 identifier:(id)a4;
-+ (id)copyOfCompositionRemovingNoOps:(id)a3;
++ (id)copyOfAdjustmentRemovingNoOps:(id)ops identifier:(id)identifier;
++ (id)copyOfCompositionRemovingNoOps:(id)ops;
 + (id)noOpRemovalFunctions;
 @end
 
 @implementation PICompositionNoOpRemoval
 
-+ (id)copyOfCompositionRemovingNoOps:(id)a3
++ (id)copyOfCompositionRemovingNoOps:(id)ops
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 copy];
-  v18 = v4;
-  v6 = [v4 schema];
-  v7 = [v6 contents];
-  v8 = [v7 allKeys];
+  opsCopy = ops;
+  v5 = [opsCopy copy];
+  v18 = opsCopy;
+  schema = [opsCopy schema];
+  contents = [schema contents];
+  allKeys = [contents allKeys];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v8;
+  v9 = allKeys;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
@@ -43,7 +43,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v16 = [a1 copyOfAdjustmentRemovingNoOps:v15 identifier:v14];
+            v16 = [self copyOfAdjustmentRemovingNoOps:v15 identifier:v14];
             [v5 setObject:v16 forKeyedSubscript:v14];
           }
         }
@@ -58,20 +58,20 @@
   return v5;
 }
 
-+ (id)copyOfAdjustmentRemovingNoOps:(id)a3 identifier:(id)a4
++ (id)copyOfAdjustmentRemovingNoOps:(id)ops identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  opsCopy = ops;
+  identifierCopy = identifier;
   v8 = +[PICompositionSerializerConstants mapForSerialization];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v9 = [v8 objectForKeyedSubscript:identifierCopy];
 
   v10 = [v9 objectForKeyedSubscript:@"omitIfDisabled"];
   if ([v10 BOOLValue])
   {
-    v11 = [v6 objectForKeyedSubscript:@"enabled"];
-    v12 = [v11 BOOLValue];
+    v11 = [opsCopy objectForKeyedSubscript:@"enabled"];
+    bOOLValue = [v11 BOOLValue];
 
-    if (!v12)
+    if (!bOOLValue)
     {
       v13 = 0;
       goto LABEL_9;
@@ -82,18 +82,18 @@
   {
   }
 
-  v14 = [a1 noOpRemovalFunctions];
-  v15 = [v14 objectForKeyedSubscript:v7];
+  noOpRemovalFunctions = [self noOpRemovalFunctions];
+  v15 = [noOpRemovalFunctions objectForKeyedSubscript:identifierCopy];
 
   if (v15)
   {
-    v16 = [v6 copy];
+    v16 = [opsCopy copy];
     v13 = (v15)[2](v15, v16);
   }
 
   else
   {
-    v13 = [v6 copy];
+    v13 = [opsCopy copy];
   }
 
 LABEL_9:
@@ -106,7 +106,7 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __48__PICompositionNoOpRemoval_noOpRemovalFunctions__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (noOpRemovalFunctions_onceToken != -1)
   {
     dispatch_once(&noOpRemovalFunctions_onceToken, block);

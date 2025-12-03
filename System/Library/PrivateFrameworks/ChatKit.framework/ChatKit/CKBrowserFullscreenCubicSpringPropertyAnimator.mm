@@ -1,21 +1,21 @@
 @interface CKBrowserFullscreenCubicSpringPropertyAnimator
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4;
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path;
 @end
 
 @implementation CKBrowserFullscreenCubicSpringPropertyAnimator
 
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = CKBrowserFullscreenCubicSpringPropertyAnimator;
-  v5 = [(UIViewPropertyAnimator *)&v10 _basicAnimationForView:a3 withKeyPath:a4];
-  v6 = [(UIViewPropertyAnimator *)self timingParameters];
-  v7 = [v6 springCubicTimingParameters];
-  v8 = [v7 _mediaTimingFunction];
+  v5 = [(UIViewPropertyAnimator *)&v10 _basicAnimationForView:view withKeyPath:path];
+  timingParameters = [(UIViewPropertyAnimator *)self timingParameters];
+  springCubicTimingParameters = [timingParameters springCubicTimingParameters];
+  _mediaTimingFunction = [springCubicTimingParameters _mediaTimingFunction];
 
-  if (v8)
+  if (_mediaTimingFunction)
   {
-    [v5 setTimingFunction:v8];
+    [v5 setTimingFunction:_mediaTimingFunction];
   }
 
   return v5;

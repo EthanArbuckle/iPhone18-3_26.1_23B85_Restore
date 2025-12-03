@@ -1,19 +1,19 @@
 @interface _UIDocumentPickerNavigationBridgeController
 + (id)_exportedInterface;
-- (id)popToRootViewControllerAnimated:(BOOL)a3;
-- (id)popToViewController:(id)a3 animated:(BOOL)a4;
-- (id)popViewControllerAnimated:(BOOL)a3;
+- (id)popToRootViewControllerAnimated:(BOOL)animated;
+- (id)popToViewController:(id)controller animated:(BOOL)animated;
+- (id)popViewControllerAnimated:(BOOL)animated;
 - (void)_documentPickerDidDismiss;
-- (void)_doneButton:(id)a3;
-- (void)_locationsMenu:(id)a3;
-- (void)_prepareWithExtensionInfo:(id)a3 completionHandler:(id)a4;
-- (void)_setPickableTypes:(id)a3;
-- (void)_setPickerMode:(unint64_t)a3;
-- (void)_setTintColor:(id)a3;
-- (void)_setUploadURLWrapper:(id)a3;
+- (void)_doneButton:(id)button;
+- (void)_locationsMenu:(id)menu;
+- (void)_prepareWithExtensionInfo:(id)info completionHandler:(id)handler;
+- (void)_setPickableTypes:(id)types;
+- (void)_setPickerMode:(unint64_t)mode;
+- (void)_setTintColor:(id)color;
+- (void)_setUploadURLWrapper:(id)wrapper;
 - (void)_updateNavigationItem;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
 @end
 
 @implementation _UIDocumentPickerNavigationBridgeController
@@ -28,61 +28,61 @@
   return v2;
 }
 
-- (void)_setPickableTypes:(id)a3
+- (void)_setPickableTypes:(id)types
 {
   if ([-[NSArray firstObject](-[UINavigationController viewControllers](self "viewControllers")])
   {
-    v5 = [(NSArray *)[(UINavigationController *)self viewControllers] firstObject];
+    firstObject = [(NSArray *)[(UINavigationController *)self viewControllers] firstObject];
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  [v5 _setPickableTypes:a3];
+  [firstObject _setPickableTypes:types];
 }
 
-- (void)_setPickerMode:(unint64_t)a3
+- (void)_setPickerMode:(unint64_t)mode
 {
   if ([-[NSArray firstObject](-[UINavigationController viewControllers](self "viewControllers")])
   {
-    v5 = [(NSArray *)[(UINavigationController *)self viewControllers] firstObject];
+    firstObject = [(NSArray *)[(UINavigationController *)self viewControllers] firstObject];
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  [v5 _setPickerMode:a3];
+  [firstObject _setPickerMode:mode];
 }
 
-- (void)_setUploadURLWrapper:(id)a3
+- (void)_setUploadURLWrapper:(id)wrapper
 {
   if ([-[NSArray firstObject](-[UINavigationController viewControllers](self "viewControllers")])
   {
-    v5 = [(NSArray *)[(UINavigationController *)self viewControllers] firstObject];
+    firstObject = [(NSArray *)[(UINavigationController *)self viewControllers] firstObject];
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  [v5 _setUploadURLWrapper:a3];
+  [firstObject _setUploadURLWrapper:wrapper];
 }
 
-- (void)_prepareWithExtensionInfo:(id)a3 completionHandler:(id)a4
+- (void)_prepareWithExtensionInfo:(id)info completionHandler:(id)handler
 {
   if ([-[NSArray firstObject](-[UINavigationController viewControllers](self "viewControllers")])
   {
-    v7 = [(NSArray *)[(UINavigationController *)self viewControllers] firstObject];
+    firstObject = [(NSArray *)[(UINavigationController *)self viewControllers] firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
   if ((dyld_program_sdk_at_least() & 1) == 0)
@@ -90,18 +90,18 @@
     [(UINavigationController *)self setNavigationBarHidden:1];
   }
 
-  if (v7)
+  if (firstObject)
   {
 
-    [v7 _prepareWithExtensionInfo:a3 completionHandler:a4];
+    [firstObject _prepareWithExtensionInfo:info completionHandler:handler];
   }
 
   else
   {
     v8 = _UIApplicationLinkedOnVersion;
-    v9 = *(a4 + 2);
+    v9 = *(handler + 2);
 
-    v9(a4, v8);
+    v9(handler, v8);
   }
 }
 
@@ -109,43 +109,43 @@
 {
   if ([-[NSArray firstObject](-[UINavigationController viewControllers](self "viewControllers")])
   {
-    v3 = [(NSArray *)[(UINavigationController *)self viewControllers] firstObject];
+    firstObject = [(NSArray *)[(UINavigationController *)self viewControllers] firstObject];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  [v3 _documentPickerDidDismiss];
+  [firstObject _documentPickerDidDismiss];
 }
 
-- (void)_setTintColor:(id)a3
+- (void)_setTintColor:(id)color
 {
-  v4 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
 
-  [(UIView *)v4 setTintColor:a3];
+  [(UIView *)view setTintColor:color];
 }
 
-- (void)_doneButton:(id)a3
+- (void)_doneButton:(id)button
 {
-  v3 = [(_UIDocumentPickerNavigationBridgeController *)self hostingViewController];
+  hostingViewController = [(_UIDocumentPickerNavigationBridgeController *)self hostingViewController];
 
-  [v3 _doneButtonPressed];
+  [hostingViewController _doneButtonPressed];
 }
 
-- (void)_locationsMenu:(id)a3
+- (void)_locationsMenu:(id)menu
 {
-  v5 = [a3 view];
-  [objc_msgSend(a3 "view")];
-  [v5 convertRect:-[UIViewController view](self toView:{"view"), v6, v7, v8, v9}];
+  view = [menu view];
+  [objc_msgSend(menu "view")];
+  [view convertRect:-[UIViewController view](self toView:{"view"), v6, v7, v8, v9}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(_UIDocumentPickerNavigationBridgeController *)self hostingViewController];
+  hostingViewController = [(_UIDocumentPickerNavigationBridgeController *)self hostingViewController];
 
-  [v18 _displayLocationMenu:{v11, v13, v15, v17}];
+  [hostingViewController _displayLocationMenu:{v11, v13, v15, v17}];
 }
 
 - (void)_updateNavigationItem
@@ -154,58 +154,58 @@
   if (!self->_hasSetInitialNavigationItem)
   {
     self->_hasSetInitialNavigationItem = 1;
-    v3 = [(NSArray *)[(UINavigationController *)self viewControllers] firstObject];
-    [v3 _setExistingNavigationItem:{-[_UIDocumentPickerNavigationItem initWithTitle:rightBarButtonItem:]([_UIDocumentPickerNavigationItem alloc], "initWithTitle:rightBarButtonItem:", objc_msgSend(objc_msgSend(v3, "_existingNavigationItem"), "title"), -[UIBarButtonItem initWithBarButtonSystemItem:target:action:]([UIBarButtonItem alloc], "initWithBarButtonSystemItem:target:action:", 1, self, sel__doneButton_))}];
+    firstObject = [(NSArray *)[(UINavigationController *)self viewControllers] firstObject];
+    [firstObject _setExistingNavigationItem:{-[_UIDocumentPickerNavigationItem initWithTitle:rightBarButtonItem:]([_UIDocumentPickerNavigationItem alloc], "initWithTitle:rightBarButtonItem:", objc_msgSend(objc_msgSend(firstObject, "_existingNavigationItem"), "title"), -[UIBarButtonItem initWithBarButtonSystemItem:target:action:]([UIBarButtonItem alloc], "initWithBarButtonSystemItem:target:action:", 1, self, sel__doneButton_))}];
   }
 
-  v4 = [(UINavigationController *)self topViewController];
-  if (![(NSArray *)[(UINavigationItem *)[(UIViewController *)v4 navigationItem] rightBarButtonItems] count])
+  topViewController = [(UINavigationController *)self topViewController];
+  if (![(NSArray *)[(UINavigationItem *)[(UIViewController *)topViewController navigationItem] rightBarButtonItems] count])
   {
     v5[0] = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:sel__doneButton_];
-    -[UINavigationItem setRightBarButtonItems:](-[UIViewController navigationItem](v4, "navigationItem"), "setRightBarButtonItems:", [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1]);
+    -[UINavigationItem setRightBarButtonItems:](-[UIViewController navigationItem](topViewController, "navigationItem"), "setRightBarButtonItems:", [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1]);
   }
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = _UIDocumentPickerNavigationBridgeController;
-  [(UINavigationController *)&v5 pushViewController:a3 animated:a4];
+  [(UINavigationController *)&v5 pushViewController:controller animated:animated];
   [(_UIDocumentPickerNavigationBridgeController *)self _updateNavigationItem];
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
   v6.receiver = self;
   v6.super_class = _UIDocumentPickerNavigationBridgeController;
-  v4 = [(UINavigationController *)&v6 popViewControllerAnimated:a3];
+  v4 = [(UINavigationController *)&v6 popViewControllerAnimated:animated];
   [(_UIDocumentPickerNavigationBridgeController *)self _updateNavigationItem];
   return v4;
 }
 
-- (id)popToViewController:(id)a3 animated:(BOOL)a4
+- (id)popToViewController:(id)controller animated:(BOOL)animated
 {
   v7.receiver = self;
   v7.super_class = _UIDocumentPickerNavigationBridgeController;
-  v5 = [(UINavigationController *)&v7 popToViewController:a3 animated:a4];
+  v5 = [(UINavigationController *)&v7 popToViewController:controller animated:animated];
   [(_UIDocumentPickerNavigationBridgeController *)self _updateNavigationItem];
   return v5;
 }
 
-- (id)popToRootViewControllerAnimated:(BOOL)a3
+- (id)popToRootViewControllerAnimated:(BOOL)animated
 {
   v6.receiver = self;
   v6.super_class = _UIDocumentPickerNavigationBridgeController;
-  v4 = [(UINavigationController *)&v6 popToRootViewControllerAnimated:a3];
+  v4 = [(UINavigationController *)&v6 popToRootViewControllerAnimated:animated];
   [(_UIDocumentPickerNavigationBridgeController *)self _updateNavigationItem];
   return v4;
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = _UIDocumentPickerNavigationBridgeController;
-  [(UINavigationController *)&v5 setViewControllers:a3 animated:a4];
+  [(UINavigationController *)&v5 setViewControllers:controllers animated:animated];
   [(_UIDocumentPickerNavigationBridgeController *)self _updateNavigationItem];
 }
 

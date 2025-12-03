@@ -1,7 +1,7 @@
 @interface HFProgrammableSwitchServiceItem
 + (NSSet)supportedServiceTypes;
-- (HFProgrammableSwitchServiceItem)initWithValueSource:(id)a3 service:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HFProgrammableSwitchServiceItem)initWithValueSource:(id)source service:(id)service;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFProgrammableSwitchServiceItem
@@ -22,9 +22,9 @@
   return v5;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
     v4 = sub_20DD64DC4();
   }
@@ -34,17 +34,17 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v6 = HFProgrammableSwitchServiceItem._subclass_update(options:)(v4);
 
   return v6;
 }
 
-- (HFProgrammableSwitchServiceItem)initWithValueSource:(id)a3 service:(id)a4
+- (HFProgrammableSwitchServiceItem)initWithValueSource:(id)source service:(id)service
 {
   v5.receiver = self;
   v5.super_class = HFProgrammableSwitchServiceItem;
-  return [(HFServiceItem *)&v5 initWithValueSource:a3 service:a4];
+  return [(HFServiceItem *)&v5 initWithValueSource:source service:service];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface WFUIKitAlertPresenter
-+ (void)presentAlert:(id)a3 withUserInterface:(id)a4;
++ (void)presentAlert:(id)alert withUserInterface:(id)interface;
 @end
 
 @implementation WFUIKitAlertPresenter
 
-+ (void)presentAlert:(id)a3 withUserInterface:(id)a4
++ (void)presentAlert:(id)alert withUserInterface:(id)interface
 {
-  v5 = a3;
-  v6 = a4;
+  alertCopy = alert;
+  interfaceCopy = interface;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__WFUIKitAlertPresenter_presentAlert_withUserInterface___block_invoke;
   v9[3] = &unk_279EF51A0;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = alertCopy;
+  v11 = interfaceCopy;
+  v7 = interfaceCopy;
+  v8 = alertCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 

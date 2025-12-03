@@ -1,31 +1,31 @@
 @interface OADRelativeRect
-- (BOOL)isEqual:(id)a3;
-- (OADRelativeRect)initWithLeft:(float)a3 top:(float)a4 right:(float)a5 bottom:(float)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (OADRelativeRect)initWithLeft:(float)left top:(float)top right:(float)right bottom:(float)bottom;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation OADRelativeRect
 
-- (OADRelativeRect)initWithLeft:(float)a3 top:(float)a4 right:(float)a5 bottom:(float)a6
+- (OADRelativeRect)initWithLeft:(float)left top:(float)top right:(float)right bottom:(float)bottom
 {
   v11.receiver = self;
   v11.super_class = OADRelativeRect;
   result = [(OADRelativeRect *)&v11 init];
   if (result)
   {
-    result->mLeft = a3;
-    result->mTop = a4;
-    result->mRight = a5;
-    result->mBottom = a6;
+    result->mLeft = left;
+    result->mTop = top;
+    result->mRight = right;
+    result->mBottom = bottom;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   *&v5 = self->mLeft;
   *&v6 = self->mTop;
   *&v7 = self->mRight;
@@ -34,14 +34,14 @@
   return [v4 initWithLeft:v5 top:v6 right:v7 bottom:v8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (mTop = self->mTop, [v4 top], mTop == v6) && (mBottom = self->mBottom, objc_msgSend(v4, "bottom"), mBottom == v8) && (mLeft = self->mLeft, objc_msgSend(v4, "left"), mLeft == v10))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (mTop = self->mTop, [equalCopy top], mTop == v6) && (mBottom = self->mBottom, objc_msgSend(equalCopy, "bottom"), mBottom == v8) && (mLeft = self->mLeft, objc_msgSend(equalCopy, "left"), mLeft == v10))
   {
     mRight = self->mRight;
-    [v4 right];
+    [equalCopy right];
     v13 = mRight == v12;
   }
 

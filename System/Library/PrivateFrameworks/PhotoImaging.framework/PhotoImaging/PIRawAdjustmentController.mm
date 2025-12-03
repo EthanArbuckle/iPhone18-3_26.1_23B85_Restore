@@ -1,23 +1,23 @@
 @interface PIRawAdjustmentController
 - (NSString)inputDecoderVersion;
-- (void)setInputDecoderVersion:(id)a3;
+- (void)setInputDecoderVersion:(id)version;
 @end
 
 @implementation PIRawAdjustmentController
 
 - (NSString)inputDecoderVersion
 {
-  v2 = [(PIAdjustmentController *)self adjustment];
-  v3 = [v2 objectForKeyedSubscript:@"inputDecoderVersion"];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  v3 = [adjustment objectForKeyedSubscript:@"inputDecoderVersion"];
 
   return v3;
 }
 
-- (void)setInputDecoderVersion:(id)a3
+- (void)setInputDecoderVersion:(id)version
 {
-  v5 = [a3 copy];
-  v4 = [(PIAdjustmentController *)self adjustment];
-  [v4 setObject:v5 forKeyedSubscript:@"inputDecoderVersion"];
+  v5 = [version copy];
+  adjustment = [(PIAdjustmentController *)self adjustment];
+  [adjustment setObject:v5 forKeyedSubscript:@"inputDecoderVersion"];
 }
 
 @end

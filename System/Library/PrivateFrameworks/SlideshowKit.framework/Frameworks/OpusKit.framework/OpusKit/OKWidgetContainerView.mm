@@ -1,6 +1,6 @@
 @interface OKWidgetContainerView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (void)dealloc;
 @end
 
@@ -14,10 +14,10 @@
   [(OFUIView *)&v3 dealloc];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v21 = *MEMORY[0x277D85DE8];
   v19.receiver = self;
   v19.super_class = OKWidgetContainerView;
@@ -27,8 +27,8 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = [(OKWidgetViewProxy *)[(OKWidgetContainerView *)self widgetView] subWidgetViews];
-    v8 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    subWidgetViews = [(OKWidgetViewProxy *)[(OKWidgetContainerView *)self widgetView] subWidgetViews];
+    v8 = [(NSMutableArray *)subWidgetViews countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (!v8)
     {
       return v8;
@@ -42,19 +42,19 @@ LABEL_6:
     {
       if (*v16 != v11)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(subWidgetViews);
       }
 
       v13 = *(*(&v15 + 1) + 8 * v12);
       [(OKWidgetContainerView *)self convertPoint:v13 toView:x, y];
-      if ([v13 pointInside:a4 withEvent:?])
+      if ([v13 pointInside:event withEvent:?])
       {
         break;
       }
 
       if (v10 == ++v12)
       {
-        v10 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v10 = [(NSMutableArray *)subWidgetViews countByEnumeratingWithState:&v15 objects:v20 count:16];
         LOBYTE(v8) = 0;
         if (v10)
         {
@@ -70,16 +70,16 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if ([a3 isEqualToString:@"filters"])
+  if ([key isEqualToString:@"filters"])
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = OKWidgetContainerView;
-  return [(OKWidgetContainerView *)&v6 _shouldAnimatePropertyWithKey:a3];
+  return [(OKWidgetContainerView *)&v6 _shouldAnimatePropertyWithKey:key];
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface IDSIMLMessageFactoryComponent
-- (id)runIndividuallyWithInput:(id)a3;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IDSIMLMessageFactoryComponent
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
-  v3 = a3;
-  v33 = [v3 guid];
+  inputCopy = input;
+  guid = [inputCopy guid];
   v38 = objc_alloc_init(NSMutableArray);
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = [v3 endpoints];
+  obj = [inputCopy endpoints];
   v4 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v4)
   {
@@ -32,24 +32,24 @@
 
         v7 = *(*(&v42 + 1) + 8 * i);
         v8 = [v7 URI];
-        v9 = [v3 fromID];
-        v10 = [v8 prefixedURI];
-        v11 = [v9 isEqualToString:v10];
+        fromID = [inputCopy fromID];
+        prefixedURI = [v8 prefixedURI];
+        v11 = [fromID isEqualToString:prefixedURI];
 
         if (v11)
         {
-          v12 = 0;
+          wantsDeliveryStatus = 0;
         }
 
         else
         {
-          v12 = [v3 wantsDeliveryStatus];
+          wantsDeliveryStatus = [inputCopy wantsDeliveryStatus];
         }
 
-        if ([v3 wantsCertifiedDelivery])
+        if ([inputCopy wantsCertifiedDelivery])
         {
-          v13 = [v7 capabilities];
-          v14 = [v13 valueForCapability:v35] > 0;
+          capabilities = [v7 capabilities];
+          v14 = [capabilities valueForCapability:v35] > 0;
         }
 
         else
@@ -58,32 +58,32 @@
         }
 
         v15 = objc_alloc_init(IDSPeerAggregatableMessage);
-        v16 = [v7 pushTokenObject];
-        [(IDSPeerAggregatableMessage *)v15 setTargetToken:v16];
+        pushTokenObject = [v7 pushTokenObject];
+        [(IDSPeerAggregatableMessage *)v15 setTargetToken:pushTokenObject];
 
-        v17 = [v7 sessionToken];
-        [(IDSPeerAggregatableMessage *)v15 setTargetSessionToken:v17];
+        sessionToken = [v7 sessionToken];
+        [(IDSPeerAggregatableMessage *)v15 setTargetSessionToken:sessionToken];
 
         [(IDSPeerAggregatableMessage *)v15 setTargetPeerID:v8];
-        v18 = [NSNumber numberWithBool:v12];
+        v18 = [NSNumber numberWithBool:wantsDeliveryStatus];
         [(IDSPeerAggregatableMessage *)v15 setWantsDeliveryStatus:v18];
 
         [(IDSPeerAggregatableMessage *)v15 setWantsCertifiedDelivery:v14];
-        v19 = [v7 anonymizedSenderID];
-        [(IDSPeerAggregatableMessage *)v15 setAnonymizedSenderID:v19];
+        anonymizedSenderID = [v7 anonymizedSenderID];
+        [(IDSPeerAggregatableMessage *)v15 setAnonymizedSenderID:anonymizedSenderID];
 
-        v20 = [v7 expireDate];
-        [(IDSPeerAggregatableMessage *)v15 setExpirationDate:v20];
+        expireDate = [v7 expireDate];
+        [(IDSPeerAggregatableMessage *)v15 setExpirationDate:expireDate];
 
-        v21 = [v3 fromShortHandle];
+        fromShortHandle = [inputCopy fromShortHandle];
         v22 = +[IDSPeerIDManager sharedInstance];
-        v23 = [v3 fromID];
-        v24 = [IDSURI URIWithPrefixedURI:v23];
+        fromID2 = [inputCopy fromID];
+        v24 = [IDSURI URIWithPrefixedURI:fromID2];
         v25 = [v22 shortHandleForURI:v8 fromURI:v24];
 
-        if (v21 && v25)
+        if (fromShortHandle && v25)
         {
-          [(IDSPeerAggregatableMessage *)v15 setSenderShortHandle:v21];
+          [(IDSPeerAggregatableMessage *)v15 setSenderShortHandle:fromShortHandle];
           [(IDSPeerAggregatableMessage *)v15 setTargetShortHandle:v25];
           v26 = [CUTUnsafePromise fulfilledPromiseWithValue:v15];
           [v38 addObject:v26];
@@ -108,10 +108,10 @@
   v39[1] = 3221225472;
   v39[2] = sub_10034535C;
   v39[3] = &unk_100BD8848;
-  v40 = v3;
-  v41 = v33;
-  v29 = v33;
-  v30 = v3;
+  v40 = inputCopy;
+  v41 = guid;
+  v29 = guid;
+  v30 = inputCopy;
   v31 = [v28 then:v39];
 
   return v31;

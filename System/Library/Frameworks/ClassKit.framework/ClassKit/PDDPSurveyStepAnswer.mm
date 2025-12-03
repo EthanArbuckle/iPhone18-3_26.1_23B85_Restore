@@ -1,17 +1,17 @@
 @interface PDDPSurveyStepAnswer
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAnswerType:(id)a3;
+- (int)StringAsAnswerType:(id)type;
 - (int)answerType;
 - (unint64_t)hash;
-- (void)addClassIds:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAnswerType:(BOOL)a3;
-- (void)setHasMultipleChoiceSelectedIndexValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addClassIds:(id)ids;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAnswerType:(BOOL)type;
+- (void)setHasMultipleChoiceSelectedIndexValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPSurveyStepAnswer
@@ -29,9 +29,9 @@
   }
 }
 
-- (void)setHasAnswerType:(BOOL)a3
+- (void)setHasAnswerType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -44,25 +44,25 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsAnswerType:(id)a3
+- (int)StringAsAnswerType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_RESPONSE_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_RESPONSE_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MULTIPLE_CHOICE"])
+  else if ([typeCopy isEqualToString:@"MULTIPLE_CHOICE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OPEN_RESPONSE"])
+  else if ([typeCopy isEqualToString:@"OPEN_RESPONSE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CONTINUOUS_SLIDER"])
+  else if ([typeCopy isEqualToString:@"CONTINUOUS_SLIDER"])
   {
     v4 = 3;
   }
@@ -75,9 +75,9 @@
   return v4;
 }
 
-- (void)setHasMultipleChoiceSelectedIndexValue:(BOOL)a3
+- (void)setHasMultipleChoiceSelectedIndexValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -90,22 +90,22 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addClassIds:(id)a3
+- (void)addClassIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   classIds = self->_classIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!classIds)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_classIds;
     self->_classIds = v6;
 
-    v4 = v8;
+    idsCopy = v8;
     classIds = self->_classIds;
   }
 
-  [(NSMutableArray *)classIds addObject:v4];
+  [(NSMutableArray *)classIds addObject:idsCopy];
 }
 
 - (id)description
@@ -113,8 +113,8 @@
   v7.receiver = self;
   v7.super_class = PDDPSurveyStepAnswer;
   v3 = [(PDDPSurveyStepAnswer *)&v7 description];
-  v4 = [(PDDPSurveyStepAnswer *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPSurveyStepAnswer *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -138,15 +138,15 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v8 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v10 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   createdBy = self->_createdBy;
@@ -204,9 +204,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_objectId)
   {
     PBDataWriterWriteStringField();
@@ -293,77 +293,77 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_objectId)
   {
-    [v4 setObjectId:?];
-    v4 = v9;
+    [toCopy setObjectId:?];
+    toCopy = v9;
   }
 
   if (self->_surveyId)
   {
     [v9 setSurveyId:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_dateCreated)
   {
     [v9 setDateCreated:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_dateLastModified)
   {
     [v9 setDateLastModified:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_createdBy)
   {
     [v9 setCreatedBy:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 4) = self->_answerType;
-    *(v4 + 96) |= 2u;
+    *(toCopy + 4) = self->_answerType;
+    *(toCopy + 96) |= 2u;
   }
 
   if (self->_surveyStepId)
   {
     [v9 setSurveyStepId:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 14) = self->_multipleChoiceSelectedIndexValue;
-    *(v4 + 96) |= 4u;
+    *(toCopy + 14) = self->_multipleChoiceSelectedIndexValue;
+    *(toCopy + 96) |= 4u;
   }
 
   if (self->_textAnswerValue)
   {
     [v9 setTextAnswerValue:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_continuousSliderAnswerValue;
-    *(v4 + 96) |= 1u;
+    *(toCopy + 1) = *&self->_continuousSliderAnswerValue;
+    *(toCopy + 96) |= 1u;
   }
 
   if ([(PDDPSurveyStepAnswer *)self classIdsCount])
   {
     [v9 clearClassIds];
-    v5 = [(PDDPSurveyStepAnswer *)self classIdsCount];
-    if (v5)
+    classIdsCount = [(PDDPSurveyStepAnswer *)self classIdsCount];
+    if (classIdsCount)
     {
-      v6 = v5;
+      v6 = classIdsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PDDPSurveyStepAnswer *)self classIdsAtIndex:i];
@@ -373,26 +373,26 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_objectId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_objectId copyWithZone:zone];
   v7 = v5[8];
   v5[8] = v6;
 
-  v8 = [(NSString *)self->_surveyId copyWithZone:a3];
+  v8 = [(NSString *)self->_surveyId copyWithZone:zone];
   v9 = v5[9];
   v5[9] = v8;
 
-  v10 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v10 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v12 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v13 = v5[6];
   v5[6] = v12;
 
-  v14 = [(NSString *)self->_createdBy copyWithZone:a3];
+  v14 = [(NSString *)self->_createdBy copyWithZone:zone];
   v15 = v5[4];
   v5[4] = v14;
 
@@ -402,7 +402,7 @@
     *(v5 + 96) |= 2u;
   }
 
-  v16 = [(NSString *)self->_surveyStepId copyWithZone:a3];
+  v16 = [(NSString *)self->_surveyStepId copyWithZone:zone];
   v17 = v5[10];
   v5[10] = v16;
 
@@ -412,7 +412,7 @@
     *(v5 + 96) |= 4u;
   }
 
-  v18 = [(NSString *)self->_textAnswerValue copyWithZone:a3];
+  v18 = [(NSString *)self->_textAnswerValue copyWithZone:zone];
   v19 = v5[11];
   v5[11] = v18;
 
@@ -441,7 +441,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v27 + 1) + 8 * i) copyWithZone:{a3, v27}];
+        v25 = [*(*(&v27 + 1) + 8 * i) copyWithZone:{zone, v27}];
         [v5 addClassIds:v25];
       }
 
@@ -454,16 +454,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
   objectId = self->_objectId;
-  if (objectId | *(v4 + 8))
+  if (objectId | *(equalCopy + 8))
   {
     if (![(NSString *)objectId isEqual:?])
     {
@@ -472,7 +472,7 @@
   }
 
   surveyId = self->_surveyId;
-  if (surveyId | *(v4 + 9))
+  if (surveyId | *(equalCopy + 9))
   {
     if (![(NSString *)surveyId isEqual:?])
     {
@@ -481,7 +481,7 @@
   }
 
   dateCreated = self->_dateCreated;
-  if (dateCreated | *(v4 + 5))
+  if (dateCreated | *(equalCopy + 5))
   {
     if (![(PDDPDate *)dateCreated isEqual:?])
     {
@@ -490,7 +490,7 @@
   }
 
   dateLastModified = self->_dateLastModified;
-  if (dateLastModified | *(v4 + 6))
+  if (dateLastModified | *(equalCopy + 6))
   {
     if (![(PDDPDate *)dateLastModified isEqual:?])
     {
@@ -499,7 +499,7 @@
   }
 
   createdBy = self->_createdBy;
-  if (createdBy | *(v4 + 4))
+  if (createdBy | *(equalCopy + 4))
   {
     if (![(NSString *)createdBy isEqual:?])
     {
@@ -508,22 +508,22 @@
   }
 
   has = self->_has;
-  v11 = *(v4 + 96);
+  v11 = *(equalCopy + 96);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_answerType != *(v4 + 4))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_answerType != *(equalCopy + 4))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 96) & 2) != 0)
+  else if ((*(equalCopy + 96) & 2) != 0)
   {
     goto LABEL_35;
   }
 
   surveyStepId = self->_surveyStepId;
-  if (surveyStepId | *(v4 + 10))
+  if (surveyStepId | *(equalCopy + 10))
   {
     if (![(NSString *)surveyStepId isEqual:?])
     {
@@ -531,12 +531,12 @@
     }
 
     has = self->_has;
-    v11 = *(v4 + 96);
+    v11 = *(equalCopy + 96);
   }
 
   if ((has & 4) != 0)
   {
-    if ((v11 & 4) == 0 || self->_multipleChoiceSelectedIndexValue != *(v4 + 14))
+    if ((v11 & 4) == 0 || self->_multipleChoiceSelectedIndexValue != *(equalCopy + 14))
     {
       goto LABEL_35;
     }
@@ -548,12 +548,12 @@
   }
 
   textAnswerValue = self->_textAnswerValue;
-  if (textAnswerValue | *(v4 + 11))
+  if (textAnswerValue | *(equalCopy + 11))
   {
     if ([(NSString *)textAnswerValue isEqual:?])
     {
       has = self->_has;
-      v11 = *(v4 + 96);
+      v11 = *(equalCopy + 96);
       goto LABEL_28;
     }
 
@@ -565,7 +565,7 @@ LABEL_35:
 LABEL_28:
   if (has)
   {
-    if ((v11 & 1) == 0 || self->_continuousSliderAnswerValue != *(v4 + 1))
+    if ((v11 & 1) == 0 || self->_continuousSliderAnswerValue != *(equalCopy + 1))
     {
       goto LABEL_35;
     }
@@ -577,7 +577,7 @@ LABEL_28:
   }
 
   classIds = self->_classIds;
-  if (classIds | *(v4 + 3))
+  if (classIds | *(equalCopy + 3))
   {
     v15 = [(NSMutableArray *)classIds isEqual:?];
   }
@@ -657,21 +657,21 @@ LABEL_36:
   return v3 ^ v18 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v13 ^ [(NSMutableArray *)self->_classIds hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 8))
+  fromCopy = from;
+  if (*(fromCopy + 8))
   {
     [(PDDPSurveyStepAnswer *)self setObjectId:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PDDPSurveyStepAnswer *)self setSurveyId:?];
   }
 
   dateCreated = self->_dateCreated;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   if (dateCreated)
   {
     if (v6)
@@ -686,7 +686,7 @@ LABEL_36:
   }
 
   dateLastModified = self->_dateLastModified;
-  v8 = *(v4 + 6);
+  v8 = *(fromCopy + 6);
   if (dateLastModified)
   {
     if (v8)
@@ -700,36 +700,36 @@ LABEL_36:
     [(PDDPSurveyStepAnswer *)self setDateLastModified:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PDDPSurveyStepAnswer *)self setCreatedBy:?];
   }
 
-  if ((*(v4 + 96) & 2) != 0)
+  if ((*(fromCopy + 96) & 2) != 0)
   {
-    self->_answerType = *(v4 + 4);
+    self->_answerType = *(fromCopy + 4);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(PDDPSurveyStepAnswer *)self setSurveyStepId:?];
   }
 
-  if ((*(v4 + 96) & 4) != 0)
+  if ((*(fromCopy + 96) & 4) != 0)
   {
-    self->_multipleChoiceSelectedIndexValue = *(v4 + 14);
+    self->_multipleChoiceSelectedIndexValue = *(fromCopy + 14);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(PDDPSurveyStepAnswer *)self setTextAnswerValue:?];
   }
 
-  if (*(v4 + 96))
+  if (*(fromCopy + 96))
   {
-    self->_continuousSliderAnswerValue = *(v4 + 1);
+    self->_continuousSliderAnswerValue = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -737,7 +737,7 @@ LABEL_36:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = *(v4 + 3);
+  v9 = *(fromCopy + 3);
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {

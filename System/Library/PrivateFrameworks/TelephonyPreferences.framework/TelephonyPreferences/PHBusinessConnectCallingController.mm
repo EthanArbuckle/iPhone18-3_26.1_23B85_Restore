@@ -1,13 +1,13 @@
 @interface PHBusinessConnectCallingController
-- (BOOL)supportsBusinessConnectCallingForSubscriptionContext:(id)a3;
+- (BOOL)supportsBusinessConnectCallingForSubscriptionContext:(id)context;
 - (PHBusinessConnectCallingController)init;
-- (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4;
+- (id)getBooleanFromUserDefaults:(id)defaults default:(id)default;
 - (id)getBusinessConnectCallingEnabled;
-- (id)objectForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5;
+- (id)objectForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error;
 - (id)specifiers;
-- (id)stringForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5;
-- (void)setBusinessConnectCallingEnabled:(id)a3;
-- (void)setValueInUserDefaults:(id)a3 forKey:(id)a4;
+- (id)stringForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error;
+- (void)setBusinessConnectCallingEnabled:(id)enabled;
+- (void)setValueInUserDefaults:(id)defaults forKey:(id)key;
 @end
 
 @implementation PHBusinessConnectCallingController
@@ -50,10 +50,10 @@
 
   if ([(TUFeatureFlags *)self->_featureFlags deviceExpertMigrationEnabled])
   {
-    v3 = [(PHBusinessConnectCallingController *)self configurationProvider];
-    v4 = [v3 isBusinessConnectCallingAvailable];
+    configurationProvider = [(PHBusinessConnectCallingController *)self configurationProvider];
+    isBusinessConnectCallingAvailable = [configurationProvider isBusinessConnectCallingAvailable];
 
-    if ((v4 & 1) == 0)
+    if ((isBusinessConnectCallingAvailable & 1) == 0)
     {
 LABEL_4:
       v5 = 0;
@@ -64,7 +64,7 @@ LABEL_15:
     v12 = MEMORY[0x277D3FAD8];
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v14 = [v13 localizedStringForKey:@"BUSINESS_CONNECT_CALLING_GROUP_HEADER" value:&stru_282D54710 table:@"CallDirectorySettings"];
-    v7 = [v12 groupSpecifierWithID:@"BusinessConnectCallingGroup" name:v14];
+    activeSubscriptions = [v12 groupSpecifierWithID:@"BusinessConnectCallingGroup" name:v14];
 
     v15 = objc_alloc(MEMORY[0x277D3FAD8]);
     v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -73,9 +73,9 @@ LABEL_15:
 
     v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v20 = [v19 localizedStringForKey:@"BUSINESS_CONNECT_CALLING_FOOTER_TEXT" value:&stru_282D54710 table:@"CallDirectorySettings"];
-    [v7 setProperty:v20 forKey:*MEMORY[0x277D3FF88]];
+    [activeSubscriptions setProperty:v20 forKey:*MEMORY[0x277D3FF88]];
 
-    v27[0] = v7;
+    v27[0] = activeSubscriptions;
     v27[1] = v18;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
   }
@@ -86,10 +86,10 @@ LABEL_15:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = [(PHBusinessConnectCallingController *)self carrierBundleController];
-    v7 = [v6 activeSubscriptions];
+    carrierBundleController = [(PHBusinessConnectCallingController *)self carrierBundleController];
+    activeSubscriptions = [carrierBundleController activeSubscriptions];
 
-    v8 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    v8 = [activeSubscriptions countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v8)
     {
       v9 = v8;
@@ -100,7 +100,7 @@ LABEL_15:
         {
           if (*v24 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(activeSubscriptions);
           }
 
           if ([(PHBusinessConnectCallingController *)self supportsBusinessConnectCallingForSubscriptionContext:*(*(&v23 + 1) + 8 * i)])
@@ -110,7 +110,7 @@ LABEL_15:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v9 = [activeSubscriptions countByEnumeratingWithState:&v23 objects:v28 count:16];
         if (v9)
         {
           continue;
@@ -129,12 +129,12 @@ LABEL_17:
   return v5;
 }
 
-- (BOOL)supportsBusinessConnectCallingForSubscriptionContext:(id)a3
+- (BOOL)supportsBusinessConnectCallingForSubscriptionContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v13 = 0;
-  v5 = [(PHBusinessConnectCallingController *)self stringForKeyHierarchy:&unk_282D5D648 subscriptionContext:v4 error:&v13];
+  v5 = [(PHBusinessConnectCallingController *)self stringForKeyHierarchy:&unk_282D5D648 subscriptionContext:contextCopy error:&v13];
   v6 = v13;
   v7 = v6;
   if (v5)
@@ -145,7 +145,7 @@ LABEL_17:
       *buf = 138412546;
       v15 = v5;
       v16 = 2112;
-      v17 = v4;
+      v17 = contextCopy;
       _os_log_impl(&dword_21B8E9000, v8, OS_LOG_TYPE_DEFAULT, "Retrieved verstat feature capability value '%@' for subscription %@", buf, 0x16u);
     }
 
@@ -160,7 +160,7 @@ LABEL_17:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v15 = v4;
+        v15 = contextCopy;
         v16 = 2112;
         v17 = v7;
         _os_log_impl(&dword_21B8E9000, v10, OS_LOG_TYPE_DEFAULT, "Retrieving verstat feature capability value for subscription %@ failed with error %@", buf, 0x16u);
@@ -174,22 +174,22 @@ LABEL_17:
   return v9;
 }
 
-- (id)objectForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5
+- (id)objectForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error
 {
   v8 = MEMORY[0x277CC3620];
-  v9 = a4;
-  v10 = a3;
+  contextCopy = context;
+  hierarchyCopy = hierarchy;
   v11 = [[v8 alloc] initWithBundleType:1];
-  v12 = [(PHBusinessConnectCallingController *)self carrierBundleController];
-  v13 = [v12 telephonyClient];
-  v14 = [v13 copyCarrierBundleValue:v9 keyHierarchy:v10 bundleType:v11 error:a5];
+  carrierBundleController = [(PHBusinessConnectCallingController *)self carrierBundleController];
+  telephonyClient = [carrierBundleController telephonyClient];
+  v14 = [telephonyClient copyCarrierBundleValue:contextCopy keyHierarchy:hierarchyCopy bundleType:v11 error:error];
 
   return v14;
 }
 
-- (id)stringForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5
+- (id)stringForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error
 {
-  v5 = [(PHBusinessConnectCallingController *)self objectForKeyHierarchy:a3 subscriptionContext:a4 error:a5];
+  v5 = [(PHBusinessConnectCallingController *)self objectForKeyHierarchy:hierarchy subscriptionContext:context error:error];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -206,60 +206,60 @@ LABEL_17:
 
 - (id)getBusinessConnectCallingEnabled
 {
-  v3 = [(TUFeatureFlags *)self->_featureFlags deviceExpertMigrationEnabled];
+  deviceExpertMigrationEnabled = [(TUFeatureFlags *)self->_featureFlags deviceExpertMigrationEnabled];
   v4 = MEMORY[0x277CCABB0];
-  if (v3)
+  if (deviceExpertMigrationEnabled)
   {
-    v5 = [(PHBusinessConnectCallingController *)self configurationProvider];
-    [v4 numberWithBool:{objc_msgSend(v5, "isBusinessConnectCallingEnabled")}];
+    configurationProvider = [(PHBusinessConnectCallingController *)self configurationProvider];
+    [v4 numberWithBool:{objc_msgSend(configurationProvider, "isBusinessConnectCallingEnabled")}];
   }
 
   else
   {
-    v5 = [(PHBusinessConnectCallingController *)self getBooleanFromUserDefaults:*MEMORY[0x277D6EFA8] default:&unk_282D5D6A8];
-    [v4 numberWithInt:{objc_msgSend(v5, "BOOLValue") ^ 1}];
+    configurationProvider = [(PHBusinessConnectCallingController *)self getBooleanFromUserDefaults:*MEMORY[0x277D6EFA8] default:&unk_282D5D6A8];
+    [v4 numberWithInt:{objc_msgSend(configurationProvider, "BOOLValue") ^ 1}];
   }
   v6 = ;
 
   return v6;
 }
 
-- (void)setBusinessConnectCallingEnabled:(id)a3
+- (void)setBusinessConnectCallingEnabled:(id)enabled
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = TPSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = enabledCopy;
     _os_log_impl(&dword_21B8E9000, v5, OS_LOG_TYPE_DEFAULT, "User toggled business connect calling switch to %@", &v9, 0xCu);
   }
 
   if ([(TUFeatureFlags *)self->_featureFlags deviceExpertMigrationEnabled])
   {
-    v6 = [v4 BOOLValue];
-    v7 = [(PHBusinessConnectCallingController *)self configurationProvider];
-    [v7 setBusinessConnectCallingEnabled:v6];
+    bOOLValue = [enabledCopy BOOLValue];
+    configurationProvider = [(PHBusinessConnectCallingController *)self configurationProvider];
+    [configurationProvider setBusinessConnectCallingEnabled:bOOLValue];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "BOOLValue") ^ 1}];
-    [(PHBusinessConnectCallingController *)self setValueInUserDefaults:v7 forKey:*MEMORY[0x277D6EFA8]];
+    configurationProvider = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(enabledCopy, "BOOLValue") ^ 1}];
+    [(PHBusinessConnectCallingController *)self setValueInUserDefaults:configurationProvider forKey:*MEMORY[0x277D6EFA8]];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getBooleanFromUserDefaults:(id)a3 default:(id)a4
+- (id)getBooleanFromUserDefaults:(id)defaults default:(id)default
 {
   v5 = MEMORY[0x277CBEBD0];
-  v6 = a4;
-  v7 = a3;
+  defaultCopy = default;
+  defaultsCopy = defaults;
   v8 = [v5 alloc];
   v9 = [v8 initWithSuiteName:*MEMORY[0x277D6EFA0]];
-  v10 = [v9 objectForKey:v7];
+  v10 = [v9 objectForKey:defaultsCopy];
 
   if (v10)
   {
@@ -268,7 +268,7 @@ LABEL_17:
 
   else
   {
-    v11 = v6;
+    v11 = defaultCopy;
   }
 
   v12 = v11;
@@ -276,14 +276,14 @@ LABEL_17:
   return v11;
 }
 
-- (void)setValueInUserDefaults:(id)a3 forKey:(id)a4
+- (void)setValueInUserDefaults:(id)defaults forKey:(id)key
 {
   v5 = MEMORY[0x277CBEBD0];
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  defaultsCopy = defaults;
   v8 = [v5 alloc];
   v9 = [v8 initWithSuiteName:*MEMORY[0x277D6EFA0]];
-  [v9 setValue:v7 forKey:v6];
+  [v9 setValue:defaultsCopy forKey:keyCopy];
 }
 
 @end

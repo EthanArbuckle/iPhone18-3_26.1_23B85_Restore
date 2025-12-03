@@ -1,10 +1,10 @@
 @interface CDDCloudKitServerConfiguration
 - (CDDCloudKitServerConfiguration)init;
-- (CDDCloudKitServerConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CDDCloudKitServerConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CDDCloudKitServerConfiguration
@@ -30,9 +30,9 @@
   [(CDDCloudKitServerConfiguration *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CDDCloudKitServerConfiguration allocWithZone:a3];
+  v4 = [CDDCloudKitServerConfiguration allocWithZone:zone];
   if (!v4)
   {
     return 0;
@@ -60,26 +60,26 @@
   return v3;
 }
 
-- (CDDCloudKitServerConfiguration)initWithCoder:(id)a3
+- (CDDCloudKitServerConfiguration)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CDDCloudKitServerConfiguration;
   v4 = [(CDDCloudKitServerConfiguration *)&v6 init];
   if (v4)
   {
-    v4->_storeDirectoryPath = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"storeDirectoryPath"];
-    v4->_machServiceName = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"machServiceName"];
+    v4->_storeDirectoryPath = [coder decodeObjectOfClass:objc_opt_class() forKey:@"storeDirectoryPath"];
+    v4->_machServiceName = [coder decodeObjectOfClass:objc_opt_class() forKey:@"machServiceName"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_storeDirectoryPath forKey:@"storeDirectoryPath"];
+  [coder encodeObject:self->_storeDirectoryPath forKey:@"storeDirectoryPath"];
   machServiceName = self->_machServiceName;
 
-  [a3 encodeObject:machServiceName forKey:@"machServiceName"];
+  [coder encodeObject:machServiceName forKey:@"machServiceName"];
 }
 
 @end

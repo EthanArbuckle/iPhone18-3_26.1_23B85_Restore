@@ -8,7 +8,7 @@
 {
   v12 = a3;
   v13 = a4;
-  v14 = [a1 length];
+  v14 = [self length];
   if (!v12 || !v13)
   {
     v15 = MEMORY[0x1E695DF30];
@@ -28,10 +28,10 @@
     [v20 raise:v21 format:{@"%@: Range {%lu, %lu} out of bounds; string length %lu", v22, a6, a7, v14}];
   }
 
-  v23 = [a1 string];
+  string = [self string];
   v32.location = a6;
   v32.length = a7;
-  Results = CFStringCreateArrayWithFindResults(0, v23, v12, v32, ~(8 * a5) & 0x10 | a5);
+  Results = CFStringCreateArrayWithFindResults(0, string, v12, v32, ~(8 * a5) & 0x10 | a5);
 
   if (Results)
   {
@@ -54,7 +54,7 @@
         }
 
         ValueAtIndex = CFArrayGetValueAtIndex(Results, v29);
-        [a1 replaceCharactersInRange:*ValueAtIndex withString:{ValueAtIndex[1], v13}];
+        [self replaceCharactersInRange:*ValueAtIndex withString:{ValueAtIndex[1], v13}];
         ++v27;
         --v28;
       }

@@ -1,33 +1,33 @@
 @interface DMCAlertManager
-+ (void)displayAlertWithTitle:(id)a3 message:(id)a4 defaultButtonText:(id)a5 altButtonText:(id)a6 destructive:(BOOL)a7 completion:(id)a8;
-+ (void)promptUserToLogIntoiTunesWithTitle:(id)a3 message:(id)a4 assertion:(id)a5 completion:(id)a6;
++ (void)displayAlertWithTitle:(id)title message:(id)message defaultButtonText:(id)text altButtonText:(id)buttonText destructive:(BOOL)destructive completion:(id)completion;
++ (void)promptUserToLogIntoiTunesWithTitle:(id)title message:(id)message assertion:(id)assertion completion:(id)completion;
 @end
 
 @implementation DMCAlertManager
 
-+ (void)displayAlertWithTitle:(id)a3 message:(id)a4 defaultButtonText:(id)a5 altButtonText:(id)a6 destructive:(BOOL)a7 completion:(id)a8
++ (void)displayAlertWithTitle:(id)title message:(id)message defaultButtonText:(id)text altButtonText:(id)buttonText destructive:(BOOL)destructive completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  titleCopy = title;
+  messageCopy = message;
+  textCopy = text;
+  buttonTextCopy = buttonText;
+  completionCopy = completion;
   v18 = syncQueue();
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __104__DMCAlertManager_displayAlertWithTitle_message_defaultButtonText_altButtonText_destructive_completion___block_invoke;
   v24[3] = &unk_1E7ADC498;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v30 = a7;
-  v29 = v17;
-  v19 = v17;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
-  v23 = v13;
+  v25 = titleCopy;
+  v26 = messageCopy;
+  v27 = textCopy;
+  v28 = buttonTextCopy;
+  destructiveCopy = destructive;
+  v29 = completionCopy;
+  v19 = completionCopy;
+  v20 = buttonTextCopy;
+  v21 = textCopy;
+  v22 = messageCopy;
+  v23 = titleCopy;
   dispatch_async(v18, v24);
 }
 
@@ -46,25 +46,25 @@ void __104__DMCAlertManager_displayAlertWithTitle_message_defaultButtonText_altB
   syncQueueShowNextAlert();
 }
 
-+ (void)promptUserToLogIntoiTunesWithTitle:(id)a3 message:(id)a4 assertion:(id)a5 completion:(id)a6
++ (void)promptUserToLogIntoiTunesWithTitle:(id)title message:(id)message assertion:(id)assertion completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  titleCopy = title;
+  messageCopy = message;
+  assertionCopy = assertion;
+  completionCopy = completion;
   v13 = syncQueue();
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __83__DMCAlertManager_promptUserToLogIntoiTunesWithTitle_message_assertion_completion___block_invoke;
   v18[3] = &unk_1E7ADC538;
-  v19 = v11;
-  v20 = v9;
-  v21 = v10;
-  v22 = v12;
-  v14 = v10;
-  v15 = v9;
-  v16 = v11;
-  v17 = v12;
+  v19 = assertionCopy;
+  v20 = titleCopy;
+  v21 = messageCopy;
+  v22 = completionCopy;
+  v14 = messageCopy;
+  v15 = titleCopy;
+  v16 = assertionCopy;
+  v17 = completionCopy;
   dispatch_async(v13, v18);
 }
 

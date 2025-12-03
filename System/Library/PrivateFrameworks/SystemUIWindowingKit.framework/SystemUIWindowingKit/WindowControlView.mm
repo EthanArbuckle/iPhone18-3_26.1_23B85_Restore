@@ -1,33 +1,33 @@
 @interface WindowControlView
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (void)handleHover:(id)a3;
-- (void)handleTapGesture:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (void)handleHover:(id)hover;
+- (void)handleTapGesture:(id)gesture;
 @end
 
 @implementation WindowControlView
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
   v9 = sub_21ED27784();
 
   return v9 & 1;
 }
 
-- (void)handleTapGesture:(id)a3
+- (void)handleTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_21ED278B8(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_21ED278B8(gestureCopy);
 }
 
-- (void)handleHover:(id)a3
+- (void)handleHover:(id)hover
 {
-  v4 = a3;
-  v5 = self;
-  sub_21ED27A0C(v4);
+  hoverCopy = hover;
+  selfCopy = self;
+  sub_21ED27A0C(hoverCopy);
 }
 
 @end

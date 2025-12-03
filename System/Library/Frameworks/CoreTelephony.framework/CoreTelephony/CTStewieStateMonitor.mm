@@ -1,9 +1,9 @@
 @interface CTStewieStateMonitor
 - (BOOL)start;
-- (BOOL)startWithEndpoint:(id)a3 parameters:(id)a4;
-- (CTStewieStateMonitor)initWithDelegate:(id)a3 queue:(id)a4;
+- (BOOL)startWithEndpoint:(id)endpoint parameters:(id)parameters;
+- (CTStewieStateMonitor)initWithDelegate:(id)delegate queue:(id)queue;
 - (id)getState;
-- (id)stateFromPath:(id)a3;
+- (id)stateFromPath:(id)path;
 - (void)dealloc;
 @end
 
@@ -82,10 +82,10 @@ LABEL_13:
   [(CTStewieStateMonitor *)&v5 dealloc];
 }
 
-- (CTStewieStateMonitor)initWithDelegate:(id)a3 queue:(id)a4
+- (CTStewieStateMonitor)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = CTStewieStateMonitor;
   v8 = [(CTStewieStateMonitor *)&v14 init];
@@ -105,7 +105,7 @@ LABEL_13:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!queueCopy)
   {
     v12 = CTLogStewieMonitor();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -125,8 +125,8 @@ LABEL_10:
   fState = v8->fState;
   v8->fState = v9;
 
-  objc_storeWeak(&v8->fDelegate, v6);
-  objc_storeStrong(&v8->fDelegateQueue, a4);
+  objc_storeWeak(&v8->fDelegate, delegateCopy);
+  objc_storeStrong(&v8->fDelegateQueue, queue);
   v8->fStarted = 0;
   v11 = v8;
 LABEL_11:
@@ -134,10 +134,10 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)startWithEndpoint:(id)a3 parameters:(id)a4
+- (BOOL)startWithEndpoint:(id)endpoint parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
   evaluator_for_endpoint = nw_path_create_evaluator_for_endpoint();
   fPathEvaluator = self->fPathEvaluator;
   self->fPathEvaluator = evaluator_for_endpoint;
@@ -226,10 +226,10 @@ void __53__CTStewieStateMonitor_startWithEndpoint_parameters___block_invoke(uint
   }
 }
 
-- (id)stateFromPath:(id)a3
+- (id)stateFromPath:(id)path
 {
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
     v12 = 0;
     v13 = &v12;

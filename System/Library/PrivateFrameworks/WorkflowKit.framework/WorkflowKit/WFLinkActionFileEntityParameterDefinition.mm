@@ -1,34 +1,34 @@
 @interface WFLinkActionFileEntityParameterDefinition
 - (BOOL)supportsDynamicOptions;
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4;
+- (id)linkValueFromParameterState:(id)state action:(id)action;
 - (id)parameterDefinitionDictionary;
-- (id)parameterStateFromLinkValue:(id)a3;
+- (id)parameterStateFromLinkValue:(id)value;
 - (id)supportedUTIs;
 @end
 
 @implementation WFLinkActionFileEntityParameterDefinition
 
-- (id)parameterStateFromLinkValue:(id)a3
+- (id)parameterStateFromLinkValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   if ([(WFLinkActionFileEntityParameterDefinition *)self supportsDynamicOptions])
   {
     v19.receiver = self;
     v19.super_class = WFLinkActionFileEntityParameterDefinition;
-    v5 = [(WFLinkActionDynamicOptionsParameterDefinition *)&v19 parameterStateFromLinkValue:v4];
+    v5 = [(WFLinkActionDynamicOptionsParameterDefinition *)&v19 parameterStateFromLinkValue:valueCopy];
 
     goto LABEL_18;
   }
 
-  v6 = [v4 value];
+  value = [valueCopy value];
 
-  if (v6)
+  if (value)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v8 = v6;
+      v8 = value;
     }
 
     else
@@ -42,29 +42,29 @@
       goto LABEL_15;
     }
 
-    v10 = [v6 _bookmarkData];
+    _bookmarkData = [value _bookmarkData];
 
-    if (v10)
+    if (_bookmarkData)
     {
       v11 = [WFFileValue alloc];
-      v12 = [v6 _bookmarkData];
-      v13 = [v6 filename];
-      v14 = [v6 filename];
-      v15 = [(WFFileValue *)v11 initWithBookmarkData:v12 filename:v13 displayName:v14];
+      _bookmarkData2 = [value _bookmarkData];
+      filename = [value filename];
+      filename2 = [value filename];
+      v15 = [(WFFileValue *)v11 initWithBookmarkData:_bookmarkData2 filename:filename displayName:filename2];
     }
 
     else
     {
-      v16 = [v6 fileURL];
+      fileURL = [value fileURL];
 
-      if (!v16)
+      if (!fileURL)
       {
         goto LABEL_15;
       }
 
       v17 = [WFFileValue alloc];
-      v12 = [v6 fileURL];
-      v15 = [(WFFileValue *)v17 initWithURL:v12];
+      _bookmarkData2 = [value fileURL];
+      v15 = [(WFFileValue *)v17 initWithURL:_bookmarkData2];
     }
 
     if (v15)
@@ -106,13 +106,13 @@ void __177__WFLinkActionFileEntityParameterDefinition_getLinkValueFromProcessedP
   }
 }
 
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4
+- (id)linkValueFromParameterState:(id)state action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  actionCopy = action;
   v28.receiver = self;
   v28.super_class = WFLinkActionFileEntityParameterDefinition;
-  v8 = [(WFLinkActionDynamicOptionsParameterDefinition *)&v28 linkValueFromParameterState:v6 action:v7];
+  v8 = [(WFLinkActionDynamicOptionsParameterDefinition *)&v28 linkValueFromParameterState:stateCopy action:actionCopy];
   v9 = v8;
   if (v8)
   {
@@ -120,31 +120,31 @@ void __177__WFLinkActionFileEntityParameterDefinition_getLinkValueFromProcessedP
     goto LABEL_12;
   }
 
-  v11 = v6;
+  v11 = stateCopy;
   if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v10 = 0;
     goto LABEL_11;
   }
 
-  v12 = [v11 value];
-  v13 = [v12 bookmarkData];
+  value = [v11 value];
+  bookmarkData = [value bookmarkData];
 
-  if (v13)
+  if (bookmarkData)
   {
     v14 = MEMORY[0x1E696E840];
-    v15 = [v12 bookmarkData];
-    v16 = [v12 filename];
-    v17 = [v14 wf_fileWithBookmarkData:v15 filename:v16];
+    bookmarkData2 = [value bookmarkData];
+    filename = [value filename];
+    workflowID = [v14 wf_fileWithBookmarkData:bookmarkData2 filename:filename];
   }
 
-  else if (v7)
+  else if (actionCopy)
   {
-    v19 = [v7 workflow];
-    v17 = [v19 workflowID];
+    workflow = [actionCopy workflow];
+    workflowID = [workflow workflowID];
 
     v27 = 0;
-    v20 = [v12 resolveURLWithWorkflowID:v17 error:&v27];
+    v20 = [value resolveURLWithWorkflowID:workflowID error:&v27];
     if (!v20)
     {
       v10 = 0;
@@ -153,12 +153,12 @@ void __177__WFLinkActionFileEntityParameterDefinition_getLinkValueFromProcessedP
 
     v21 = v20;
     v25 = MEMORY[0x1E696E840];
-    v22 = [v12 filename];
-    v24 = [v21 wfFileType];
-    v23 = [v24 string];
-    v26 = [v25 fileWithFileURL:v21 filename:v22 typeIdentifier:v23];
+    filename2 = [value filename];
+    wfFileType = [v21 wfFileType];
+    string = [wfFileType string];
+    v26 = [v25 fileWithFileURL:v21 filename:filename2 typeIdentifier:string];
 
-    v17 = v26;
+    workflowID = v26;
     if (!v26)
     {
       v10 = 0;
@@ -168,10 +168,10 @@ void __177__WFLinkActionFileEntityParameterDefinition_getLinkValueFromProcessedP
 
   else
   {
-    v17 = 0;
+    workflowID = 0;
   }
 
-  v10 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:v17];
+  v10 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:workflowID];
 LABEL_8:
 
 LABEL_9:
@@ -187,12 +187,12 @@ LABEL_12:
   v11[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = WFLinkActionFileEntityParameterDefinition;
-  v3 = [(WFLinkActionParameterDefinition *)&v9 parameterDefinitionDictionary];
+  parameterDefinitionDictionary = [(WFLinkActionParameterDefinition *)&v9 parameterDefinitionDictionary];
   v10 = @"FilePickerSupportedTypes";
-  v4 = [(WFLinkActionFileEntityParameterDefinition *)self supportedUTIs];
-  v11[0] = v4;
+  supportedUTIs = [(WFLinkActionFileEntityParameterDefinition *)self supportedUTIs];
+  v11[0] = supportedUTIs;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v6 = [v3 definitionByAddingEntriesInDictionary:v5];
+  v6 = [parameterDefinitionDictionary definitionByAddingEntriesInDictionary:v5];
 
   v7 = *MEMORY[0x1E69E9840];
 
@@ -210,8 +210,8 @@ LABEL_12:
   else
   {
     v5 = [(WFLinkActionParameterDefinition *)self objectForTypeSpecificMetadataKey:@"LNValueTypeSpecificMetadataKeyLinkEntityMetadata" ofClass:objc_opt_class()];
-    v6 = [v5 systemProtocolMetadata];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69AC2C0]];
+    systemProtocolMetadata = [v5 systemProtocolMetadata];
+    v7 = [systemProtocolMetadata objectForKeyedSubscript:*MEMORY[0x1E69AC2C0]];
 
     if (v7)
     {
@@ -234,13 +234,13 @@ LABEL_12:
 
     v9 = v8;
 
-    v10 = [v9 supportedContentTypes];
-    v11 = [v10 count];
+    supportedContentTypes = [v9 supportedContentTypes];
+    v11 = [supportedContentTypes count];
 
     if (v11)
     {
-      v12 = [v9 supportedContentTypes];
-      v4 = [v12 if_map:&__block_literal_global_11312];
+      supportedContentTypes2 = [v9 supportedContentTypes];
+      v4 = [supportedContentTypes2 if_map:&__block_literal_global_11312];
     }
 
     else
@@ -254,8 +254,8 @@ LABEL_12:
 
 - (BOOL)supportsDynamicOptions
 {
-  v2 = [(WFLinkActionParameterDefinition *)self parameterMetadata];
-  v3 = [v2 dynamicOptionsSupport] == 2;
+  parameterMetadata = [(WFLinkActionParameterDefinition *)self parameterMetadata];
+  v3 = [parameterMetadata dynamicOptionsSupport] == 2;
 
   return v3;
 }

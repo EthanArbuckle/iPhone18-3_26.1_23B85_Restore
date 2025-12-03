@@ -1,9 +1,9 @@
 @interface EFMutableInt64Set
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addIndexes:(id)a3;
-- (void)intersectIndexes:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addIndexes:(id)indexes;
+- (void)intersectIndexes:(id)indexes;
 - (void)removeAllIndexes;
-- (void)removeIndexes:(id)a3;
+- (void)removeIndexes:(id)indexes;
 @end
 
 @implementation EFMutableInt64Set
@@ -17,7 +17,7 @@
   p_end_node[-1].__left_ = p_end_node;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   memset(v5, 170, sizeof(v5));
   std::set<long long>::set[abi:ne200100](v5, &self->super._underlying);
@@ -26,20 +26,20 @@
   return v3;
 }
 
-- (void)addIndexes:(id)a3
+- (void)addIndexes:(id)indexes
 {
-  if (a3)
+  if (indexes)
   {
-    std::set<long long>::insert[abi:ne200100]<std::__tree_const_iterator<long long,std::__tree_node<long long,void *> *,long>>(&self->super._underlying, *(a3 + 1), a3 + 2);
+    std::set<long long>::insert[abi:ne200100]<std::__tree_const_iterator<long long,std::__tree_node<long long,void *> *,long>>(&self->super._underlying, *(indexes + 1), indexes + 2);
   }
 }
 
-- (void)removeIndexes:(id)a3
+- (void)removeIndexes:(id)indexes
 {
-  v10 = a3;
-  if (v10)
+  indexesCopy = indexes;
+  if (indexesCopy)
   {
-    if (v10 == self)
+    if (indexesCopy == self)
     {
       left = self->super._underlying.__tree_.__end_node_.__left_;
       p_end_node = &self->super._underlying.__tree_.__end_node_;
@@ -51,8 +51,8 @@
 
     else
     {
-      begin_node = v10->super._underlying.__tree_.__begin_node_;
-      if (begin_node != &v10->super._underlying.__tree_.__end_node_)
+      begin_node = indexesCopy->super._underlying.__tree_.__begin_node_;
+      if (begin_node != &indexesCopy->super._underlying.__tree_.__end_node_)
       {
         do
         {
@@ -84,24 +84,24 @@
           begin_node = v6;
         }
 
-        while (v6 != &v10->super._underlying.__tree_.__end_node_);
+        while (v6 != &indexesCopy->super._underlying.__tree_.__end_node_);
       }
     }
   }
 }
 
-- (void)intersectIndexes:(id)a3
+- (void)intersectIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && *(v4 + 3))
+  indexesCopy = indexes;
+  v5 = indexesCopy;
+  if (indexesCopy && *(indexesCopy + 3))
   {
     v11[0] = 0;
     v11[1] = 0;
     v10 = v11;
     begin_node = self->super._underlying.__tree_.__begin_node_;
     p_underlying = &self->super._underlying;
-    std::__set_intersection[abi:ne200100]<std::_ClassicAlgPolicy,std::__less<void,void>,std::__tree_const_iterator<long long,std::__tree_node<long long,void *> *,long>,std::__tree_const_iterator<long long,std::__tree_node<long long,void *> *,long>,std::__tree_const_iterator<long long,std::__tree_node<long long,void *> *,long>,std::__tree_const_iterator<long long,std::__tree_node<long long,void *> *,long>,std::insert_iterator<std::set<long long>>>(begin_node, &p_underlying->__tree_.__end_node_.__left_, *(v4 + 1), v4 + 2, &v10, v11, v12);
+    std::__set_intersection[abi:ne200100]<std::_ClassicAlgPolicy,std::__less<void,void>,std::__tree_const_iterator<long long,std::__tree_node<long long,void *> *,long>,std::__tree_const_iterator<long long,std::__tree_node<long long,void *> *,long>,std::__tree_const_iterator<long long,std::__tree_node<long long,void *> *,long>,std::__tree_const_iterator<long long,std::__tree_node<long long,void *> *,long>,std::insert_iterator<std::set<long long>>>(begin_node, &p_underlying->__tree_.__end_node_.__left_, *(indexesCopy + 1), indexesCopy + 2, &v10, v11, v12);
     if (p_underlying != &v10)
     {
       std::__tree<long long>::__assign_multi<std::__tree_const_iterator<long long,std::__tree_node<long long,void *> *,long>>(p_underlying, v10, v11);

@@ -1,20 +1,20 @@
 @interface AKAuthorizationContinueButton
-- (AKAuthorizationContinueButton)initWithCoder:(id)a3;
-- (AKAuthorizationContinueButton)initWithFrame:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (AKAuthorizationContinueButton)initWithCoder:(id)coder;
+- (AKAuthorizationContinueButton)initWithFrame:(CGRect)frame;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation AKAuthorizationContinueButton
 
-- (AKAuthorizationContinueButton)initWithFrame:(CGRect)a3
+- (AKAuthorizationContinueButton)initWithFrame:(CGRect)frame
 {
-  v11 = a3;
+  frameCopy = frame;
   v9 = a2;
   v10 = 0;
   v8.receiver = self;
   v8.super_class = AKAuthorizationContinueButton;
-  v10 = [(AKAuthorizationContinueButton *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v10 = [(AKAuthorizationContinueButton *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&v10, v10);
   if (v10)
   {
@@ -32,48 +32,48 @@
   return v4;
 }
 
-- (AKAuthorizationContinueButton)initWithCoder:(id)a3
+- (AKAuthorizationContinueButton)initWithCoder:(id)coder
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = AKAuthorizationContinueButton;
-  v11 = [(AKAuthorizationContinueButton *)&v9 initWithCoder:location[0]];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(AKAuthorizationContinueButton *)&v9 initWithCoder:location[0]];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    v8.receiver = v11;
+    v8.receiver = selfCopy;
     v8.super_class = AKAuthorizationContinueButton;
     [(AKAuthorizationButton *)&v8 setupButton];
-    v6 = v11;
+    v6 = selfCopy;
     v7 = +[AKAuthorizationAppearance continueButtonDefaultColor];
     [(AKAuthorizationContinueButton *)v6 setBackgroundColor:?];
     MEMORY[0x277D82BD8](v7);
   }
 
-  v5 = MEMORY[0x277D82BE0](v11);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  if ([(AKAuthorizationContinueButton *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(AKAuthorizationContinueButton *)self isHighlighted]!= highlighted)
   {
-    v7.receiver = v10;
+    v7.receiver = selfCopy;
     v7.super_class = AKAuthorizationContinueButton;
-    [(AKAuthorizationContinueButton *)&v7 setHighlighted:v8];
-    if (v8)
+    [(AKAuthorizationContinueButton *)&v7 setHighlighted:highlightedCopy];
+    if (highlightedCopy)
     {
-      v5 = v10;
+      v5 = selfCopy;
       v6 = +[AKAuthorizationAppearance continueButtonHighlightedColor];
       [(AKAuthorizationContinueButton *)v5 setBackgroundColor:?];
       MEMORY[0x277D82BD8](v6);
@@ -81,7 +81,7 @@
 
     else
     {
-      v3 = v10;
+      v3 = selfCopy;
       v4 = +[AKAuthorizationAppearance continueButtonDefaultColor];
       [(AKAuthorizationContinueButton *)v3 setBackgroundColor:?];
       MEMORY[0x277D82BD8](v4);
@@ -89,19 +89,19 @@
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  if ([(AKAuthorizationContinueButton *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(AKAuthorizationContinueButton *)self isEnabled]!= enabled)
   {
-    v7.receiver = v10;
+    v7.receiver = selfCopy;
     v7.super_class = AKAuthorizationContinueButton;
-    [(AKAuthorizationContinueButton *)&v7 setEnabled:v8];
-    if (v8)
+    [(AKAuthorizationContinueButton *)&v7 setEnabled:enabledCopy];
+    if (enabledCopy)
     {
-      v5 = v10;
+      v5 = selfCopy;
       v6 = +[AKAuthorizationAppearance continueButtonDefaultColor];
       [(AKAuthorizationContinueButton *)v5 setBackgroundColor:?];
       MEMORY[0x277D82BD8](v6);
@@ -109,7 +109,7 @@
 
     else
     {
-      v3 = v10;
+      v3 = selfCopy;
       v4 = +[AKAuthorizationAppearance continueButtonDisabledColor];
       [(AKAuthorizationContinueButton *)v3 setBackgroundColor:?];
       MEMORY[0x277D82BD8](v4);

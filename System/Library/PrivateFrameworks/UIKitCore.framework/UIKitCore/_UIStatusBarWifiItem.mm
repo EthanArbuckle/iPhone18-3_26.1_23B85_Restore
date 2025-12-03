@@ -1,15 +1,15 @@
 @interface _UIStatusBarWifiItem
-+ (id)groupWithPriority:(int64_t)a3;
++ (id)groupWithPriority:(int64_t)priority;
 - (_UIStatusBarImageView)networkIconView;
 - (_UIStatusBarStringView)rawStringView;
 - (_UIStatusBarWifiSignalView)signalView;
-- (double)_barThicknessForUpdate:(id)a3;
-- (double)_interspaceForUpdate:(id)a3;
-- (double)_totalWidthForUpdate:(id)a3;
-- (id)_backgroundColorForUpdate:(id)a3 entry:(id)a4;
-- (id)_fillColorForUpdate:(id)a3 entry:(id)a4;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)viewForIdentifier:(id)a3;
+- (double)_barThicknessForUpdate:(id)update;
+- (double)_interspaceForUpdate:(id)update;
+- (double)_totalWidthForUpdate:(id)update;
+- (id)_backgroundColorForUpdate:(id)update entry:(id)entry;
+- (id)_fillColorForUpdate:(id)update entry:(id)entry;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_networkIconView;
 - (void)_create_rawStringView;
 - (void)_create_signalView;
@@ -17,11 +17,11 @@
 
 @implementation _UIStatusBarWifiItem
 
-- (double)_barThicknessForUpdate:(id)a3
+- (double)_barThicknessForUpdate:(id)update
 {
-  v3 = [a3 styleAttributes];
-  v4 = [v3 traitCollection];
-  [v4 displayScale];
+  styleAttributes = [update styleAttributes];
+  traitCollection = [styleAttributes traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
   result = 2.5;
@@ -33,11 +33,11 @@
   return result;
 }
 
-- (double)_interspaceForUpdate:(id)a3
+- (double)_interspaceForUpdate:(id)update
 {
-  v3 = [a3 styleAttributes];
-  v4 = [v3 traitCollection];
-  [v4 displayScale];
+  styleAttributes = [update styleAttributes];
+  traitCollection = [styleAttributes traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
   result = 1.66666667;
@@ -49,136 +49,136 @@
   return result;
 }
 
-- (double)_totalWidthForUpdate:(id)a3
+- (double)_totalWidthForUpdate:(id)update
 {
-  v3 = [a3 styleAttributes];
-  v4 = [v3 traitCollection];
-  [v4 displayScale];
+  styleAttributes = [update styleAttributes];
+  traitCollection = [styleAttributes traitCollection];
+  [traitCollection displayScale];
   v6 = v5 > 2.5;
 
   return dbl_18A681710[v6];
 }
 
-- (id)_fillColorForUpdate:(id)a3 entry:(id)a4
+- (id)_fillColorForUpdate:(id)update entry:(id)entry
 {
-  v5 = a3;
-  if ([a4 lowDataModeActive])
+  updateCopy = update;
+  if ([entry lowDataModeActive])
   {
     v6 = +[UIColor systemYellowColor];
   }
 
   else
   {
-    v7 = [v5 styleAttributes];
-    v8 = [v7 imageTintColor];
-    v6 = [v8 colorWithAlphaComponent:1.0];
+    styleAttributes = [updateCopy styleAttributes];
+    imageTintColor = [styleAttributes imageTintColor];
+    v6 = [imageTintColor colorWithAlphaComponent:1.0];
   }
 
   return v6;
 }
 
-- (id)_backgroundColorForUpdate:(id)a3 entry:(id)a4
+- (id)_backgroundColorForUpdate:(id)update entry:(id)entry
 {
-  v5 = a3;
-  if ([a4 lowDataModeActive])
+  updateCopy = update;
+  if ([entry lowDataModeActive])
   {
-    v6 = +[UIColor systemYellowColor];
-    [v6 colorWithAlphaComponent:0.3];
+    styleAttributes = +[UIColor systemYellowColor];
+    [styleAttributes colorWithAlphaComponent:0.3];
   }
 
   else
   {
-    v6 = [v5 styleAttributes];
-    [v6 imageDimmedTintColor];
+    styleAttributes = [updateCopy styleAttributes];
+    [styleAttributes imageDimmedTintColor];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v34.receiver = self;
   v34.super_class = _UIStatusBarWifiItem;
-  v8 = [(_UIStatusBarItem *)&v34 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [v6 data];
-  v10 = [v9 wifiEntry];
+  v8 = [(_UIStatusBarItem *)&v34 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  data = [updateCopy data];
+  wifiEntry = [data wifiEntry];
 
-  v11 = [v7 identifier];
-  v12 = [objc_opt_class() signalStrengthDisplayIdentifier];
+  identifier = [itemCopy identifier];
+  signalStrengthDisplayIdentifier = [objc_opt_class() signalStrengthDisplayIdentifier];
 
-  if (v11 == v12)
+  if (identifier == signalStrengthDisplayIdentifier)
   {
-    v18 = [v7 isEnabled] && objc_msgSend(v10, "isEnabled") && objc_msgSend(v10, "type") != 1;
-    [v7 setEnabled:v18];
-    v19 = [(_UIStatusBarWifiItem *)self signalView];
-    if (![v7 isEnabled])
+    v18 = [itemCopy isEnabled] && objc_msgSend(wifiEntry, "isEnabled") && objc_msgSend(wifiEntry, "type") != 1;
+    [itemCopy setEnabled:v18];
+    signalView = [(_UIStatusBarWifiItem *)self signalView];
+    if (![itemCopy isEnabled])
     {
       goto LABEL_49;
     }
 
-    if (([v6 styleAttributesChanged] & 1) != 0 || objc_msgSend(v6, "dataChanged"))
+    if (([updateCopy styleAttributesChanged] & 1) != 0 || objc_msgSend(updateCopy, "dataChanged"))
     {
-      v20 = [(_UIStatusBarWifiItem *)self _backgroundColorForUpdate:v6 entry:v10];
-      [v19 setInactiveColor:v20];
+      v20 = [(_UIStatusBarWifiItem *)self _backgroundColorForUpdate:updateCopy entry:wifiEntry];
+      [signalView setInactiveColor:v20];
 
-      v21 = [(_UIStatusBarWifiItem *)self _fillColorForUpdate:v6 entry:v10];
-      [v19 setActiveColor:v21];
+      v21 = [(_UIStatusBarWifiItem *)self _fillColorForUpdate:updateCopy entry:wifiEntry];
+      [signalView setActiveColor:v21];
     }
 
-    if ([v6 styleAttributesChanged])
+    if ([updateCopy styleAttributesChanged])
     {
-      v22 = [v6 styleAttributes];
-      v23 = [v22 mode];
+      styleAttributes = [updateCopy styleAttributes];
+      mode = [styleAttributes mode];
       v24 = -0.666666667;
-      if (v23 != 1)
+      if (mode != 1)
       {
         v24 = 0.0;
       }
 
-      [v7 setBaselineOffset:v24];
+      [itemCopy setBaselineOffset:v24];
     }
 
-    if (![v6 dataChanged])
+    if (![updateCopy dataChanged])
     {
       goto LABEL_49;
     }
 
-    v25 = [v10 status];
+    status = [wifiEntry status];
     v26 = 0;
     v27 = 0;
-    if (v25 > 3)
+    if (status > 3)
     {
-      if (v25 == 5)
+      if (status == 5)
       {
         v27 = 1;
         v26 = 2;
 LABEL_45:
-        if ([v7 isEnabled])
+        if ([itemCopy isEnabled])
         {
-          v32 = [v10 displayValue];
+          displayValue = [wifiEntry displayValue];
           if (v27)
           {
-            [v19 setNumberOfActiveBars:v32];
+            [signalView setNumberOfActiveBars:displayValue];
           }
 
-          [v19 setSignalMode:v26];
+          [signalView setSignalMode:v26];
         }
 
         goto LABEL_49;
       }
 
-      if (v25 != 4)
+      if (status != 4)
       {
         goto LABEL_45;
       }
     }
 
-    else if (v25 >= 2)
+    else if (status >= 2)
     {
-      if (v25 == 3)
+      if (status == 3)
       {
         v27 = 0;
         v26 = 1;
@@ -187,38 +187,38 @@ LABEL_45:
       goto LABEL_45;
     }
 
-    [v7 setEnabled:0];
+    [itemCopy setEnabled:0];
     v27 = 0;
     v26 = 0;
     goto LABEL_45;
   }
 
-  v13 = [v7 identifier];
-  v14 = [objc_opt_class() iconDisplayIdentifier];
+  identifier2 = [itemCopy identifier];
+  iconDisplayIdentifier = [objc_opt_class() iconDisplayIdentifier];
 
-  if (v13 == v14)
+  if (identifier2 == iconDisplayIdentifier)
   {
-    if ([v7 isEnabled])
+    if ([itemCopy isEnabled])
     {
-      v28 = [v10 isEnabled];
+      isEnabled = [wifiEntry isEnabled];
     }
 
     else
     {
-      v28 = 0;
+      isEnabled = 0;
     }
 
-    [v7 setEnabled:v28];
-    if (![v7 isEnabled])
+    [itemCopy setEnabled:isEnabled];
+    if (![itemCopy isEnabled])
     {
       goto LABEL_50;
     }
 
-    v29 = [v10 status];
-    switch(v29)
+    status2 = [wifiEntry status];
+    switch(status2)
     {
       case 5:
-        if ([v10 type] == 1)
+        if ([wifiEntry type] == 1)
         {
           v30 = @"personalhotspot";
           goto LABEL_41;
@@ -231,28 +231,28 @@ LABEL_45:
       case 1:
         v30 = @"wifi.slash";
 LABEL_41:
-        v19 = [UIImage systemImageNamed:v30];
-        v31 = [(_UIStatusBarWifiItem *)self networkIconView];
-        [v31 setImage:v19];
+        signalView = [UIImage systemImageNamed:v30];
+        networkIconView = [(_UIStatusBarWifiItem *)self networkIconView];
+        [networkIconView setImage:signalView];
         goto LABEL_42;
     }
 
-    [v7 setEnabled:0];
+    [itemCopy setEnabled:0];
     goto LABEL_50;
   }
 
-  v15 = [v7 identifier];
-  v16 = [objc_opt_class() rawDisplayIdentifier];
+  identifier3 = [itemCopy identifier];
+  rawDisplayIdentifier = [objc_opt_class() rawDisplayIdentifier];
 
-  if (v15 == v16)
+  if (identifier3 == rawDisplayIdentifier)
   {
-    v17 = [v7 isEnabled] && objc_msgSend(v10, "isEnabled") ? objc_msgSend(v10, "displayRawValue") : 0;
-    [v7 setEnabled:v17];
-    if ([v7 isEnabled])
+    v17 = [itemCopy isEnabled] && objc_msgSend(wifiEntry, "isEnabled") ? objc_msgSend(wifiEntry, "displayRawValue") : 0;
+    [itemCopy setEnabled:v17];
+    if ([itemCopy isEnabled])
     {
-      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", objc_msgSend(v10, "rawValue")];
-      v31 = [(_UIStatusBarWifiItem *)self rawStringView];
-      [v31 setText:v19];
+      signalView = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", objc_msgSend(wifiEntry, "rawValue")];
+      networkIconView = [(_UIStatusBarWifiItem *)self rawStringView];
+      [networkIconView setText:signalView];
 LABEL_42:
 
 LABEL_49:
@@ -328,68 +328,68 @@ LABEL_50:
   self->_rawStringView = v4;
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() signalStrengthDisplayIdentifier];
+  identifierCopy = identifier;
+  signalStrengthDisplayIdentifier = [objc_opt_class() signalStrengthDisplayIdentifier];
 
-  if (v5 == v4)
+  if (signalStrengthDisplayIdentifier == identifierCopy)
   {
-    v8 = [(_UIStatusBarWifiItem *)self signalView];
+    signalView = [(_UIStatusBarWifiItem *)self signalView];
   }
 
   else
   {
-    v6 = [objc_opt_class() iconDisplayIdentifier];
+    iconDisplayIdentifier = [objc_opt_class() iconDisplayIdentifier];
 
-    if (v6 == v4)
+    if (iconDisplayIdentifier == identifierCopy)
     {
-      v8 = [(_UIStatusBarWifiItem *)self networkIconView];
+      signalView = [(_UIStatusBarWifiItem *)self networkIconView];
     }
 
     else
     {
-      v7 = [objc_opt_class() rawDisplayIdentifier];
+      rawDisplayIdentifier = [objc_opt_class() rawDisplayIdentifier];
 
-      if (v7 == v4)
+      if (rawDisplayIdentifier == identifierCopy)
       {
-        v8 = [(_UIStatusBarWifiItem *)self rawStringView];
+        signalView = [(_UIStatusBarWifiItem *)self rawStringView];
       }
 
       else
       {
         v11.receiver = self;
         v11.super_class = _UIStatusBarWifiItem;
-        v8 = [(_UIStatusBarItem *)&v11 viewForIdentifier:v4];
+        signalView = [(_UIStatusBarItem *)&v11 viewForIdentifier:identifierCopy];
       }
     }
   }
 
-  v9 = v8;
+  v9 = signalView;
 
   return v9;
 }
 
-+ (id)groupWithPriority:(int64_t)a3
++ (id)groupWithPriority:(int64_t)priority
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v5 = [a1 signalStrengthDisplayIdentifier];
-  v6 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v5 priority:2];
+  signalStrengthDisplayIdentifier = [self signalStrengthDisplayIdentifier];
+  v6 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:signalStrengthDisplayIdentifier priority:2];
 
-  v7 = [a1 iconDisplayIdentifier];
-  v8 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v7 priority:3];
+  iconDisplayIdentifier = [self iconDisplayIdentifier];
+  v8 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:iconDisplayIdentifier priority:3];
   v17[0] = v6;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v10 = [v8 excludingPlacements:v9];
 
-  v11 = [a1 rawDisplayIdentifier];
-  v12 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v11 priority:1];
+  rawDisplayIdentifier = [self rawDisplayIdentifier];
+  v12 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:rawDisplayIdentifier priority:1];
 
   v16[0] = v6;
   v16[1] = v10;
   v16[2] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:3];
-  v14 = [(_UIStatusBarDisplayItemPlacementGroup *)_UIStatusBarDisplayItemPlacementWifiGroup groupWithPriority:a3 placements:v13];
+  v14 = [(_UIStatusBarDisplayItemPlacementGroup *)_UIStatusBarDisplayItemPlacementWifiGroup groupWithPriority:priority placements:v13];
 
   [v14 setSignalStrengthPlacement:v6];
   [v14 setIconPlacement:v10];

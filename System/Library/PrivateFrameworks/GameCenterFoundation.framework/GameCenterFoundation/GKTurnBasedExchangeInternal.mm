@@ -1,6 +1,6 @@
 @interface GKTurnBasedExchangeInternal
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation GKTurnBasedExchangeInternal
@@ -62,15 +62,15 @@ void __54__GKTurnBasedExchangeInternal_secureCodedPropertyKeys__block_invoke()
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     exchangeID = self->_exchangeID;
-    v6 = [v4 exchangeID];
-    v7 = exchangeID == v6;
+    exchangeID = [equalCopy exchangeID];
+    v7 = exchangeID == exchangeID;
   }
 
   else

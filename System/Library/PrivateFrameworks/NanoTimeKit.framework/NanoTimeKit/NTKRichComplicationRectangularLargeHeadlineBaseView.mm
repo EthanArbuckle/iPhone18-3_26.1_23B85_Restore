@@ -1,11 +1,11 @@
 @interface NTKRichComplicationRectangularLargeHeadlineBaseView
 - (NTKRichComplicationRectangularLargeHeadlineBaseView)init;
 - (int64_t)tritiumUpdateMode;
-- (void)_enumerateLabelsWithBlock:(id)a3;
-- (void)_updateTemplateHeaderWithTextProvider:(id)a3 imageProvider:(id)a4 viewData:(id)a5 reason:(int64_t)a6;
+- (void)_enumerateLabelsWithBlock:(id)block;
+- (void)_updateTemplateHeaderWithTextProvider:(id)provider imageProvider:(id)imageProvider viewData:(id)data reason:(int64_t)reason;
 - (void)layoutSubviews;
-- (void)setPaused:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setPaused:(BOOL)paused;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -19,16 +19,16 @@
   if (v2)
   {
     v3 = [off_27877BEB0 alloc];
-    v4 = [(CDRichComplicationView *)v2 device];
-    v5 = [v3 initWithDevice:v4 useAccentColor:1];
+    device = [(CDRichComplicationView *)v2 device];
+    v5 = [v3 initWithDevice:device useAccentColor:1];
     headerImageView = v2->_headerImageView;
     v2->_headerImageView = v5;
 
     [(CDRichComplicationImageView *)v2->_headerImageView setPaused:[(CDRichComplicationView *)v2 paused]];
     [(CDRichComplicationImageView *)v2->_headerImageView setFilterProvider:v2];
-    v7 = [off_27877BE70 async];
+    async = [off_27877BE70 async];
     headerSwiftUIView = v2->_headerSwiftUIView;
-    v2->_headerSwiftUIView = v7;
+    v2->_headerSwiftUIView = async;
 
     [(CDComplicationHostingView *)v2->_headerSwiftUIView setFilterProvider:v2];
     [(CDComplicationHostingView *)v2->_headerSwiftUIView setShouldAccentDesaturatedView:1];
@@ -66,8 +66,8 @@ void __59__NTKRichComplicationRectangularLargeHeadlineBaseView_init__block_invok
   v59.receiver = self;
   v59.super_class = NTKRichComplicationRectangularLargeHeadlineBaseView;
   [(NTKRichComplicationRectangularLargeHeadlineBaseView *)&v59 layoutSubviews];
-  v3 = [(CDRichComplicationView *)self device];
-  v4 = ___LayoutConstants_block_invoke_44(v3, v3);
+  device = [(CDRichComplicationView *)self device];
+  v4 = ___LayoutConstants_block_invoke_44(device, device);
   v6 = v5;
   v58 = v7;
 
@@ -79,16 +79,16 @@ void __59__NTKRichComplicationRectangularLargeHeadlineBaseView_init__block_invok
   rect = v13;
   [(NTKRichComplicationRectangularBaseView *)self contentMargin];
   v15 = v14;
-  v16 = [(CLKUIColoringLabel *)self->_headerLabel font];
-  [v16 ascender];
+  font = [(CLKUIColoringLabel *)self->_headerLabel font];
+  [font ascender];
   v18 = v4 - v17;
 
   [(CLKUIColoringLabel *)self->_headerLabel sizeToFit];
   [(CLKUIColoringLabel *)self->_headerLabel frame];
   v20 = v19;
   v22 = v21;
-  v23 = [(CLKUIColoringLabel *)self->_headerLabel font];
-  [v23 lineHeight];
+  font2 = [(CLKUIColoringLabel *)self->_headerLabel font];
+  [font2 lineHeight];
   v25 = v24;
 
   v60.origin.x = v20;
@@ -101,16 +101,16 @@ void __59__NTKRichComplicationRectangularLargeHeadlineBaseView_init__block_invok
   v61.size.width = v22;
   v61.size.height = v25;
   v27 = MinY + (CGRectGetHeight(v61) - v6) * 0.5;
-  v28 = [(CDRichComplicationImageView *)self->_headerImageView superview];
-  if (v28)
+  superview = [(CDRichComplicationImageView *)self->_headerImageView superview];
+  if (superview)
   {
   }
 
   else
   {
-    v29 = [(CDComplicationHostingView *)self->_headerSwiftUIView superview];
+    superview2 = [(CDComplicationHostingView *)self->_headerSwiftUIView superview];
 
-    if (!v29)
+    if (!superview2)
     {
       goto LABEL_8;
     }
@@ -154,7 +154,7 @@ void __59__NTKRichComplicationRectangularLargeHeadlineBaseView_init__block_invok
 
   CGRectGetMinX(*&v31);
 LABEL_8:
-  v37 = [(CDRichComplicationView *)self device];
+  device2 = [(CDRichComplicationView *)self device];
   CLKPixelAlignRectForDevice();
   v39 = v38;
   v41 = v40;
@@ -167,7 +167,7 @@ LABEL_8:
   v66.size.width = v43;
   v66.size.height = v45;
   [(CLKUIColoringLabel *)self->_headerLabel setMaxWidth:CGRectGetWidth(v66)];
-  v46 = [(CDRichComplicationView *)self device];
+  device3 = [(CDRichComplicationView *)self device];
   CLKPixelAlignRectForDevice();
   v48 = v47;
   v50 = v49;
@@ -178,37 +178,37 @@ LABEL_8:
   [(CDComplicationHostingView *)self->_headerSwiftUIView setFrame:v48, v50, v52, v54];
 }
 
-- (void)_updateTemplateHeaderWithTextProvider:(id)a3 imageProvider:(id)a4 viewData:(id)a5 reason:(int64_t)a6
+- (void)_updateTemplateHeaderWithTextProvider:(id)provider imageProvider:(id)imageProvider viewData:(id)data reason:(int64_t)reason
 {
-  v10 = a4;
-  v11 = a5;
+  imageProviderCopy = imageProvider;
+  dataCopy = data;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __123__NTKRichComplicationRectangularLargeHeadlineBaseView__updateTemplateHeaderWithTextProvider_imageProvider_viewData_reason___block_invoke;
   aBlock[3] = &unk_27877DB10;
   aBlock[4] = self;
-  v12 = a3;
+  providerCopy = provider;
   v13 = _Block_copy(aBlock);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __123__NTKRichComplicationRectangularLargeHeadlineBaseView__updateTemplateHeaderWithTextProvider_imageProvider_viewData_reason___block_invoke_2;
   v17[3] = &unk_2787805D8;
   v17[4] = self;
-  v17[5] = a6;
+  v17[5] = reason;
   v14 = _Block_copy(v17);
   v15 = v14;
-  if (v11)
+  if (dataCopy)
   {
-    [(CDComplicationHostingView *)self->_headerSwiftUIView setViewData:v11];
+    [(CDComplicationHostingView *)self->_headerSwiftUIView setViewData:dataCopy];
     [(NTKRichComplicationRectangularLargeHeadlineBaseView *)self addSubview:self->_headerSwiftUIView];
     v16 = v15;
   }
 
   else
   {
-    if (v10)
+    if (imageProviderCopy)
     {
-      [(CDRichComplicationImageView *)self->_headerImageView setImageProvider:v10 reason:a6];
+      [(CDRichComplicationImageView *)self->_headerImageView setImageProvider:imageProviderCopy reason:reason];
       [(NTKRichComplicationRectangularLargeHeadlineBaseView *)self addSubview:self->_headerImageView];
     }
 
@@ -221,7 +221,7 @@ LABEL_8:
   }
 
   v16[2]();
-  [(CLKUIColoringLabel *)self->_headerLabel setTextProvider:v12];
+  [(CLKUIColoringLabel *)self->_headerLabel setTextProvider:providerCopy];
 }
 
 uint64_t __123__NTKRichComplicationRectangularLargeHeadlineBaseView__updateTemplateHeaderWithTextProvider_imageProvider_viewData_reason___block_invoke(uint64_t a1)
@@ -240,31 +240,31 @@ uint64_t __123__NTKRichComplicationRectangularLargeHeadlineBaseView__updateTempl
   return [v2 removeFromSuperview];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v5.receiver = self;
   v5.super_class = NTKRichComplicationRectangularLargeHeadlineBaseView;
   [(CDRichComplicationView *)&v5 setPaused:?];
-  [(CDRichComplicationImageView *)self->_headerImageView setPaused:v3];
-  [(CDComplicationHostingView *)self->_headerSwiftUIView setPaused:v3];
+  [(CDRichComplicationImageView *)self->_headerImageView setPaused:pausedCopy];
+  [(CDComplicationHostingView *)self->_headerSwiftUIView setPaused:pausedCopy];
 }
 
 - (int64_t)tritiumUpdateMode
 {
-  v3 = [(CDRichComplicationImageView *)self->_headerImageView tritiumUpdateMode];
-  v4 = v3;
-  if (v3)
+  tritiumUpdateMode = [(CDRichComplicationImageView *)self->_headerImageView tritiumUpdateMode];
+  v4 = tritiumUpdateMode;
+  if (tritiumUpdateMode)
   {
-    v5 = [v3 integerValue];
-    if (v5 >= 2)
+    integerValue = [tritiumUpdateMode integerValue];
+    if (integerValue >= 2)
     {
-      v6 = 2;
+      tritiumUpdateMode2 = 2;
     }
 
     else
     {
-      v6 = v5;
+      tritiumUpdateMode2 = integerValue;
     }
   }
 
@@ -272,28 +272,28 @@ uint64_t __123__NTKRichComplicationRectangularLargeHeadlineBaseView__updateTempl
   {
     v8.receiver = self;
     v8.super_class = NTKRichComplicationRectangularLargeHeadlineBaseView;
-    v6 = [(CDRichComplicationTemplateView *)&v8 tritiumUpdateMode];
+    tritiumUpdateMode2 = [(CDRichComplicationTemplateView *)&v8 tritiumUpdateMode];
   }
 
-  return v6;
+  return tritiumUpdateMode2;
 }
 
-- (void)_enumerateLabelsWithBlock:(id)a3
+- (void)_enumerateLabelsWithBlock:(id)block
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationRectangularLargeHeadlineBaseView;
-  v4 = a3;
-  [(CDRichComplicationView *)&v5 _enumerateLabelsWithBlock:v4];
-  v4[2](v4, self->_headerLabel);
+  blockCopy = block;
+  [(CDRichComplicationView *)&v5 _enumerateLabelsWithBlock:blockCopy];
+  blockCopy[2](blockCopy, self->_headerLabel);
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   [(CLKUIColoringLabel *)self->_headerLabel transitionToMonochromeWithFraction:2 style:?];
-  [(CDRichComplicationImageView *)self->_headerImageView transitionToMonochromeWithFraction:a3];
+  [(CDRichComplicationImageView *)self->_headerImageView transitionToMonochromeWithFraction:fraction];
   headerSwiftUIView = self->_headerSwiftUIView;
 
-  [(CDComplicationHostingView *)headerSwiftUIView transitionToMonochromeWithFraction:a3];
+  [(CDComplicationHostingView *)headerSwiftUIView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor

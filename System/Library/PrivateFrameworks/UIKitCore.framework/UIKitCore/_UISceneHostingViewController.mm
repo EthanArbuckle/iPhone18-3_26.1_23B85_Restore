@@ -4,30 +4,30 @@
 - (NSString)debugDescription;
 - (_UIRemoteSheet)_remoteSheet;
 - (id)_multitaskingDragExclusionRects;
-- (id)initWithSceneHostingController:(void *)a1;
+- (id)initWithSceneHostingController:(void *)controller;
 - (id)succinctDescription;
 - (int)_preferredStatusBarVisibility;
 - (int64_t)preferredStatusBarStyle;
 - (int64_t)preferredWhitePointAdaptivityStyle;
 - (unint64_t)preferredScreenEdgesDeferringSystemGestures;
-- (void)_childViewControllerWillBePresentedFromViewControllerDelayingPresentationWithPresenter:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)_childViewControllerWillBePresentedFromViewControllerDelayingPresentationWithPresenter:(id)presenter;
+- (void)appendDescriptionToStream:(id)stream;
 - (void)loadView;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation _UISceneHostingViewController
 
-- (id)initWithSceneHostingController:(void *)a1
+- (id)initWithSceneHostingController:(void *)controller
 {
-  if (!a1)
+  if (!controller)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = controller;
   v6.super_class = _UISceneHostingViewController;
   v3 = objc_msgSendSuper2(&v6, sel_initWithNibName_bundle_, 0, 0);
   v4 = v3;
@@ -42,8 +42,8 @@
 - (void)loadView
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHostingController);
-  v4 = [WeakRetained sceneView];
-  [(UIViewController *)self setView:v4];
+  sceneView = [WeakRetained sceneView];
+  [(UIViewController *)self setView:sceneView];
 
   v5 = objc_loadWeakRetained(&self->_sceneHostingController);
   v6 = v5;
@@ -58,8 +58,8 @@
   }
 
   v8 = v7;
-  v9 = [v8 _viewControllerAppearanceComponent];
-  objc_storeWeak(&self->_vcPreferenceComponent, v9);
+  _viewControllerAppearanceComponent = [v8 _viewControllerAppearanceComponent];
+  objc_storeWeak(&self->_vcPreferenceComponent, _viewControllerAppearanceComponent);
 
   v10 = objc_loadWeakRetained(&self->_sceneHostingController);
   v14 = v10;
@@ -74,15 +74,15 @@
   }
 
   v12 = v11;
-  v13 = [v12 ui_zoomTransitionComponent];
-  [(_UISceneZoomTransitionHostComponent *)v13 setViewController:?];
+  ui_zoomTransitionComponent = [v12 ui_zoomTransitionComponent];
+  [(_UISceneZoomTransitionHostComponent *)ui_zoomTransitionComponent setViewController:?];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = _UISceneHostingViewController;
-  [(UIViewController *)&v14 viewWillAppear:a3];
+  [(UIViewController *)&v14 viewWillAppear:appear];
   WeakRetained = objc_loadWeakRetained(&self->_sceneHostingController);
   v5 = objc_opt_self();
   v6 = [(_UISceneHostingViewAppearanceActionHostToClient *)v5 _actionForActionType:?];
@@ -114,68 +114,68 @@
     v11 = v10;
 
     v12 = objc_loadWeakRetained(&self->_sceneHostingController);
-    v13 = [v12 _remoteSheetProvider];
+    _remoteSheetProvider = [v12 _remoteSheetProvider];
 
-    if (v13)
+    if (_remoteSheetProvider)
     {
       if (v11)
       {
-        [v11 _tryToConnectToRemoteSheet:v13];
+        [v11 _tryToConnectToRemoteSheet:_remoteSheetProvider];
       }
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = _UISceneHostingViewController;
-  [(UIViewController *)&v7 viewWillDisappear:a3];
+  [(UIViewController *)&v7 viewWillDisappear:disappear];
   WeakRetained = objc_loadWeakRetained(&self->_sceneHostingController);
   v5 = objc_opt_self();
   v6 = [(_UISceneHostingViewAppearanceActionHostToClient *)v5 _actionForActionType:?];
   [WeakRetained sendAction:v6];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = _UISceneHostingViewController;
-  [(UIViewController *)&v7 viewDidDisappear:a3];
+  [(UIViewController *)&v7 viewDidDisappear:disappear];
   WeakRetained = objc_loadWeakRetained(&self->_sceneHostingController);
   v5 = objc_opt_self();
   v6 = [(_UISceneHostingViewAppearanceActionHostToClient *)v5 _actionForActionType:?];
   [WeakRetained sendAction:v6];
 }
 
-- (void)_childViewControllerWillBePresentedFromViewControllerDelayingPresentationWithPresenter:(id)a3
+- (void)_childViewControllerWillBePresentedFromViewControllerDelayingPresentationWithPresenter:(id)presenter
 {
   v16.receiver = self;
   v16.super_class = _UISceneHostingViewController;
   [(UIViewController *)&v16 _childViewControllerWillBePresentedFromViewControllerDelayingPresentationWithPresenter:?];
-  v5 = a3;
-  if (v5)
+  presenterCopy = presenter;
+  if (presenterCopy)
   {
     do
     {
-      v6 = [v5 _existingView];
-      v7 = [v6 window];
+      _existingView = [presenterCopy _existingView];
+      window = [_existingView window];
 
-      if (v7)
+      if (window)
       {
         break;
       }
 
-      v8 = [v5 parentViewController];
+      parentViewController = [presenterCopy parentViewController];
 
-      v5 = v8;
+      presenterCopy = parentViewController;
     }
 
-    while (v8);
+    while (parentViewController);
   }
 
-  v9 = [v5 _existingView];
-  v10 = [v9 window];
+  _existingView2 = [presenterCopy _existingView];
+  window2 = [_existingView2 window];
 
   WeakRetained = objc_loadWeakRetained(&self->_sceneHostingController);
   v12 = WeakRetained;
@@ -190,56 +190,56 @@
   }
 
   v14 = v13;
-  v15 = [v14 _relationshipManagementHostComponent];
-  [v15 _willMoveToWindowWithDelayedPresentation:v10];
+  _relationshipManagementHostComponent = [v14 _relationshipManagementHostComponent];
+  [_relationshipManagementHostComponent _willMoveToWindowWithDelayedPresentation:window2];
 }
 
 - (_UIRemoteSheet)_remoteSheet
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneHostingController);
-  v3 = [WeakRetained _remoteSheetProvider];
+  _remoteSheetProvider = [WeakRetained _remoteSheetProvider];
 
-  return v3;
+  return _remoteSheetProvider;
 }
 
 - (int64_t)preferredStatusBarStyle
 {
   WeakRetained = objc_loadWeakRetained(&self->_vcPreferenceComponent);
-  v3 = [WeakRetained statusBarStyle];
+  statusBarStyle = [WeakRetained statusBarStyle];
 
-  return v3;
+  return statusBarStyle;
 }
 
 - (int)_preferredStatusBarVisibility
 {
   WeakRetained = objc_loadWeakRetained(&self->_vcPreferenceComponent);
-  v3 = [WeakRetained statusBarVisibility];
+  statusBarVisibility = [WeakRetained statusBarVisibility];
 
-  return v3;
+  return statusBarVisibility;
 }
 
 - (int64_t)preferredWhitePointAdaptivityStyle
 {
   WeakRetained = objc_loadWeakRetained(&self->_vcPreferenceComponent);
-  v3 = [WeakRetained whitePointAdaptivityStyle];
+  whitePointAdaptivityStyle = [WeakRetained whitePointAdaptivityStyle];
 
-  return v3;
+  return whitePointAdaptivityStyle;
 }
 
 - (id)_multitaskingDragExclusionRects
 {
   WeakRetained = objc_loadWeakRetained(&self->_vcPreferenceComponent);
-  v3 = [WeakRetained multitaskingDragExclusionRects];
+  multitaskingDragExclusionRects = [WeakRetained multitaskingDragExclusionRects];
 
-  return v3;
+  return multitaskingDragExclusionRects;
 }
 
 - (unint64_t)preferredScreenEdgesDeferringSystemGestures
 {
   WeakRetained = objc_loadWeakRetained(&self->_vcPreferenceComponent);
-  v3 = [WeakRetained screenEdgesDeferringSystemGestures];
+  screenEdgesDeferringSystemGestures = [WeakRetained screenEdgesDeferringSystemGestures];
 
-  return v3;
+  return screenEdgesDeferringSystemGestures;
 }
 
 - (BOOL)prefersPointerLocked
@@ -253,41 +253,41 @@
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
   WeakRetained = objc_loadWeakRetained(&self->_vcPreferenceComponent);
-  v3 = [WeakRetained homeIndicatorAutoHidden];
+  homeIndicatorAutoHidden = [WeakRetained homeIndicatorAutoHidden];
 
-  return v3;
+  return homeIndicatorAutoHidden;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59___UISceneHostingViewController_appendDescriptionToStream___block_invoke;
   v9[3] = &unk_1E70F35B8;
-  v9[4] = a3;
+  v9[4] = stream;
   v9[5] = self;
-  [a3 appendProem:self block:v9];
-  v5 = [a3 style];
-  v6 = [v5 verbosity];
+  [stream appendProem:self block:v9];
+  style = [stream style];
+  verbosity = [style verbosity];
 
-  if (v6 != 2)
+  if (verbosity != 2)
   {
-    v7 = [MEMORY[0x1E698E690] succinctStyle];
+    succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __59___UISceneHostingViewController_appendDescriptionToStream___block_invoke_2;
     v8[3] = &unk_1E70F35B8;
-    v8[4] = a3;
+    v8[4] = stream;
     v8[5] = self;
-    [a3 overlayStyle:v7 block:v8];
+    [stream overlayStyle:succinctStyle block:v8];
   }
 }
 
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
@@ -295,8 +295,8 @@
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }

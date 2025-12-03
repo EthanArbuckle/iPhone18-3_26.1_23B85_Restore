@@ -1,23 +1,23 @@
 @interface ArcadeSubscribeViewController
-- (_TtC20ProductPageExtension29ArcadeSubscribeViewController)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension29ArcadeSubscribeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20ProductPageExtension29ArcadeSubscribeViewController)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension29ArcadeSubscribeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)as_viewDidBecomeFullyVisible;
 - (void)as_viewWillBecomePartiallyVisible;
 - (void)dealloc;
-- (void)dismissPressed:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)dismissPressed:(id)pressed;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation ArcadeSubscribeViewController
 
-- (_TtC20ProductPageExtension29ArcadeSubscribeViewController)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension29ArcadeSubscribeViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension29ArcadeSubscribeViewController_overlayViewController) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension29ArcadeSubscribeViewController_fallbackDismissButton) = 0;
@@ -33,42 +33,42 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver:v5];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(ArcadeSubscribeViewController *)&v7 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ArcadeSubscribeViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  ArcadeSubscribeViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  ArcadeSubscribeViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  ArcadeSubscribeViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  ArcadeSubscribeViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  ArcadeSubscribeViewController.viewWillDisappear(_:)(a3);
+  selfCopy = self;
+  ArcadeSubscribeViewController.viewWillDisappear(_:)(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   ObjectType = swift_getObjectType();
   v6 = sub_10075F2AC();
   v7 = *(v6 - 8);
@@ -76,9 +76,9 @@
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v10 = self;
-  [(ArcadeSubscribeViewController *)&v11 viewDidDisappear:v3];
-  sub_10000CF78((&v10->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension29ArcadeSubscribeViewController_lifecycleObserver), *&v10->lifecycleObserver[OBJC_IVAR____TtC20ProductPageExtension29ArcadeSubscribeViewController_lifecycleObserver + 16]);
+  selfCopy = self;
+  [(ArcadeSubscribeViewController *)&v11 viewDidDisappear:disappearCopy];
+  sub_10000CF78((&selfCopy->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension29ArcadeSubscribeViewController_lifecycleObserver), *&selfCopy->lifecycleObserver[OBJC_IVAR____TtC20ProductPageExtension29ArcadeSubscribeViewController_lifecycleObserver + 16]);
   (*(v7 + 104))(v9, enum case for StoreViewControllerLifecycleEvent.didDisappear(_:), v6);
   sub_10075F2BC();
 
@@ -87,34 +87,34 @@
 
 - (void)as_viewDidBecomeFullyVisible
 {
-  v2 = self;
+  selfCopy = self;
   ArcadeSubscribeViewController.as_viewDidBecomeFullyVisible()();
 }
 
 - (void)as_viewWillBecomePartiallyVisible
 {
-  v2 = self;
+  selfCopy = self;
   ArcadeSubscribeViewController.as_viewWillBecomePartiallyVisible()();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ArcadeSubscribeViewController.viewWillLayoutSubviews()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  v5 = a3;
-  [(ArcadeSubscribeViewController *)&v8 traitCollectionDidChange:v5];
-  v6 = [v4 view];
-  if (v6)
+  changeCopy = change;
+  [(ArcadeSubscribeViewController *)&v8 traitCollectionDidChange:changeCopy];
+  view = [v4 view];
+  if (view)
   {
-    v7 = v6;
-    [v6 setNeedsLayout];
+    v7 = view;
+    [view setNeedsLayout];
   }
 
   else
@@ -125,11 +125,11 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(ArcadeSubscribeViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(ArcadeSubscribeViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -140,11 +140,11 @@
   }
 }
 
-- (void)dismissPressed:(id)a3
+- (void)dismissPressed:(id)pressed
 {
-  if (a3)
+  if (pressed)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_10077123C();
     swift_unknownObjectRelease();
@@ -153,7 +153,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10035041C();
@@ -161,7 +161,7 @@
   sub_10000CFBC(v6, &unk_1009434C0);
 }
 
-- (_TtC20ProductPageExtension29ArcadeSubscribeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20ProductPageExtension29ArcadeSubscribeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

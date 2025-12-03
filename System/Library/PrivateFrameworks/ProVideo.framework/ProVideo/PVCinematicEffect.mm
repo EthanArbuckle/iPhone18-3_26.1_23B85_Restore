@@ -1,21 +1,21 @@
 @interface PVCinematicEffect
-+ (BOOL)assetIsCinematicVideo:(id)a3;
-+ (BOOL)currentSystemCanRenderAsset:(id)a3;
-+ (BOOL)deviceSupportsRendering:(id)a3;
-+ (BOOL)deviceSupportsTracking:(id)a3;
++ (BOOL)assetIsCinematicVideo:(id)video;
++ (BOOL)currentSystemCanRenderAsset:(id)asset;
++ (BOOL)deviceSupportsRendering:(id)rendering;
++ (BOOL)deviceSupportsTracking:(id)tracking;
 + (BOOL)hasAppleNeuralEngine;
-+ (id)cinematicMetadataFromAsset:(id)a3;
++ (id)cinematicMetadataFromAsset:(id)asset;
 + (int64_t)memorySize;
-+ (unint64_t)renderingVersionFromAsset:(id)a3 error:(id *)a4;
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4;
-- (BOOL)setAsset:(id)a3;
++ (unint64_t)renderingVersionFromAsset:(id)asset error:(id *)error;
++ (void)registerEffectWithID:(id)d displayName:(id)name;
+- (BOOL)setAsset:(id)asset;
 - (CGAffineTransform)postEffectTransform;
 - (CGSize)outputSize;
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
 - (PVCinematicEffect)init;
-- (void)setPostEffectTransform:(CGAffineTransform *)a3;
+- (void)setPostEffectTransform:(CGAffineTransform *)transform;
 - (void)setupGlobalMetadata;
-- (void)updateDictionary:(id)a3 completion:(id)a4;
+- (void)updateDictionary:(id)dictionary completion:(id)completion;
 @end
 
 @implementation PVCinematicEffect
@@ -44,15 +44,15 @@
   return v3;
 }
 
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4
++ (void)registerEffectWithID:(id)d displayName:(id)name
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v5, @"FFEffectProperty_DisplayName", @"Helium", @"FFEffectProperty_Category", @"effect.video.filter", @"FFEffectProperty_EffectType", 0}];
-  [PVEffect registerEffectClass:objc_opt_class() forEffectID:v9 withProperties:v6];
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v5, @"displayName", @"BuiltIn", @"contentGroup", 0}];
+  dCopy = d;
+  nameCopy = name;
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{nameCopy, @"FFEffectProperty_DisplayName", @"Helium", @"FFEffectProperty_Category", @"effect.video.filter", @"FFEffectProperty_EffectType", 0}];
+  [PVEffect registerEffectClass:objc_opt_class() forEffectID:dCopy withProperties:v6];
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{nameCopy, @"displayName", @"BuiltIn", @"contentGroup", 0}];
   v8 = +[PVContentRegistry sharedInstance];
-  [v8 registerContentClass:objc_opt_class() forID:v9 type:@"effect.video.filter" withProperties:v7];
+  [v8 registerContentClass:objc_opt_class() forID:dCopy type:@"effect.video.filter" withProperties:v7];
 }
 
 + (int64_t)memorySize
@@ -110,16 +110,16 @@ uint64_t __41__PVCinematicEffect_hasAppleNeuralEngine__block_invoke()
   return result;
 }
 
-+ (BOOL)deviceSupportsRendering:(id)a3
++ (BOOL)deviceSupportsRendering:(id)rendering
 {
-  v3 = a3;
+  renderingCopy = rendering;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = *"";
   block[2] = __45__PVCinematicEffect_deviceSupportsRendering___block_invoke;
   block[3] = &unk_279AA4DD8;
-  v9 = v3;
+  v9 = renderingCopy;
   v4 = +[PVCinematicEffect deviceSupportsRendering:]::onceToken;
-  v5 = v3;
+  v5 = renderingCopy;
   if (v4 != -1)
   {
     dispatch_once(&+[PVCinematicEffect deviceSupportsRendering:]::onceToken, block);
@@ -153,16 +153,16 @@ void __45__PVCinematicEffect_deviceSupportsRendering___block_invoke(uint64_t a1)
   +[PVCinematicEffect deviceSupportsRendering:]::supported = v3;
 }
 
-+ (BOOL)deviceSupportsTracking:(id)a3
++ (BOOL)deviceSupportsTracking:(id)tracking
 {
-  v3 = a3;
+  trackingCopy = tracking;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = *"";
   block[2] = __44__PVCinematicEffect_deviceSupportsTracking___block_invoke;
   block[3] = &unk_279AA4DD8;
-  v9 = v3;
+  v9 = trackingCopy;
   v4 = +[PVCinematicEffect deviceSupportsTracking:]::onceToken;
-  v5 = v3;
+  v5 = trackingCopy;
   if (v4 != -1)
   {
     dispatch_once(&+[PVCinematicEffect deviceSupportsTracking:]::onceToken, block);
@@ -206,11 +206,11 @@ LABEL_8:
   return result;
 }
 
-+ (BOOL)currentSystemCanRenderAsset:(id)a3
++ (BOOL)currentSystemCanRenderAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v9 = 0;
-  v5 = [a1 renderingVersionFromAsset:v4 error:&v9];
+  v5 = [self renderingVersionFromAsset:assetCopy error:&v9];
   v6 = v9;
   if (objc_opt_respondsToSelector())
   {
@@ -225,23 +225,23 @@ LABEL_8:
   return v7;
 }
 
-+ (BOOL)assetIsCinematicVideo:(id)a3
++ (BOOL)assetIsCinematicVideo:(id)video
 {
-  v3 = [a1 cinematicMetadataFromAsset:a3];
+  v3 = [self cinematicMetadataFromAsset:video];
   v4 = v3 != 0;
 
   return v4;
 }
 
-+ (id)cinematicMetadataFromAsset:(id)a3
++ (id)cinematicMetadataFromAsset:(id)asset
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 metadata];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  metadata = [asset metadata];
+  v4 = [metadata countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = *v13;
@@ -251,12 +251,12 @@ LABEL_8:
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(metadata);
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
-        v8 = [v7 identifier];
-        v9 = [v8 isEqual:@"mdta/com.apple.quicktime.cinematic-video"];
+        identifier = [v7 identifier];
+        v9 = [identifier isEqual:@"mdta/com.apple.quicktime.cinematic-video"];
 
         if (v9)
         {
@@ -265,7 +265,7 @@ LABEL_8:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [metadata countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -281,15 +281,15 @@ LABEL_11:
   return v10;
 }
 
-+ (unint64_t)renderingVersionFromAsset:(id)a3 error:(id *)a4
++ (unint64_t)renderingVersionFromAsset:(id)asset error:(id *)error
 {
-  v5 = [a1 cinematicMetadataFromAsset:a3];
+  v5 = [self cinematicMetadataFromAsset:asset];
   v6 = v5;
   if (v5)
   {
     v7 = MEMORY[0x277D3E888];
-    v8 = [v5 value];
-    v9 = [v7 deserializeMetadataWithType:2 fromGlobalMetadata:v8 error:a4];
+    value = [v5 value];
+    v9 = [v7 deserializeMetadataWithType:2 fromGlobalMetadata:value error:error];
 
     if (v9)
     {
@@ -298,7 +298,7 @@ LABEL_11:
       {
         if (objc_opt_respondsToSelector())
         {
-          v10 = [v9 renderingVersion];
+          renderingVersion = [v9 renderingVersion];
 LABEL_11:
 
           goto LABEL_12;
@@ -318,16 +318,16 @@ LABEL_11:
       v11 = @"Deserialize failed.";
     }
 
-    PVLogError(v11, @"ProVideo.Cinematic", a4);
-    v10 = 0;
+    PVLogError(v11, @"ProVideo.Cinematic", error);
+    renderingVersion = 0;
     goto LABEL_11;
   }
 
-  PVLogError(@"Can't find global cinematic metadata in asset.", @"ProVideo.Cinematic", a4);
-  v10 = 0;
+  PVLogError(@"Can't find global cinematic metadata in asset.", @"ProVideo.Cinematic", error);
+  renderingVersion = 0;
 LABEL_12:
 
-  return v10;
+  return renderingVersion;
 }
 
 - (CGSize)outputSize
@@ -346,8 +346,8 @@ LABEL_12:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(AVAsset *)self->_avasset metadata];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  metadata = [(AVAsset *)self->_avasset metadata];
+  v4 = [metadata countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = *v17;
@@ -357,19 +357,19 @@ LABEL_12:
       {
         if (*v17 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(metadata);
         }
 
         v7 = *(*(&v16 + 1) + 8 * i);
-        v8 = [v7 identifier];
-        v9 = [v8 isEqualToString:@"mdta/com.apple.quicktime.cinematic-video"];
+        identifier = [v7 identifier];
+        v9 = [identifier isEqualToString:@"mdta/com.apple.quicktime.cinematic-video"];
 
         if (v9)
         {
           v10 = MEMORY[0x277D3E888];
-          v11 = [v7 value];
+          value = [v7 value];
           v15 = 0;
-          v12 = [v10 deserializeMetadataWithType:2 fromGlobalMetadata:v11 error:&v15];
+          v12 = [v10 deserializeMetadataWithType:2 fromGlobalMetadata:value error:&v15];
           v13 = v15;
 
           if (v12)
@@ -382,7 +382,7 @@ LABEL_12:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v4 = [metadata countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v4)
       {
         continue;
@@ -395,12 +395,12 @@ LABEL_12:
 LABEL_13:
 }
 
-- (BOOL)setAsset:(id)a3
+- (BOOL)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_avasset != v5)
+  assetCopy = asset;
+  if (self->_avasset != assetCopy)
   {
-    objc_storeStrong(&self->_avasset, a3);
+    objc_storeStrong(&self->_avasset, asset);
     self->_isCinematographyScriptReady = 0;
     self->_isAssetOK = 0;
     avasset = self->_avasset;
@@ -412,7 +412,7 @@ LABEL_13:
       v9[2] = __30__PVCinematicEffect_setAsset___block_invoke;
       v9[3] = &unk_279AA4E28;
       v9[4] = self;
-      v10 = v5;
+      v10 = assetCopy;
       [(AVAsset *)avasset loadTracksWithMediaType:v7 completionHandler:v9];
     }
   }
@@ -463,16 +463,16 @@ intptr_t __30__PVCinematicEffect_setAsset___block_invoke_2(uint64_t a1)
   return dispatch_semaphore_signal(v2);
 }
 
-- (void)updateDictionary:(id)a3 completion:(id)a4
+- (void)updateDictionary:(id)dictionary completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (self->_currentCinemtography == v7 && self->_isCinematographyScriptReady)
+  dictionaryCopy = dictionary;
+  completionCopy = completion;
+  if (self->_currentCinemtography == dictionaryCopy && self->_isCinematographyScriptReady)
   {
 LABEL_7:
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     goto LABEL_10;
@@ -492,8 +492,8 @@ LABEL_7:
     v14[2] = __49__PVCinematicEffect_updateDictionary_completion___block_invoke;
     v14[3] = &unk_279AA4E50;
     v14[4] = self;
-    v15 = v7;
-    v16 = v8;
+    v15 = dictionaryCopy;
+    v16 = completionCopy;
     v13 = [(PTCinematographyScript *)v11 loadWithAsset:avasset changesDictionary:v15 completion:v14];
 
     goto LABEL_10;
@@ -501,8 +501,8 @@ LABEL_7:
 
   if (objc_opt_respondsToSelector())
   {
-    [(PTCinematographyScript *)self->_script reloadWithChangesDictionary:v7];
-    objc_storeStrong(&self->_currentCinemtography, a3);
+    [(PTCinematographyScript *)self->_script reloadWithChangesDictionary:dictionaryCopy];
+    objc_storeStrong(&self->_currentCinemtography, dictionary);
     goto LABEL_7;
   }
 
@@ -531,7 +531,7 @@ void __49__PVCinematicEffect_updateDictionary_completion___block_invoke(uint64_t
   }
 }
 
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v84 = v6;
   v107 = *MEMORY[0x277D85DE8];
@@ -543,12 +543,12 @@ void __49__PVCinematicEffect_updateDictionary_completion___block_invoke(uint64_t
     return v41;
   }
 
-  v86 = self;
-  PVInputHGNodeMap<unsigned int>::GetNode(a4, 0, &v103);
-  PVInputHGNodeMap<unsigned int>::GetNode(a4, 1u, &v102);
+  selfCopy = self;
+  PVInputHGNodeMap<unsigned int>::GetNode(inputs, 0, &v103);
+  PVInputHGNodeMap<unsigned int>::GetNode(inputs, 1u, &v102);
   v9 = v103;
   *v84 = v103;
-  v10 = v86;
+  v10 = selfCopy;
   if (v9)
   {
     (*(*v9 + 16))(v9);
@@ -560,14 +560,14 @@ void __49__PVCinematicEffect_updateDictionary_completion___block_invoke(uint64_t
   (*(*v11 + 120))(v11, 0, v103);
   (*(*v11 + 120))(v11, 1, v102);
   v85 = v11;
-  ptGlobalRenderingMetadata = v86->_ptGlobalRenderingMetadata;
+  ptGlobalRenderingMetadata = selfCopy->_ptGlobalRenderingMetadata;
   if (ptGlobalRenderingMetadata)
   {
     HGRenderCinema::SetGlobalRenderingMetadata(v11, ptGlobalRenderingMetadata, v12);
   }
 
-  v81 = PVInputHGNodeMap<unsigned int>::GetTimedMetadata(a4, 0);
-  v14 = PVInputHGNodeMap<unsigned int>::GetTimedMetadata(a4, 1u);
+  v81 = PVInputHGNodeMap<unsigned int>::GetTimedMetadata(inputs, 0);
+  v14 = PVInputHGNodeMap<unsigned int>::GetTimedMetadata(inputs, 1u);
   v15 = v81;
   v79 = v14;
   if (!v81)
@@ -583,9 +583,9 @@ void __49__PVCinematicEffect_updateDictionary_completion___block_invoke(uint64_t
     goto LABEL_39;
   }
 
-  v17 = [v16 items];
-  v78 = v17;
-  if (!v17)
+  items = [v16 items];
+  v78 = items;
+  if (!items)
   {
     v21 = 1.0;
     goto LABEL_38;
@@ -595,7 +595,7 @@ void __49__PVCinematicEffect_updateDictionary_completion___block_invoke(uint64_t
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v18 = v17;
+  v18 = items;
   v19 = [v18 countByEnumeratingWithState:&v98 objects:v106 count:16];
   if (!v19)
   {
@@ -617,12 +617,12 @@ void __49__PVCinematicEffect_updateDictionary_completion___block_invoke(uint64_t
       }
 
       v23 = *(*(&v98 + 1) + 8 * v22);
-      v24 = [v23 identifier];
-      v25 = [v24 isEqualToString:@"mdta/com.apple.quicktime.disparity-float"];
+      identifier = [v23 identifier];
+      v25 = [identifier isEqualToString:@"mdta/com.apple.quicktime.disparity-float"];
 
       if (v25)
       {
-        v26 = [v23 value];
+        value = [v23 value];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -631,44 +631,44 @@ void __49__PVCinematicEffect_updateDictionary_completion___block_invoke(uint64_t
           goto LABEL_27;
         }
 
-        v28 = [v23 value];
-        [v28 floatValue];
+        value2 = [v23 value];
+        [value2 floatValue];
         v21 = v29;
         goto LABEL_26;
       }
 
-      v28 = [v23 identifier];
-      if (![v28 isEqualToString:@"mdta/com.apple.quicktime.cinematic-video.rendering"])
+      value2 = [v23 identifier];
+      if (![value2 isEqualToString:@"mdta/com.apple.quicktime.cinematic-video.rendering"])
       {
         goto LABEL_26;
       }
 
-      v30 = [v23 dataType];
-      if (([v30 isEqualToString:v87] & 1) == 0)
+      dataType = [v23 dataType];
+      if (([dataType isEqualToString:v87] & 1) == 0)
       {
 
 LABEL_26:
         goto LABEL_27;
       }
 
-      v31 = [v23 value];
+      value3 = [v23 value];
       objc_opt_class();
       v32 = objc_opt_isKindOfClass();
 
       if (v32)
       {
-        v33 = v86->_ptGlobalRenderingMetadata;
+        v33 = selfCopy->_ptGlobalRenderingMetadata;
         if (v33)
         {
-          v34 = [(PTGlobalRenderingMetadata *)v33 majorVersion];
-          v35 = [(PTGlobalRenderingMetadata *)v86->_ptGlobalRenderingMetadata minorVersion];
+          majorVersion = [(PTGlobalRenderingMetadata *)v33 majorVersion];
+          minorVersion = [(PTGlobalRenderingMetadata *)selfCopy->_ptGlobalRenderingMetadata minorVersion];
           v36 = MEMORY[0x277D3E900];
-          v37 = [v23 value];
-          v28 = [v36 objectFromData:v37 withMajorVersion:v34 minorVersion:v35];
+          value4 = [v23 value];
+          value2 = [v36 objectFromData:value4 withMajorVersion:majorVersion minorVersion:minorVersion];
 
-          if (v28)
+          if (value2)
           {
-            HGRenderCinema::SetTimedRenderingMetadata(v85, v28, v38);
+            HGRenderCinema::SetTimedRenderingMetadata(v85, value2, v38);
           }
 
           else
@@ -693,14 +693,14 @@ LABEL_27:
 LABEL_37:
 
 LABEL_38:
-  v10 = v86;
+  v10 = selfCopy;
 LABEL_39:
   if (v10->_isCinematographyScriptReady)
   {
-    var0 = a3->var0;
-    var1 = a3->var1;
-    v104 = *&a3->var2;
-    var3_high = HIDWORD(a3->var3);
+    var0 = time->var0;
+    var1 = time->var1;
+    v104 = *&time->var2;
+    var3_high = HIDWORD(time->var3);
     memset(v88, 0, 24);
     CMTimeMakeWithSeconds(v88, v10->_clipOffset, var1);
     memset(&v97, 0, sizeof(v97));
@@ -732,7 +732,7 @@ LABEL_39:
       v48 = 1068708659;
     }
 
-    v10 = v86;
+    v10 = selfCopy;
   }
 
   else
@@ -750,7 +750,7 @@ LABEL_39:
   }
 
   v52 = *MEMORY[0x277CC4CD8];
-  v53 = PVInstructionGraphContext::WorkingColorSpace(*a6.m_Obj);
+  v53 = PVInstructionGraphContext::WorkingColorSpace(*context.m_Obj);
   if (([v53 isRec709GammaColorSpace] & 1) == 0)
   {
     if ([v53 isRec2020LinearColorSpace])
@@ -758,7 +758,7 @@ LABEL_39:
       v54 = *MEMORY[0x277CC04E0];
 
       v52 = v54;
-      v10 = v86;
+      v10 = selfCopy;
     }
 
     else
@@ -786,8 +786,8 @@ LABEL_39:
   HGRenderCinema::SetFXParameter(v85, 1, v64, v63, v65, v66, v67);
   HGRenderCinema::SetDisplayMode(v85, 0, v68);
   v69 = v52;
-  v70 = [v52 UTF8String];
-  v71 = strlen(v70);
+  uTF8String = [v52 UTF8String];
+  v71 = strlen(uTF8String);
   if (v71 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -802,7 +802,7 @@ LABEL_39:
   v92 = v71;
   if (v71)
   {
-    memmove(&__dst, v70, v71);
+    memmove(&__dst, uTF8String, v71);
   }
 
   *(&__dst + v73) = 0;
@@ -835,10 +835,10 @@ LABEL_39:
     (*(*v74 + 16))(v74);
   }
 
-  v75 = *&v86->_postEffectTransform.c;
-  *v88 = *&v86->_postEffectTransform.a;
+  v75 = *&selfCopy->_postEffectTransform.c;
+  *v88 = *&selfCopy->_postEffectTransform.a;
   *&v88[16] = v75;
-  v89 = *&v86->_postEffectTransform.tx;
+  v89 = *&selfCopy->_postEffectTransform.tx;
   HGXFormForCGAffineTransform(&v90, v88, 1, &v97);
   value = v97.value;
   if (v74 == v97.value)
@@ -889,11 +889,11 @@ LABEL_39:
   return self;
 }
 
-- (void)setPostEffectTransform:(CGAffineTransform *)a3
+- (void)setPostEffectTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_postEffectTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_postEffectTransform.a = *&transform->a;
   *&self->_postEffectTransform.c = v4;
   *&self->_postEffectTransform.tx = v3;
 }

@@ -1,7 +1,7 @@
 @interface JavaUtilCurrency
 + (void)initialize;
 - (id)getSymbol;
-- (id)getSymbolWithJavaUtilLocale:(id)a3;
+- (id)getSymbolWithJavaUtilLocale:(id)locale;
 - (int)getDefaultFractionDigits;
 - (void)dealloc;
 @end
@@ -15,26 +15,26 @@
   return [(JavaUtilCurrency *)self getSymbolWithJavaUtilLocale:Default];
 }
 
-- (id)getSymbolWithJavaUtilLocale:(id)a3
+- (id)getSymbolWithJavaUtilLocale:(id)locale
 {
-  if (!a3)
+  if (!locale)
   {
     goto LABEL_12;
   }
 
-  v5 = [a3 getCountry];
-  if (!v5)
+  getCountry = [locale getCountry];
+  if (!getCountry)
   {
     goto LABEL_12;
   }
 
-  if (![v5 length])
+  if (![getCountry length])
   {
     p_currencyCode = &self->currencyCode_;
     return *p_currencyCode;
   }
 
-  v6 = LibcoreIcuLocaleData_getWithJavaUtilLocale_(a3);
+  v6 = LibcoreIcuLocaleData_getWithJavaUtilLocale_(locale);
   if (!v6 || (v7 = v6, (internationalCurrencySymbol = v6->internationalCurrencySymbol_) == 0))
   {
 LABEL_12:
@@ -50,7 +50,7 @@ LABEL_12:
 
   else
   {
-    result = LibcoreIcuICU_getCurrencySymbolWithNSString_([a3 description]);
+    result = LibcoreIcuICU_getCurrencySymbolWithNSString_([locale description]);
     if (result)
     {
       return result;
@@ -87,7 +87,7 @@ LABEL_12:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilHashMap_init();
     JreStrongAssignAndConsume(&qword_100554E10, v2);

@@ -1,6 +1,6 @@
 @interface DDContactPreviewContainer
 + (double)estimatedHeight;
-- (void)updateContactWithTitle:(id)a3 subtitle:(id)a4 image:(id)a5 person:(BOOL)a6;
+- (void)updateContactWithTitle:(id)title subtitle:(id)subtitle image:(id)image person:(BOOL)person;
 @end
 
 @implementation DDContactPreviewContainer
@@ -8,8 +8,8 @@
 + (double)estimatedHeight
 {
   v2 = _UISolariumEnabled();
-  v3 = [MEMORY[0x277D75520] defaultMetrics];
-  [v3 scaledValueForValue:46.5];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics scaledValueForValue:46.5];
   v5 = v4 + 15.0;
 
   v6 = fmax(v5, 72.0);
@@ -22,11 +22,11 @@
   return v6 - v7;
 }
 
-- (void)updateContactWithTitle:(id)a3 subtitle:(id)a4 image:(id)a5 person:(BOOL)a6
+- (void)updateContactWithTitle:(id)title subtitle:(id)subtitle image:(id)image person:(BOOL)person
 {
-  v63 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  imageCopy = image;
   v12 = _UISolariumEnabled();
   if (v12)
   {
@@ -38,19 +38,19 @@
     v13 = 16.0;
   }
 
-  if ([v63 length])
+  if ([titleCopy length])
   {
     v14 = objc_alloc_init(MEMORY[0x277D75D18]);
     [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
     v15 = v14;
     v16 = v15;
-    if (v11)
+    if (imageCopy)
     {
-      v17 = [[DDRoundedImage alloc] initWithImage:v11];
+      v17 = [[DDRoundedImage alloc] initWithImage:imageCopy];
       [(DDRoundedImage *)v17 setClipsToBounds:1];
       if (v17)
       {
-        v17->_avatar = v12 | a6;
+        v17->_avatar = v12 | person;
       }
 
       [(DDRoundedImage *)v16 addSubview:v17];
@@ -58,8 +58,8 @@
       v18 = [MEMORY[0x277CCAAD0] constraintWithItem:v17 attribute:9 relatedBy:0 toItem:v16 attribute:5 multiplier:1.0 constant:36.0];
       [v18 setActive:1];
 
-      v19 = [MEMORY[0x277D75520] defaultMetrics];
-      [v19 scaledValueForValue:1.0];
+      defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+      [defaultMetrics scaledValueForValue:1.0];
       v21 = v20;
 
       if (v21 <= 1.5)
@@ -108,11 +108,11 @@
     [v32 setFont:v33];
 
     [v32 setAdjustsFontSizeToFitWidth:1];
-    v34 = [MEMORY[0x277D75348] labelColor];
-    [v32 setTextColor:v34];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v32 setTextColor:labelColor];
 
     [v32 setTextAlignment:4];
-    [v32 setText:v63];
+    [v32 setText:titleCopy];
     if (v27 == v16)
     {
       v35 = 5;
@@ -129,9 +129,9 @@
     v37 = [MEMORY[0x277CCAAD0] constraintWithItem:v16 attribute:6 relatedBy:0 toItem:v32 attribute:6 multiplier:1.0 constant:v13];
     [v37 setActive:1];
 
-    if ([v10 length])
+    if ([subtitleCopy length])
     {
-      if (v11)
+      if (imageCopy)
       {
         v38 = 12.0;
         v39 = v32;
@@ -159,11 +159,11 @@
       [v49 setFont:v50];
 
       [v49 setAdjustsFontSizeToFitWidth:1];
-      v51 = [MEMORY[0x277D75348] secondaryLabelColor];
-      [v49 setTextColor:v51];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      [v49 setTextColor:secondaryLabelColor];
 
       [v49 setTextAlignment:4];
-      [v49 setText:v10];
+      [v49 setText:subtitleCopy];
       v52 = [MEMORY[0x277CCAAD0] constraintWithItem:v49 attribute:5 relatedBy:0 toItem:v32 attribute:5 multiplier:1.0 constant:0.0];
       [v52 setActive:1];
 
@@ -176,7 +176,7 @@
 
     else
     {
-      if (v11)
+      if (imageCopy)
       {
         v43 = 12.0;
         v44 = v32;
@@ -198,9 +198,9 @@
       [v49 setActive:1];
     }
 
-    v55 = [(DDContactPreviewContainer *)self subviews];
-    v56 = [v55 firstObject];
-    [v56 removeFromSuperview];
+    subviews = [(DDContactPreviewContainer *)self subviews];
+    firstObject = [subviews firstObject];
+    [firstObject removeFromSuperview];
 
     [(DDContactPreviewContainer *)self addSubview:v16];
     v57 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:5 relatedBy:0 toItem:v16 attribute:5 multiplier:1.0 constant:0.0];

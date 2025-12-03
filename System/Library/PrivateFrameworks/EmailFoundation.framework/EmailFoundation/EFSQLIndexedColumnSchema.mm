@@ -1,45 +1,45 @@
 @interface EFSQLIndexedColumnSchema
-- (EFSQLIndexedColumnSchema)initWithColumnName:(id)a3 collation:(unint64_t)a4 orderDirection:(unint64_t)a5;
-- (EFSQLIndexedColumnSchema)initWithExpression:(id)a3 collation:(unint64_t)a4 orderDirection:(unint64_t)a5;
+- (EFSQLIndexedColumnSchema)initWithColumnName:(id)name collation:(unint64_t)collation orderDirection:(unint64_t)direction;
+- (EFSQLIndexedColumnSchema)initWithExpression:(id)expression collation:(unint64_t)collation orderDirection:(unint64_t)direction;
 - (NSString)definition;
 - (NSString)name;
 @end
 
 @implementation EFSQLIndexedColumnSchema
 
-- (EFSQLIndexedColumnSchema)initWithExpression:(id)a3 collation:(unint64_t)a4 orderDirection:(unint64_t)a5
+- (EFSQLIndexedColumnSchema)initWithExpression:(id)expression collation:(unint64_t)collation orderDirection:(unint64_t)direction
 {
-  v9 = a3;
+  expressionCopy = expression;
   v13.receiver = self;
   v13.super_class = EFSQLIndexedColumnSchema;
   v10 = [(EFSQLIndexedColumnSchema *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_expression, a3);
-    v11->_collation = a4;
-    v11->_orderDirection = a5;
+    objc_storeStrong(&v10->_expression, expression);
+    v11->_collation = collation;
+    v11->_orderDirection = direction;
   }
 
   return v11;
 }
 
-- (EFSQLIndexedColumnSchema)initWithColumnName:(id)a3 collation:(unint64_t)a4 orderDirection:(unint64_t)a5
+- (EFSQLIndexedColumnSchema)initWithColumnName:(id)name collation:(unint64_t)collation orderDirection:(unint64_t)direction
 {
-  v8 = a3;
-  v9 = [[EFSQLColumnExpression alloc] initWithName:v8];
-  v10 = [(EFSQLIndexedColumnSchema *)self initWithExpression:v9 collation:a4 orderDirection:a5];
+  nameCopy = name;
+  v9 = [[EFSQLColumnExpression alloc] initWithName:nameCopy];
+  v10 = [(EFSQLIndexedColumnSchema *)self initWithExpression:v9 collation:collation orderDirection:direction];
 
   return v10;
 }
 
 - (NSString)name
 {
-  v2 = [(EFSQLIndexedColumnSchema *)self expression];
+  expression = [(EFSQLIndexedColumnSchema *)self expression];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 name];
+    name = [expression name];
   }
 
   else
@@ -49,13 +49,13 @@
       [EFSQLIndexedColumnSchema name];
     }
 
-    v4 = [v2 ef_SQLExpression];
-    v3 = [v4 ef_stringByRemovingCharactersInSet:name_sInvalidCharacters];
+    ef_SQLExpression = [expression ef_SQLExpression];
+    name = [ef_SQLExpression ef_stringByRemovingCharactersInSet:name_sInvalidCharacters];
   }
 
-  v5 = [v3 lowercaseString];
+  lowercaseString = [name lowercaseString];
 
-  return v5;
+  return lowercaseString;
 }
 
 void __32__EFSQLIndexedColumnSchema_name__block_invoke()
@@ -71,21 +71,21 @@ void __32__EFSQLIndexedColumnSchema_name__block_invoke()
 
 - (NSString)definition
 {
-  v3 = [(EFSQLIndexedColumnSchema *)self collation];
-  if (v3)
+  collation = [(EFSQLIndexedColumnSchema *)self collation];
+  if (collation)
   {
     v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v5 = EFSQLStringForCollation(v3);
+    v5 = EFSQLStringForCollation(collation);
     v6 = [v4 initWithFormat:@" %@", v5];
 
-    v3 = v6;
+    collation = v6;
   }
 
-  v7 = [(EFSQLIndexedColumnSchema *)self orderDirection];
-  if (v7)
+  orderDirection = [(EFSQLIndexedColumnSchema *)self orderDirection];
+  if (orderDirection)
   {
     v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v9 = EFSQLStringForOrderDirection(v7);
+    v9 = EFSQLStringForOrderDirection(orderDirection);
     v10 = [v8 initWithFormat:@" %@", v9];
   }
 
@@ -95,13 +95,13 @@ void __32__EFSQLIndexedColumnSchema_name__block_invoke()
   }
 
   v11 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v12 = [(EFSQLIndexedColumnSchema *)self expression];
-  v13 = [v12 ef_SQLExpression];
-  v14 = v13;
+  expression = [(EFSQLIndexedColumnSchema *)self expression];
+  ef_SQLExpression = [expression ef_SQLExpression];
+  v14 = ef_SQLExpression;
   v15 = &stru_1F459BF68;
-  if (v3)
+  if (collation)
   {
-    v16 = v3;
+    v16 = collation;
   }
 
   else
@@ -114,7 +114,7 @@ void __32__EFSQLIndexedColumnSchema_name__block_invoke()
     v15 = v10;
   }
 
-  v17 = [v11 initWithFormat:@"%@%@%@", v13, v16, v15];
+  v17 = [v11 initWithFormat:@"%@%@%@", ef_SQLExpression, v16, v15];
 
   return v17;
 }

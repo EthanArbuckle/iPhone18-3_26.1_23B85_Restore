@@ -4,25 +4,25 @@
 - (double)distanceInMeters;
 - (double)distanceInMiles;
 - (id)_unitLength;
-- (id)localizedDistanceStringForCity:(BOOL)a3 forceUnit:(BOOL)a4;
+- (id)localizedDistanceStringForCity:(BOOL)city forceUnit:(BOOL)unit;
 @end
 
 @implementation SADistance
 
-- (id)localizedDistanceStringForCity:(BOOL)a3 forceUnit:(BOOL)a4
+- (id)localizedDistanceStringForCity:(BOOL)city forceUnit:(BOOL)unit
 {
-  v4 = a4;
-  v7 = [(SADistance *)self value];
-  [v7 doubleValue];
+  unitCopy = unit;
+  value = [(SADistance *)self value];
+  [value doubleValue];
   v9 = v8;
 
-  if (v9 > 0.0 && (a3 || [(SADistance *)self isWithinMaxDistanceToShow]))
+  if (v9 > 0.0 && (city || [(SADistance *)self isWithinMaxDistanceToShow]))
   {
-    v10 = [(SADistance *)self isMetricUnit];
-    if (v4)
+    isMetricUnit = [(SADistance *)self isMetricUnit];
+    if (unitCopy)
     {
-      v11 = [(SADistance *)self _unitLength];
-      if (v10)
+      _unitLength = [(SADistance *)self _unitLength];
+      if (isMetricUnit)
       {
         v12 = 2;
       }
@@ -32,15 +32,15 @@
         v12 = 3;
       }
 
-      v13 = [NSMeasurementFormatter _ma_distanceStringWithValue:v11 unit:v12 style:v9];
+      v13 = [NSMeasurementFormatter _ma_distanceStringWithValue:_unitLength unit:v12 style:v9];
     }
 
     else
     {
       [(SADistance *)self distanceInMeters];
       v16 = v15;
-      v11 = +[NSLocale _ma_locale];
-      if (v10)
+      _unitLength = +[NSLocale _ma_locale];
+      if (isMetricUnit)
       {
         v17 = 2;
       }
@@ -50,7 +50,7 @@
         v17 = 1;
       }
 
-      v13 = [NSString _navigation_localizedStringForDistance:2 detail:v10 unitFormat:v11 locale:v17 useMetric:1 useYards:v16];
+      v13 = [NSString _navigation_localizedStringForDistance:2 detail:isMetricUnit unitFormat:_unitLength locale:v17 useMetric:1 useYards:v16];
     }
 
     v14 = v13;
@@ -83,34 +83,34 @@
 
 - (double)distanceInMiles
 {
-  v3 = [(SADistance *)self value];
-  [v3 doubleValue];
+  value = [(SADistance *)self value];
+  [value doubleValue];
   v5 = v4;
 
-  v6 = [(SADistance *)self unit];
-  v7 = [v6 isEqualToString:SADistanceUnitFeetValue];
+  unit = [(SADistance *)self unit];
+  v7 = [unit isEqualToString:SADistanceUnitFeetValue];
 
   if (v7)
   {
     return v5 / 5280.0;
   }
 
-  v9 = [(SADistance *)self unit];
-  v10 = [v9 isEqualToString:SADistanceUnitMilesValue];
+  unit2 = [(SADistance *)self unit];
+  v10 = [unit2 isEqualToString:SADistanceUnitMilesValue];
 
   result = v5;
   if ((v10 & 1) == 0)
   {
-    v11 = [(SADistance *)self unit];
-    v12 = [v11 isEqualToString:SADistanceUnitMetersValue];
+    unit3 = [(SADistance *)self unit];
+    v12 = [unit3 isEqualToString:SADistanceUnitMetersValue];
 
     if (v12)
     {
       return v5 * 0.000621371192;
     }
 
-    v13 = [(SADistance *)self unit];
-    v14 = [v13 isEqualToString:SADistanceUnitKilometersValue];
+    unit4 = [(SADistance *)self unit];
+    v14 = [unit4 isEqualToString:SADistanceUnitKilometersValue];
 
     if (v14)
     {
@@ -119,8 +119,8 @@
 
     else
     {
-      v16 = [(SADistance *)self unit];
-      v17 = [v16 isEqualToString:SADistanceUnitCentimetersValue];
+      unit5 = [(SADistance *)self unit];
+      v17 = [unit5 isEqualToString:SADistanceUnitCentimetersValue];
 
       result = 0.0;
       if (!v17)
@@ -139,12 +139,12 @@
 
 - (double)distanceInMeters
 {
-  v3 = [(SADistance *)self value];
-  [v3 doubleValue];
+  value = [(SADistance *)self value];
+  [value doubleValue];
   v5 = v4;
 
-  v6 = [(SADistance *)self unit];
-  v7 = [v6 isEqualToString:SADistanceUnitFeetValue];
+  unit = [(SADistance *)self unit];
+  v7 = [unit isEqualToString:SADistanceUnitFeetValue];
 
   if (v7)
   {
@@ -152,8 +152,8 @@
     return v5 * v8;
   }
 
-  v9 = [(SADistance *)self unit];
-  v10 = [v9 isEqualToString:SADistanceUnitMilesValue];
+  unit2 = [(SADistance *)self unit];
+  v10 = [unit2 isEqualToString:SADistanceUnitMilesValue];
 
   if (v10)
   {
@@ -161,14 +161,14 @@
     return v5 * v8;
   }
 
-  v12 = [(SADistance *)self unit];
-  v13 = [v12 isEqualToString:SADistanceUnitMetersValue];
+  unit3 = [(SADistance *)self unit];
+  v13 = [unit3 isEqualToString:SADistanceUnitMetersValue];
 
   result = v5;
   if ((v13 & 1) == 0)
   {
-    v14 = [(SADistance *)self unit];
-    v15 = [v14 isEqualToString:SADistanceUnitKilometersValue];
+    unit4 = [(SADistance *)self unit];
+    v15 = [unit4 isEqualToString:SADistanceUnitKilometersValue];
 
     if (v15)
     {
@@ -176,8 +176,8 @@
       return v5 * v8;
     }
 
-    v16 = [(SADistance *)self unit];
-    v17 = [v16 isEqualToString:SADistanceUnitCentimetersValue];
+    unit5 = [(SADistance *)self unit];
+    v17 = [unit5 isEqualToString:SADistanceUnitCentimetersValue];
 
     result = 0.0;
     if (v17)
@@ -191,16 +191,16 @@
 
 - (BOOL)isImperialUnit
 {
-  v3 = [(SADistance *)self unit];
-  if ([v3 isEqualToString:SADistanceUnitFeetValue])
+  unit = [(SADistance *)self unit];
+  if ([unit isEqualToString:SADistanceUnitFeetValue])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SADistance *)self unit];
-    v4 = [v5 isEqualToString:SADistanceUnitMilesValue];
+    unit2 = [(SADistance *)self unit];
+    v4 = [unit2 isEqualToString:SADistanceUnitMilesValue];
   }
 
   return v4;
@@ -208,8 +208,8 @@
 
 - (id)_unitLength
 {
-  v3 = [(SADistance *)self unit];
-  v4 = [v3 isEqualToString:SADistanceUnitFeetValue];
+  unit = [(SADistance *)self unit];
+  v4 = [unit isEqualToString:SADistanceUnitFeetValue];
 
   if (v4)
   {
@@ -218,8 +218,8 @@
 
   else
   {
-    v6 = [(SADistance *)self unit];
-    v7 = [v6 isEqualToString:SADistanceUnitMilesValue];
+    unit2 = [(SADistance *)self unit];
+    v7 = [unit2 isEqualToString:SADistanceUnitMilesValue];
 
     if (v7)
     {
@@ -228,8 +228,8 @@
 
     else
     {
-      v8 = [(SADistance *)self unit];
-      v9 = [v8 isEqualToString:SADistanceUnitMetersValue];
+      unit3 = [(SADistance *)self unit];
+      v9 = [unit3 isEqualToString:SADistanceUnitMetersValue];
 
       if (v9)
       {
@@ -238,8 +238,8 @@
 
       else
       {
-        v10 = [(SADistance *)self unit];
-        v11 = [v10 isEqualToString:SADistanceUnitKilometersValue];
+        unit4 = [(SADistance *)self unit];
+        v11 = [unit4 isEqualToString:SADistanceUnitKilometersValue];
 
         if (v11)
         {
@@ -248,8 +248,8 @@
 
         else
         {
-          v12 = [(SADistance *)self unit];
-          v13 = [v12 isEqualToString:SADistanceUnitCentimetersValue];
+          unit5 = [(SADistance *)self unit];
+          v13 = [unit5 isEqualToString:SADistanceUnitCentimetersValue];
 
           if (v13)
           {

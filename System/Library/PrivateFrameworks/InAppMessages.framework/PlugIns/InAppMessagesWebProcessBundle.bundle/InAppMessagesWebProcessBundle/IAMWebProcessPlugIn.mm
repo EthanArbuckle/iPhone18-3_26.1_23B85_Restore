@@ -1,50 +1,50 @@
 @interface IAMWebProcessPlugIn
-- (void)webProcessPlugIn:(id)a3 didCreateBrowserContextController:(id)a4;
-- (void)webProcessPlugIn:(id)a3 initializeWithObject:(id)a4;
-- (void)webProcessPlugIn:(id)a3 willDestroyBrowserContextController:(id)a4;
+- (void)webProcessPlugIn:(id)in didCreateBrowserContextController:(id)controller;
+- (void)webProcessPlugIn:(id)in initializeWithObject:(id)object;
+- (void)webProcessPlugIn:(id)in willDestroyBrowserContextController:(id)controller;
 @end
 
 @implementation IAMWebProcessPlugIn
 
-- (void)webProcessPlugIn:(id)a3 initializeWithObject:(id)a4
+- (void)webProcessPlugIn:(id)in initializeWithObject:(id)object
 {
-  v5 = [NSMapTable strongToStrongObjectsMapTable:a3];
+  v5 = [NSMapTable strongToStrongObjectsMapTable:in];
   [(IAMWebProcessPlugIn *)self setContextControllersToLoadDelegates:v5];
 }
 
-- (void)webProcessPlugIn:(id)a3 didCreateBrowserContextController:(id)a4
+- (void)webProcessPlugIn:(id)in didCreateBrowserContextController:(id)controller
 {
-  v5 = a4;
+  controllerCopy = controller;
   v13 = objc_opt_new();
-  [v5 setLoadDelegate:v13];
+  [controllerCopy setLoadDelegate:v13];
   v6 = [_WKRemoteObjectInterface remoteObjectInterfaceWithProtocol:&OBJC_PROTOCOL___IAMWebProcessProxy];
-  v7 = [v5 _remoteObjectRegistry];
-  [v7 registerExportedObject:v13 interface:v6];
+  _remoteObjectRegistry = [controllerCopy _remoteObjectRegistry];
+  [_remoteObjectRegistry registerExportedObject:v13 interface:v6];
 
   v8 = [_WKRemoteObjectInterface remoteObjectInterfaceWithProtocol:&OBJC_PROTOCOL___IAMWebProcessDelegate];
-  v9 = [v5 _remoteObjectRegistry];
-  v10 = [v9 remoteObjectProxyWithInterface:v8];
+  _remoteObjectRegistry2 = [controllerCopy _remoteObjectRegistry];
+  v10 = [_remoteObjectRegistry2 remoteObjectProxyWithInterface:v8];
   [v13 setWebProcessDelegate:v10];
 
-  v11 = [v13 webProcessDelegate];
-  [v11 webProcessPlugInDidCreateBrowserContextController];
+  webProcessDelegate = [v13 webProcessDelegate];
+  [webProcessDelegate webProcessPlugInDidCreateBrowserContextController];
 
-  v12 = [(IAMWebProcessPlugIn *)self contextControllersToLoadDelegates];
-  [v12 setObject:v13 forKey:v5];
+  contextControllersToLoadDelegates = [(IAMWebProcessPlugIn *)self contextControllersToLoadDelegates];
+  [contextControllersToLoadDelegates setObject:v13 forKey:controllerCopy];
 }
 
-- (void)webProcessPlugIn:(id)a3 willDestroyBrowserContextController:(id)a4
+- (void)webProcessPlugIn:(id)in willDestroyBrowserContextController:(id)controller
 {
-  v5 = a4;
-  v6 = [(IAMWebProcessPlugIn *)self contextControllersToLoadDelegates];
-  v9 = [v6 objectForKey:v5];
+  controllerCopy = controller;
+  contextControllersToLoadDelegates = [(IAMWebProcessPlugIn *)self contextControllersToLoadDelegates];
+  v9 = [contextControllersToLoadDelegates objectForKey:controllerCopy];
 
-  v7 = [v9 webProcessDelegate];
-  [v7 webProcessPlugInWillDestroyBrowserContextController];
+  webProcessDelegate = [v9 webProcessDelegate];
+  [webProcessDelegate webProcessPlugInWillDestroyBrowserContextController];
 
   [v9 setWebProcessDelegate:0];
-  v8 = [(IAMWebProcessPlugIn *)self contextControllersToLoadDelegates];
-  [v8 removeObjectForKey:v5];
+  contextControllersToLoadDelegates2 = [(IAMWebProcessPlugIn *)self contextControllersToLoadDelegates];
+  [contextControllersToLoadDelegates2 removeObjectForKey:controllerCopy];
 }
 
 @end

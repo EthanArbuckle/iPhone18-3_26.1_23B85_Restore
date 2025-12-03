@@ -1,21 +1,21 @@
 @interface ARPointCloudSensorData
-- (ARPointCloudSensorData)initWithCoder:(id)a3;
-- (ARPointCloudSensorData)initWithPointCloudData:(id)a3 captureFramePerSecond:(int64_t)a4 captureDevice:(id)a5 captureSession:(id)a6;
-- (ARPointCloudSensorData)initWithPointCloudData:(id)a3 projectorMode:(int64_t)a4 timestamp:(double)a5;
-- (__n128)setCameraTransform:(__n128)a3;
-- (__n128)setExtrinsicsToWideSensor:(__n128)a3;
-- (double)setVisionCameraTransform:(uint64_t)a1;
-- (void)encodeWithCoder:(id)a3;
+- (ARPointCloudSensorData)initWithCoder:(id)coder;
+- (ARPointCloudSensorData)initWithPointCloudData:(id)data captureFramePerSecond:(int64_t)second captureDevice:(id)device captureSession:(id)session;
+- (ARPointCloudSensorData)initWithPointCloudData:(id)data projectorMode:(int64_t)mode timestamp:(double)timestamp;
+- (__n128)setCameraTransform:(__n128)transform;
+- (__n128)setExtrinsicsToWideSensor:(__n128)sensor;
+- (double)setVisionCameraTransform:(uint64_t)transform;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARPointCloudSensorData
 
-- (ARPointCloudSensorData)initWithPointCloudData:(id)a3 captureFramePerSecond:(int64_t)a4 captureDevice:(id)a5 captureSession:(id)a6
+- (ARPointCloudSensorData)initWithPointCloudData:(id)data captureFramePerSecond:(int64_t)second captureDevice:(id)device captureSession:(id)session
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (_isPointCloudBlackened(v9))
+  dataCopy = data;
+  deviceCopy = device;
+  if (_isPointCloudBlackened(dataCopy))
   {
     if (ARShouldUseLogTypeError_onceToken_32 != -1)
     {
@@ -58,11 +58,11 @@ LABEL_24:
       goto LABEL_15;
     }
 
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_26;
   }
 
-  v13 = [MEMORY[0x1E698C170] makeWithDataBuffer:{objc_msgSend(v9, "pointCloudDataBuffer")}];
+  v13 = [MEMORY[0x1E698C170] makeWithDataBuffer:{objc_msgSend(dataCopy, "pointCloudDataBuffer")}];
   if (!v13)
   {
     if (ARShouldUseLogTypeError_onceToken_32 != -1)
@@ -120,15 +120,15 @@ LABEL_24:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_pointCloudData, a3);
+    objc_storeStrong(&v19->_pointCloudData, data);
     objc_storeStrong(&v20->_pointCloud, v13);
-    v21 = [v10 deviceType];
+    deviceType = [deviceCopy deviceType];
     cameraType = v20->_cameraType;
-    v20->_cameraType = v21;
+    v20->_cameraType = deviceType;
 
-    v20->_cameraPosition = [v10 position];
+    v20->_cameraPosition = [deviceCopy position];
     v20->_projectorMode = [(AVPointCloudData *)v20->_pointCloudData projectorMode];
-    v23 = ARPixelBufferGetMetadata([v9 pointCloudDataBuffer]);
+    v23 = ARPixelBufferGetMetadata([dataCopy pointCloudDataBuffer]);
     v24 = v23;
     if (v23)
     {
@@ -139,32 +139,32 @@ LABEL_24:
   }
 
   self = v20;
-  v26 = self;
+  selfCopy = self;
 LABEL_26:
 
-  return v26;
+  return selfCopy;
 }
 
-- (ARPointCloudSensorData)initWithPointCloudData:(id)a3 projectorMode:(int64_t)a4 timestamp:(double)a5
+- (ARPointCloudSensorData)initWithPointCloudData:(id)data projectorMode:(int64_t)mode timestamp:(double)timestamp
 {
-  v9 = a3;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = ARPointCloudSensorData;
   v10 = [(ARPointCloudSensorData *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_pointCloud, a3);
-    v11->_projectorMode = a4;
-    v11->_timestamp = a5;
+    objc_storeStrong(&v10->_pointCloud, data);
+    v11->_projectorMode = mode;
+    v11->_timestamp = timestamp;
   }
 
   return v11;
 }
 
-- (double)setVisionCameraTransform:(uint64_t)a1
+- (double)setVisionCameraTransform:(uint64_t)transform
 {
-  *(a1 + 64) = a2;
+  *(transform + 64) = a2;
   v33 = __invert_f4(a2);
   v21 = v33.columns[1];
   v23 = v33.columns[0];
@@ -212,39 +212,39 @@ LABEL_26:
   v14 = v30;
   v15 = v31;
   v16 = v32;
-  *(a1 + 128) = v29;
-  *(a1 + 144) = v14;
-  *(a1 + 160) = v15;
-  *(a1 + 176) = v16;
+  *(transform + 128) = v29;
+  *(transform + 144) = v14;
+  *(transform + 160) = v15;
+  *(transform + 176) = v16;
   return result;
 }
 
-- (ARPointCloudSensorData)initWithCoder:(id)a3
+- (ARPointCloudSensorData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = ARPointCloudSensorData;
   v5 = [(ARPointCloudSensorData *)&v21 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"timestamp"];
+    [coderCopy decodeDoubleForKey:@"timestamp"];
     v5->_timestamp = v6;
-    [v4 ar_decodeMatrix4x4ForKey:@"visionCameraTransform"];
+    [coderCopy ar_decodeMatrix4x4ForKey:@"visionCameraTransform"];
     *v5->_anon_40 = v7;
     *&v5->_anon_40[16] = v8;
     *&v5->_anon_40[32] = v9;
     *&v5->_anon_40[48] = v10;
-    [v4 ar_decodeMatrix4x4ForKey:@"cameraTransform"];
+    [coderCopy ar_decodeMatrix4x4ForKey:@"cameraTransform"];
     *v5->_anon_80 = v11;
     *&v5->_anon_80[16] = v12;
     *&v5->_anon_80[32] = v13;
     *&v5->_anon_80[48] = v14;
-    v5->_cameraPosition = [v4 decodeIntegerForKey:@"cameraPosition"];
-    v15 = [v4 decodeObjectForKey:@"cameraType"];
+    v5->_cameraPosition = [coderCopy decodeIntegerForKey:@"cameraPosition"];
+    v15 = [coderCopy decodeObjectForKey:@"cameraType"];
     cameraType = v5->_cameraType;
     v5->_cameraType = v15;
 
-    v17 = [v4 decodeObjectForKey:@"pointCloud"];
+    v17 = [coderCopy decodeObjectForKey:@"pointCloud"];
     v18 = [objc_alloc(MEMORY[0x1E698C170]) initWithDictionaryRepresentation:v17];
     pointCloud = v5->_pointCloud;
     v5->_pointCloud = v18;
@@ -253,32 +253,32 @@ LABEL_26:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 encodeDouble:@"timestamp" forKey:timestamp];
-  [v5 ar_encodeMatrix4x4:@"visionCameraTransform" forKey:{*self->_anon_40, *&self->_anon_40[16], *&self->_anon_40[32], *&self->_anon_40[48]}];
-  [v5 ar_encodeMatrix4x4:@"cameraTransform" forKey:{*self->_anon_80, *&self->_anon_80[16], *&self->_anon_80[32], *&self->_anon_80[48]}];
-  [v5 encodeInteger:self->_cameraPosition forKey:@"cameraPosition"];
-  [v5 encodeObject:self->_cameraType forKey:@"cameraType"];
-  v6 = [(ADJasperPointCloud *)self->_pointCloud dictionaryRepresentation];
-  [v5 encodeObject:v6 forKey:@"pointCloud"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"timestamp" forKey:timestamp];
+  [coderCopy ar_encodeMatrix4x4:@"visionCameraTransform" forKey:{*self->_anon_40, *&self->_anon_40[16], *&self->_anon_40[32], *&self->_anon_40[48]}];
+  [coderCopy ar_encodeMatrix4x4:@"cameraTransform" forKey:{*self->_anon_80, *&self->_anon_80[16], *&self->_anon_80[32], *&self->_anon_80[48]}];
+  [coderCopy encodeInteger:self->_cameraPosition forKey:@"cameraPosition"];
+  [coderCopy encodeObject:self->_cameraType forKey:@"cameraType"];
+  dictionaryRepresentation = [(ADJasperPointCloud *)self->_pointCloud dictionaryRepresentation];
+  [coderCopy encodeObject:dictionaryRepresentation forKey:@"pointCloud"];
 }
 
-- (__n128)setCameraTransform:(__n128)a3
+- (__n128)setCameraTransform:(__n128)transform
 {
   result[8] = a2;
-  result[9] = a3;
+  result[9] = transform;
   result[10] = a4;
   result[11] = a5;
   return result;
 }
 
-- (__n128)setExtrinsicsToWideSensor:(__n128)a3
+- (__n128)setExtrinsicsToWideSensor:(__n128)sensor
 {
   result[12] = a2;
-  result[13] = a3;
+  result[13] = sensor;
   result[14] = a4;
   result[15] = a5;
   return result;

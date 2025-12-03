@@ -1,15 +1,15 @@
 @interface PFLivePhotoPlaybackResult
 - (void)dealloc;
-- (void)setPhoto:(CGImage *)a3;
-- (void)setPhotoTime:(id *)a3;
+- (void)setPhoto:(CGImage *)photo;
+- (void)setPhotoTime:(id *)time;
 @end
 
 @implementation PFLivePhotoPlaybackResult
 
-- (void)setPhotoTime:(id *)a3
+- (void)setPhotoTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_photoTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_photoTime.epoch = time->var3;
   *&self->_photoTime.value = v3;
 }
 
@@ -21,13 +21,13 @@
   [(PFLivePhotoPlaybackResult *)&v3 dealloc];
 }
 
-- (void)setPhoto:(CGImage *)a3
+- (void)setPhoto:(CGImage *)photo
 {
   photo = self->_photo;
-  if (photo != a3)
+  if (photo != photo)
   {
     CGImageRelease(photo);
-    self->_photo = CGImageRetain(a3);
+    self->_photo = CGImageRetain(photo);
   }
 }
 

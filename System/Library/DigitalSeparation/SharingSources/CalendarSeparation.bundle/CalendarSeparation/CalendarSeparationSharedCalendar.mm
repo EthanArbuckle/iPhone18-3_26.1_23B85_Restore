@@ -1,38 +1,38 @@
 @interface CalendarSeparationSharedCalendar
-- (CalendarSeparationSharedCalendar)initWithCalendar:(id)a3;
+- (CalendarSeparationSharedCalendar)initWithCalendar:(id)calendar;
 - (id)displayDetail;
 - (id)displayName;
 - (int64_t)visibility;
-- (void)makePrivateWithCompletion:(id)a3;
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4;
+- (void)makePrivateWithCompletion:(id)completion;
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion;
 @end
 
 @implementation CalendarSeparationSharedCalendar
 
-- (CalendarSeparationSharedCalendar)initWithCalendar:(id)a3
+- (CalendarSeparationSharedCalendar)initWithCalendar:(id)calendar
 {
-  v5 = a3;
+  calendarCopy = calendar;
   v23.receiver = self;
   v23.super_class = CalendarSeparationSharedCalendar;
   v6 = [(CalendarSeparationSharedCalendar *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_calendar, a3);
+    objc_storeStrong(&v6->_calendar, calendar);
     v8 = objc_opt_new();
     [(CalendarSeparationSharedResource *)v7 setCsParticipants:v8];
 
-    v9 = [[CalendarSeparationParticipant alloc] initWithEKCalendar:v5];
+    v9 = [[CalendarSeparationParticipant alloc] initWithEKCalendar:calendarCopy];
     objc_storeStrong(&v7->_owner, v9);
-    v10 = [(CalendarSeparationSharedResource *)v7 csParticipants];
-    [v10 addObject:v9];
+    csParticipants = [(CalendarSeparationSharedResource *)v7 csParticipants];
+    [csParticipants addObject:v9];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [v5 sharees];
-    v12 = [v11 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    sharees = [calendarCopy sharees];
+    v12 = [sharees countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v12)
     {
       v13 = v12;
@@ -44,18 +44,18 @@
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(sharees);
           }
 
           v16 = [[CalendarSeparationParticipant alloc] initWithEKSharee:*(*(&v19 + 1) + 8 * v15)];
-          v17 = [(CalendarSeparationSharedResource *)v7 csParticipants];
-          [v17 addObject:v16];
+          csParticipants2 = [(CalendarSeparationSharedResource *)v7 csParticipants];
+          [csParticipants2 addObject:v16];
 
           v15 = v15 + 1;
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v13 = [sharees countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v13);
@@ -67,10 +67,10 @@
 
 - (id)displayName
 {
-  v2 = [(CalendarSeparationSharedCalendar *)self calendar];
-  v3 = [v2 title];
+  calendar = [(CalendarSeparationSharedCalendar *)self calendar];
+  title = [calendar title];
 
-  return v3;
+  return title;
 }
 
 - (id)displayDetail
@@ -83,10 +83,10 @@
 
 - (int64_t)visibility
 {
-  v2 = [(CalendarSeparationSharedCalendar *)self calendar];
-  v3 = [v2 isPublished];
+  calendar = [(CalendarSeparationSharedCalendar *)self calendar];
+  isPublished = [calendar isPublished];
 
-  if (v3)
+  if (isPublished)
   {
     return 2;
   }
@@ -97,45 +97,45 @@
   }
 }
 
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CalendarSeparationSharedCalendar *)self calendar];
+  participantCopy = participant;
+  completionCopy = completion;
+  calendar = [(CalendarSeparationSharedCalendar *)self calendar];
 
-  if (!v8)
+  if (!calendar)
   {
     v78 = NSLocalizedDescriptionKey;
     v79 = @"Resource is missing Calendar";
     v22 = [NSDictionary dictionaryWithObjects:&v79 forKeys:&v78 count:1];
     v23 = [NSError errorWithDomain:@"CalendarSeparationErrorDomain" code:0 userInfo:v22];
 
-    v7[2](v7, v23);
+    completionCopy[2](completionCopy, v23);
     goto LABEL_54;
   }
 
-  v9 = [(CalendarSeparationSharedCalendar *)self calendar];
-  v10 = [v9 eventStore];
+  calendar2 = [(CalendarSeparationSharedCalendar *)self calendar];
+  eventStore = [calendar2 eventStore];
 
-  v11 = [(CalendarSeparationSharedCalendar *)self calendar];
-  v12 = [v11 sharingStatus];
+  calendar3 = [(CalendarSeparationSharedCalendar *)self calendar];
+  sharingStatus = [calendar3 sharingStatus];
 
-  if (v12 == &dword_0 + 2)
+  if (sharingStatus == &dword_0 + 2)
   {
-    if (v6)
+    if (participantCopy)
     {
       v76 = 0u;
       v77 = 0u;
       v74 = 0u;
       v75 = 0u;
-      v13 = [(CalendarSeparationSharedCalendar *)self calendar];
-      v14 = [v13 shareesAndOwner];
+      calendar4 = [(CalendarSeparationSharedCalendar *)self calendar];
+      shareesAndOwner = [calendar4 shareesAndOwner];
 
-      v15 = [v14 countByEnumeratingWithState:&v74 objects:v90 count:16];
+      v15 = [shareesAndOwner countByEnumeratingWithState:&v74 objects:v90 count:16];
       if (v15)
       {
         v16 = v15;
-        v60 = v10;
+        v60 = eventStore;
         v17 = *v75;
         while (2)
         {
@@ -143,21 +143,21 @@
           {
             if (*v75 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(shareesAndOwner);
             }
 
             v19 = [[CalendarSeparationParticipant alloc] initWithEKSharee:*(*(&v74 + 1) + 8 * i)];
-            v20 = [(CalendarSeparationParticipant *)v19 matchesDSParticipation:v6];
+            v20 = [(CalendarSeparationParticipant *)v19 matchesDSParticipation:participantCopy];
 
             if (v20)
             {
 
-              v10 = v60;
+              eventStore = v60;
               goto LABEL_16;
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v74 objects:v90 count:16];
+          v16 = [shareesAndOwner countByEnumeratingWithState:&v74 objects:v90 count:16];
           if (v16)
           {
             continue;
@@ -167,7 +167,7 @@
         }
 
         v21 = 0;
-        v10 = v60;
+        eventStore = v60;
       }
 
       else
@@ -179,9 +179,9 @@
     else
     {
 LABEL_16:
-      v24 = [(CalendarSeparationSharedCalendar *)self calendar];
+      calendar5 = [(CalendarSeparationSharedCalendar *)self calendar];
       v73 = 0;
-      v25 = [v10 removeCalendar:v24 commit:1 error:&v73];
+      v25 = [eventStore removeCalendar:calendar5 commit:1 error:&v73];
       v21 = v73;
 
       if ((v25 & 1) != 0 || v21)
@@ -191,8 +191,8 @@ LABEL_16:
 
       v88 = NSLocalizedDescriptionKey;
       v89 = @"Failed to remove calendar";
-      v14 = [NSDictionary dictionaryWithObjects:&v89 forKeys:&v88 count:1];
-      v21 = [NSError errorWithDomain:@"CalendarSeparationErrorDomain" code:0 userInfo:v14];
+      shareesAndOwner = [NSDictionary dictionaryWithObjects:&v89 forKeys:&v88 count:1];
+      v21 = [NSError errorWithDomain:@"CalendarSeparationErrorDomain" code:0 userInfo:shareesAndOwner];
     }
   }
 
@@ -202,23 +202,23 @@ LABEL_16:
   }
 
 LABEL_21:
-  v26 = [(CalendarSeparationSharedCalendar *)self calendar];
-  v27 = [v26 sharingStatus];
+  calendar6 = [(CalendarSeparationSharedCalendar *)self calendar];
+  sharingStatus2 = [calendar6 sharingStatus];
 
-  if (v27 == &dword_0 + 1)
+  if (sharingStatus2 == &dword_0 + 1)
   {
     v58 = v21;
-    v59 = v7;
-    v61 = v10;
+    v59 = completionCopy;
+    v61 = eventStore;
     v28 = objc_opt_new();
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v29 = [(CalendarSeparationSharedCalendar *)self calendar];
-    v30 = [v29 sharees];
+    calendar7 = [(CalendarSeparationSharedCalendar *)self calendar];
+    sharees = [calendar7 sharees];
 
-    v31 = [v30 countByEnumeratingWithState:&v69 objects:v87 count:16];
+    v31 = [sharees countByEnumeratingWithState:&v69 objects:v87 count:16];
     if (v31)
     {
       v32 = v31;
@@ -229,38 +229,38 @@ LABEL_21:
         {
           if (*v70 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(sharees);
           }
 
           v35 = *(*(&v69 + 1) + 8 * j);
           v36 = [[CalendarSeparationParticipant alloc] initWithEKSharee:v35];
           v37 = v36;
-          if (!v6 || [(CalendarSeparationParticipant *)v36 matchesDSParticipation:v6])
+          if (!participantCopy || [(CalendarSeparationParticipant *)v36 matchesDSParticipation:participantCopy])
           {
             [v35 setShareeMuteRemoval:1];
             [v28 addObject:v35];
           }
         }
 
-        v32 = [v30 countByEnumeratingWithState:&v69 objects:v87 count:16];
+        v32 = [sharees countByEnumeratingWithState:&v69 objects:v87 count:16];
       }
 
       while (v32);
     }
 
-    v38 = [(CalendarSeparationSharedCalendar *)self calendar];
+    calendar8 = [(CalendarSeparationSharedCalendar *)self calendar];
     v68 = v58;
-    v39 = [v10 saveCalendar:v38 commit:1 error:&v68];
+    v39 = [eventStore saveCalendar:calendar8 commit:1 error:&v68];
     v40 = v68;
 
     if (v39)
     {
-      v7 = v59;
+      completionCopy = v59;
     }
 
     else
     {
-      v7 = v59;
+      completionCopy = v59;
       if (!v40)
       {
         v85 = NSLocalizedDescriptionKey;
@@ -290,8 +290,8 @@ LABEL_21:
           }
 
           v47 = *(*(&v64 + 1) + 8 * k);
-          v48 = [(CalendarSeparationSharedCalendar *)self calendar];
-          [v48 removeSharee:v47];
+          calendar9 = [(CalendarSeparationSharedCalendar *)self calendar];
+          [calendar9 removeSharee:v47];
         }
 
         v44 = [v42 countByEnumeratingWithState:&v64 objects:v84 count:16];
@@ -300,10 +300,10 @@ LABEL_21:
       while (v44);
     }
 
-    v49 = [(CalendarSeparationSharedCalendar *)self calendar];
+    calendar10 = [(CalendarSeparationSharedCalendar *)self calendar];
     v63 = v40;
-    v10 = v61;
-    v50 = [v61 saveCalendar:v49 commit:1 error:&v63];
+    eventStore = v61;
+    v50 = [v61 saveCalendar:calendar10 commit:1 error:&v63];
     v21 = v63;
 
     if ((v50 & 1) == 0 && !v21)
@@ -315,19 +315,19 @@ LABEL_21:
     }
   }
 
-  if (v6 || (-[CalendarSeparationSharedCalendar calendar](self, "calendar"), v52 = objc_claimAutoreleasedReturnValue(), v53 = [v52 isPublished], v52, !v53))
+  if (participantCopy || (-[CalendarSeparationSharedCalendar calendar](self, "calendar"), v52 = objc_claimAutoreleasedReturnValue(), v53 = [v52 isPublished], v52, !v53))
   {
     v23 = v21;
   }
 
   else
   {
-    v54 = [(CalendarSeparationSharedCalendar *)self calendar];
-    [v54 setIsPublished:0];
+    calendar11 = [(CalendarSeparationSharedCalendar *)self calendar];
+    [calendar11 setIsPublished:0];
 
-    v55 = [(CalendarSeparationSharedCalendar *)self calendar];
+    calendar12 = [(CalendarSeparationSharedCalendar *)self calendar];
     v62 = v21;
-    v56 = [v10 saveCalendar:v55 commit:1 error:&v62];
+    v56 = [eventStore saveCalendar:calendar12 commit:1 error:&v62];
     v23 = v62;
 
     if ((v56 & 1) == 0 && !v23)
@@ -339,31 +339,31 @@ LABEL_21:
     }
   }
 
-  v7[2](v7, v23);
+  completionCopy[2](completionCopy, v23);
 
 LABEL_54:
 }
 
-- (void)makePrivateWithCompletion:(id)a3
+- (void)makePrivateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CalendarSeparationSharedCalendar *)self calendar];
-  v6 = [v5 isPublished];
+  completionCopy = completion;
+  calendar = [(CalendarSeparationSharedCalendar *)self calendar];
+  isPublished = [calendar isPublished];
 
-  if (!v6)
+  if (!isPublished)
   {
     goto LABEL_7;
   }
 
-  v7 = [(CalendarSeparationSharedCalendar *)self calendar];
-  v8 = [v7 eventStore];
+  calendar2 = [(CalendarSeparationSharedCalendar *)self calendar];
+  eventStore = [calendar2 eventStore];
 
-  v9 = [(CalendarSeparationSharedCalendar *)self calendar];
-  [v9 setIsPublished:0];
+  calendar3 = [(CalendarSeparationSharedCalendar *)self calendar];
+  [calendar3 setIsPublished:0];
 
-  v10 = [(CalendarSeparationSharedCalendar *)self calendar];
+  calendar4 = [(CalendarSeparationSharedCalendar *)self calendar];
   v17 = 0;
-  v11 = [v8 saveCalendar:v10 commit:1 error:&v17];
+  v11 = [eventStore saveCalendar:calendar4 commit:1 error:&v17];
   v12 = v17;
 
   if ((v11 & 1) == 0 && !v12)
@@ -383,13 +383,13 @@ LABEL_54:
   {
 LABEL_7:
     v15 = [CalendarSeparationSharedCalendar alloc];
-    v16 = [(CalendarSeparationSharedCalendar *)self calendar];
-    v14 = [(CalendarSeparationSharedCalendar *)v15 initWithCalendar:v16];
+    calendar5 = [(CalendarSeparationSharedCalendar *)self calendar];
+    v14 = [(CalendarSeparationSharedCalendar *)v15 initWithCalendar:calendar5];
 
     v12 = 0;
   }
 
-  v4[2](v4, v14, v12);
+  completionCopy[2](completionCopy, v14, v12);
 }
 
 @end

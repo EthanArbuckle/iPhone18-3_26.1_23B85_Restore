@@ -1,7 +1,7 @@
 @interface PXStoryMockAutoEditDecisionList
 - ($A35046FF140701A0BC97C4369CFAD28C)overallDurationInfo;
-- (PXStoryMockAutoEditDecisionList)initWithSong:(id)a3;
-- (id)clipAtIndex:(int64_t)a3;
+- (PXStoryMockAutoEditDecisionList)initWithSong:(id)song;
+- (id)clipAtIndex:(int64_t)index;
 @end
 
 @implementation PXStoryMockAutoEditDecisionList
@@ -18,17 +18,17 @@
   return self;
 }
 
-- (id)clipAtIndex:(int64_t)a3
+- (id)clipAtIndex:(int64_t)index
 {
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryMockAutoEditDecisionList.m" lineNumber:44 description:{@"Index (%ld) out of range", a3}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMockAutoEditDecisionList.m" lineNumber:44 description:{@"Index (%ld) out of range", index}];
 
   abort();
 }
 
-- (PXStoryMockAutoEditDecisionList)initWithSong:(id)a3
+- (PXStoryMockAutoEditDecisionList)initWithSong:(id)song
 {
-  v5 = a3;
+  songCopy = song;
   v15.receiver = self;
   v15.super_class = PXStoryMockAutoEditDecisionList;
   v6 = [(PXStoryMockAutoEditDecisionList *)&v15 init];
@@ -36,11 +36,11 @@
   if (v6)
   {
     v6->_numberOfClips = 0;
-    v8 = [v5 colorGradeCategory];
+    colorGradeCategory = [songCopy colorGradeCategory];
     colorGradeCategory = v7->_colorGradeCategory;
-    v7->_colorGradeCategory = v8;
+    v7->_colorGradeCategory = colorGradeCategory;
 
-    objc_storeStrong(&v7->_song, a3);
+    objc_storeStrong(&v7->_song, song);
     CMTimeMakeWithSeconds(&v14, 2.0, 600);
     v7->_defaultDisplayAssetPresentationDuration = v14;
     v7->_allowsNUp = 0;

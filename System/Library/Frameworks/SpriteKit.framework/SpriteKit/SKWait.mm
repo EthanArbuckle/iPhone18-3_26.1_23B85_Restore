@@ -1,10 +1,10 @@
 @interface SKWait
-+ (id)waitForDuration:(double)a3;
-+ (id)waitForDuration:(double)a3 withRange:(double)a4;
++ (id)waitForDuration:(double)duration;
++ (id)waitForDuration:(double)duration withRange:(double)range;
 - (SKWait)init;
-- (SKWait)initWithCoder:(id)a3;
+- (SKWait)initWithCoder:(id)coder;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKWait
@@ -21,12 +21,12 @@
   return 0;
 }
 
-- (SKWait)initWithCoder:(id)a3
+- (SKWait)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKWait;
-  if ([(SKAction *)&v6 initWithCoder:v4])
+  if ([(SKAction *)&v6 initWithCoder:coderCopy])
   {
     operator new();
   }
@@ -34,27 +34,27 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SKWait;
-  [(SKAction *)&v3 encodeWithCoder:a3];
+  [(SKAction *)&v3 encodeWithCoder:coder];
 }
 
-+ (id)waitForDuration:(double)a3
++ (id)waitForDuration:(double)duration
 {
   v4 = objc_alloc_init(SKWait);
-  [(SKAction *)v4 setDuration:a3];
+  [(SKAction *)v4 setDuration:duration];
 
   return v4;
 }
 
-+ (id)waitForDuration:(double)a3 withRange:(double)a4
++ (id)waitForDuration:(double)duration withRange:(double)range
 {
   v6 = objc_alloc_init(SKWait);
-  [(SKAction *)v6 setDuration:a3];
-  v7 = a4;
-  v6->_mycaction->var9 = v7;
+  [(SKAction *)v6 setDuration:duration];
+  rangeCopy = range;
+  v6->_mycaction->var9 = rangeCopy;
 
   return v6;
 }

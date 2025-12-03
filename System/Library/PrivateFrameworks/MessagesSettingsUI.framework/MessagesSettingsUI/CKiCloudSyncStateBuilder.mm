@@ -1,41 +1,41 @@
 @interface CKiCloudSyncStateBuilder
-+ (id)_messagesInCloudCountStringWithLongCount:(unint64_t)a3;
-+ (id)_syncFooterTextWithStatusError:(id)a3 dateString:(id)a4;
-+ (id)_syncingMessagesStringWithLongCount:(unint64_t)a3;
-+ (id)accountMismatchStateForDescriptor:(CKiCloudSyncStatusDescriptor *)a3;
-+ (id)idleStateForDescriptor:(CKiCloudSyncStatusDescriptor *)a3;
-+ (id)noSyncStorageAlmostFullForDescriptor:(CKiCloudSyncStatusDescriptor *)a3;
-+ (id)noSyncStorageFullForDescriptor:(CKiCloudSyncStatusDescriptor *)a3;
-+ (id)noSyncStorageOverFullForDescriptor:(CKiCloudSyncStatusDescriptor *)a3;
-+ (id)syncCompleteForDescriptor:(CKiCloudSyncStatusDescriptor *)a3;
-+ (id)syncDownloadingForDescriptor:(CKiCloudSyncStatusDescriptor *)a3;
-+ (id)syncModelForDescriptor:(CKiCloudSyncStatusDescriptor *)a3;
-+ (id)syncPausedAirplaneModeForDescriptor:(CKiCloudSyncStatusDescriptor *)a3;
-+ (id)syncPausedCellularDataDisabledForDescriptor:(CKiCloudSyncStatusDescriptor *)a3;
-+ (id)syncPausedNoInternetConnectionForDescriptor:(CKiCloudSyncStatusDescriptor *)a3;
-+ (id)syncUploadingForDescriptor:(CKiCloudSyncStatusDescriptor *)a3;
++ (id)_messagesInCloudCountStringWithLongCount:(unint64_t)count;
++ (id)_syncFooterTextWithStatusError:(id)error dateString:(id)string;
++ (id)_syncingMessagesStringWithLongCount:(unint64_t)count;
++ (id)accountMismatchStateForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor;
++ (id)idleStateForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor;
++ (id)noSyncStorageAlmostFullForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor;
++ (id)noSyncStorageFullForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor;
++ (id)noSyncStorageOverFullForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor;
++ (id)syncCompleteForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor;
++ (id)syncDownloadingForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor;
++ (id)syncModelForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor;
++ (id)syncPausedAirplaneModeForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor;
++ (id)syncPausedCellularDataDisabledForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor;
++ (id)syncPausedNoInternetConnectionForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor;
++ (id)syncUploadingForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor;
 @end
 
 @implementation CKiCloudSyncStateBuilder
 
-+ (id)syncModelForDescriptor:(CKiCloudSyncStatusDescriptor *)a3
++ (id)syncModelForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor
 {
-  var0 = a3->var0;
-  if (a3->var0 > 4)
+  var0 = descriptor->var0;
+  if (descriptor->var0 > 4)
   {
     if (var0 <= 6)
     {
       if (var0 == 5)
       {
-        v36 = *&a3->var0;
-        var3 = a3->var3;
-        var2 = a3->var2;
+        v36 = *&descriptor->var0;
+        var3 = descriptor->var3;
+        var2 = descriptor->var2;
         v8 = var3;
         v38 = v8;
-        var4 = a3->var4;
-        if (a1)
+        var4 = descriptor->var4;
+        if (self)
         {
-          v9 = [a1 syncPausedCellularDataDisabledForDescriptor:&v36];
+          v9 = [self syncPausedCellularDataDisabledForDescriptor:&v36];
           goto LABEL_34;
         }
       }
@@ -47,15 +47,15 @@
           goto LABEL_36;
         }
 
-        v32 = *&a3->var0;
-        v12 = a3->var3;
-        v33 = a3->var2;
+        v32 = *&descriptor->var0;
+        v12 = descriptor->var3;
+        v33 = descriptor->var2;
         v8 = v12;
         v34 = v8;
-        v35 = a3->var4;
-        if (a1)
+        v35 = descriptor->var4;
+        if (self)
         {
-          v9 = [a1 accountMismatchStateForDescriptor:&v32];
+          v9 = [self accountMismatchStateForDescriptor:&v32];
           goto LABEL_34;
         }
       }
@@ -66,43 +66,43 @@
       switch(var0)
       {
         case 7:
-          v28 = *&a3->var0;
-          v16 = a3->var3;
-          v29 = a3->var2;
+          v28 = *&descriptor->var0;
+          v16 = descriptor->var3;
+          v29 = descriptor->var2;
           v8 = v16;
           v30 = v8;
-          v31 = a3->var4;
-          if (a1)
+          v31 = descriptor->var4;
+          if (self)
           {
-            v9 = [a1 noSyncStorageAlmostFullForDescriptor:&v28];
+            v9 = [self noSyncStorageAlmostFullForDescriptor:&v28];
             goto LABEL_34;
           }
 
           break;
         case 8:
-          v24 = *&a3->var0;
-          v18 = a3->var3;
-          v25 = a3->var2;
+          v24 = *&descriptor->var0;
+          v18 = descriptor->var3;
+          v25 = descriptor->var2;
           v8 = v18;
           v26 = v8;
-          v27 = a3->var4;
-          if (a1)
+          v27 = descriptor->var4;
+          if (self)
           {
-            v9 = [a1 noSyncStorageFullForDescriptor:&v24];
+            v9 = [self noSyncStorageFullForDescriptor:&v24];
             goto LABEL_34;
           }
 
           break;
         case 9:
-          v20 = *&a3->var0;
-          v10 = a3->var3;
-          v21 = a3->var2;
+          v20 = *&descriptor->var0;
+          v10 = descriptor->var3;
+          v21 = descriptor->var2;
           v8 = v10;
           v22 = v8;
-          v23 = a3->var4;
-          if (a1)
+          v23 = descriptor->var4;
+          if (self)
           {
-            v9 = [a1 noSyncStorageOverFullForDescriptor:&v20];
+            v9 = [self noSyncStorageOverFullForDescriptor:&v20];
             goto LABEL_34;
           }
 
@@ -122,30 +122,30 @@
         goto LABEL_36;
       }
 
-      v52 = *&a3->var0;
-      v11 = a3->var3;
-      v53 = a3->var2;
+      v52 = *&descriptor->var0;
+      v11 = descriptor->var3;
+      v53 = descriptor->var2;
       v8 = v11;
       v54 = v8;
-      v55 = a3->var4;
-      if (a1)
+      v55 = descriptor->var4;
+      if (self)
       {
-        v9 = [a1 syncUploadingForDescriptor:&v52];
+        v9 = [self syncUploadingForDescriptor:&v52];
         goto LABEL_34;
       }
     }
 
     else
     {
-      v56 = *&a3->var0;
-      v13 = a3->var3;
-      v57 = a3->var2;
+      v56 = *&descriptor->var0;
+      v13 = descriptor->var3;
+      v57 = descriptor->var2;
       v8 = v13;
       v58 = v8;
-      v59 = a3->var4;
-      if (a1)
+      v59 = descriptor->var4;
+      if (self)
       {
-        v9 = [a1 idleStateForDescriptor:&v56];
+        v9 = [self idleStateForDescriptor:&v56];
         goto LABEL_34;
       }
     }
@@ -156,43 +156,43 @@
     switch(var0)
     {
       case 2:
-        v48 = *&a3->var0;
-        v15 = a3->var3;
-        v49 = a3->var2;
+        v48 = *&descriptor->var0;
+        v15 = descriptor->var3;
+        v49 = descriptor->var2;
         v8 = v15;
         v50 = v8;
-        v51 = a3->var4;
-        if (a1)
+        v51 = descriptor->var4;
+        if (self)
         {
-          v9 = [a1 syncDownloadingForDescriptor:&v48];
+          v9 = [self syncDownloadingForDescriptor:&v48];
           goto LABEL_34;
         }
 
         break;
       case 3:
-        v44 = *&a3->var0;
-        v17 = a3->var3;
-        v45 = a3->var2;
+        v44 = *&descriptor->var0;
+        v17 = descriptor->var3;
+        v45 = descriptor->var2;
         v8 = v17;
         v46 = v8;
-        v47 = a3->var4;
-        if (a1)
+        v47 = descriptor->var4;
+        if (self)
         {
-          v9 = [a1 syncPausedNoInternetConnectionForDescriptor:&v44];
+          v9 = [self syncPausedNoInternetConnectionForDescriptor:&v44];
           goto LABEL_34;
         }
 
         break;
       case 4:
-        v40 = *&a3->var0;
-        v7 = a3->var3;
-        v41 = a3->var2;
+        v40 = *&descriptor->var0;
+        v7 = descriptor->var3;
+        v41 = descriptor->var2;
         v8 = v7;
         v42 = v8;
-        v43 = a3->var4;
-        if (a1)
+        v43 = descriptor->var4;
+        if (self)
         {
-          v9 = [a1 syncPausedAirplaneModeForDescriptor:&v40];
+          v9 = [self syncPausedAirplaneModeForDescriptor:&v40];
 LABEL_34:
           v3 = v9;
           goto LABEL_36;
@@ -210,17 +210,17 @@ LABEL_36:
   return v3;
 }
 
-+ (id)idleStateForDescriptor:(CKiCloudSyncStatusDescriptor *)a3
++ (id)idleStateForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor
 {
   v5 = objc_alloc_init(CKiCloudSyncStateModel);
-  [(CKiCloudSyncStateModel *)v5 setSyncState:a3->var0];
+  [(CKiCloudSyncStateModel *)v5 setSyncState:descriptor->var0];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusMacButtonType:1];
-  v6 = [a1 _messagesInCloudCountStringWithLongCount:a3->var1];
+  v6 = [self _messagesInCloudCountStringWithLongCount:descriptor->var1];
   [(CKiCloudSyncStateModel *)v5 setMessagesInCloudCount:v6];
 
   [(CKiCloudSyncStateModel *)v5 setSyncStatusFooterText:0];
   [(CKiCloudSyncStateModel *)v5 setSyncAvailable:1];
-  if (a3->var4)
+  if (descriptor->var4)
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"SYNC_PAUSED" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
@@ -229,18 +229,18 @@ LABEL_36:
 
   else
   {
-    v7 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:a3->var3 inContext:1];
+    v7 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:descriptor->var3 inContext:1];
     [(CKiCloudSyncStateModel *)v5 setSyncStatus:v7];
   }
 
   return v5;
 }
 
-+ (id)syncUploadingForDescriptor:(CKiCloudSyncStatusDescriptor *)a3
++ (id)syncUploadingForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor
 {
-  if (a3->var2)
+  if (descriptor->var2)
   {
-    v5 = [a1 _syncingMessagesStringWithLongCount:?];
+    v5 = [self _syncingMessagesStringWithLongCount:?];
   }
 
   else
@@ -249,11 +249,11 @@ LABEL_36:
     v5 = [v6 localizedStringForKey:@"SYNCING_WITH_ICLOUD" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
   }
 
-  v7 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:a3->var3 inContext:0];
+  v7 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:descriptor->var3 inContext:0];
   v8 = objc_alloc_init(CKiCloudSyncStateModel);
-  [(CKiCloudSyncStateModel *)v8 setSyncState:a3->var0];
+  [(CKiCloudSyncStateModel *)v8 setSyncState:descriptor->var0];
   [(CKiCloudSyncStateModel *)v8 setSyncStatusMacButtonType:1];
-  v9 = [a1 _messagesInCloudCountStringWithLongCount:a3->var1];
+  v9 = [self _messagesInCloudCountStringWithLongCount:descriptor->var1];
   [(CKiCloudSyncStateModel *)v8 setMessagesInCloudCount:v9];
 
   [(CKiCloudSyncStateModel *)v8 setSyncStatus:v5];
@@ -264,13 +264,13 @@ LABEL_36:
   return v8;
 }
 
-+ (id)syncDownloadingForDescriptor:(CKiCloudSyncStatusDescriptor *)a3
++ (id)syncDownloadingForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor
 {
-  v5 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:a3->var3 inContext:0];
+  v5 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:descriptor->var3 inContext:0];
   v6 = objc_alloc_init(CKiCloudSyncStateModel);
-  [(CKiCloudSyncStateModel *)v6 setSyncState:a3->var0];
+  [(CKiCloudSyncStateModel *)v6 setSyncState:descriptor->var0];
   [(CKiCloudSyncStateModel *)v6 setSyncStatusMacButtonType:1];
-  v7 = [a1 _messagesInCloudCountStringWithLongCount:a3->var1];
+  v7 = [self _messagesInCloudCountStringWithLongCount:descriptor->var1];
   [(CKiCloudSyncStateModel *)v6 setMessagesInCloudCount:v7];
 
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -284,12 +284,12 @@ LABEL_36:
   return v6;
 }
 
-+ (id)syncCompleteForDescriptor:(CKiCloudSyncStatusDescriptor *)a3
++ (id)syncCompleteForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor
 {
   v5 = objc_alloc_init(CKiCloudSyncStateModel);
-  [(CKiCloudSyncStateModel *)v5 setSyncState:a3->var0];
+  [(CKiCloudSyncStateModel *)v5 setSyncState:descriptor->var0];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusMacButtonType:1];
-  v6 = [a1 _messagesInCloudCountStringWithLongCount:a3->var1];
+  v6 = [self _messagesInCloudCountStringWithLongCount:descriptor->var1];
   [(CKiCloudSyncStateModel *)v5 setMessagesInCloudCount:v6];
 
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -302,12 +302,12 @@ LABEL_36:
   return v5;
 }
 
-+ (id)syncPausedNoInternetConnectionForDescriptor:(CKiCloudSyncStatusDescriptor *)a3
++ (id)syncPausedNoInternetConnectionForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor
 {
   v5 = objc_alloc_init(CKiCloudSyncStateModel);
-  [(CKiCloudSyncStateModel *)v5 setSyncState:a3->var0];
+  [(CKiCloudSyncStateModel *)v5 setSyncState:descriptor->var0];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusMacButtonType:3];
-  v6 = [a1 _messagesInCloudCountStringWithLongCount:a3->var1];
+  v6 = [self _messagesInCloudCountStringWithLongCount:descriptor->var1];
   [(CKiCloudSyncStateModel *)v5 setMessagesInCloudCount:v6];
 
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -326,7 +326,7 @@ LABEL_36:
   v15 = [v14 localizedStringForKey:@"SYNC_ERROR_NO_INTERNET_%@" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
   v16 = [v13 stringWithFormat:v15, v12];
 
-  v17 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:a3->var3 inContext:0];
+  v17 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:descriptor->var3 inContext:0];
   v18 = [CKiCloudSyncStateBuilder _syncFooterTextWithStatusError:v16 dateString:v17];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusFooterText:v18];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusFooterSubstringForHyperlink:v12];
@@ -336,12 +336,12 @@ LABEL_36:
   return v5;
 }
 
-+ (id)syncPausedAirplaneModeForDescriptor:(CKiCloudSyncStatusDescriptor *)a3
++ (id)syncPausedAirplaneModeForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor
 {
   v5 = objc_alloc_init(CKiCloudSyncStateModel);
-  [(CKiCloudSyncStateModel *)v5 setSyncState:a3->var0];
+  [(CKiCloudSyncStateModel *)v5 setSyncState:descriptor->var0];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusMacButtonType:0];
-  v6 = [a1 _messagesInCloudCountStringWithLongCount:a3->var1];
+  v6 = [self _messagesInCloudCountStringWithLongCount:descriptor->var1];
   [(CKiCloudSyncStateModel *)v5 setMessagesInCloudCount:v6];
 
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -360,7 +360,7 @@ LABEL_36:
   v15 = [v14 localizedStringForKey:@"SYNC_ERROR_AIRPLANE_MODE_%@" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
   v16 = [v13 stringWithFormat:v15, v12];
 
-  v17 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:a3->var3 inContext:0];
+  v17 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:descriptor->var3 inContext:0];
   v18 = [CKiCloudSyncStateBuilder _syncFooterTextWithStatusError:v16 dateString:v17];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusFooterText:v18];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusFooterSubstringForHyperlink:v12];
@@ -370,12 +370,12 @@ LABEL_36:
   return v5;
 }
 
-+ (id)syncPausedCellularDataDisabledForDescriptor:(CKiCloudSyncStatusDescriptor *)a3
++ (id)syncPausedCellularDataDisabledForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor
 {
   v5 = objc_alloc_init(CKiCloudSyncStateModel);
-  [(CKiCloudSyncStateModel *)v5 setSyncState:a3->var0];
+  [(CKiCloudSyncStateModel *)v5 setSyncState:descriptor->var0];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusMacButtonType:0];
-  v6 = [a1 _messagesInCloudCountStringWithLongCount:a3->var1];
+  v6 = [self _messagesInCloudCountStringWithLongCount:descriptor->var1];
   [(CKiCloudSyncStateModel *)v5 setMessagesInCloudCount:v6];
 
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -394,7 +394,7 @@ LABEL_36:
   v15 = [v14 localizedStringForKey:@"SYNC_ERROR_NO_CELLULAR_DATA_%@" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
   v16 = [v13 stringWithFormat:v15, v12];
 
-  v17 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:a3->var3 inContext:0];
+  v17 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:descriptor->var3 inContext:0];
   v18 = [CKiCloudSyncStateBuilder _syncFooterTextWithStatusError:v16 dateString:v17];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusFooterText:v18];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusFooterSubstringForHyperlink:v12];
@@ -404,12 +404,12 @@ LABEL_36:
   return v5;
 }
 
-+ (id)accountMismatchStateForDescriptor:(CKiCloudSyncStatusDescriptor *)a3
++ (id)accountMismatchStateForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor
 {
   v5 = objc_alloc_init(CKiCloudSyncStateModel);
-  [(CKiCloudSyncStateModel *)v5 setSyncState:a3->var0];
+  [(CKiCloudSyncStateModel *)v5 setSyncState:descriptor->var0];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusMacButtonType:3];
-  v6 = [a1 _messagesInCloudCountStringWithLongCount:a3->var1];
+  v6 = [self _messagesInCloudCountStringWithLongCount:descriptor->var1];
   [(CKiCloudSyncStateModel *)v5 setMessagesInCloudCount:v6];
 
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -428,7 +428,7 @@ LABEL_36:
   v15 = [v14 localizedStringForKey:@"ICLOUD_ACCOUNT_MISMATCH_%@" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
   v16 = [v13 stringWithFormat:v15, v12];
 
-  v17 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:a3->var3 inContext:0];
+  v17 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:descriptor->var3 inContext:0];
   v18 = [CKiCloudSyncStateBuilder _syncFooterTextWithStatusError:v16 dateString:v17];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusFooterText:v18];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusFooterSubstringForHyperlink:v12];
@@ -438,15 +438,15 @@ LABEL_36:
   return v5;
 }
 
-+ (id)noSyncStorageAlmostFullForDescriptor:(CKiCloudSyncStatusDescriptor *)a3
++ (id)noSyncStorageAlmostFullForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor
 {
   v5 = objc_alloc_init(CKiCloudSyncStateModel);
-  [(CKiCloudSyncStateModel *)v5 setSyncState:a3->var0];
+  [(CKiCloudSyncStateModel *)v5 setSyncState:descriptor->var0];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusMacButtonType:1];
-  v6 = [a1 _messagesInCloudCountStringWithLongCount:a3->var1];
+  v6 = [self _messagesInCloudCountStringWithLongCount:descriptor->var1];
   [(CKiCloudSyncStateModel *)v5 setMessagesInCloudCount:v6];
 
-  v7 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:a3->var3 inContext:0];
+  v7 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:descriptor->var3 inContext:0];
   [(CKiCloudSyncStateModel *)v5 setSyncStatus:v7];
 
   [(CKiCloudSyncStateModel *)v5 setSyncAvailable:1];
@@ -468,12 +468,12 @@ LABEL_36:
   return v5;
 }
 
-+ (id)noSyncStorageFullForDescriptor:(CKiCloudSyncStatusDescriptor *)a3
++ (id)noSyncStorageFullForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor
 {
   v5 = objc_alloc_init(CKiCloudSyncStateModel);
-  [(CKiCloudSyncStateModel *)v5 setSyncState:a3->var0];
+  [(CKiCloudSyncStateModel *)v5 setSyncState:descriptor->var0];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusMacButtonType:2];
-  v6 = [a1 _messagesInCloudCountStringWithLongCount:a3->var1];
+  v6 = [self _messagesInCloudCountStringWithLongCount:descriptor->var1];
   [(CKiCloudSyncStateModel *)v5 setMessagesInCloudCount:v6];
 
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -492,7 +492,7 @@ LABEL_36:
   v15 = [v14 localizedStringForKey:@"YOUR_ICLOUD_STORAGE_IS_FULL_%@" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
   v16 = [v13 stringWithFormat:v15, v12];
 
-  v17 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:a3->var3 inContext:0];
+  v17 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:descriptor->var3 inContext:0];
   v18 = [CKiCloudSyncStateBuilder _syncFooterTextWithStatusError:v16 dateString:v17];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusFooterText:v18];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusFooterSubstringForHyperlink:v12];
@@ -502,12 +502,12 @@ LABEL_36:
   return v5;
 }
 
-+ (id)noSyncStorageOverFullForDescriptor:(CKiCloudSyncStatusDescriptor *)a3
++ (id)noSyncStorageOverFullForDescriptor:(CKiCloudSyncStatusDescriptor *)descriptor
 {
   v5 = objc_alloc_init(CKiCloudSyncStateModel);
-  [(CKiCloudSyncStateModel *)v5 setSyncState:a3->var0];
+  [(CKiCloudSyncStateModel *)v5 setSyncState:descriptor->var0];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusMacButtonType:2];
-  v6 = [a1 _messagesInCloudCountStringWithLongCount:a3->var1];
+  v6 = [self _messagesInCloudCountStringWithLongCount:descriptor->var1];
   [(CKiCloudSyncStateModel *)v5 setMessagesInCloudCount:v6];
 
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -526,7 +526,7 @@ LABEL_36:
   v15 = [v14 localizedStringForKey:@"YOUR_ICLOUD_STORAGE_IS_OVER_FULL_%@" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
   v16 = [v13 stringWithFormat:v15, v12];
 
-  v17 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:a3->var3 inContext:0];
+  v17 = [CKiCloudSettingsUtils lastSyncedDateStringForDate:descriptor->var3 inContext:0];
   v18 = [CKiCloudSyncStateBuilder _syncFooterTextWithStatusError:v16 dateString:v17];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusFooterText:v18];
   [(CKiCloudSyncStateModel *)v5 setSyncStatusFooterSubstringForHyperlink:v12];
@@ -536,10 +536,10 @@ LABEL_36:
   return v5;
 }
 
-+ (id)_messagesInCloudCountStringWithLongCount:(unint64_t)a3
++ (id)_messagesInCloudCountStringWithLongCount:(unint64_t)count
 {
   v4 = +[CKiCloudSettingsUtils sharedNumberFormatter];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:count];
   v6 = [v4 stringFromNumber:v5];
 
   if (v6)
@@ -547,7 +547,7 @@ LABEL_36:
     v7 = MEMORY[0x277CCACA8];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"N_MESSAGE(S)" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
-    v10 = [v7 stringWithFormat:v9, a3, v6];
+    v10 = [v7 stringWithFormat:v9, count, v6];
   }
 
   else
@@ -558,10 +558,10 @@ LABEL_36:
   return v10;
 }
 
-+ (id)_syncingMessagesStringWithLongCount:(unint64_t)a3
++ (id)_syncingMessagesStringWithLongCount:(unint64_t)count
 {
   v4 = +[CKiCloudSettingsUtils sharedNumberFormatter];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:count];
   v6 = [v4 stringFromNumber:v5];
 
   if (v6)
@@ -569,7 +569,7 @@ LABEL_36:
     v7 = MEMORY[0x277CCACA8];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"SYNCING_N_MESSAGE(S)" value:&stru_286A13F00 table:@"iCloudMessagesSettings"];
-    v10 = [v7 stringWithFormat:v9, a3, v6];
+    v10 = [v7 stringWithFormat:v9, count, v6];
   }
 
   else
@@ -580,21 +580,21 @@ LABEL_36:
   return v10;
 }
 
-+ (id)_syncFooterTextWithStatusError:(id)a3 dateString:(id)a4
++ (id)_syncFooterTextWithStatusError:(id)error dateString:(id)string
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (string)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n\n%@", v5, a4];
+    string = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n\n%@", errorCopy, string];
   }
 
   else
   {
-    v7 = v5;
+    string = errorCopy;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }

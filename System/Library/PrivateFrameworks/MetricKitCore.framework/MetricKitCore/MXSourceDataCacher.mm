@@ -1,25 +1,25 @@
 @interface MXSourceDataCacher
-- (BOOL)saveToSourceDirectoryWithDiagnosticSourcePayload:(id)a3;
-- (BOOL)saveToSourceDirectoryWithMetricSourcePayload:(id)a3;
-- (MXSourceDataCacher)initWithSourcePathUtil:(id)a3 andStorageUtil:(id)a4 andBundleUtil:(id)a5;
+- (BOOL)saveToSourceDirectoryWithDiagnosticSourcePayload:(id)payload;
+- (BOOL)saveToSourceDirectoryWithMetricSourcePayload:(id)payload;
+- (MXSourceDataCacher)initWithSourcePathUtil:(id)util andStorageUtil:(id)storageUtil andBundleUtil:(id)bundleUtil;
 @end
 
 @implementation MXSourceDataCacher
 
-- (MXSourceDataCacher)initWithSourcePathUtil:(id)a3 andStorageUtil:(id)a4 andBundleUtil:(id)a5
+- (MXSourceDataCacher)initWithSourcePathUtil:(id)util andStorageUtil:(id)storageUtil andBundleUtil:(id)bundleUtil
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  utilCopy = util;
+  storageUtilCopy = storageUtil;
+  bundleUtilCopy = bundleUtil;
   v17.receiver = self;
   v17.super_class = MXSourceDataCacher;
   v12 = [(MXSourceDataCacher *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sourcePathUtil, a3);
-    objc_storeStrong(&v13->_storageUtil, a4);
-    objc_storeStrong(&v13->_bundleUtil, a5);
+    objc_storeStrong(&v12->_sourcePathUtil, util);
+    objc_storeStrong(&v13->_storageUtil, storageUtil);
+    objc_storeStrong(&v13->_bundleUtil, bundleUtil);
     v14 = os_log_create("com.apple.metrickit", "source.cache.manager");
     logHandle = v13->_logHandle;
     v13->_logHandle = v14;
@@ -33,12 +33,12 @@
   return v13;
 }
 
-- (BOOL)saveToSourceDirectoryWithMetricSourcePayload:(id)a3
+- (BOOL)saveToSourceDirectoryWithMetricSourcePayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   storageUtil = self->_storageUtil;
   v19 = 0;
-  v6 = [(MXStorageUtilProtocol *)storageUtil archivedDataWithObject:v4 error:&v19];
+  v6 = [(MXStorageUtilProtocol *)storageUtil archivedDataWithObject:payloadCopy error:&v19];
   v7 = v19;
   v8 = v7;
   logHandle = self->_logHandle;
@@ -60,10 +60,10 @@
     }
 
     sourcePathUtil = self->_sourcePathUtil;
-    v12 = [v4 sourceID];
-    v13 = [v4 bundleID];
-    v14 = [v4 datestamp];
-    v15 = [(MXSourcePathUtilProtocol *)sourcePathUtil filePathOfMetricSourcePayloadForSourceID:v12 andBundleID:v13 andDate:v14];
+    sourceID = [payloadCopy sourceID];
+    bundleID = [payloadCopy bundleID];
+    datestamp = [payloadCopy datestamp];
+    v15 = [(MXSourcePathUtilProtocol *)sourcePathUtil filePathOfMetricSourcePayloadForSourceID:sourceID andBundleID:bundleID andDate:datestamp];
 
     if (!v15)
     {
@@ -90,7 +90,7 @@
   v16 = self->_logHandle;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    [(MXSourceDataCacher *)v16 saveToSourceDirectoryWithMetricSourcePayload:v4];
+    [(MXSourceDataCacher *)v16 saveToSourceDirectoryWithMetricSourcePayload:payloadCopy];
   }
 
   v17 = 1;
@@ -99,12 +99,12 @@ LABEL_19:
   return v17;
 }
 
-- (BOOL)saveToSourceDirectoryWithDiagnosticSourcePayload:(id)a3
+- (BOOL)saveToSourceDirectoryWithDiagnosticSourcePayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   storageUtil = self->_storageUtil;
   v21 = 0;
-  v6 = [(MXStorageUtilProtocol *)storageUtil archivedDataWithObject:v4 error:&v21];
+  v6 = [(MXStorageUtilProtocol *)storageUtil archivedDataWithObject:payloadCopy error:&v21];
   v7 = v21;
   v8 = v7;
   logHandle = self->_logHandle;
@@ -125,22 +125,22 @@ LABEL_19:
       [MXSourceDataCacher saveToSourceDirectoryWithMetricSourcePayload:];
     }
 
-    v11 = [v4 bundleID];
-    if ([(MXBundleUtilProtocol *)self->_bundleUtil isAppExtensionFromBundleID:v11]&& ([(MXBundleUtilProtocol *)self->_bundleUtil mainAppBundleIDforExtension:v11], v12 = objc_claimAutoreleasedReturnValue(), v11, (v11 = v12) == 0))
+    bundleID = [payloadCopy bundleID];
+    if ([(MXBundleUtilProtocol *)self->_bundleUtil isAppExtensionFromBundleID:bundleID]&& ([(MXBundleUtilProtocol *)self->_bundleUtil mainAppBundleIDforExtension:bundleID], v12 = objc_claimAutoreleasedReturnValue(), bundleID, (bundleID = v12) == 0))
     {
       v19 = self->_logHandle;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        [(MXSourceDataCacher *)v19 saveToSourceDirectoryWithDiagnosticSourcePayload:v4];
+        [(MXSourceDataCacher *)v19 saveToSourceDirectoryWithDiagnosticSourcePayload:payloadCopy];
       }
     }
 
     else
     {
       sourcePathUtil = self->_sourcePathUtil;
-      v14 = [v4 sourceID];
-      v15 = [v4 datestamp];
-      v16 = [(MXSourcePathUtilProtocol *)sourcePathUtil filePathOfDiagnosticSourcePayloadForSourceID:v14 andBundleID:v11 andDate:v15];
+      sourceID = [payloadCopy sourceID];
+      datestamp = [payloadCopy datestamp];
+      v16 = [(MXSourcePathUtilProtocol *)sourcePathUtil filePathOfDiagnosticSourcePayloadForSourceID:sourceID andBundleID:bundleID andDate:datestamp];
 
       if (v16)
       {
@@ -171,7 +171,7 @@ LABEL_18:
   v17 = self->_logHandle;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    [(MXSourceDataCacher *)v17 saveToSourceDirectoryWithMetricSourcePayload:v4];
+    [(MXSourceDataCacher *)v17 saveToSourceDirectoryWithMetricSourcePayload:payloadCopy];
   }
 
   v18 = 1;

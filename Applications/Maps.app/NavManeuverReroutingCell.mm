@@ -1,15 +1,15 @@
 @interface NavManeuverReroutingCell
-- (NavManeuverReroutingCell)initWithFrame:(CGRect)a3;
-- (void)setSelectedWithLayoutProgress:(double)a3;
+- (NavManeuverReroutingCell)initWithFrame:(CGRect)frame;
+- (void)setSelectedWithLayoutProgress:(double)progress;
 - (void)startAnimating;
 @end
 
 @implementation NavManeuverReroutingCell
 
-- (void)setSelectedWithLayoutProgress:(double)a3
+- (void)setSelectedWithLayoutProgress:(double)progress
 {
   v6 = sub_1000808D8();
-  v5 = [v6 colorWithAlphaComponent:a3 * 0.239999995];
+  v5 = [v6 colorWithAlphaComponent:progress * 0.239999995];
   [(UIView *)self->_mapsBackgroundView setBackgroundColor:v5];
 }
 
@@ -21,11 +21,11 @@
   [(UIActivityIndicatorView *)spinnerView startAnimating];
 }
 
-- (NavManeuverReroutingCell)initWithFrame:(CGRect)a3
+- (NavManeuverReroutingCell)initWithFrame:(CGRect)frame
 {
   v74.receiver = self;
   v74.super_class = NavManeuverReroutingCell;
-  v3 = [(NavManeuverReroutingCell *)&v74 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NavManeuverReroutingCell *)&v74 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_class();
@@ -37,14 +37,14 @@
     v3->_mapsBackgroundView = v6;
 
     [(UIView *)v3->_mapsBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [(NavManeuverReroutingCell *)v3 contentView];
-    [v8 addSubview:v3->_mapsBackgroundView];
+    contentView = [(NavManeuverReroutingCell *)v3 contentView];
+    [contentView addSubview:v3->_mapsBackgroundView];
 
     v9 = objc_opt_new();
     [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v9 setAccessibilityIdentifier:@"SignContainerView"];
-    v10 = [(NavManeuverReroutingCell *)v3 contentView];
-    [v10 addSubview:v9];
+    contentView2 = [(NavManeuverReroutingCell *)v3 contentView];
+    [contentView2 addSubview:v9];
 
     v11 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:101];
     spinnerView = v3->_spinnerView;
@@ -73,73 +73,73 @@
 
     [v14 setAccessibilityIdentifier:@"MessageLabel"];
     [v9 addSubview:v14];
-    v72 = [(UIView *)v3->_mapsBackgroundView leadingAnchor];
-    v73 = [(NavManeuverReroutingCell *)v3 contentView];
-    v71 = [v73 leadingAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71];
+    leadingAnchor = [(UIView *)v3->_mapsBackgroundView leadingAnchor];
+    contentView3 = [(NavManeuverReroutingCell *)v3 contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v70 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v75[0] = v70;
-    v68 = [(UIView *)v3->_mapsBackgroundView trailingAnchor];
-    v69 = [(NavManeuverReroutingCell *)v3 contentView];
-    v67 = [v69 trailingAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    trailingAnchor = [(UIView *)v3->_mapsBackgroundView trailingAnchor];
+    contentView4 = [(NavManeuverReroutingCell *)v3 contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    v66 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v75[1] = v66;
-    v64 = [(UIView *)v3->_mapsBackgroundView topAnchor];
-    v65 = [(NavManeuverReroutingCell *)v3 contentView];
-    v63 = [v65 topAnchor];
-    v62 = [v64 constraintEqualToAnchor:v63];
+    topAnchor = [(UIView *)v3->_mapsBackgroundView topAnchor];
+    contentView5 = [(NavManeuverReroutingCell *)v3 contentView];
+    topAnchor2 = [contentView5 topAnchor];
+    v62 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v75[2] = v62;
-    v60 = [(UIView *)v3->_mapsBackgroundView bottomAnchor];
-    v61 = [(NavManeuverReroutingCell *)v3 contentView];
-    v59 = [v61 bottomAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59];
+    bottomAnchor = [(UIView *)v3->_mapsBackgroundView bottomAnchor];
+    contentView6 = [(NavManeuverReroutingCell *)v3 contentView];
+    bottomAnchor2 = [contentView6 bottomAnchor];
+    v58 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v75[3] = v58;
-    v57 = [(UIActivityIndicatorView *)v3->_spinnerView leadingAnchor];
-    v56 = [v9 leadingAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56];
+    leadingAnchor3 = [(UIActivityIndicatorView *)v3->_spinnerView leadingAnchor];
+    leadingAnchor4 = [v9 leadingAnchor];
+    v55 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v75[4] = v55;
-    v54 = [(UIActivityIndicatorView *)v3->_spinnerView centerYAnchor];
-    v53 = [v9 centerYAnchor];
-    v51 = [v54 constraintEqualToAnchor:v53];
+    centerYAnchor = [(UIActivityIndicatorView *)v3->_spinnerView centerYAnchor];
+    centerYAnchor2 = [v9 centerYAnchor];
+    v51 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v75[5] = v51;
-    v50 = [(UIActivityIndicatorView *)v3->_spinnerView widthAnchor];
-    v49 = [v50 constraintEqualToConstant:30.0];
+    widthAnchor = [(UIActivityIndicatorView *)v3->_spinnerView widthAnchor];
+    v49 = [widthAnchor constraintEqualToConstant:30.0];
     v75[6] = v49;
-    v48 = [(UIActivityIndicatorView *)v3->_spinnerView heightAnchor];
-    v47 = [v48 constraintEqualToConstant:30.0];
+    heightAnchor = [(UIActivityIndicatorView *)v3->_spinnerView heightAnchor];
+    v47 = [heightAnchor constraintEqualToConstant:30.0];
     v75[7] = v47;
-    v45 = [v14 leadingAnchor];
-    v44 = [(UIActivityIndicatorView *)v3->_spinnerView trailingAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44 constant:16.0];
+    leadingAnchor5 = [v14 leadingAnchor];
+    trailingAnchor3 = [(UIActivityIndicatorView *)v3->_spinnerView trailingAnchor];
+    v43 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor3 constant:16.0];
     v75[8] = v43;
-    v42 = [v14 trailingAnchor];
-    v41 = [v9 trailingAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    trailingAnchor4 = [v14 trailingAnchor];
+    trailingAnchor5 = [v9 trailingAnchor];
+    v40 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
     v75[9] = v40;
     v52 = v14;
-    v39 = [v14 topAnchor];
-    v38 = [v9 topAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    topAnchor3 = [v14 topAnchor];
+    topAnchor4 = [v9 topAnchor];
+    v37 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v75[10] = v37;
-    v36 = [v14 bottomAnchor];
-    v35 = [v9 bottomAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    bottomAnchor3 = [v14 bottomAnchor];
+    bottomAnchor4 = [v9 bottomAnchor];
+    v34 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v75[11] = v34;
-    v32 = [v9 centerXAnchor];
-    v33 = [(NavManeuverReroutingCell *)v3 contentView];
-    v31 = [v33 centerXAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    centerXAnchor = [v9 centerXAnchor];
+    contentView7 = [(NavManeuverReroutingCell *)v3 contentView];
+    centerXAnchor2 = [contentView7 centerXAnchor];
+    v30 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v75[12] = v30;
     v19 = v9;
     v46 = v9;
-    v20 = [v9 centerYAnchor];
-    v21 = [(NavManeuverReroutingCell *)v3 contentView];
-    v22 = [v21 centerYAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    centerYAnchor3 = [v9 centerYAnchor];
+    contentView8 = [(NavManeuverReroutingCell *)v3 contentView];
+    centerYAnchor4 = [contentView8 centerYAnchor];
+    v23 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v75[13] = v23;
-    v24 = [v19 widthAnchor];
-    v25 = [(NavManeuverReroutingCell *)v3 contentView];
-    v26 = [v25 widthAnchor];
-    v27 = [v24 constraintLessThanOrEqualToAnchor:v26];
+    widthAnchor2 = [v19 widthAnchor];
+    contentView9 = [(NavManeuverReroutingCell *)v3 contentView];
+    widthAnchor3 = [contentView9 widthAnchor];
+    v27 = [widthAnchor2 constraintLessThanOrEqualToAnchor:widthAnchor3];
     v75[14] = v27;
     v28 = [NSArray arrayWithObjects:v75 count:15];
     [NSLayoutConstraint activateConstraints:v28];

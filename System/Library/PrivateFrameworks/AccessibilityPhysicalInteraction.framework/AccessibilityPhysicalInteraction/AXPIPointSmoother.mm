@@ -1,14 +1,14 @@
 @interface AXPIPointSmoother
-+ (CGPoint)_averagePointsInArray:(id)a3;
++ (CGPoint)_averagePointsInArray:(id)array;
 - (AXPIPointSmoother)init;
 - (AXPIPointSmootherClientDelegate)delegate;
-- (CGPoint)medianFilterPointForPoint:(CGPoint)a3;
+- (CGPoint)medianFilterPointForPoint:(CGPoint)point;
 - (CGPoint)point;
-- (CGSize)_deltaForPoint:(CGPoint)a3;
-- (id)_gaussianBlurredArrayFromArray:(id)a3;
+- (CGSize)_deltaForPoint:(CGPoint)point;
+- (id)_gaussianBlurredArrayFromArray:(id)array;
 - (id)_gaussianBlurredPointBuffer;
 - (unint64_t)bufferSize;
-- (void)addPoint:(CGPoint)a3;
+- (void)addPoint:(CGPoint)point;
 - (void)removeAllPoints;
 - (void)updateFPS;
 @end
@@ -41,30 +41,30 @@
   return v3;
 }
 
-- (CGPoint)medianFilterPointForPoint:(CGPoint)a3
+- (CGPoint)medianFilterPointForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(AXPIPointSmoother *)self medianPointBuffer];
+  y = point.y;
+  x = point.x;
+  medianPointBuffer = [(AXPIPointSmoother *)self medianPointBuffer];
   v6 = [MEMORY[0x277CCAE60] valueWithPoint:{x, y}];
-  [v5 addObject:v6];
+  [medianPointBuffer addObject:v6];
 
-  if ([v5 count] >= 8)
+  if ([medianPointBuffer count] >= 8)
   {
     do
     {
-      [v5 removeObjectAtIndex:0];
+      [medianPointBuffer removeObjectAtIndex:0];
     }
 
-    while ([v5 count] > 7);
+    while ([medianPointBuffer count] > 7);
   }
 
-  if ([v5 count] >= 7)
+  if ([medianPointBuffer count] >= 7)
   {
-    v7 = [v5 ax_mappedArrayUsingBlock:&__block_literal_global_5];
+    v7 = [medianPointBuffer ax_mappedArrayUsingBlock:&__block_literal_global_5];
     v8 = [v7 sortedArrayUsingSelector:sel_compare_];
 
-    v9 = [v5 ax_mappedArrayUsingBlock:&__block_literal_global_6];
+    v9 = [medianPointBuffer ax_mappedArrayUsingBlock:&__block_literal_global_6];
     v10 = [v9 sortedArrayUsingSelector:sel_compare_];
 
     v11 = [v8 objectAtIndexedSubscript:{objc_msgSend(v8, "count") >> 1}];
@@ -98,10 +98,10 @@ uint64_t __47__AXPIPointSmoother_medianFilterPointForPoint___block_invoke_2(uint
   return [v2 numberWithDouble:v3];
 }
 
-- (void)addPoint:(CGPoint)a3
+- (void)addPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(AXPIPointSmoother *)self updateFPS];
   if ([(AXPIPointSmoother *)self useMedianFilter])
   {
@@ -110,17 +110,17 @@ uint64_t __47__AXPIPointSmoother_medianFilterPointForPoint___block_invoke_2(uint
     y = v7;
   }
 
-  v8 = [(AXPIPointSmoother *)self pointBuffer];
-  v9 = [v8 count];
+  pointBuffer = [(AXPIPointSmoother *)self pointBuffer];
+  v9 = [pointBuffer count];
 
   if (v9)
   {
     [(AXPIPointSmoother *)self smoothingMaxDelta];
     if (v10 > 0.0)
     {
-      v11 = [(AXPIPointSmoother *)self pointBuffer];
-      v12 = [(AXPIPointSmoother *)self pointBuffer];
-      v13 = [v11 subarrayWithRange:{0, objc_msgSend(v12, "count")}];
+      pointBuffer2 = [(AXPIPointSmoother *)self pointBuffer];
+      pointBuffer3 = [(AXPIPointSmoother *)self pointBuffer];
+      v13 = [pointBuffer2 subarrayWithRange:{0, objc_msgSend(pointBuffer3, "count")}];
 
       [objc_opt_class() _averagePointsInArray:v13];
       AX_CGPointGetDistanceToPoint();
@@ -134,8 +134,8 @@ uint64_t __47__AXPIPointSmoother_medianFilterPointForPoint___block_invoke_2(uint
         v20 = -1;
         while (1)
         {
-          v21 = [(AXPIPointSmoother *)self pointBuffer];
-          v22 = [v21 count];
+          pointBuffer4 = [(AXPIPointSmoother *)self pointBuffer];
+          v22 = [pointBuffer4 count];
 
           if (v18 >= v22 || !v19)
           {
@@ -143,9 +143,9 @@ uint64_t __47__AXPIPointSmoother_medianFilterPointForPoint___block_invoke_2(uint
           }
 
           ++v18;
-          v23 = [(AXPIPointSmoother *)self pointBuffer];
-          v24 = [(AXPIPointSmoother *)self pointBuffer];
-          v25 = [v23 subarrayWithRange:{v18, objc_msgSend(v24, "count") + v20}];
+          pointBuffer5 = [(AXPIPointSmoother *)self pointBuffer];
+          pointBuffer6 = [(AXPIPointSmoother *)self pointBuffer];
+          v25 = [pointBuffer5 subarrayWithRange:{v18, objc_msgSend(pointBuffer6, "count") + v20}];
 
           [objc_opt_class() _averagePointsInArray:v25];
           AX_CGPointGetDistanceToPoint();
@@ -167,8 +167,8 @@ uint64_t __47__AXPIPointSmoother_medianFilterPointForPoint___block_invoke_2(uint
         }
 
 LABEL_12:
-        v29 = [(AXPIPointSmoother *)self pointBuffer];
-        [v29 removeObjectsInRange:{0, v18}];
+        pointBuffer7 = [(AXPIPointSmoother *)self pointBuffer];
+        [pointBuffer7 removeObjectsInRange:{0, v18}];
 
         v13 = v25;
       }
@@ -178,17 +178,17 @@ LABEL_13:
 
     while (1)
     {
-      v31 = [(AXPIPointSmoother *)self pointBuffer];
-      v32 = [v31 count];
-      v33 = [(AXPIPointSmoother *)self bufferSize];
+      pointBuffer8 = [(AXPIPointSmoother *)self pointBuffer];
+      v32 = [pointBuffer8 count];
+      bufferSize = [(AXPIPointSmoother *)self bufferSize];
 
-      if (v32 < v33)
+      if (v32 < bufferSize)
       {
         break;
       }
 
-      v30 = [(AXPIPointSmoother *)self pointBuffer];
-      [v30 removeObjectAtIndex:0];
+      pointBuffer9 = [(AXPIPointSmoother *)self pointBuffer];
+      [pointBuffer9 removeObjectAtIndex:0];
     }
   }
 
@@ -199,15 +199,15 @@ LABEL_13:
     y = y + v35;
   }
 
-  v37 = [(AXPIPointSmoother *)self pointBuffer];
+  pointBuffer10 = [(AXPIPointSmoother *)self pointBuffer];
   v36 = [MEMORY[0x277CCAE60] valueWithPoint:{x, y}];
-  [v37 addObject:v36];
+  [pointBuffer10 addObject:v36];
 }
 
-- (id)_gaussianBlurredArrayFromArray:(id)a3
+- (id)_gaussianBlurredArrayFromArray:(id)array
 {
-  v3 = a3;
-  v4 = [v3 count];
+  arrayCopy = array;
+  v4 = [arrayCopy count];
   if (v4 >= [&unk_284FC7910 count])
   {
     v7 = [&unk_284FC7910 count] + 1;
@@ -219,7 +219,7 @@ LABEL_13:
       v10 = 0;
       do
       {
-        v11 = [v3 objectAtIndexedSubscript:v10];
+        v11 = [arrayCopy objectAtIndexedSubscript:v10];
         [v5 addObject:v11];
 
         ++v10;
@@ -228,7 +228,7 @@ LABEL_13:
       while (v9 != v10);
     }
 
-    if (v9 < [v3 count] - v8)
+    if (v9 < [arrayCopy count] - v8)
     {
       v12 = (v7 & 0xFFFFFFFFFFFFFFFELL) - 1;
       do
@@ -240,7 +240,7 @@ LABEL_13:
         {
           do
           {
-            v16 = [v3 objectAtIndexedSubscript:v14];
+            v16 = [arrayCopy objectAtIndexedSubscript:v14];
             [v13 addObject:v16];
 
             ++v14;
@@ -282,19 +282,19 @@ LABEL_13:
         ++v9;
       }
 
-      while (v9 < [v3 count] - v8);
+      while (v9 < [arrayCopy count] - v8);
     }
 
-    for (i = [v3 count] - v8; i < objc_msgSend(v3, "count"); ++i)
+    for (i = [arrayCopy count] - v8; i < objc_msgSend(arrayCopy, "count"); ++i)
     {
-      v27 = [v3 objectAtIndexedSubscript:i];
+      v27 = [arrayCopy objectAtIndexedSubscript:i];
       [v5 addObject:v27];
     }
   }
 
   else
   {
-    v5 = v3;
+    v5 = arrayCopy;
   }
 
   return v5;
@@ -302,9 +302,9 @@ LABEL_13:
 
 - (id)_gaussianBlurredPointBuffer
 {
-  v3 = [(AXPIPointSmoother *)self pointBuffer];
-  v4 = [v3 ax_mappedArrayUsingBlock:&__block_literal_global_16];
-  v5 = [v3 ax_mappedArrayUsingBlock:&__block_literal_global_18];
+  pointBuffer = [(AXPIPointSmoother *)self pointBuffer];
+  v4 = [pointBuffer ax_mappedArrayUsingBlock:&__block_literal_global_16];
+  v5 = [pointBuffer ax_mappedArrayUsingBlock:&__block_literal_global_18];
   v18 = v4;
   v6 = [(AXPIPointSmoother *)self _gaussianBlurredArrayFromArray:v4];
   v7 = [(AXPIPointSmoother *)self _gaussianBlurredArrayFromArray:v5];
@@ -408,13 +408,13 @@ uint64_t __48__AXPIPointSmoother__gaussianBlurredPointBuffer__block_invoke_2(uin
   return result;
 }
 
-- (CGSize)_deltaForPoint:(CGPoint)a3
+- (CGSize)_deltaForPoint:(CGPoint)point
 {
   v4 = *MEMORY[0x277CBF3A0];
   v5 = *(MEMORY[0x277CBF3A0] + 8);
   v6 = *(MEMORY[0x277CBF3A0] + 16);
   v7 = *(MEMORY[0x277CBF3A0] + 24);
-  v8 = [(AXPIPointSmoother *)self delegate];
+  delegate = [(AXPIPointSmoother *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   v10 = v7;
@@ -423,8 +423,8 @@ uint64_t __48__AXPIPointSmoother__gaussianBlurredPointBuffer__block_invoke_2(uin
   v13 = v4;
   if (v9)
   {
-    v14 = [(AXPIPointSmoother *)self delegate];
-    [v14 rotatedScreenBounds];
+    delegate2 = [(AXPIPointSmoother *)self delegate];
+    [delegate2 rotatedScreenBounds];
     v13 = v15;
     v12 = v16;
     v11 = v17;
@@ -441,8 +441,8 @@ uint64_t __48__AXPIPointSmoother__gaussianBlurredPointBuffer__block_invoke_2(uin
   v47.size.height = v7;
   if (CGRectEqualToRect(v44, v47))
   {
-    v19 = [MEMORY[0x277D759A0] mainScreen];
-    [v19 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v13 = v20;
     v12 = v21;
     v11 = v22;
@@ -460,7 +460,7 @@ uint64_t __48__AXPIPointSmoother__gaussianBlurredPointBuffer__block_invoke_2(uin
   v46.size.height = v10;
   v25 = fmax(MidX, 1.0);
   v26 = fmax(CGRectGetMidY(v46), 1.0);
-  *&MidX = vabdd_f64(v25, a3.x) / v25;
+  *&MidX = vabdd_f64(v25, point.x) / v25;
   [(AXPIPointSmoother *)self xOrder];
   v28 = v27;
   v29 = powf(*&MidX, v28);
@@ -469,18 +469,18 @@ uint64_t __48__AXPIPointSmoother__gaussianBlurredPointBuffer__block_invoke_2(uin
   v32 = v30 * v29;
   [(AXPIPointSmoother *)self yOrder];
   v35 = v34;
-  v33 = vabdd_f64(v26, a3.y) / v26;
+  v33 = vabdd_f64(v26, point.y) / v26;
   v36 = powf(v33, v35);
   [(AXPIPointSmoother *)self yOffset];
   v38 = v37 * v36;
   v39 = -(v31 * v29);
-  if (a3.x > v25)
+  if (point.x > v25)
   {
     v39 = v32;
   }
 
   v40 = -(v37 * v36);
-  if (a3.y <= v26)
+  if (point.y <= v26)
   {
     v38 = v40;
   }
@@ -493,8 +493,8 @@ uint64_t __48__AXPIPointSmoother__gaussianBlurredPointBuffer__block_invoke_2(uin
 
 - (void)removeAllPoints
 {
-  v2 = [(AXPIPointSmoother *)self pointBuffer];
-  [v2 removeAllObjects];
+  pointBuffer = [(AXPIPointSmoother *)self pointBuffer];
+  [pointBuffer removeAllObjects];
 }
 
 - (unint64_t)bufferSize
@@ -533,10 +533,10 @@ uint64_t __48__AXPIPointSmoother__gaussianBlurredPointBuffer__block_invoke_2(uin
 
   else
   {
-    v4 = [(AXPIPointSmoother *)self lowFPSDetectedCount];
-    if (v4 + 1 < 0x32)
+    lowFPSDetectedCount = [(AXPIPointSmoother *)self lowFPSDetectedCount];
+    if (lowFPSDetectedCount + 1 < 0x32)
     {
-      v5 = v4 + 1;
+      v5 = lowFPSDetectedCount + 1;
     }
 
     else
@@ -548,15 +548,15 @@ uint64_t __48__AXPIPointSmoother__gaussianBlurredPointBuffer__block_invoke_2(uin
   [(AXPIPointSmoother *)self setLowFPSDetectedCount:v5];
 }
 
-+ (CGPoint)_averagePointsInArray:(id)a3
++ (CGPoint)_averagePointsInArray:(id)array
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [arrayCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -569,7 +569,7 @@ uint64_t __48__AXPIPointSmoother__gaussianBlurredPointBuffer__block_invoke_2(uin
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrayCopy);
         }
 
         [*(*(&v15 + 1) + 8 * i) CGPointValue];
@@ -577,7 +577,7 @@ uint64_t __48__AXPIPointSmoother__gaussianBlurredPointBuffer__block_invoke_2(uin
         v7 = v7 + v11;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [arrayCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -589,7 +589,7 @@ uint64_t __48__AXPIPointSmoother__gaussianBlurredPointBuffer__block_invoke_2(uin
     v8 = 0.0;
   }
 
-  v12 = [v3 count];
+  v12 = [arrayCopy count];
 
   v13 = v8 / v12;
   v14 = v7 / v12;

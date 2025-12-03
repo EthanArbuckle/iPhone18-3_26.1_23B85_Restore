@@ -1,12 +1,12 @@
 @interface TypistKoreanHangulSyllable
-- (BOOL)_hasConsonantVariants:(id)a3;
-- (TypistKoreanHangulSyllable)initWithSyllable:(unsigned __int16)a3;
-- (int)_determineSyllableStructure:(unint64_t)a3 vowelPositionType:(int)a4;
+- (BOOL)_hasConsonantVariants:(id)variants;
+- (TypistKoreanHangulSyllable)initWithSyllable:(unsigned __int16)syllable;
+- (int)_determineSyllableStructure:(unint64_t)structure vowelPositionType:(int)type;
 @end
 
 @implementation TypistKoreanHangulSyllable
 
-- (TypistKoreanHangulSyllable)initWithSyllable:(unsigned __int16)a3
+- (TypistKoreanHangulSyllable)initWithSyllable:(unsigned __int16)syllable
 {
   v13.receiver = self;
   v13.super_class = TypistKoreanHangulSyllable;
@@ -17,7 +17,7 @@
     jamosInSyllable = v4->jamosInSyllable;
     v4->jamosInSyllable = v5;
 
-    v4->_syllable = a3;
+    v4->_syllable = syllable;
     v7 = [TypistKoreanHangulSyllable decomposeSyllableForScribble:[(TypistKoreanHangulSyllable *)v4 syllable]];
     if ([v7 length])
     {
@@ -43,28 +43,28 @@
   return v4;
 }
 
-- (BOOL)_hasConsonantVariants:(id)a3
+- (BOOL)_hasConsonantVariants:(id)variants
 {
-  v3 = a3;
-  if ([v3 count])
+  variantsCopy = variants;
+  if ([variantsCopy count])
   {
     v4 = 0;
     v5 = 0;
     v6 = 0;
     do
     {
-      v7 = [v3 objectAtIndexedSubscript:v4];
-      v8 = [v7 isConsonantVariant];
+      v7 = [variantsCopy objectAtIndexedSubscript:v4];
+      isConsonantVariant = [v7 isConsonantVariant];
 
-      v6 |= v8;
-      v9 = [v3 objectAtIndexedSubscript:v4];
-      v10 = [v9 isVerticalVowel];
+      v6 |= isConsonantVariant;
+      v9 = [variantsCopy objectAtIndexedSubscript:v4];
+      isVerticalVowel = [v9 isVerticalVowel];
 
-      v5 |= v10;
+      v5 |= isVerticalVowel;
       ++v4;
     }
 
-    while (v4 < [v3 count]);
+    while (v4 < [variantsCopy count]);
     v11 = v6 & v5;
   }
 
@@ -76,22 +76,22 @@
   return v11 & 1;
 }
 
-- (int)_determineSyllableStructure:(unint64_t)a3 vowelPositionType:(int)a4
+- (int)_determineSyllableStructure:(unint64_t)structure vowelPositionType:(int)type
 {
-  if (a3 == 3)
+  if (structure == 3)
   {
-    v4 = a4 - 2;
-    if ((a4 - 2) <= 2)
+    v4 = type - 2;
+    if ((type - 2) <= 2)
     {
       v5 = &unk_2701A463C;
       return v5[v4];
     }
   }
 
-  else if (a3 == 2)
+  else if (structure == 2)
   {
-    v4 = a4 - 2;
-    if ((a4 - 2) < 3)
+    v4 = type - 2;
+    if ((type - 2) < 3)
     {
       v5 = &unk_2701A4630;
       return v5[v4];

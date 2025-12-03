@@ -1,6 +1,6 @@
 @interface NMRSendCommandMessage
-- (NMRSendCommandMessage)initWithCommand:(unsigned int)a3 bundleID:(id)a4 options:(id)a5 originIdentifier:(id)a6;
-- (NMRSendCommandMessage)initWithProtobufData:(id)a3;
+- (NMRSendCommandMessage)initWithCommand:(unsigned int)command bundleID:(id)d options:(id)options originIdentifier:(id)identifier;
+- (NMRSendCommandMessage)initWithProtobufData:(id)data;
 - (NSDate)serializationDate;
 - (NSDictionary)options;
 - (NSNumber)originIdentifier;
@@ -10,11 +10,11 @@
 
 @implementation NMRSendCommandMessage
 
-- (NMRSendCommandMessage)initWithCommand:(unsigned int)a3 bundleID:(id)a4 options:(id)a5 originIdentifier:(id)a6
+- (NMRSendCommandMessage)initWithCommand:(unsigned int)command bundleID:(id)d options:(id)options originIdentifier:(id)identifier
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  optionsCopy = options;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = NMRSendCommandMessage;
   v13 = [(NMRSendCommandMessage *)&v20 init];
@@ -24,28 +24,28 @@
     protobuf = v13->_protobuf;
     v13->_protobuf = v14;
 
-    [(_NMRSendCommandMessageProtobuf *)v13->_protobuf setCommand:sub_1000058C8(a3)];
-    [(_NMRSendCommandMessageProtobuf *)v13->_protobuf setBundleID:v10];
+    [(_NMRSendCommandMessageProtobuf *)v13->_protobuf setCommand:sub_1000058C8(command)];
+    [(_NMRSendCommandMessageProtobuf *)v13->_protobuf setBundleID:dCopy];
     v16 = v13->_protobuf;
-    v17 = sub_100005E08(v11);
+    v17 = sub_100005E08(optionsCopy);
     [(_NMRSendCommandMessageProtobuf *)v16 setOptions:v17];
 
-    -[_NMRSendCommandMessageProtobuf setOriginIdentifier:](v13->_protobuf, "setOriginIdentifier:", [v12 intValue]);
+    -[_NMRSendCommandMessageProtobuf setOriginIdentifier:](v13->_protobuf, "setOriginIdentifier:", [identifierCopy intValue]);
     v18 = v13;
   }
 
   return v13;
 }
 
-- (NMRSendCommandMessage)initWithProtobufData:(id)a3
+- (NMRSendCommandMessage)initWithProtobufData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = NMRSendCommandMessage;
   v5 = [(NMRSendCommandMessage *)&v10 init];
   if (v5)
   {
-    v6 = [[_NMRSendCommandMessageProtobuf alloc] initWithData:v4];
+    v6 = [[_NMRSendCommandMessageProtobuf alloc] initWithData:dataCopy];
     protobuf = v5->_protobuf;
     v5->_protobuf = v6;
 
@@ -57,15 +57,15 @@
 
 - (unsigned)command
 {
-  v2 = [(_NMRSendCommandMessageProtobuf *)self->_protobuf command];
+  command = [(_NMRSendCommandMessageProtobuf *)self->_protobuf command];
 
-  return sub_100005B8C(v2);
+  return sub_100005B8C(command);
 }
 
 - (NSDictionary)options
 {
-  v2 = [(_NMRSendCommandMessageProtobuf *)self->_protobuf options];
-  v3 = sub_100005EB0(v2);
+  options = [(_NMRSendCommandMessageProtobuf *)self->_protobuf options];
+  v3 = sub_100005EB0(options);
 
   return v3;
 }

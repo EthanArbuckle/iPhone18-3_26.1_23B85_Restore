@@ -1,7 +1,7 @@
 @interface MTL4LibraryDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4LibraryDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -15,37 +15,37 @@
   return [(MTL4LibraryDescriptor *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setSource:{-[MTL4LibraryDescriptor source](self, "source")}];
   [v4 setOptions:{-[MTL4LibraryDescriptor options](self, "options")}];
   [v4 setName:{-[MTL4LibraryDescriptor name](self, "name")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_12;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     LOBYTE(v6) = 0;
     return v6;
   }
 
   source = self->_source;
-  if (source == *(a3 + 1) || (v6 = [(NSString *)source isEqual:?]) != 0)
+  if (source == *(equal + 1) || (v6 = [(NSString *)source isEqual:?]) != 0)
   {
     options = self->_options;
-    if (options == *(a3 + 2) || (v6 = [(MTLCompileOptions *)options isEqual:?]) != 0)
+    if (options == *(equal + 2) || (v6 = [(MTLCompileOptions *)options isEqual:?]) != 0)
     {
       name = self->_name;
-      if (name != *(a3 + 3))
+      if (name != *(equal + 3))
       {
 
         LOBYTE(v6) = [(NSString *)name isEqual:?];

@@ -1,117 +1,117 @@
 @interface PSAppCellularUsageSpecifier
-+ (id)appSpecifierWithBundleID:(id)a3 name:(id)a4 statisticsCache:(id)a5 usageType:(unint64_t)a6;
-+ (id)systemPolicySpecifierForAppName:(id)a3 bundleID:(id)a4 icon:(id)a5;
-+ (void)setIconForSpecifier:(id)a3 bundleID:(id)a4;
++ (id)appSpecifierWithBundleID:(id)d name:(id)name statisticsCache:(id)cache usageType:(unint64_t)type;
++ (id)systemPolicySpecifierForAppName:(id)name bundleID:(id)d icon:(id)icon;
++ (void)setIconForSpecifier:(id)specifier bundleID:(id)d;
 - (BOOL)isRestricted;
 - (PSAppCellularUsageSpecifierDelegate)delegate;
 - (PSBillingPeriodSource)billingPeriodSource;
 - (id)dataUsageString;
 - (id)usagePolicy;
 - (unint64_t)dataUsage;
-- (void)setUsagePolicy:(id)a3;
+- (void)setUsagePolicy:(id)policy;
 @end
 
 @implementation PSAppCellularUsageSpecifier
 
-+ (id)appSpecifierWithBundleID:(id)a3 name:(id)a4 statisticsCache:(id)a5 usageType:(unint64_t)a6
++ (id)appSpecifierWithBundleID:(id)d name:(id)name statisticsCache:(id)cache usageType:(unint64_t)type
 {
-  v10 = a3;
-  v11 = [a1 _specifierWithDisplayName:a4 appName:a4 bundleID:v10 shouldShowUsage:1 icon:0 statisticsCache:a5 usageType:a6];
-  if (v10)
+  dCopy = d;
+  v11 = [self _specifierWithDisplayName:name appName:name bundleID:dCopy shouldShowUsage:1 icon:0 statisticsCache:cache usageType:type];
+  if (dCopy)
   {
-    [a1 setIconForSpecifier:v11 bundleID:v10];
+    [self setIconForSpecifier:v11 bundleID:dCopy];
   }
 
   return v11;
 }
 
-+ (void)setIconForSpecifier:(id)a3 bundleID:(id)a4
++ (void)setIconForSpecifier:(id)specifier bundleID:(id)d
 {
-  v12 = a3;
+  specifierCopy = specifier;
   v5 = MEMORY[0x277D75D70];
-  v6 = a4;
-  if ([v5 bundleIdentifierContainsWebClipIdentifier:v6])
+  dCopy = d;
+  if ([v5 bundleIdentifierContainsWebClipIdentifier:dCopy])
   {
-    v7 = [MEMORY[0x277D75D70] webClipIdentifierFromBundleIdentifier:v6];
+    v7 = [MEMORY[0x277D75D70] webClipIdentifierFromBundleIdentifier:dCopy];
 
     v8 = [MEMORY[0x277D75D70] webClipWithIdentifier:v7];
-    v9 = [MEMORY[0x277D759A0] mainScreen];
-    [v9 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v10 = [v8 generateIconImageForFormat:0 scale:?];
 
     if (v10)
     {
-      [v12 setProperty:v10 forKey:*MEMORY[0x277D3FFC0]];
+      [specifierCopy setProperty:v10 forKey:*MEMORY[0x277D3FFC0]];
     }
   }
 
   else
   {
-    [v12 setProperty:v6 forKey:*MEMORY[0x277D40008]];
+    [specifierCopy setProperty:dCopy forKey:*MEMORY[0x277D40008]];
 
     v11 = [MEMORY[0x277CCABB0] numberWithBool:1];
-    [v12 setProperty:v11 forKey:*MEMORY[0x277D40020]];
+    [specifierCopy setProperty:v11 forKey:*MEMORY[0x277D40020]];
 
     v7 = [MEMORY[0x277CCABB0] numberWithBool:1];
-    [v12 setProperty:v7 forKey:*MEMORY[0x277D40018]];
+    [specifierCopy setProperty:v7 forKey:*MEMORY[0x277D40018]];
   }
 }
 
-+ (id)systemPolicySpecifierForAppName:(id)a3 bundleID:(id)a4 icon:(id)a5
++ (id)systemPolicySpecifierForAppName:(id)name bundleID:(id)d icon:(id)icon
 {
   v7 = MEMORY[0x277D75418];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 currentDevice];
-  [v11 sf_isChinaRegionCellularDevice];
+  iconCopy = icon;
+  dCopy = d;
+  nameCopy = name;
+  currentDevice = [v7 currentDevice];
+  [currentDevice sf_isChinaRegionCellularDevice];
 
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = SFLocalizableWAPIStringKeyForKey();
   v14 = [v12 localizedStringForKey:v13 value:&stru_287730CE8 table:@"WirelessData"];
 
   v15 = +[PSDataUsageStatisticsCache sharedInstance];
-  v16 = [PSAppCellularUsageSpecifier _specifierWithDisplayName:v14 appName:v10 bundleID:v9 shouldShowUsage:0 icon:v8 statisticsCache:v15 usageType:0];
+  v16 = [PSAppCellularUsageSpecifier _specifierWithDisplayName:v14 appName:nameCopy bundleID:dCopy shouldShowUsage:0 icon:iconCopy statisticsCache:v15 usageType:0];
 
   return v16;
 }
 
 - (unint64_t)dataUsage
 {
-  v3 = [(PSAppCellularUsageSpecifier *)self billingPeriodSource];
+  billingPeriodSource = [(PSAppCellularUsageSpecifier *)self billingPeriodSource];
   statisticsCache = self->_statisticsCache;
-  v5 = [(PSAppCellularUsageSpecifier *)self bundleID];
-  if (v3)
+  bundleID = [(PSAppCellularUsageSpecifier *)self bundleID];
+  if (billingPeriodSource)
   {
-    v6 = [v3 selectedPeriod];
+    selectedPeriod = [billingPeriodSource selectedPeriod];
   }
 
   else
   {
-    v6 = 0;
+    selectedPeriod = 0;
   }
 
-  v7 = [(PSDataUsageStatisticsCache *)statisticsCache usageForBundleID:v5 inPeriod:v6];
+  v7 = [(PSDataUsageStatisticsCache *)statisticsCache usageForBundleID:bundleID inPeriod:selectedPeriod];
 
-  v8 = [(PSAppCellularUsageSpecifier *)self usageType];
-  v9 = [v7 native];
-  v10 = v9;
-  if (v8 == 1)
+  usageType = [(PSAppCellularUsageSpecifier *)self usageType];
+  native = [v7 native];
+  v10 = native;
+  if (usageType == 1)
   {
-    v11 = [v9 satellite];
-    v12 = [v7 proxied];
-    v13 = [v12 satellite] + v11;
+    satellite = [native satellite];
+    proxied = [v7 proxied];
+    v13 = [proxied satellite] + satellite;
   }
 
   else
   {
-    v14 = [v9 cellularHome];
-    v12 = [v7 native];
-    v15 = [v12 cellularRoaming] + v14;
-    v16 = [v7 proxied];
-    v17 = [v16 cellularHome];
-    v18 = [v7 proxied];
-    v13 = v15 + v17 + [v18 cellularRoaming];
+    cellularHome = [native cellularHome];
+    proxied = [v7 native];
+    v15 = [proxied cellularRoaming] + cellularHome;
+    proxied2 = [v7 proxied];
+    cellularHome2 = [proxied2 cellularHome];
+    proxied3 = [v7 proxied];
+    v13 = v15 + cellularHome2 + [proxied3 cellularRoaming];
   }
 
   return v13;
@@ -119,10 +119,10 @@
 
 - (id)dataUsageString
 {
-  v3 = [(PSAppCellularUsageSpecifier *)self dataUsage];
-  if (v3)
+  dataUsage = [(PSAppCellularUsageSpecifier *)self dataUsage];
+  if (dataUsage)
   {
-    v4 = [SettingsCellularSharedUtils usageSizeString:v3];
+    v4 = [SettingsCellularSharedUtils usageSizeString:dataUsage];
   }
 
   else
@@ -130,16 +130,16 @@
     v4 = 0;
   }
 
-  v5 = [(PSAppCellularUsageSpecifier *)self bundleID];
-  if (!v5)
+  bundleID = [(PSAppCellularUsageSpecifier *)self bundleID];
+  if (!bundleID)
   {
     goto LABEL_8;
   }
 
-  v6 = v5;
+  v6 = bundleID;
   v7 = +[PSCellularManagementCache sharedInstance];
-  v8 = [(PSAppCellularUsageSpecifier *)self bundleID];
-  v9 = [v7 isManaged:v8];
+  bundleID2 = [(PSAppCellularUsageSpecifier *)self bundleID];
+  v9 = [v7 isManaged:bundleID2];
 
   if (v9)
   {
@@ -181,9 +181,9 @@ LABEL_8:
   objc_exception_throw(v2);
 }
 
-- (void)setUsagePolicy:(id)a3
+- (void)setUsagePolicy:(id)policy
 {
-  v3 = a3;
+  policyCopy = policy;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:@"Unimplemented method." reason:@"This method is only implemented by subclasses." userInfo:0];
   objc_exception_throw(v4);
 }
@@ -193,18 +193,18 @@ LABEL_8:
   v3 = +[PSCellularManagementCache sharedInstance];
   if ([v3 isGlobalDataModificationRestricted])
   {
-    v4 = 1;
+    isRestricted = 1;
   }
 
   else
   {
     v5 = +[PSAppDataUsagePolicyCache sharedInstance];
-    v6 = [(PSAppCellularUsageSpecifier *)self bundleID];
-    v7 = [v5 policiesFor:v6];
-    v4 = [v7 isRestricted];
+    bundleID = [(PSAppCellularUsageSpecifier *)self bundleID];
+    v7 = [v5 policiesFor:bundleID];
+    isRestricted = [v7 isRestricted];
   }
 
-  return v4;
+  return isRestricted;
 }
 
 - (PSBillingPeriodSource)billingPeriodSource

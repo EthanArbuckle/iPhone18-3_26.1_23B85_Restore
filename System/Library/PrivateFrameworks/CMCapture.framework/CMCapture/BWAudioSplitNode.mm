@@ -1,16 +1,16 @@
 @interface BWAudioSplitNode
-- (BWAudioSplitNode)initWithInputChannelLayoutTag:(unsigned int)a3 output1ChannelLayoutTag:(unsigned int)a4 output2ChannelLayoutTag:(unsigned int)a5;
-- (uint64_t)_createSplitAndInterleaveFromSampleBuffer:(const opaqueCMFormatDescription *)a3 outputFormat1:(CMSampleBufferRef *)a4 outputBuffer1:(const opaqueCMFormatDescription *)a5 outputFormat2:(CMSampleBufferRef *)a6 outputBuffer2:;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (BWAudioSplitNode)initWithInputChannelLayoutTag:(unsigned int)tag output1ChannelLayoutTag:(unsigned int)layoutTag output2ChannelLayoutTag:(unsigned int)channelLayoutTag;
+- (uint64_t)_createSplitAndInterleaveFromSampleBuffer:(const opaqueCMFormatDescription *)buffer outputFormat1:(CMSampleBufferRef *)format1 outputBuffer1:(const opaqueCMFormatDescription *)buffer1 outputFormat2:(CMSampleBufferRef *)format2 outputBuffer2:;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWAudioSplitNode
 
-- (BWAudioSplitNode)initWithInputChannelLayoutTag:(unsigned int)a3 output1ChannelLayoutTag:(unsigned int)a4 output2ChannelLayoutTag:(unsigned int)a5
+- (BWAudioSplitNode)initWithInputChannelLayoutTag:(unsigned int)tag output1ChannelLayoutTag:(unsigned int)layoutTag output2ChannelLayoutTag:(unsigned int)channelLayoutTag
 {
   v18.receiver = self;
   v18.super_class = BWAudioSplitNode;
@@ -18,14 +18,14 @@
   v9 = v8;
   if (v8)
   {
-    v8->_splitAtIndex = a4;
-    v8->_inputNumberOfChannels = a3;
-    v8->_inputChannelLayoutTag = a3;
-    v8->_output1ChannelLayoutTag = a4;
-    v8->_output2ChannelLayoutTag = a5;
-    if (a3 == -267386874)
+    v8->_splitAtIndex = layoutTag;
+    v8->_inputNumberOfChannels = tag;
+    v8->_inputChannelLayoutTag = tag;
+    v8->_output1ChannelLayoutTag = layoutTag;
+    v8->_output2ChannelLayoutTag = channelLayoutTag;
+    if (tag == -267386874)
     {
-      if (a5 == 12451844)
+      if (channelLayoutTag == 12451844)
       {
         v10 = 1667853921;
       }
@@ -52,7 +52,7 @@
     }
 
     v8->_cinematicAudioIngestDomain = v11;
-    if (v8->_inputNumberOfChannels == a4 + a5)
+    if (v8->_inputNumberOfChannels == layoutTag + channelLayoutTag)
     {
       v12 = [[BWNodeInput alloc] initWithMediaType:1936684398 node:v8];
       if (v12)
@@ -98,20 +98,20 @@
   [(BWNode *)&v2 dealloc];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   if (self->_input)
   {
-    [(BWNodeOutput *)self->_output1 makeConfiguredFormatLive:a3];
+    [(BWNodeOutput *)self->_output1 makeConfiguredFormatLive:d];
     output2 = self->_output2;
 
     [(BWNodeOutput *)output2 makeConfiguredFormatLive];
   }
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  if (a3)
+  if (format)
   {
     splitAtIndex = self->_splitAtIndex;
     v19 = self->_inputNumberOfChannels - splitAtIndex;
@@ -121,7 +121,7 @@
     output1ChannelLayoutTag = self->_output1ChannelLayoutTag;
     v42 = 0;
     v38 = output1ChannelLayoutTag;
-    v8 = [MEMORY[0x1E695DEF0] dataWithBytes:&v38 length:{32, a5}];
+    v8 = [MEMORY[0x1E695DEF0] dataWithBytes:&v38 length:{32, key}];
     cinematicAudioIngestDomain = self->_cinematicAudioIngestDomain;
     if (cinematicAudioIngestDomain && (self->_output1ChannelLayoutTag == 12451844 || self->_output2ChannelLayoutTag == 12451844))
     {
@@ -179,7 +179,7 @@
     v28[4] = 0x1F21754F0;
     v28[5] = 0x1F2175610;
     v29[5] = v8;
-    -[BWNodeOutput setFormat:](self->_output1, "setFormat:", +[BWAudioFormat formatForAVAudioSettings:inputFormat:formatExtensions:](BWAudioFormat, "formatForAVAudioSettings:inputFormat:formatExtensions:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:6], a3, v14));
+    -[BWNodeOutput setFormat:](self->_output1, "setFormat:", +[BWAudioFormat formatForAVAudioSettings:inputFormat:formatExtensions:](BWAudioFormat, "formatForAVAudioSettings:inputFormat:formatExtensions:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:6], format, v14));
     v25 = 0;
     v24 = 0;
     v27 = 0;
@@ -198,7 +198,7 @@
     v21[4] = 0x1F21754F0;
     v21[5] = 0x1F2175610;
     v22[5] = v16;
-    -[BWNodeOutput setFormat:](self->_output2, "setFormat:", +[BWAudioFormat formatForAVAudioSettings:inputFormat:formatExtensions:](BWAudioFormat, "formatForAVAudioSettings:inputFormat:formatExtensions:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:6], a3, v18));
+    -[BWNodeOutput setFormat:](self->_output2, "setFormat:", +[BWAudioFormat formatForAVAudioSettings:inputFormat:formatExtensions:](BWAudioFormat, "formatForAVAudioSettings:inputFormat:formatExtensions:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:6], format, v18));
   }
 
   else
@@ -207,17 +207,17 @@
   }
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  [(BWNodeOutput *)self->_output1 markEndOfLiveOutputForConfigurationID:a3, a4];
+  [(BWNodeOutput *)self->_output1 markEndOfLiveOutputForConfigurationID:d, input];
   output2 = self->_output2;
 
-  [(BWNodeOutput *)output2 markEndOfLiveOutputForConfigurationID:a3];
+  [(BWNodeOutput *)output2 markEndOfLiveOutputForConfigurationID:d];
 }
 
-- (uint64_t)_createSplitAndInterleaveFromSampleBuffer:(const opaqueCMFormatDescription *)a3 outputFormat1:(CMSampleBufferRef *)a4 outputBuffer1:(const opaqueCMFormatDescription *)a5 outputFormat2:(CMSampleBufferRef *)a6 outputBuffer2:
+- (uint64_t)_createSplitAndInterleaveFromSampleBuffer:(const opaqueCMFormatDescription *)buffer outputFormat1:(CMSampleBufferRef *)format1 outputBuffer1:(const opaqueCMFormatDescription *)buffer1 outputFormat2:(CMSampleBufferRef *)format2 outputBuffer2:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -228,7 +228,7 @@
   v64 = 0;
   v62 = 0;
   memset(&timingInfoOut, 0, sizeof(timingInfoOut));
-  if (!sbuf || !a3 || !a4 || !a5 || !a6)
+  if (!sbuf || !buffer || !format1 || !buffer1 || !format2)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_11();
@@ -252,14 +252,14 @@ LABEL_46:
   }
 
   v12 = CMSampleBufferGetFormatDescription(sbuf);
-  if (!v12 || (StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(v12)) == 0 || (mBytesPerFrame = StreamBasicDescription->mBytesPerFrame, mChannelsPerFrame = StreamBasicDescription->mChannelsPerFrame, (v16 = CMAudioFormatDescriptionGetStreamBasicDescription(a3)) == 0) || (v57 = a4, v17 = v16->mBytesPerFrame, v18 = v16->mChannelsPerFrame, (v19 = CMAudioFormatDescriptionGetStreamBasicDescription(a5)) == 0) || (v20 = v19->mChannelsPerFrame, v20 + v18 != mChannelsPerFrame))
+  if (!v12 || (StreamBasicDescription = CMAudioFormatDescriptionGetStreamBasicDescription(v12)) == 0 || (mBytesPerFrame = StreamBasicDescription->mBytesPerFrame, mChannelsPerFrame = StreamBasicDescription->mChannelsPerFrame, (v16 = CMAudioFormatDescriptionGetStreamBasicDescription(buffer)) == 0) || (v57 = format1, v17 = v16->mBytesPerFrame, v18 = v16->mChannelsPerFrame, (v19 = CMAudioFormatDescriptionGetStreamBasicDescription(buffer1)) == 0) || (v20 = v19->mChannelsPerFrame, v20 + v18 != mChannelsPerFrame))
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_11();
     goto LABEL_42;
   }
 
-  v56 = a6;
+  format2Copy = format2;
   v21 = v19->mBytesPerFrame;
   v22 = malloc_type_malloc((16 * mChannelsPerFrame) | 8, 0x10800404ACF7207uLL);
   if (!v22)
@@ -323,7 +323,7 @@ LABEL_45:
     goto LABEL_52;
   }
 
-  formatDescription = a5;
+  formatDescription = buffer1;
   v58 = v22;
   if (NumSamples)
   {
@@ -388,7 +388,7 @@ LABEL_45:
   }
 
   v46 = OUTLINED_FUNCTION_5_41();
-  v51 = CMSampleBufferCreate(v46, v47, v48, v49, v50, formatDescription, NumSamples, 1, &timingInfoOut, 1, &v62, v56);
+  v51 = CMSampleBufferCreate(v46, v47, v48, v49, v50, formatDescription, NumSamples, 1, &timingInfoOut, 1, &v62, format2Copy);
   v22 = v58;
   if (v51)
   {
@@ -417,11 +417,11 @@ LABEL_31:
   return v51;
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v5 = 0;
   cf = 0;
-  if ([(BWAudioSplitNode *)self _createSplitAndInterleaveFromSampleBuffer:a3 outputFormat1:[(BWFormat *)[(BWNodeOutput *)self->_output1 format:a3] formatDescription] outputBuffer1:&cf outputFormat2:[(BWFormat *)[(BWNodeOutput *)self->_output2 format] formatDescription] outputBuffer2:&v5])
+  if ([(BWAudioSplitNode *)self _createSplitAndInterleaveFromSampleBuffer:buffer outputFormat1:[(BWFormat *)[(BWNodeOutput *)self->_output1 format:buffer] formatDescription] outputBuffer1:&cf outputFormat2:[(BWFormat *)[(BWNodeOutput *)self->_output2 format] formatDescription] outputBuffer2:&v5])
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_6();

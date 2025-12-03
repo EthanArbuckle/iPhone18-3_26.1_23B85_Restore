@@ -2,7 +2,7 @@
 - (BOOL)_isDisabled;
 - (BOOL)_wantsOriginalImageColor;
 - (UIActivityViewController)parentViewController;
-- (_SFWebExtensionActivity)initWithPageMenuController:(id)a3 webExtension:(id)a4 tab:(id)a5;
+- (_SFWebExtensionActivity)initWithPageMenuController:(id)controller webExtension:(id)extension tab:(id)tab;
 - (id)_actionImage;
 - (id)_activityBadgeText;
 - (id)_activityImage;
@@ -14,22 +14,22 @@
 
 @implementation _SFWebExtensionActivity
 
-- (_SFWebExtensionActivity)initWithPageMenuController:(id)a3 webExtension:(id)a4 tab:(id)a5
+- (_SFWebExtensionActivity)initWithPageMenuController:(id)controller webExtension:(id)extension tab:(id)tab
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  extensionCopy = extension;
+  tabCopy = tab;
   v16.receiver = self;
   v16.super_class = _SFWebExtensionActivity;
   v11 = [(UIActivity *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_pageMenuController, v8);
-    objc_storeStrong(&v12->_webExtension, a4);
-    objc_storeStrong(&v12->_tab, a5);
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v12 selector:sel__reloadActivitySoon name:@"activityContentsDidUpdate" object:v12->_webExtension];
+    objc_storeWeak(&v11->_pageMenuController, controllerCopy);
+    objc_storeStrong(&v12->_webExtension, extension);
+    objc_storeStrong(&v12->_tab, tab);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__reloadActivitySoon name:@"activityContentsDidUpdate" object:v12->_webExtension];
 
     v14 = v12;
   }
@@ -39,26 +39,26 @@
 
 - (BOOL)_wantsOriginalImageColor
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_pageMenuController);
-  LOBYTE(v2) = [WeakRetained wantsTemplateIconForTab:v2->_tab];
+  LOBYTE(selfCopy) = [WeakRetained wantsTemplateIconForTab:selfCopy->_tab];
 
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
 - (id)_actionImage
 {
   if ([(_SFWebExtensionActivity *)self _wantsOriginalImageColor])
   {
-    v3 = 0;
+    _activityImage = 0;
   }
 
   else
   {
-    v3 = [(_SFWebExtensionActivity *)self _activityImage];
+    _activityImage = [(_SFWebExtensionActivity *)self _activityImage];
   }
 
-  return v3;
+  return _activityImage;
 }
 
 - (id)_activityImage
@@ -72,35 +72,35 @@
 - (id)activityType
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(WBSWebExtensionData *)self->_webExtension composedIdentifier];
-  v4 = [v2 stringWithFormat:@"%@-%@", @"com.apple.mobilesafari.webextension", v3];
+  composedIdentifier = [(WBSWebExtensionData *)self->_webExtension composedIdentifier];
+  v4 = [v2 stringWithFormat:@"%@-%@", @"com.apple.mobilesafari.webextension", composedIdentifier];
 
   return v4;
 }
 
 - (BOOL)_isDisabled
 {
-  v2 = self;
-  v3 = [(WBSWebExtensionData *)self->_webExtension toolbarItem];
-  LOBYTE(v2) = [v3 isEnabledForTab:v2->_tab];
+  selfCopy = self;
+  toolbarItem = [(WBSWebExtensionData *)self->_webExtension toolbarItem];
+  LOBYTE(selfCopy) = [toolbarItem isEnabledForTab:selfCopy->_tab];
 
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
 - (void)performActivity
 {
   WeakRetained = objc_loadWeakRetained(&self->_parentViewController);
-  v3 = [WeakRetained presentingViewController];
+  presentingViewController = [WeakRetained presentingViewController];
   v4 = _SFPopoverSourceInfoForViewController();
   [(UIActivity *)self activityDidFinish:1];
   v5 = objc_loadWeakRetained(&self->_pageMenuController);
-  [v5 performActionForTab:self->_tab parentViewController:v3 popoverSourceInfo:v4];
+  [v5 performActionForTab:self->_tab parentViewController:presentingViewController popoverSourceInfo:v4];
 }
 
 - (id)_activityBadgeText
 {
-  v3 = [(WBSWebExtensionData *)self->_webExtension toolbarItem];
-  v4 = [v3 badgeTextForTab:self->_tab];
+  toolbarItem = [(WBSWebExtensionData *)self->_webExtension toolbarItem];
+  v4 = [toolbarItem badgeTextForTab:self->_tab];
 
   return v4;
 }

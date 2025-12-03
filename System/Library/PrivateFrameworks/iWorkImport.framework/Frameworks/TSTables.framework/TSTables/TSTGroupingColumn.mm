@@ -1,72 +1,72 @@
 @interface TSTGroupingColumn
 + (id)shortStringForDayOfWeekType;
-+ (id)shortStringForDayOfWeekTypeForLocale:(id)a3;
++ (id)shortStringForDayOfWeekTypeForLocale:(id)locale;
 + (id)shortStringForDayType;
-+ (id)shortStringForDayTypeForLocale:(id)a3;
-+ (id)shortStringForGroupingType:(int64_t)a3;
-+ (id)shortStringForGroupingType:(int64_t)a3 locale:(id)a4;
++ (id)shortStringForDayTypeForLocale:(id)locale;
++ (id)shortStringForGroupingType:(int64_t)type;
++ (id)shortStringForGroupingType:(int64_t)type locale:(id)locale;
 + (id)shortStringForMonthOfYearType;
-+ (id)shortStringForMonthOfYearTypeForLocale:(id)a3;
++ (id)shortStringForMonthOfYearTypeForLocale:(id)locale;
 + (id)shortStringForMonthType;
-+ (id)shortStringForMonthTypeForLocale:(id)a3;
++ (id)shortStringForMonthTypeForLocale:(id)locale;
 + (id)shortStringForQuarterOfYearType;
-+ (id)shortStringForQuarterOfYearTypeForLocale:(id)a3;
++ (id)shortStringForQuarterOfYearTypeForLocale:(id)locale;
 + (id)shortStringForYearQuarterType;
-+ (id)shortStringForYearQuarterTypeForLocale:(id)a3;
++ (id)shortStringForYearQuarterTypeForLocale:(id)locale;
 + (id)shortStringForYearType;
-+ (id)shortStringForYearTypeForLocale:(id)a3;
++ (id)shortStringForYearTypeForLocale:(id)locale;
 + (id)shortStringForYearWeekType;
-+ (id)shortStringForYearWeekTypeForLocale:(id)a3;
++ (id)shortStringForYearWeekTypeForLocale:(id)locale;
 + (id)stringForDayOfWeekType;
-+ (id)stringForDayOfWeekTypeForLocale:(id)a3;
++ (id)stringForDayOfWeekTypeForLocale:(id)locale;
 + (id)stringForDayType;
-+ (id)stringForDayTypeForLocale:(id)a3;
-+ (id)stringForGroupingType:(int64_t)a3;
-+ (id)stringForGroupingType:(int64_t)a3 locale:(id)a4;
++ (id)stringForDayTypeForLocale:(id)locale;
++ (id)stringForGroupingType:(int64_t)type;
++ (id)stringForGroupingType:(int64_t)type locale:(id)locale;
 + (id)stringForMonthOfYearType;
-+ (id)stringForMonthOfYearTypeForLocale:(id)a3;
++ (id)stringForMonthOfYearTypeForLocale:(id)locale;
 + (id)stringForMonthType;
-+ (id)stringForMonthTypeForLocale:(id)a3;
++ (id)stringForMonthTypeForLocale:(id)locale;
 + (id)stringForQuarterOfYearType;
-+ (id)stringForQuarterOfYearTypeForLocale:(id)a3;
++ (id)stringForQuarterOfYearTypeForLocale:(id)locale;
 + (id)stringForUniqueType;
-+ (id)stringForUniqueTypeForLocale:(id)a3;
++ (id)stringForUniqueTypeForLocale:(id)locale;
 + (id)stringForYearQuarterType;
-+ (id)stringForYearQuarterTypeForLocale:(id)a3;
++ (id)stringForYearQuarterTypeForLocale:(id)locale;
 + (id)stringForYearType;
-+ (id)stringForYearTypeForLocale:(id)a3;
++ (id)stringForYearTypeForLocale:(id)locale;
 + (id)stringForYearWeekType;
-+ (id)stringForYearWeekTypeForLocale:(id)a3;
-+ (int64_t)coarserGroupingTypeFor:(int64_t)a3;
-+ (int64_t)coarserGroupingTypeFor:(int64_t)a3 groupTypesToAvoid:(id)a4;
-+ (int64_t)finerGroupingTypeFor:(int64_t)a3;
-+ (int64_t)finerGroupingTypeFor:(int64_t)a3 groupTypesToAvoid:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)stringForYearWeekTypeForLocale:(id)locale;
++ (int64_t)coarserGroupingTypeFor:(int64_t)for;
++ (int64_t)coarserGroupingTypeFor:(int64_t)for groupTypesToAvoid:(id)avoid;
++ (int64_t)finerGroupingTypeFor:(int64_t)for;
++ (int64_t)finerGroupingTypeFor:(int64_t)for groupTypesToAvoid:(id)avoid;
+- (BOOL)isEqual:(id)equal;
 - (TSKUIDStruct)columnUid;
 - (TSKUIDStruct)groupingColumnUid;
 - (TSKUIDStruct)uniqueObjectUID;
-- (TSTGroupingColumn)initWithArchive:(const void *)a3;
-- (TSTGroupingColumn)initWithColumnIndex:(TSUModelColumnIndex)a3 groupingType:(int64_t)a4 inTableInfo:(id)a5;
-- (TSTGroupingColumn)initWithColumnUid:(TSKUIDStruct)a3 groupingType:(int64_t)a4;
-- (TSTGroupingColumn)initWithGroupingColumnUid:(TSKUIDStruct)a3 columnUid:(TSKUIDStruct)a4 groupingType:(int64_t)a5;
+- (TSTGroupingColumn)initWithArchive:(const void *)archive;
+- (TSTGroupingColumn)initWithColumnIndex:(TSUModelColumnIndex)index groupingType:(int64_t)type inTableInfo:(id)info;
+- (TSTGroupingColumn)initWithColumnUid:(TSKUIDStruct)uid groupingType:(int64_t)type;
+- (TSTGroupingColumn)initWithGroupingColumnUid:(TSKUIDStruct)uid columnUid:(TSKUIDStruct)columnUid groupingType:(int64_t)type;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)groupValueForValue:(id)a3 calcEngine:(id)a4;
-- (id)p_groupingFormatWithLocale:(id)a3;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
-- (void)getUUIDBytesForColumnUid:(unsigned __int8)a3[16];
-- (void)getUUIDBytesForGroupingColumnUid:(unsigned __int8)a3[16];
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)groupValueForValue:(id)value calcEngine:(id)engine;
+- (id)p_groupingFormatWithLocale:(id)locale;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
+- (void)getUUIDBytesForColumnUid:(unsigned __int8)uid[16];
+- (void)getUUIDBytesForGroupingColumnUid:(unsigned __int8)uid[16];
 - (void)setFunctorForType;
 @end
 
 @implementation TSTGroupingColumn
 
-- (TSTGroupingColumn)initWithGroupingColumnUid:(TSKUIDStruct)a3 columnUid:(TSKUIDStruct)a4 groupingType:(int64_t)a5
+- (TSTGroupingColumn)initWithGroupingColumnUid:(TSKUIDStruct)uid columnUid:(TSKUIDStruct)columnUid groupingType:(int64_t)type
 {
-  upper = a4._upper;
-  lower = a4._lower;
-  v8 = a3._upper;
-  v9 = a3._lower;
+  upper = columnUid._upper;
+  lower = columnUid._lower;
+  v8 = uid._upper;
+  v9 = uid._lower;
   v17.receiver = self;
   v17.super_class = TSTGroupingColumn;
   v10 = [(TSTGroupingColumn *)&v17 init];
@@ -77,26 +77,26 @@
     v10->_groupingColumnUid.var0.var0._upper = v8;
     v10->_columnUid.var0.var0._lower = lower;
     v10->_columnUid.var0.var0._upper = upper;
-    v10->_groupingType = a5;
+    v10->_groupingType = type;
     objc_msgSend_setFunctorForType(v10, v11, v12, v13, v14);
   }
 
   return v15;
 }
 
-- (TSTGroupingColumn)initWithColumnUid:(TSKUIDStruct)a3 groupingType:(int64_t)a4
+- (TSTGroupingColumn)initWithColumnUid:(TSKUIDStruct)uid groupingType:(int64_t)type
 {
-  upper = a3._upper;
-  lower = a3._lower;
+  upper = uid._upper;
+  lower = uid._lower;
   v8 = TSKMakeUIDStructRandom();
-  return objc_msgSend_initWithGroupingColumnUid_columnUid_groupingType_(self, v9, v8, v9, lower, upper, a4);
+  return objc_msgSend_initWithGroupingColumnUid_columnUid_groupingType_(self, v9, v8, v9, lower, upper, type);
 }
 
-- (TSTGroupingColumn)initWithColumnIndex:(TSUModelColumnIndex)a3 groupingType:(int64_t)a4 inTableInfo:(id)a5
+- (TSTGroupingColumn)initWithColumnIndex:(TSUModelColumnIndex)index groupingType:(int64_t)type inTableInfo:(id)info
 {
-  v8 = objc_msgSend_translator(a5, a2, *&a3._column, a4, a5);
-  v12 = objc_msgSend_columnUIDForBaseColumnIndex_(v8, v9, a3._column, v10, v11);
-  v14 = objc_msgSend_initWithColumnUid_groupingType_(self, v13, v12, v13, a4);
+  v8 = objc_msgSend_translator(info, a2, *&index._column, type, info);
+  v12 = objc_msgSend_columnUIDForBaseColumnIndex_(v8, v9, index._column, v10, v11);
+  v14 = objc_msgSend_initWithColumnUid_groupingType_(self, v13, v12, v13, type);
 
   return v14;
 }
@@ -121,7 +121,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSTGroupingColumn alloc];
   v9 = objc_msgSend_groupingColumnUid(self, v5, v6, v7, v8);
@@ -132,9 +132,9 @@
   return objc_msgSend_initWithGroupingColumnUid_columnUid_groupingType_(v4, v15, v9, v11, v16, v15, groupingType);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -164,19 +164,19 @@
   return v20;
 }
 
-- (void)getUUIDBytesForGroupingColumnUid:(unsigned __int8)a3[16]
+- (void)getUUIDBytesForGroupingColumnUid:(unsigned __int8)uid[16]
 {
-  if (a3)
+  if (uid)
   {
-    uuid_copy(a3, self->_groupingColumnUid.var0._uuid);
+    uuid_copy(uid, self->_groupingColumnUid.var0._uuid);
   }
 }
 
-- (void)getUUIDBytesForColumnUid:(unsigned __int8)a3[16]
+- (void)getUUIDBytesForColumnUid:(unsigned __int8)uid[16]
 {
-  if (a3)
+  if (uid)
   {
-    uuid_copy(a3, self->_columnUid.var0._uuid);
+    uuid_copy(uid, self->_columnUid.var0._uuid);
   }
 }
 
@@ -622,12 +622,12 @@ LABEL_24:
   self->_groupingFormatComputed = 0;
 }
 
-- (id)p_groupingFormatWithLocale:(id)a3
+- (id)p_groupingFormatWithLocale:(id)locale
 {
-  v5 = a3;
-  if (self->_docLocale != v5 || !self->_groupingFormatComputed)
+  localeCopy = locale;
+  if (self->_docLocale != localeCopy || !self->_groupingFormatComputed)
   {
-    objc_storeStrong(&self->_docLocale, a3);
+    objc_storeStrong(&self->_docLocale, locale);
     groupingType = self->_groupingType;
     if (groupingType > 3)
     {
@@ -741,13 +741,13 @@ LABEL_29:
   return v52;
 }
 
-- (id)groupValueForValue:(id)a3 calcEngine:(id)a4
+- (id)groupValueForValue:(id)value calcEngine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  valueCopy = value;
+  engineCopy = engine;
+  v8 = valueCopy;
   v13 = TSCEFunctor::isValid(&self->_groupingFunctor, v9, v10, v11, v12) ^ 1;
-  if (!v7)
+  if (!engineCopy)
   {
     LOBYTE(v13) = 1;
   }
@@ -757,7 +757,7 @@ LABEL_29:
   {
     v15 = objc_alloc(MEMORY[0x277CBEA60]);
     v19 = objc_msgSend_initWithObjects_(v15, v16, v8, v17, v18, 0);
-    v20 = TSCEFunctor::evaluateWithArgs(&self->_groupingFunctor, v19, v7);
+    v20 = TSCEFunctor::evaluateWithArgs(&self->_groupingFunctor, v19, engineCopy);
 
     if (v20 && objc_msgSend_valueType(v20, v21, v22, v23, v24) != 9 && objc_msgSend_valueType(v20, v25, v26, v27, v28) && objc_msgSend_valueType(v20, v29, v30, v31, v32) != 10)
     {
@@ -788,11 +788,11 @@ LABEL_29:
   return v14;
 }
 
-- (TSTGroupingColumn)initWithArchive:(const void *)a3
+- (TSTGroupingColumn)initWithArchive:(const void *)archive
 {
-  if ((*(a3 + 16) & 4) != 0)
+  if ((*(archive + 16) & 4) != 0)
   {
-    v5 = TSKUIDStruct::loadFromMessage(*(a3 + 5), a2);
+    v5 = TSKUIDStruct::loadFromMessage(*(archive + 5), a2);
   }
 
   else
@@ -802,9 +802,9 @@ LABEL_29:
 
   v7 = v5;
   v8 = v6;
-  if (*(a3 + 3))
+  if (*(archive + 3))
   {
-    v9 = *(a3 + 3);
+    v9 = *(archive + 3);
   }
 
   else
@@ -815,11 +815,11 @@ LABEL_29:
   v10 = TSKUIDStruct::loadFromMessage(v9, v6);
   v12 = v11;
   TSCEFunctor::TSCEFunctor(&v18);
-  groupingType = *(a3 + 12);
+  groupingType = *(archive + 12);
   self->_groupingType = groupingType;
-  if ((*(a3 + 16) & 2) != 0)
+  if ((*(archive + 16) & 2) != 0)
   {
-    TSCEFunctor::TSCEFunctor(&v17, *(a3 + 4));
+    TSCEFunctor::TSCEFunctor(&v17, *(archive + 4));
     TSCEFunctor::operator=(&v18._formula, &v17);
 
     groupingType = self->_groupingType;
@@ -830,65 +830,65 @@ LABEL_29:
   return v15;
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
-  v17 = a4;
-  *(a3 + 4) |= 4u;
-  v6 = *(a3 + 5);
+  archiverCopy = archiver;
+  *(archive + 4) |= 4u;
+  v6 = *(archive + 5);
   if (!v6)
   {
-    v7 = *(a3 + 1);
+    v7 = *(archive + 1);
     if (v7)
     {
       v7 = *(v7 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v6 = MEMORY[0x223DA0360](v7);
-    *(a3 + 5) = v6;
+    *(archive + 5) = v6;
   }
 
   TSP::UUIDData::saveToMessage(&self->_groupingColumnUid, v6);
-  *(a3 + 4) |= 1u;
-  v8 = *(a3 + 3);
+  *(archive + 4) |= 1u;
+  v8 = *(archive + 3);
   if (!v8)
   {
-    v9 = *(a3 + 1);
+    v9 = *(archive + 1);
     if (v9)
     {
       v9 = *(v9 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v8 = MEMORY[0x223DA0360](v9);
-    *(a3 + 3) = v8;
+    *(archive + 3) = v8;
   }
 
   TSP::UUIDData::saveToMessage(&self->_columnUid, v8);
   groupingType = self->_groupingType;
-  *(a3 + 4) |= 8u;
-  *(a3 + 12) = groupingType;
+  *(archive + 4) |= 8u;
+  *(archive + 12) = groupingType;
   if (TSCEFunctor::isValid(&self->_groupingFunctor, v11, v12, v13, v14))
   {
-    *(a3 + 4) |= 2u;
-    v15 = *(a3 + 4);
+    *(archive + 4) |= 2u;
+    v15 = *(archive + 4);
     if (!v15)
     {
-      v16 = *(a3 + 1);
+      v16 = *(archive + 1);
       if (v16)
       {
         v16 = *(v16 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v15 = google::protobuf::Arena::CreateMaybeMessage<TSCE::FunctorArchive>(v16);
-      *(a3 + 4) = v15;
+      *(archive + 4) = v15;
     }
 
-    TSCEFunctor::encodeToArchive(&self->_groupingFunctor, v15, v17);
+    TSCEFunctor::encodeToArchive(&self->_groupingFunctor, v15, archiverCopy);
   }
 }
 
 + (id)stringForUniqueType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"Value", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -896,7 +896,7 @@ LABEL_29:
 
 + (id)stringForYearType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"Year", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -904,7 +904,7 @@ LABEL_29:
 
 + (id)stringForMonthType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"Year-Month", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -912,7 +912,7 @@ LABEL_29:
 
 + (id)stringForDayOfWeekType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"Day of Week", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -920,7 +920,7 @@ LABEL_29:
 
 + (id)stringForDayType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"Year-Month-Day", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -928,7 +928,7 @@ LABEL_29:
 
 + (id)stringForYearWeekType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"Year-Week", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -936,7 +936,7 @@ LABEL_29:
 
 + (id)stringForYearQuarterType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"Year-Quarter", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -944,7 +944,7 @@ LABEL_29:
 
 + (id)stringForMonthOfYearType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"Month", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -952,7 +952,7 @@ LABEL_29:
 
 + (id)stringForQuarterOfYearType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"Quarter", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -960,7 +960,7 @@ LABEL_29:
 
 + (id)shortStringForYearType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"Year", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -968,7 +968,7 @@ LABEL_29:
 
 + (id)shortStringForMonthType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"YM", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -976,7 +976,7 @@ LABEL_29:
 
 + (id)shortStringForDayOfWeekType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"Day", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -984,7 +984,7 @@ LABEL_29:
 
 + (id)shortStringForDayType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"YMD", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -992,7 +992,7 @@ LABEL_29:
 
 + (id)shortStringForYearWeekType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"YW", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -1000,7 +1000,7 @@ LABEL_29:
 
 + (id)shortStringForYearQuarterType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"YQ", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -1008,7 +1008,7 @@ LABEL_29:
 
 + (id)shortStringForMonthOfYearType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"Month", &stru_2834BADA0, @"TSTables");
 
   return v7;
@@ -1016,145 +1016,145 @@ LABEL_29:
 
 + (id)shortStringForQuarterOfYearType
 {
-  v5 = sub_2214AAEA8(a1, a2, v2, v3, v4);
+  v5 = sub_2214AAEA8(self, a2, v2, v3, v4);
   v7 = objc_msgSend_localizedStringForKey_value_table_(v5, v6, @"Qtr", &stru_2834BADA0, @"TSTables");
 
   return v7;
 }
 
-+ (id)stringForUniqueTypeForLocale:(id)a3
++ (id)stringForUniqueTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"Value", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"Value", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)stringForYearTypeForLocale:(id)a3
++ (id)stringForYearTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"Year", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"Year", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)stringForMonthTypeForLocale:(id)a3
++ (id)stringForMonthTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"Year-Month", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"Year-Month", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)stringForDayOfWeekTypeForLocale:(id)a3
++ (id)stringForDayOfWeekTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"Day of Week", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"Day of Week", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)stringForDayTypeForLocale:(id)a3
++ (id)stringForDayTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"Year-Month-Day", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"Year-Month-Day", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)stringForYearWeekTypeForLocale:(id)a3
++ (id)stringForYearWeekTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"Year-Week", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"Year-Week", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)stringForYearQuarterTypeForLocale:(id)a3
++ (id)stringForYearQuarterTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"Year-Quarter", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"Year-Quarter", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)stringForMonthOfYearTypeForLocale:(id)a3
++ (id)stringForMonthOfYearTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"Month", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"Month", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)stringForQuarterOfYearTypeForLocale:(id)a3
++ (id)stringForQuarterOfYearTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"Quarter", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"Quarter", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)shortStringForYearTypeForLocale:(id)a3
++ (id)shortStringForYearTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"Year", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"Year", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)shortStringForMonthTypeForLocale:(id)a3
++ (id)shortStringForMonthTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"YM", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"YM", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)shortStringForDayOfWeekTypeForLocale:(id)a3
++ (id)shortStringForDayOfWeekTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"Day", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"Day", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)shortStringForDayTypeForLocale:(id)a3
++ (id)shortStringForDayTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"YMD", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"YMD", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)shortStringForYearWeekTypeForLocale:(id)a3
++ (id)shortStringForYearWeekTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"YW", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"YW", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)shortStringForYearQuarterTypeForLocale:(id)a3
++ (id)shortStringForYearQuarterTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"YQ", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"YQ", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)shortStringForMonthOfYearTypeForLocale:(id)a3
++ (id)shortStringForMonthOfYearTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"Month", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"Month", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)shortStringForQuarterOfYearTypeForLocale:(id)a3
++ (id)shortStringForQuarterOfYearTypeForLocale:(id)locale
 {
-  v3 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, @"Qtr", &stru_2834BADA0, @"TSTables");
+  v3 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, @"Qtr", &stru_2834BADA0, @"TSTables");
 
   return v3;
 }
 
-+ (id)shortStringForGroupingType:(int64_t)a3
++ (id)shortStringForGroupingType:(int64_t)type
 {
   v4 = objc_opt_class();
-  if (a3 <= 4)
+  if (type <= 4)
   {
-    if (a3 <= 2)
+    if (type <= 2)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v9 = objc_msgSend_shortStringForYearType(v4, v5, v6, v7, v8);
         goto LABEL_20;
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
         v9 = objc_msgSend_shortStringForMonthType(v4, v5, v6, v7, v8);
         goto LABEL_20;
@@ -1163,7 +1163,7 @@ LABEL_29:
       goto LABEL_19;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       objc_msgSend_shortStringForDayOfWeekType(v4, v5, v6, v7, v8);
     }
@@ -1177,9 +1177,9 @@ LABEL_29:
     goto LABEL_20;
   }
 
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    if (a3 == 5)
+    if (type == 5)
     {
       objc_msgSend_shortStringForYearWeekType(v4, v5, v6, v7, v8);
     }
@@ -1192,13 +1192,13 @@ LABEL_29:
     goto LABEL_9;
   }
 
-  if (a3 == 7)
+  if (type == 7)
   {
     v9 = objc_msgSend_shortStringForMonthOfYearType(v4, v5, v6, v7, v8);
     goto LABEL_20;
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
     v9 = objc_msgSend_shortStringForQuarterOfYearType(v4, v5, v6, v7, v8);
     goto LABEL_20;
@@ -1211,20 +1211,20 @@ LABEL_20:
   return v9;
 }
 
-+ (id)stringForGroupingType:(int64_t)a3
++ (id)stringForGroupingType:(int64_t)type
 {
   v4 = objc_opt_class();
-  if (a3 <= 4)
+  if (type <= 4)
   {
-    if (a3 <= 2)
+    if (type <= 2)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v9 = objc_msgSend_stringForYearType(v4, v5, v6, v7, v8);
         goto LABEL_20;
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
         v9 = objc_msgSend_stringForMonthType(v4, v5, v6, v7, v8);
         goto LABEL_20;
@@ -1233,7 +1233,7 @@ LABEL_20:
       goto LABEL_19;
     }
 
-    if (a3 == 3)
+    if (type == 3)
     {
       objc_msgSend_stringForDayOfWeekType(v4, v5, v6, v7, v8);
     }
@@ -1247,9 +1247,9 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    if (a3 == 5)
+    if (type == 5)
     {
       objc_msgSend_stringForYearWeekType(v4, v5, v6, v7, v8);
     }
@@ -1262,13 +1262,13 @@ LABEL_20:
     goto LABEL_9;
   }
 
-  if (a3 == 7)
+  if (type == 7)
   {
     v9 = objc_msgSend_stringForMonthOfYearType(v4, v5, v6, v7, v8);
     goto LABEL_20;
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
     v9 = objc_msgSend_stringForQuarterOfYearType(v4, v5, v6, v7, v8);
     goto LABEL_20;
@@ -1281,24 +1281,24 @@ LABEL_20:
   return v9;
 }
 
-+ (id)stringForGroupingType:(int64_t)a3 locale:(id)a4
++ (id)stringForGroupingType:(int64_t)type locale:(id)locale
 {
-  v5 = a4;
-  if (a3 <= 4)
+  localeCopy = locale;
+  if (type <= 4)
   {
-    if (a3 <= 2)
+    if (type <= 2)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v23 = objc_opt_class();
-        v10 = objc_msgSend_stringForYearTypeForLocale_(v23, v24, v5, v25, v26);
+        v10 = objc_msgSend_stringForYearTypeForLocale_(v23, v24, localeCopy, v25, v26);
         goto LABEL_20;
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
         v6 = objc_opt_class();
-        v10 = objc_msgSend_stringForMonthTypeForLocale_(v6, v7, v5, v8, v9);
+        v10 = objc_msgSend_stringForMonthTypeForLocale_(v6, v7, localeCopy, v8, v9);
         goto LABEL_20;
       }
 
@@ -1306,77 +1306,77 @@ LABEL_20:
     }
 
     v15 = objc_opt_class();
-    if (a3 == 3)
+    if (type == 3)
     {
-      objc_msgSend_stringForDayOfWeekTypeForLocale_(v15, v16, v5, v17, v18);
+      objc_msgSend_stringForDayOfWeekTypeForLocale_(v15, v16, localeCopy, v17, v18);
     }
 
     else
     {
-      objc_msgSend_stringForDayTypeForLocale_(v15, v16, v5, v17, v18);
+      objc_msgSend_stringForDayTypeForLocale_(v15, v16, localeCopy, v17, v18);
     }
 
     v10 = LABEL_9:;
     goto LABEL_20;
   }
 
-  if (a3 <= 6)
+  if (type <= 6)
   {
     v11 = objc_opt_class();
-    if (a3 == 5)
+    if (type == 5)
     {
-      objc_msgSend_stringForYearWeekTypeForLocale_(v11, v12, v5, v13, v14);
+      objc_msgSend_stringForYearWeekTypeForLocale_(v11, v12, localeCopy, v13, v14);
     }
 
     else
     {
-      objc_msgSend_stringForYearQuarterTypeForLocale_(v11, v12, v5, v13, v14);
+      objc_msgSend_stringForYearQuarterTypeForLocale_(v11, v12, localeCopy, v13, v14);
     }
 
     goto LABEL_9;
   }
 
-  if (a3 == 7)
+  if (type == 7)
   {
     v27 = objc_opt_class();
-    v10 = objc_msgSend_stringForMonthOfYearTypeForLocale_(v27, v28, v5, v29, v30);
+    v10 = objc_msgSend_stringForMonthOfYearTypeForLocale_(v27, v28, localeCopy, v29, v30);
     goto LABEL_20;
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
     v19 = objc_opt_class();
-    v10 = objc_msgSend_stringForQuarterOfYearTypeForLocale_(v19, v20, v5, v21, v22);
+    v10 = objc_msgSend_stringForQuarterOfYearTypeForLocale_(v19, v20, localeCopy, v21, v22);
     goto LABEL_20;
   }
 
 LABEL_19:
   v31 = objc_opt_class();
-  v10 = objc_msgSend_stringForUniqueTypeForLocale_(v31, v32, v5, v33, v34);
+  v10 = objc_msgSend_stringForUniqueTypeForLocale_(v31, v32, localeCopy, v33, v34);
 LABEL_20:
   v35 = v10;
 
   return v35;
 }
 
-+ (id)shortStringForGroupingType:(int64_t)a3 locale:(id)a4
++ (id)shortStringForGroupingType:(int64_t)type locale:(id)locale
 {
-  v5 = a4;
-  if (a3 <= 4)
+  localeCopy = locale;
+  if (type <= 4)
   {
-    if (a3 <= 2)
+    if (type <= 2)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v23 = objc_opt_class();
-        v10 = objc_msgSend_shortStringForYearTypeForLocale_(v23, v24, v5, v25, v26);
+        v10 = objc_msgSend_shortStringForYearTypeForLocale_(v23, v24, localeCopy, v25, v26);
         goto LABEL_20;
       }
 
-      if (a3 == 2)
+      if (type == 2)
       {
         v6 = objc_opt_class();
-        v10 = objc_msgSend_shortStringForMonthTypeForLocale_(v6, v7, v5, v8, v9);
+        v10 = objc_msgSend_shortStringForMonthTypeForLocale_(v6, v7, localeCopy, v8, v9);
         goto LABEL_20;
       }
 
@@ -1384,121 +1384,121 @@ LABEL_20:
     }
 
     v15 = objc_opt_class();
-    if (a3 == 3)
+    if (type == 3)
     {
-      objc_msgSend_shortStringForDayOfWeekTypeForLocale_(v15, v16, v5, v17, v18);
+      objc_msgSend_shortStringForDayOfWeekTypeForLocale_(v15, v16, localeCopy, v17, v18);
     }
 
     else
     {
-      objc_msgSend_shortStringForDayTypeForLocale_(v15, v16, v5, v17, v18);
+      objc_msgSend_shortStringForDayTypeForLocale_(v15, v16, localeCopy, v17, v18);
     }
 
     v10 = LABEL_9:;
     goto LABEL_20;
   }
 
-  if (a3 <= 6)
+  if (type <= 6)
   {
     v11 = objc_opt_class();
-    if (a3 == 5)
+    if (type == 5)
     {
-      objc_msgSend_shortStringForYearWeekTypeForLocale_(v11, v12, v5, v13, v14);
+      objc_msgSend_shortStringForYearWeekTypeForLocale_(v11, v12, localeCopy, v13, v14);
     }
 
     else
     {
-      objc_msgSend_shortStringForYearQuarterTypeForLocale_(v11, v12, v5, v13, v14);
+      objc_msgSend_shortStringForYearQuarterTypeForLocale_(v11, v12, localeCopy, v13, v14);
     }
 
     goto LABEL_9;
   }
 
-  if (a3 == 7)
+  if (type == 7)
   {
     v27 = objc_opt_class();
-    v10 = objc_msgSend_shortStringForMonthOfYearTypeForLocale_(v27, v28, v5, v29, v30);
+    v10 = objc_msgSend_shortStringForMonthOfYearTypeForLocale_(v27, v28, localeCopy, v29, v30);
     goto LABEL_20;
   }
 
-  if (a3 == 8)
+  if (type == 8)
   {
     v19 = objc_opt_class();
-    v10 = objc_msgSend_shortStringForQuarterOfYearTypeForLocale_(v19, v20, v5, v21, v22);
+    v10 = objc_msgSend_shortStringForQuarterOfYearTypeForLocale_(v19, v20, localeCopy, v21, v22);
     goto LABEL_20;
   }
 
 LABEL_19:
   v31 = objc_opt_class();
-  v10 = objc_msgSend_stringForUniqueTypeForLocale_(v31, v32, v5, v33, v34);
+  v10 = objc_msgSend_stringForUniqueTypeForLocale_(v31, v32, localeCopy, v33, v34);
 LABEL_20:
   v35 = v10;
 
   return v35;
 }
 
-+ (int64_t)coarserGroupingTypeFor:(int64_t)a3
++ (int64_t)coarserGroupingTypeFor:(int64_t)for
 {
-  if ((a3 - 1) > 7)
+  if ((for - 1) > 7)
   {
     return 0;
   }
 
   else
   {
-    return qword_2217E2190[a3 - 1];
+    return qword_2217E2190[for - 1];
   }
 }
 
-+ (int64_t)coarserGroupingTypeFor:(int64_t)a3 groupTypesToAvoid:(id)a4
++ (int64_t)coarserGroupingTypeFor:(int64_t)for groupTypesToAvoid:(id)avoid
 {
-  v9 = a4;
+  avoidCopy = avoid;
   do
   {
-    v13 = objc_msgSend_coarserGroupingTypeFor_(a1, v6, a3, v7, v8);
-    if (v13 == a3)
+    v13 = objc_msgSend_coarserGroupingTypeFor_(self, v6, for, v7, v8);
+    if (v13 == for)
     {
       break;
     }
 
-    a3 = v13;
+    for = v13;
   }
 
-  while ((objc_msgSend_containsIndex_(v9, v10, v13, v11, v12) & 1) != 0);
+  while ((objc_msgSend_containsIndex_(avoidCopy, v10, v13, v11, v12) & 1) != 0);
 
-  return a3;
+  return for;
 }
 
-+ (int64_t)finerGroupingTypeFor:(int64_t)a3
++ (int64_t)finerGroupingTypeFor:(int64_t)for
 {
-  if ((a3 - 1) > 7)
+  if ((for - 1) > 7)
   {
     return 0;
   }
 
   else
   {
-    return qword_2217E21D0[a3 - 1];
+    return qword_2217E21D0[for - 1];
   }
 }
 
-+ (int64_t)finerGroupingTypeFor:(int64_t)a3 groupTypesToAvoid:(id)a4
++ (int64_t)finerGroupingTypeFor:(int64_t)for groupTypesToAvoid:(id)avoid
 {
-  v9 = a4;
+  avoidCopy = avoid;
   do
   {
-    v13 = objc_msgSend_finerGroupingTypeFor_(a1, v6, a3, v7, v8);
-    if (v13 == a3)
+    v13 = objc_msgSend_finerGroupingTypeFor_(self, v6, for, v7, v8);
+    if (v13 == for)
     {
       break;
     }
 
-    a3 = v13;
+    for = v13;
   }
 
-  while ((objc_msgSend_containsIndex_(v9, v10, v13, v11, v12) & 1) != 0);
+  while ((objc_msgSend_containsIndex_(avoidCopy, v10, v13, v11, v12) & 1) != 0);
 
-  return a3;
+  return for;
 }
 
 - (TSKUIDStruct)uniqueObjectUID

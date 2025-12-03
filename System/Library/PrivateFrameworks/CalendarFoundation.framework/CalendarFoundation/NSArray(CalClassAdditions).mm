@@ -21,13 +21,13 @@
 - (void)CalMutableRecursiveCopy
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -39,33 +39,33 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [v8 CalMutableRecursiveCopy];
+          calMutableRecursiveCopy = [v8 CalMutableRecursiveCopy];
         }
 
         else if ((objc_opt_respondsToSelector() & 1) != 0 && [v8 conformsToProtocol:{&unk_1F37B6050, v13}])
         {
-          v9 = [v8 mutableCopy];
+          calMutableRecursiveCopy = [v8 mutableCopy];
         }
 
         else
         {
-          v9 = [v8 copy];
+          calMutableRecursiveCopy = [v8 copy];
         }
 
-        v10 = v9;
-        [v2 addObject:{v9, v13}];
+        v10 = calMutableRecursiveCopy;
+        [v2 addObject:{calMutableRecursiveCopy, v13}];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -78,13 +78,13 @@
 - (id)allObjectsWithClass:()CalClassAdditions
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -95,17 +95,17 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         if (objc_opt_isKindOfClass())
         {
-          [v2 addObject:{v8, v11}];
+          [array addObject:{v8, v11}];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -113,7 +113,7 @@
 
   v9 = *MEMORY[0x1E69E9840];
 
-  return v2;
+  return array;
 }
 
 + (id)arrayOfSetsBySplitting:()CalClassAdditions batchSize:
@@ -168,7 +168,7 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -188,10 +188,10 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 valueForKey:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self valueForKey:{*(*(&v14 + 1) + 8 * i), v14}];
         if (v11)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -203,14 +203,14 @@
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
 - (id)_CalArrayOfValueForKeyPaths:()CalClassAdditions
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -230,10 +230,10 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 valueForKeyPath:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self valueForKeyPath:{*(*(&v14 + 1) + 8 * i), v14}];
         if (v11)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -245,23 +245,23 @@
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
 - (id)_CalStringForArrayOfValues:()CalClassAdditions
 {
   v24 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [MEMORY[0x1E696AD60] string];
-  v5 = [v3 firstObject];
-  v6 = [v5 count];
+  string = [MEMORY[0x1E696AD60] string];
+  firstObject = [v3 firstObject];
+  v6 = [firstObject count];
 
   if (v6)
   {
     v7 = 0;
     do
     {
-      v8 = [MEMORY[0x1E696AD60] string];
+      string2 = [MEMORY[0x1E696AD60] string];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
@@ -282,7 +282,7 @@
             }
 
             v14 = [*(*(&v19 + 1) + 8 * i) objectAtIndexedSubscript:v7];
-            [v8 appendFormat:@"%@, ", v14];
+            [string2 appendFormat:@"%@, ", v14];
           }
 
           v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -291,10 +291,10 @@
         while (v11);
       }
 
-      [v4 appendFormat:@"%@\n", v8];
+      [string appendFormat:@"%@\n", string2];
       ++v7;
-      v15 = [v9 firstObject];
-      v16 = [v15 count];
+      firstObject2 = [v9 firstObject];
+      v16 = [firstObject2 count];
     }
 
     while (v16 > v7);
@@ -302,21 +302,21 @@
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return string;
 }
 
 - (id)CalStringValueForKeys:()CalClassAdditions
 {
-  v2 = [a1 _CalArrayOfValueForKeys:?];
-  v3 = [a1 _CalStringForArrayOfValues:v2];
+  v2 = [self _CalArrayOfValueForKeys:?];
+  v3 = [self _CalStringForArrayOfValues:v2];
 
   return v3;
 }
 
 - (id)CalStringValueForKeyPaths:()CalClassAdditions
 {
-  v2 = [a1 _CalArrayOfValueForKeyPaths:?];
-  v3 = [a1 _CalStringForArrayOfValues:v2];
+  v2 = [self _CalArrayOfValueForKeyPaths:?];
+  v3 = [self _CalStringForArrayOfValues:v2];
 
   return v3;
 }
@@ -324,19 +324,19 @@
 - (id)CalStringValueForKeys:()CalClassAdditions keyPaths:
 {
   v6 = a4;
-  v7 = [a1 _CalArrayOfValueForKeys:a3];
-  v8 = [a1 _CalArrayOfValueForKeyPaths:v6];
+  v7 = [self _CalArrayOfValueForKeys:a3];
+  v8 = [self _CalArrayOfValueForKeyPaths:v6];
 
   [v7 addObjectsFromArray:v8];
-  v9 = [a1 _CalStringForArrayOfValues:v7];
+  v9 = [self _CalStringForArrayOfValues:v7];
 
   return v9;
 }
 
 - (id)filteredArrayUsingTest:()CalClassAdditions
 {
-  v2 = [a1 indexesOfObjectsPassingTest:?];
-  v3 = [a1 objectsAtIndexes:v2];
+  v2 = [self indexesOfObjectsPassingTest:?];
+  v3 = [self objectsAtIndexes:v2];
 
   return v3;
 }
@@ -350,7 +350,7 @@
   v9[3] = &unk_1E7EC7228;
   v5 = v4;
   v10 = v5;
-  v6 = [a1 indexOfObjectPassingTest:v9];
+  v6 = [self indexOfObjectPassingTest:v9];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = 0;
@@ -358,7 +358,7 @@
 
   else
   {
-    v7 = [a1 objectAtIndex:v6];
+    v7 = [self objectAtIndex:v6];
   }
 
   return v7;
@@ -373,8 +373,8 @@
   v9[3] = &unk_1E7EC7228;
   v10 = v4;
   v5 = v4;
-  v6 = [a1 indexesOfObjectsPassingTest:v9];
-  v7 = [a1 objectsAtIndexes:v6];
+  v6 = [self indexesOfObjectsPassingTest:v9];
+  v7 = [self objectsAtIndexes:v6];
 
   return v7;
 }
@@ -383,13 +383,13 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(self, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -400,7 +400,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v4[2](v4, *(*(&v15 + 1) + 8 * i));
@@ -411,12 +411,12 @@
 
         else
         {
-          v12 = [MEMORY[0x1E695DFB0] null];
-          [v5 addObject:v12];
+          null = [MEMORY[0x1E695DFB0] null];
+          [v5 addObject:null];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -431,13 +431,13 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -448,14 +448,14 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v4[2](v4, *(*(&v14 + 1) + 8 * i));
-        [v5 addObjectsFromArray:{v11, v14}];
+        [array addObjectsFromArray:{v11, v14}];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -463,22 +463,22 @@
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
 - (id)CalTake:()CalClassAdditions
 {
-  if ([a1 count] >= a3)
+  if ([self count] >= a3)
   {
-    v5 = [a1 subarrayWithRange:{0, a3}];
+    selfCopy = [self subarrayWithRange:{0, a3}];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

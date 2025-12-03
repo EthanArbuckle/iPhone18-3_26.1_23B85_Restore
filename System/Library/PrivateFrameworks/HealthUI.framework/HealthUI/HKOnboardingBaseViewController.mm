@@ -2,42 +2,42 @@
 - (double)_titleTopToFirstBaselineLeading;
 - (double)contentTop;
 - (double)titleTopToFirstBaseline;
-- (id)_buttonForButtonType:(int64_t)a3;
+- (id)_buttonForButtonType:(int64_t)type;
 - (id)_cancelButton;
 - (id)_cancelWithConfirmButton;
 - (id)_closeButton;
 - (id)_skipButton;
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4;
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version;
 - (id)titleFont;
 - (void)_adjustScrollViewForFooterView;
 - (void)_setUpNavigationBar;
-- (void)cancelWithConfirmButtonTapped:(id)a3;
-- (void)closeButtonTapped:(id)a3;
-- (void)presentAlertWithMessage:(id)a3 title:(id)a4;
-- (void)presentLearnMoreAlertWithMessage:(id)a3 learnMoreTapped:(id)a4;
+- (void)cancelWithConfirmButtonTapped:(id)tapped;
+- (void)closeButtonTapped:(id)tapped;
+- (void)presentAlertWithMessage:(id)message title:(id)title;
+- (void)presentLearnMoreAlertWithMessage:(id)message learnMoreTapped:(id)tapped;
 - (void)removeFooterView;
-- (void)setFooterView:(id)a3 insets:(NSDirectionalEdgeInsets)a4;
-- (void)setLeftButtonType:(int64_t)a3;
-- (void)setRightButtonType:(int64_t)a3;
+- (void)setFooterView:(id)view insets:(NSDirectionalEdgeInsets)insets;
+- (void)setLeftButtonType:(int64_t)type;
+- (void)setRightButtonType:(int64_t)type;
 - (void)setUpConstraints;
 - (void)setUpUI;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HKOnboardingBaseViewController
 
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version
 {
   v7.receiver = self;
   v7.super_class = HKOnboardingBaseViewController;
   result = [(HKOnboardingBaseViewController *)&v7 initWithNibName:0 bundle:0];
   if (result)
   {
-    *(result + 992) = a3;
-    *(result + 125) = a4;
+    *(result + 992) = onboarding;
+    *(result + 125) = version;
   }
 
   return result;
@@ -48,9 +48,9 @@
   v5.receiver = self;
   v5.super_class = HKOnboardingBaseViewController;
   [(HKOnboardingBaseViewController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v4 = [(HKOnboardingBaseViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [(HKOnboardingBaseViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   [(HKOnboardingBaseViewController *)self setUpUI];
   [(HKOnboardingBaseViewController *)self setUpConstraints];
@@ -60,13 +60,13 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HKOnboardingBaseViewController;
-  [(HKOnboardingBaseViewController *)&v5 viewWillAppear:a3];
-  v4 = [(HKOnboardingBaseViewController *)self scrollView];
-  [v4 flashScrollIndicators];
+  [(HKOnboardingBaseViewController *)&v5 viewWillAppear:appear];
+  scrollView = [(HKOnboardingBaseViewController *)self scrollView];
+  [scrollView flashScrollIndicators];
 }
 
 - (void)viewDidLayoutSubviews
@@ -74,23 +74,23 @@
   v4.receiver = self;
   v4.super_class = HKOnboardingBaseViewController;
   [(HKOnboardingBaseViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(HKOnboardingBaseViewController *)self traitCollection];
-  -[HKOnboardingBaseViewController updateUserInterfaceForStyle:](self, "updateUserInterfaceForStyle:", [v3 userInterfaceStyle]);
+  traitCollection = [(HKOnboardingBaseViewController *)self traitCollection];
+  -[HKOnboardingBaseViewController updateUserInterfaceForStyle:](self, "updateUserInterfaceForStyle:", [traitCollection userInterfaceStyle]);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = HKOnboardingBaseViewController;
-  v4 = a3;
-  [(HKOnboardingBaseViewController *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(HKOnboardingBaseViewController *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(HKOnboardingBaseViewController *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
 
-  v7 = [v4 userInterfaceStyle];
-  if (v6 != v7)
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    [(HKOnboardingBaseViewController *)self updateUserInterfaceForStyle:v6];
+    [(HKOnboardingBaseViewController *)self updateUserInterfaceForStyle:userInterfaceStyle];
   }
 }
 
@@ -99,90 +99,90 @@
   v3 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
   [(HKOnboardingBaseViewController *)self setScrollView:v3];
 
-  v4 = [(HKOnboardingBaseViewController *)self scrollView];
-  [v4 setAlwaysBounceVertical:1];
+  scrollView = [(HKOnboardingBaseViewController *)self scrollView];
+  [scrollView setAlwaysBounceVertical:1];
 
-  v5 = [(HKOnboardingBaseViewController *)self scrollView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scrollView2 = [(HKOnboardingBaseViewController *)self scrollView];
+  [scrollView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(HKOnboardingBaseViewController *)self view];
-  v7 = [(HKOnboardingBaseViewController *)self scrollView];
-  [v6 addSubview:v7];
+  view = [(HKOnboardingBaseViewController *)self view];
+  scrollView3 = [(HKOnboardingBaseViewController *)self scrollView];
+  [view addSubview:scrollView3];
 
   v8 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [(HKOnboardingBaseViewController *)self setContentView:v8];
 
-  v9 = [(HKOnboardingBaseViewController *)self contentView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  contentView = [(HKOnboardingBaseViewController *)self contentView];
+  [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(HKOnboardingBaseViewController *)self scrollView];
-  v10 = [(HKOnboardingBaseViewController *)self contentView];
-  [v11 addSubview:v10];
+  scrollView4 = [(HKOnboardingBaseViewController *)self scrollView];
+  contentView2 = [(HKOnboardingBaseViewController *)self contentView];
+  [scrollView4 addSubview:contentView2];
 }
 
 - (void)setUpConstraints
 {
-  v3 = [(HKOnboardingBaseViewController *)self scrollView];
-  v4 = [(HKOnboardingBaseViewController *)self view];
-  [v3 hk_alignHorizontalConstraintsWithView:v4 margin:0.0];
+  scrollView = [(HKOnboardingBaseViewController *)self scrollView];
+  view = [(HKOnboardingBaseViewController *)self view];
+  [scrollView hk_alignHorizontalConstraintsWithView:view margin:0.0];
 
-  v5 = [(HKOnboardingBaseViewController *)self scrollView];
-  v6 = [v5 topAnchor];
-  v7 = [(HKOnboardingBaseViewController *)self view];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  scrollView2 = [(HKOnboardingBaseViewController *)self scrollView];
+  topAnchor = [scrollView2 topAnchor];
+  view2 = [(HKOnboardingBaseViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v9 setActive:1];
 
-  v10 = [(HKOnboardingBaseViewController *)self scrollView];
-  v11 = [v10 bottomAnchor];
-  v12 = [(HKOnboardingBaseViewController *)self view];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  scrollView3 = [(HKOnboardingBaseViewController *)self scrollView];
+  bottomAnchor = [scrollView3 bottomAnchor];
+  view3 = [(HKOnboardingBaseViewController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [(HKOnboardingBaseViewController *)self setScrollViewBottomConstraint:v14];
 
-  v15 = [(HKOnboardingBaseViewController *)self scrollViewBottomConstraint];
-  [v15 setActive:1];
+  scrollViewBottomConstraint = [(HKOnboardingBaseViewController *)self scrollViewBottomConstraint];
+  [scrollViewBottomConstraint setActive:1];
 
-  v16 = [(HKOnboardingBaseViewController *)self contentView];
-  v17 = [(HKOnboardingBaseViewController *)self scrollView];
-  [v16 hk_alignHorizontalConstraintsWithView:v17 margin:0.0];
+  contentView = [(HKOnboardingBaseViewController *)self contentView];
+  scrollView4 = [(HKOnboardingBaseViewController *)self scrollView];
+  [contentView hk_alignHorizontalConstraintsWithView:scrollView4 margin:0.0];
 
-  v18 = [(HKOnboardingBaseViewController *)self contentView];
-  v19 = [(HKOnboardingBaseViewController *)self scrollView];
-  [v18 hk_alignVerticalConstraintsWithView:v19 margin:0.0];
+  contentView2 = [(HKOnboardingBaseViewController *)self contentView];
+  scrollView5 = [(HKOnboardingBaseViewController *)self scrollView];
+  [contentView2 hk_alignVerticalConstraintsWithView:scrollView5 margin:0.0];
 
-  v21 = [(HKOnboardingBaseViewController *)self contentView];
-  v20 = [(HKOnboardingBaseViewController *)self view];
-  [v21 hk_alignHorizontalConstraintsWithView:v20 margin:0.0];
+  contentView3 = [(HKOnboardingBaseViewController *)self contentView];
+  view4 = [(HKOnboardingBaseViewController *)self view];
+  [contentView3 hk_alignHorizontalConstraintsWithView:view4 margin:0.0];
 }
 
-- (void)setFooterView:(id)a3 insets:(NSDirectionalEdgeInsets)a4
+- (void)setFooterView:(id)view insets:(NSDirectionalEdgeInsets)insets
 {
-  trailing = a4.trailing;
-  leading = a4.leading;
-  objc_storeStrong(&self->_footerView, a3);
-  v8 = a3;
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(HKOnboardingBaseViewController *)self view];
-  [v9 addSubview:v8];
+  trailing = insets.trailing;
+  leading = insets.leading;
+  objc_storeStrong(&self->_footerView, view);
+  viewCopy = view;
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(HKOnboardingBaseViewController *)self view];
+  [view addSubview:viewCopy];
 
-  v10 = [v8 leadingAnchor];
-  v11 = [(HKOnboardingBaseViewController *)self view];
-  v12 = [v11 leadingAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:leading];
+  leadingAnchor = [viewCopy leadingAnchor];
+  view2 = [(HKOnboardingBaseViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:leading];
   [v13 setActive:1];
 
-  v14 = [v8 trailingAnchor];
-  v15 = [(HKOnboardingBaseViewController *)self view];
-  v16 = [v15 trailingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16 constant:-trailing];
+  trailingAnchor = [viewCopy trailingAnchor];
+  view3 = [(HKOnboardingBaseViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-trailing];
   [v17 setActive:1];
 
-  v18 = [v8 bottomAnchor];
+  bottomAnchor = [viewCopy bottomAnchor];
 
-  v19 = [(HKOnboardingBaseViewController *)self view];
-  v20 = [v19 bottomAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  view4 = [(HKOnboardingBaseViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v21 setActive:1];
 
   [(HKOnboardingBaseViewController *)self _adjustScrollViewForFooterView];
@@ -190,77 +190,77 @@
 
 - (void)removeFooterView
 {
-  v3 = [(HKOnboardingBaseViewController *)self footerView];
-  [v3 removeFromSuperview];
+  footerView = [(HKOnboardingBaseViewController *)self footerView];
+  [footerView removeFromSuperview];
 
   v4 = *MEMORY[0x1E69DDCE0];
   v5 = *(MEMORY[0x1E69DDCE0] + 8);
   v6 = *(MEMORY[0x1E69DDCE0] + 16);
   v7 = *(MEMORY[0x1E69DDCE0] + 24);
-  v8 = [(HKOnboardingBaseViewController *)self scrollView];
-  [v8 setContentInset:{v4, v5, v6, v7}];
+  scrollView = [(HKOnboardingBaseViewController *)self scrollView];
+  [scrollView setContentInset:{v4, v5, v6, v7}];
 
-  v9 = [(HKOnboardingBaseViewController *)self scrollView];
-  [v9 setScrollIndicatorInsets:{v4, v5, v6, v7}];
+  scrollView2 = [(HKOnboardingBaseViewController *)self scrollView];
+  [scrollView2 setScrollIndicatorInsets:{v4, v5, v6, v7}];
 }
 
-- (void)setLeftButtonType:(int64_t)a3
+- (void)setLeftButtonType:(int64_t)type
 {
-  self->_leftButtonType = a3;
+  self->_leftButtonType = type;
   v5 = [(HKOnboardingBaseViewController *)self _buttonForButtonType:?];
-  v4 = [(HKOnboardingBaseViewController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v5];
+  navigationItem = [(HKOnboardingBaseViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v5];
 }
 
-- (void)setRightButtonType:(int64_t)a3
+- (void)setRightButtonType:(int64_t)type
 {
-  self->_rightButtonType = a3;
+  self->_rightButtonType = type;
   v5 = [(HKOnboardingBaseViewController *)self _buttonForButtonType:?];
-  v4 = [(HKOnboardingBaseViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v5];
+  navigationItem = [(HKOnboardingBaseViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 }
 
-- (void)cancelWithConfirmButtonTapped:(id)a3
+- (void)cancelWithConfirmButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(HKOnboardingBaseViewController *)self cancelWithConfirmAlertTitle];
-  if (![v5 length])
+  tappedCopy = tapped;
+  cancelWithConfirmAlertTitle = [(HKOnboardingBaseViewController *)self cancelWithConfirmAlertTitle];
+  if (![cancelWithConfirmAlertTitle length])
   {
     goto LABEL_6;
   }
 
-  v6 = [(HKOnboardingBaseViewController *)self cancelWithConfirmAlertContinueActionTitle];
-  if (![v6 length])
+  cancelWithConfirmAlertContinueActionTitle = [(HKOnboardingBaseViewController *)self cancelWithConfirmAlertContinueActionTitle];
+  if (![cancelWithConfirmAlertContinueActionTitle length])
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v7 = [(HKOnboardingBaseViewController *)self cancelWithConfirmAlertAbortActionTitle];
-  v8 = [v7 length];
+  cancelWithConfirmAlertAbortActionTitle = [(HKOnboardingBaseViewController *)self cancelWithConfirmAlertAbortActionTitle];
+  v8 = [cancelWithConfirmAlertAbortActionTitle length];
 
   if (!v8)
   {
 LABEL_7:
-    [(HKOnboardingBaseViewController *)self closeButtonTapped:v4];
+    [(HKOnboardingBaseViewController *)self closeButtonTapped:tappedCopy];
     goto LABEL_8;
   }
 
   v9 = MEMORY[0x1E69DC650];
-  v10 = [(HKOnboardingBaseViewController *)self cancelWithConfirmAlertTitle];
-  v11 = [v9 alertControllerWithTitle:0 message:v10 preferredStyle:0];
+  cancelWithConfirmAlertTitle2 = [(HKOnboardingBaseViewController *)self cancelWithConfirmAlertTitle];
+  v11 = [v9 alertControllerWithTitle:0 message:cancelWithConfirmAlertTitle2 preferredStyle:0];
 
   v12 = MEMORY[0x1E69DC648];
-  v13 = [(HKOnboardingBaseViewController *)self cancelWithConfirmAlertAbortActionTitle];
+  cancelWithConfirmAlertAbortActionTitle2 = [(HKOnboardingBaseViewController *)self cancelWithConfirmAlertAbortActionTitle];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __64__HKOnboardingBaseViewController_cancelWithConfirmButtonTapped___block_invoke;
   v23 = &unk_1E81B6F00;
-  v24 = self;
-  v14 = v4;
+  selfCopy = self;
+  v14 = tappedCopy;
   v25 = v14;
-  v15 = [v12 actionWithTitle:v13 style:0 handler:&v20];
+  v15 = [v12 actionWithTitle:cancelWithConfirmAlertAbortActionTitle2 style:0 handler:&v20];
 
   v16 = MEMORY[0x1E69DC648];
   v17 = [(HKOnboardingBaseViewController *)self cancelWithConfirmAlertContinueActionTitle:v20];
@@ -268,14 +268,14 @@ LABEL_7:
 
   [v11 addAction:v15];
   [v11 addAction:v18];
-  v19 = [v11 popoverPresentationController];
-  [v19 setSourceItem:v14];
+  popoverPresentationController = [v11 popoverPresentationController];
+  [popoverPresentationController setSourceItem:v14];
 
   [(HKOnboardingBaseViewController *)self presentViewController:v11 animated:1 completion:0];
 LABEL_8:
 }
 
-- (void)closeButtonTapped:(id)a3
+- (void)closeButtonTapped:(id)tapped
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -297,9 +297,9 @@ void __52__HKOnboardingBaseViewController_closeButtonTapped___block_invoke(uint6
   }
 }
 
-- (void)presentAlertWithMessage:(id)a3 title:(id)a4
+- (void)presentAlertWithMessage:(id)message title:(id)title
 {
-  v9 = [MEMORY[0x1E69DC650] alertControllerWithTitle:a4 message:a3 preferredStyle:1];
+  v9 = [MEMORY[0x1E69DC650] alertControllerWithTitle:title message:message preferredStyle:1];
   v5 = MEMORY[0x1E69DC648];
   v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v7 = [v6 localizedStringForKey:@"ONBOARDING_OK" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -309,10 +309,10 @@ void __52__HKOnboardingBaseViewController_closeButtonTapped___block_invoke(uint6
   [(HKOnboardingBaseViewController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)presentLearnMoreAlertWithMessage:(id)a3 learnMoreTapped:(id)a4
+- (void)presentLearnMoreAlertWithMessage:(id)message learnMoreTapped:(id)tapped
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:a3 preferredStyle:1];
+  tappedCopy = tapped;
+  v6 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:message preferredStyle:1];
   v7 = MEMORY[0x1E69DC648];
   v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v9 = [v8 localizedStringForKey:@"ONBOARDING_LEARN_MORE_WITH_ELLIPSES" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -320,8 +320,8 @@ void __52__HKOnboardingBaseViewController_closeButtonTapped___block_invoke(uint6
   v17[1] = 3221225472;
   v17[2] = __83__HKOnboardingBaseViewController_presentLearnMoreAlertWithMessage_learnMoreTapped___block_invoke;
   v17[3] = &unk_1E81B8440;
-  v18 = v5;
-  v10 = v5;
+  v18 = tappedCopy;
+  v10 = tappedCopy;
   v11 = [v7 actionWithTitle:v9 style:0 handler:v17];
 
   v12 = MEMORY[0x1E69DC648];
@@ -335,33 +335,33 @@ void __52__HKOnboardingBaseViewController_closeButtonTapped___block_invoke(uint6
   [(HKOnboardingBaseViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (id)_buttonForButtonType:(int64_t)a3
+- (id)_buttonForButtonType:(int64_t)type
 {
-  v4 = 0;
-  if (a3 > 2)
+  _closeButton = 0;
+  if (type > 2)
   {
-    if (a3 == 3)
+    if (type == 3)
     {
-      v4 = [(HKOnboardingBaseViewController *)self _closeButton];
+      _closeButton = [(HKOnboardingBaseViewController *)self _closeButton];
     }
 
-    else if (a3 == 4)
+    else if (type == 4)
     {
-      v4 = [(HKOnboardingBaseViewController *)self _skipButton];
+      _closeButton = [(HKOnboardingBaseViewController *)self _skipButton];
     }
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
-    v4 = [(HKOnboardingBaseViewController *)self _cancelWithConfirmButton];
+    _closeButton = [(HKOnboardingBaseViewController *)self _cancelWithConfirmButton];
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
-    v4 = [(HKOnboardingBaseViewController *)self _cancelButton];
+    _closeButton = [(HKOnboardingBaseViewController *)self _cancelButton];
   }
 
-  return v4;
+  return _closeButton;
 }
 
 - (id)_cancelWithConfirmButton
@@ -406,67 +406,67 @@ void __52__HKOnboardingBaseViewController_closeButtonTapped___block_invoke(uint6
 
 - (void)_setUpNavigationBar
 {
-  v3 = [(HKOnboardingBaseViewController *)self navigationController];
-  v4 = [v3 navigationBar];
-  [v4 _setHidesShadow:1];
+  navigationController = [(HKOnboardingBaseViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar _setHidesShadow:1];
 
-  v7 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v5 = [(HKOnboardingBaseViewController *)self navigationController];
-  v6 = [v5 navigationBar];
-  [v6 setBarTintColor:v7];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  navigationController2 = [(HKOnboardingBaseViewController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  [navigationBar2 setBarTintColor:systemBackgroundColor];
 }
 
 - (void)_adjustScrollViewForFooterView
 {
-  v3 = [(HKOnboardingBaseViewController *)self scrollView];
-  [v3 contentInset];
+  scrollView = [(HKOnboardingBaseViewController *)self scrollView];
+  [scrollView contentInset];
   v5 = v4;
   v7 = v6;
   v9 = v8;
 
-  v10 = [(HKOnboardingBaseViewController *)self footerView];
-  [v10 layoutIfNeeded];
+  footerView = [(HKOnboardingBaseViewController *)self footerView];
+  [footerView layoutIfNeeded];
 
-  v11 = [(HKOnboardingBaseViewController *)self footerView];
-  [v11 frame];
+  footerView2 = [(HKOnboardingBaseViewController *)self footerView];
+  [footerView2 frame];
   Height = CGRectGetHeight(v19);
-  v13 = [(UIViewController *)self hk_window];
-  [v13 safeAreaInsets];
+  hk_window = [(UIViewController *)self hk_window];
+  [hk_window safeAreaInsets];
   v15 = Height - v14;
 
-  v16 = [(HKOnboardingBaseViewController *)self scrollView];
-  [v16 setContentInset:{v5, v7, v15, v9}];
+  scrollView2 = [(HKOnboardingBaseViewController *)self scrollView];
+  [scrollView2 setContentInset:{v5, v7, v15, v9}];
 
-  v17 = [(HKOnboardingBaseViewController *)self scrollView];
-  [v17 setScrollIndicatorInsets:{v5, v7, v15, v9}];
+  scrollView3 = [(HKOnboardingBaseViewController *)self scrollView];
+  [scrollView3 setScrollIndicatorInsets:{v5, v7, v15, v9}];
 }
 
 - (id)titleFont
 {
   v2 = MEMORY[0x1E69DB878];
-  v3 = [(HKOnboardingBaseViewController *)self _titleFontTextStyle];
-  v4 = [v2 hk_scalableFontForTextStyle:v3 symbolicTraits:2];
+  _titleFontTextStyle = [(HKOnboardingBaseViewController *)self _titleFontTextStyle];
+  v4 = [v2 hk_scalableFontForTextStyle:_titleFontTextStyle symbolicTraits:2];
 
   return v4;
 }
 
 - (double)_titleTopToFirstBaselineLeading
 {
-  v2 = [(HKOnboardingBaseViewController *)self isOnboarding];
-  v3 = [MEMORY[0x1E69DCEB0] hk_currentDeviceHas5Point8InchScreen];
+  isOnboarding = [(HKOnboardingBaseViewController *)self isOnboarding];
+  hk_currentDeviceHas5Point8InchScreen = [MEMORY[0x1E69DCEB0] hk_currentDeviceHas5Point8InchScreen];
   result = 36.0;
-  if (v3)
+  if (hk_currentDeviceHas5Point8InchScreen)
   {
     result = 44.0;
   }
 
   v5 = 40.0;
-  if (v3)
+  if (hk_currentDeviceHas5Point8InchScreen)
   {
     v5 = 48.0;
   }
 
-  if (!v2)
+  if (!isOnboarding)
   {
     return v5;
   }
@@ -476,9 +476,9 @@ void __52__HKOnboardingBaseViewController_closeButtonTapped___block_invoke(uint6
 
 - (double)titleTopToFirstBaseline
 {
-  v3 = [(HKOnboardingBaseViewController *)self titleFont];
+  titleFont = [(HKOnboardingBaseViewController *)self titleFont];
   [(HKOnboardingBaseViewController *)self _titleTopToFirstBaselineLeading];
-  [v3 _scaledValueForValue:?];
+  [titleFont _scaledValueForValue:?];
   v5 = v4;
 
   return v5;
@@ -486,16 +486,16 @@ void __52__HKOnboardingBaseViewController_closeButtonTapped___block_invoke(uint6
 
 - (double)contentTop
 {
-  v3 = [(HKOnboardingBaseViewController *)self isViewLoaded];
+  isViewLoaded = [(HKOnboardingBaseViewController *)self isViewLoaded];
   result = 0.0;
-  if (v3)
+  if (isViewLoaded)
   {
-    v5 = [(HKOnboardingBaseViewController *)self view];
-    [v5 frame];
+    view = [(HKOnboardingBaseViewController *)self view];
+    [view frame];
     Height = CGRectGetHeight(v10);
-    v7 = [(HKOnboardingBaseViewController *)self navigationController];
-    v8 = [v7 navigationBar];
-    [v8 frame];
+    navigationController = [(HKOnboardingBaseViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar frame];
     v9 = -(CGRectGetHeight(v11) - Height * 0.09);
 
     result = 0.0;

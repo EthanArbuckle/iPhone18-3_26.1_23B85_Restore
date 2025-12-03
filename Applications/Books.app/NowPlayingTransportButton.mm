@@ -1,14 +1,14 @@
 @interface NowPlayingTransportButton
 - (CGSize)intrinsicContentSize;
-- (_TtC5Books25NowPlayingTransportButton)initWithCoder:(id)a3;
+- (_TtC5Books25NowPlayingTransportButton)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation NowPlayingTransportButton
 
-- (_TtC5Books25NowPlayingTransportButton)initWithCoder:(id)a3
+- (_TtC5Books25NowPlayingTransportButton)initWithCoder:(id)coder
 {
   *&self->MPButton_opaque[OBJC_IVAR____TtC5Books25NowPlayingTransportButton_highlightIndicatorView] = 0;
   *&self->MPButton_opaque[OBJC_IVAR____TtC5Books25NowPlayingTransportButton_highlightIndicatorWidthConstraint] = 0;
@@ -18,23 +18,23 @@
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = type metadata accessor for NowPlayingTransportButton();
   v4 = v5.receiver;
-  [(NowPlayingTransportButton *)&v5 setHighlighted:v3];
+  [(NowPlayingTransportButton *)&v5 setHighlighted:highlightedCopy];
   sub_100601978();
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = type metadata accessor for NowPlayingTransportButton();
   v4 = v7.receiver;
-  [(NowPlayingTransportButton *)&v7 setEnabled:v3];
+  [(NowPlayingTransportButton *)&v7 setEnabled:enabledCopy];
   if ([v4 isEnabled])
   {
     v5 = 1.0;
@@ -86,7 +86,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100601F44();
 }
 

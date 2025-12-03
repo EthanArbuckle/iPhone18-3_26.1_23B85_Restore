@@ -1,25 +1,25 @@
 @interface TKTokenAccessManager
-- (TKTokenAccessManager)initWithTokenAccessRegistry:(id)a3 applicationWorkSpace:(id)a4;
-- (void)applicationsDidUninstall:(id)a3;
+- (TKTokenAccessManager)initWithTokenAccessRegistry:(id)registry applicationWorkSpace:(id)space;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)cleanupInvalidTokenAccessRecords;
 - (void)dealloc;
-- (void)pluginsDidUninstall:(id)a3;
+- (void)pluginsDidUninstall:(id)uninstall;
 @end
 
 @implementation TKTokenAccessManager
 
-- (TKTokenAccessManager)initWithTokenAccessRegistry:(id)a3 applicationWorkSpace:(id)a4
+- (TKTokenAccessManager)initWithTokenAccessRegistry:(id)registry applicationWorkSpace:(id)space
 {
-  v7 = a3;
-  v8 = a4;
+  registryCopy = registry;
+  spaceCopy = space;
   v14.receiver = self;
   v14.super_class = TKTokenAccessManager;
   v9 = [(TKTokenAccessManager *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_tokenAccessRegistry, a3);
-    objc_storeStrong(&v10->_applicationWorkspace, a4);
+    objc_storeStrong(&v9->_tokenAccessRegistry, registry);
+    objc_storeStrong(&v10->_applicationWorkspace, space);
     v11 = dispatch_queue_create("com.apple.ctkd.tokenaccessmanager", 0);
     queue = v10->_queue;
     v10->_queue = v11;
@@ -47,31 +47,31 @@
   dispatch_async(queue, block);
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100011D5C;
   v7[3] = &unk_100038760;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = uninstallCopy;
+  selfCopy = self;
+  v6 = uninstallCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)pluginsDidUninstall:(id)a3
+- (void)pluginsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100011F80;
   v7[3] = &unk_100038760;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = uninstallCopy;
+  selfCopy = self;
+  v6 = uninstallCopy;
   dispatch_async(queue, v7);
 }
 

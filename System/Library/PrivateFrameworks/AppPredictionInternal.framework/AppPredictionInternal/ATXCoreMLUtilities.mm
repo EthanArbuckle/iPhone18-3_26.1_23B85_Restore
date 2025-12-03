@@ -1,37 +1,37 @@
 @interface ATXCoreMLUtilities
-+ (double)scoreForModelOutputValue:(id)a3 outputIndexedSubscript:(int64_t)a4;
-+ (id)loadCoreMLModelWithName:(id)a3;
-+ (id)loadCoreMLModelWithName:(id)a3 withConfiguration:(id)a4 error:(id *)a5;
++ (double)scoreForModelOutputValue:(id)value outputIndexedSubscript:(int64_t)subscript;
++ (id)loadCoreMLModelWithName:(id)name;
++ (id)loadCoreMLModelWithName:(id)name withConfiguration:(id)configuration error:(id *)error;
 @end
 
 @implementation ATXCoreMLUtilities
 
-+ (id)loadCoreMLModelWithName:(id)a3
++ (id)loadCoreMLModelWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_new();
   [v5 setComputeUnits:0];
   v10 = 0;
-  v6 = [a1 loadCoreMLModelWithName:v4 withConfiguration:v5 error:&v10];
+  v6 = [self loadCoreMLModelWithName:nameCopy withConfiguration:v5 error:&v10];
   v7 = v10;
   if (!v6)
   {
     v8 = __atxlog_handle_default();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(ATXCoreMLUtilities *)v4 loadCoreMLModelWithName:v7, v8];
+      [(ATXCoreMLUtilities *)nameCopy loadCoreMLModelWithName:v7, v8];
     }
   }
 
   return v6;
 }
 
-+ (id)loadCoreMLModelWithName:(id)a3 withConfiguration:(id)a4 error:(id *)a5
++ (id)loadCoreMLModelWithName:(id)name withConfiguration:(id)configuration error:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  nameCopy = name;
+  configurationCopy = configuration;
+  if (!nameCopy)
   {
     v15 = MEMORY[0x277CCA9B8];
     v16 = *MEMORY[0x277CEB260];
@@ -48,7 +48,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = [MEMORY[0x277CEB3C0] pathForResource:v7 ofType:@"mlmodelc" isDirectory:1];
+  v9 = [MEMORY[0x277CEB3C0] pathForResource:nameCopy ofType:@"mlmodelc" isDirectory:1];
   if (!v9)
   {
     v15 = MEMORY[0x277CCA9B8];
@@ -65,14 +65,14 @@ LABEL_6:
   v11 = MEMORY[0x277CBFF20];
   v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v9];
   v23 = 0;
-  v13 = [v11 modelWithContentsOfURL:v12 configuration:v8 error:&v23];
+  v13 = [v11 modelWithContentsOfURL:v12 configuration:configurationCopy error:&v23];
   v14 = v23;
 LABEL_7:
 
-  if (a5 && !v13)
+  if (error && !v13)
   {
     v20 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -80,48 +80,48 @@ LABEL_7:
   return v13;
 }
 
-+ (double)scoreForModelOutputValue:(id)a3 outputIndexedSubscript:(int64_t)a4
++ (double)scoreForModelOutputValue:(id)value outputIndexedSubscript:(int64_t)subscript
 {
-  v5 = a3;
-  v6 = [v5 type];
-  v7 = v6;
-  if (v6 > 4)
+  valueCopy = value;
+  type = [valueCopy type];
+  v7 = type;
+  if (type > 4)
   {
-    if (v6 == 5)
+    if (type == 5)
     {
-      v10 = [v5 multiArrayValue];
-      v11 = [v10 objectAtIndexedSubscript:a4];
+      multiArrayValue = [valueCopy multiArrayValue];
+      v11 = [multiArrayValue objectAtIndexedSubscript:subscript];
       [v11 doubleValue];
-      v9 = v15;
+      int64Value = v15;
     }
 
     else
     {
-      if (v6 != 6)
+      if (type != 6)
       {
         goto LABEL_8;
       }
 
-      v10 = [v5 dictionaryValue];
-      v11 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-      v12 = [v10 objectForKeyedSubscript:v11];
+      multiArrayValue = [valueCopy dictionaryValue];
+      v11 = [MEMORY[0x277CCABB0] numberWithInteger:subscript];
+      v12 = [multiArrayValue objectForKeyedSubscript:v11];
       [v12 doubleValue];
-      v9 = v13;
+      int64Value = v13;
     }
 
     goto LABEL_14;
   }
 
-  if (v6 == 1)
+  if (type == 1)
   {
-    v9 = [v5 int64Value];
+    int64Value = [valueCopy int64Value];
     goto LABEL_14;
   }
 
-  if (v6 == 2)
+  if (type == 2)
   {
-    [v5 doubleValue];
-    v9 = v8;
+    [valueCopy doubleValue];
+    int64Value = v8;
     goto LABEL_14;
   }
 
@@ -132,10 +132,10 @@ LABEL_8:
     [ATXCoreMLUtilities scoreForModelOutputValue:v7 outputIndexedSubscript:v14];
   }
 
-  v9 = -31337.0;
+  int64Value = -31337.0;
 LABEL_14:
 
-  return v9;
+  return int64Value;
 }
 
 + (void)loadCoreMLModelWithName:(os_log_t)log .cold.1(uint64_t a1, uint64_t a2, os_log_t log)

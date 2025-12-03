@@ -1,48 +1,48 @@
 @interface HMDACWGUtilities
 + (id)createGroupResolvingKey;
-+ (id)createIssuerKeyV2KeychainItemWithKeyPairExternalRepresentation:(id)a3 generationCounter:(unint64_t)a4 homeUUID:(id)a5 dateProvider:(id)a6 accountIdentifier:(id)a7 idsIdentifier:(id)a8;
-+ (id)createLabelFromDate:(id)a3 idsIdentifier:(id)a4;
-+ (id)findWinningIssuerKeyForHomeUUID:(id)a3 withKeys:(id)a4 accountIdentifier:(id)a5;
-+ (id)keyPairExternalRepresentationFromKeychainItem:(id)a3;
-+ (id)keychainIdentifierForPublicKeyExternalRepresentation:(id)a3;
++ (id)createIssuerKeyV2KeychainItemWithKeyPairExternalRepresentation:(id)representation generationCounter:(unint64_t)counter homeUUID:(id)d dateProvider:(id)provider accountIdentifier:(id)identifier idsIdentifier:(id)idsIdentifier;
++ (id)createLabelFromDate:(id)date idsIdentifier:(id)identifier;
++ (id)findWinningIssuerKeyForHomeUUID:(id)d withKeys:(id)keys accountIdentifier:(id)identifier;
++ (id)keyPairExternalRepresentationFromKeychainItem:(id)item;
++ (id)keychainIdentifierForPublicKeyExternalRepresentation:(id)representation;
 @end
 
 @implementation HMDACWGUtilities
 
-+ (id)createLabelFromDate:(id)a3 idsIdentifier:(id)a4
++ (id)createLabelFromDate:(id)date idsIdentifier:(id)identifier
 {
   v5 = MEMORY[0x277CCA968];
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  dateCopy = date;
   v8 = objc_alloc_init(v5);
   [v8 setDateFormat:@"yyyyMMddHHmmss"];
-  v9 = [v8 stringFromDate:v7];
+  v9 = [v8 stringFromDate:dateCopy];
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@_Home ACWG Issuer Key", v6, v9];
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@_Home ACWG Issuer Key", identifierCopy, v9];
 
   return v10;
 }
 
-+ (id)keyPairExternalRepresentationFromKeychainItem:(id)a3
++ (id)keyPairExternalRepresentationFromKeychainItem:(id)item
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 accessGroup];
-  v6 = [v5 isEqualToString:@"com.apple.hap.pairing"];
+  itemCopy = item;
+  accessGroup = [itemCopy accessGroup];
+  v6 = [accessGroup isEqualToString:@"com.apple.hap.pairing"];
 
   if (v6)
   {
-    v7 = [v4 type];
-    v8 = [v7 isEqualToNumber:&unk_283E72EA8];
+    type = [itemCopy type];
+    v8 = [type isEqualToNumber:&unk_283E72EA8];
 
     if (v8)
     {
-      v9 = [v4 valueData];
+      valueData = [itemCopy valueData];
       goto LABEL_10;
     }
 
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -50,7 +50,7 @@
       v17 = 138543874;
       v18 = v13;
       v19 = 2112;
-      v20 = v4;
+      v20 = itemCopy;
       v21 = 2112;
       v22 = &unk_283E72EA8;
       v14 = "%{public}@Failed to create ACWG Issuer key from keychain item: %@ is not equal to: %@";
@@ -61,7 +61,7 @@
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -69,7 +69,7 @@
       v17 = 138543874;
       v18 = v13;
       v19 = 2112;
-      v20 = v4;
+      v20 = itemCopy;
       v21 = 2112;
       v22 = @"com.apple.hap.pairing";
       v14 = "%{public}@Failed to create ACWG Issuer key from keychain item: %@ access group is not equal to: %@";
@@ -79,36 +79,36 @@ LABEL_8:
   }
 
   objc_autoreleasePoolPop(v10);
-  v9 = 0;
+  valueData = 0;
 LABEL_10:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return valueData;
 }
 
-+ (id)findWinningIssuerKeyForHomeUUID:(id)a3 withKeys:(id)a4 accountIdentifier:(id)a5
++ (id)findWinningIssuerKeyForHomeUUID:(id)d withKeys:(id)keys accountIdentifier:(id)identifier
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
+  dCopy = d;
+  keysCopy = keys;
+  identifierCopy = identifier;
+  internalOnlyInitializer = [MEMORY[0x277D0F7B8] internalOnlyInitializer];
   v12 = objc_autoreleasePoolPush();
-  v13 = a1;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v11 UUID];
+    uUID = [internalOnlyInitializer UUID];
     *buf = 138544130;
     *&buf[4] = v15;
     *&buf[12] = 2112;
-    *&buf[14] = v16;
+    *&buf[14] = uUID;
     *&buf[22] = 2112;
-    v49 = v8;
+    v49 = dCopy;
     LOWORD(v50) = 2112;
-    *(&v50 + 2) = v9;
+    *(&v50 + 2) = keysCopy;
     _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@[NewFlow: %@ {Feature:Home Key}] Finding winning issuer key for HomeUUID: %@ for keys: %@", buf, 0x2Au);
   }
 
@@ -131,29 +131,29 @@ LABEL_10:
   v29[1] = 3221225472;
   v29[2] = __79__HMDACWGUtilities_findWinningIssuerKeyForHomeUUID_withKeys_accountIdentifier___block_invoke;
   v29[3] = &unk_278679DE8;
-  v36 = v13;
-  v17 = v11;
+  v36 = selfCopy;
+  v17 = internalOnlyInitializer;
   v30 = v17;
-  v18 = v8;
+  v18 = dCopy;
   v31 = v18;
-  v19 = v10;
+  v19 = identifierCopy;
   v32 = v19;
   v33 = v37;
   v34 = &v38;
   v35 = buf;
-  [v9 na_each:v29];
+  [keysCopy na_each:v29];
   v20 = objc_autoreleasePoolPush();
-  v21 = v13;
+  v21 = selfCopy;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     v23 = HMFGetLogIdentifier();
-    v24 = [v17 UUID];
+    uUID2 = [v17 UUID];
     v25 = *(*&buf[8] + 40);
     *v42 = 138543874;
     v43 = v23;
     v44 = 2112;
-    v45 = v24;
+    v45 = uUID2;
     v46 = 2112;
     v47 = v25;
     _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] Winning key found: %@", v42, 0x20u);
@@ -376,65 +376,65 @@ LABEL_20:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)createIssuerKeyV2KeychainItemWithKeyPairExternalRepresentation:(id)a3 generationCounter:(unint64_t)a4 homeUUID:(id)a5 dateProvider:(id)a6 accountIdentifier:(id)a7 idsIdentifier:(id)a8
++ (id)createIssuerKeyV2KeychainItemWithKeyPairExternalRepresentation:(id)representation generationCounter:(unint64_t)counter homeUUID:(id)d dateProvider:(id)provider accountIdentifier:(id)identifier idsIdentifier:(id)idsIdentifier
 {
   v49[4] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  representationCopy = representation;
+  dCopy = d;
+  providerCopy = provider;
+  identifierCopy = identifier;
+  idsIdentifierCopy = idsIdentifier;
   v48[0] = @"GC";
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:counter];
   v49[0] = v19;
   v48[1] = @"HUUID";
-  v40 = v15;
-  v20 = [v15 UUIDString];
-  v49[1] = v20;
+  v40 = dCopy;
+  uUIDString = [dCopy UUIDString];
+  v49[1] = uUIDString;
   v49[2] = &unk_283E72E90;
   v48[2] = @"KV";
   v48[3] = @"AcID";
-  v41 = v17;
-  v49[3] = v17;
+  v41 = identifierCopy;
+  v49[3] = identifierCopy;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:4];
 
   v39 = v21;
   v22 = [MEMORY[0x277CFEC78] serializeImmutableDictionary:v21];
-  v23 = [HMDNIST256Utilities publicKeyExternalRepresentationFromKeyPairExternalRepresentation:v14];
+  v23 = [HMDNIST256Utilities publicKeyExternalRepresentationFromKeyPairExternalRepresentation:representationCopy];
   v24 = objc_alloc_init(MEMORY[0x277CFEBC8]);
-  v42 = v16;
-  v25 = [v16 now];
+  v42 = providerCopy;
+  v25 = [providerCopy now];
   [v24 setItemDescription:@"Per User ACWG Issuer Key synced to HomeKit locks to grant users access."];
   [v24 setAccessGroup:@"com.apple.hap.pairing"];
   [v24 setSyncable:1];
   [v24 setType:&unk_283E72EA8];
   v26 = MEMORY[0x277CFEC78];
-  v27 = [v24 type];
-  v28 = [v26 viewHintForType:v27];
+  type = [v24 type];
+  v28 = [v26 viewHintForType:type];
   [v24 setViewHint:v28];
 
-  v43 = v14;
-  [v24 setValueData:v14];
+  v43 = representationCopy;
+  [v24 setValueData:representationCopy];
   [v24 setCreationDate:v25];
-  v29 = [a1 keychainIdentifierForPublicKeyExternalRepresentation:v23];
+  v29 = [self keychainIdentifierForPublicKeyExternalRepresentation:v23];
   [v24 setAccount:v29];
 
-  v30 = v18;
-  v31 = [a1 createLabelFromDate:v25 idsIdentifier:v18];
+  v30 = idsIdentifierCopy;
+  v31 = [self createLabelFromDate:v25 idsIdentifier:idsIdentifierCopy];
   [v24 setLabel:v31];
 
   [v24 setGenericData:v22];
   v32 = objc_autoreleasePoolPush();
-  v33 = a1;
+  selfCopy = self;
   v34 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
   {
     v35 = HMFGetLogIdentifier();
-    v36 = [v24 account];
+    account = [v24 account];
     *buf = 138543618;
     v45 = v35;
     v46 = 2112;
-    v47 = v36;
+    v47 = account;
     _os_log_impl(&dword_229538000, v34, OS_LOG_TYPE_INFO, "%{public}@Created new aliro issuer key with account identifier: %@", buf, 0x16u);
   }
 
@@ -444,16 +444,16 @@ LABEL_20:
   return v24;
 }
 
-+ (id)keychainIdentifierForPublicKeyExternalRepresentation:(id)a3
++ (id)keychainIdentifierForPublicKeyExternalRepresentation:(id)representation
 {
   v3 = MEMORY[0x277CCAD78];
-  v4 = a3;
+  representationCopy = representation;
   v5 = [[v3 alloc] initWithUUIDString:@"B52DD235-5F79-4A54-91F1-07076C605ED8"];
-  v6 = [MEMORY[0x277CCAD78] hmf_UUIDWithNamespace:v5 data:v4];
+  v6 = [MEMORY[0x277CCAD78] hmf_UUIDWithNamespace:v5 data:representationCopy];
 
-  v7 = [v6 UUIDString];
+  uUIDString = [v6 UUIDString];
 
-  return v7;
+  return uUIDString;
 }
 
 + (id)createGroupResolvingKey
@@ -463,7 +463,7 @@ LABEL_20:
   if (SecRandomCopyBytes(*MEMORY[0x277CDC540], [v3 length], objc_msgSend(v3, "mutableBytes")))
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = a1;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {

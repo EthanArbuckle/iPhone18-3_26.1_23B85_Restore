@@ -1,5 +1,5 @@
 @interface EKDirectoryRecord
-+ (id)recordFromSearchResult:(id)a3;
++ (id)recordFromSearchResult:(id)result;
 - (NSDictionary)userInfo;
 - (id)description;
 @end
@@ -14,50 +14,50 @@
   v4 = [(EKDirectoryRecord *)&v11 description];
   v5 = [v3 initWithSuperclassDescription:v4];
 
-  v6 = [(EKDirectoryRecord *)self displayName];
-  [v5 setKey:@"displayName" withString:v6];
+  displayName = [(EKDirectoryRecord *)self displayName];
+  [v5 setKey:@"displayName" withString:displayName];
 
-  v7 = [(EKDirectoryRecord *)self preferredAddress];
-  [v5 setKey:@"preferredAddress" withString:v7];
+  preferredAddress = [(EKDirectoryRecord *)self preferredAddress];
+  [v5 setKey:@"preferredAddress" withString:preferredAddress];
 
-  v8 = [(EKDirectoryRecord *)self principalPath];
-  [v5 setKey:@"principalPath" withString:v8];
+  principalPath = [(EKDirectoryRecord *)self principalPath];
+  [v5 setKey:@"principalPath" withString:principalPath];
 
-  v9 = [v5 build];
+  build = [v5 build];
 
-  return v9;
+  return build;
 }
 
 - (NSDictionary)userInfo
 {
   v3 = objc_opt_new();
-  v4 = [(EKDirectoryRecord *)self principalPath];
+  principalPath = [(EKDirectoryRecord *)self principalPath];
 
-  if (v4)
+  if (principalPath)
   {
-    v5 = [(EKDirectoryRecord *)self principalPath];
-    [v3 setObject:v5 forKeyedSubscript:EKDirectoryRecordPrincipalPathKey];
+    principalPath2 = [(EKDirectoryRecord *)self principalPath];
+    [v3 setObject:principalPath2 forKeyedSubscript:EKDirectoryRecordPrincipalPathKey];
   }
 
   return v3;
 }
 
-+ (id)recordFromSearchResult:(id)a3
++ (id)recordFromSearchResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = objc_opt_new();
-  v5 = [v3 displayName];
-  [v4 setDisplayName:v5];
+  displayName = [resultCopy displayName];
+  [v4 setDisplayName:displayName];
 
-  v6 = [v3 firstName];
-  [v4 setFirstName:v6];
+  firstName = [resultCopy firstName];
+  [v4 setFirstName:firstName];
 
-  v7 = [v3 lastName];
-  [v4 setLastName:v7];
+  lastName = [resultCopy lastName];
+  [v4 setLastName:lastName];
 
-  v8 = [v3 preferredAddress];
+  preferredAddress = [resultCopy preferredAddress];
 
-  [v4 setPreferredAddress:v8];
+  [v4 setPreferredAddress:preferredAddress];
 
   return v4;
 }

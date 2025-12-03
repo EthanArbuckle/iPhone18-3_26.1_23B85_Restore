@@ -1,5 +1,5 @@
 @interface PUIStyleFontWeightSlider
-- (CGRect)trackRectForBounds:(CGRect)a3;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
 - (PUIStyleFontWeightSlider)init;
 - (void)layoutSubviews;
 @end
@@ -13,11 +13,11 @@
   v2 = [(PUIStyleFontWeightSlider *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] clearColor];
-    [(PUIStyleFontWeightSlider *)v2 setMinimumTrackTintColor:v3];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PUIStyleFontWeightSlider *)v2 setMinimumTrackTintColor:clearColor];
 
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(PUIStyleFontWeightSlider *)v2 setMaximumTrackTintColor:v4];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(PUIStyleFontWeightSlider *)v2 setMaximumTrackTintColor:clearColor2];
 
     v5 = [_PUIFontWeightSliderTrackView alloc];
     v6 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.2];
@@ -45,11 +45,11 @@
   [(_PUIFontWeightSliderTrackView *)self->_trackView setFrame:v4, 0.0, v6];
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
   v9.receiver = self;
   v9.super_class = PUIStyleFontWeightSlider;
-  [(PUIStyleFontWeightSlider *)&v9 trackRectForBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PUIStyleFontWeightSlider *)&v9 trackRectForBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v6 = v5 + -3.0;
   v8 = v7 + 6.0;
   result.size.height = v4;

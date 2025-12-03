@@ -1,14 +1,14 @@
 @interface CHSWidgetMetrics
-+ (id)sha256DataFromData:(id)a3;
-+ (void)_removeSafeAreaInsetsIn:(id)a3;
-+ (void)_replaceFontStyleIn:(id)a3 withTextSizeAdjustment:(int64_t)a4;
++ (id)sha256DataFromData:(id)data;
++ (void)_removeSafeAreaInsetsIn:(id)in;
++ (void)_replaceFontStyleIn:(id)in withTextSizeAdjustment:(int64_t)adjustment;
 - (BOOL)_hasZeroLayoutInsets;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualTo:(id)a3 using32BitFloats:(BOOL)a4;
-- (CGSize)_effectiveSizePixelAlignedForDisplayScale:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualTo:(id)to using32BitFloats:(BOOL)floats;
+- (CGSize)_effectiveSizePixelAlignedForDisplayScale:(double)scale;
 - (CGSize)_rawEffectiveSize;
-- (CGSize)_rawLayoutInsetAdjustedSizePixelAlignedForDisplayScale:(double)a3;
-- (CGSize)_rawSizePixelAlignedForDisplayScale:(double)a3;
+- (CGSize)_rawLayoutInsetAdjustedSizePixelAlignedForDisplayScale:(double)scale;
+- (CGSize)_rawSizePixelAlignedForDisplayScale:(double)scale;
 - (CGSize)scale;
 - (CGSize)size;
 - (CHSEdgeInsets)contentMargins;
@@ -21,28 +21,28 @@
 - (CHSVersionedWidgetMetrics)dawnburstVersionedWidgetMetrics;
 - (CHSVersionedWidgetMetrics)luckierVersionedWidgetMetrics;
 - (CHSWidgetMetrics)init;
-- (CHSWidgetMetrics)initWithCoder:(id)a3;
-- (CHSWidgetMetrics)initWithSize:(CGSize)a3 cornerRadius:(double)a4 scaleFactor:(double)a5 fontStyle:(int64_t)a6 margins:(id)a7 supportsDynamicText:(unint64_t)a8 widgetGroupMargins:(id)a9 nestedContentMetrics:(id)a10;
-- (CHSWidgetMetrics)initWithSize:(CGSize)a3 cornerRadius:(double)a4 scaleFactor:(double)a5 fontStyle:(int64_t)a6 safeAreaInsets:(CHSEdgeInsets)a7 widgetGroupMargins:(id)a8 nestedContentMetrics:(id)a9;
-- (CHSWidgetMetrics)initWithXPCDictionary:(id)a3;
+- (CHSWidgetMetrics)initWithCoder:(id)coder;
+- (CHSWidgetMetrics)initWithSize:(CGSize)size cornerRadius:(double)radius scaleFactor:(double)factor fontStyle:(int64_t)style margins:(id)margins supportsDynamicText:(unint64_t)text widgetGroupMargins:(id)groupMargins nestedContentMetrics:(id)self0;
+- (CHSWidgetMetrics)initWithSize:(CGSize)size cornerRadius:(double)radius scaleFactor:(double)factor fontStyle:(int64_t)style safeAreaInsets:(CHSEdgeInsets)insets widgetGroupMargins:(id)margins nestedContentMetrics:(id)metrics;
+- (CHSWidgetMetrics)initWithXPCDictionary:(id)dictionary;
 - (double)_effectiveCornerRadius;
-- (double)_roundToNearestOrUp:(double)a3 withScale:(double)a4;
+- (double)_roundToNearestOrUp:(double)up withScale:(double)scale;
 - (id)_crystalStringKeyRepresentation;
 - (id)_dawnStringKeyRepresentation;
 - (id)_luckStringKeyRepresentation;
 - (id)_stringKeyRepresentation;
-- (id)_stringKeyRepresentationForVersion:(unint64_t)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)filenameSafeSHAFrom:(id)a3;
+- (id)_stringKeyRepresentationForVersion:(unint64_t)version;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)filenameSafeSHAFrom:(id)from;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (int64_t)compare:(id)a3;
-- (uint64_t)initWithSize:(double)a3 cornerRadius:(double)a4 scaleFactor:(double)a5 fontStyle:(double)a6 safeAreaInsets:(double)a7 layoutInsets:(double)a8 contentMargins:(double)a9 supportsDynamicText:(uint64_t)a10;
+- (int64_t)compare:(id)compare;
+- (uint64_t)initWithSize:(double)size cornerRadius:(double)radius scaleFactor:(double)factor fontStyle:(double)style safeAreaInsets:(double)insets layoutInsets:(double)layoutInsets contentMargins:(double)margins supportsDynamicText:(uint64_t)self0;
 - (unint64_t)hash;
-- (unint64_t)hashUsing32BitFloats:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (unint64_t)hashUsing32BitFloats:(BOOL)floats;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation CHSWidgetMetrics
@@ -160,14 +160,14 @@
   v5 = [v3 appendFloat:@"cornerRadius" withName:?];
   [(CHSWidgetMetrics *)self scaleFactor];
   v6 = [v3 appendFloat:@"scaleFactor" withName:?];
-  v7 = [(CHSWidgetMetrics *)self dynamicTextSupport];
+  dynamicTextSupport = [(CHSWidgetMetrics *)self dynamicTextSupport];
   v8 = @"Unspecified";
-  if (v7 == 2)
+  if (dynamicTextSupport == 2)
   {
     v8 = @"No";
   }
 
-  if (v7 == 1)
+  if (dynamicTextSupport == 1)
   {
     v9 = @"Yes";
   }
@@ -222,51 +222,51 @@
 
 - (id)succinctDescription
 {
-  v2 = [(CHSWidgetMetrics *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CHSWidgetMetrics *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (CHSWidgetMetrics)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CHSWidgetMetrics.m" lineNumber:74 description:@"Use initWithSize:cornerRadius:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CHSWidgetMetrics.m" lineNumber:74 description:@"Use initWithSize:cornerRadius:"];
 
   return [(CHSWidgetMetrics *)self initWithSize:*MEMORY[0x1E695F060] cornerRadius:*(MEMORY[0x1E695F060] + 8), 0.0];
 }
 
-- (CHSWidgetMetrics)initWithSize:(CGSize)a3 cornerRadius:(double)a4 scaleFactor:(double)a5 fontStyle:(int64_t)a6 safeAreaInsets:(CHSEdgeInsets)a7 widgetGroupMargins:(id)a8 nestedContentMetrics:(id)a9
+- (CHSWidgetMetrics)initWithSize:(CGSize)size cornerRadius:(double)radius scaleFactor:(double)factor fontStyle:(int64_t)style safeAreaInsets:(CHSEdgeInsets)insets widgetGroupMargins:(id)margins nestedContentMetrics:(id)metrics
 {
-  trailing = a7.trailing;
-  bottom = a7.bottom;
-  leading = a7.leading;
-  top = a7.top;
-  height = a3.height;
-  width = a3.width;
-  v20 = a8;
-  v21 = a9;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  marginsCopy = margins;
+  metricsCopy = metrics;
   v22 = [[CHSWidgetMargins alloc] initWithSafeAreaInsets:top layoutInsets:leading contentMargins:bottom backgroundRemovedContentMargins:trailing, 0, 0, 0, 0, 0, 0, 0, 0];
-  v23 = [(CHSWidgetMetrics *)self initWithSize:a6 cornerRadius:v22 scaleFactor:0 fontStyle:v20 margins:v21 supportsDynamicText:width widgetGroupMargins:height nestedContentMetrics:a4, a5];
+  factor = [(CHSWidgetMetrics *)self initWithSize:style cornerRadius:v22 scaleFactor:0 fontStyle:marginsCopy margins:metricsCopy supportsDynamicText:width widgetGroupMargins:height nestedContentMetrics:radius, factor];
 
-  return v23;
+  return factor;
 }
 
-- (uint64_t)initWithSize:(double)a3 cornerRadius:(double)a4 scaleFactor:(double)a5 fontStyle:(double)a6 safeAreaInsets:(double)a7 layoutInsets:(double)a8 contentMargins:(double)a9 supportsDynamicText:(uint64_t)a10
+- (uint64_t)initWithSize:(double)size cornerRadius:(double)radius scaleFactor:(double)factor fontStyle:(double)style safeAreaInsets:(double)insets layoutInsets:(double)layoutInsets contentMargins:(double)margins supportsDynamicText:(uint64_t)self0
 {
-  v31 = [[CHSWidgetMargins alloc] initWithSafeAreaInsets:a6 layoutInsets:a7 contentMargins:a8 backgroundRemovedContentMargins:a9, a17, a18, a19, a20, a21, a22, a23, a24, a21, a22, a23, a24];
-  v32 = [a1 initWithSize:a11 cornerRadius:v31 scaleFactor:a12 fontStyle:a2 margins:a3 supportsDynamicText:{a4, a5}];
+  v31 = [[CHSWidgetMargins alloc] initWithSafeAreaInsets:style layoutInsets:insets contentMargins:layoutInsets backgroundRemovedContentMargins:margins, a17, a18, a19, a20, a21, a22, a23, a24, a21, a22, a23, a24];
+  v32 = [self initWithSize:a11 cornerRadius:v31 scaleFactor:a12 fontStyle:a2 margins:size supportsDynamicText:{radius, factor}];
 
   return v32;
 }
 
-- (CHSWidgetMetrics)initWithSize:(CGSize)a3 cornerRadius:(double)a4 scaleFactor:(double)a5 fontStyle:(int64_t)a6 margins:(id)a7 supportsDynamicText:(unint64_t)a8 widgetGroupMargins:(id)a9 nestedContentMetrics:(id)a10
+- (CHSWidgetMetrics)initWithSize:(CGSize)size cornerRadius:(double)radius scaleFactor:(double)factor fontStyle:(int64_t)style margins:(id)margins supportsDynamicText:(unint64_t)text widgetGroupMargins:(id)groupMargins nestedContentMetrics:(id)self0
 {
-  height = a3.height;
-  width = a3.width;
-  v19 = a7;
-  v20 = a9;
-  v21 = a10;
+  height = size.height;
+  width = size.width;
+  marginsCopy = margins;
+  groupMarginsCopy = groupMargins;
+  metricsCopy = metrics;
   v31.receiver = self;
   v31.super_class = CHSWidgetMetrics;
   v22 = [(CHSWidgetMetrics *)&v31 init];
@@ -275,19 +275,19 @@
   {
     v22->_size.width = width;
     v22->_size.height = height;
-    v22->_cornerRadius = a4;
-    v22->_scaleFactor = a5;
-    v22->_fontStyle = a6;
-    v24 = [v19 copy];
+    v22->_cornerRadius = radius;
+    v22->_scaleFactor = factor;
+    v22->_fontStyle = style;
+    v24 = [marginsCopy copy];
     margins = v23->_margins;
     v23->_margins = v24;
 
-    v23->_dynamicTextSupport = a8;
-    v26 = [v20 copy];
+    v23->_dynamicTextSupport = text;
+    v26 = [groupMarginsCopy copy];
     groupMargins = v23->_groupMargins;
     v23->_groupMargins = v26;
 
-    v28 = [v21 copy];
+    v28 = [metricsCopy copy];
     nestedContentMetrics = v23->_nestedContentMetrics;
     v23->_nestedContentMetrics = v28;
   }
@@ -355,20 +355,20 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  LOBYTE(self) = [(CHSWidgetMetrics *)self isEqualTo:v4 using32BitFloats:+[CHSWidgetMetrics use32BitFloats]];
+  equalCopy = equal;
+  LOBYTE(self) = [(CHSWidgetMetrics *)self isEqualTo:equalCopy using32BitFloats:+[CHSWidgetMetrics use32BitFloats]];
 
   return self;
 }
 
-- (BOOL)isEqualTo:(id)a3 using32BitFloats:(BOOL)a4
+- (BOOL)isEqualTo:(id)to using32BitFloats:(BOOL)floats
 {
-  v4 = a4;
-  v6 = a3;
+  floatsCopy = floats;
+  toCopy = to;
   v7 = objc_opt_class();
-  v8 = v6;
+  v8 = toCopy;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -392,7 +392,7 @@
   if (v10)
   {
     v11 = [MEMORY[0x1E698E6A0] builderWithObject:v8 ofExpectedClass:objc_opt_class()];
-    if (v4)
+    if (floatsCopy)
     {
       width = self->_size.width;
       height = self->_size.height;
@@ -488,13 +488,13 @@
     v46 = v43;
     v54 = v46;
     v47 = [v11 appendObject:groupMargins counterpart:v53];
-    v48 = [(CHSWidgetMetrics *)self nestedContentMetrics];
+    nestedContentMetrics = [(CHSWidgetMetrics *)self nestedContentMetrics];
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
     v51[2] = __47__CHSWidgetMetrics_isEqualTo_using32BitFloats___block_invoke_11;
     v51[3] = &unk_1E7454598;
     v52 = v46;
-    v49 = [v11 appendObject:v48 counterpart:v51];
+    v49 = [v11 appendObject:nestedContentMetrics counterpart:v51];
 
     v28 = [v11 isEqual];
   }
@@ -515,17 +515,17 @@ double __47__CHSWidgetMetrics_isEqualTo_using32BitFloats___block_invoke_4(uint64
   return result;
 }
 
-- (unint64_t)hashUsing32BitFloats:(BOOL)a3
+- (unint64_t)hashUsing32BitFloats:(BOOL)floats
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E698E6B8] builder];
-  v6 = v5;
+  floatsCopy = floats;
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v6 = builder;
   width = self->_size.width;
-  if (v3)
+  if (floatsCopy)
   {
     v8 = width;
     height = self->_size.height;
-    v10 = [v5 appendCGSize:{v8, height}];
+    v10 = [builder appendCGSize:{v8, height}];
     cornerRadius = self->_cornerRadius;
     v12 = [v6 appendCGFloat:cornerRadius];
     scaleFactor = self->_scaleFactor;
@@ -534,7 +534,7 @@ double __47__CHSWidgetMetrics_isEqualTo_using32BitFloats___block_invoke_4(uint64
 
   else
   {
-    v15 = [v5 appendCGSize:{width, self->_size.height}];
+    v15 = [builder appendCGSize:{width, self->_size.height}];
     v16 = [v6 appendCGFloat:self->_cornerRadius];
     v14 = self->_scaleFactor;
   }
@@ -550,11 +550,11 @@ double __47__CHSWidgetMetrics_isEqualTo_using32BitFloats___block_invoke_4(uint64
   return v23;
 }
 
-+ (id)sha256DataFromData:(id)a3
++ (id)sha256DataFromData:(id)data
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (CC_SHA256([v3 bytes], objc_msgSend(v3, "length"), md))
+  dataCopy = data;
+  if (CC_SHA256([dataCopy bytes], objc_msgSend(dataCopy, "length"), md))
   {
     v4 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:32];
     v5 = [v4 base64EncodedStringWithOptions:0];
@@ -570,17 +570,17 @@ double __47__CHSWidgetMetrics_isEqualTo_using32BitFloats___block_invoke_4(uint64
   return v5;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CHSWidgetMetrics *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CHSWidgetMetrics *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -588,8 +588,8 @@ double __47__CHSWidgetMetrics_isEqualTo_using32BitFloats___block_invoke_4(uint64
   v9[3] = &unk_1E7453000;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   v7 = v6;
 
   return v6;
@@ -633,73 +633,73 @@ uint64_t __58__CHSWidgetMetrics_descriptionBuilderWithMultilinePrefix___block_in
   return [v14 appendDictionarySection:v15 withName:@"nestedContentMetrics" multilinePrefix:@"   " skipIfEmpty:1];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeSize:@"size" forKey:{self->_size.width, self->_size.height}];
-  [v6 encodeDouble:@"cornerRadius" forKey:self->_cornerRadius];
-  [v6 encodeDouble:@"scaleFactor" forKey:self->_scaleFactor];
-  [v6 encodeInteger:self->_fontStyle forKey:@"fontStyle"];
-  [v6 encodeObject:self->_margins forKey:@"margins"];
-  [v6 encodeInteger:self->_dynamicTextSupport forKey:@"dynamicText"];
+  coderCopy = coder;
+  [coderCopy encodeSize:@"size" forKey:{self->_size.width, self->_size.height}];
+  [coderCopy encodeDouble:@"cornerRadius" forKey:self->_cornerRadius];
+  [coderCopy encodeDouble:@"scaleFactor" forKey:self->_scaleFactor];
+  [coderCopy encodeInteger:self->_fontStyle forKey:@"fontStyle"];
+  [coderCopy encodeObject:self->_margins forKey:@"margins"];
+  [coderCopy encodeInteger:self->_dynamicTextSupport forKey:@"dynamicText"];
   groupMargins = self->_groupMargins;
   if (groupMargins)
   {
-    [v6 encodeObject:groupMargins forKey:@"widgetGroupMargins"];
+    [coderCopy encodeObject:groupMargins forKey:@"widgetGroupMargins"];
   }
 
   nestedContentMetrics = self->_nestedContentMetrics;
   if (nestedContentMetrics)
   {
-    [v6 encodeObject:nestedContentMetrics forKey:@"nestedContentMetrics"];
+    [coderCopy encodeObject:nestedContentMetrics forKey:@"nestedContentMetrics"];
   }
 }
 
-- (CHSWidgetMetrics)initWithCoder:(id)a3
+- (CHSWidgetMetrics)initWithCoder:(id)coder
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 decodeSizeForKey:@"size"];
+  coderCopy = coder;
+  [coderCopy decodeSizeForKey:@"size"];
   v6 = v5;
   v8 = v7;
-  [v4 decodeDoubleForKey:@"cornerRadius"];
+  [coderCopy decodeDoubleForKey:@"cornerRadius"];
   v10 = v9;
-  [v4 decodeDoubleForKey:@"scaleFactor"];
+  [coderCopy decodeDoubleForKey:@"scaleFactor"];
   v12 = v11;
-  if ([v4 containsValueForKey:@"scaleFactors"])
+  if ([coderCopy containsValueForKey:@"scaleFactors"])
   {
     v13 = MEMORY[0x1E696ABC0];
     v26 = *MEMORY[0x1E696A578];
     v27[0] = @"No longer valid due to deprecated scale factor.";
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
     v15 = [v13 errorWithDomain:@"com.apple.chronoservices.metrics" code:1 userInfo:v14];
-    [v4 failWithError:v15];
+    [coderCopy failWithError:v15];
 
-    v16 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    if ([v4 containsValueForKey:@"textSizeAdjustment"])
+    if ([coderCopy containsValueForKey:@"textSizeAdjustment"])
     {
-      v17 = CHSWidgetFontStyleFromTextSizeAdjustment([v4 decodeIntegerForKey:@"textSizeAdjustment"]);
+      v17 = CHSWidgetFontStyleFromTextSizeAdjustment([coderCopy decodeIntegerForKey:@"textSizeAdjustment"]);
     }
 
     else
     {
-      v17 = [v4 decodeIntegerForKey:@"fontStyle"];
+      v17 = [coderCopy decodeIntegerForKey:@"fontStyle"];
     }
 
     v18 = v17;
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"margins"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"margins"];
     if (!v19)
     {
       v19 = [[CHSWidgetMargins alloc] initWithSafeAreaInsets:0.0 layoutInsets:0.0 contentMargins:0.0 backgroundRemovedContentMargins:0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0];
     }
 
-    if ([v4 containsValueForKey:@"dynamicText"])
+    if ([coderCopy containsValueForKey:@"dynamicText"])
     {
-      v20 = [v4 decodeIntegerForKey:@"dynamicText"];
+      v20 = [coderCopy decodeIntegerForKey:@"dynamicText"];
     }
 
     else
@@ -707,21 +707,21 @@ uint64_t __58__CHSWidgetMetrics_descriptionBuilderWithMultilinePrefix___block_in
       v20 = 0;
     }
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widgetGroupMargins"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widgetGroupMargins"];
     v22 = objc_opt_class();
-    v23 = [v4 decodeDictionaryWithKeysOfClass:v22 objectsOfClass:objc_opt_class() forKey:@"nestedContentMetrics"];
+    v23 = [coderCopy decodeDictionaryWithKeysOfClass:v22 objectsOfClass:objc_opt_class() forKey:@"nestedContentMetrics"];
     self = [(CHSWidgetMetrics *)self initWithSize:v18 cornerRadius:v19 scaleFactor:v20 fontStyle:v21 margins:v23 supportsDynamicText:v6 widgetGroupMargins:v8 nestedContentMetrics:v10, v12];
 
-    v16 = self;
+    selfCopy = self;
   }
 
   v24 = *MEMORY[0x1E69E9840];
-  return v16;
+  return selfCopy;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   if (xdict)
   {
     [@"size" UTF8String];
@@ -751,13 +751,13 @@ uint64_t __58__CHSWidgetMetrics_descriptionBuilderWithMultilinePrefix___block_in
   }
 }
 
-- (CHSWidgetMetrics)initWithXPCDictionary:(id)a3
+- (CHSWidgetMetrics)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
 LABEL_5:
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
@@ -765,9 +765,9 @@ LABEL_5:
   BSDeserializeCGSizeFromXPCDictionaryWithKey();
   v6 = v5;
   v8 = v7;
-  v9 = MEMORY[0x19A8C4AB0](v4, [@"cornerRadius" UTF8String]);
-  v10 = MEMORY[0x19A8C4AB0](v4, [@"scaleFactor" UTF8String]);
-  v11 = xpc_dictionary_get_value(v4, [@"scaleFactors" UTF8String]);
+  v9 = MEMORY[0x19A8C4AB0](dictionaryCopy, [@"cornerRadius" UTF8String]);
+  v10 = MEMORY[0x19A8C4AB0](dictionaryCopy, [@"scaleFactor" UTF8String]);
+  v11 = xpc_dictionary_get_value(dictionaryCopy, [@"scaleFactors" UTF8String]);
 
   if (v11)
   {
@@ -780,17 +780,17 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v13 = xpc_dictionary_get_value(v4, [@"textSizeAdjustment" UTF8String]);
+  v13 = xpc_dictionary_get_value(dictionaryCopy, [@"textSizeAdjustment" UTF8String]);
 
   if (v13)
   {
-    int64 = xpc_dictionary_get_int64(v4, [@"textSizeAdjustment" UTF8String]);
+    int64 = xpc_dictionary_get_int64(dictionaryCopy, [@"textSizeAdjustment" UTF8String]);
     v15 = CHSWidgetFontStyleFromTextSizeAdjustment(int64);
   }
 
   else
   {
-    v15 = xpc_dictionary_get_int64(v4, [@"fontStyle" UTF8String]);
+    v15 = xpc_dictionary_get_int64(dictionaryCopy, [@"fontStyle" UTF8String]);
   }
 
   v16 = v15;
@@ -801,7 +801,7 @@ LABEL_5:
     v17 = [[CHSWidgetMargins alloc] initWithSafeAreaInsets:0.0 layoutInsets:0.0 contentMargins:0.0 backgroundRemovedContentMargins:0.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 0, 0, 0, 0, 0, 0];
   }
 
-  uint64 = xpc_dictionary_get_uint64(v4, [@"dynamicText" UTF8String]);
+  uint64 = xpc_dictionary_get_uint64(dictionaryCopy, [@"dynamicText" UTF8String]);
   [@"widgetGroupMargins" UTF8String];
   v19 = BSDeserializeBSXPCEncodableObjectFromXPCDictionaryWithKey();
   [@"nestedContentMetrics" UTF8String];
@@ -811,22 +811,22 @@ LABEL_5:
   v23 = [v21 unarchivedDictionaryWithKeysOfClass:v22 objectsOfClass:objc_opt_class() fromData:v20 error:0];
   self = [(CHSWidgetMetrics *)self initWithSize:v16 cornerRadius:v17 scaleFactor:uint64 fontStyle:v19 margins:v23 supportsDynamicText:v6 widgetGroupMargins:v8 nestedContentMetrics:v9, v10];
 
-  v12 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v12;
+  return selfCopy;
 }
 
-+ (void)_replaceFontStyleIn:(id)a3 withTextSizeAdjustment:(int64_t)a4
++ (void)_replaceFontStyleIn:(id)in withTextSizeAdjustment:(int64_t)adjustment
 {
-  xdict = a3;
+  xdict = in;
   xpc_dictionary_set_value(xdict, [@"fontStyle" UTF8String], 0);
-  xpc_dictionary_set_int64(xdict, [@"textSizeAdjustment" UTF8String], a4);
+  xpc_dictionary_set_int64(xdict, [@"textSizeAdjustment" UTF8String], adjustment);
 }
 
-+ (void)_removeSafeAreaInsetsIn:(id)a3
++ (void)_removeSafeAreaInsetsIn:(id)in
 {
-  v49 = a3;
+  inCopy = in;
   [@"margins" UTF8String];
   v3 = BSDeserializeBSXPCEncodableObjectFromXPCDictionaryWithKey();
   if (v3)
@@ -877,7 +877,7 @@ LABEL_12:
   return CHSEdgeInsetsEqualToEdgeInsets();
 }
 
-- (CGSize)_effectiveSizePixelAlignedForDisplayScale:(double)a3
+- (CGSize)_effectiveSizePixelAlignedForDisplayScale:(double)scale
 {
   [(CHSWidgetMetrics *)self _rawEffectiveSize];
   v6 = v5;
@@ -885,9 +885,9 @@ LABEL_12:
   scaleFactor = self->_scaleFactor;
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    [(CHSWidgetMetrics *)self _roundToNearestOrUp:v6 withScale:a3];
+    [(CHSWidgetMetrics *)self _roundToNearestOrUp:v6 withScale:scale];
     v6 = v10;
-    [(CHSWidgetMetrics *)self _roundToNearestOrUp:v8 withScale:a3];
+    [(CHSWidgetMetrics *)self _roundToNearestOrUp:v8 withScale:scale];
     v8 = v11;
   }
 
@@ -898,11 +898,11 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)_rawSizePixelAlignedForDisplayScale:(double)a3
+- (CGSize)_rawSizePixelAlignedForDisplayScale:(double)scale
 {
-  [(CHSWidgetMetrics *)self _roundToNearestOrUp:self->_size.width withScale:a3];
+  [(CHSWidgetMetrics *)self _roundToNearestOrUp:self->_size.width withScale:scale];
   v6 = v5;
-  [(CHSWidgetMetrics *)self _roundToNearestOrUp:self->_size.height withScale:a3];
+  [(CHSWidgetMetrics *)self _roundToNearestOrUp:self->_size.height withScale:scale];
   v8 = v7;
   v9 = v6;
   result.height = v8;
@@ -910,14 +910,14 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)_rawLayoutInsetAdjustedSizePixelAlignedForDisplayScale:(double)a3
+- (CGSize)_rawLayoutInsetAdjustedSizePixelAlignedForDisplayScale:(double)scale
 {
   [(CHSWidgetMargins *)self->_margins layoutInsets];
   v6 = v5;
   v8 = v7;
-  [(CHSWidgetMetrics *)self _roundToNearestOrUp:fmax(self->_size.width - v9 - v10 withScale:0.0), a3];
+  [(CHSWidgetMetrics *)self _roundToNearestOrUp:fmax(self->_size.width - v9 - v10 withScale:0.0), scale];
   v12 = v11;
-  [(CHSWidgetMetrics *)self _roundToNearestOrUp:fmax(self->_size.height - v6 - v8 withScale:0.0), a3];
+  [(CHSWidgetMetrics *)self _roundToNearestOrUp:fmax(self->_size.height - v6 - v8 withScale:0.0), scale];
   v14 = v13;
   v15 = v12;
   result.height = v14;
@@ -925,11 +925,11 @@ LABEL_12:
   return result;
 }
 
-- (double)_roundToNearestOrUp:(double)a3 withScale:(double)a4
+- (double)_roundToNearestOrUp:(double)up withScale:(double)scale
 {
-  if (a4 != 0.0)
+  if (scale != 0.0)
   {
-    return 1.0 / a4 * floor((1.0 / a4 * 0.5 + a3) / (1.0 / a4));
+    return 1.0 / scale * floor((1.0 / scale * 0.5 + up) / (1.0 / scale));
   }
 
   v4 = CHSLogChronoServices();
@@ -941,11 +941,11 @@ LABEL_12:
   return 0.0;
 }
 
-- (id)filenameSafeSHAFrom:(id)a3
+- (id)filenameSafeSHAFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  if ([v17 count])
+  fromCopy = from;
+  if ([fromCopy count])
   {
     context = objc_autoreleasePoolPush();
     v3 = objc_alloc_init(MEMORY[0x1E695DF88]);
@@ -953,7 +953,7 @@ LABEL_12:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = v17;
+    v4 = fromCopy;
     v5 = [v4 countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v5)
     {
@@ -1010,25 +1010,25 @@ LABEL_12:
   return v13;
 }
 
-- (id)_stringKeyRepresentationForVersion:(unint64_t)a3
+- (id)_stringKeyRepresentationForVersion:(unint64_t)version
 {
-  switch(a3)
+  switch(version)
   {
     case 1uLL:
-      v3 = [(CHSWidgetMetrics *)self _dawnStringKeyRepresentation];
+      _dawnStringKeyRepresentation = [(CHSWidgetMetrics *)self _dawnStringKeyRepresentation];
       break;
     case 2uLL:
-      v3 = [(CHSWidgetMetrics *)self _crystalStringKeyRepresentation];
+      _dawnStringKeyRepresentation = [(CHSWidgetMetrics *)self _crystalStringKeyRepresentation];
       break;
     case 3uLL:
-      v3 = [(CHSWidgetMetrics *)self _luckStringKeyRepresentation];
+      _dawnStringKeyRepresentation = [(CHSWidgetMetrics *)self _luckStringKeyRepresentation];
       break;
     default:
-      v3 = [MEMORY[0x1E695DF30] exceptionWithName:@"CHSWidgetMetricsError" reason:@"Invalid version" userInfo:&unk_1F0A7A130];
+      _dawnStringKeyRepresentation = [MEMORY[0x1E695DF30] exceptionWithName:@"CHSWidgetMetricsError" reason:@"Invalid version" userInfo:&unk_1F0A7A130];
       break;
   }
 
-  return v3;
+  return _dawnStringKeyRepresentation;
 }
 
 - (id)_crystalStringKeyRepresentation
@@ -1080,12 +1080,12 @@ LABEL_12:
   return [v15 stringWithFormat:@"%.2fw--%.2fh--%.2fr--%ldf--%.2ft-%.2fl-%.2fb%.2ft", v4, v6, v16, self->_fontStyle, v8, v10, v12, v14];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = v4;
+  compareCopy = compare;
+  v5 = compareCopy;
   width = self->_size.width;
-  v7 = v4[8];
+  v7 = compareCopy[8];
   if (width < v7)
   {
     goto LABEL_2;
@@ -1099,7 +1099,7 @@ LABEL_4:
   }
 
   height = self->_size.height;
-  v11 = v4[9];
+  v11 = compareCopy[9];
   if (height >= v11)
   {
     if (height > v11)
@@ -1108,7 +1108,7 @@ LABEL_4:
     }
 
     cornerRadius = self->_cornerRadius;
-    v13 = v4[1];
+    v13 = compareCopy[1];
     if (cornerRadius >= v13)
     {
       if (cornerRadius > v13)
@@ -1117,7 +1117,7 @@ LABEL_4:
       }
 
       scaleFactor = self->_scaleFactor;
-      v15 = v4[2];
+      v15 = compareCopy[2];
       if (scaleFactor >= v15)
       {
         if (scaleFactor > v15)
@@ -1126,7 +1126,7 @@ LABEL_4:
         }
 
         fontStyle = self->_fontStyle;
-        v17 = *(v4 + 4);
+        v17 = *(compareCopy + 4);
         if (fontStyle >= v17)
         {
           if (fontStyle > v17)
@@ -1135,13 +1135,13 @@ LABEL_4:
           }
 
           dynamicTextSupport = self->_dynamicTextSupport;
-          v19 = *(v4 + 3);
+          v19 = *(compareCopy + 3);
           if (dynamicTextSupport >= v19)
           {
             if (dynamicTextSupport <= v19)
             {
               margins = self->_margins;
-              v21 = *(v4 + 5);
+              v21 = *(compareCopy + 5);
               v22 = margins;
               v8 = [(CHSWidgetMargins *)v22 compare:v21];
 

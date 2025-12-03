@@ -1,5 +1,5 @@
 @interface TRActivationOperation
-- (void)_handleResponse:(id)a3;
+- (void)_handleResponse:(id)response;
 - (void)execute;
 @end
 
@@ -10,8 +10,8 @@
   v13 = *MEMORY[0x277D85DE8];
   if ([(TRActivationOperation *)self isCancelled])
   {
-    v8 = [objc_opt_class() userCancelledError];
-    [(TROperation *)self finishWithError:v8];
+    userCancelledError = [objc_opt_class() userCancelledError];
+    [(TROperation *)self finishWithError:userCancelledError];
     v3 = *MEMORY[0x277D85DE8];
   }
 
@@ -30,13 +30,13 @@
 
     v5 = objc_alloc_init(TRSetupActivationRequest);
     objc_initWeak(buf, self);
-    v6 = [(TROperation *)self session];
+    session = [(TROperation *)self session];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __32__TRActivationOperation_execute__block_invoke;
     v9[3] = &unk_279DCECD0;
     objc_copyWeak(&v10, buf);
-    [v6 sendRequest:v5 withResponseHandler:v9];
+    [session sendRequest:v5 withResponseHandler:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);
@@ -67,10 +67,10 @@ void __32__TRActivationOperation_execute__block_invoke(uint64_t a1, void *a2, vo
   }
 }
 
-- (void)_handleResponse:(id)a3
+- (void)_handleResponse:(id)response
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   if (_TRLogEnabled == 1)
   {
     v5 = TRLogHandle();
@@ -79,7 +79,7 @@ void __32__TRActivationOperation_execute__block_invoke(uint64_t a1, void *a2, vo
       *buf = 136315394;
       v17 = "[TRActivationOperation _handleResponse:]";
       v18 = 2112;
-      v19 = v4;
+      v19 = responseCopy;
       _os_log_impl(&dword_26F2A2000, v5, OS_LOG_TYPE_DEFAULT, "%s Handle Activation Response: %@", buf, 0x16u);
     }
   }
@@ -87,18 +87,18 @@ void __32__TRActivationOperation_execute__block_invoke(uint64_t a1, void *a2, vo
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = responseCopy;
     v7 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "activated", @"TRActivationOperationIsActivatedKey"}];
     v15 = v7;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     v9 = [v8 mutableCopy];
 
-    v10 = [v6 error];
+    error = [v6 error];
 
-    if (v10)
+    if (error)
     {
-      v11 = [v6 error];
-      [v9 setObject:v11 forKeyedSubscript:@"TRActivationOperationErrorKey"];
+      error2 = [v6 error];
+      [v9 setObject:error2 forKeyedSubscript:@"TRActivationOperationErrorKey"];
     }
 
     v12 = [v9 copy];

@@ -1,46 +1,46 @@
 @interface CPSClipOverlayViewController
-- (CPSClipOverlayViewController)initWithAppClipBundleID:(id)a3;
-- (CPSClipOverlayViewController)initWithAppClipBundleID:(id)a3 webClipID:(id)a4;
-- (CPSClipOverlayViewController)initWithAppClipRecord:(id)a3;
-- (id)_initWithAppClipBundleID:(id)a3;
+- (CPSClipOverlayViewController)initWithAppClipBundleID:(id)d;
+- (CPSClipOverlayViewController)initWithAppClipBundleID:(id)d webClipID:(id)iD;
+- (CPSClipOverlayViewController)initWithAppClipRecord:(id)record;
+- (id)_initWithAppClipBundleID:(id)d;
 - (void)_didTapBanner;
-- (void)_dismissLoadingViewAnimated:(BOOL)a3;
+- (void)_dismissLoadingViewAnimated:(BOOL)animated;
 - (void)_loadClipMetadataUsingPlaceholderWebClipID;
 - (void)_loadClipRecordUsingBundleID;
-- (void)_presentLoadingViewAnimated:(BOOL)a3;
+- (void)_presentLoadingViewAnimated:(BOOL)animated;
 - (void)_scheduleBannerDismissTimerIfNeeded;
-- (void)_setBannerHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setClipRecord:(id)a3;
-- (void)_setClipSessionProxy:(id)a3;
-- (void)_setPlaceholderClipMetadata:(id)a3;
+- (void)_setBannerHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)_setClipRecord:(id)record;
+- (void)_setClipSessionProxy:(id)proxy;
+- (void)_setPlaceholderClipMetadata:(id)metadata;
 - (void)_setUpNewSessionProxy;
-- (void)_showFailedLoadingStateAndReloadMetadata:(BOOL)a3 animated:(BOOL)a4;
+- (void)_showFailedLoadingStateAndReloadMetadata:(BOOL)metadata animated:(BOOL)animated;
 - (void)_updateBanner;
 - (void)_updateBannerLabels;
 - (void)_updateLoadingView;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)proxy:(id)a3 didFinishLoadingWithError:(id)a4;
-- (void)proxy:(id)a3 didRetrieveHeroImage:(id)a4;
-- (void)proxyDidChangeProgress:(id)a3;
-- (void)proxyDidUpdateMetadata:(id)a3;
-- (void)proxyRemoteServiceDidCrash:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)proxy:(id)proxy didFinishLoadingWithError:(id)error;
+- (void)proxy:(id)proxy didRetrieveHeroImage:(id)image;
+- (void)proxyDidChangeProgress:(id)progress;
+- (void)proxyDidUpdateMetadata:(id)metadata;
+- (void)proxyRemoteServiceDidCrash:(id)crash;
 - (void)setClipNeedsUpdateToLatestVersion;
-- (void)setDisplayedOverPlaceholder:(BOOL)a3 animated:(BOOL)a4;
-- (void)setDisplayedOverPlaceholder:(BOOL)a3 forWebClipID:(id)a4 animated:(BOOL)a5;
-- (void)setDisplayedOverPlaceholder:(BOOL)a3 usingClipMetadata:(id)a4 animated:(BOOL)a5;
-- (void)setReferrerBundleID:(id)a3;
-- (void)setSceneActivationState:(int64_t)a3 animated:(BOOL)a4;
-- (void)setWebClipID:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setDisplayedOverPlaceholder:(BOOL)placeholder animated:(BOOL)animated;
+- (void)setDisplayedOverPlaceholder:(BOOL)placeholder forWebClipID:(id)d animated:(BOOL)animated;
+- (void)setDisplayedOverPlaceholder:(BOOL)placeholder usingClipMetadata:(id)metadata animated:(BOOL)animated;
+- (void)setReferrerBundleID:(id)d;
+- (void)setSceneActivationState:(int64_t)state animated:(BOOL)animated;
+- (void)setWebClipID:(id)d;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation CPSClipOverlayViewController
 
-- (CPSClipOverlayViewController)initWithAppClipBundleID:(id)a3
+- (CPSClipOverlayViewController)initWithAppClipBundleID:(id)d
 {
-  v3 = [(CPSClipOverlayViewController *)self _initWithAppClipBundleID:a3];
+  v3 = [(CPSClipOverlayViewController *)self _initWithAppClipBundleID:d];
   v4 = v3;
   if (v3)
   {
@@ -51,24 +51,24 @@
   return v4;
 }
 
-- (CPSClipOverlayViewController)initWithAppClipRecord:(id)a3
+- (CPSClipOverlayViewController)initWithAppClipRecord:(id)record
 {
-  v5 = a3;
-  v6 = [v5 bundleID];
-  v7 = [(CPSClipOverlayViewController *)self _initWithAppClipBundleID:v6];
+  recordCopy = record;
+  bundleID = [recordCopy bundleID];
+  v7 = [(CPSClipOverlayViewController *)self _initWithAppClipBundleID:bundleID];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_clipRecord, a3);
+    objc_storeStrong(&v7->_clipRecord, record);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)_initWithAppClipBundleID:(id)a3
+- (id)_initWithAppClipBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = CPSClipOverlayViewController;
   v5 = [(CPSClipOverlayViewController *)&v11 initWithNibName:0 bundle:0];
@@ -76,7 +76,7 @@
   if (v5)
   {
     v5->_sceneActivationState = -1;
-    v7 = [objc_alloc(MEMORY[0x277CFA688]) initWithBundleID:v4];
+    v7 = [objc_alloc(MEMORY[0x277CFA688]) initWithBundleID:dCopy];
     clipRecord = v6->_clipRecord;
     v6->_clipRecord = v7;
 
@@ -98,14 +98,14 @@
   [(CPSClipOverlayViewController *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (kvoContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (kvoContext == context)
   {
-    if (self->_bannerContainer == v11)
+    if (self->_bannerContainer == objectCopy)
     {
       [(CPSClipOverlayViewController *)self _scheduleBannerDismissTimerIfNeeded];
     }
@@ -115,7 +115,7 @@
   {
     v13.receiver = self;
     v13.super_class = CPSClipOverlayViewController;
-    [(CPSClipOverlayViewController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(CPSClipOverlayViewController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -124,7 +124,7 @@
   v17.receiver = self;
   v17.super_class = CPSClipOverlayViewController;
   [(CPSClipOverlayViewController *)&v17 viewDidLoad];
-  v3 = [(CPSClipOverlayViewController *)self view];
+  view = [(CPSClipOverlayViewController *)self view];
   objc_initWeak(&location, self);
   v4 = objc_alloc_init(CPSAppAttributionBanner);
   banner = self->_banner;
@@ -145,22 +145,22 @@
   self->_bannerContainer = v7;
 
   [(CPSBannerContainerView *)self->_bannerContainer setAutoresizingMask:18];
-  [v3 bounds];
+  [view bounds];
   [(CPSBannerContainerView *)self->_bannerContainer setFrame:?];
   [(CPSBannerContainerView *)self->_bannerContainer addObserver:self forKeyPath:@"bannerHidden" options:0 context:kvoContext];
   [(CPSBannerContainerView *)self->_bannerContainer addObserver:self forKeyPath:@"trackingBannerDismissGesture" options:0 context:kvoContext];
   [(CPSBannerContainerView *)self->_bannerContainer addObserver:self forKeyPath:@"bannerHasAccessibilityFocus" options:0 context:kvoContext];
-  [v3 addSubview:self->_bannerContainer];
-  v9 = [(CPSAppClipRecord *)self->_clipRecord fullApplicationName];
-  if (v9)
+  [view addSubview:self->_bannerContainer];
+  fullApplicationName = [(CPSAppClipRecord *)self->_clipRecord fullApplicationName];
+  if (fullApplicationName)
   {
   }
 
   else
   {
-    v10 = [(CPSAppClipRecord *)self->_clipRecord fullApplicationCaption];
+    fullApplicationCaption = [(CPSAppClipRecord *)self->_clipRecord fullApplicationCaption];
 
-    if (!v10)
+    if (!fullApplicationCaption)
     {
       [(CPSClipOverlayViewController *)self _loadClipRecordUsingBundleID];
     }
@@ -176,22 +176,22 @@ void __43__CPSClipOverlayViewController_viewDidLoad__block_invoke(uint64_t a1)
   [WeakRetained _didTapBanner];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CPSClipOverlayViewController;
-  [(CPSClipOverlayViewController *)&v4 viewDidAppear:a3];
+  [(CPSClipOverlayViewController *)&v4 viewDidAppear:appear];
   self->_initialAppearanceTime = CACurrentMediaTime();
 }
 
-- (void)setWebClipID:(id)a3
+- (void)setWebClipID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   webClipID = self->_webClipID;
-  if (webClipID != v4)
+  if (webClipID != dCopy)
   {
-    v11 = v4;
-    if (![(NSString *)webClipID isEqualToString:v4])
+    v11 = dCopy;
+    if (![(NSString *)webClipID isEqualToString:dCopy])
     {
       v6 = [(NSString *)v11 copy];
       v7 = self->_webClipID;
@@ -203,9 +203,9 @@ void __43__CPSClipOverlayViewController_viewDidLoad__block_invoke(uint64_t a1)
         [(CPSPromise *)sessionPromise finishWithError:0];
       }
 
-      v9 = [MEMORY[0x277CFA6C8] promise];
+      promise = [MEMORY[0x277CFA6C8] promise];
       v10 = self->_sessionPromise;
-      self->_sessionPromise = v9;
+      self->_sessionPromise = promise;
 
       [(CPSClipOverlayViewController *)self _loadClipMetadataUsingPlaceholderWebClipID];
     }
@@ -214,87 +214,87 @@ void __43__CPSClipOverlayViewController_viewDidLoad__block_invoke(uint64_t a1)
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setDisplayedOverPlaceholder:(BOOL)a3 forWebClipID:(id)a4 animated:(BOOL)a5
+- (void)setDisplayedOverPlaceholder:(BOOL)placeholder forWebClipID:(id)d animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a3;
+  animatedCopy = animated;
+  placeholderCopy = placeholder;
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  dCopy = d;
   v9 = CPS_LOG_CHANNEL_PREFIXClipUIServices();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     displayedOverPlaceholder = self->_displayedOverPlaceholder;
     v11 = 138478595;
-    v12 = v8;
+    v12 = dCopy;
     v13 = 1024;
     v14 = displayedOverPlaceholder;
     v15 = 1024;
-    v16 = v6;
+    v16 = placeholderCopy;
     v17 = 1024;
-    v18 = v5;
+    v18 = animatedCopy;
     _os_log_impl(&dword_24374B000, v9, OS_LOG_TYPE_DEFAULT, "Displaying overlay for web clip %{private}@. Was over placeholder (%d), is over placeholder (%d), animated (%d).", &v11, 0x1Eu);
   }
 
-  [(CPSClipOverlayViewController *)self setWebClipID:v8];
-  if (self->_displayedOverPlaceholder != v6 || self->_showingDemoProgress)
+  [(CPSClipOverlayViewController *)self setWebClipID:dCopy];
+  if (self->_displayedOverPlaceholder != placeholderCopy || self->_showingDemoProgress)
   {
-    self->_displayedOverPlaceholder = v6;
-    if (v6 || self->_showingDemoProgress)
+    self->_displayedOverPlaceholder = placeholderCopy;
+    if (placeholderCopy || self->_showingDemoProgress)
     {
-      [(CPSClipOverlayViewController *)self _presentLoadingViewAnimated:v5];
+      [(CPSClipOverlayViewController *)self _presentLoadingViewAnimated:animatedCopy];
     }
 
     else
     {
-      [(CPSClipOverlayViewController *)self _dismissLoadingViewAnimated:v5];
+      [(CPSClipOverlayViewController *)self _dismissLoadingViewAnimated:animatedCopy];
     }
   }
 }
 
-- (void)setDisplayedOverPlaceholder:(BOOL)a3 usingClipMetadata:(id)a4 animated:(BOOL)a5
+- (void)setDisplayedOverPlaceholder:(BOOL)placeholder usingClipMetadata:(id)metadata animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
-  v9 = [v8 webClipID];
-  [(CPSClipOverlayViewController *)self setWebClipID:v9];
+  animatedCopy = animated;
+  placeholderCopy = placeholder;
+  metadataCopy = metadata;
+  webClipID = [metadataCopy webClipID];
+  [(CPSClipOverlayViewController *)self setWebClipID:webClipID];
 
-  [(CPSClipOverlayViewController *)self _setPlaceholderClipMetadata:v8];
-  v10 = [v8 webClipID];
+  [(CPSClipOverlayViewController *)self _setPlaceholderClipMetadata:metadataCopy];
+  webClipID2 = [metadataCopy webClipID];
 
-  [(CPSClipOverlayViewController *)self setDisplayedOverPlaceholder:v6 forWebClipID:v10 animated:v5];
+  [(CPSClipOverlayViewController *)self setDisplayedOverPlaceholder:placeholderCopy forWebClipID:webClipID2 animated:animatedCopy];
 }
 
-- (void)setSceneActivationState:(int64_t)a3 animated:(BOOL)a4
+- (void)setSceneActivationState:(int64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v23 = *MEMORY[0x277D85DE8];
   v7 = CPS_LOG_CHANNEL_PREFIXClipUIServices();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     sceneActivationState = self->_sceneActivationState;
     *buf = 134218752;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
-    v18 = a3;
+    stateCopy = state;
     v19 = 2048;
     v20 = sceneActivationState;
     v21 = 1024;
-    v22 = v4;
+    v22 = animatedCopy;
     _os_log_impl(&dword_24374B000, v7, OS_LOG_TYPE_DEFAULT, "CPSClipOverlayViewController (%p): Setting scene activation state to %ld from %ld, animated (%d).", buf, 0x26u);
   }
 
-  if (self->_sceneActivationState != a3)
+  if (self->_sceneActivationState != state)
   {
-    self->_sceneActivationState = a3;
+    self->_sceneActivationState = state;
     [(CPSClipOverlayViewController *)self loadViewIfNeeded];
-    if ((a3 - 1) < 2 || a3 == -1)
+    if ((state - 1) < 2 || state == -1)
     {
-      [(CPSClipOverlayViewController *)self _setBannerHidden:1 animated:v4];
+      [(CPSClipOverlayViewController *)self _setBannerHidden:1 animated:animatedCopy];
       return;
     }
 
-    if (a3)
+    if (state)
     {
       return;
     }
@@ -306,8 +306,8 @@ void __43__CPSClipOverlayViewController_viewDidLoad__block_invoke(uint64_t a1)
 
     else
     {
-      v10 = [(CPSClipLoadingView *)self->_loadingView superview];
-      v11 = v10 == 0;
+      superview = [(CPSClipLoadingView *)self->_loadingView superview];
+      v11 = superview == 0;
 
       if (!v11)
       {
@@ -332,7 +332,7 @@ LABEL_14:
       displayedOverPlaceholder = self->_displayedOverPlaceholder;
     }
 
-    [(CPSClipOverlayViewController *)self _setBannerHidden:displayedOverPlaceholder animated:v4];
+    [(CPSClipOverlayViewController *)self _setBannerHidden:displayedOverPlaceholder animated:animatedCopy];
     goto LABEL_14;
   }
 }
@@ -378,9 +378,9 @@ void __65__CPSClipOverlayViewController_setSceneActivationState_animated___block
   {
     clipRecord = self->_clipRecord;
     v5 = v3;
-    v6 = [(CPSAppClipRecord *)clipRecord bundleID];
+    bundleID = [(CPSAppClipRecord *)clipRecord bundleID];
     *buf = 138412290;
-    v11 = v6;
+    v11 = bundleID;
     _os_log_impl(&dword_24374B000, v5, OS_LOG_TYPE_DEFAULT, "Update to latest version requested for: %@", buf, 0xCu);
   }
 
@@ -484,12 +484,12 @@ void __65__CPSClipOverlayViewController_setClipNeedsUpdateToLatestVersion__block
   }
 }
 
-- (void)setReferrerBundleID:(id)a3
+- (void)setReferrerBundleID:(id)d
 {
-  v5 = a3;
-  if ([(NSString *)v5 length]&& self->_referrerBundleID != v5 && ![(NSString *)v5 isEqualToString:@"com.apple.ClipServices.clipserviced"])
+  dCopy = d;
+  if ([(NSString *)dCopy length]&& self->_referrerBundleID != dCopy && ![(NSString *)dCopy isEqualToString:@"com.apple.ClipServices.clipserviced"])
   {
-    objc_storeStrong(&self->_referrerBundleID, a3);
+    objc_storeStrong(&self->_referrerBundleID, d);
   }
 
   MEMORY[0x2821F96F8]();
@@ -499,14 +499,14 @@ void __65__CPSClipOverlayViewController_setClipNeedsUpdateToLatestVersion__block
 {
   if (!self->_usesMockData)
   {
-    v3 = [MEMORY[0x277CFA690] defaultStore];
-    v4 = [(CPSAppClipRecord *)self->_clipRecord bundleID];
+    defaultStore = [MEMORY[0x277CFA690] defaultStore];
+    bundleID = [(CPSAppClipRecord *)self->_clipRecord bundleID];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __60__CPSClipOverlayViewController__loadClipRecordUsingBundleID__block_invoke;
     v5[3] = &unk_278DD2308;
     v5[4] = self;
-    [v3 getAppClipRecordWithBundleID:v4 completion:v5];
+    [defaultStore getAppClipRecordWithBundleID:bundleID completion:v5];
   }
 }
 
@@ -526,15 +526,15 @@ void __60__CPSClipOverlayViewController__loadClipRecordUsingBundleID__block_invo
   }
 }
 
-- (void)_setClipRecord:(id)a3
+- (void)_setClipRecord:(id)record
 {
-  v5 = a3;
-  if (self->_clipRecord != v5)
+  recordCopy = record;
+  if (self->_clipRecord != recordCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_clipRecord, a3);
+    v6 = recordCopy;
+    objc_storeStrong(&self->_clipRecord, record);
     [(CPSClipOverlayViewController *)self _updateBanner];
-    v5 = v6;
+    recordCopy = v6;
   }
 }
 
@@ -547,14 +547,14 @@ void __60__CPSClipOverlayViewController__loadClipRecordUsingBundleID__block_invo
     v3 = self->_webClipID;
     if ([(NSString *)v3 length])
     {
-      v4 = [MEMORY[0x277CFA6F0] sharedStore];
+      mEMORY[0x277CFA6F0] = [MEMORY[0x277CFA6F0] sharedStore];
       v5[0] = MEMORY[0x277D85DD0];
       v5[1] = 3221225472;
       v5[2] = __74__CPSClipOverlayViewController__loadClipMetadataUsingPlaceholderWebClipID__block_invoke;
       v5[3] = &unk_278DD2330;
       v6 = v3;
-      v7 = self;
-      [v4 getAppClipWithIdentifier:v6 receiveOnQueue:MEMORY[0x277D85CD0] completionHandler:v5];
+      selfCopy = self;
+      [mEMORY[0x277CFA6F0] getAppClipWithIdentifier:v6 receiveOnQueue:MEMORY[0x277D85CD0] completionHandler:v5];
     }
   }
 }
@@ -583,46 +583,46 @@ void __74__CPSClipOverlayViewController__loadClipMetadataUsingPlaceholderWebClip
 - (void)_setUpNewSessionProxy
 {
   v3 = objc_alloc(MEMORY[0x277CFA6D8]);
-  v4 = [(CPSWebClip *)self->_webClip pageURL];
-  v7 = [v3 initWithURL:v4];
+  pageURL = [(CPSWebClip *)self->_webClip pageURL];
+  v7 = [v3 initWithURL:pageURL];
 
-  v5 = [MEMORY[0x277CFA6D0] localConfiguration];
-  [v7 setConfiguration:v5];
+  localConfiguration = [MEMORY[0x277CFA6D0] localConfiguration];
+  [v7 setConfiguration:localConfiguration];
 
-  v6 = [v7 configuration];
-  [v6 setIsForSwitcherOverlay:1];
+  configuration = [v7 configuration];
+  [configuration setIsForSwitcherOverlay:1];
 
   [(CPSClipOverlayViewController *)self _setClipSessionProxy:v7];
 }
 
-- (void)_setPlaceholderClipMetadata:(id)a3
+- (void)_setPlaceholderClipMetadata:(id)metadata
 {
-  v5 = a3;
-  if (self->_placeholderClipMetadata != v5)
+  metadataCopy = metadata;
+  if (self->_placeholderClipMetadata != metadataCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeholderClipMetadata, a3);
+    v6 = metadataCopy;
+    objc_storeStrong(&self->_placeholderClipMetadata, metadata);
     [(CPSClipOverlayViewController *)self _updateLoadingView];
-    v5 = v6;
+    metadataCopy = v6;
   }
 }
 
-- (void)_setClipSessionProxy:(id)a3
+- (void)_setClipSessionProxy:(id)proxy
 {
-  v5 = a3;
-  if (!v5)
+  proxyCopy = proxy;
+  if (!proxyCopy)
   {
     self->_attemptToShowBannerOnceSessionProxyIsResolved = 0;
   }
 
   sessionProxy = self->_sessionProxy;
-  if (sessionProxy != v5)
+  if (sessionProxy != proxyCopy)
   {
-    v8 = v5;
-    if (([(CPSSessionProxy *)sessionProxy isEqual:v5]& 1) == 0)
+    v8 = proxyCopy;
+    if (([(CPSSessionProxy *)sessionProxy isEqual:proxyCopy]& 1) == 0)
     {
       v7 = self->_sessionProxy;
-      objc_storeStrong(&self->_sessionProxy, a3);
+      objc_storeStrong(&self->_sessionProxy, proxy);
       if (v7)
       {
         [(CPSSessionProxy *)v7 disconnect];
@@ -645,16 +645,16 @@ void __74__CPSClipOverlayViewController__loadClipMetadataUsingPlaceholderWebClip
   MEMORY[0x2821F96F8]();
 }
 
-- (void)proxyDidUpdateMetadata:(id)a3
+- (void)proxyDidUpdateMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__CPSClipOverlayViewController_proxyDidUpdateMetadata___block_invoke;
   v6[3] = &unk_278DD22E0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = metadataCopy;
+  v5 = metadataCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -665,12 +665,12 @@ void __55__CPSClipOverlayViewController_proxyDidUpdateMetadata___block_invoke(ui
   [v1 _setPlaceholderClipMetadata:v2];
 }
 
-- (void)proxyDidChangeProgress:(id)a3
+- (void)proxyDidChangeProgress:(id)progress
 {
   if (!self->_showingDemoProgress)
   {
-    v4 = [a3 estimatedProgress];
-    [v4 floatValue];
+    estimatedProgress = [progress estimatedProgress];
+    [estimatedProgress floatValue];
     v6 = v5;
 
     v7[0] = MEMORY[0x277D85DD0];
@@ -683,10 +683,10 @@ void __55__CPSClipOverlayViewController_proxyDidUpdateMetadata___block_invoke(ui
   }
 }
 
-- (void)proxy:(id)a3 didFinishLoadingWithError:(id)a4
+- (void)proxy:(id)proxy didFinishLoadingWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  proxyCopy = proxy;
+  errorCopy = error;
   if (!self->_showingDemoProgress)
   {
     objc_initWeak(&location, self);
@@ -695,8 +695,8 @@ void __55__CPSClipOverlayViewController_proxyDidUpdateMetadata___block_invoke(ui
     v8[2] = __64__CPSClipOverlayViewController_proxy_didFinishLoadingWithError___block_invoke;
     v8[3] = &unk_278DD2380;
     objc_copyWeak(&v11, &location);
-    v9 = v7;
-    v10 = v6;
+    v9 = errorCopy;
+    v10 = proxyCopy;
     dispatch_async(MEMORY[0x277D85CD0], v8);
 
     objc_destroyWeak(&v11);
@@ -747,9 +747,9 @@ uint64_t __64__CPSClipOverlayViewController_proxy_didFinishLoadingWithError___bl
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)proxyRemoteServiceDidCrash:(id)a3
+- (void)proxyRemoteServiceDidCrash:(id)crash
 {
-  v4 = a3;
+  crashCopy = crash;
   v5 = CPS_LOG_CHANNEL_PREFIXClipUIServices();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -760,9 +760,9 @@ uint64_t __64__CPSClipOverlayViewController_proxy_didFinishLoadingWithError___bl
   v7[1] = 3221225472;
   v7[2] = __59__CPSClipOverlayViewController_proxyRemoteServiceDidCrash___block_invoke;
   v7[3] = &unk_278DD22E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = crashCopy;
+  selfCopy = self;
+  v6 = crashCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -795,16 +795,16 @@ void __59__CPSClipOverlayViewController_proxyRemoteServiceDidCrash___block_invok
   }
 }
 
-- (void)proxy:(id)a3 didRetrieveHeroImage:(id)a4
+- (void)proxy:(id)proxy didRetrieveHeroImage:(id)image
 {
-  v5 = a4;
+  imageCopy = image;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__CPSClipOverlayViewController_proxy_didRetrieveHeroImage___block_invoke;
   v7[3] = &unk_278DD22E0;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = imageCopy;
+  selfCopy = self;
+  v6 = imageCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -826,13 +826,13 @@ void __59__CPSClipOverlayViewController_proxy_didRetrieveHeroImage___block_invok
   [*(*(a1 + 40) + 1040) setBackgroundImage:v5 animated:CACurrentMediaTime() - *(*(a1 + 40) + 1080) > 0.15];
 }
 
-- (void)_presentLoadingViewAnimated:(BOOL)a3
+- (void)_presentLoadingViewAnimated:(BOOL)animated
 {
-  v4 = [(CPSClipLoadingView *)self->_loadingView superview];
+  superview = [(CPSClipLoadingView *)self->_loadingView superview];
 
   v5 = CPS_LOG_CHANNEL_PREFIXClipUIServices();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (superview)
   {
     if (v6)
     {
@@ -853,14 +853,14 @@ void __59__CPSClipOverlayViewController_proxy_didRetrieveHeroImage___block_invok
     loadingView = self->_loadingView;
     self->_loadingView = v7;
 
-    v9 = [(CPSClipOverlayViewController *)self view];
-    [v9 bounds];
+    view = [(CPSClipOverlayViewController *)self view];
+    [view bounds];
     [(CPSClipLoadingView *)self->_loadingView setFrame:?];
 
     [(CPSClipLoadingView *)self->_loadingView setAutoresizingMask:18];
     [(CPSClipOverlayViewController *)self _updateLoadingView];
-    v10 = [(CPSClipOverlayViewController *)self view];
-    [v10 insertSubview:self->_loadingView belowSubview:self->_bannerContainer];
+    view2 = [(CPSClipOverlayViewController *)self view];
+    [view2 insertSubview:self->_loadingView belowSubview:self->_bannerContainer];
 
     if (self->_usesMockData || self->_showingDemoProgress)
     {
@@ -899,36 +899,36 @@ void __60__CPSClipOverlayViewController__presentLoadingViewAnimated___block_invo
 {
   [(CPSClipLoadingView *)self->_loadingView setPoweredByThirdParty:[(CPSClipMetadata *)self->_placeholderClipMetadata isPoweredByThirdParty]];
   [(CPSClipLoadingView *)self->_loadingView setSupportsArcade:[(CPSClipMetadata *)self->_placeholderClipMetadata supportsArcade]];
-  v3 = [(CPSClipMetadata *)self->_placeholderClipMetadata clipName];
-  [(CPSClipLoadingView *)self->_loadingView setName:v3];
+  clipName = [(CPSClipMetadata *)self->_placeholderClipMetadata clipName];
+  [(CPSClipLoadingView *)self->_loadingView setName:clipName];
 
-  v4 = [(CPSClipMetadata *)self->_placeholderClipMetadata fullAppShortName];
-  if (v4)
+  fullAppShortName = [(CPSClipMetadata *)self->_placeholderClipMetadata fullAppShortName];
+  if (fullAppShortName)
   {
-    [(CPSClipLoadingView *)self->_loadingView setProvider:v4];
+    [(CPSClipLoadingView *)self->_loadingView setProvider:fullAppShortName];
   }
 
   else
   {
-    v5 = [(CPSClipMetadata *)self->_placeholderClipMetadata fullAppName];
-    [(CPSClipLoadingView *)self->_loadingView setProvider:v5];
+    fullAppName = [(CPSClipMetadata *)self->_placeholderClipMetadata fullAppName];
+    [(CPSClipLoadingView *)self->_loadingView setProvider:fullAppName];
   }
 
-  v10 = [(CPSClipMetadata *)self->_placeholderClipMetadata clipHeroImageURL];
-  if ([v10 cps_isFileURL])
+  clipHeroImageURL = [(CPSClipMetadata *)self->_placeholderClipMetadata clipHeroImageURL];
+  if ([clipHeroImageURL cps_isFileURL])
   {
     loadingView = self->_loadingView;
     v7 = objc_alloc(MEMORY[0x277D755B8]);
-    v8 = [v10 path];
-    v9 = [v7 initWithContentsOfFile:v8];
+    path = [clipHeroImageURL path];
+    v9 = [v7 initWithContentsOfFile:path];
     [(CPSClipLoadingView *)loadingView setBackgroundImage:v9 animated:0];
   }
 }
 
-- (void)_showFailedLoadingStateAndReloadMetadata:(BOOL)a3 animated:(BOOL)a4
+- (void)_showFailedLoadingStateAndReloadMetadata:(BOOL)metadata animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  metadataCopy = metadata;
   objc_initWeak(&location, self);
   loadingView = self->_loadingView;
   v8 = MEMORY[0x277D85DD0];
@@ -936,8 +936,8 @@ void __60__CPSClipOverlayViewController__presentLoadingViewAnimated___block_invo
   v10 = __82__CPSClipOverlayViewController__showFailedLoadingStateAndReloadMetadata_animated___block_invoke;
   v11 = &unk_278DD2218;
   objc_copyWeak(&v12, &location);
-  [(CPSClipLoadingView *)loadingView setLoadingHasFailed:1 animated:v4 reason:0 reloadHandler:&v8];
-  if (v5)
+  [(CPSClipLoadingView *)loadingView setLoadingHasFailed:1 animated:animatedCopy reason:0 reloadHandler:&v8];
+  if (metadataCopy)
   {
     [(CPSSessionProxy *)self->_sessionProxy fetchClipMetadataAndImages:v8];
   }
@@ -992,13 +992,13 @@ void __82__CPSClipOverlayViewController__showFailedLoadingStateAndReloadMetadata
   }
 }
 
-- (void)_dismissLoadingViewAnimated:(BOOL)a3
+- (void)_dismissLoadingViewAnimated:(BOOL)animated
 {
-  v4 = [(CPSClipLoadingView *)self->_loadingView superview];
+  superview = [(CPSClipLoadingView *)self->_loadingView superview];
 
   v5 = CPS_LOG_CHANNEL_PREFIXClipUIServices();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (superview)
   {
     if (v6)
     {
@@ -1040,13 +1040,13 @@ uint64_t __60__CPSClipOverlayViewController__dismissLoadingViewAnimated___block_
   return [*(a1 + 32) _setBannerHidden:0 animated:1];
 }
 
-- (void)_setBannerHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)_setBannerHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (a3)
+  if (hidden)
   {
     bannerContainer = self->_bannerContainer;
 
-    [(CPSBannerContainerView *)bannerContainer setBannerHidden:1 animated:a4 animationCompletion:0];
+    [(CPSBannerContainerView *)bannerContainer setBannerHidden:1 animated:animated animationCompletion:0];
   }
 
   else
@@ -1057,7 +1057,7 @@ uint64_t __60__CPSClipOverlayViewController__dismissLoadingViewAnimated___block_
     v14[2] = __58__CPSClipOverlayViewController__setBannerHidden_animated___block_invoke;
     v14[3] = &unk_278DD23D0;
     objc_copyWeak(&v15, &location);
-    v16 = a4;
+    animatedCopy = animated;
     v7 = MEMORY[0x245D3DDC0](v14);
     v8 = v7;
     if (self->_appAttributionBannerPolicy)
@@ -1232,7 +1232,7 @@ void __67__CPSClipOverlayViewController__scheduleBannerDismissTimerIfNeeded__blo
   v7[2] = __45__CPSClipOverlayViewController__updateBanner__block_invoke;
   v7[3] = &unk_278DD2470;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v6 = v4;
   [(CPSAppClipRecord *)v6 getApplicationIconForImageDescriptor:v5 resultHandler:v7];
 }
@@ -1263,42 +1263,42 @@ uint64_t __45__CPSClipOverlayViewController__updateBanner__block_invoke(uint64_t
     v4 = 0;
   }
 
-  v5 = [(CPSAppClipRecord *)self->_clipRecord fullApplicationName];
-  if (v5)
+  fullApplicationName = [(CPSAppClipRecord *)self->_clipRecord fullApplicationName];
+  if (fullApplicationName)
   {
     p_banner = &self->_banner;
-    [(CPSAppAttributionBanner *)self->_banner setTitle:v5];
+    [(CPSAppAttributionBanner *)self->_banner setTitle:fullApplicationName];
   }
 
   else
   {
-    v7 = [(CPSWebClip *)self->_webClip fullAppName];
+    fullAppName = [(CPSWebClip *)self->_webClip fullAppName];
     p_banner = &self->_banner;
-    [(CPSAppAttributionBanner *)self->_banner setTitle:v7];
+    [(CPSAppAttributionBanner *)self->_banner setTitle:fullAppName];
   }
 
-  v8 = [(CPSAppClipRecord *)self->_clipRecord fullApplicationCaption];
-  if (v8)
+  fullApplicationCaption = [(CPSAppClipRecord *)self->_clipRecord fullApplicationCaption];
+  if (fullApplicationCaption)
   {
-    [(CPSAppAttributionBanner *)*p_banner setSubtitle:v8];
+    [(CPSAppAttributionBanner *)*p_banner setSubtitle:fullApplicationCaption];
   }
 
   else
   {
-    v9 = [(CPSWebClip *)self->_webClip fullAppCaption];
-    [(CPSAppAttributionBanner *)*p_banner setSubtitle:v9];
+    fullAppCaption = [(CPSWebClip *)self->_webClip fullAppCaption];
+    [(CPSAppAttributionBanner *)*p_banner setSubtitle:fullAppCaption];
   }
 
-  v10 = [(CPSAppClipRecord *)self->_clipRecord fullApplicationStoreURL];
-  if (v10)
+  fullApplicationStoreURL = [(CPSAppClipRecord *)self->_clipRecord fullApplicationStoreURL];
+  if (fullApplicationStoreURL)
   {
     [(CPSAppAttributionBanner *)*p_banner setShowsAppStoreButton:1];
   }
 
   else
   {
-    v11 = [(CPSWebClip *)self->_webClip fullAppStoreURL];
-    [(CPSAppAttributionBanner *)*p_banner setShowsAppStoreButton:v11 != 0];
+    fullAppStoreURL = [(CPSWebClip *)self->_webClip fullAppStoreURL];
+    [(CPSAppAttributionBanner *)*p_banner setShowsAppStoreButton:fullAppStoreURL != 0];
   }
 
   v12 = *p_banner;
@@ -1308,45 +1308,45 @@ uint64_t __45__CPSClipOverlayViewController__updateBanner__block_invoke(uint64_t
 
 - (void)_didTapBanner
 {
-  v2 = *a1;
+  v2 = *self;
   v3 = a2;
-  v4 = [v2 bundleID];
+  bundleID = [v2 bundleID];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_2(&dword_24374B000, v5, v6, "No App Store URL recorded for full application with ID %{private}@", v7, v8, v9, v10, v11);
 }
 
-- (CPSClipOverlayViewController)initWithAppClipBundleID:(id)a3 webClipID:(id)a4
+- (CPSClipOverlayViewController)initWithAppClipBundleID:(id)d webClipID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v8 = CPS_LOG_CHANNEL_PREFIXClipUIServices();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     [CPSClipOverlayViewController initWithAppClipBundleID:webClipID:];
   }
 
-  v9 = [(CPSClipOverlayViewController *)self initWithAppClipBundleID:v7];
+  v9 = [(CPSClipOverlayViewController *)self initWithAppClipBundleID:dCopy];
 
   if (v9)
   {
-    [(CPSClipOverlayViewController *)v9 setWebClipID:v6];
+    [(CPSClipOverlayViewController *)v9 setWebClipID:iDCopy];
     v10 = v9;
   }
 
   return v9;
 }
 
-- (void)setDisplayedOverPlaceholder:(BOOL)a3 animated:(BOOL)a4
+- (void)setDisplayedOverPlaceholder:(BOOL)placeholder animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  placeholderCopy = placeholder;
   v7 = CPS_LOG_CHANNEL_PREFIXClipUIServices();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     [CPSClipOverlayViewController setDisplayedOverPlaceholder:animated:];
   }
 
-  [(CPSClipOverlayViewController *)self setDisplayedOverPlaceholder:v5 forWebClipID:self->_webClipID animated:v4];
+  [(CPSClipOverlayViewController *)self setDisplayedOverPlaceholder:placeholderCopy forWebClipID:self->_webClipID animated:animatedCopy];
 }
 
 void __65__CPSClipOverlayViewController_setSceneActivationState_animated___block_invoke_cold_1()

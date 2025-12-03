@@ -1,29 +1,29 @@
 @interface PSITokenizer
-+ (id)fts5StringFromString:(id)a3 useWildcard:(BOOL)a4 leadingAnchored:(BOOL)a5 orderInsensitive:(BOOL)a6;
-+ (id)normalizeString:(id)a3;
-- (PSITokenizer)initWithLocale:(id)a3 useCache:(BOOL)a4;
-- (id)newTokensFromString:(id)a3 withOptions:(int64_t)a4 outCopyRanges:(id *)a5 error:(id *)a6;
-- (id)normalizeString:(id)a3;
-- (int)registerFTS5TokenizerForDatabase:(sqlite3 *)a3;
-- (void)_tokenizeString:(id)a3 withContext:(id *)a4;
++ (id)fts5StringFromString:(id)string useWildcard:(BOOL)wildcard leadingAnchored:(BOOL)anchored orderInsensitive:(BOOL)insensitive;
++ (id)normalizeString:(id)string;
+- (PSITokenizer)initWithLocale:(id)locale useCache:(BOOL)cache;
+- (id)newTokensFromString:(id)string withOptions:(int64_t)options outCopyRanges:(id *)ranges error:(id *)error;
+- (id)normalizeString:(id)string;
+- (int)registerFTS5TokenizerForDatabase:(sqlite3 *)database;
+- (void)_tokenizeString:(id)string withContext:(id *)context;
 - (void)dealloc;
-- (void)tokenizeString:(id)a3 withOptions:(int64_t)a4 tokenOutput:(tokenOutput_t *)a5;
+- (void)tokenizeString:(id)string withOptions:(int64_t)options tokenOutput:(tokenOutput_t *)output;
 @end
 
 @implementation PSITokenizer
 
-- (int)registerFTS5TokenizerForDatabase:(sqlite3 *)a3
+- (int)registerFTS5TokenizerForDatabase:(sqlite3 *)database
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = fts5_api_from_db(a3);
+  v5 = fts5_api_from_db(database);
   if (v5)
   {
     v6 = v5;
     v19 = xmmword_1F0F035B8;
     v20 = off_1F0F035C8;
     v7 = *(v5 + 8);
-    v8 = [objc_opt_class() ftsTokenizerName];
-    v9 = v7(v6, [v8 UTF8String], self, &v19, 0);
+    ftsTokenizerName = [objc_opt_class() ftsTokenizerName];
+    v9 = v7(v6, [ftsTokenizerName UTF8String], self, &v19, 0);
 
     v10 = PLSearchBackendPSITokenizerGetLog();
     v11 = v10;
@@ -31,7 +31,7 @@
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v12 = sqlite3_errmsg(a3);
+        v12 = sqlite3_errmsg(database);
         *buf = 67109378;
         v22 = v9;
         v23 = 2080;
@@ -68,12 +68,12 @@ LABEL_10:
   return 1;
 }
 
-- (id)newTokensFromString:(id)a3 withOptions:(int64_t)a4 outCopyRanges:(id *)a5 error:(id *)a6
+- (id)newTokensFromString:(id)string withOptions:(int64_t)options outCopyRanges:(id *)ranges error:(id *)error
 {
   v27[63] = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  stringCopy = string;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (a5)
+  if (ranges)
   {
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
@@ -90,11 +90,11 @@ LABEL_10:
   v21[4] = 32;
   v22 = 0u;
   v23 = 0u;
-  [(PSITokenizer *)self tokenizeString:v10 withOptions:a4 tokenOutput:v21];
-  if (!a5)
+  [(PSITokenizer *)self tokenizeString:stringCopy withOptions:options tokenOutput:v21];
+  if (!ranges)
   {
 LABEL_12:
-    a6 = v11;
+    error = v11;
     goto LABEL_15;
   }
 
@@ -120,34 +120,34 @@ LABEL_12:
     }
 
     v16 = v12;
-    *a5 = v12;
+    *ranges = v12;
     goto LABEL_12;
   }
 
-  if (a6)
+  if (error)
   {
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: Reached token ranges limit (%ld) for string: %@", 32, v10];
+    stringCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error: Reached token ranges limit (%ld) for string: %@", 32, stringCopy];
     v18 = MEMORY[0x1E696ABC0];
     v24 = *MEMORY[0x1E696A578];
-    v25 = v17;
+    v25 = stringCopy;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    *a6 = [v18 errorWithDomain:@"com.apple.photos.search" code:-1 userInfo:v19];
+    *error = [v18 errorWithDomain:@"com.apple.photos.search" code:-1 userInfo:v19];
 
-    a6 = 0;
+    error = 0;
   }
 
 LABEL_15:
 
-  return a6;
+  return error;
 }
 
-- (void)_tokenizeString:(id)a3 withContext:(id *)a4
+- (void)_tokenizeString:(id)string withContext:(id *)context
 {
   v79 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  stringCopy = string;
   if (self->_useCache)
   {
-    v7 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:stringCopy];
     if ([v7 count])
     {
       v73 = 0u;
@@ -170,9 +170,9 @@ LABEL_15:
             }
 
             v13 = *(*(&v71 + 1) + 8 * i);
-            v14 = [v13 string];
-            v15 = [v13 range];
-            enumerateToken(v14, v15, v16, a4);
+            string = [v13 string];
+            range = [v13 range];
+            enumerateToken(string, range, v16, context);
           }
 
           v10 = [v8 countByEnumeratingWithState:&v71 objects:v78 count:16];
@@ -188,20 +188,20 @@ LABEL_15:
     [(NSMutableDictionary *)self->_cache removeAllObjects];
   }
 
-  v18 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __44__PSITokenizer__tokenizeString_withContext___block_invoke;
   aBlock[3] = &unk_1E756BD10;
-  v19 = v18;
+  v19 = array;
   v70 = v19;
   v20 = _Block_copy(aBlock);
   v66[0] = MEMORY[0x1E69E9820];
   v66[1] = 3221225472;
   v66[2] = __44__PSITokenizer__tokenizeString_withContext___block_invoke_2;
   v66[3] = &unk_1E756BD38;
-  v53 = v6;
-  v21 = v6;
+  v53 = stringCopy;
+  v21 = stringCopy;
   v67 = v21;
   v52 = v20;
   v68 = v52;
@@ -221,11 +221,11 @@ LABEL_15:
   v65 = v22;
   NLTaggerEnumerateTokens();
   useCache = self->_useCache;
-  v54 = self;
+  selfCopy = self;
   v50 = v65;
-  if ((a4->var1 & 4) != 0 && [v19 count] >= 9)
+  if ((context->var1 & 4) != 0 && [v19 count] >= 9)
   {
-    if ((a4->var1 & 8) != 0)
+    if ((context->var1 & 8) != 0)
     {
       v26 = 2;
     }
@@ -236,17 +236,17 @@ LABEL_15:
     }
 
     v27 = [v19 objectAtIndexedSubscript:{objc_msgSend(v19, "count") - v26}];
-    v28 = [v27 range];
+    range2 = [v27 range];
     v30 = v29;
 
     v31 = [v19 objectAtIndexedSubscript:8 - v26];
-    v32 = [v31 range];
+    range3 = [v31 range];
 
-    v33 = v28 + v30 - v32;
-    v80.location = v32;
+    v33 = range2 + v30 - range3;
+    v80.location = range3;
     v80.length = v33;
     v34 = CFStringCreateWithSubstring(*MEMORY[0x1E695E480], v24, v80);
-    v35 = [[PSIToken alloc] initWithString:v34 range:v32, v33];
+    v35 = [[PSIToken alloc] initWithString:v34 range:range3, v33];
     CFRelease(v34);
     v36 = [v19 count] - 7;
     v77 = v35;
@@ -286,16 +286,16 @@ LABEL_21:
         }
 
         v43 = *(*(&v55 + 1) + 8 * j);
-        v44 = [v43 string];
-        v45 = [v43 range];
-        enumerateToken(v44, v45, v46, a4);
+        string2 = [v43 string];
+        range4 = [v43 range];
+        enumerateToken(string2, range4, v46, context);
         if (v38)
         {
-          v47 = [v43 string];
-          v48 = [[PSIToken alloc] initWithString:v47 range:0, CFStringGetLength(v47)];
+          string3 = [v43 string];
+          v48 = [[PSIToken alloc] initWithString:string3 range:0, CFStringGetLength(string3)];
           v75 = v48;
           v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v75 count:1];
-          [(NSMutableDictionary *)v54->_cache setObject:v49 forKeyedSubscript:v47];
+          [(NSMutableDictionary *)selfCopy->_cache setObject:v49 forKeyedSubscript:string3];
         }
       }
 
@@ -306,7 +306,7 @@ LABEL_21:
   }
 
   v8 = v70;
-  v6 = v53;
+  stringCopy = v53;
 LABEL_31:
 }
 
@@ -372,14 +372,14 @@ uint64_t __44__PSITokenizer__tokenizeString_withContext___block_invoke_3(uint64_
   return result;
 }
 
-- (void)tokenizeString:(id)a3 withOptions:(int64_t)a4 tokenOutput:(tokenOutput_t *)a5
+- (void)tokenizeString:(id)string withOptions:(int64_t)options tokenOutput:(tokenOutput_t *)output
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  stringCopy = string;
+  v9 = stringCopy;
+  if (stringCopy)
   {
-    Length = CFStringGetLength(v8);
+    Length = CFStringGetLength(stringCopy);
     v11 = 3 * Length + 4;
     if (Length >= 85)
     {
@@ -392,8 +392,8 @@ uint64_t __44__PSITokenizer__tokenizeString_withContext___block_invoke_3(uint64_
     }
 
     v14[0] = v9;
-    v14[1] = a4;
-    v14[2] = a5;
+    v14[1] = options;
+    v14[2] = output;
     v15 = v12;
     v16 = v12;
     v17 = v11;
@@ -420,10 +420,10 @@ uint64_t __44__PSITokenizer__tokenizeString_withContext___block_invoke_3(uint64_
   }
 }
 
-- (id)normalizeString:(id)a3
+- (id)normalizeString:(id)string
 {
-  v3 = a3;
-  v4 = [objc_opt_class() normalizeString:v3];
+  stringCopy = string;
+  v4 = [objc_opt_class() normalizeString:stringCopy];
 
   return v4;
 }
@@ -442,11 +442,11 @@ uint64_t __44__PSITokenizer__tokenizeString_withContext___block_invoke_3(uint64_
   [(PSITokenizer *)&v4 dealloc];
 }
 
-- (PSITokenizer)initWithLocale:(id)a3 useCache:(BOOL)a4
+- (PSITokenizer)initWithLocale:(id)locale useCache:(BOOL)cache
 {
-  v4 = a4;
+  cacheCopy = cache;
   v16[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  localeCopy = locale;
   v13.receiver = self;
   v13.super_class = PSITokenizer;
   v8 = [(PSITokenizer *)&v13 init];
@@ -458,38 +458,38 @@ uint64_t __44__PSITokenizer__tokenizeString_withContext___block_invoke_3(uint64_
     v15 = MEMORY[0x1E695E118];
     [MEMORY[0x1E695DF20] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     v8->_tagger = NLTaggerCreate();
-    objc_storeStrong(&v8->_locale, a3);
-    v8->_useCache = v4;
-    if (v4)
+    objc_storeStrong(&v8->_locale, locale);
+    v8->_useCache = cacheCopy;
+    if (cacheCopy)
     {
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
     else
     {
-      v10 = 0;
+      dictionary = 0;
     }
 
     cache = v8->_cache;
-    v8->_cache = v10;
+    v8->_cache = dictionary;
   }
 
   return v8;
 }
 
-+ (id)fts5StringFromString:(id)a3 useWildcard:(BOOL)a4 leadingAnchored:(BOOL)a5 orderInsensitive:(BOOL)a6
++ (id)fts5StringFromString:(id)string useWildcard:(BOOL)wildcard leadingAnchored:(BOOL)anchored orderInsensitive:(BOOL)insensitive
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 stringByReplacingOccurrencesOfString:@" withString:@"];
+  insensitiveCopy = insensitive;
+  anchoredCopy = anchored;
+  wildcardCopy = wildcard;
+  v9 = [string stringByReplacingOccurrencesOfString:@" withString:@"];
   v10 = @"^";
-  if (!v7)
+  if (!anchoredCopy)
   {
     v10 = &stru_1F0F06D80;
   }
 
-  if (v8)
+  if (wildcardCopy)
   {
     v11 = @"*";
   }
@@ -502,7 +502,7 @@ uint64_t __44__PSITokenizer__tokenizeString_withContext___block_invoke_3(uint64_
   v12 = MEMORY[0x1E696AEC0];
   v13 = v10;
   v14 = v13;
-  if (v6)
+  if (insensitiveCopy)
   {
     v15 = @"%@%@%@";
   }
@@ -517,13 +517,13 @@ uint64_t __44__PSITokenizer__tokenizeString_withContext___block_invoke_3(uint64_
   return v16;
 }
 
-+ (id)normalizeString:(id)a3
++ (id)normalizeString:(id)string
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([(__CFString *)v3 length])
+  stringCopy = string;
+  if ([(__CFString *)stringCopy length])
   {
-    v4 = 3 * [(__CFString *)v3 length]+ 1;
+    v4 = 3 * [(__CFString *)stringCopy length]+ 1;
     if (v4 >= 257)
     {
       v5 = malloc_type_malloc(2 * v4, 0x1000040BDFB0063uLL);
@@ -535,7 +535,7 @@ uint64_t __44__PSITokenizer__tokenizeString_withContext___block_invoke_3(uint64_
     }
 
     numChars = 0;
-    if (!_normalizeString(v3, v5, v4, &numChars))
+    if (!_normalizeString(stringCopy, v5, v4, &numChars))
     {
       if (v5 != v10)
       {
@@ -544,7 +544,7 @@ uint64_t __44__PSITokenizer__tokenizeString_withContext___block_invoke_3(uint64_
 
       v7 = numChars + 1;
       v5 = malloc_type_malloc(2 * (numChars + 1), 0x1000040BDFB0063uLL);
-      _normalizeString(v3, v5, v7, 0);
+      _normalizeString(stringCopy, v5, v7, 0);
     }
 
     v6 = CFStringCreateWithCharacters(*MEMORY[0x1E695E480], v5, numChars);
@@ -556,7 +556,7 @@ uint64_t __44__PSITokenizer__tokenizeString_withContext___block_invoke_3(uint64_
 
   else
   {
-    v6 = v3;
+    v6 = stringCopy;
   }
 
   return v6;

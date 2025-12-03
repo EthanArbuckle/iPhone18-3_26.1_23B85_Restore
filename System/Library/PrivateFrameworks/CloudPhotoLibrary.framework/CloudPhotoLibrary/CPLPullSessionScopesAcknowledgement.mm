@@ -1,27 +1,27 @@
 @interface CPLPullSessionScopesAcknowledgement
-- (BOOL)applyToStore:(id)a3 error:(id *)a4;
-- (BOOL)discardFromStore:(id)a3 error:(id *)a4;
-- (CPLPullSessionScopesAcknowledgement)initWithCoder:(id)a3;
-- (CPLPullSessionScopesAcknowledgement)initWithStore:(id)a3 scopesChangeBatch:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)applyToStore:(id)store error:(id *)error;
+- (BOOL)discardFromStore:(id)store error:(id *)error;
+- (CPLPullSessionScopesAcknowledgement)initWithCoder:(id)coder;
+- (CPLPullSessionScopesAcknowledgement)initWithStore:(id)store scopesChangeBatch:(id)batch;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPLPullSessionScopesAcknowledgement
 
-- (BOOL)discardFromStore:(id)a3 error:(id *)a4
+- (BOOL)discardFromStore:(id)store error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = CPLPullSessionScopesAcknowledgement;
-  return [(CPLChangeSessionUpdate *)&v5 discardFromStore:a3 error:a4];
+  return [(CPLChangeSessionUpdate *)&v5 discardFromStore:store error:error];
 }
 
-- (BOOL)applyToStore:(id)a3 error:(id *)a4
+- (BOOL)applyToStore:(id)store error:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = CPLPullSessionScopesAcknowledgement;
-  if ([(CPLChangeSessionUpdate *)&v13 applyToStore:v6 error:a4])
+  if ([(CPLChangeSessionUpdate *)&v13 applyToStore:storeCopy error:error])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -35,8 +35,8 @@
       }
     }
 
-    v9 = [v6 scopes];
-    v10 = [v9 clientAcknowledgedScopeChanges:self->_scopesChangeBatch error:a4];
+    scopes = [storeCopy scopes];
+    v10 = [scopes clientAcknowledgedScopeChanges:self->_scopesChangeBatch error:error];
   }
 
   else
@@ -48,24 +48,24 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CPLPullSessionScopesAcknowledgement;
-  v4 = a3;
-  [(CPLChangeSessionUpdate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_scopesChangeBatch forKey:{@"scb", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CPLChangeSessionUpdate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_scopesChangeBatch forKey:{@"scb", v5.receiver, v5.super_class}];
 }
 
-- (CPLPullSessionScopesAcknowledgement)initWithCoder:(id)a3
+- (CPLPullSessionScopesAcknowledgement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CPLPullSessionScopesAcknowledgement;
-  v5 = [(CPLChangeSessionUpdate *)&v9 initWithCoder:v4];
+  v5 = [(CPLChangeSessionUpdate *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scb"];
     scopesChangeBatch = v5->_scopesChangeBatch;
     v5->_scopesChangeBatch = v6;
   }
@@ -73,16 +73,16 @@
   return v5;
 }
 
-- (CPLPullSessionScopesAcknowledgement)initWithStore:(id)a3 scopesChangeBatch:(id)a4
+- (CPLPullSessionScopesAcknowledgement)initWithStore:(id)store scopesChangeBatch:(id)batch
 {
-  v7 = a4;
+  batchCopy = batch;
   v11.receiver = self;
   v11.super_class = CPLPullSessionScopesAcknowledgement;
-  v8 = [(CPLChangeSessionUpdate *)&v11 initWithStore:a3];
+  v8 = [(CPLChangeSessionUpdate *)&v11 initWithStore:store];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_scopesChangeBatch, a4);
+    objc_storeStrong(&v8->_scopesChangeBatch, batch);
   }
 
   return v9;

@@ -1,19 +1,19 @@
 @interface NSBasicObjectID
-- (NSBasicObjectID)initWithObject:(id)a3;
+- (NSBasicObjectID)initWithObject:(id)object;
 - (id)_retainedURIString;
 - (void)dealloc;
 @end
 
 @implementation NSBasicObjectID
 
-- (NSBasicObjectID)initWithObject:(id)a3
+- (NSBasicObjectID)initWithObject:(id)object
 {
   v7.receiver = self;
   v7.super_class = NSBasicObjectID;
   v4 = [(NSBasicObjectID *)&v7 init];
   if (v4)
   {
-    v4->_referenceData = a3;
+    v4->_referenceData = object;
     Class = object_getClass(v4);
     atomic_fetch_add_explicit(object_getIndexedIvars(Class), 1u, memory_order_relaxed);
   }
@@ -30,10 +30,10 @@
 
 - (id)_retainedURIString
 {
-  v3 = [(_NSCoreManagedObjectID *)self _storeIdentifier];
-  if (v3)
+  _storeIdentifier = [(_NSCoreManagedObjectID *)self _storeIdentifier];
+  if (_storeIdentifier)
   {
-    v4 = v3;
+    v4 = _storeIdentifier;
   }
 
   else

@@ -1,16 +1,16 @@
 @interface VUIPromoMetadataView
 - (CGSize)expectedImageSize;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (VUIPromoMetadataView)init;
 - (VUIPromoMetadataViewDelegate)delegate;
 - (id)_createComputationOnlyButton;
-- (id)_createSkipButtonWithTitle:(id)a3;
-- (id)_createUpNextButtonWithPromoInfo:(id)a3;
-- (void)_configureBasicLayoutForButton:(id)a3;
+- (id)_createSkipButtonWithTitle:(id)title;
+- (id)_createUpNextButtonWithPromoInfo:(id)info;
+- (void)_configureBasicLayoutForButton:(id)button;
 - (void)_configureLayout;
-- (void)_skipButtonTapped:(id)a3;
-- (void)_upNextButtonTapped:(id)a3;
-- (void)updateWithInfo:(id)a3;
+- (void)_skipButtonTapped:(id)tapped;
+- (void)_upNextButtonTapped:(id)tapped;
+- (void)updateWithInfo:(id)info;
 @end
 
 @implementation VUIPromoMetadataView
@@ -32,23 +32,23 @@
   return v3;
 }
 
-- (void)updateWithInfo:(id)a3
+- (void)updateWithInfo:(id)info
 {
-  v4 = a3;
-  [(VUIPromoMetadataView *)self setSkipInfo:v4];
-  v5 = [v4 promoInfo];
+  infoCopy = info;
+  [(VUIPromoMetadataView *)self setSkipInfo:infoCopy];
+  promoInfo = [infoCopy promoInfo];
   [(VUIPromoMetadataView *)self setOnlySkipButtonAvailable:1];
   LODWORD(v6) = +[_TtC8VideosUI38VUINetworkReachabilityMonitorObjCProxy isNetworkReachable];
   if (v6)
   {
-    v46 = [v5 titleImageURLString];
-    if (v46)
+    titleImageURLString = [promoInfo titleImageURLString];
+    if (titleImageURLString)
     {
-      v7 = [(VUIPromoMetadataView *)self titleImageView];
-      v8 = v7;
-      if (v7)
+      titleImageView = [(VUIPromoMetadataView *)self titleImageView];
+      v8 = titleImageView;
+      if (titleImageView)
       {
-        v9 = v7;
+        v9 = titleImageView;
       }
 
       else
@@ -59,8 +59,8 @@
 
       v11 = v9;
 
-      v12 = [v5 title];
-      [v11 setAccessibilityLabel:v12];
+      title = [promoInfo title];
+      [v11 setAccessibilityLabel:title];
 
       [v11 setAccessibilityIdentifier:@"TitleImage"];
       v48[0] = MEMORY[0x1E69E9820];
@@ -69,11 +69,11 @@
       v48[3] = &unk_1E872FCC0;
       v49 = v11;
       v13 = v11;
-      [v5 getTitleImageUsingCompletionHandler:v48];
-      [v5 expectedImageSize];
+      [promoInfo getTitleImageUsingCompletionHandler:v48];
+      [promoInfo expectedImageSize];
       [(VUIPromoMetadataView *)self setExpectedImageSize:?];
-      v14 = [(VUIPromoMetadataView *)self titleImageView];
-      [(VUIPromoMetadataView *)self vui_addSubview:v13 oldView:v14];
+      titleImageView2 = [(VUIPromoMetadataView *)self titleImageView];
+      [(VUIPromoMetadataView *)self vui_addSubview:v13 oldView:titleImageView2];
 
       [(VUIPromoMetadataView *)self setTitleImageView:v13];
       [(VUIPromoMetadataView *)self setOnlySkipButtonAvailable:0];
@@ -85,17 +85,17 @@
     }
 
     v15 = objc_opt_new();
-    v16 = [v5 genre];
-    if (v16)
+    genre = [promoInfo genre];
+    if (genre)
     {
-      [v15 setObject:v16 forKey:@"genreName"];
+      [v15 setObject:genre forKey:@"genreName"];
     }
 
-    v17 = [v5 movieRuntime];
-    v18 = v17;
-    if (v17)
+    movieRuntime = [promoInfo movieRuntime];
+    v18 = movieRuntime;
+    if (movieRuntime)
     {
-      [v17 doubleValue];
+      [movieRuntime doubleValue];
       if (v19 != 0.0)
       {
         v20 = [MEMORY[0x1E696AD98] numberWithDouble:?];
@@ -103,12 +103,12 @@
       }
     }
 
-    v21 = [v5 ratingDisplayName];
-    v22 = [v5 ratingSystem];
-    v23 = v22;
-    if (v21 && v22)
+    ratingDisplayName = [promoInfo ratingDisplayName];
+    ratingSystem = [promoInfo ratingSystem];
+    v23 = ratingSystem;
+    if (ratingDisplayName && ratingSystem)
     {
-      [v15 setObject:v21 forKey:@"ratingName"];
+      [v15 setObject:ratingDisplayName forKey:@"ratingName"];
       [v15 setObject:v23 forKey:@"ratingSystem"];
     }
 
@@ -118,19 +118,19 @@
       v24 = [[VUIContentMetadata alloc] initWithDictionary:v15];
       v45 = v6;
       [(VUIPromoMetadataView *)self mediaTagsViewLayout];
-      v44 = v5;
+      v44 = promoInfo;
       v25 = v15;
-      v26 = v21;
+      v26 = ratingDisplayName;
       v27 = v18;
-      v29 = v28 = v4;
-      v30 = [(VUIPromoMetadataView *)self mediaTagsView];
-      v6 = [VUIMediaTagsView tagsViewWithMetadata:v24 layout:v29 existingView:v30];
+      v29 = v28 = infoCopy;
+      mediaTagsView = [(VUIPromoMetadataView *)self mediaTagsView];
+      v6 = [VUIMediaTagsView tagsViewWithMetadata:v24 layout:v29 existingView:mediaTagsView];
 
-      v4 = v28;
+      infoCopy = v28;
       v18 = v27;
-      v21 = v26;
+      ratingDisplayName = v26;
       v15 = v25;
-      v5 = v44;
+      promoInfo = v44;
       [v6 setAccessibilityIdentifier:@"MediaTags"];
       [(VUIPromoMetadataView *)self vui_addSubview:v6 oldView:0];
       [(VUIPromoMetadataView *)self setMediaTagsView:v6];
@@ -141,24 +141,24 @@
 
     else
     {
-      v31 = [(VUIPromoMetadataView *)self mediaTagsView];
-      [v31 removeFromSuperview];
+      mediaTagsView2 = [(VUIPromoMetadataView *)self mediaTagsView];
+      [mediaTagsView2 removeFromSuperview];
 
       [(VUIPromoMetadataView *)self setMediaTagsView:0];
     }
   }
 
-  v32 = [v5 addToUpNextLabelString];
-  if (!v32)
+  addToUpNextLabelString = [promoInfo addToUpNextLabelString];
+  if (!addToUpNextLabelString)
   {
     goto LABEL_25;
   }
 
-  v33 = v32;
-  v34 = [v5 addedToUpNextLabelString];
+  v33 = addToUpNextLabelString;
+  addedToUpNextLabelString = [promoInfo addedToUpNextLabelString];
 
   v35 = v6 ^ 1;
-  if (!v34)
+  if (!addedToUpNextLabelString)
   {
     v35 = 1;
   }
@@ -172,56 +172,56 @@ LABEL_25:
 
   else
   {
-    v36 = [(VUIPromoMetadataView *)self _createUpNextButtonWithPromoInfo:v5];
+    v36 = [(VUIPromoMetadataView *)self _createUpNextButtonWithPromoInfo:promoInfo];
     [v36 setAccessibilityIdentifier:@"UpNextButton"];
-    v37 = [(VUIPromoMetadataView *)self upNextButton];
-    [(VUIPromoMetadataView *)self vui_addSubview:v36 oldView:v37];
+    upNextButton = [(VUIPromoMetadataView *)self upNextButton];
+    [(VUIPromoMetadataView *)self vui_addSubview:v36 oldView:upNextButton];
 
     [(VUIPromoMetadataView *)self setUpNextButton:v36];
-    v38 = [(VUIPromoMetadataView *)self _createComputationOnlyButton];
-    [(VUIPromoMetadataView *)self setComputationOnlyButton:v38];
+    _createComputationOnlyButton = [(VUIPromoMetadataView *)self _createComputationOnlyButton];
+    [(VUIPromoMetadataView *)self setComputationOnlyButton:_createComputationOnlyButton];
 
     [(VUIPromoMetadataView *)self setOnlySkipButtonAvailable:0];
   }
 
-  v39 = [v4 localizedTitle];
-  if (![v39 length])
+  localizedTitle = [infoCopy localizedTitle];
+  if (![localizedTitle length])
   {
     v40 = +[VUILocalizationManager sharedInstance];
     v41 = [v40 localizedStringForKey:@"SKIP_INTRO"];
 
-    v39 = v41;
+    localizedTitle = v41;
   }
 
-  v42 = [(VUIPromoMetadataView *)self _createSkipButtonWithTitle:v39];
+  v42 = [(VUIPromoMetadataView *)self _createSkipButtonWithTitle:localizedTitle];
   [v42 setAccessibilityIdentifier:@"SkipButton"];
-  v43 = [(VUIPromoMetadataView *)self skipButton];
-  [(VUIPromoMetadataView *)self vui_addSubview:v42 oldView:v43];
+  skipButton = [(VUIPromoMetadataView *)self skipButton];
+  [(VUIPromoMetadataView *)self vui_addSubview:v42 oldView:skipButton];
 
   [(VUIPromoMetadataView *)self setSkipButton:v42];
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
+  height = subviews.height;
+  width = subviews.width;
   if ([(VUIPromoMetadataView *)self onlySkipButtonAvailable])
   {
-    v8 = [(VUIPromoMetadataView *)self skipButton];
-    [v8 vui_sizeThatFits:{width, height}];
+    skipButton = [(VUIPromoMetadataView *)self skipButton];
+    [skipButton vui_sizeThatFits:{width, height}];
     v10 = v9;
     v12 = v11;
 
-    if (!a4)
+    if (!only)
     {
-      v13 = [(VUIPromoMetadataView *)self skipButton];
-      v14 = v13;
+      skipButton2 = [(VUIPromoMetadataView *)self skipButton];
+      v14 = skipButton2;
       v15 = 0.0;
       v16 = 0.0;
       v17 = v10;
       v18 = v12;
 LABEL_28:
-      [v13 setFrame:{v15, v16, v17, v18}];
+      [skipButton2 setFrame:{v15, v16, v17, v18}];
 
       v10 = *MEMORY[0x1E695F060];
       v12 = *(MEMORY[0x1E695F060] + 8);
@@ -234,23 +234,23 @@ LABEL_28:
   [(VUIPromoMetadataView *)self expectedImageSize];
   v93 = v19;
   v95 = v20;
-  v21 = [(VUIPromoMetadataView *)self mediaTagsView];
-  [v21 vui_sizeThatFits:{width, 0.0}];
+  mediaTagsView = [(VUIPromoMetadataView *)self mediaTagsView];
+  [mediaTagsView vui_sizeThatFits:{width, 0.0}];
   v97 = v23;
   v99 = v22;
 
-  v24 = [(VUIPromoMetadataView *)self skipButton];
-  [v24 vui_sizeThatFits:{width, height}];
+  skipButton3 = [(VUIPromoMetadataView *)self skipButton];
+  [skipButton3 vui_sizeThatFits:{width, height}];
   v26 = v25;
   v28 = v27;
 
-  v29 = [(VUIPromoMetadataView *)self upNextButton];
-  [v29 vui_sizeThatFits:{width, height}];
+  upNextButton = [(VUIPromoMetadataView *)self upNextButton];
+  [upNextButton vui_sizeThatFits:{width, height}];
   v31 = v30;
   v33 = v32;
 
-  v34 = [(VUIPromoMetadataView *)self computationOnlyButton];
-  [v34 vui_sizeThatFits:{width, height}];
+  computationOnlyButton = [(VUIPromoMetadataView *)self computationOnlyButton];
+  [computationOnlyButton vui_sizeThatFits:{width, height}];
   v36 = v35;
 
   if (v31 >= v26)
@@ -283,12 +283,12 @@ LABEL_28:
     [(VUIPromoMetadataView *)self minButtonWidth];
 LABEL_13:
     v49 = v48;
-    v50 = [(VUIPromoMetadataView *)self skipButton];
-    [v50 vui_sizeThatFits:{v49, 0.0}];
+    skipButton4 = [(VUIPromoMetadataView *)self skipButton];
+    [skipButton4 vui_sizeThatFits:{v49, 0.0}];
     v28 = v51;
 
-    v52 = [(VUIPromoMetadataView *)self upNextButton];
-    [v52 vui_sizeThatFits:{v49, 0.0}];
+    upNextButton2 = [(VUIPromoMetadataView *)self upNextButton];
+    [upNextButton2 vui_sizeThatFits:{v49, 0.0}];
     v33 = v53;
 
     v39 = v47;
@@ -342,7 +342,7 @@ LABEL_14:
     v10 = v93;
   }
 
-  if (!a4)
+  if (!only)
   {
     [(VUIPromoMetadataView *)self vuiIsRTL];
     [(VUIPromoMetadataView *)self imageViewBottomMargin];
@@ -372,17 +372,17 @@ LABEL_14:
     v79 = v78;
     v81 = v80;
     v83 = v82;
-    v84 = [(VUIPromoMetadataView *)self titleImageView];
-    [v84 setFrame:{v96, v94, v92, v91}];
+    titleImageView = [(VUIPromoMetadataView *)self titleImageView];
+    [titleImageView setFrame:{v96, v94, v92, v91}];
 
-    v85 = [(VUIPromoMetadataView *)self mediaTagsView];
-    [v85 setFrame:{v100, v98, v90, v89}];
+    mediaTagsView2 = [(VUIPromoMetadataView *)self mediaTagsView];
+    [mediaTagsView2 setFrame:{v100, v98, v90, v89}];
 
-    v86 = [(VUIPromoMetadataView *)self upNextButton];
-    [v86 setFrame:{v69, v71, v73, v75}];
+    upNextButton3 = [(VUIPromoMetadataView *)self upNextButton];
+    [upNextButton3 setFrame:{v69, v71, v73, v75}];
 
-    v13 = [(VUIPromoMetadataView *)self skipButton];
-    v14 = v13;
+    skipButton2 = [(VUIPromoMetadataView *)self skipButton];
+    v14 = skipButton2;
     v15 = v77;
     v16 = v79;
     v17 = v81;
@@ -399,14 +399,14 @@ LABEL_29:
   return result;
 }
 
-- (id)_createSkipButtonWithTitle:(id)a3
+- (id)_createSkipButtonWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(VUIPromoMetadataView *)self skipButton];
-  v6 = v5;
-  if (v5)
+  titleCopy = title;
+  skipButton = [(VUIPromoMetadataView *)self skipButton];
+  v6 = skipButton;
+  if (skipButton)
   {
-    v7 = v5;
+    v7 = skipButton;
   }
 
   else
@@ -417,8 +417,8 @@ LABEL_29:
   v8 = v7;
 
   [(VUIPromoMetadataView *)self _configureBasicLayoutForButton:v8];
-  v9 = [(VUIPromoMetadataView *)self buttonTextLayout];
-  v10 = [VUILabel labelWithString:v4 textLayout:v9 existingLabel:0];
+  buttonTextLayout = [(VUIPromoMetadataView *)self buttonTextLayout];
+  v10 = [VUILabel labelWithString:titleCopy textLayout:buttonTextLayout existingLabel:0];
 
   if ([(VUIPromoMetadataView *)self onlySkipButtonAvailable])
   {
@@ -446,20 +446,20 @@ void __51__VUIPromoMetadataView__createSkipButtonWithTitle___block_invoke(uint64
   [WeakRetained _skipButtonTapped:v3];
 }
 
-- (id)_createUpNextButtonWithPromoInfo:(id)a3
+- (id)_createUpNextButtonWithPromoInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 addToUpNextLabelString];
-  v6 = [v4 addedToUpNextLabelString];
-  v35 = [(VUIPromoMetadataView *)self addToUpNextSymbolName];
-  v34 = [(VUIPromoMetadataView *)self addedToUpNextSymbolName];
-  v33 = [v4 canonicalId];
-  v32 = [v4 isAddedToUpNext];
-  v7 = [(VUIPromoMetadataView *)self upNextButton];
-  v8 = v7;
-  if (v7)
+  infoCopy = info;
+  addToUpNextLabelString = [infoCopy addToUpNextLabelString];
+  addedToUpNextLabelString = [infoCopy addedToUpNextLabelString];
+  addToUpNextSymbolName = [(VUIPromoMetadataView *)self addToUpNextSymbolName];
+  addedToUpNextSymbolName = [(VUIPromoMetadataView *)self addedToUpNextSymbolName];
+  canonicalId = [infoCopy canonicalId];
+  isAddedToUpNext = [infoCopy isAddedToUpNext];
+  upNextButton = [(VUIPromoMetadataView *)self upNextButton];
+  v8 = upNextButton;
+  if (upNextButton)
   {
-    v9 = v7;
+    v9 = upNextButton;
   }
 
   else
@@ -469,49 +469,49 @@ void __51__VUIPromoMetadataView__createSkipButtonWithTitle___block_invoke(uint64
 
   v10 = v9;
 
-  v11 = [(VUIUpNextButton *)v10 properties];
-  v12 = [(VUIPromoMetadataView *)self buttonTextLayout];
-  v31 = v5;
-  v13 = [VUILabel labelWithString:v5 textLayout:v12 existingLabel:0];
+  properties = [(VUIUpNextButton *)v10 properties];
+  buttonTextLayout = [(VUIPromoMetadataView *)self buttonTextLayout];
+  v31 = addToUpNextLabelString;
+  v13 = [VUILabel labelWithString:addToUpNextLabelString textLayout:buttonTextLayout existingLabel:0];
 
-  v14 = [(VUIPromoMetadataView *)self buttonTextLayout];
-  v30 = v6;
-  v15 = [VUILabel labelWithString:v6 textLayout:v14 existingLabel:0];
+  buttonTextLayout2 = [(VUIPromoMetadataView *)self buttonTextLayout];
+  v30 = addedToUpNextLabelString;
+  v15 = [VUILabel labelWithString:addedToUpNextLabelString textLayout:buttonTextLayout2 existingLabel:0];
 
   v28 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40]];
   v16 = [MEMORY[0x1E69DCAD8] configurationWithFont:?];
-  v17 = [v11 removedStateView];
-  [v17 setLabel:v13];
-  v18 = [MEMORY[0x1E69DCAB8] systemImageNamed:v35 withConfiguration:v16];
-  v27 = v17;
-  [v17 setImage:v18];
+  removedStateView = [properties removedStateView];
+  [removedStateView setLabel:v13];
+  v18 = [MEMORY[0x1E69DCAB8] systemImageNamed:addToUpNextSymbolName withConfiguration:v16];
+  v27 = removedStateView;
+  [removedStateView setImage:v18];
 
-  v19 = [v11 addedStateView];
+  addedStateView = [properties addedStateView];
   v29 = v15;
-  [v19 setLabel:v15];
-  v20 = [MEMORY[0x1E69DCAB8] systemImageNamed:v34 withConfiguration:v16];
-  [v19 setImage:v20];
+  [addedStateView setLabel:v15];
+  v20 = [MEMORY[0x1E69DCAB8] systemImageNamed:addedToUpNextSymbolName withConfiguration:v16];
+  [addedStateView setImage:v20];
 
-  [v11 setCanonicalID:v33];
-  [v11 setIsWatchListed:v32];
-  [v11 setDismissOnSelect:0];
+  [properties setCanonicalID:canonicalId];
+  [properties setIsWatchListed:isAddedToUpNext];
+  [properties setDismissOnSelect:0];
   v21 = objc_alloc(MEMORY[0x1E69DF778]);
-  if (v32)
+  if (isAddedToUpNext)
   {
-    v22 = v34;
+    v22 = addedToUpNextSymbolName;
   }
 
   else
   {
-    v22 = v35;
+    v22 = addToUpNextSymbolName;
   }
 
   v23 = [v21 initWithSymbol:v22 size:v16 symbolConfiguration:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   v24 = [MEMORY[0x1E69DF720] makeImageViewWithResourceDescriptor:v23 existingView:0];
-  [v11 setCurrentImageView:v24];
+  [properties setCurrentImageView:v24];
   [(VUIPromoMetadataView *)self _configureBasicLayoutForButton:v10];
-  [v11 setDelegate:v10];
-  [v11 updateButtonContentView];
+  [properties setDelegate:v10];
+  [properties updateButtonContentView];
   objc_initWeak(location, self);
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
@@ -524,7 +524,7 @@ void __51__VUIPromoMetadataView__createSkipButtonWithTitle___block_invoke(uint64
   v36[2] = __57__VUIPromoMetadataView__createUpNextButtonWithPromoInfo___block_invoke_2;
   v36[3] = &unk_1E8733A60;
   objc_copyWeak(&v38, location);
-  v25 = v4;
+  v25 = infoCopy;
   v37 = v25;
   [(VUIUpNextButton *)v10 setStateDidChangeHandler:v36];
 
@@ -560,8 +560,8 @@ void __57__VUIPromoMetadataView__createUpNextButtonWithPromoInfo___block_invoke_
   [(VUIPromoMetadataView *)self setMediaTagsViewLayout:v3];
 
   v11 = objc_opt_new();
-  v4 = [MEMORY[0x1E69DC888] blackColor];
-  [v11 setColor:v4];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [v11 setColor:blackColor];
 
   [v11 setTextStyle:6];
   [v11 setFontWeight:10];
@@ -570,17 +570,17 @@ void __57__VUIPromoMetadataView__createUpNextButtonWithPromoInfo___block_invoke_
   [v11 setLineBreakMode:1];
   if (MEMORY[0x1E6913230]([(VUIPromoMetadataView *)self setButtonTextLayout:v11]))
   {
-    v5 = [MEMORY[0x1E69DF6F0] isPad];
+    isPad = [MEMORY[0x1E69DF6F0] isPad];
     v6 = 140.0;
-    if (v5)
+    if (isPad)
     {
       v6 = 150.0;
     }
 
     [(VUIPromoMetadataView *)self setMaxButtonWidth:v6];
-    v7 = [MEMORY[0x1E69DF6F0] isPad];
+    isPad2 = [MEMORY[0x1E69DF6F0] isPad];
     v8 = 110.0;
-    if (v7)
+    if (isPad2)
     {
       v8 = 126.0;
     }
@@ -605,45 +605,45 @@ void __57__VUIPromoMetadataView__createUpNextButtonWithPromoInfo___block_invoke_
   [(VUIPromoMetadataView *)self setDefaultButtonHeight:v10];
 }
 
-- (void)_configureBasicLayoutForButton:(id)a3
+- (void)_configureBasicLayoutForButton:(id)button
 {
-  v6 = a3;
+  buttonCopy = button;
   if (MEMORY[0x1E6913230]())
   {
-    [v6 setButtonShape:2];
-    v3 = [MEMORY[0x1E69DC888] whiteColor];
-    [v6 vuiEnableGlassBackgroundWithIsEnabled:1 tint:v3 type:1 flexible:1];
+    [buttonCopy setButtonShape:2];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [buttonCopy vuiEnableGlassBackgroundWithIsEnabled:1 tint:whiteColor type:1 flexible:1];
   }
 
   else
   {
-    [v6 setButtonShape:0];
-    [v6 setCornerRadius:8.0];
-    v3 = [MEMORY[0x1E69DC888] whiteColor];
-    [v6 setButtonBackgroundColor:v3];
+    [buttonCopy setButtonShape:0];
+    [buttonCopy setCornerRadius:8.0];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [buttonCopy setButtonBackgroundColor:whiteColor];
   }
 
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
-  [v6 setHighlightColor:v4];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  [buttonCopy setHighlightColor:whiteColor2];
 
-  v5 = [MEMORY[0x1E69DC888] blackColor];
-  [v6 setTintColor:v5];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [buttonCopy setTintColor:blackColor];
 
-  [v6 setPadding:{0.0, 16.0, 0.0, 16.0}];
+  [buttonCopy setPadding:{0.0, 16.0, 0.0, 16.0}];
 }
 
 - (id)_createComputationOnlyButton
 {
-  v3 = [(VUIPromoMetadataView *)self skipInfo];
-  v4 = [v3 promoInfo];
+  skipInfo = [(VUIPromoMetadataView *)self skipInfo];
+  promoInfo = [skipInfo promoInfo];
 
-  v5 = [(VUIPromoMetadataView *)self computationOnlyButton];
-  v6 = v5;
-  if (v4)
+  computationOnlyButton = [(VUIPromoMetadataView *)self computationOnlyButton];
+  v6 = computationOnlyButton;
+  if (promoInfo)
   {
-    if (v5)
+    if (computationOnlyButton)
     {
-      v7 = v5;
+      v7 = computationOnlyButton;
     }
 
     else
@@ -654,42 +654,42 @@ void __57__VUIPromoMetadataView__createUpNextButtonWithPromoInfo___block_invoke_
     v8 = v7;
 
     [(VUIPromoMetadataView *)self _configureBasicLayoutForButton:v8];
-    if ([v4 isAddedToUpNext])
+    if ([promoInfo isAddedToUpNext])
     {
-      [v4 addToUpNextLabelString];
+      [promoInfo addToUpNextLabelString];
     }
 
     else
     {
-      [v4 addedToUpNextLabelString];
+      [promoInfo addedToUpNextLabelString];
     }
     v9 = ;
-    v10 = [(VUIPromoMetadataView *)self buttonTextLayout];
-    v11 = [VUILabel labelWithString:v9 textLayout:v10 existingLabel:0];
+    buttonTextLayout = [(VUIPromoMetadataView *)self buttonTextLayout];
+    v11 = [VUILabel labelWithString:v9 textLayout:buttonTextLayout existingLabel:0];
 
     [(VUIButton *)v8 setTextContentView:v11];
   }
 
   else
   {
-    v8 = v5;
+    v8 = computationOnlyButton;
   }
 
   return v8;
 }
 
-- (void)_skipButtonTapped:(id)a3
+- (void)_skipButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(VUIPromoMetadataView *)self delegate];
-  [v5 skipButtonTapped:v4];
+  tappedCopy = tapped;
+  delegate = [(VUIPromoMetadataView *)self delegate];
+  [delegate skipButtonTapped:tappedCopy];
 }
 
-- (void)_upNextButtonTapped:(id)a3
+- (void)_upNextButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(VUIPromoMetadataView *)self delegate];
-  [v5 upNextButtonTapped:v4];
+  tappedCopy = tapped;
+  delegate = [(VUIPromoMetadataView *)self delegate];
+  [delegate upNextButtonTapped:tappedCopy];
 }
 
 - (VUIPromoMetadataViewDelegate)delegate

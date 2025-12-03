@@ -1,27 +1,27 @@
 @interface CLOdometerNotifierAdapter
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLOdometerNotifierAdapter)init;
 - (void)adaptee;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
 - (void)endService;
-- (void)querySignificantElevationDeltaFromDate:(id)a3 toDate:(id)a4 withReply:(id)a5;
-- (void)registerForCyclingWorkoutDistanceUpdates:(id)a3;
-- (void)unregisterForCyclingWorkoutDistanceUpdates:(id)a3;
-- (void)updatePhoneWorkoutElevationSubscription:(BOOL)a3;
+- (void)querySignificantElevationDeltaFromDate:(id)date toDate:(id)toDate withReply:(id)reply;
+- (void)registerForCyclingWorkoutDistanceUpdates:(id)updates;
+- (void)unregisterForCyclingWorkoutDistanceUpdates:(id)updates;
+- (void)updatePhoneWorkoutElevationSubscription:(BOOL)subscription;
 @end
 
 @implementation CLOdometerNotifierAdapter
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -68,20 +68,20 @@
   return result;
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLOdometerNotifierAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLOdometerNotifierAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLOdometerNotifierAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLOdometerNotifierAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
 + (BOOL)isSupported
@@ -94,50 +94,50 @@
   return byte_1026566F0;
 }
 
-- (void)querySignificantElevationDeltaFromDate:(id)a3 toDate:(id)a4 withReply:(id)a5
+- (void)querySignificantElevationDeltaFromDate:(id)date toDate:(id)toDate withReply:(id)reply
 {
   v17 = 0u;
   v18 = 0u;
   v16 = 0u;
   v8 = [(CLOdometerNotifierAdapter *)self adaptee:0];
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v10 = v9;
-  [a4 timeIntervalSinceReferenceDate];
+  [toDate timeIntervalSinceReferenceDate];
   sub_1004D2390(v8, &v15, v10, v11);
   v12.n128_u64[0] = *(&v16 + 1);
   if (*(&v16 + 1) == -1.0)
   {
-    v13 = *(a5 + 2);
+    v13 = *(reply + 2);
 
-    v13(a5, 0, v12);
+    v13(reply, 0, v12);
   }
 
   else
   {
     v14 = [[CMSignificantElevationSample alloc] initWithSignificantElevation:&v15];
-    (*(a5 + 2))(a5, v14);
+    (*(reply + 2))(reply, v14);
   }
 }
 
-- (void)updatePhoneWorkoutElevationSubscription:(BOOL)a3
+- (void)updatePhoneWorkoutElevationSubscription:(BOOL)subscription
 {
   v3 = *(*[(CLOdometerNotifierAdapter *)self adaptee]+ 208);
 
   v3();
 }
 
-- (void)registerForCyclingWorkoutDistanceUpdates:(id)a3
+- (void)registerForCyclingWorkoutDistanceUpdates:(id)updates
 {
-  v4 = [(CLOdometerNotifierAdapter *)self adaptee];
+  adaptee = [(CLOdometerNotifierAdapter *)self adaptee];
 
-  sub_1004D24C4(v4, a3);
+  sub_1004D24C4(adaptee, updates);
 }
 
-- (void)unregisterForCyclingWorkoutDistanceUpdates:(id)a3
+- (void)unregisterForCyclingWorkoutDistanceUpdates:(id)updates
 {
-  v4 = [(CLOdometerNotifierAdapter *)self adaptee];
+  adaptee = [(CLOdometerNotifierAdapter *)self adaptee];
 
-  sub_1004D25AC(v4, a3);
+  sub_1004D25AC(adaptee, updates);
 }
 
 @end

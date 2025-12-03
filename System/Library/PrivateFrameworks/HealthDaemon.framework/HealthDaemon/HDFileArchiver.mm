@@ -1,9 +1,9 @@
 @interface HDFileArchiver
-- (BOOL)compressFileAtURL:(id)a3 to:(id)a4 strippingPathPrefix:(id)a5 error:(id *)a6;
-- (BOOL)decompressArchiveAt:(id)a3 to:(id)a4 error:(id *)a5;
+- (BOOL)compressFileAtURL:(id)l to:(id)to strippingPathPrefix:(id)prefix error:(id *)error;
+- (BOOL)decompressArchiveAt:(id)at to:(id)to error:(id *)error;
 - (HDFileArchiver)init;
 - (id).cxx_construct;
-- (id)_errorFromReaderWithContext:(uint64_t)a1;
+- (id)_errorFromReaderWithContext:(uint64_t)context;
 - (uint64_t)_reset;
 - (void)dealloc;
 @end
@@ -74,15 +74,15 @@
   return v2;
 }
 
-- (id)_errorFromReaderWithContext:(uint64_t)a1
+- (id)_errorFromReaderWithContext:(uint64_t)context
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (context)
   {
-    v4 = *(a1 + 32);
+    v4 = *(context + 32);
     v5 = archive_errno();
-    v6 = *(a1 + 32);
+    v6 = *(context + 32);
     if (v5 < 1)
     {
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: Internal libarchive error %s", v3, archive_error_string()];
@@ -119,15 +119,15 @@
   return v11;
 }
 
-- (BOOL)compressFileAtURL:(id)a3 to:(id)a4 strippingPathPrefix:(id)a5 error:(id *)a6
+- (BOOL)compressFileAtURL:(id)l to:(id)to strippingPathPrefix:(id)prefix error:(id *)error
 {
   *(&v66[2] + 2) = *MEMORY[0x277D85DE8];
-  v62 = a3;
-  v11 = a4;
-  v12 = a5;
+  lCopy = l;
+  toCopy = to;
+  prefixCopy = prefix;
   [(HDFileArchiver *)self _reset];
-  objc_storeStrong(&self->_sourceURL, a3);
-  objc_storeStrong(&self->_prefixURL, a5);
+  objc_storeStrong(&self->_sourceURL, l);
+  objc_storeStrong(&self->_prefixURL, prefix);
   self->_reader = archive_read_disk_new();
   p_reader = &self->_reader;
   archive_read_disk_set_metadata_filter_callback();
@@ -136,7 +136,7 @@
   if (archive_read_disk_open())
   {
     v15 = *p_reader;
-    [MEMORY[0x277CCA9B8] hk_assignError:a6 code:100 format:{@"Failed to open source: %s", archive_error_string()}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"Failed to open source: %s", archive_error_string()}];
     [(HDFileArchiver *)self _reset];
     v16 = 0;
     goto LABEL_58;
@@ -148,7 +148,7 @@
   writer = self->_writer;
   archive_write_set_format_pax_restricted();
   v19 = self->_writer;
-  [v11 fileSystemRepresentation];
+  [toCopy fileSystemRepresentation];
   archive_write_open_filename();
   v61 = @"Failed to write sparse block for entry %s: %s";
   while (1)
@@ -174,7 +174,7 @@
         v49 = *p_reader;
         v50 = archive_error_string();
         *buf = 138543874;
-        v64 = self;
+        selfCopy2 = self;
         v65 = 1024;
         LODWORD(v66[0]) = v48;
         WORD2(v66[0]) = 2080;
@@ -185,7 +185,7 @@
       if (v22 == -25 || v22 == -30)
       {
         v52 = *p_reader;
-        [MEMORY[0x277CCA9B8] hk_assignError:a6 code:100 format:{@"Failed to read next file from disk during compression: %s", archive_error_string()}];
+        [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"Failed to read next file from disk during compression: %s", archive_error_string()}];
         goto LABEL_56;
       }
 
@@ -211,25 +211,25 @@
         goto LABEL_47;
       }
 
-      v26 = [(NSURL *)self->_prefixURL fileSystemRepresentation];
+      fileSystemRepresentation = [(NSURL *)self->_prefixURL fileSystemRepresentation];
       _HKInitializeLogging();
       v27 = HKLogInfrastructure();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 136315394;
-        v64 = v26;
+        selfCopy2 = fileSystemRepresentation;
         v65 = 2080;
         v66[0] = v25;
         _os_log_impl(&dword_228986000, v27, OS_LOG_TYPE_DEFAULT, "Stripping %s from %s", buf, 0x16u);
       }
 
-      if (v26)
+      if (fileSystemRepresentation)
       {
-        v28 = strstr(v25, v26);
+        v28 = strstr(v25, fileSystemRepresentation);
         if (v28 == v25)
         {
           v29 = v28;
-          v30 = strlen(v26);
+          v30 = strlen(fileSystemRepresentation);
           if (v29[v30] == 47)
           {
             v25 = &v29[v30 + 1];
@@ -256,7 +256,7 @@
     {
       v32 = archive_entry_pathname();
       *buf = 136315138;
-      v64 = v32;
+      selfCopy2 = v32;
       _os_log_impl(&dword_228986000, v31, OS_LOG_TYPE_DEFAULT, "Writing entry %s", buf, 0xCu);
     }
 
@@ -266,7 +266,7 @@
       v53 = MEMORY[0x277CCA9B8];
       v54 = archive_entry_pathname();
       v55 = *p_writer;
-      [v53 hk_assignError:a6 code:100 format:{@"Failed to write entry header for %s: %s", v54, archive_error_string()}];
+      [v53 hk_assignError:error code:100 format:{@"Failed to write entry header for %s: %s", v54, archive_error_string()}];
       goto LABEL_56;
     }
 
@@ -333,7 +333,7 @@ LABEL_54:
       {
         v46 = archive_entry_pathname();
         *buf = 138543618;
-        v64 = self;
+        selfCopy2 = self;
         v65 = 2080;
         v66[0] = v46;
         _os_log_impl(&dword_228986000, v45, OS_LOG_TYPE_DEFAULT, "%{public}@: Truncated write for %s; file may have grown while being archived.", buf, 0x16u);
@@ -355,7 +355,7 @@ LABEL_55:
   v56 = MEMORY[0x277CCA9B8];
   v57 = archive_entry_pathname();
   v58 = *p_writer;
-  [v56 hk_assignError:a6 code:100 format:{v61, v57, archive_error_string()}];
+  [v56 hk_assignError:error code:100 format:{v61, v57, archive_error_string()}];
 LABEL_56:
   v16 = 0;
 LABEL_57:
@@ -367,28 +367,28 @@ LABEL_58:
   return v16;
 }
 
-- (BOOL)decompressArchiveAt:(id)a3 to:(id)a4 error:(id *)a5
+- (BOOL)decompressArchiveAt:(id)at to:(id)to error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  atCopy = at;
+  toCopy = to;
   [(HDFileArchiver *)self _reset];
-  objc_storeStrong(&self->_destinationDirectoryURL, a4);
+  objc_storeStrong(&self->_destinationDirectoryURL, to);
   self->_reader = archive_read_new();
   archive_read_support_filter_all();
   reader = self->_reader;
   archive_read_support_format_all();
   v11 = self->_reader;
-  [v8 fileSystemRepresentation];
+  [atCopy fileSystemRepresentation];
   if (archive_read_open_filename())
   {
     v12 = [(HDFileArchiver *)self _errorFromReaderWithContext:?];
     v13 = v12;
     if (v12)
     {
-      if (a5)
+      if (error)
       {
         v14 = v12;
-        *a5 = v13;
+        *error = v13;
       }
 
       else
@@ -433,10 +433,10 @@ LABEL_58:
         v26 = v25;
         if (v25)
         {
-          if (a5)
+          if (error)
           {
             v27 = v25;
-            *a5 = v26;
+            *error = v26;
           }
 
           else
@@ -459,10 +459,10 @@ LABEL_58:
     v19 = v23;
     if (v23)
     {
-      if (a5)
+      if (error)
       {
         v24 = v23;
-        *a5 = v19;
+        *error = v19;
       }
 
       else

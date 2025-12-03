@@ -1,17 +1,17 @@
 @interface PVLivePlayerAVAssetSource
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)itemTimeForHostTime:(SEL)a3;
-- (PVLivePlayerAVAssetSource)initWithAVAsset:(id)a3;
-- (__CVBuffer)_copyPixelBufferForHostTime:(double)a3;
-- (__CVBuffer)_copyPixelBufferForTime:(id *)a3;
-- (id)imageBufferForHostTime:(double)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)itemTimeForHostTime:(SEL)time;
+- (PVLivePlayerAVAssetSource)initWithAVAsset:(id)asset;
+- (__CVBuffer)_copyPixelBufferForHostTime:(double)time;
+- (__CVBuffer)_copyPixelBufferForTime:(id *)time;
+- (id)imageBufferForHostTime:(double)time;
 - (void)dealloc;
 - (void)finishReading;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)play;
-- (void)playerItemDidPlayToEnd:(id)a3;
-- (void)seekToTime:(id *)a3;
-- (void)setMuted:(BOOL)a3;
+- (void)playerItemDidPlayToEnd:(id)end;
+- (void)seekToTime:(id *)time;
+- (void)setMuted:(BOOL)muted;
 - (void)setupPlayer;
 - (void)startObservers;
 - (void)stopObservers;
@@ -19,9 +19,9 @@
 
 @implementation PVLivePlayerAVAssetSource
 
-- (PVLivePlayerAVAssetSource)initWithAVAsset:(id)a3
+- (PVLivePlayerAVAssetSource)initWithAVAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v21.receiver = self;
   v21.super_class = PVLivePlayerAVAssetSource;
   v6 = [(PVLivePlayerAVAssetSource *)&v21 init];
@@ -29,7 +29,7 @@
   v8 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_asset, a3);
+    objc_storeStrong(&v6->_asset, asset);
     asset = v8->_asset;
     if (asset)
     {
@@ -150,10 +150,10 @@
     [(AVQueuePlayer *)self->_playerQueue items];
   }
   v3 = ;
-  v6 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  v4 = [v6 status];
-  switch(v4)
+  status = [firstObject status];
+  switch(status)
   {
     case 0:
       if ([(AVQueuePlayer *)self->_playerQueue status]!= 1)
@@ -183,7 +183,7 @@ LABEL_16:
   [(PVLivePlayerAVAssetSource *)self setStatus:2];
 }
 
-- (id)imageBufferForHostTime:(double)a3
+- (id)imageBufferForHostTime:(double)time
 {
   v5 = [(PVLivePlayerAVAssetSource *)self _copyPixelBufferForHostTime:?];
   if (v5)
@@ -191,7 +191,7 @@ LABEL_16:
     v6 = v5;
     v16 = 0uLL;
     v17 = 0;
-    [(PVLivePlayerAVAssetSource *)self itemTimeForHostTime:a3];
+    [(PVLivePlayerAVAssetSource *)self itemTimeForHostTime:time];
     v7 = [PVImageBuffer imageWithCVPixelBuffer:v6];
     v14 = v16;
     v15 = v17;
@@ -227,7 +227,7 @@ LABEL_16:
   return v9;
 }
 
-- (__CVBuffer)_copyPixelBufferForHostTime:(double)a3
+- (__CVBuffer)_copyPixelBufferForHostTime:(double)time
 {
   v5 = [(NSArray *)self->_playerItemOutputs count];
   if (v5 < 1)
@@ -245,7 +245,7 @@ LABEL_16:
     v15 = 0;
     if (v8)
     {
-      [v8 itemTimeForHostTime:a3];
+      [v8 itemTimeForHostTime:time];
     }
 
     v12 = v14;
@@ -269,26 +269,26 @@ LABEL_16:
   return v10;
 }
 
-- (void)seekToTime:(id *)a3
+- (void)seekToTime:(id *)time
 {
   if (self->_playerQueue)
   {
-    v6 = *a3;
+    v6 = *time;
     CMTimeConvertScale(&v7, &v6, HIDWORD(self->_videoTrackRange.start.value), kCMTimeRoundingMethod_RoundHalfAwayFromZero);
-    *a3 = v7;
+    *time = v7;
     if ([(PVLivePlayerAVAssetSource *)self loopPlayback])
     {
-      CMTimeMake(&v7, (a3->var0 - *(&self->_assetRate + 1)) % *(&self->_videoTrackRange.start.epoch + 4), a3->var1);
-      *a3 = v7;
+      CMTimeMake(&v7, (time->var0 - *(&self->_assetRate + 1)) % *(&self->_videoTrackRange.start.epoch + 4), time->var1);
+      *time = v7;
     }
 
     playerQueue = self->_playerQueue;
-    v7 = *a3;
+    v7 = *time;
     [(AVQueuePlayer *)playerQueue seekToTime:&v7];
   }
 }
 
-- (__CVBuffer)_copyPixelBufferForTime:(id *)a3
+- (__CVBuffer)_copyPixelBufferForTime:(id *)time
 {
   v5 = [(NSArray *)self->_playerItemOutputs count];
   if (v5 < 1)
@@ -303,8 +303,8 @@ LABEL_16:
     v8 = (v6 + self->_currentPlayerItemOutput) % v5;
     v9 = [(NSArray *)self->_playerItemOutputs objectAtIndex:v8];
 
-    v12 = *&a3->var0;
-    var3 = a3->var3;
+    v12 = *&time->var0;
+    var3 = time->var3;
     if ([v9 hasNewPixelBufferForItemTime:&v12])
     {
       break;
@@ -319,8 +319,8 @@ LABEL_16:
     }
   }
 
-  v12 = *&a3->var0;
-  var3 = a3->var3;
+  v12 = *&time->var0;
+  var3 = time->var3;
   v10 = [v9 copyPixelBufferForItemTime:&v12 itemTimeForDisplay:0];
   self->_currentPlayerItemOutput = v8;
 LABEL_8:
@@ -328,7 +328,7 @@ LABEL_8:
   return v10;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)itemTimeForHostTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)itemTimeForHostTime:(SEL)time
 {
   v6 = [(NSArray *)self->_playerItemOutputs objectAtIndexedSubscript:self->_currentPlayerItemOutput];
   v8 = v6;
@@ -347,12 +347,12 @@ LABEL_8:
   return result;
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
   playerQueue = self->_playerQueue;
   if (playerQueue)
   {
-    [(AVQueuePlayer *)playerQueue setMuted:a3];
+    [(AVQueuePlayer *)playerQueue setMuted:muted];
   }
 }
 
@@ -390,8 +390,8 @@ LABEL_8:
   v32 = v12;
   [(AVAsset *)asset loadTracksWithMediaType:v11 completionHandler:v31];
   dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
-  v13 = [v35[5] formatDescriptions];
-  v14 = [v13 objectAtIndex:0];
+  formatDescriptions = [v35[5] formatDescriptions];
+  v14 = [formatDescriptions objectAtIndex:0];
 
   v15 = v35;
   v16 = v35[5];
@@ -422,7 +422,7 @@ LABEL_8:
   v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([(PVLivePlayerAVAssetSource *)self loopPlayback])
   {
-    v21 = [(AVPlayerLooper *)self->_playerLooper loopingPlayerItems];
+    loopingPlayerItems = [(AVPlayerLooper *)self->_playerLooper loopingPlayerItems];
     v22 = v28;
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = *"";
@@ -430,12 +430,12 @@ LABEL_8:
     v28[3] = &unk_279AA5668;
     v28[4] = v19;
     v28[5] = v20;
-    [v21 enumerateObjectsUsingBlock:v28];
+    [loopingPlayerItems enumerateObjectsUsingBlock:v28];
   }
 
   else
   {
-    v21 = [(AVQueuePlayer *)self->_playerQueue items];
+    loopingPlayerItems = [(AVQueuePlayer *)self->_playerQueue items];
     v22 = v27;
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = *"";
@@ -443,7 +443,7 @@ LABEL_8:
     v27[3] = &unk_279AA5668;
     v27[4] = v19;
     v27[5] = v20;
-    [v21 enumerateObjectsUsingBlock:v27];
+    [loopingPlayerItems enumerateObjectsUsingBlock:v27];
   }
 
   [(PVLivePlayerAVAssetSource *)self startObservers];
@@ -522,10 +522,10 @@ void __40__PVLivePlayerAVAssetSource_setupPlayer__block_invoke_3(uint64_t a1, vo
     [(AVQueuePlayer *)self->_playerQueue items];
   }
   v3 = ;
-  v5 = [v3 lastObject];
+  lastObject = [v3 lastObject];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_playerItemDidPlayToEnd_ name:*MEMORY[0x277CE60C0] object:v5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_playerItemDidPlayToEnd_ name:*MEMORY[0x277CE60C0] object:lastObject];
 }
 
 - (void)stopObservers
@@ -541,13 +541,13 @@ void __40__PVLivePlayerAVAssetSource_setupPlayer__block_invoke_3(uint64_t a1, vo
     [(AVQueuePlayer *)self->_playerQueue items];
   }
   v3 = ;
-  v5 = [v3 lastObject];
+  lastObject = [v3 lastObject];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277CE60C0] object:v5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CE60C0] object:lastObject];
 }
 
-- (void)playerItemDidPlayToEnd:(id)a3
+- (void)playerItemDidPlayToEnd:(id)end
 {
   if (![(PVLivePlayerAVAssetSource *)self loopPlayback])
   {
@@ -556,13 +556,13 @@ void __40__PVLivePlayerAVAssetSource_setupPlayer__block_invoke_3(uint64_t a1, vo
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 isEqualToString:@"status"] ^ 1;
-  if (a6 != &s_PlayerQueueStatusObservationContext)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = [pathCopy isEqualToString:@"status"] ^ 1;
+  if (context != &s_PlayerQueueStatusObservationContext)
   {
     LOBYTE(v13) = 1;
   }
@@ -571,10 +571,10 @@ void __40__PVLivePlayerAVAssetSource_setupPlayer__block_invoke_3(uint64_t a1, vo
   {
     v14.receiver = self;
     v14.super_class = PVLivePlayerAVAssetSource;
-    [(PVLivePlayerAVAssetSource *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PVLivePlayerAVAssetSource *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
-  else if ([v11 status] == 1)
+  else if ([objectCopy status] == 1)
   {
     dispatch_semaphore_signal(self->_dispatchQueue);
   }

@@ -1,16 +1,16 @@
 @interface SBSceneRelevancyResult
 + (id)defaultResult;
-- (BOOL)hasSameAssertions:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SBSceneRelevancyResult)initWithActivityMode:(char)a3 jetsamMode:(char)a4 resourceElevation:(char)a5 resignActive:(BOOL)a6 disableFlattening:(BOOL)a7;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)hasSameAssertions:(id)assertions;
+- (BOOL)isEqual:(id)equal;
+- (SBSceneRelevancyResult)initWithActivityMode:(char)mode jetsamMode:(char)jetsamMode resourceElevation:(char)elevation resignActive:(BOOL)active disableFlattening:(BOOL)flattening;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
 @implementation SBSceneRelevancyResult
 
-- (SBSceneRelevancyResult)initWithActivityMode:(char)a3 jetsamMode:(char)a4 resourceElevation:(char)a5 resignActive:(BOOL)a6 disableFlattening:(BOOL)a7
+- (SBSceneRelevancyResult)initWithActivityMode:(char)mode jetsamMode:(char)jetsamMode resourceElevation:(char)elevation resignActive:(BOOL)active disableFlattening:(BOOL)flattening
 {
   v21.receiver = self;
   v21.super_class = SBSceneRelevancyResult;
@@ -18,11 +18,11 @@
   v13 = v12;
   if (v12)
   {
-    v12->_activityMode = a3;
-    v12->_jetsamMode = a4;
-    v12->_resourceElevation = a5;
-    v12->_resignActive = a6;
-    v12->_disableFlattening = a7;
+    v12->_activityMode = mode;
+    v12->_jetsamMode = jetsamMode;
+    v12->_resourceElevation = elevation;
+    v12->_resignActive = active;
+    v12->_disableFlattening = flattening;
     v14 = objc_alloc_init(MEMORY[0x277CF0C40]);
     v15 = [v14 appendInteger:v13->_activityMode];
     v16 = [v14 appendInteger:v13->_jetsamMode];
@@ -42,16 +42,16 @@
   return v2;
 }
 
-- (BOOL)hasSameAssertions:(id)a3
+- (BOOL)hasSameAssertions:(id)assertions
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  assertionsCopy = assertions;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:assertionsCopy ofExpectedClass:objc_opt_class()];
   activityMode = self->_activityMode;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __44__SBSceneRelevancyResult_hasSameAssertions___block_invoke;
   v21[3] = &unk_2783ACDE0;
-  v7 = v4;
+  v7 = assertionsCopy;
   v22 = v7;
   v8 = [v5 appendInteger:activityMode counterpart:v21];
   jetsamMode = self->_jetsamMode;
@@ -75,16 +75,16 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   activityMode = self->_activityMode;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __34__SBSceneRelevancyResult_isEqual___block_invoke;
   v30[3] = &unk_2783ACDE0;
-  v7 = v4;
+  v7 = equalCopy;
   v31 = v7;
   v8 = [v5 appendInteger:activityMode counterpart:v30];
   jetsamMode = self->_jetsamMode;
@@ -126,33 +126,33 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBSceneRelevancyResult *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSceneRelevancyResult *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSceneRelevancyResult *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSceneRelevancyResult *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBSceneRelevancyResult *)self succinctDescriptionBuilder];
-  [v5 setActiveMultilinePrefix:v4];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBSceneRelevancyResult *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__SBSceneRelevancyResult_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

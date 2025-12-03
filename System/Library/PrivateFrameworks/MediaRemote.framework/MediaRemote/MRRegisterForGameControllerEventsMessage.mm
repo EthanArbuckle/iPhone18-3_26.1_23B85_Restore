@@ -1,20 +1,20 @@
 @interface MRRegisterForGameControllerEventsMessage
-- (MRRegisterForGameControllerEventsMessage)initWithInputMode:(unsigned int)a3;
+- (MRRegisterForGameControllerEventsMessage)initWithInputMode:(unsigned int)mode;
 - (unsigned)inputMode;
 @end
 
 @implementation MRRegisterForGameControllerEventsMessage
 
-- (MRRegisterForGameControllerEventsMessage)initWithInputMode:(unsigned int)a3
+- (MRRegisterForGameControllerEventsMessage)initWithInputMode:(unsigned int)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v7.receiver = self;
   v7.super_class = MRRegisterForGameControllerEventsMessage;
   v4 = [(MRProtocolMessage *)&v7 init];
   if (v4)
   {
     v5 = objc_alloc_init(_MRRegisterForGameControllerEventsMessageProtobuf);
-    [(_MRRegisterForGameControllerEventsMessageProtobuf *)v5 setInputModeFlags:MRProtobufFromGameControllerInputMode(v3)];
+    [(_MRRegisterForGameControllerEventsMessageProtobuf *)v5 setInputModeFlags:MRProtobufFromGameControllerInputMode(modeCopy)];
     [(MRProtocolMessage *)v4 setUnderlyingCodableMessage:v5];
   }
 
@@ -23,8 +23,8 @@
 
 - (unsigned)inputMode
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = MRGameControllerInputModeFromProtobuf([v2 inputModeFlags]);
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  v3 = MRGameControllerInputModeFromProtobuf([underlyingCodableMessage inputModeFlags]);
 
   return v3;
 }

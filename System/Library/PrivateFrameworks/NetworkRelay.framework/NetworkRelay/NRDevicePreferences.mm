@@ -3,7 +3,7 @@
 - (BOOL)hasQuickRelayRequest;
 - (NRBluetoothLinkPreferences)bluetoothLinkPreferences;
 - (NRCompanionLinkPreferences)companionLinkPreferences;
-- (NRDevicePreferences)initWithDeviceIdentifier:(id)a3;
+- (NRDevicePreferences)initWithDeviceIdentifier:(id)identifier;
 - (NSSet)policyTrafficClassifiers;
 - (const)copyDetailsLocked;
 - (id)description;
@@ -19,23 +19,23 @@
 - (void)removePreferWiFiRequest;
 - (void)removePreferWiFiRequestLocked;
 - (void)removeQuickRelayRequest;
-- (void)removeQuickRelayRequestLocked:(uint64_t)a1;
+- (void)removeQuickRelayRequestLocked:(uint64_t)locked;
 - (void)resetCompanionLinkPreferencesLocked;
 - (void)sendDevicePreferencesLocked;
-- (void)setBluetoothLinkPreferences:(id)a3;
-- (void)setBluetoothLinkPreferencesLocked:(uint64_t)a1;
-- (void)setCompanionLinkPreferences:(id)a3;
-- (void)setPolicyTrafficClassifiers:(id)a3;
+- (void)setBluetoothLinkPreferences:(id)preferences;
+- (void)setBluetoothLinkPreferencesLocked:(uint64_t)locked;
+- (void)setCompanionLinkPreferences:(id)preferences;
+- (void)setPolicyTrafficClassifiers:(id)classifiers;
 @end
 
 @implementation NRDevicePreferences
 
-- (void)setPolicyTrafficClassifiers:(id)a3
+- (void)setPolicyTrafficClassifiers:(id)classifiers
 {
-  v25 = a3;
-  if (v25)
+  classifiersCopy = classifiers;
+  if (classifiersCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x277CBEB98]) initWithSet:v25 copyItems:1];
+    v4 = [objc_alloc(MEMORY[0x277CBEB98]) initWithSet:classifiersCopy copyItems:1];
   }
 
   else
@@ -110,27 +110,27 @@
 - (void)sendDevicePreferencesLocked
 {
   location[2] = *MEMORY[0x277D85DE8];
-  if (!a1 || (os_unfair_lock_assert_owner((a1 + 16)), ([a1 isNRDTestServer] & 1) != 0))
+  if (!self || (os_unfair_lock_assert_owner((self + 16)), ([self isNRDTestServer] & 1) != 0))
   {
 LABEL_34:
     v30 = *MEMORY[0x277D85DE8];
     return;
   }
 
-  os_unfair_lock_assert_owner((a1 + 16));
-  v2 = *(a1 + 64);
-  if (([v2 isNotEmpty] & 1) != 0 || objc_msgSend(*(a1 + 80), "count") || *(a1 + 8) == 1)
+  os_unfair_lock_assert_owner((self + 16));
+  v2 = *(self + 64);
+  if (([v2 isNotEmpty] & 1) != 0 || objc_msgSend(*(self + 80), "count") || *(self + 8) == 1)
   {
 
     goto LABEL_7;
   }
 
-  v31 = *(a1 + 9);
+  v31 = *(self + 9);
 
   if (v31)
   {
 LABEL_7:
-    if (!*(a1 + 56))
+    if (!*(self + 56))
     {
       if (nrXPCCopyQueue_onceToken != -1)
       {
@@ -139,11 +139,11 @@ LABEL_7:
 
       v3 = nrXPCCopyQueue_nrXPCQueue;
       mach_service = xpc_connection_create_mach_service("com.apple.terminusd", v3, 2uLL);
-      v5 = *(a1 + 56);
-      *(a1 + 56) = mach_service;
+      v5 = *(self + 56);
+      *(self + 56) = mach_service;
 
-      objc_initWeak(location, a1);
-      v6 = *(a1 + 56);
+      objc_initWeak(location, self);
+      v6 = *(self + 56);
       v79[0] = MEMORY[0x277D85DD0];
       v79[1] = 3221225472;
       v79[2] = __50__NRDevicePreferences_sendDevicePreferencesLocked__block_invoke;
@@ -151,14 +151,14 @@ LABEL_7:
       objc_copyWeak(&v80, location);
       xpc_connection_set_event_handler(v6, v79);
 
-      v7 = *(a1 + 56);
+      v7 = *(self + 56);
       xpc_connection_activate(v7);
 
       objc_destroyWeak(&v80);
       objc_destroyWeak(location);
     }
 
-    v13 = [(NRDevicePreferences *)a1 copyDetailsLocked];
+    copyDetailsLocked = [(NRDevicePreferences *)self copyDetailsLocked];
     if (nrCopyLogObj_onceToken_113 != -1)
     {
       dispatch_once(&nrCopyLogObj_onceToken_113, &__block_literal_global_114);
@@ -174,10 +174,10 @@ LABEL_7:
     if (v14)
     {
       xpc_dictionary_set_uint64(v14, "Type", 0xBuLL);
-      v16 = [a1 deviceIdentifier];
-      v17 = [v16 nrDeviceIdentifier];
+      deviceIdentifier = [self deviceIdentifier];
+      nrDeviceIdentifier = [deviceIdentifier nrDeviceIdentifier];
       v18 = v15;
-      v19 = v17;
+      v19 = nrDeviceIdentifier;
       v20 = v19;
       if (v19)
       {
@@ -208,14 +208,14 @@ LABEL_7:
       _NRLogWithArgs(v54, 17, "%s called with null uuid", v55, v56, v57, v58, v59, "nr_xpc_dictionary_set_nsuuid");
 
 LABEL_19:
-      xpc_dictionary_set_BOOL(v18, "DevicePreferencesIsDeviceSetupInProgress", *(a1 + 8));
-      if ([*(a1 + 64) isNotEmpty])
+      xpc_dictionary_set_BOOL(v18, "DevicePreferencesIsDeviceSetupInProgress", *(self + 8));
+      if ([*(self + 64) isNotEmpty])
       {
-        v21 = [*(a1 + 64) copyEncodedXPCDict];
-        xpc_dictionary_set_value(v18, "DevicePreferencesBTLinkPreferences", v21);
+        copyEncodedXPCDict = [*(self + 64) copyEncodedXPCDict];
+        xpc_dictionary_set_value(v18, "DevicePreferencesBTLinkPreferences", copyEncodedXPCDict);
       }
 
-      if (![*(a1 + 80) count])
+      if (![*(self + 80) count])
       {
         goto LABEL_31;
       }
@@ -227,7 +227,7 @@ LABEL_19:
         v78 = 0u;
         v75 = 0u;
         v76 = 0u;
-        v23 = *(a1 + 80);
+        v23 = *(self + 80);
         v24 = [v23 countByEnumeratingWithState:&v75 objects:v81 count:16];
         if (v24)
         {
@@ -252,8 +252,8 @@ LABEL_19:
 
         xpc_dictionary_set_value(v18, "DevicePreferencesPolicyTrafficClassifiers", v22);
 LABEL_31:
-        objc_initWeak(location, a1);
-        v27 = *(a1 + 56);
+        objc_initWeak(location, self);
+        v27 = *(self + 56);
         if (nrXPCCopyQueue_onceToken != -1)
         {
           dispatch_once(&nrXPCCopyQueue_onceToken, &__block_literal_global_2644);
@@ -265,7 +265,7 @@ LABEL_31:
         v72[2] = __50__NRDevicePreferences_sendDevicePreferencesLocked__block_invoke_2;
         v72[3] = &unk_27996AEF8;
         objc_copyWeak(&v74, location);
-        v29 = v13;
+        v29 = copyDetailsLocked;
         v73 = v29;
         xpc_connection_send_message_with_reply(v27, v18, v28, v72);
 
@@ -341,13 +341,13 @@ LABEL_52:
   if ((sNRCopyLogToStdErr & 1) != 0 || os_log_type_enabled(nrCopyLogObj_sNRLogObj_115, OS_LOG_TYPE_DEFAULT))
   {
     v32 = nrCopyLogObj_sNRLogObj_115;
-    v71 = [(NRDevicePreferences *)a1 copyDetailsLocked];
+    copyDetailsLocked2 = [(NRDevicePreferences *)self copyDetailsLocked];
     _NRLogWithArgs(v32, 0, "%s%.30s:%-4d %@ cancelling connection because not needed %@", v33, v34, v35, v36, v37, "");
   }
 
   v38 = *MEMORY[0x277D85DE8];
 
-  [(NRDevicePreferences *)a1 cancelConnectionLocked];
+  [(NRDevicePreferences *)self cancelConnectionLocked];
 }
 
 - (const)copyDetailsLocked
@@ -372,9 +372,9 @@ LABEL_52:
 
 - (void)cancelConnectionLocked
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 16));
+    os_unfair_lock_assert_owner((self + 16));
     if (nrCopyLogObj_onceToken_113 != -1)
     {
       dispatch_once(&nrCopyLogObj_onceToken_113, &__block_literal_global_114);
@@ -383,11 +383,11 @@ LABEL_52:
     if ((sNRCopyLogToStdErr & 1) != 0 || os_log_type_enabled(nrCopyLogObj_sNRLogObj_115, OS_LOG_TYPE_DEFAULT))
     {
       v2 = nrCopyLogObj_sNRLogObj_115;
-      os_unfair_lock_assert_owner((a1 + 16));
+      os_unfair_lock_assert_owner((self + 16));
       v3 = objc_alloc(MEMORY[0x277CCACA8]);
-      v4 = *(a1 + 32);
-      v5 = *(a1 + 80);
-      v6 = *(a1 + 64);
+      v4 = *(self + 32);
+      v5 = *(self + 80);
+      v6 = *(self + 64);
       v7 = v5;
       v8 = _NRCopyPolicyTrafficClassifiersDescription(v7);
       v9 = [v3 initWithFormat:@"%llu preferWiFi, %@, %@", v4, v6, v8];
@@ -395,12 +395,12 @@ LABEL_52:
       _NRLogWithArgs(v2, 0, "%s%.30s:%-4d %@ cancelling connection %@", v10, v11, v12, v13, v14, "");
     }
 
-    v15 = *(a1 + 56);
+    v15 = *(self + 56);
     if (v15)
     {
       xpc_connection_cancel(v15);
-      v16 = *(a1 + 56);
-      *(a1 + 56) = 0;
+      v16 = *(self + 56);
+      *(self + 56) = 0;
     }
   }
 }
@@ -516,7 +516,7 @@ void __50__NRDevicePreferences_sendDevicePreferencesLocked__block_invoke_2(uint6
 
 - (uint64_t)restartConnectionLocked
 {
-  os_unfair_lock_assert_owner((a1 + 16));
+  os_unfair_lock_assert_owner((self + 16));
   if (nrCopyLogObj_onceToken_113 != -1)
   {
     dispatch_once(&nrCopyLogObj_onceToken_113, &__block_literal_global_114);
@@ -525,11 +525,11 @@ void __50__NRDevicePreferences_sendDevicePreferencesLocked__block_invoke_2(uint6
   if ((sNRCopyLogToStdErr & 1) != 0 || os_log_type_enabled(nrCopyLogObj_sNRLogObj_115, OS_LOG_TYPE_DEFAULT))
   {
     v2 = nrCopyLogObj_sNRLogObj_115;
-    os_unfair_lock_assert_owner((a1 + 16));
+    os_unfair_lock_assert_owner((self + 16));
     v3 = objc_alloc(MEMORY[0x277CCACA8]);
-    v4 = *(a1 + 32);
-    v5 = *(a1 + 80);
-    v6 = *(a1 + 64);
+    v4 = *(self + 32);
+    v5 = *(self + 80);
+    v6 = *(self + 64);
     v7 = v5;
     v8 = _NRCopyPolicyTrafficClassifiersDescription(v7);
     v9 = [v3 initWithFormat:@"%llu preferWiFi, %@, %@", v4, v6, v8];
@@ -537,9 +537,9 @@ void __50__NRDevicePreferences_sendDevicePreferencesLocked__block_invoke_2(uint6
     _NRLogWithArgs(v2, 0, "%s%.30s:%-4d %@ restarting connection %@", v10, v11, v12, v13, v14, "");
   }
 
-  [(NRDevicePreferences *)a1 cancelConnectionLocked];
+  [(NRDevicePreferences *)self cancelConnectionLocked];
 
-  return [(NRDevicePreferences *)a1 sendDevicePreferencesLocked];
+  return [(NRDevicePreferences *)self sendDevicePreferencesLocked];
 }
 
 - (NSSet)policyTrafficClassifiers
@@ -568,11 +568,11 @@ LABEL_6:
   return v5;
 }
 
-- (void)setCompanionLinkPreferences:(id)a3
+- (void)setCompanionLinkPreferences:(id)preferences
 {
-  v5 = a3;
+  preferencesCopy = preferences;
   os_unfair_lock_lock(&self->_lock);
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (!self || (v6 = self->_internalCompanionLinkPreferences) == 0 || (v7 = v6, v8 = [v5 isEqual:self->_internalCompanionLinkPreferences], v7, !v8)))
+  if (!preferencesCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (!self || (v6 = self->_internalCompanionLinkPreferences) == 0 || (v7 = v6, v8 = [preferencesCopy isEqual:self->_internalCompanionLinkPreferences], v7, !v8)))
   {
     if (nrCopyLogObj_onceToken_113 != -1)
     {
@@ -592,12 +592,12 @@ LABEL_6:
     }
 
     [(NRDevicePreferences *)self resetCompanionLinkPreferencesLocked];
-    if (!v5)
+    if (!preferencesCopy)
     {
       goto LABEL_34;
     }
 
-    if ([v5 serviceClass] == 2 || objc_msgSend(v5, "serviceClass") == 3 || objc_msgSend(v5, "serviceClass") == 4)
+    if ([preferencesCopy serviceClass] == 2 || objc_msgSend(preferencesCopy, "serviceClass") == 3 || objc_msgSend(preferencesCopy, "serviceClass") == 4)
     {
       v17 = objc_alloc_init(NRBluetoothLinkPreferences);
       [(NRBluetoothLinkPreferences *)v17 setPacketsPerSecond:&unk_286D2CEA8];
@@ -608,11 +608,11 @@ LABEL_6:
       }
     }
 
-    if ([v5 serviceClass] == 3)
+    if ([preferencesCopy serviceClass] == 3)
     {
       v18 = objc_alloc_init(MEMORY[0x277CD91F0]);
       [v18 requireNetworkAgentWithDomain:@"com.apple.networkrelay" type:@"PhoneCallRelayAgent"];
-      v19 = [v18 copyCParameters];
+      copyCParameters = [v18 copyCParameters];
       evaluator_for_endpoint = nw_path_create_evaluator_for_endpoint();
 
       v21 = nw_path_evaluator_copy_path();
@@ -644,7 +644,7 @@ LABEL_6:
       _Block_object_dispose(&v27, 8);
     }
 
-    if (![v5 highThroughput])
+    if (![preferencesCopy highThroughput])
     {
 LABEL_34:
       if (!self)
@@ -655,9 +655,9 @@ LABEL_34:
       goto LABEL_39;
     }
 
-    if ([v5 includeP2P])
+    if ([preferencesCopy includeP2P])
     {
-      if ([v5 serviceClass] != 2 && objc_msgSend(v5, "serviceClass") != 3 && objc_msgSend(v5, "serviceClass") != 4 && objc_msgSend(v5, "serviceClass") != 5)
+      if ([preferencesCopy serviceClass] != 2 && objc_msgSend(preferencesCopy, "serviceClass") != 3 && objc_msgSend(preferencesCopy, "serviceClass") != 4 && objc_msgSend(preferencesCopy, "serviceClass") != 5)
       {
         NRPreferP2PSet(1);
         if (!self)
@@ -676,7 +676,7 @@ LABEL_34:
 LABEL_38:
         *(&self->super.isa + v23) = 1;
 LABEL_39:
-        objc_storeStrong(&self->_internalCompanionLinkPreferences, a3);
+        objc_storeStrong(&self->_internalCompanionLinkPreferences, preferences);
       }
     }
 
@@ -697,57 +697,57 @@ LABEL_40:
 
 - (void)resetCompanionLinkPreferencesLocked
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 16));
-    if (*(a1 + 72))
+    os_unfair_lock_assert_owner((self + 16));
+    if (*(self + 72))
     {
-      if (*(a1 + 13) == 1)
+      if (*(self + 13) == 1)
       {
-        [(NRDevicePreferences *)a1 setBluetoothLinkPreferencesLocked:?];
-        *(a1 + 13) = 0;
+        [(NRDevicePreferences *)self setBluetoothLinkPreferencesLocked:?];
+        *(self + 13) = 0;
       }
 
-      if (*(a1 + 14) == 1)
+      if (*(self + 14) == 1)
       {
-        v2 = *(a1 + 96);
+        v2 = *(self + 96);
         nw_path_evaluator_cancel();
-        v3 = *(a1 + 96);
-        *(a1 + 96) = 0;
+        v3 = *(self + 96);
+        *(self + 96) = 0;
 
-        *(a1 + 14) = 0;
+        *(self + 14) = 0;
       }
 
-      if (*(a1 + 10) == 1)
+      if (*(self + 10) == 1)
       {
         NRPreferP2PSet(0);
-        *(a1 + 10) = 0;
+        *(self + 10) = 0;
       }
 
-      if (*(a1 + 11) == 1)
+      if (*(self + 11) == 1)
       {
         NRPreferP2PImmediatelySet(0);
-        *(a1 + 11) = 0;
+        *(self + 11) = 0;
       }
 
-      if (*(a1 + 12) == 1)
+      if (*(self + 12) == 1)
       {
         NRPreferWiFiSet(0);
-        *(a1 + 12) = 0;
+        *(self + 12) = 0;
       }
 
-      v4 = *(a1 + 72);
-      *(a1 + 72) = 0;
+      v4 = *(self + 72);
+      *(self + 72) = 0;
     }
   }
 }
 
-- (void)setBluetoothLinkPreferencesLocked:(uint64_t)a1
+- (void)setBluetoothLinkPreferencesLocked:(uint64_t)locked
 {
   v17 = a2;
-  if (a1)
+  if (locked)
   {
-    os_unfair_lock_assert_owner((a1 + 16));
+    os_unfair_lock_assert_owner((locked + 16));
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -758,13 +758,13 @@ LABEL_40:
 
       if ((sNRCopyLogToStdErr & 1) != 0 || os_log_type_enabled(nrCopyLogObj_sNRLogObj_115, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = *(a1 + 64);
+        v9 = *(locked + 64);
         v10 = nrCopyLogObj_sNRLogObj_115;
         _NRLogWithArgs(v10, 0, "%s%.30s:%-4d %@ setting Bluetooth link preferences from %@ to %@", v11, v12, v13, v14, v15, "");
       }
 
-      objc_storeStrong((a1 + 64), a2);
-      [(NRDevicePreferences *)a1 sendDevicePreferencesLocked];
+      objc_storeStrong((locked + 64), a2);
+      [(NRDevicePreferences *)locked sendDevicePreferencesLocked];
     }
 
     else
@@ -826,14 +826,14 @@ uint64_t __51__NRDevicePreferences_setCompanionLinkPreferences___block_invoke(ui
   return v4;
 }
 
-- (void)setBluetoothLinkPreferences:(id)a3
+- (void)setBluetoothLinkPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   os_unfair_lock_lock(&self->_lock);
   if (self)
   {
     self->_hasCmpnLnkPrefsForBT = 0;
-    [(NRDevicePreferences *)self setBluetoothLinkPreferencesLocked:v4];
+    [(NRDevicePreferences *)self setBluetoothLinkPreferencesLocked:preferencesCopy];
   }
 
   else
@@ -878,15 +878,15 @@ uint64_t __51__NRDevicePreferences_setCompanionLinkPreferences___block_invoke(ui
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeQuickRelayRequestLocked:(uint64_t)a1
+- (void)removeQuickRelayRequestLocked:(uint64_t)locked
 {
-  if (!a1)
+  if (!locked)
   {
     return;
   }
 
-  os_unfair_lock_assert_owner((a1 + 16));
-  v9 = *(a1 + 40);
+  os_unfair_lock_assert_owner((locked + 16));
+  v9 = *(locked + 40);
   if (!v9)
   {
     return;
@@ -894,7 +894,7 @@ uint64_t __51__NRDevicePreferences_setCompanionLinkPreferences___block_invoke(ui
 
   if (a2)
   {
-    *(a1 + 40) = 0;
+    *(locked + 40) = 0;
     if (nrCopyLogObj_onceToken_113 != -1)
     {
       dispatch_once(&nrCopyLogObj_onceToken_113, &__block_literal_global_114);
@@ -902,24 +902,24 @@ uint64_t __51__NRDevicePreferences_setCompanionLinkPreferences___block_invoke(ui
 
     if ((sNRCopyLogToStdErr & 1) != 0 || os_log_type_enabled(nrCopyLogObj_sNRLogObj_115, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = *(a1 + 40);
+      v11 = *(locked + 40);
       _NRLogWithArgs(nrCopyLogObj_sNRLogObj_115, 0, "%s%.30s:%-4d %@ removing all quick relay requests (count is now %llu)", v4, v5, v6, v7, v8, "");
     }
 
-    [*(a1 + 48) removeAllQuickRelayRequests];
-    if (*(a1 + 40))
+    [*(locked + 48) removeAllQuickRelayRequests];
+    if (*(locked + 40))
     {
       return;
     }
 
 LABEL_17:
-    v10 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    v10 = *(locked + 48);
+    *(locked + 48) = 0;
 
     return;
   }
 
-  *(a1 + 40) = v9 - 1;
+  *(locked + 40) = v9 - 1;
   if (nrCopyLogObj_onceToken_113 != -1)
   {
     dispatch_once(&nrCopyLogObj_onceToken_113, &__block_literal_global_114);
@@ -927,12 +927,12 @@ LABEL_17:
 
   if ((sNRCopyLogToStdErr & 1) != 0 || os_log_type_enabled(nrCopyLogObj_sNRLogObj_115, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = *(a1 + 40);
+    v12 = *(locked + 40);
     _NRLogWithArgs(nrCopyLogObj_sNRLogObj_115, 0, "%s%.30s:%-4d %@ removing quick relay request (count is now %llu)", v4, v5, v6, v7, v8, "");
   }
 
-  [*(a1 + 48) removeQuickRelayRequest];
-  if (!*(a1 + 40))
+  [*(locked + 48) removeQuickRelayRequest];
+  if (!*(locked + 40))
   {
     goto LABEL_17;
   }
@@ -960,9 +960,9 @@ LABEL_17:
     else
     {
       v4 = [NRDevicePreferencesQuickRelay alloc];
-      v5 = [(NRDevicePreferences *)self deviceIdentifier];
-      v6 = [v5 nrDeviceIdentifier];
-      v7 = [(NRDevicePreferencesQuickRelay *)v4 initWithNRUUID:v6];
+      deviceIdentifier = [(NRDevicePreferences *)self deviceIdentifier];
+      nrDeviceIdentifier = [deviceIdentifier nrDeviceIdentifier];
+      v7 = [(NRDevicePreferencesQuickRelay *)v4 initWithNRUUID:nrDeviceIdentifier];
       quickRelayPreference = self->_quickRelayPreference;
       self->_quickRelayPreference = v7;
 
@@ -994,13 +994,13 @@ LABEL_17:
 
 - (void)removePreferWiFiRequestLocked
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 16));
-    v7 = *(a1 + 32);
+    os_unfair_lock_assert_owner((self + 16));
+    v7 = *(self + 32);
     if (v7)
     {
-      *(a1 + 32) = v7 - 1;
+      *(self + 32) = v7 - 1;
       if (nrCopyLogObj_onceToken_113 != -1)
       {
         dispatch_once(&nrCopyLogObj_onceToken_113, &__block_literal_global_114);
@@ -1008,7 +1008,7 @@ LABEL_17:
 
       if ((sNRCopyLogToStdErr & 1) != 0 || os_log_type_enabled(nrCopyLogObj_sNRLogObj_115, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = *(a1 + 32);
+        v8 = *(self + 32);
         _NRLogWithArgs(nrCopyLogObj_sNRLogObj_115, 0, "%s%.30s:%-4d %@ removing prefer Wi-Fi request (count is now %llu)", v2, v3, v4, v5, v6, "");
       }
 
@@ -1081,10 +1081,10 @@ LABEL_17:
     identifier = 0;
   }
 
-  v5 = [(NRDevicePreferences *)self deviceIdentifier];
-  v6 = [v5 nrDeviceIdentifier];
-  v7 = [v6 UUIDString];
-  v8 = [v3 initWithFormat:@"DevPref[%llu %@]", identifier, v7];
+  deviceIdentifier = [(NRDevicePreferences *)self deviceIdentifier];
+  nrDeviceIdentifier = [deviceIdentifier nrDeviceIdentifier];
+  uUIDString = [nrDeviceIdentifier UUIDString];
+  v8 = [v3 initWithFormat:@"DevPref[%llu %@]", identifier, uUIDString];
 
   return v8;
 }
@@ -1118,7 +1118,7 @@ LABEL_17:
   if ((sNRCopyLogToStdErr & 1) != 0 || os_log_type_enabled(nrCopyLogObj_sNRLogObj_115, OS_LOG_TYPE_DEFAULT))
   {
     v3 = nrCopyLogObj_sNRLogObj_115;
-    v10 = [(NRDevicePreferences *)self copyDetailsLocked];
+    copyDetailsLocked = [(NRDevicePreferences *)self copyDetailsLocked];
     _NRLogWithArgs(v3, 0, "%s%.30s:%-4d Cancel: %@ %@", v4, v5, v6, v7, v8, "");
   }
 
@@ -1138,11 +1138,11 @@ LABEL_17:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (NRDevicePreferences)initWithDeviceIdentifier:(id)a3
+- (NRDevicePreferences)initWithDeviceIdentifier:(id)identifier
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     v16 = nrCopyLogObj_117();
     if (sNRCopyLogToStdErr == 1)
@@ -1175,7 +1175,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v6 = v5;
+  v6 = identifierCopy;
   v39.receiver = self;
   v39.super_class = NRDevicePreferences;
   v7 = [(NRDevicePreferences *)&v39 init];
@@ -1213,7 +1213,7 @@ LABEL_19:
   }
 
   v8 = v7;
-  objc_storeStrong(&v7->_deviceIdentifier, a3);
+  objc_storeStrong(&v7->_deviceIdentifier, identifier);
   v8->_lock._os_unfair_lock_opaque = 0;
   v8->_identifier = atomic_fetch_add_explicit(&initWithDeviceIdentifier__sNRDevicePreferencesIndex, 1uLL, memory_order_relaxed);
   if (nrCopyLogObj_onceToken_113 != -1)

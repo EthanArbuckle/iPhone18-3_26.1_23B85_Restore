@@ -1,14 +1,14 @@
 @interface _UIViewCubicTimingFunction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)controlPoint1;
 - (CGPoint)controlPoint2;
 - (_UIViewCubicTimingFunction)init;
-- (_UIViewCubicTimingFunction)initWithCoder:(id)a3;
-- (_UIViewCubicTimingFunction)initWithControlPoint1:(CGPoint)a3 controlPoint2:(CGPoint)a4;
+- (_UIViewCubicTimingFunction)initWithCoder:(id)coder;
+- (_UIViewCubicTimingFunction)initWithControlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2;
 - (id)_mediaTimingFunction;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIViewCubicTimingFunction
@@ -54,12 +54,12 @@
   return 0;
 }
 
-- (_UIViewCubicTimingFunction)initWithControlPoint1:(CGPoint)a3 controlPoint2:(CGPoint)a4
+- (_UIViewCubicTimingFunction)initWithControlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = point2.y;
+  x = point2.x;
+  v6 = point1.y;
+  v7 = point1.x;
   v9.receiver = self;
   v9.super_class = _UIViewCubicTimingFunction;
   result = [(_UIViewCubicTimingFunction *)&v9 init];
@@ -70,9 +70,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   x = self->_point1.x;
   y = self->_point1.y;
   v7 = self->_point2.x;
@@ -81,13 +81,13 @@
   return [v4 initWithControlPoint1:x controlPoint2:{y, v7, v8}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(_UIViewCubicTimingFunction *)self controlPoint1];
     v7 = v6;
     v9 = v8;
@@ -115,29 +115,29 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   x = self->_point1.x;
   y = self->_point1.y;
-  v6 = a3;
-  [v6 encodeCGPoint:@"point1" forKey:{x, y}];
-  [v6 encodeCGPoint:@"point2" forKey:{self->_point2.x, self->_point2.y}];
+  coderCopy = coder;
+  [coderCopy encodeCGPoint:@"point1" forKey:{x, y}];
+  [coderCopy encodeCGPoint:@"point2" forKey:{self->_point2.x, self->_point2.y}];
 }
 
-- (_UIViewCubicTimingFunction)initWithCoder:(id)a3
+- (_UIViewCubicTimingFunction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     v14.receiver = self;
     v14.super_class = _UIViewCubicTimingFunction;
     v5 = [(_UIViewCubicTimingFunction *)&v14 init];
     if (v5)
     {
-      [v4 decodeCGPointForKey:@"point1"];
+      [coderCopy decodeCGPointForKey:@"point1"];
       v7 = v6;
       v9 = v8;
-      [v4 decodeCGPointForKey:@"point2"];
+      [coderCopy decodeCGPointForKey:@"point2"];
       v5->_point1.x = v7;
       v5->_point1.y = v9;
       v5->_point2.x = v10;
@@ -145,16 +145,16 @@
     }
 
     self = v5;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E696A4C8] format:{@"%@ only supports keyed coding.", objc_opt_class()}];
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)description

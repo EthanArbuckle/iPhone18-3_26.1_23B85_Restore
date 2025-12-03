@@ -1,8 +1,8 @@
 @interface XMLTreeParser.Element
 - (_TtCV25TelephonyBlastDoorSupport13XMLTreeParser7Element)init;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser foundCharacters:(id)characters;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
 @end
 
 @implementation XMLTreeParser.Element
@@ -14,31 +14,31 @@
   return result;
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v8 = Strong;
-    [a3 setDelegate_];
+    [parser setDelegate_];
   }
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
   v6 = sub_26D22E3C4();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  parserCopy = parser;
+  selfCopy = self;
   sub_26D1E82DC(v6, v8);
 }
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_26D1E838C(v8);
+  parserCopy = parser;
+  occurredCopy = occurred;
+  selfCopy = self;
+  sub_26D1E838C(occurredCopy);
 }
 
 @end

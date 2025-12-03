@@ -1,34 +1,34 @@
 @interface _SLSheetMaskLayer
-- (void)drawInContext:(CGContext *)a3;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation _SLSheetMaskLayer
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   [(_SLSheetMaskLayer *)self bounds];
   x = v14.origin.x;
   y = v14.origin.y;
   width = v14.size.width;
   height = v14.size.height;
-  CGContextAddRect(a3, v14);
+  CGContextAddRect(context, v14);
   v9 = MEMORY[0x1E69DC728];
   [(_SLSheetMaskLayer *)self clipCornerRadius];
   v11 = [v9 bezierPathWithRoundedRect:x cornerRadius:{y, width, height, v10}];
-  CGContextAddPath(a3, [v11 CGPath]);
+  CGContextAddPath(context, [v11 CGPath]);
 
-  CGContextEOClip(a3);
-  v12 = [(_SLSheetMaskLayer *)self clipBackgroundColor];
-  CGContextSetFillColorWithColor(a3, [v12 CGColor]);
+  CGContextEOClip(context);
+  clipBackgroundColor = [(_SLSheetMaskLayer *)self clipBackgroundColor];
+  CGContextSetFillColorWithColor(context, [clipBackgroundColor CGColor]);
 
   v15.origin.x = x;
   v15.origin.y = y;
   v15.size.width = width;
   v15.size.height = height;
-  CGContextFillRect(a3, v15);
+  CGContextFillRect(context, v15);
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 @end

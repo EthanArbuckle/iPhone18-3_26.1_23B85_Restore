@@ -2,13 +2,13 @@
 - (CLGnssLocationXPCServiceManager)init;
 - (id)getConnection;
 - (id)getSynchronousRemoteObjectProxy;
-- (void)configureInitializeAndStartRavenSupervisorWithPlatformInfo:(id)a3 withParametersOverrideString:(id)a4 withCompletion:(id)a5;
+- (void)configureInitializeAndStartRavenSupervisorWithPlatformInfo:(id)info withParametersOverrideString:(id)string withCompletion:(id)completion;
 - (void)dealloc;
-- (void)getRavenSolutionAtMCTime:(double)a3 WithReply:(id)a4;
-- (void)getRavenSolutionWithReply:(id)a3;
+- (void)getRavenSolutionAtMCTime:(double)time WithReply:(id)reply;
+- (void)getRavenSolutionWithReply:(id)reply;
 - (void)initializeTriangleSleepManager;
-- (void)pauseResetAndFreeRavenSupervisorWithCompletion:(id)a3;
-- (void)raiseRavenEventsFromData:(id)a3;
+- (void)pauseResetAndFreeRavenSupervisorWithCompletion:(id)completion;
+- (void)raiseRavenEventsFromData:(id)data;
 - (void)reconfigureRavenIfNeeded;
 - (void)reset;
 - (void)shutdown;
@@ -41,7 +41,7 @@
         sub_1018B53B4();
       }
 
-      v6 = [(CLGnssLocationXPCServiceManager *)self getSynchronousRemoteObjectProxy];
+      getSynchronousRemoteObjectProxy = [(CLGnssLocationXPCServiceManager *)self getSynchronousRemoteObjectProxy];
       fRavenPlatformInfoData = self->fRavenPlatformInfoData;
       fRavenParametersString = self->fRavenParametersString;
       v9[0] = _NSConcreteStackBlock;
@@ -49,16 +49,16 @@
       v9[2] = sub_10052D938;
       v9[3] = &unk_10245C2C8;
       v9[4] = self;
-      [v6 configureInitializeAndStartRavenSupervisorWithPlatformInfo:fRavenPlatformInfoData withParametersOverrideString:fRavenParametersString withCompletion:v9];
+      [getSynchronousRemoteObjectProxy configureInitializeAndStartRavenSupervisorWithPlatformInfo:fRavenPlatformInfoData withParametersOverrideString:fRavenParametersString withCompletion:v9];
     }
   }
 }
 
 - (id)getSynchronousRemoteObjectProxy
 {
-  v2 = [(CLGnssLocationXPCServiceManager *)self getConnection];
+  getConnection = [(CLGnssLocationXPCServiceManager *)self getConnection];
 
-  return [v2 synchronousRemoteObjectProxyWithErrorHandler:&stru_10245C7C0];
+  return [getConnection synchronousRemoteObjectProxyWithErrorHandler:&stru_10245C7C0];
 }
 
 - (id)getConnection
@@ -204,7 +204,7 @@
   [(CLGnssLocationXPCServiceManager *)&v8 dealloc];
 }
 
-- (void)configureInitializeAndStartRavenSupervisorWithPlatformInfo:(id)a3 withParametersOverrideString:(id)a4 withCompletion:(id)a5
+- (void)configureInitializeAndStartRavenSupervisorWithPlatformInfo:(id)info withParametersOverrideString:(id)string withCompletion:(id)completion
 {
   if (qword_1025D4680 != -1)
   {
@@ -225,11 +225,11 @@
 
   [-[CLGnssLocationXPCServiceManager getSynchronousRemoteObjectProxy](self "getSynchronousRemoteObjectProxy")];
   *&self->fRavenCurrentlyRunning = 1;
-  self->fRavenPlatformInfoData = a3;
-  self->fRavenParametersString = a4;
+  self->fRavenPlatformInfoData = info;
+  self->fRavenParametersString = string;
 }
 
-- (void)pauseResetAndFreeRavenSupervisorWithCompletion:(id)a3
+- (void)pauseResetAndFreeRavenSupervisorWithCompletion:(id)completion
 {
   if (qword_1025D4680 != -1)
   {
@@ -253,11 +253,11 @@
   v6[2] = sub_10052DCE0;
   v6[3] = &unk_10245C2F0;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = completion;
   [-[CLGnssLocationXPCServiceManager getSynchronousRemoteObjectProxy](self "getSynchronousRemoteObjectProxy")];
 }
 
-- (void)getRavenSolutionAtMCTime:(double)a3 WithReply:(id)a4
+- (void)getRavenSolutionAtMCTime:(double)time WithReply:(id)reply
 {
   [(CLTriangleSleepManager *)self->fTriangleSleepManager performSleep];
   if (qword_1025D4680 != -1)
@@ -269,13 +269,13 @@
   if (os_log_type_enabled(qword_1025D4688, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v10 = a3;
+    timeCopy = time;
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEFAULT, "CLGLS,CLGnssLocationXPCServiceManager,getRavenSolutionAtMCTimeWithReply,%{public}.2lf", buf, 0xCu);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_1018B5880(a3);
+    sub_1018B5880(time);
   }
 
   [(CLGnssLocationXPCServiceManager *)self reconfigureRavenIfNeeded];
@@ -283,11 +283,11 @@
   v8[1] = 3221225472;
   v8[2] = sub_10052DE84;
   v8[3] = &unk_10245C7E8;
-  v8[4] = a4;
+  v8[4] = reply;
   [-[CLGnssLocationXPCServiceManager getSynchronousRemoteObjectProxy](self "getSynchronousRemoteObjectProxy")];
 }
 
-- (void)getRavenSolutionWithReply:(id)a3
+- (void)getRavenSolutionWithReply:(id)reply
 {
   [(CLTriangleSleepManager *)self->fTriangleSleepManager performSleep];
   if (qword_1025D4680 != -1)
@@ -312,16 +312,16 @@
   v6[1] = 3221225472;
   v6[2] = sub_10052DFA0;
   v6[3] = &unk_10245C7E8;
-  v6[4] = a3;
+  v6[4] = reply;
   [-[CLGnssLocationXPCServiceManager getSynchronousRemoteObjectProxy](self "getSynchronousRemoteObjectProxy")];
 }
 
-- (void)raiseRavenEventsFromData:(id)a3
+- (void)raiseRavenEventsFromData:(id)data
 {
   [(CLGnssLocationXPCServiceManager *)self reconfigureRavenIfNeeded];
-  v5 = [(CLGnssLocationXPCServiceManager *)self getSynchronousRemoteObjectProxy];
+  getSynchronousRemoteObjectProxy = [(CLGnssLocationXPCServiceManager *)self getSynchronousRemoteObjectProxy];
 
-  [v5 raiseRavenEventsFromData:a3];
+  [getSynchronousRemoteObjectProxy raiseRavenEventsFromData:data];
 }
 
 - (void)reset

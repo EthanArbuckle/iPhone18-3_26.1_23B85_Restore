@@ -1,29 +1,29 @@
 @interface PSGMatterController
 + (BOOL)shouldShowTestSpecifiers;
-+ (id)accessorySpecifierWithID:(id)a3 name:(id)a4 pairing:(id)a5 target:(id)a6;
++ (id)accessorySpecifierWithID:(id)d name:(id)name pairing:(id)pairing target:(id)target;
 + (id)testSpecifiers;
-+ (void)shouldShowMatterControllerWithCompletion:(id)a3;
++ (void)shouldShowMatterControllerWithCompletion:(id)completion;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)aboutLinkWasTapped;
-- (void)deleteAccessory:(id)a3;
-- (void)reloadAccessoriesWithCompletion:(id)a3;
-- (void)showDeleteAllConfirmation:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)deleteAccessory:(id)accessory;
+- (void)reloadAccessoriesWithCompletion:(id)completion;
+- (void)showDeleteAllConfirmation:(id)confirmation;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 @end
 
 @implementation PSGMatterController
 
-+ (void)shouldShowMatterControllerWithCompletion:(id)a3
++ (void)shouldShowMatterControllerWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_opt_new();
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__PSGMatterController_shouldShowMatterControllerWithCompletion___block_invoke;
   v6[3] = &unk_278325450;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 fetchPairingsWithCompletionHandler:v6];
 }
 
@@ -65,11 +65,11 @@ void __64__PSGMatterController_shouldShowMatterControllerWithCompletion___block_
 
 + (BOOL)shouldShowTestSpecifiers
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  if ([v2 sf_isInternalInstall])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice sf_isInternalInstall])
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [v3 BOOLForKey:@"PSGMatterControllerShowTestDevices"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v4 = [standardUserDefaults BOOLForKey:@"PSGMatterControllerShowTestDevices"];
   }
 
   else
@@ -83,19 +83,19 @@ void __64__PSGMatterController_shouldShowMatterControllerWithCompletion___block_
 + (id)testSpecifiers
 {
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x277CCAD78] UUID];
-  v5 = [v4 UUIDString];
-  v6 = [a1 accessorySpecifierWithID:v5 name:@"Mock test device #1" pairing:0 target:0];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v6 = [self accessorySpecifierWithID:uUIDString name:@"Mock test device #1" pairing:0 target:0];
   [v3 addObject:v6];
 
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
-  v9 = [a1 accessorySpecifierWithID:v8 name:@"Mock test device #2" pairing:0 target:0];
+  uUID2 = [MEMORY[0x277CCAD78] UUID];
+  uUIDString2 = [uUID2 UUIDString];
+  v9 = [self accessorySpecifierWithID:uUIDString2 name:@"Mock test device #2" pairing:0 target:0];
   [v3 addObject:v9];
 
-  v10 = [MEMORY[0x277CCAD78] UUID];
-  v11 = [v10 UUIDString];
-  v12 = [a1 accessorySpecifierWithID:v11 name:@"Mock test device #3" pairing:0 target:0];
+  uUID3 = [MEMORY[0x277CCAD78] UUID];
+  uUIDString3 = [uUID3 UUIDString];
+  v12 = [self accessorySpecifierWithID:uUIDString3 name:@"Mock test device #3" pairing:0 target:0];
   [v3 addObject:v12];
 
   v13 = [v3 copy];
@@ -103,18 +103,18 @@ void __64__PSGMatterController_shouldShowMatterControllerWithCompletion___block_
   return v13;
 }
 
-+ (id)accessorySpecifierWithID:(id)a3 name:(id)a4 pairing:(id)a5 target:(id)a6
++ (id)accessorySpecifierWithID:(id)d name:(id)name pairing:(id)pairing target:(id)target
 {
   v9 = MEMORY[0x277D3FAD8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v9 preferenceSpecifierNamed:v12 target:v10 set:0 get:sel_detailText_ detail:objc_opt_class() cell:2 edit:0];
+  targetCopy = target;
+  pairingCopy = pairing;
+  nameCopy = name;
+  dCopy = d;
+  v14 = [v9 preferenceSpecifierNamed:nameCopy target:targetCopy set:0 get:sel_detailText_ detail:objc_opt_class() cell:2 edit:0];
 
-  [v14 setIdentifier:v13];
+  [v14 setIdentifier:dCopy];
   [v14 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
-  [v14 setObject:v11 forKeyedSubscript:@"PSGDevicePairingKey"];
+  [v14 setObject:pairingCopy forKeyedSubscript:@"PSGDevicePairingKey"];
 
   return v14;
 }
@@ -156,10 +156,10 @@ void __64__PSGMatterController_shouldShowMatterControllerWithCompletion___block_
 
 - (void)aboutLinkWasTapped
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 sf_isiPad];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
-  if (v3)
+  if (sf_isiPad)
   {
     v4 = @"https://support.apple.com/ht213441?cid=mc-ols-iphone-article_ht213441-ipados_ui-09062022";
   }
@@ -170,17 +170,17 @@ void __64__PSGMatterController_shouldShowMatterControllerWithCompletion___block_
   }
 
   v6 = [MEMORY[0x277CBEBC0] URLWithString:v4];
-  v5 = [MEMORY[0x277D75128] sharedApplication];
-  [v5 openURL:v6 options:MEMORY[0x277CBEC10] completionHandler:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] openURL:v6 options:MEMORY[0x277CBEC10] completionHandler:0];
 }
 
-- (void)reloadAccessoriesWithCompletion:(id)a3
+- (void)reloadAccessoriesWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSGMatterController *)self pairingManager];
+  completionCopy = completion;
+  pairingManager = [(PSGMatterController *)self pairingManager];
 
-  if (!v5)
+  if (!pairingManager)
   {
     v6 = objc_opt_new();
     [(PSGMatterController *)self setPairingManager:v6];
@@ -194,15 +194,15 @@ void __64__PSGMatterController_shouldShowMatterControllerWithCompletion___block_
     _os_log_impl(&dword_21CF20000, v7, OS_LOG_TYPE_DEFAULT, "%s: querying for pairings.", buf, 0xCu);
   }
 
-  v8 = [(PSGMatterController *)self pairingManager];
+  pairingManager2 = [(PSGMatterController *)self pairingManager];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__PSGMatterController_reloadAccessoriesWithCompletion___block_invoke;
   v11[3] = &unk_2783254F0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
-  [v8 fetchPairingsWithCompletionHandler:v11];
+  v12 = completionCopy;
+  v9 = completionCopy;
+  [pairingManager2 fetchPairingsWithCompletionHandler:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -557,9 +557,9 @@ LABEL_22:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = [(PSGMatterController *)self indexForIndexPath:a4];
+  v5 = [(PSGMatterController *)self indexForIndexPath:path];
   v6 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndex:v5];
   v7 = [v6 objectForKeyedSubscript:@"PSGDevicePairingKey"];
   v8 = v7 != 0;
@@ -567,15 +567,15 @@ LABEL_22:
   return v8;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v6 = [(PSGMatterController *)self specifierAtIndexPath:a5, a4];
-  [(PSGMatterController *)self deleteAccessory:v6];
+  style = [(PSGMatterController *)self specifierAtIndexPath:path, style];
+  [(PSGMatterController *)self deleteAccessory:style];
 }
 
-- (void)deleteAccessory:(id)a3
+- (void)deleteAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = MEMORY[0x277D75110];
   v6 = PSG_LocalizedStringForMatter(@"ACCESSORY_DELETE_PROMPT");
   v7 = PSG_LocalizedStringForMatter(@"ACCESSORY_DELETE_PROMPT_MULTIPLE_OPTIONS_DETAIL");
@@ -587,9 +587,9 @@ LABEL_22:
   v23[1] = 3221225472;
   v23[2] = __39__PSGMatterController_deleteAccessory___block_invoke;
   v23[3] = &unk_2783250E0;
-  v11 = v4;
+  v11 = accessoryCopy;
   v24 = v11;
-  v25 = self;
+  selfCopy = self;
   v12 = [v9 actionWithTitle:v10 style:2 handler:v23];
   [v8 addAction:v12];
 
@@ -666,9 +666,9 @@ void __39__PSGMatterController_deleteAccessory___block_invoke_81(uint64_t a1, vo
   [*(a1 + 32) reloadAccessoriesWithCompletion:0];
 }
 
-- (void)showDeleteAllConfirmation:(id)a3
+- (void)showDeleteAllConfirmation:(id)confirmation
 {
-  v4 = a3;
+  confirmationCopy = confirmation;
   v5 = MEMORY[0x277D75110];
   v6 = PSG_LocalizedStringForMatter(@"ACCESSORY_REMOVE_FROM_ALL_PROMPT");
   v7 = PSG_LocalizedStringForMatter(@"ACCESSORY_REMOVE_FROM_ALL_DETAIL");
@@ -680,9 +680,9 @@ void __39__PSGMatterController_deleteAccessory___block_invoke_81(uint64_t a1, vo
   v17[1] = 3221225472;
   v17[2] = __49__PSGMatterController_showDeleteAllConfirmation___block_invoke;
   v17[3] = &unk_2783250E0;
-  v18 = v4;
-  v19 = self;
-  v11 = v4;
+  v18 = confirmationCopy;
+  selfCopy = self;
+  v11 = confirmationCopy;
   v12 = [v9 actionWithTitle:v10 style:2 handler:v17];
   [v8 addAction:v12];
 

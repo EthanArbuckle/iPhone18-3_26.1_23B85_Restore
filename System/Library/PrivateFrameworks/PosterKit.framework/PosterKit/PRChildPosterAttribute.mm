@@ -1,30 +1,30 @@
 @interface PRChildPosterAttribute
-+ (id)decodeObjectWithJSON:(id)a3;
-- (PRChildPosterAttribute)initWithChildPosterUUID:(id)a3 dateCreated:(id)a4 providerIdentifier:(id)a5;
++ (id)decodeObjectWithJSON:(id)n;
+- (PRChildPosterAttribute)initWithChildPosterUUID:(id)d dateCreated:(id)created providerIdentifier:(id)identifier;
 - (id)encodeJSON;
 @end
 
 @implementation PRChildPosterAttribute
 
-- (PRChildPosterAttribute)initWithChildPosterUUID:(id)a3 dateCreated:(id)a4 providerIdentifier:(id)a5
+- (PRChildPosterAttribute)initWithChildPosterUUID:(id)d dateCreated:(id)created providerIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  createdCopy = created;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = PRChildPosterAttribute;
   v11 = [(PRChildPosterAttribute *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     childPosterUUID = v11->_childPosterUUID;
     v11->_childPosterUUID = v12;
 
-    v14 = [v9 copy];
+    v14 = [createdCopy copy];
     dateCreated = v11->_dateCreated;
     v11->_dateCreated = v14;
 
-    v16 = [v10 copy];
+    v16 = [identifierCopy copy];
     providerIdentifier = v11->_providerIdentifier;
     v11->_providerIdentifier = v16;
   }
@@ -32,9 +32,9 @@
   return v11;
 }
 
-+ (id)decodeObjectWithJSON:(id)a3
++ (id)decodeObjectWithJSON:(id)n
 {
-  v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:16 error:0];
+  v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:16 error:0];
   v4 = [v3 objectForKey:@"dateCreated"];
   [v4 doubleValue];
   v6 = v5;
@@ -73,14 +73,14 @@
   v7 = [v4 stringForObjectValue:v6];
   v15[0] = v7;
   v14[1] = @"UUIDString";
-  v8 = [(NSUUID *)self->_childPosterUUID UUIDString];
+  uUIDString = [(NSUUID *)self->_childPosterUUID UUIDString];
   providerIdentifier = self->_providerIdentifier;
-  v15[1] = v8;
+  v15[1] = uUIDString;
   v15[2] = providerIdentifier;
   v14[2] = @"providerIdentifier";
   v14[3] = @"attributeType";
-  v10 = [(PRChildPosterAttribute *)self attributeType];
-  v15[3] = v10;
+  attributeType = [(PRChildPosterAttribute *)self attributeType];
+  v15[3] = attributeType;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
   v12 = [v3 dataWithJSONObject:v11 options:2 error:0];
 
